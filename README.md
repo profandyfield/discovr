@@ -12,7 +12,7 @@ blah blah
 
 ## Datasets
 
-See the book or data descriptions for more details. This is a list of available datasets within the package. Raw CSV files are available from the books website.
+See the book or data descriptions for more details. This is a list of available datasets within the package. Raw CSV files are available from the book's website.
 
 * **acdc**: Data from the file *oxoby_2008.csv*
 * **teaching**: Data from the file *method_of_teaching.csv*

@@ -7,7 +7,7 @@
 \format{A tibble with 20 rows and 3 variables:
 \describe{
   \item{method}{The type of teaching method used}
-  \item{Sex}{Biological sex of the individual}
+  \item{sex}{Biological sex of the individual}
   \item{mark}{The score out of 20 on a test}
 }}
 \source{

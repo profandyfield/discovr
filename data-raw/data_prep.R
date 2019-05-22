@@ -31,3 +31,15 @@ acdc <- get_data("oxoby_2008.csv") %>%
   )
 
 usethis::use_data(acdc)
+
+
+# shopping_exercise.csv
+
+shopping <- get_data("shopping_exercise.csv") %>%
+  dplyr::mutate(
+    sex = forcats::as_factor(sex)
+  )
+
+usethis::use_data(shopping)
+
+

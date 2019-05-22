@@ -8,7 +8,7 @@
 #' @format A tibble with 20 rows and 3 variables:
 #' \describe{
 #'   \item{method}{The type of teaching method used}
-#'   \item{Sex}{Biological sex of the individual}
+#'   \item{sex}{Biological sex of the individual}
 #'   \item{mark}{The score out of 20 on a test}
 #' }
 #' @source \url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
@@ -44,5 +44,22 @@
 
 "acdc"
 
+#' Shopping and exercise data
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' According to some highly unscientific research done by a UK department store chain and reported in [Marie Claire magazine](http://ow.ly/9Dxvy), shopping is good for you.
+#' They found that the average woman spends 150 minutes and walks 2.6 miles when she shops, burning off around 385 calories. In contrast, men spend only about 50 minutes shopping, covering 1.5 miles.
+#' This was based on strapping a pedometer on a mere 10 participants. Although I don’t have the actual data, some simulated data based on these means are in this file.
+#'
+#' @format A tibble with 10 rows and 3 variables:
+#' \describe{
+#'   \item{sex}{Biological sex of the individual}
+#'   \item{distance}{The distance travelled in miles}
+#'   \item{time}{The time spent shopping in minutes}
+#' }
+#' @source \url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+
+"shopping"
 
 

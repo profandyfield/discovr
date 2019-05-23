@@ -1,4 +1,5 @@
 # discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2020)
+
 The `discovr` package contains resources for my 2020 textbook [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/). There are tutorials written using [learnr](https://rstudio.github.io/learnr/). Once a tutorial is running it's a bit like reading a book but with places where you can practice the R code that you have just been taught. The `discovr` package is free and offered to support tutors and students using my textbook who want to learn R.
  
 # Contents of `discovr`
@@ -14,9 +15,13 @@ blah blah
 
 See the book or data descriptions for more details. This is a list of available datasets within the package. Raw CSV files are available from the book's website.
 
-* **acdc**: Data from the file *oxoby_2008.csv*
-* **teaching**: Data from the file *method_of_teaching.csv*
-
+* **acdc**: Data from the file *oxoby_2008.csv*. For more information execute `?acdc`.
+* **animal_bride**: Data from the file *oxoby_2008.csv*. For more information execute `?animal_bride`.
+* **metallica**: Data from the file *metallica.csv*. For more information execute `?metallica`.
+* **teaching**: Data from the file *method_of_teaching.csv*. For more information execute `?teaching`.
+* **shopping**: Data from the file *shopping_exercise.csv*. For more information execute `?shopping`.
+* **tea15**: Data from the file *tea_makes_you_brainy_15.csv*. For more information execute `?tea15`.
+* **zhang_sample**: Data from the file *zhang_2013_subsample.csv*. For more information execute `?zhang_sample`.
 
 # Installing `discovr`
 

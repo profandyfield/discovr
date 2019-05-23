@@ -1,3 +1,50 @@
+
+#' Goat or dog data
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Fictitious data inspired by two news stories that I enjoyed. The first was about a Sudanese man who was forced to marry a goat (\url{http://ow.ly/9DyyP})
+#' after being caught having sex with it. I’m not sure he treated the goat to a nice dinner in a posh restaurant before taking advantage of her, but either way you have to feel sorry for the goat.
+#' I’d barely had time to recover from that story when another appeared about an Indian man forced to marry a dog(\url{http://ow.ly/9DyFn}) to atone for stoning two dogs and stringing them up in a tree 15 years earlier.
+#' Why anyone would think it’s a good idea to enter a dog into matrimony with a man with a history of violent behaviour towards dogs is beyond me.
+#' Still, I wondered whether a goat or dog made a better spouse. I found (but not really) some other people who had been forced to marry goats and dogs and measured their life satisfaction and, also, how much they like animals.
+#' The data contains the following variables:
+#'
+#' \itemize{
+#'   \item \strong{wife}: Whether the person married a goat or a dog
+#'   \item \strong{animal}: How much the person likes animals
+#'   \item \strong{life_satisfaction}: The person's life satisfaction score
+#' }
+#' @format A tibble with 20 rows and 3 variables.
+#' @docType data
+#' @source \url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+
+"animal_bride"
+
+
+#' Metallica data
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' The data show various pieces of information about past and present members of the band Metallica that may or may not be accurate at the time of writing (2019).
+#' The data contains the following variables:
+#'
+#' \itemize{
+#'   \item \strong{name}: The band member's name
+#'   \item \strong{birth_date}: The band member's date of birth
+#'   \item \strong{death_date}: The band member's date of death (where applicable)
+#'   \item \strong{instrument}: The instrument played by the band member
+#'   \item \strong{current_member}: Is the member currently in the band? (True or False)
+#'   \item \strong{songs_written}: The number of songs the band member has contributed to
+#'   \item \strong{net_worth}: The band member's net worth as of 2019 according to some dodgy website
+#'   \item \strong{worth_per_song}: The members net worth per song contributed to
+#' }
+#' @format A tibble with 7 rows and 8 variables.
+#' @docType data
+#' @source \url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+
+"metallica"
+
 #' Method of teaching data
 #'
 #' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
@@ -5,12 +52,13 @@
 #' The data show the score (out of 20) for 20 different students, some of whom are male and some female,
 #' and some of whom were taught using positive reinforcement (being nice) and others who were taught using punishment (electric shock)
 #'
-#' @format A tibble with 20 rows and 3 variables:
-#' \describe{
-#'   \item{method}{The type of teaching method used}
-#'   \item{sex}{Biological sex of the individual}
-#'   \item{mark}{The score out of 20 on a test}
+#' \itemize{
+#'   \item \strong{method}: The type of teaching method used
+#'   \item \strong{sex}: Biological sex of the individual
+#'   \item \strong{mark}: The score out of 20 on a test
 #' }
+#' @format A tibble with 20 rows and 3 variables.
+#' @docType data
 #' @source \url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
 
 "teaching"
@@ -31,16 +79,20 @@
 #' (because of the ‘feel-good factor’ the music creates). Therefore, by comparing the value of offers made and the minimum acceptable offers in the two groups he could see whether people have more of a feel
 #' good factor when listening to Bon or Brian. There were 18 people per group.
 #'
-#' These data are approximated from graphs within his paper:
-#' Oxoby, R. J. (2008). On the efficiency of AC/DC: Bon Scott versus Brian Johnson. *Economic Enquiry*, *47(3)*, 598-602. [doi](10.1111/j.1465-7295.2008.00138.x)
+#' These data are approximated from graphs within Oxoby (2008). The object contains the following variables:
 #'
-#' @format A tibble with 36 rows and 2 variables:
-#' \describe{
-#'   \item{singer}{The type of teaching method used}
-#'   \item{offer}{Offer made (in dollars)}
-#'   \item{mao}{The minimum acceptable offer, MAO, in dollars}
+#' \itemize{
+#'   \item \strong{singer}: The type of teaching method used
+#'   \item \strong{offer}: Offer made (in dollars)
+#'   \item \strong{mao}: The minimum acceptable offer, MAO, in dollars
 #' }
+#' @docType data
+#' @format A tibble with 36 rows and 2 variables.
 #' @source \url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+#' @references
+#' \itemize{
+#'    \item Oxoby, R. J. (2008). On the efficiency of AC/DC: Bon Scott versus Brian Johnson. \emph{Economic Enquiry}, \emph{47}, 598-602. \url{https://doi.org/10.1111/j.1465-7295.2008.00138.x}
+#'}
 
 "acdc"
 
@@ -48,18 +100,67 @@
 #'
 #' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' According to some highly unscientific research done by a UK department store chain and reported in [Marie Claire magazine](http://ow.ly/9Dxvy), shopping is good for you.
+#' According to some highly unscientific research done by a UK department store chain and reported in Marie Claire magazine (\url{http://ow.ly/9Dxvy}), shopping is good for you.
 #' They found that the average woman spends 150 minutes and walks 2.6 miles when she shops, burning off around 385 calories. In contrast, men spend only about 50 minutes shopping, covering 1.5 miles.
 #' This was based on strapping a pedometer on a mere 10 participants. Although I don’t have the actual data, some simulated data based on these means are in this file.
 #'
-#' @format A tibble with 10 rows and 3 variables:
-#' \describe{
-#'   \item{sex}{Biological sex of the individual}
-#'   \item{distance}{The distance travelled in miles}
-#'   \item{time}{The time spent shopping in minutes}
+#' \itemize{
+#'   \item \strong{sex}: Biological sex of the individual
+#'   \item \strong{distance}: The distance travelled in miles
+#'   \item \strong{time}: The time spent shopping in minutes
 #' }
+#' @format A tibble with 10 rows and 3 variables.
+#' @docType data
 #' @source \url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
 
 "shopping"
 
+#' Tea data (small sample)
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' One of my favourite activities, especially when trying to do brain-melting things like writing statistics books, is drinking tea. I am English, after all.
+#' Fortunately, tea improves your cognitive function – well, it does in old Chinese people at any rate (Feng, Gwee, Kua, & Ng, 2010).
+#' I may not be Chinese and I’m not that old, but I nevertheless enjoy the idea that tea might help me think. Here are some (fictional) data based on Feng et al.’s
+#' study that measured the number of cups of tea drunk per day and cognitive functioning (out of 80) in 15 people.
+#'
 
+#' \itemize{
+#'   \item \strong{tea}: The number of cups of tea a person drinks per day
+#'   \item \strong{cog_fun}: Cognitive functioning (out of 80)
+#' }
+#' @format A tibble with 15 rows and 2 variables:
+#' @source \url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+#' @references
+#' \itemize{
+#'    \item Feng, L., Gwee, X., Kua, E. H., & Ng, T. P. (2010). Cognitive function and tea consumption in community dwelling older Chinese in Singapore. \emph{Journal of Nutrition Health & Aging}, \emph{14}, 433-438.
+#'}
+
+"tea15"
+
+#' Zhang et al. (2013) (subsample)
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Statistics and maths anxiety are common and affect people’s performance on maths and stats assignments; women in particular can lack confidence in mathematics (Field, 2010).
+#' Zhang, Schmader and Hall (2013) did an intriguing study in which students completed a maths test in which some put their own name on the test booklet,
+#' whereas others were given a booklet that already had either a male or female name on. Participants in the latter two conditions were told that they would use this other person’s name for the purpose of the test.
+#' Women who completed the test using a different name performed significantly better than those who completed the test using their own name. (There were no such significant effects for men.)
+#' The data are a random subsample of Zhang et al.’s data with the following variables:
+#'
+#' \itemize{
+#'   \item \strong{id}: Participant ID
+#'   \item \strong{sex}: Participant's biological sex
+#'   \item \strong{name_type}: The booklet condition to which the participant was allocated: Female fake name, Male fake name or Own name
+#'   \item \strong{accuracy}: The participant's score on the maths test
+#' }
+#' @format A tibble with 52 rows and 4 variables
+#' @docType data
+#' @source \url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+#' @references
+#' \itemize{
+#'    \item Field, A. P. (2010). Teaching Statistics. In D. Upton & A. Trapp (Eds.), \emph{Teaching Psychology in Higher Education} (pp. 134-163). Chichester, UK: Wiley-Blackwell.
+#'    \item Zhang, S., Schmader, T., & Hall, W. M. (2013). L'eggo My Ego: Reducing the Gender Gap in Math by Unlinking the Self from Performance. \emph{Self and Identity}, \emph{12}, 400-412. \url{https://doi.org/10.1080/15298868.2012.687012}
+#'}
+
+"zhang_sample"

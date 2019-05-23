@@ -4,12 +4,7 @@
 \name{teaching}
 \alias{teaching}
 \title{Method of teaching data}
-\format{A tibble with 20 rows and 3 variables:
-\describe{
-  \item{method}{The type of teaching method used}
-  \item{sex}{Biological sex of the individual}
-  \item{mark}{The score out of 20 on a test}
-}}
+\format{A tibble with 20 rows and 3 variables.}
 \source{
 \url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
 }
@@ -22,5 +17,11 @@ A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (
 \details{
 The data show the score (out of 20) for 20 different students, some of whom are male and some female,
 and some of whom were taught using positive reinforcement (being nice) and others who were taught using punishment (electric shock)
+
+\itemize{
+  \item \strong{method}: The type of teaching method used
+  \item \strong{sex}: Biological sex of the individual
+  \item \strong{mark}: The score out of 20 on a test
+}
 }
 \keyword{datasets}

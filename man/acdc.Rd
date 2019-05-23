@@ -4,12 +4,7 @@
 \name{acdc}
 \alias{acdc}
 \title{Oxoby (2008) data}
-\format{A tibble with 36 rows and 2 variables:
-\describe{
-  \item{singer}{The type of teaching method used}
-  \item{offer}{Offer made (in dollars)}
-  \item{mao}{The minimum acceptable offer, MAO, in dollars}
-}}
+\format{A tibble with 36 rows and 2 variables.}
 \source{
 \url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
 }
@@ -32,7 +27,17 @@ and the minimum offers that responders accepted (called the minimum acceptable o
 (because of the ‘feel-good factor’ the music creates). Therefore, by comparing the value of offers made and the minimum acceptable offers in the two groups he could see whether people have more of a feel
 good factor when listening to Bon or Brian. There were 18 people per group.
 
-These data are approximated from graphs within his paper:
-Oxoby, R. J. (2008). On the efficiency of AC/DC: Bon Scott versus Brian Johnson. *Economic Enquiry*, *47(3)*, 598-602. [doi](10.1111/j.1465-7295.2008.00138.x)
+These data are approximated from graphs within Oxoby (2008). The object contains the following variables:
+
+\itemize{
+  \item \strong{singer}: The type of teaching method used
+  \item \strong{offer}: Offer made (in dollars)
+  \item \strong{mao}: The minimum acceptable offer, MAO, in dollars
+}
+}
+\references{
+\itemize{
+   \item Oxoby, R. J. (2008). On the efficiency of AC/DC: Bon Scott versus Brian Johnson. \emph{Economic Enquiry}, \emph{47}, 598-602. \url{https://doi.org/10.1111/j.1465-7295.2008.00138.x}
+}
 }
 \keyword{datasets}

@@ -1,7 +1,7 @@
 ---
 title: "Smart Alex Solutions: Chapter 1"
 author: "Andy P. Field"
-date: 'Created 23/05/2019, Updated `r format(Sys.Date(), "%d %B %Y")`'
+date: 'Last updated `r format(Sys.Date(), "%d %B %Y")`'
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Smart Alex Solutions: Chapter 1}
@@ -12,7 +12,9 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
 )
 ```
 
@@ -33,7 +35,7 @@ library(tidyverse) #if you haven't already executed this command
 readr::write_csv(metalli_tib, "../data/metallica.csv")
 ```
 
-##  Task 2.2
+##  Task 1.2
 
 > 	In R markdown how would achieve the following formatted text?
 

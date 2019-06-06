@@ -1,5 +1,7 @@
 ---
 title: "R code in Chapter 2"
+author: "Andy P. Field"
+date: 'Last updated `r format(Sys.Date(), "%d %B %Y")`'
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{R code in Chapter 2}
@@ -106,7 +108,8 @@ fb_tib %>%
     IQR = IQR(friends),
     var = var(friends),
     sd = sd(friends)
-)
+) %>% 
+  round(., 2)
 
 ```
 
@@ -135,4 +138,73 @@ fb_tib %>%
   round(., 2)
 
 ```
+
+### Pieces of great 2.2
+
+```{r}
+get_summary <- function(tibble, variable){
+  variable <- enquo(variable)
+  
+  summary <- tibble %>% 
+    dplyr::summarise(
+      median =  median(!!variable),
+      mean =  mean(!!variable),
+      `trimmed mean 10%` =  mean(!!variable, trim = 0.1)
+      ) %>% 
+    round(., 2)
+
+
+return(summary)
+} 
+
+fb_tib %>% 
+  get_summary(., friends)
+
+```
+
+Or, annoy people by using random names for the inputs of the function:
+
+```{r}
+get_summary <- function(johnson_pitchfork, harry_the_hungy_hippo){
+  harry_the_hungy_hippo <- enquo(harry_the_hungy_hippo)
+  
+  summary <- johnson_pitchfork %>% 
+    dplyr::summarise(
+      median =  median(!!harry_the_hungy_hippo),
+      mean =  mean(!!harry_the_hungy_hippo),
+      `trimmed mean 10%` =  mean(!!harry_the_hungy_hippo, trim = 0.1)
+      ) %>% 
+    round(., 2)
+
+return(summary)
+}
+
+
+fb_tib %>% 
+  get_summary(., friends)
+
+```
+
+Include options relating to `mean()` and `median()`
+
+
+```{r}
+get_summary <- function(tibble, variable, na_remove = FALSE, trim_val = 0){
+  variable <- enquo(variable)
+  
+  summary <- tibble %>% 
+    dplyr::summarise(
+      median =  median(!!variable, na.rm = na_remove),
+      mean =  mean(!!variable, na.rm = na_remove, trim = trim_val)
+      ) %>% 
+    round(., 2)
+
+return(summary)
+}
+
+fb_tib %>% 
+  get_summary(., friends, na_remove = TRUE, trim_val  = 0.1)
+
+```
+
 

@@ -23,7 +23,15 @@ animal_bride <- tibble(.rows = 20) %>%
 
 usethis::use_data(animal_bride)
 
+# Johns et al. (2012)
 
+johns_2012 <- get_data("johns_2012.csv") %>%
+  dplyr::rename_all(list(tolower)) %>%
+  dplyr::mutate(
+    partners = forcats::as_factor(partners)
+  )
+
+usethis::use_data(johns_2012)
 
 # Metallica
 

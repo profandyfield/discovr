@@ -21,6 +21,30 @@
 
 "animal_bride"
 
+#' Johns et al. (2012) data
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' It is believed that males have a biological predispoition towards the colour red because it is sexually salient.
+#' The theory suggests that women use the colour red as a proxy signal for genital colour to indicate ovulation and sexual proceptivity.
+#' If this hypothesis is true then using the colour red in this way would have to attract men (otherwise it’s a pointless strategy).
+#' In a novel study, Johns, Hargrave, and Newton-Fisher (2012) tested this idea by manipulating the colour of four pictures of female
+#' geneitalia to make them increasing shades of red (pale pink, light pink, dark pink, red). Heterosexual males rated the resulting 16
+#' pictures from 0 (unattractive) to 100 (attractive). These are the data from that study. The data contains the following variables:
+#'
+#' \itemize{
+#'   \item \strong{partners}: Sexual experience coded as a factor ('Very little' and 'Some")
+#'   \item \strong{pale_pink}: Male rating of the attractiveness of pale pink coloured female geneitalia from 0 to 100
+#'   \item \strong{light_pink}: Male rating of the attractiveness of light pink coloured female geneitalia from 0 to 100
+#'   \item \strong{dark_pink}: Male rating of the attractiveness of dark pink coloured female geneitalia from 0 to 100
+#'   \item \strong{red}: Male rating of the attractiveness of red coloured female geneitalia from 0 to 100
+#' }
+#' @format A tibble with 40 rows and 5 variables.
+#' @docType data
+#' @source \url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+
+"johns_2012"
+
 
 #' Metallica data
 #'

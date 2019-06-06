@@ -30,14 +30,14 @@ good factor when listening to Bon or Brian. There were 18 people per group.
 These data are approximated from graphs within Oxoby (2008). The object contains the following variables:
 
 \itemize{
-  \item \strong{singer}: The type of teaching method used
-  \item \strong{offer}: Offer made (in dollars)
-  \item \strong{mao}: The minimum acceptable offer, MAO, in dollars
+\item \strong{singer}: The type of teaching method used
+\item \strong{offer}: Offer made (in dollars)
+\item \strong{mao}: The minimum acceptable offer, MAO, in dollars
 }
 }
 \references{
 \itemize{
-   \item Oxoby, R. J. (2008). On the efficiency of AC/DC: Bon Scott versus Brian Johnson. \emph{Economic Enquiry}, \emph{47}, 598-602. \url{https://doi.org/10.1111/j.1465-7295.2008.00138.x}
+\item Oxoby, R. J. (2008). On the efficiency of AC/DC: Bon Scott versus Brian Johnson. \emph{Economic Enquiry}, \emph{47}, 598-602. \url{https://doi.org/10.1111/j.1465-7295.2008.00138.x}
 }
 }
 \keyword{datasets}

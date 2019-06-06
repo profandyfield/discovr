@@ -19,7 +19,7 @@ Anyone teaching from or reading \href{https://www.discoveringstatistics.com/book
 
 
 \itemize{
-   \item \strong{discovr_02}: Data basics in R and RStudio
+\item \strong{discovr_02}: Data basics in R and RStudio
 }
 
 To run a tutorial execute:
@@ -36,13 +36,13 @@ replacing \emph{name_of_tutorial} with the name of the tutorial (see below). For
 
 See the book or data descriptions for more details. This is a list of available datasets within the package. Raw CSV files are available from the book's website.
 \itemize{
-   \item \strong{acdc}: Data from the file \emph{oxoby_2008.csv}. For more information execute \code{?acdc}.
-   \item \strong{animal_bride}: Data from the file \emph{oxoby_2008.csv}. For more information execute \code{?animal_bride}.
-   \item \strong{metallica}: Data from the file \emph{metallica.csv}. For more information execute \code{?metallica}.
-   \item \strong{teaching}: Data from the file \emph{method_of_teaching.csv}. For more information execute \code{?teaching}.
-   \item \strong{shopping}: Data from the file \emph{shopping_exercise.csv}. For more information execute \code{?shopping}.
-   \item \strong{tea15}: Data from the file \emph{tea_makes_you_brainy_15.csv}. For more information execute \code{?tea15}.
-   \item \strong{zhang_sample}: Data from the file \emph{zhang_2013_subsample.csv}. For more information execute \code{?zhang_sample}.
+\item \strong{acdc}: Data from the file \emph{oxoby_2008.csv}. For more information execute \code{?acdc}.
+\item \strong{animal_bride}: Data from the file \emph{oxoby_2008.csv}. For more information execute \code{?animal_bride}.
+\item \strong{metallica}: Data from the file \emph{metallica.csv}. For more information execute \code{?metallica}.
+\item \strong{teaching}: Data from the file \emph{method_of_teaching.csv}. For more information execute \code{?teaching}.
+\item \strong{shopping}: Data from the file \emph{shopping_exercise.csv}. For more information execute \code{?shopping}.
+\item \strong{tea15}: Data from the file \emph{tea_makes_you_brainy_15.csv}. For more information execute \code{?tea15}.
+\item \strong{zhang_sample}: Data from the file \emph{zhang_2013_subsample.csv}. For more information execute \code{?zhang_sample}.
 }
 }
 
@@ -50,7 +50,7 @@ See the book or data descriptions for more details. This is a list of available 
 
 
 \itemize{
-       \item Field, A. P. (2020). \emph{Discovering statistics using R and RStudio} (2nd ed.). London: Sage.
+\item Field, A. P. (2020). \emph{Discovering statistics using R and RStudio} (2nd ed.). London: Sage.
 }
 }
 

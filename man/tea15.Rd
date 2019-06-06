@@ -21,13 +21,13 @@ I may not be Chinese and I’m not that old, but I nevertheless enjoy the idea t
 study that measured the number of cups of tea drunk per day and cognitive functioning (out of 80) in 15 people.
 
 \itemize{
-  \item \strong{tea}: The number of cups of tea a person drinks per day
-  \item \strong{cog_fun}: Cognitive functioning (out of 80)
+\item \strong{tea}: The number of cups of tea a person drinks per day
+\item \strong{cog_fun}: Cognitive functioning (out of 80)
 }
 }
 \references{
 \itemize{
-   \item Feng, L., Gwee, X., Kua, E. H., & Ng, T. P. (2010). Cognitive function and tea consumption in community dwelling older Chinese in Singapore. \emph{Journal of Nutrition Health & Aging}, \emph{14}, 433-438.
+\item Feng, L., Gwee, X., Kua, E. H., & Ng, T. P. (2010). Cognitive function and tea consumption in community dwelling older Chinese in Singapore. \emph{Journal of Nutrition Health & Aging}, \emph{14}, 433-438.
 }
 }
 \keyword{datasets}

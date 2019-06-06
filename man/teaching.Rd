@@ -19,9 +19,9 @@ The data show the score (out of 20) for 20 different students, some of whom are 
 and some of whom were taught using positive reinforcement (being nice) and others who were taught using punishment (electric shock)
 
 \itemize{
-  \item \strong{method}: The type of teaching method used
-  \item \strong{sex}: Biological sex of the individual
-  \item \strong{mark}: The score out of 20 on a test
+\item \strong{method}: The type of teaching method used
+\item \strong{sex}: Biological sex of the individual
+\item \strong{mark}: The score out of 20 on a test
 }
 }
 \keyword{datasets}

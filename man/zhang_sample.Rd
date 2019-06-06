@@ -22,16 +22,16 @@ Women who completed the test using a different name performed significantly bett
 The data are a random subsample of Zhang et al.’s data with the following variables:
 
 \itemize{
-  \item \strong{id}: Participant ID
-  \item \strong{sex}: Participant's biological sex
-  \item \strong{name_type}: The booklet condition to which the participant was allocated: Female fake name, Male fake name or Own name
-  \item \strong{accuracy}: The participant's score on the maths test
+\item \strong{id}: Participant ID
+\item \strong{sex}: Participant's biological sex
+\item \strong{name_type}: The booklet condition to which the participant was allocated: Female fake name, Male fake name or Own name
+\item \strong{accuracy}: The participant's score on the maths test
 }
 }
 \references{
 \itemize{
-   \item Field, A. P. (2010). Teaching Statistics. In D. Upton & A. Trapp (Eds.), \emph{Teaching Psychology in Higher Education} (pp. 134-163). Chichester, UK: Wiley-Blackwell.
-   \item Zhang, S., Schmader, T., & Hall, W. M. (2013). L'eggo My Ego: Reducing the Gender Gap in Math by Unlinking the Self from Performance. \emph{Self and Identity}, \emph{12}, 400-412. \url{https://doi.org/10.1080/15298868.2012.687012}
+\item Field, A. P. (2010). Teaching Statistics. In D. Upton & A. Trapp (Eds.), \emph{Teaching Psychology in Higher Education} (pp. 134-163). Chichester, UK: Wiley-Blackwell.
+\item Zhang, S., Schmader, T., & Hall, W. M. (2013). L'eggo My Ego: Reducing the Gender Gap in Math by Unlinking the Self from Performance. \emph{Self and Identity}, \emph{12}, 400-412. \url{https://doi.org/10.1080/15298868.2012.687012}
 }
 }
 \keyword{datasets}

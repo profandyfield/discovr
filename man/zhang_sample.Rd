@@ -22,10 +22,17 @@ Women who completed the test using a different name performed significantly bett
 The data are a random subsample of Zhang et al.’s data with the following variables:
 
 \itemize{
+<<<<<<< HEAD
 \item \strong{id}: participant ID
 \item \strong{sex}: participant's biological sex
 \item \strong{name_type}: the booklet condition to which the participant was allocated: Female fake name, Male fake name or Own name
 \item \strong{accuracy}: the participant's score on the maths test
+=======
+\item \strong{id}: Participant ID
+\item \strong{sex}: Participant's biological sex
+\item \strong{name_type}: The booklet condition to which the participant was allocated: Female fake name, Male fake name or Own name
+\item \strong{accuracy}: The participant's score on the maths test
+>>>>>>> 6a2adff7e9b12384dc4c29f43d98f870f6b23049
 }
 }
 \references{

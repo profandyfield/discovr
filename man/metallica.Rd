@@ -19,6 +19,7 @@ The data show various pieces of information about past and present members of th
 The data contains the following variables:
 
 \itemize{
+<<<<<<< HEAD
 \item \strong{name}: the band member's name
 \item \strong{birth_date}: the band member's date of birth
 \item \strong{death_date}: the band member's date of death (where applicable)
@@ -27,6 +28,16 @@ The data contains the following variables:
 \item \strong{songs_written}: the number of songs the band member has contributed to
 \item \strong{net_worth}: the band member's net worth as of 2019 according to some dodgy website
 \item \strong{worth_per_song}: the members net worth per song contributed to
+=======
+\item \strong{name}: The band member's name
+\item \strong{birth_date}: The band member's date of birth
+\item \strong{death_date}: The band member's date of death (where applicable)
+\item \strong{instrument}: The instrument played by the band member
+\item \strong{current_member}: Is the member currently in the band? (True or False)
+\item \strong{songs_written}: The number of songs the band member has contributed to
+\item \strong{net_worth}: The band member's net worth as of 2019 according to some dodgy website
+\item \strong{worth_per_song}: The members net worth per song contributed to
+>>>>>>> 6a2adff7e9b12384dc4c29f43d98f870f6b23049
 }
 }
 \keyword{datasets}

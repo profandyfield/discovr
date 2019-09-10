@@ -23,9 +23,15 @@ Still, I wondered whether a goat or dog made a better spouse. I found (but not r
 The data contains the following variables:
 
 \itemize{
+<<<<<<< HEAD
 \item \strong{wife}: whether the person married a goat or a dog
 \item \strong{animal}: how much the person likes animals
 \item \strong{life_satisfaction}: the person's life satisfaction score
+=======
+\item \strong{wife}: Whether the person married a goat or a dog
+\item \strong{animal}: How much the person likes animals
+\item \strong{life_satisfaction}: The person's life satisfaction score
+>>>>>>> 6a2adff7e9b12384dc4c29f43d98f870f6b23049
 }
 }
 \keyword{datasets}

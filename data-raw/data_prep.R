@@ -2,8 +2,11 @@
 
 library(tidyverse)
 library(here)
+<<<<<<< HEAD
 library(haven)
 library(sjlabelled)
+=======
+>>>>>>> 6a2adff7e9b12384dc4c29f43d98f870f6b23049
 
 get_data <- function(name){
   tib <- paste0("data-raw/", name) %>%
@@ -11,6 +14,7 @@ get_data <- function(name){
     readr::read_csv()
   return(tib)
 }
+<<<<<<< HEAD
 
 get_spss <- function(name){
   file.path("..", "..", "books", "discovering_statistics", "dsu_spss", "dsus_05", "dsus_5_web_materials", "ds5_spss_files", name) %>%
@@ -31,6 +35,10 @@ exam_anxiety <- get_spss("exam_anxiety.sav") %>%
   )
 
 usethis::use_data(exam_anxiety)
+=======
+#########
+
+>>>>>>> 6a2adff7e9b12384dc4c29f43d98f870f6b23049
 
 # Goat or dog
 
@@ -43,6 +51,7 @@ animal_bride <- tibble(.rows = 20) %>%
 
 usethis::use_data(animal_bride)
 
+<<<<<<< HEAD
 # Jiminy cricket
 
 jiminy_cricket <- get_spss("jiminy_cricket.sav") %>%
@@ -53,6 +62,8 @@ jiminy_cricket <- get_spss("jiminy_cricket.sav") %>%
 
 usethis::use_data(jiminy_cricket)
 
+=======
+>>>>>>> 6a2adff7e9b12384dc4c29f43d98f870f6b23049
 # Johns et al. (2012)
 
 johns_2012 <- get_data("johns_2012.csv") %>%
@@ -91,6 +102,7 @@ teaching <- get_data("method_of_teaching.csv") %>%
 
 usethis::use_data(teaching)
 
+<<<<<<< HEAD
 # Notebook
 
 notebook <- get_spss("notebook.sav") %>%
@@ -139,6 +151,8 @@ here::here("data-raw/ong_2011.csv") %>%
 usethis::use_data(ong_2011, overwrite = TRUE)
 usethis::use_data(ong_tidy, overwrite = TRUE)
 
+=======
+>>>>>>> 6a2adff7e9b12384dc4c29f43d98f870f6b23049
 # Oxoby (2008)
 
 acdc <- get_data("oxoby_2008.csv") %>%

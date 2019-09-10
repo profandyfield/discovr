@@ -1,0 +1,74 @@
+---
+title: "R code in Chapter 5"
+author: "Andy P. Field"
+date: 'Last updated `r format(Sys.Date(), "%d %B %Y")`'
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{R code in Chapter 5}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+```{r setup}
+library(discovr)
+library(tidyverse)
+```
+
+## Usage
+
+This file contains code relevant to chapter 1 of *Discovering Statistics Using R and RStudio* by [Andy Field](https://www.discoveringstatistics.com/). These files contain abridged sections from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/), ^[Basically you can use this material for teaching and non-profit activities but do not meddle with it or claim it as your own work.]
+
+## Load the data
+
+Remember to load the package with `library(discovr)`. After which you can load data files by executing`data(name_of_data)`. For example, to load the data stored in `ong_tidy` execute:
+
+`data(ong_tidy)`
+```{r}
+data(ong_tidy)
+```
+
+If you want to read the file from the CSV and you have set up your project folder as I suggest in Chapter 1, then the general format of the code you would use is:
+
+```{r, eval = FALSE}
+
+tibble_name <- here::here("data/name_of_file.csv") %>%
+  readr::read_csv() %>%
+  dplyr::mutate(
+    ...
+    code to convert character variables to factors
+    ...
+  )
+```
+
+In which you'd replace `tibble_name` with the name you want to assign to the tibble (to keep things consistent with the book, I'd use the filename, so if you load in `ong_tidy.csv` call the tibble `ong_tidy`). Also, change `name_of_file.csv` to the name of the file that you're trying to load. You can use mutate to convert categorical variables to factors. For example, for the `ong_tidy` data you would load it by executing:
+
+```{r, eval = FALSE}
+ong_tidy <- here::here("data/ong_tidy.csv") %>%
+  readr::read_csv() %>%
+  dplyr::mutate(
+    id = forcats::as_factor(id),
+    sex = forcats::as_factor(sex),
+    rating_type = forcats::as_factor(rating_type)
+  )
+```
+
+## A quick example
+
+```{r}
+ong_plot <- ggplot(ong_tidy, aes(narcissism, rating, colour = sex))
+ong_plot + 
+  geom_point()
+
+
+```
+
+

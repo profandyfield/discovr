@@ -1,0 +1,615 @@
+---
+title: "R code in Chapter 1"
+author: "Andy P. Field"
+date: 'Last updated `r format(Sys.Date(), "%d %B %Y")`'
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{R code in Chapter 1}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+```{r setup, results="hide"}
+# Make sure to load these packages
+
+library(discovr)
+library(lubridate)
+library(tidyverse)
+```
+
+## Usage
+
+This file contains code relevant to chapter 1 of *Discovering Statistics Using R and RStudio* by [Andy Field](https://www.discoveringstatistics.com/). These files contain abridged sections from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/), ^[Basically you can use this material for teaching and non-profit activities but do not meddle with it or claim it as your own work.]
+
+
+## Functions and objects
+
+```{r functions}
+
+metallica <- c("Lars","James","Jason", "Kirk")
+metallica <- metallica[metallica != "Jason"]
+metallica <- c(metallica, "Rob")
+
+print(metallica)
+metallica %>% print(.)
+```
+
+
+## R markdown
+
+### Basic text formatting
+
+* Italic (\*): `Make text *italic* by placing it between asterisks (with no spaces)` will knit as: Make text *italic* by placing it between asterisks (with no spaces)
+* Bold (\*\*): `Make text **bold** by placing it between asterisks (with no spaces)` will knit as:	Make text **bold** by placing it between asterisks (with no spaces)
+* Superscript	(\^\^): `Make text^superscript^ by placing it between carats (with no spaces)` will knit as: Make text^superscript^ by placing it between asterisks (with no spaces)
+* Subscript	(\~\~):	`Make text~subscript~ by placing it between tildes (with no spaces)` will knit as: Make text~subscript~ by placing it between tildes (with no spaces)
+* Footnote [\^\1]: `A footnote[^1] and a second footnote[^2]` will knit as: A footnote[^1] and a second footnote[^2]
+
+[^1]: Contents of my first footnote.
+[^2]: Contents of my second footnote.
+
+### Headings
+
+You can use hashes to make headings of different levels. For example:
+```
+# Level 1 heading
+## Level 2 heading
+### Level 3 heading
+#### Level 4 heading
+##### Level 5 heading
+###### Level 6 heading
+```
+
+will knit as:
+
+# Level 1 heading
+## Level 2 heading
+### Level 3 heading
+#### Level 4 heading
+##### Level 5 heading
+###### Level 6 heading
+
+
+### Bullet lists
+
+Single bullet lists, this:
+
+```
+* This is the first bullet
+* This is the second
+* This is the third
+```
+will knit as:
+
+* This is the first bullet
+* This is the second
+* This is the third
+
+
+Numbered bullet lists, this:
+
+```
+1. This is the first entry
+2. This is the second
+3. This is the third
+```
+
+will knit as:
+
+1. This is the first entry
+2. This is the second
+3. This is the third
+
+Complex lists. This:
+
+```
+* This is the first bullet point
+    + this is a sub-bullet
+    + so is this
+* This is the second bullet
+    + This is a sub-bullet
+        - I've gone crazy and done a third level of bullets
+        - It had to be done
+* and this is the third
+```
+
+will knit as:
+
+* This is the first bullet point
+    + this is a sub-bullet
+    + so is this
+* This is the second bullet
+    + This is a sub-bullet
+        - I've gone crazy and done a third level of bullets
+        - It had to be done
+* and this is the third
+
+### Hyperlinks
+
+You use `[text do display](web address)` to insert hyperlinks. For example:
+
+`My favourite band is [Iron Maiden](https://ironmaiden.com/)` will knit as:
+
+My favourite band is [Iron Maiden](https://ironmaiden.com/)
+
+### Images
+
+You use `![Image caption (optional)](path to image)` to insert images. For example:
+
+`![Figure 1: I love my spaniel](andy_milton.png)` knits as:
+
+![Figure 1: I love my spaniel](andy_milton.png)
+
+### Tables
+
+Insert tables using raw text. | denotes a column and the colon position denotes the alignment of the column, for example `|---:|` is right justified, `|:---|` is left justified, and `|:---:|` is centred.
+
+```
+: My top 3 Iron Maiden albums
+
+| Name                   | Year   | Cover rating | Favourite track |
+|:-----------------------|:----:|------:|:--------------------------------:|
+|Piece of mind           | 1983 | ****  | The Flight of Icarus             |
+|The Number of the beast | 1982 | ****  | Children of the damned           |
+|Powerslave              | 1984 | ***** | The rime of the ancient mariner  |
+```
+
+knits as:
+
+: My top 3 Iron Maiden albums
+
+| Name                     | Year   | Cover rating | Favourite track |
+|:-------------------------|:------:|------:|:----------------------:|
+|"Piece of mind"           | "1983" | "****"  | "The Flight of Icarus" |
+|"The Number of the beast" | "1982" | "****"  | "Children of the damned" |
+|"Powerslave"              | "1984" | "*****" | "The rime of the ancient mariner" |
+
+
+Alternative, put your data in a tibble (more on this later) and use `knitr::kable()`:
+
+```
+tibble::tribble(
+~Name, ~Year, ~`Cover rating`, ~`Favourite track`,
+"Piece of mind", "1983",  "****", "The Flight of Icarus",
+"The Number of the beast", "1982", "****", "Children of the damned",
+"Powerslave", "1984", "*****", "The rime of the ancient mariner"
+) %>% 
+knitr::kable(caption = "My top 3 Iron Maiden albums")
+```
+
+will knit as:
+
+```{r, results = 'asis'}
+tibble::tribble(
+~Name, ~Year, ~`Cover rating`, ~`Favourite track`,
+"Piece of mind", "1983",  "****", "The Flight of Icarus",
+"The Number of the beast", "1982", "****", "Children of the damned",
+"Powerslave", "1984", "*****", "The rime of the ancient mariner"
+) %>% 
+knitr::kable(caption = "My top 3 Iron Maiden albums")
+```
+
+
+### Equations
+
+You can include equations in R markdown using latex commands. You include an equation by enclosing it within `$$` (or a single `$` if you want the equation within the line of text you’re writing). To give you a flavour:
+
+`We can include the linear model in a sentence like this: $Y_i = b_0 + b_1X_i + \epsilon_i$`
+
+which will knit as:
+
+We can include the linear model in a sentence like this: $Y_i = b_0 + b_1X_i + \epsilon_i$
+
+Or, if we want it within its own paragraph we’d write it as this:
+```
+$$
+Y_i = b_0 + b_1X_i + \epsilon_i
+$$
+```
+
+which knits as:
+
+$$
+Y_i = b_0 + b_1X_i + \epsilon_i
+$$
+
+
+## Tidyverse and the pipe operator (%>%)
+
+```{r}
+# library(tidyverse) or library(magrittr) to access the pipe
+
+core_members <- metallica %>% 
+  subset(., metallica != "Rob") %>% 
+  sort(.)
+
+core_members
+```
+
+
+##	Getting data into R
+
+```{r metallica}
+
+name <- c("Lars Ulrich","James Hetfield", "Kirk Hammett", "Rob Trujillo", "Jason Newsted", "Cliff Burton", "Dave Mustaine")
+
+# Numeric variables stored as double
+songs_written <-  c(111, 112, 56, 16, 3, 11, 6)
+net_worth <- c(300000000, 300000000, 200000000, 20000000, 40000000, 1000000, 20000000)
+
+# Numeric variables stored as integer
+songs_written_int <-  c(111L, 112L, 56L, 16L, 3L, 11L, 6L)
+net_worth_int <- c(300000000L, 300000000L, 200000000L, 20000000L, 40000000L, 1000000L, 20000000L)
+
+# Date variables
+birth_date <- c("1963-12-26", "1963-08-03", "1962-11-18", "1964-10-23", "1963-03-04", "1962-02-10", "1961-09-13") %>% lubridate::ymd()
+
+death_date <- c(NA, NA, NA, NA, NA, "1986-09-27", NA) %>% 
+  lubridate::ymd()
+
+# Logical variables
+current_member <- c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
+
+# Factor variables
+instrument <- c(2, 0, 0, 1, 1, 1, 0) %>% factor(levels = 0:2, labels = c("Guitar", "Bass", "Drums"))
+
+
+instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>%
+  forcats::as_factor() %>%
+  forcats::fct_relevel("Guitar", "Bass", "Drums")
+
+levels(instrument)
+levels(instrument) <- c("Proper guitar", "Bass guitar", "Drums") 
+
+```
+
+
+##	Tibbles and data frames 
+
+###	Creating data frames 
+
+```{r create_dat}
+metalli_dat <- data.frame(name, birth_date, death_date, instrument, current_member, songs_written, net_worth)
+```
+
+###	Creating tibbles 
+```{r create_tibble}
+metalli_tib <- tibble(name, birth_date, death_date, instrument, current_member, songs_written, net_worth)
+```
+
+###	Viewing dataframes and tibbles 
+
+```{r, view_tib}
+metalli_tib
+
+# View(metalli_tib) 
+```
+
+
+###	Creating an empty tibble 
+
+```{r, emp_tib}
+
+#to create an empty tibble called empty_tib that has 50 rows, execute:
+
+empty_tib <- tibble(.rows = 10)
+
+```
+
+
+### Creating new variables within a tibble 
+
+Using base R:
+
+```{r}
+metalli_tib$songs_written 
+```
+
+Using `dplyrr:mutate()`:
+
+```{r}
+metalli_tib <- metalli_tib %>% 
+  dplyr::mutate(
+    	albums = c(10, 10, 10, 2, 4, 3, 0)
+  )
+
+metalli_tib
+```
+
+You can create your data set by initializing an empty tibble and then using `dplyr::mutate` to add variables. For example, we can create `metalli_tib` from scratch as follows:
+
+```{r}
+metalli_tib <- tibble(.rows = 7) %>% 
+  dplyr::mutate(
+    name = c("Lars Ulrich","James Hetfield", "Kirk Hammett", "Rob Trujillo", "Jason Newsted", "Cliff Burton", "Dave Mustaine"),
+    birth_date = c("1963-12-26", "1963-08-03", "1962-11-18", "1964-10-23", "1963-03-04", "1962-02-10", "1961-09-13") %>% lubridate::ymd(),
+    death_date = c(NA, NA, NA, NA, NA, "1986-09-27", NA) %>% 
+  lubridate::ymd(),
+  instrument = c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>%
+  forcats::as_factor() %>% forcats::fct_relevel("Guitar", "Bass", "Drums"),
+  current_member = c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE),
+  songs_written =  c(111, 112, 56, 16, 3, 11, 6),
+net_worth = c(300000000, 300000000, 200000000, 20000000, 40000000, 1000000, 20000000)
+  )
+```
+
+and now add one that quantifies how much they have earnt per they contributed to:
+
+```{r}
+metalli_tib <- metalli_tib %>% 
+  dplyr::mutate(
+    	worth_per_song = net_worth/songs_written
+  )
+metalli_tib
+```
+
+### Entering data directly into a tibble 
+
+You can enter the data directly as a tibble (rather than creating an empty one and using `dplyr::mutate()`:
+
+```{r}
+metalli_tib <- tribble(
+  ~name, ~birth_date, ~death_date, ~instrument, ~current_member, ~songs_written, ~net_worth,
+  "Lars Ulrich", "1963-12-26", NA, "Drums", TRUE, 111, 300000000,
+  "James Hetfield", "1963-08-03", NA, "Guitar", TRUE, 112, 300000000,
+  "Kirk Hammett", "1962-11-18", NA, "Guitar", TRUE, 56, 200000000,
+  "Rob Trujillo", "1964-10-23", NA, "Bass",  TRUE, 16, 20000000,
+  "Jason Newsted", "1963-03-04", NA, "Bass", FALSE, 3, 40000000,
+  "Cliff Burton", "1962-02-10", "1986-09-27", "Bass", FALSE, 11, 1000000,
+  "Dave Mustaine", "1961-09-13", NA, "Guitar", FALSE, 6, 20000000
+  ) %>% 
+  dplyr::mutate(
+    birth_date = lubridate::ymd(birth_date),
+    death_date = lubridate::ymd(death_date)
+  )
+
+
+```
+
+
+### Finding a cell of a data frame or tibble 
+
+Three ways to discover which instrument Lars Ulrich 'plays':
+
+```{r}
+metalli_tib[1, 4]
+metalli_tib[1, "instrument"]
+metalli_tib[name == "Lars Ulrich", "instrument"]
+```
+
+### Selecting variables
+
+Using base R
+
+```{r}
+# These commands return the contents of the variable called 'name'
+metalli_tib$name
+metalli_tib[1]
+metalli_tib["name"]
+
+# Both of these commands return the contents of the variables called 'name' and instrument
+metalli_tib[c(1, 4)]
+metalli_tib[c("name", "instrument")]
+```
+
+The tidyverse way
+
+```{r}
+metalli_tib %>% 
+  dplyr::select(name, instrument)
+```
+
+You can exclude variables too, try these out:
+
+```{r}
+metalli_tib %>% 
+  dplyr::select(-name)
+
+metalli_tib %>% 
+  dplyr::select(-c(name, instrument))
+```
+
+You can save a subsetted tibble to a new object:
+
+```{r}
+# Save a version of metalli_tib but exclude the variable called name
+
+metalli_anon_tib <- metalli_tib %>% 
+  dplyr::select(-name)
+
+#View this new object
+metalli_anon_tib
+```
+
+### Selecting cases (filtering tibbles)
+
+Using base R we can do the following. View only the data for the current members of metallica:
+
+```{r}
+metalli_tib[current_member == TRUE,]
+```
+
+View only the instruments played by the current members of metallica:
+
+```{r}
+metalli_tib[current_member == TRUE, "instrument"]
+```
+
+View only the names, instruments played, and number of songs written by the current members of metallica:
+
+```{r}
+metalli_tib[current_member == TRUE, c("name", "instrument", "songs_written")]
+```
+
+```{r}
+metalli_tib[songs_written > 50,]
+```
+
+Using `dplyr::filter()`
+
+```{r}
+dplyr::filter(metalli_tib, current_member == TRUE)
+
+# Or using a pipe:
+
+metalli_tib %>% 
+  dplyr::filter(current_member == TRUE)
+```
+
+Again, we can save the filtered tibble to a new object:
+
+```{r}
+metallica_current <- metalli_tib %>% 
+  dplyr::filter(current_member == TRUE)
+
+metallica_current
+```
+
+Combining conditions:
+
+```{r}
+metalli_tib %>% 
+  dplyr::filter(is.na(death_date) & instrument == "Bass guitar")
+```
+
+If we change `is.na()` to `!is.na()` we get Cliff Burton's data (the only member who is a bassist and does NOT have a value of 'NA' for the variable death_date):
+
+```{r}
+metalli_tib %>% 
+  dplyr::filter(!is.na(death_date) & instrument == "Bass guitar")
+```
+
+We can also use the OR operator (|) to set conditions for which only one has to be true. For example, to select members who are either bassists OR drummers we'd use:
+
+```{r}
+metalli_tib %>% 
+  dplyr::filter(instrument == "Drums" | instrument == "Bass guitar")
+```
+
+### Combining selecting cases with selecting variables 
+
+This command filters `metalli_tib` according to whether the variable `current_member` is equal to TRUE and whether the variable `instrument` is NOT equal to (`!=`) the phrase "Bass guitar":
+
+```{r}
+metalli_worth  <- metalli_tib %>% 
+  dplyr::filter(current_member == TRUE & instrument != "Bass guitar")
+
+metalli_worth
+```
+
+Having done this, we could pass the object `net_worth` object that we just created into the `select` function to select the variables `name` and `net_worth`:
+
+```{r}
+metalli_worth  <- metalli_worth  %>% 
+  dplyr::select(name, net_worth)
+
+metalli_worth
+```
+
+Better still, combine the two operations into a single pipe:
+
+```{r}
+metalli_worth <- metalli_tib %>% 
+  dplyr::filter(current_member == TRUE & instrument != "Bass guitar") %>% 
+  dplyr::select(name, net_worth)
+
+metalli_worth
+```
+
+Doing the same with base R will make your eyes hurt
+
+```{r}
+metalli_worth <- metalli_tib[current_member == TRUE & instrument != "Bass guitar", c("name", "net_worth")]
+metalli_worth
+```
+
+### Exporting data
+
+```{r}
+readr::write_csv(metalli_tib, "../data/metallica.csv")
+
+# or 
+
+readr::write_csv(metalli_tib, here::here("/data/metallica.csv"))
+```
+
+##	Using other software to get data in R
+
+
+```{r, eval = FALSE}
+metalli_tib <- readr::read_csv("../data/metallica.csv")
+
+# or 
+
+metalli_tib <- here::here("/data/metallica.csv") %>% readr::read_csv()
+```
+
+We can specify data types:
+
+```{r, eval = FALSE}
+metalli_tib <- readr::read_csv("../data/metallica.csv", col_types = cols(
+  name = col_character(),
+  birth_date = col_date(),
+  death_date = col_date(),
+  instrument = col_factor(),
+  current_member = col_logical(),
+  songs_written = col_double(),
+  net_worth = col_double()
+  )
+)
+
+#OR
+
+metalli_tib <- readr::read_csv("../data/metallica.csv", col_types = "cDDfldd")
+
+# OR
+
+metalli_tib <- readr::read_csv("../data/metallica.csv") %>% 
+  dplyr::mutate(
+    instrument = forcats::as_factor(instrument)
+  )
+
+metalli_tib$instrument
+
+```
+
+***
+
+## Pieces of great
+### Pieces of great 1.5
+
+```{r pog_1.5, eval=FALSE}
+
+husband <- c("1973-06-21", "1970-07-16", "1949-10-08", "1969-05-24")
+wife <- c("1984-11-12", "1973-08-02", "1948-11-11", "1983-07-23")
+agegap <- husband-wife
+
+husband <- c("1973-06-21", "1970-07-16", "1949-10-08", "1969-05-24") %>%
+  lubridate::ymd(.)
+wife <- c("1984-11-12", "1973-08-02", "1948-11-11", "1983-07-23") %>%
+  lubridate::ymd(.)
+
+agegap <- husband-wife
+agegap
+```
+
+### Pieces of great 1.8
+```{r pog_1.8}
+# Creates a list
+metalli_lst <- list(name, instrument)
+metalli_lst
+
+# creates a data frame using cbind
+metalli_mtx <- cbind(name, instrument)
+metalli_mtx
+
+```

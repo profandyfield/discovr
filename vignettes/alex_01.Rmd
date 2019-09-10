@@ -1,0 +1,211 @@
+---
+title: "Smart Alex Solutions: Chapter 1"
+author: "Andy P. Field"
+date: 'Last updated `r format(Sys.Date(), "%d %B %Y")`'
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Smart Alex Solutions: Chapter 1}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+```{r setup, echo = FALSE}
+library(discovr)
+```
+
+![](dsus_smart_alex_banner.png)
+
+This document may contain abridged sections from *Discovering Statistics Using R and RStudio* by [Andy Field](https://www.discoveringstatistics.com/) so there are some copyright considerations, but the material is offered under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Basically you can use this material for teaching and non-profit activities but please do not meddle with it or claim it as your own work.
+
+## Task 1.1
+
+Answer is in the chapter, but to save the tibble as a csv use:
+
+```{r 1_1, echo = TRUE, eval = FALSE}
+library(tidyverse) #if you haven't already executed this command
+readr::write_csv(metalli_tib, "../data/metallica.csv")
+```
+
+##  Task 1.2
+
+> 	In R markdown how would achieve the following formatted text?
+
+I *hate* R: `I *hate* R`
+
+I **really** *hate* R: `I **really** *hate* R`
+
+I hate R^a\ little\ bit^ : `I hate R^a\ little\ bit^`
+
+I hate R~a\ tiny\ bit~ : `I hate R~a\ tiny\ bit~`
+
+I don’t hate R at all, and I love equations like this: $3x-616=1382$: `I don’t hate R at all, and I love equations like this: $3x-616=1382$`
+
+Just kidding, here’s words to describe my feelings about R:
+
+*	Loathe
+*	Despise
+*	Abhor
+*	Execrate
+
+```
+Just kidding, here’s words to describe my feelings about R:
+
+*	Loathe
+*	Despise
+*	Abhor
+*	Execrate
+```
+
+
+##  Task 1.3
+
+> The data below show the score (out of 20) for 20 different students, some of whom are male and some female, and some of whom were taught using positive reinforcement (being nice) and others who were taught using punishment (electric shock). Enter these data into R and save the file as method_of_teaching.csv in your data folder (see Task 1). (Hint: the data below are in messy format, you need to enter them in tidy format.)
+
+We have three variables here: **sex** (was the person male or female), the **method** of teaching they underwent and their **mark** on an assignment. Therefore, the tidy format is to arrange the data in three columns. There are several ways to do this, here's one of them:
+
+```{r 1_3, echo = TRUE, eval = FALSE}
+library(tidyverse) #if you haven't already executed this command
+library(here) #if you haven't already executed this command
+
+tibble(.rows = 20) %>% 
+  dplyr::mutate(
+    	method = c(rep("Electric shock", 10), rep("Being nice", 10)) %>% forcats::as_factor(),
+    	sex = c(rep("Female", 5), rep("Male", 5)) %>% rep(., 2) %>% forcats::as_factor(),
+    	mark = c(6, 7, 5, 4, 8, 15, 14, 20, 13, 13, 12, 10, 7, 8, 13, 10, 9, 8, 6, 7)
+    	) %>% 
+  readr::write_csv(., here::here("data/method_of_teaching.csv"))
+```
+
+
+The data can be found in the file [method_of_teaching.csv](./data/r_data/method_of_teaching.csv).
+
+##  Task 1.4
+
+> In the study discussed in Labcoat Leni’s Real Research 1.1, Oxoby also measured the minimum acceptable offer; these MAOs (in dollars) are below (again, they are approximations based on the graphs in the paper). Read in the file oxoby_2008.csv (which you should already have if you completed the task in Labcoat Leni’s Real Research 1.1 but if not grab it from my website and save it in your data folder) to a tibble called oxoby_tib. Add a variable called mao to the tibble using the values below and overwrite oxoby_2008.csv with this new tibble.
+* Bon Scott group: 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5
+* Brian Johnson group: 0, 1, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 1
+
+Assuming you have the original **oxoby_2008.csv** in the data folder of your project, this code should do the job:
+
+```{r 1_4, echo = TRUE, eval = FALSE}
+library(tidyverse) #if you haven't already executed this command
+library(here) #if you haven't already executed this command
+
+oxoby_tib <- here::here("data/oxoby_2008.csv") %>% read_csv()
+
+oxoby_tib %>% 
+  dplyr::mutate(
+    	mao = c(2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 0, 1, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 1)
+    	) 
+
+oxoby_tib %>% 
+  readr::write_csv(., here::here("data/oxoby_2008.csv)
+```
+
+The data can be found in the file [oxoby_2008.csv](./data/r_data/oxoby_2008.csv)
+
+##  Task 1.5
+
+> According to some highly unscientific research done by a UK department store chain and reported in [Marie Clare magazine](http://ow.ly/9Dxvy) shopping is good for you: they found that the average women spends 150 minutes and walks 2.6 miles when she shops, burning off around 385 calories. In contrast, men spend only about 50 minutes shopping, covering 1.5 miles. This was based on strapping a pedometer on a mere 10 participants. Although I don’t have the actual data, some simulated data based on these means are below. Enter these data into R and save the file as shopping_exercise.csv in your data folder (see Task 1).
+
+We have three variables here: **sex** (was the person male or female), the **distance** they walked and the **time** they spent shopping. Therefore, we arrange the data in three columns:
+
+```{r 1_5, echo = TRUE, eval = FALSE}
+library(tidyverse) #if you haven't already executed this command
+library(here) #if you haven't already executed this command
+
+tibble(.rows = 10) %>% 
+  dplyr::mutate(
+    	sex = c(rep("Male", 5), rep("Female", 5)) %>% forcats::as_factor(),
+    	distance = c(0.16, 0.40, 1.36, 1.99, 3.61, 1.40, 1.81, 1.96, 3.02, 4.82),
+    	time = c(15, 30, 37, 65, 103, 22, 140, 160, 183, 245)
+    	) %>% 
+  readr::write_csv(., here::here("data/shopping_exercise.csv"))
+```
+
+The data can be found in the file [shopping_exercise.csv](./data/r_data/shopping_exercise.csv)
+
+
+##  Task 1.6
+
+> I was taken by two new stories. The first was about a Sudanese man who was forced to [marry a goat](http://ow.ly/9DyyP) after being caught having sex with it. I’m not sure he treated the goat to a nice dinner in a posh restaurant before taking advantage of her, but either way you have to feel sorry for the goat. I’d barely had time to recover from that story when another appeared about an Indian man forced to [marry a dog](http://ow.ly/9DyFn) to atone for stoning two dogs and stringing them up in a tree 15 years earlier. Why anyone would think it’s a good idea to enter a dog into matrimony with a man with a history of violent behaviour towards dogs is beyond me. Still, I wondered whether a goat or dog made a better spouse. I found some other people who had been forced to marry goats and dogs and measured their life satisfaction and, also, how much they like animals. Enter these data into R and export to a file called goat_or_dog.csv.
+
+We have three variables here: **wife** (did the person marry a goat or a dog?), their love of animals (**animal**) and their **life_satisfaction** score. The tidy format is to arrange the data in three columns. There are several ways to do this, here's one of them:
+
+```{r 1_6, echo = TRUE, eval = FALSE}
+library(tidyverse) #if you haven't already executed this command
+library(here) #if you haven't already executed this command
+
+tibble(.rows = 20) %>% 
+  dplyr::mutate(
+    	wife = c(rep("Goat", 12), rep("Dog", 8)) %>% forcats::as_factor(),
+    	animal = c(69, 25, 31, 29, 12, 49, 25, 35, 51, 40, 23, 37, 16, 65, 39, 35, 19, 53, 27, 44),
+    	life_satisfaction = c(47, 6, 47, 33, 13, 56, 42, 51, 42, 46, 27, 48, 52, 66, 65, 61, 60, 68, 37, 72)
+    	) %>% 
+  readr::write_csv(., here::here("data/goat_or_dog.csv"))
+```
+
+The data can be found in the file [goat_or_dog.csv](./data/r_data/goat_or_dog.csv).
+
+##  Task 1.7
+
+> One of my favourite activities, especially when trying to do brain-melting things like writing statistics books, is drinking tea. I am English, after all. Fortunately, tea improves your cognitive function – well, it does in old Chinese people at any rate (Feng, Gwee, Kua, & Ng, 2010). I may not be Chinese and I’m not that old, but I nevertheless enjoy the idea that tea might help me think. Here are some data based on Feng et al.’s study that measured the number of cups of tea drunk per day and cognitive functioning (out of 80) in 15 people. Enter these data into R and export to a file called tea_makes_you_brainy_15.csv.
+
+We have two variables here: the number of cups of tea a person drinks per day (**tea**) and their cognitive functioning out of 80 (**cog_fun**) The tidy format is to arrange the data in three columns. There are several ways to do this, here's one of them:
+
+```{r 1_7, echo = TRUE, eval = FALSE}
+library(tidyverse) #if you haven't already executed this command
+library(here) #if you haven't already executed this command
+
+tibble(.rows = 15) %>% 
+  dplyr::mutate(
+    	tea = c(2, 4, 3, 4, 2, 3, 5, 5, 2, 5, 1, 3, 3, 4, 1),
+    	cog_fun = c(60, 47, 31, 62, 44, 41, 49, 56, 45, 56, 57, 40, 54, 34, 46)
+    	) %>% 
+  readr::write_csv(., here::here("data/tea_makes_you_brainy_15.csv"))
+```
+
+The data can be found in the file [tea_makes_you_brainy_15.csv](./data/r_data/tea_makes_you_brainy_15.csv).
+
+##  Task 1.8
+
+> Statistics and maths anxiety are common and affect people’s performance on maths and stats assignments; women in particular can lack confidence in mathematics (Field, 2010). Zhang, Schmader and Hall (2013) did an intriguing study in which students completed a maths test in which some put their own name on the test booklet, whereas others were given a booklet that already had either a male or female name on. Participants in the latter two conditions were told that they would use this other person’s name for the purpose of the test. Women who completed the test using a different name performed significantly better than those who completed the test using their own name. (There were no such significant effects for men.) The data below are a random subsample of Zhang et al.’s data. Enter them into R and export the file as zhang_2013_subsample.csv 
+
+The design of this study is such that different people were put in one of three different conditions (female fake name, male fake name, own name), but the groups are not equal. In the female fake name group there were 10 females but only 7 males, in the fake male name there were 10 females and 9 males, and in the own name condition 7 females and 9 males. With a bit of adding we can see that there were 27 females in total, and 25 males. We're going to have to use a lot of `rep()` statements and keep our wits about us!
+
+We have three variables: whether the participant was male or female (**sex**), which booklet condition they were in (**name_type**) and their test score (**accuracy**). I've also included a participant **id**, just so that your data matches the file [zhang_2013_subsample.csv](./data/r_data/zhang_2013_subsample.csv) that I provide for you. We can enter the data as follows (there are other ways too ...):
+
+```{r 1_8, echo = TRUE, eval = FALSE}
+library(tidyverse) #if you haven't already executed this command
+library(here) #if you haven't already executed this command
+
+tibble(.rows = 52) %>% 
+  dplyr::mutate(
+    id = c(171, 35, 57, 36, 53, 176, 76, 184, 64, 166, 14, 100, 30, 49, 157, 14, 68, 71, 4, 40, 66, 27, 61, 27, 36, 33, 120, 113, 95, 99, 78, 32, 43, 183, 103, 31, 86, 54, 5, 20, 13, 59, 58, 188, 187, 15, 50, 9, 45, 60, 73, 189) %>% forcats::as_factor(),
+    sex = c(rep("Female", 27), rep("Male", 25)) %>% forcats::as_factor(),
+    name_type = c(rep("Female fake name", 10), rep("Male fake name", 10), rep("Own name", 7), rep("Female fake name", 7), rep("Male fake name", 9), rep("Own name", 9)) %>% forcats::as_factor(),
+    	accuracy = c(33, 22, 46, 53, 14, 27, 64, 62, 75, 50, 69, 60, 82, 78, 38, 63, 46, 27, 61, 29, 75, 33, 83, 42, 10, 44, 27, 53, 47, 87, 41, 62, 67, 57, 31, 63, 34, 40, 22, 17, 60, 47, 57, 70, 57, 33, 83, 86, 65, 64, 37, 80)
+    	) %>% 
+  readr::write_csv(., here::here("data/zhang_2013_subsample.csv"))
+```
+
+##  Task 1.9
+
+> What is a coding variable?
+
+A variable in which numbers are used to represent group or category membership. An example would be a variable in which a score of 1 represents a person being female, and a 0 represents them being male.
+
+##  Task 1.10
+
+> What is the difference between wide and long format data?
+
+Tidy format data are arranged such that scores on an outcome variable appear in a single column and rows represent a combination of the attributes of those scores (for example, the entity from which the scores came, when the score was recorded etc.). In tidy format data, scores from a single entity can appear over multiple rows where each row represents a combination of the attributes of the score (e.g., levels of an independent variable or time point at which the score was recorded etc.) In contrast, messy format data are arranged such that scores from a single entity appear in a single row and levels of independent or predictor variables are arranged over different columns. As such, in designs with multiple measurements of an outcome variable within a case the outcome variable scores will be contained in multiple columns each representing a level of an independent variable, or a timepoint at which the score was observed. Columns can also represent attributes of the score or entity that are fixed over the duration of data collection (e.g., participant sex, employment status etc.).

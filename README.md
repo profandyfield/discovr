@@ -6,8 +6,9 @@ The `discovr` package contains resources for my 2020 textbook [Discovering Stati
 
 ## Interactive tutorials
 
-* **discovr_01_r**: Key concepts in R (packages/the CRAN, functions and objects, packages and functions, style, getting help)
-* **discovr_01_rstudio**: Interacting with R using R studio (Rmarkdown, knitting, basic formatting, code chunks, the here package)
+I recommend working through [this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/) on how to install, set up and work within R and RStudio before starting the interactive tutorials.
+
+* **discovr_01**: Key concepts in R (functions and objects, packages and functions, style, data types, tidyverse, tibbles)
 
 
 ## Datasets

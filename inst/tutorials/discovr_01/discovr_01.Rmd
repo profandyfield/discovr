@@ -272,6 +272,18 @@ my_data <- here::here("data/metallica.csv") %>% readr::read_csv(.)
 
 Instead of embedding the `here::here()` function within `readr::read_csv()`, we put it first and feed or ‘pipe’ its output into `readr::read_csv(.)` using `%>%`.The code is easier to read, it makes clear that we’re using  `here::here()` to generate a path to the file that we want to open, and that we’re feeding that file path into `readr::read_csv(.)`. Note that the `readr::read_csv(.)` function has a period (.) within it. This period represents whatever is coming through the pipe from the left. Often, you don't need the period but sometimes you do so it's worth being aware of it.
 
+```{r pipe_quiz}
+  question("What's going on in the command `here::here(\"data/metallica.csv\") %>% readr::read_csv(.)`?",
+    answer("`here::here(\"data/metallica.csv\")` generates the filepath to the data file called 'metallica.csv' and this filepath is fed into `readr::read_csv(.)`, which reads in that file.", correct = TRUE, message = "Well done."),
+    answer("`here::here(\"data/metallica.csv\")` opens the data file called 'metallica.csv' and `readr::read_csv(.)` converts it to a CSV file`", message = "the `here()` function generates a file path, it doesn;t open the file."),
+    answer("The `%>%` reads the data file back into the `here()` function", message = "The flow of commands is in the opposite direction"),
+    random_answer_order = TRUE,
+    allow_retry = T
+  )
+```
+
+
+
 ## Data types
 
 Often when analysing data you will [input your data with an external software](http://milton-the-cat.rocks/learnr/r/r_getting_started/) such as Microsoft Excel, Google sheets, or Numbers and then import it into R. However, you can enter data directly. It's also useful to know about the different ways in which R stores data. R can store information using several different data types:
@@ -323,6 +335,8 @@ Try this in the code box:
 
 ```{r met_name-solution}
 name <- c("Lars Ulrich", "James Hetfield", "Kirk Hammett", "Rob Trujillo", "Jason Newsted", "Cliff Burton", "Dave Mustaine")
+# To view this variable:
+name
 ```
 
 ###	Double or integer variables
@@ -342,6 +356,10 @@ Try entering these variables in the code box.
 ```{r met_numeric-solution}
 songs_written <-  c(111, 112, 56, 16, 3, 11, 6)
 net_worth <- c(300000000, 300000000, 200000000, 20000000, 40000000, 1000000, 20000000)
+
+# To view these variables:
+songs_written
+net_worth
 ```
 
 ### Date variables
@@ -374,6 +392,8 @@ Try entering this variable in the code box (the tidyverse package is already loa
 ```{r met_dob-solution}
 birth_date <- c("1963-12-26", "1963-08-03", "1962-11-18", "1964-10-23", "1963-03-04", "1962-02-10", "1961-09-13") %>%
   lubridate::ymd()
+# To view this variable:
+birth_date
 ```
 
 ###	Missing values
@@ -393,6 +413,8 @@ Try entering this variable in the code box.
 ```{r met_dod-solution}
 death_date <- c(NA, NA, NA, NA, NA, "1986-09-27", NA) %>% 
   lubridate::ymd()
+# To view this variable:
+death_date
 ```
 
 ### logical variables
@@ -410,6 +432,8 @@ Try entering this variable in the code box.
 
 ```{r met_current-solution}
 current_member <- c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
+# To view this variable:
+current_member
 ```
 
 ### Factor variables
@@ -452,6 +476,7 @@ Try this out:
 
 ```{r met_inst-solution}
 instrument <- factor(c(2, 0, 0, 1, 1, 1, 0), levels = 0:2, labels = c("Guitar", "Bass", "Drums"))
+# To view this variable:
 instrument
 ```
 
@@ -477,6 +502,7 @@ Notice that with this method we don’t specify the levels of labels of the fact
 ```{r met_insttidy-solution}
 instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>%
   forcats::as_factor()
+# To view this variable:
 instrument
 ```
 
@@ -515,9 +541,11 @@ and note how the order of factor levels change.
 ```{r met_relevel-solution}
 instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>%
   forcats::as_factor()
+# To view this variable:
 instrument
 
 instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>% forcats::as_factor() %>% forcats::fct_relevel("Guitar", "Bass", "Drums")
+# To view this variable:
 instrument
 ```
 
@@ -542,9 +570,9 @@ We have looked at how to create variables, but what if we want to combine these 
 ```
 metalli_tib <- tibble::tibble(name, birth_date, death_date, instrument, current_member, songs_written, net_worth)
 ```
-This command creates an object called `metalli_tib` (I tend to use `_tib` to denote a tibble) that contains all of the variables we have created in columns. You view tibbles by executing its name. The contents of the tibble will be printed within the R markdown document itself below the code chunk. By default the first 10 rows will be displayed and as many columns as the width of the pane allows. The display is interactive so you can navigate across columns or down beyond the first 10 rows (withinin this tutorial it won't be interactive!).
+This command creates an object called `metalli_tib` (I tend to use `_tib` to denote a tibble) that contains all of the variables we have created in columns. You view tibbles by executing its name. The contents of the tibble will be printed within the R markdown document itself below the code chunk. By default the first 10 rows will be displayed and as many columns as the width of the pane allows. The display is interactive so you can navigate across columns or down beyond the first 10 rows.
 
-Create a tibble of the metallica data:
+Create a tibble of the metallica data (don't forget to execute its name to view it):
 
 ```{r met_tibble-setup}
 current_member <- c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
@@ -564,6 +592,8 @@ death_date <- c(NA, NA, NA, NA, NA, "1986-09-27", NA) %>%
 
 ```{r met_tibble-solution}
 metalli_tib <- tibble::tibble(name, birth_date, death_date, instrument, current_member, songs_written, net_worth)
+# To view the tibble
+metalli_tib
 ```
 
 From viewing the tibble, you can see that it collects together the objects called **name**, **birth_date**, **death_date**, **instrument**, **current_member**, **songs_written**, and **net_worth** into columns. When we created these variables we consistently entered the data in the order of Lars, James, Kirk, Rob, Jason, Cliff and Dave, therefore, each row represents the data for each member. For example, we can see that Lars plays drums and has a song writing credit on 111 songs. The whole thing looks like Table 1.
@@ -612,7 +642,7 @@ death_date <- c(NA, NA, NA, NA, NA, "1986-09-27", NA) %>%
 metalli_tib <- tibble::tibble(name, birth_date, death_date, instrument, current_member, songs_written, net_worth)
 ```
 
-```{r met_mutate, exercise=TRUE}
+```{r met_mutate, exercise=TRUE, exercise.setup = "met_setup"}
 
 ```
 
@@ -703,6 +733,8 @@ metalli_tib %>%
 # Saving a version of metalli_tib by excluding the variable 'name'
 metalli_anon_tib <- metalli_tib %>% 
   dplyr::select(-name)
+# To view the tibble:
+metalli_anon_tib
 ```
 
 
@@ -764,10 +796,10 @@ dplyr::filter(songs_written > 50 & instrument == "Drums")
 ```
 
 We can also use the OR operator (`|`) to select cases based on whether one of many conditions is met. For example, let’s say we want to isolate the rhythm section, we need to include cases that either play drums or bass. We can achieve this with a statement such as:
-`instrument == "Drums" | instrument == "Bass guitar"`. The `|` denotes 'or', so this command would read as ‘the value of the variable instrument is equal to the word ‘Drums’ OR the value of the variable instrument is equal to the phrase ‘Bass guitar’. Again, we’d insert this statement into the `filter()` function.
+`instrument == "Drums" | instrument == "Bass"`. The `|` denotes 'or', so this command would read as ‘the value of the variable instrument is equal to the word ‘Drums’ OR the value of the variable instrument is equal to the phrase ‘Bass’. Again, we’d insert this statement into the `filter()` function.
 ```
 metalli_tib %>% 
-dplyr::filter(instrument == "Drums" | instrument == "Bass guitar")
+dplyr::filter(instrument == "Drums" | instrument == "Bass")
 ```
 Notice that the result displays only the bassists and drummers.
 
@@ -777,7 +809,7 @@ Notice that the result displays only the bassists and drummers.
 
 ```{r met_filter_or-solution}
 metalli_tib %>% 
-dplyr::filter(instrument == "Drums" | instrument == "Bass guitar")
+dplyr::filter(instrument == "Drums" | instrument == "Bass")
 ```
  
 ###	Combining selecting cases with selecting variables
@@ -787,13 +819,13 @@ We can combine what we have learnt in the previous sections to select variables 
 1. Filter the cases to exclude everyone except Lars, James and Kirk.
 2. We want to exclude all of the variables except for net worth.
 
-Let’s first select the cases we want. We can do this in several ways, but one is to set a condition that the variable **current_member** is TRUE (this will give us Lars, James, Kirk and Rob) and a second condition that instrument is not equal (`!=`) to ‘Bass guitar’, which will exclude Rob. This condition would be written as `current_member == TRUE & instrument != "Bass guitar"`. We could place this command into the `filter()` function:
+Let’s first select the cases we want. We can do this in several ways, but one is to set a condition that the variable **current_member** is TRUE (this will give us Lars, James, Kirk and Rob) and a second condition that instrument is not equal (`!=`) to ‘Bass’, which will exclude Rob. This condition would be written as `current_member == TRUE & instrument != "Bass"`. We could place this command into the `filter()` function:
 ```
 metalli_worth <- metalli_tib %>% 
-dplyr::filter(current_member == TRUE & instrument != "Bass guitar")
+dplyr::filter(current_member == TRUE & instrument != "Bass")
 ```
 
-This command creates an object called **metalli_worth** that contains the rows of *metalli_tib* that meet the conditions that the variable **current_member** is equal to TRUE and the variable **instrument** is NOT equal to (`!=`) the phrase "Bass guitar". Having created this object, we could re-create it from itself but passed through the `select()` function to select only the variables called **name** and **net_worth**:
+This command creates an object called **metalli_worth** that contains the rows of *metalli_tib* that meet the conditions that the variable **current_member** is equal to TRUE and the variable **instrument** is NOT equal to (`!=`) the phrase "Bass". Having created this object, we could re-create it from itself but passed through the `select()` function to select only the variables called **name** and **net_worth**:
 ```
 metalli_worth <- metalli_worth %>% 
 dplyr::select(name, net_worth)
@@ -803,7 +835,7 @@ Notice that by executing this command we overwrite the original object `metalli_
 The method just described is inefficient (but helpful for showing you the explicit steps that we want to take). A more efficient way to do achieve the same goal is to do both operations as part of the same pipe:
 ```
 metalli_worth <- metalli_tib %>% 
-  dplyr::filter(current_member == TRUE & instrument != "Bass guitar") %>% 
+  dplyr::filter(current_member == TRUE & instrument != "Bass") %>% 
   dplyr::select(name, net_worth)
 ```
 
@@ -815,7 +847,7 @@ We now begin to see the beauty of the pipe: it enables us to put together a sequ
 
 ```{r met_filter_select-solution}
 metalli_worth <- metalli_tib %>% 
-  dplyr::filter(current_member == TRUE & instrument != "Bass guitar") %>% 
+  dplyr::filter(current_member == TRUE & instrument != "Bass") %>% 
   dplyr::select(name, net_worth)
 metalli_worth
 ```

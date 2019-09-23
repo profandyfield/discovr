@@ -1,21 +1,15 @@
 Package: discovr
 Type: Package
-<<<<<<< HEAD
 Title: Materials for Discovering Statistics Using R and RStudio (Field 20xx)
 Version: 0.1.0
 Author:  person("Andy", "Field", email = "andyf@sussex.ac.uk", role = c("aut", "cre"))
 Maintainer: Andy Field <andyf@sussex.ac.uk>
 Description: This package contains materials and datasets for the textbook Discovering Statistics Using R and RStudio.
 License: GPL-3
-Encoding: UTF-8
-LazyData: true
-=======
-Title: Resources for the textbook Discovering Statistics Using R and RStudio by Field (2020)
-Version: 0.1.0
-Author: person("Andy", "Field", email = "andyf@sussex.ac.uk", role = c("aut", "cre"))
-Maintainer: Andy Field <andyf@sussex.ac.uk>
-Description: Resources for Discovering Statistics Using R and RStudio by Field (2020)
-License: GPL-3
+Depends:
+  R (>= 3.6.0),
+  learnr,
+  tidyverse
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
@@ -25,5 +19,4 @@ Imports:
 Suggests: 
     knitr,
     rmarkdown
->>>>>>> 6a2adff7e9b12384dc4c29f43d98f870f6b23049
 VignetteBuilder: knitr

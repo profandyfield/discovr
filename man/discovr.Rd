@@ -39,10 +39,13 @@ See the book or data descriptions for more details. This is a list of available 
 \item \strong{acdc}: Data from the file \emph{oxoby_2008.csv}. For more information execute \code{?acdc}.
 \item \strong{animal_bride}: Data from the file \emph{oxoby_2008.csv}. For more information execute \code{?animal_bride}.
 \item \strong{metallica}: Data from the file \emph{metallica.csv}. For more information execute \code{?metallica}.
+\item \strong{ong_2011}: Data from the file \emph{ong_2011.csv}. For more information execute \code{?ong_2011}.
+\item \strong{ong_tidy}: Data from the file \emph{ong_tidy.csv}. For more information execute \code{?ong_tidy}.
 \item \strong{teaching}: Data from the file \emph{method_of_teaching.csv}. For more information execute \code{?teaching}.
 \item \strong{shopping}: Data from the file \emph{shopping_exercise.csv}. For more information execute \code{?shopping}.
 \item \strong{tea15}: Data from the file \emph{tea_makes_you_brainy_15.csv}. For more information execute \code{?tea15}.
 \item \strong{zhang_sample}: Data from the file \emph{zhang_2013_subsample.csv}. For more information execute \code{?zhang_sample}.
+
 }
 }
 

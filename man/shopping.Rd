@@ -20,6 +20,9 @@ They found that the average woman spends 150 minutes and walks 2.6 miles when sh
 This was based on strapping a pedometer on a mere 10 participants. Although I don’t have the actual data, some simulated data based on these means are in this file.
 
 \itemize{
+\item \strong{sex}: biological sex of the individual
+\item \strong{distance}: the distance travelled in miles
+\item \strong{time}: the time spent shopping in minutes
 \item \strong{sex}: Biological sex of the individual
 \item \strong{distance}: The distance travelled in miles
 \item \strong{time}: The time spent shopping in minutes

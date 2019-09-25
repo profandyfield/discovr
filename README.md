@@ -6,22 +6,32 @@ The `discovr` package contains resources for my 2020 textbook [Discovering Stati
 
 ## Interactive tutorials
 
-blah blah
+I recommend working through [this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/) on how to install, set up and work within R and RStudio before starting the interactive tutorials.
 
-* **discovr_02**: Data basics in R and RStudio
+* **discovr_01**: Key concepts in R (functions and objects, packages and functions, style, data types, tidyverse, tibbles)
 
 
 ## Datasets
 
 See the book or data descriptions for more details. This is a list of available datasets within the package. Raw CSV files are available from the book's website.
 
-* **acdc**: Data from the file *oxoby_2008.csv*. For more information execute `?acdc`.
-* **animal_bride**: Data from the file *oxoby_2008.csv*. For more information execute `?animal_bride`.
-* **metallica**: Data from the file *metallica.csv*. For more information execute `?metallica`.
-* **teaching**: Data from the file *method_of_teaching.csv*. For more information execute `?teaching`.
-* **shopping**: Data from the file *shopping_exercise.csv*. For more information execute `?shopping`.
-* **tea15**: Data from the file *tea_makes_you_brainy_15.csv*. For more information execute `?tea15`.
-* **zhang_sample**: Data from the file *zhang_2013_subsample.csv*. For more information execute `?zhang_sample`.
+* **acdc**: Data from the file *oxoby_2008.csv*. For more information execute `?acdc`
+* **animal_bride**: Data from the file *oxoby_2008.csv*. For more information execute `?animal_bride`
+* **exam_anxiety**: Data from the file *exam_anxiety.csv*. For more information execute `?exam_anxiety`
+* **ice_bucket**: Data from the file *ice_bucket.csv*. For more information execute `?ice_bucket`
+* **invisibility_cloak**: Data from the file *invisibility.csv*. For more information execute `?invisibility_cloak`
+* **invisibility_rm**: Data from the file *invisibility_rm.csv*. For more information execute `?invisibility_rm`
+* **jiminy_cricket**: Data from the file *jiminy_cricket.csv*. For more information execute `?jiminy_cricket`
+* **johns_2012**: Data from the file *johns_2012.csv*. For more information execute `?johns_2012`
+* **metallica**: Data from the file *metallica.csv*. For more information execute `?metallica`
+* **notebook**: Data from the file *notebook.csv*. For more information execute `?notebook`
+* **ong_2011**: Data from the file *ong_2011.csv*. For more information execute `?ong_2011`
+* **ong_tidy**: Data from the file *ong_tidy.csv*. For more information execute `?ong_tidy`
+* **shopping**: Data from the file *shopping_exercise.csv*. For more information execute `?shopping`
+* **tea15**: Data from the file *tea_makes_you_brainy_15.csv*. For more information execute `?tea15`
+* **teaching**: Data from the file *method_of_teaching.csv*. For more information execute `?teaching`
+* **zhang_sample**: Data from the file *zhang_2013_subsample.csv*. For more information execute `?zhang_sample`
+
 
 # Installing `discovr`
 

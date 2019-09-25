@@ -23,6 +23,11 @@ geneitalia to make them increasing shades of red (pale pink, light pink, dark pi
 pictures from 0 (unattractive) to 100 (attractive). These are the data from that study. The data contains the following variables:
 
 \itemize{
+\item \strong{partners}: sexual experience coded as a factor ('Very little' and 'Some")
+\item \strong{pale_pink}: male rating of the attractiveness of pale pink coloured female geneitalia from 0 to 100
+\item \strong{light_pink}: male rating of the attractiveness of light pink coloured female geneitalia from 0 to 100
+\item \strong{dark_pink}: male rating of the attractiveness of dark pink coloured female geneitalia from 0 to 100
+\item \strong{red}: male rating of the attractiveness of red coloured female geneitalia from 0 to 100
 \item \strong{partners}: Sexual experience coded as a factor ('Very little' and 'Some")
 \item \strong{pale_pink}: Male rating of the attractiveness of pale pink coloured female geneitalia from 0 to 100
 \item \strong{light_pink}: Male rating of the attractiveness of light pink coloured female geneitalia from 0 to 100

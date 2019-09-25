@@ -30,9 +30,9 @@ good factor when listening to Bon or Brian. There were 18 people per group.
 These data are approximated from graphs within Oxoby (2008). The object contains the following variables:
 
 \itemize{
-\item \strong{singer}: The type of teaching method used
-\item \strong{offer}: Offer made (in dollars)
-\item \strong{mao}: The minimum acceptable offer, MAO, in dollars
+\item \strong{singer}: the type of teaching method used
+\item \strong{offer}: offer made (in dollars)
+\item \strong{mao}: the minimum acceptable offer, MAO, in dollars
 }
 }
 \references{

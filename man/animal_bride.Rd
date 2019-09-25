@@ -3,7 +3,7 @@
 \docType{data}
 \name{animal_bride}
 \alias{animal_bride}
-\title{Goat or dog data}
+\title{Animal bride data}
 \format{A tibble with 20 rows and 3 variables.}
 \source{
 \url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
@@ -23,6 +23,9 @@ Still, I wondered whether a goat or dog made a better spouse. I found (but not r
 The data contains the following variables:
 
 \itemize{
+\item \strong{wife}: whether the person married a goat or a dog
+\item \strong{animal}: how much the person likes animals
+\item \strong{life_satisfaction}: the person's life satisfaction score
 \item \strong{wife}: Whether the person married a goat or a dog
 \item \strong{animal}: How much the person likes animals
 \item \strong{life_satisfaction}: The person's life satisfaction score

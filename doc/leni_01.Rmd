@@ -1,0 +1,41 @@
+---
+title: "Labcoat Leni Solutions: Chapter 1"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Labcoat Leni Solutions: Chapter 1}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(discovr)
+```
+
+![](leni_banner.png)
+
+This document may contain abridged sections from *Discovering Statistics Using R and RStudio* by [Andy Field](https://www.discoveringstatistics.com/) so there are some copyright considerations, but the material is offered under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Basically you can use this material for teaching and non-profit activities but please do not meddle with it or claim it as your own work.
+
+There are several ways to enter the Oxoby data, here's one of them:
+
+```{r 1_1, echo = TRUE, eval = FALSE}
+library(tidyverse) #if you haven't already executed this command
+library(here) #if you haven't already executed this command
+
+oxoby_tib <- tibble(.rows = 36) %>% 
+  dplyr::mutate(
+    	singer = c(rep("Bon Scott", 18), rep("Brian Johnson", 18)) %>% forcats::as_factor(),
+    	offer = c(1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5)
+    	) 
+
+# You can go on to save this tibble to a csv in your data folder using:
+
+oxoby_tib %>% 
+  readr::write_csv(., here::here("data/oxoby_2008.csv"))
+```

@@ -6,13 +6,14 @@ library(haven)
 library(randomNames)
 library(sjlabelled)
 
+
+
 get_data <- function(name){
   tib <- paste0("data-raw/", name) %>%
     here::here() %>%
     readr::read_csv()
   return(tib)
 }
-
 
 get_spss <- function(name){
   file.path("..", "..", "books", "discovering_statistics", "dsu_spss", "dsus_05", "dsus_5_web_materials", "ds5_spss_files", name) %>%
@@ -41,25 +42,9 @@ get_ids <- function(length = 4){
   return(ids)
 }
 
-#########
 
-# Exam anxiety
-
-exam_anxiety <- get_spss("exam_anxiety.sav") %>%
-  dplyr::rename_all(tolower) %>%
-  dplyr::rename(id = code, exam_grade = exam) %>%
-  dplyr::mutate(
-    id = forcats::as_factor(id),
-    sex = forcats::as_factor(sex),
-  )
-
-here::here("data-raw/exam_anxiety.csv") %>%
-  readr::write_csv(exam_anxiety, path = .)
-
-usethis::use_data(exam_anxiety)
 
 #########
-
 
 # Animal bride
 
@@ -158,6 +143,8 @@ here::here("data-raw/jiminy_cricket.csv") %>%
 
 usethis::use_data(jiminy_cricket)
 
+
+
 # Johns et al. (2012)
 
 johns_2012 <- get_data("johns_2012.csv") %>%
@@ -246,6 +233,7 @@ here::here("data-raw/ong_2011.csv") %>%
 
 usethis::use_data(ong_2011, overwrite = TRUE)
 usethis::use_data(ong_tidy, overwrite = TRUE)
+
 
 # Oxoby (2008)
 

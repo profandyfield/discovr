@@ -32,30 +32,7 @@
 
 "acdc"
 
-#' Exam anxiety data
-#'
-#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
-#'
-#' a psychologist was interested in the effects of exam stress on exam performance. She devised and validated a questionnaire to assess
-#' state anxiety relating to exams (called the Exam Anxiety Questionnaire, or EAQ). This scale produced a measure of anxiety scored out of 100.
-#' Anxiety was measured before an exam, and the percentage mark of each student on the exam was used to assess the exam performance. These data are fictional.
-#' The object contains the following variables:
-#'
-#' \itemize{
-#'   \item \strong{id}: participant id
-#'   \item \strong{revise}: the time spent revising for the exam (hours)
-#'   \item \strong{exam_grade}: the percentage score of each student on the exam
-#'   \item \strong{anxiety}: anxiety score on the EAQ out of 100
-#'   \item \strong{sex}: biological sex of the participant
-#'
-#' }
-#' @docType data
-#' @format A tibble with 103 rows and 5 variables.
-#' @source \url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
-
-"exam_anxiety"
-
-#' Goat or dog data
+#' Animal bride data
 #'
 #' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
@@ -79,6 +56,96 @@
 #' @source \url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
 
 "animal_bride"
+
+#' Exam anxiety data
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' a psychologist was interested in the effects of exam stress on exam performance. She devised and validated a questionnaire to assess
+#' state anxiety relating to exams (called the Exam Anxiety Questionnaire, or EAQ). This scale produced a measure of anxiety scored out of 100.
+#' Anxiety was measured before an exam, and the percentage mark of each student on the exam was used to assess the exam performance. These data are fictional.
+#' The object contains the following variables:
+#'
+#' \itemize{
+#'   \item \strong{id}: participant id
+#'   \item \strong{revise}: the time spent revising for the exam (hours)
+#'   \item \strong{exam_grade}: the percentage score of each student on the exam
+#'   \item \strong{anxiety}: anxiety score on the EAQ out of 100
+#'   \item \strong{sex}: biological sex of the participant
+#'
+#' }
+#' @docType data
+#' @format A tibble with 103 rows and 5 variables.
+#' @source \url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+
+"exam_anxiety"
+
+
+#' Ice bucket challenge data
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' AGoogle data relating to the ice bucket challenge from 2014. Golfer Chris Kennedy tipped a bucket of iced water on his head to raise awareness of the disease amyotrophic lateral sclerosis (ALS, also known as Lou Gehrig's disease).
+#' The idea is that you are challenged and have 24 hours to post a video of you having a bucket of iced water poured over your head in this video you also challenge at least three other people.
+#' If you fail to complete the challenge your forfeit is to donate to charity (in this case ALS). The data show the the number of days after Chris Kennedy’s initial ice bucket challenge that each of 2323 ice bucket challenge video was uploaded to YouTube.
+#'
+#' \itemize{
+#'   \item \strong{upload_days}: the number of days after Chris Kennedy’s initial ice bucket challenge that an ice bucket challenge video was uploaded to YouTube
+#'
+#' }
+#' @docType data
+#' @format A tibble with 2323 rows and 1 variable.
+#' @source \url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+
+"ice_bucket"
+
+
+#' Invisibility data (independent design)
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' I got very excited by two news stories implying that scientists had made Harry Potter’s cloak of invisibility. Although the newspapers overstated the case,
+#' I imagined a future in which we have cloaks of invisibility to test out. Given my slightly mischievous streak, the future me is interested in the effect
+#' that wearing a cloak of invisibility has on the tendency for mischief. I take 24 participants and place them in an enclosed community.
+#' The community is riddled with hidden cameras so that we can record mischievous acts. Half of the participants are given cloaks of invisibility;
+#' they are told not to tell anyone else about their cloak and that they can wear it whenever they liked. I measure how many mischievous acts they performed in one week.
+#' The object contains the following variables:
+#'
+#' \itemize{
+#'   \item \strong{id}: participant id
+#'   \item \strong{cloak}: whether the participant was assigned a cloak of invisibility
+#'   \item \strong{mischief}: the number of mischievous acts committed during a week
+#'
+#' }
+#' @docType data
+#' @format A tibble with 24 rows and 3 variables.
+#' @source \url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+
+"invisibility_cloak"
+
+#' Invisibility data (repeated measures design)
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' I got very excited by two news stories implying that scientists had made Harry Potter’s cloak of invisibility. Although the newspapers overstated the case,
+#' I imagined a future in which we have cloaks of invisibility to test out. Given my slightly mischievous streak, the future me is interested in the effect
+#' that wearing a cloak of invisibility has on the tendency for mischief. I take 12 participants and place them in an enclosed community.
+#' The community is riddled with hidden cameras so that we can record mischievous acts. For one week the participants are given cloaks of invisibility, during a different week they are not.
+#' I measure how many mischievous acts they performed in each week. These data are the same as in \strong{invisibility_cloak} but arranged in a repeated measures design.
+#' The object contains the following variables:
+#'
+#' \itemize{
+#'   \item \strong{id}: participant id
+#'   \item \strong{cloak}: whether the participant had access to a cloak of invisibility
+#'   \item \strong{mischief}: the number of mischievous acts committed during a week
+#'
+#' }
+#' @docType data
+#' @format A tibble with 24 rows and 3 variables.
+#' @source \url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+
+
+"invisibility_rm"
 
 #' Jiminy Cricket data
 #'

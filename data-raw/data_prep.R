@@ -2,11 +2,11 @@
 
 library(tidyverse)
 library(here)
-<<<<<<< HEAD
 library(haven)
+library(randomNames)
 library(sjlabelled)
-=======
->>>>>>> 6a2adff7e9b12384dc4c29f43d98f870f6b23049
+
+
 
 get_data <- function(name){
   tib <- paste0("data-raw/", name) %>%
@@ -14,7 +14,6 @@ get_data <- function(name){
     readr::read_csv()
   return(tib)
 }
-<<<<<<< HEAD
 
 get_spss <- function(name){
   file.path("..", "..", "books", "discovering_statistics", "dsu_spss", "dsus_05", "dsus_5_web_materials", "ds5_spss_files", name) %>%
@@ -22,25 +21,32 @@ get_spss <- function(name){
     return()
 }
 
+random_letter <- function(){
+  return(letters[runif(1, 0, 26)])
+}
+
+get_id <- function(n_letters = 4){
+  code <- random_letter()
+  for(i in 1:(n_letters-1)){
+    code <- paste0(code, random_letter())
+    i = i+1
+  }
+  return(code)
+}
+
+get_ids <- function(length = 4){
+  ids <- character(length = length)
+  for(i in 1:length){
+    ids[i] <- get_id()
+  }
+  return(ids)
+}
+
+
+
 #########
 
-# Exam anxiety
-
-exam_anxiety <- get_spss("exam_anxiety.sav") %>%
-  dplyr::rename_all(tolower) %>%
-  dplyr::rename(id = code, exam_grade = exam) %>%
-  dplyr::mutate(
-    id = forcats::as_factor(id),
-    sex = forcats::as_factor(sex),
-  )
-
-usethis::use_data(exam_anxiety)
-=======
-#########
-
->>>>>>> 6a2adff7e9b12384dc4c29f43d98f870f6b23049
-
-# Goat or dog
+# Animal bride
 
 animal_bride <- tibble(.rows = 20) %>%
   dplyr::mutate(
@@ -51,7 +57,79 @@ animal_bride <- tibble(.rows = 20) %>%
 
 usethis::use_data(animal_bride)
 
-<<<<<<< HEAD
+######
+# Ice bucket challenge
+
+ice_bucket <-  file.path("..", "..", "data", "dsu_spss_data", "dsus_development_and_diagrams", "ice_bucket_challenge.csv") %>%
+  readr::read_csv()
+
+upload_day <- numeric()
+for(i in 1:nrow(ice_bucket)){
+  if(is.na(ice_bucket$YTVids[i]) == FALSE & ice_bucket$YTVids[i] > 0 & ice_bucket$YTVids[i] < 205){
+  temp <- rep(ice_bucket$Days[i], ice_bucket$YTVids[i])
+  upload_day <- c(upload_day, temp)
+  }
+}
+
+ice_bucket <- tibble::tibble(.rows = length(upload_day)) %>%
+  dplyr::mutate(
+    upload_day = upload_day
+  )
+
+here::here("data-raw/ice_bucket.csv") %>%
+  readr::write_csv(ice_bucket, path = .)
+
+usethis::use_data(ice_bucket)
+
+######
+# Exam anxiety
+
+  get_spss_dev("exam_anxiety.sav") %>%
+  dplyr::rename_all(tolower) %>%
+  dplyr::rename(id = code, exam_grade = exam) %>%
+  dplyr::mutate(
+    id = forcats::as_factor(id),
+    sex = forcats::as_factor(sex),
+  )
+
+here::here("data-raw/exam_anxiety.csv") %>%
+  readr::write_csv(exam_anxiety, path = .)
+
+usethis::use_data(exam_anxiety)
+
+#########
+
+
+# Invisibility
+
+invisibility_cloak <- tibble::tibble(.rows = 24) %>%
+  dplyr::mutate(
+    id = randomNames(n = nrow(.), which.names = "first"),
+    cloak = c(rep("No cloak", 12), rep("Cloak", 12)) %>% forcats::as_factor(),
+    mischief = c(3, 1, 5, 4, 6, 4, 6, 2, 0, 5, 4, 5, 4, 3, 6, 6, 8, 5, 5, 4, 2, 5, 7, 5),
+    )
+
+here::here("data-raw/invisibility.csv") %>%
+  readr::write_csv(invisibility_cloak, path = .)
+
+usethis::use_data(invisibility_cloak)
+
+# Invisibility RM
+
+new_id <- rep(invisibility_cloak$id[1:12], 2)
+
+invisibility_rm <- invisibility_cloak %>%
+  dplyr::mutate(
+    id = new_id,
+  ) %>%
+  dplyr::arrange(id)
+
+here::here("data-raw/invisibility_rm.csv") %>%
+  readr::write_csv(invisibility_rm, path = .)
+
+usethis::use_data(invisibility_rm)
+
+
 # Jiminy cricket
 
 jiminy_cricket <- get_spss("jiminy_cricket.sav") %>%
@@ -60,10 +138,13 @@ jiminy_cricket <- get_spss("jiminy_cricket.sav") %>%
     strategy = forcats::as_factor(strategy) %>%  tolower() %>% sub("(\\w)", "\\U\\1", perl = TRUE, .)
   )
 
+here::here("data-raw/jiminy_cricket.csv") %>%
+  readr::write_csv(jiminy_cricket, path = .)
+
 usethis::use_data(jiminy_cricket)
 
-=======
->>>>>>> 6a2adff7e9b12384dc4c29f43d98f870f6b23049
+
+
 # Johns et al. (2012)
 
 johns_2012 <- get_data("johns_2012.csv") %>%
@@ -102,7 +183,6 @@ teaching <- get_data("method_of_teaching.csv") %>%
 
 usethis::use_data(teaching)
 
-<<<<<<< HEAD
 # Notebook
 
 notebook <- get_spss("notebook.sav") %>%
@@ -111,6 +191,9 @@ notebook <- get_spss("notebook.sav") %>%
     sex = forcats::as_factor(sex),
     film = forcats::as_factor(film),
   )
+
+here::here("data-raw/notebook.csv") %>%
+  readr::write_csv(notebook, path = .)
 
 usethis::use_data(notebook)
 
@@ -151,8 +234,7 @@ here::here("data-raw/ong_2011.csv") %>%
 usethis::use_data(ong_2011, overwrite = TRUE)
 usethis::use_data(ong_tidy, overwrite = TRUE)
 
-=======
->>>>>>> 6a2adff7e9b12384dc4c29f43d98f870f6b23049
+
 # Oxoby (2008)
 
 acdc <- get_data("oxoby_2008.csv") %>%

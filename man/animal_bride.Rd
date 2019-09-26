@@ -3,7 +3,7 @@
 \docType{data}
 \name{animal_bride}
 \alias{animal_bride}
-\title{Goat or dog data}
+\title{Animal bride data}
 \format{A tibble with 20 rows and 3 variables.}
 \source{
 \url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}

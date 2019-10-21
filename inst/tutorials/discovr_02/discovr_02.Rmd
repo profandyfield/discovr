@@ -4,6 +4,7 @@ author: "Andy Field"
 output:
   learnr::tutorial:
     progressive: false
+    theme: "paper"
 runtime: shiny_prerendered
 bibliography: discovr_02.bib
 ---
@@ -11,7 +12,7 @@ bibliography: discovr_02.bib
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-	echo = FALSE,
+	echo = TRUE,
 	message = FALSE,
 	warning = FALSE
 )
@@ -29,6 +30,7 @@ ice_tib <- discovr::ice_bucket
 
 ```
 
+
 # discovr: Summarizing data
 
 ## Overview
@@ -45,11 +47,11 @@ If you haven't done so already, I recommend working through [this tutorial](http
 
 ## Packages and data
 
-The tutorials are self-contained (you practice code in code boxes) so you don’t need to use RStudio at the same time. However, I recommend that you open another RStudio session to the one that you're using to run this tutorial. In this second RStudio session, open an R markdown file and everything you do in the tutorial, practice in the R markdown file (and save it). This video explains the sort of workflow that I mean:
+The tutorials are self-contained (you practice code in code boxes) so you don’t need to use RStudio at the same time. However, I recommend that you open another RStudio session to the one that you're using to run this tutorial. In this second RStudio session, open an R markdown file and practice everything you do in the tutorial in the R markdown file (and save it). This video explains the sort of workflow that I mean:
 
 ![]("https://youtu.be/FE0ntX0dyc4")
 
-hint_text("Within the tutorial itself, everything will work. To replicate things outside of the tutorial you will need to load the relevant packages and data.")
+`r hint_text("Within the tutorial itself, everything will work. To replicate things outside of the tutorial you will need to load the relevant packages and data.")`
 
 ### Packages
 
@@ -58,7 +60,7 @@ To work *outside of this tutorial* you need to load the following packages:
 * `here` [@here]
 * `tidyverse` [@tidyverse]
 
-If you haven't already done this, install a package at the command line using `install.packages("package_name")`, where *package_name* is the name of the package. If the package is already installed, then load it within the first code chunk within your R markdown file using `library(package_name)`, where *package_name* is the name of the package.
+If you haven't already done this, install a package at the command line using `install.packages("package_name")`, where *package_name* is the name of the package. If the package has already been installed, load it by typing `library(package_name)`, where *package_name* is the name of the package, within the first code chunk in your R markdown file.
 
 ### Data
 
@@ -66,824 +68,584 @@ To work *outside of this tutorial* you need to download the following data file:
 
 * [ice_bucket.csv](http://www.discoveringstatistics.com/repository/discovr_data/ice_bucket.csv)
 
-Assuming you set up an RStudio project in the way [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), then save the data files to the folder within your project folder called `data`. Then in a code chunk in your R Markdown document execute
+Assuming you set up an RStudio project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), then save the data files to the folder within your project folder called `data`. Then, in the first code chunk in your R Markdown document, execute:
 
-```
+```{r, eval=FALSE}
 ice_tib <- here::here("data/ice_bucket.csv") %>% readr::read_csv()
 ```
 
 
+## Frequency distributions
 
+We will use data about memes, which typically have a common pattern: they start small, rapidly expand in popularity and then die out. Specifiaclly we'll use data from the ice bucket challenge. You can check Wikipedia for the full story, but it all started (arguably) with golfer Chris Kennedy tipping a bucket of iced water on his head to raise awareness of the disease amyotrophic lateral sclerosis (ALS, also known as Lou Gehrig's disease).  The idea is that you are challenged and have 24 hours to post a video of you having a bucket of iced water poured over your head. In this video you also challenge at least three other people. If you fail to complete the challenge your forfeit is to donate to charity (in this case ALS). Many people completed the challenge and made donations.
 
-## Functions and objects
+The ice bucket challenge generated something like 2.3 million on YouTube. The data are stored in `ice_tib`, which contains one variable `upload_day` that is the number of days after Chris Kennedy’s initial challenge that each of 2,323,452 ice bucket related videos were uploaded to YouTube. For example, if the value is 21 it means that the video was uploaded 21 days after Chris Kennedy’s initial challenge. We can't see the pattern of the data easily from 2,323,452 scores. However, we can if we count the frequency of each score and place it in a table.
 
-To communicate with R you type commands that tell it what to do. This process might seem strange to you if you are used to interacting with software by using your mouse to click on options and on-screen buttons. The problem with pointing and clicking is that the process isn't easily reproducible. Often when analysing data we want to reproduce what we have done. By typing commands and saving those commands as a script, we are able to reproduce our analysis exactly.
+### Frequency tables
 
-The conversation that you have with R consists of you typing instructions, then doing something to execute those instructions. R will either dutifully carry out your instructions or complain that your instructions weren’t clear enough. In short, you type commands, try to execute them and R either does what you ask or throws an error. In the early days of learning R you will become very familiar with error messages, they are typically indecipherable so fear not if they seem like gibberish. 
+To get a basic frequency table we use the `group_by()` and `summarise()` and `n()` functions from the `dplyr` package (automatically loaded as part of tidyverse). These functions do the following:
 
-A simple ‘conversation’ with R is made up of commands that follow the common structure shown in Figure 1.
+* `group_by()`: groups the data by whatever variable (or variables) you name within the function.
+* `summarise()`: creates a summary table based on whatever variables you create within the function
+* `n()`: counts the number of scores
 
-```
-object <- instructions
-```
+We can combine these functions to create a frequency table called `freq_tbl` as follows:
 
-Which you can read as object is created from instructions. In the middle of each command is an arrow (`<-`) known as the **assignment operator**, so called because it assigns the stuff on the right of the command to the thing on the left (hence the arrow points right-to-left). The ‘thing’ on the left is an **object** that is created when the command is executed. An object can be a single value (e.g., a median of a set of scores) or collections of information (e.g. the details of a statistical model). The ‘stuff’ on the right, which I’ve called instructions, are typically a set of operations or the results of applying a function.
-
-
-![Figure 1: The anatomy of a command](./images/dsr2_fig_01_06_functions_objects.png)
-
-For example, the first command in Figure 1:
-
-```
-metallica <- c("Lars","James","Jason", "Kirk")
-```
-
-creates an object called *metallica*, consisting of the four band members’ first names (pre 2001). The ‘instructions’ used to create the object *metallica* include the concatenate function, `c()`, which collects things together. A function is a bit of code that someone has written (and that you can write yourself) that typically has at least one argument and an output. **Functions** have a name followed by parenthesis, for example, `ggplot()`, `mean()` and `plot()`. **Arguments** are inputs to the function, which are pre-defined things that you specify within the parentheses. You can think of arguments like options that you set for the function.  Most functions return an output, which could be a new data set, a value, information about a statistical model, a graph and so on.
- 
-In the first command in Figure 1 the arguments passed into the `c()` function are the band member’s names as four separate strings of text, and the output returned by the function is these strings collected together as a single entity. So, we input each band member’s name (in straight quotes and separated by commas), and by enclosing them in `c()` we bind them into a single entity, which is assigned (using `<-`) to an object that we have called ‘metallica’. Once this command is executed the object that we called ‘metallica’ is created and stored in memory so we can use it in future commands.
-
-`r hint_text("Tip: Simultaneously press the **alt** + **−** keys to insert the assignment operator (<-)") `
-
-Let's try this out. In the code box below type `metallica <- c("Lars","James","Jason", "Kirk")` and then click ![](./images/learnr_run_code.png){width=10%}.
-
-```{r met_data, exercise=TRUE}
-
-```
-
-```{r met_data-solution}
-metallica <- c("Lars","James","Jason", "Kirk")
-```
-
-You should find that nothing happened, which will be disconcerting. That's because we told R to create the object *metallica* but not to show it to us. So, the object *metallica* has been created and stored in R’s memory and we can refer back to it, use it to do other things, change it, and view it. To view it we execute its name. So, let's try the exercise above but now ask to see the object *metallica* that we have created by executing:
-
-```
-metallica <- c("Lars","James","Jason", "Kirk")
-metallica
-```
-
-```{r met_data_2, exercise=TRUE}
-
-```
-
-```{r met_data_2-solution}
-metallica <- c("Lars","James","Jason", "Kirk")
-metallica
-```
-
-Notice that the contents of the object *metallica* are displayed:
-
-```{r}
-metallica <- c("Lars","James","Jason", "Kirk")
-metallica
-```
-
-We can do other things with our newly created object too, but we'll save that fun for another time.
-
-```{r fun_quiz}
-learnr::quiz(
-  learnr::question("What is a function in R?",
-    learnr::answer("An instruction that typically creates an output from at least one input", correct = TRUE),
-    learnr::answer("A lady who loves to boogie to Parliament and Funkadelic", message = "No, that's a funk Sian."),
-    learnr::answer("Something created by R", message = "No, that's an object."),
-    learnr::answer("The weird arrow thing (`<-`)", message = "No, that's the assignment operator (`<-`)."),
-    correct = "Correct - well done!",
-    random_answer_order = TRUE,
-    allow_retry = T
-  ),
-  learnr::question("What is an argument in R?",
-    learnr::answer("An option that can be set within a function that controls what it does", correct = TRUE),
-    learnr::answer("When you tell R to do something and it throws an error message", message = "No, that's your life for the next few years."),
-    learnr::answer("An instruction that typically creates an output from at least one input", message = "No, that's a function"),
-    learnr::answer("The weird arrow thing (`<-`)", message = "No, that's the assignment operator (`<-`)."),
-    correct = "Correct - well done!",
-    random_answer_order = TRUE,
-    allow_retry = T
+```{r, eval=FALSE}
+freq_tbl <- ice_tib %>%
+  dplyr::group_by(upload_day) %>% 
+  dplyr::summarise(
+    frequency = n()
   )
-)
+```
+
+To count the frequencies of scores we need to do two things:
+
+1. Tell R to treat values that are the same, as being in the same group or category. For example, tell it that scores of 21 are from the same group/category. We do this using `group_by(upload_day)`, which tells R to treat scores that are the same within `upload_day` as being in the same group. Any subsequent operation will be conducted on these 'groups'. 
+2. Count how many scores fall into each 'category'. This is done using `summarize()`, within which we create a variable called `frequency` that counts how many items are in each group created by `group_by()`. This variable will, therefore, contain the number of times each value of `upload_day` occurs.
+
+To sum up, the code feeds the data stored in `ice_tib` into the `group_by()` function and asks it to group the output by the variable `upload_day`. Having done this, a variable called `frequency` is created that counts how many scores is in each 'group'. Try this code in the box below.
+
+`r hint_text("TIP: remember to also execute")` `freq_tbl` `r hint_text("to see the table")`
+
+```{r freq_dist, exercise=TRUE, exercise.lines=6}
+
 
 ```
 
-
-### Optional: still confused about functions and arguments then read on
-
-Try to think of a function as activating a dialog box and arguments as setting options within that dialog box. Let’s take a simple function `mean()`, which (no surprises here) calculates the mean (or average) of a set of scores. This function takes the general form:
-
-```
-mean(variable_name, na.rm = FALSE, trim = 0)
-```
-
-The function takes three arguments:
-
-*	`variable_name` is the name of the variable for which you want to compute a mean.
-* `na.rm = FALSE` is an argument that sets whether to remove missing values (TRUE) or not (FALSE)
-*	`Trim = 0` is an argument that determines by how much you trim the scores before computing the mean. The default is 0 (include all scores) but you can set another value, such as 5 (trim 5% of scores from both extremes of the scores before computing the mean).
-
-Don't worry too much about understanding what the arguments do for now, we'll come back to this function in a later tutorial. Figure 2 maps this process of setting arguments within functions to ticking check boxes in a dialog box. In this imaginary statistics software, we have selected a menu called ‘mean’ that opens the dialog box in the figure. This action is comparable to typing `mean()`: it activates the function, but if we were to click *OK* nothing would happen because we haven’t told the computer which variable to compute the mean on. Imagine I've dragged the variable **songs_written** to the space labelled *Variable:*. Having selected the variable, two options are available: the first determines what we do with missing values, and the second determines how much we trim the scores. Each option or ‘argument’ has a tick box. Having specified a variable, we could click on *OK* and we’d get some output because the options/arguments have default values (Figure 2 left): the tick box for removing missing values is unchecked, which is the same as typing `na.rm = FALSE` into the function, and the checkbox for trimming the mean is unchecked which is the same as typing `trim = 0` into the function. In other words it would be like executing:
-
-```
-mean(songs_written)
+```{r freq_dist-solution}
+freq_tbl <- ice_tib %>%
+  dplyr::group_by(upload_day) %>% 
+  dplyr::summarise(
+    frequency = n()
+  )
+freq_tbl
 ```
 
-We don’t need to write `na.rm = FALSE, trim = 0` explicitly within the function because these are the defaults values that the function will use. However, we could change these defaults by changing these arguments. Going back to our imaginary dialog box, the right side of Figure 2 shows that same variable is selected (**songs_written**), but this time the user has selected the option for removing missing values, which equates to typing `na.rm = TRUE` into the function. The user has also selected to trim means and type in a value of 5 to set the amount of trim, which is equivalent to typing `trim = 5` into the function. Now, when we click on *OK* the mean will be calculated having trimmed 5% of scores from either side and excluding missing values. This process is equivalent to executing:
+We can see, for example, that 29000 videos were uploaded 30 days after Chris Kennedy’s initial challenge, and 10000 were uploaded 27 days after.
 
-```
-mean(songs_written, na.rm = TRUE, trim = 5)
-```
+### Grouped frequency tables
 
-![Figure 2: An imaginary dialog box to help you map the idea of setting arguments to selecting options in dialog boxes](./images/dsr2_fig_01_07_functions_dialog_analogy.png)
+However, the frequency table that we just produced is large and a little unweildy. It might be useful to instead have a table that counts the frequencies for a range of scores. For example, how many videos were uploaded between 21 and 24 days, and 25 and 28 days. This is known as a *grouped* frequency distribution. To produce one of these, first we have to place the values of `upload_days` into what are known as *bins*. The values of the number of days range from 21 to 76 days after Chris Kennedy’s initial challenge. Imagine we wanted to group the data in such a way as to see how many videos were uploaded every 4 days (instead of every day). To do this, we'd need to group the values of days into bins of 21-24, 25-28, 29-32 and so on. Notivce that each 'bin' is made up of 4 days worth of values. We can create these bins using `ggplot2::cut_width()` which takes this form:
 
-##	Packages and functions
-
-When you load a package (see [this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-installing-and-loading-packages)) into your session you are loading in a collection of new functions that you can use in R.  You can refer to a function directly, to use a general example:
-
-```
-function()
+```{r, eval=FALSE}
+ggplot2::cut_width(variable, width_of_bin)
 ```
 
-or you can include a reference to the package from which the function came, in general:
 
-```
-package::function()
-```
+In which we place the variable that we wish to spread across bins, and `width_of_bin` is how wide we want the bins to be. If we want to split the variable `upload_day` into bins containing 4 days worth of data we'd use:
 
-For example, you can use the `ggplot()` function from the **ggplot2** package within a command by executing either of these:
-
-```
-ggplot()
-ggplot2::ggplot()
+```{r, eval=FALSE}
+ggplot2::cut_width(upload_day, 4)
 ```
 
-Although many people don’t include the package name, it is good style to include it when you refer to a function because you will occasionally stumble across two functions in two different packages that have the same name. For example, there is a `recode()` function in both the **Hmisc** and **car** packages. If you have both packages loaded and you try to use `recode()`, R won’t know which one to use or will guess incorrectly and throw an error. If you always specify the package as well as the function then R (and everyone else) will know which function you're using. For example, if we want to use the recode function in the car package we would use:
-```
-car::recode()
-```
-but to use the one in Hmisc we would use:
-```
-Hmisc::recode()
+Combining this with `dplyr::mutate()` (which we encountered in the **discovr_01** tutorial). To create a new variable called `days_group`, we could execute:
+
+```{r, eval=FALSE}
+gp_freq_tbl <- ice_tib %>% 
+  dplyr::mutate(
+    days_group = ggplot2::cut_width(upload_day, 4)
+    ) 
 ```
 
-```{r packfun_quiz}
-  question("In the R command `dplyr::select()` ...",
-    answer("`dplyr` is the name of a package and `select()` is a function within that package.", correct = TRUE),
-    answer("`select()` is the name of a package and `dplyr` is a function within that package."),
-    correct = "Correct - well done!",
-    incorrect = "Sorry, that's incorrect. Try again.",
-    random_answer_order = TRUE,
-    allow_retry = T
+This creates a new object called `gp_freq_tbl` that contains `ice_tib` biut with an extra column/variable called `days_group` that indicates into which 'bin' the value of `upload_day` falls.
+
+Try the above code in the box:
+
+`r hint_text("TIP: remember to also execute")` `gp_freq_tblt` `r hint_text("to see the table")`
+
+
+```{r cut_width, exercise=TRUE, exercise.lines=5}
+
+
+```
+
+```{r cut_width-solution}
+gp_freq_tbl <- ice_tib %>% 
+  dplyr::mutate(
+    days_group = ggplot2::cut_width(upload_day, 4)
+    )
+gp_freq_tbl
+```
+
+Notice that each value of `upload_days` now has a corresponding value of `days_group` containing the 'bin' to which the score has been assigned. For example, the first score of 34 has been assigned to the bin labelled `(30, 34]`. This is the bin containing any score above 30 up to and including 34. (The label uses standard mathematical notation for sets where `(` or `)` means 'not including' and `[` or `]` means 'including').
+
+Having done this we can again use `summarize()` and `n()` to count the scores as we did before except that this time we group by `days_group` instead of `upload_day`. The full code to create a grouped frequency table called `gp_freq_tbl` would be:
+
+```{r, eval=FALSE}
+gp_freq_tbl <- ice_tib %>% 
+  dplyr::mutate(
+    days_group = ggplot2::cut_width(upload_day, 4)
+    ) %>% 
+  dplyr::group_by(days_group) %>% 
+  dplyr::summarise(
+    frequency = n()
+  )
+```
+
+Try this below.
+
+`r hint_text("TIP: remember to also execute")` `gp_freq_tblt` `r hint_text("to see the table")`
+
+```{r gp_freq_dist, exercise=TRUE, exercise.lines=10}
+
+
+```
+
+```{r gp_freq_dist-solution}
+gp_freq_dist <- ice_tib %>% 
+  dplyr::mutate(
+    days_group = ggplot2::cut_width(upload_day, 4)
+    ) %>% 
+  dplyr::group_by(days_group) %>% 
+  dplyr::summarise(
+    frequency = n()
+  )
+gp_freq_dist
+```
+
+We can see, for example that 534000 videos were uploaded after 38 days and up to and including 42 days. 
+
+### Relative frequencies
+
+We now have an object `gp_freq_dist` that contains the number of days grouped into bins of 4 days (`days_group`) and the number of videos uploaded during each of the time periods represented by those bins (`frequency`). If we want to calculate the relative frequency (i.e., the proportion of videos uploaded during each of the time periods represented by the bins) we can use `dplyr::mutate()` to add a variable that divides the frequency by the total number of videos uploaded. We can find this total using `sum()`.
+
+```{r, eval = FALSE}
+gp_freq_dist <- gp_freq_dist %>% 
+  dplyr::mutate(
+    relative_freq = frequency/sum(frequency)
+  )
+```
+
+Within this code we pipe the object `gp_freq_dist` that we previously created into the `mutate()` function. Within that we create a new column called `relative_freq` using `frequency/sum(frequency)`. The effect of this command is that for each value of the variable `frequency` within `gp_freq_dist`, a new value is computed that is the original value divided by the sum (or total) of all of the frequencies. This process converts the raw frequancy into a relative frequency. Try this code in the box below.
+
+
+```{r rel_freq-setup}
+gp_freq_dist <- ice_tib %>% 
+  dplyr::mutate(
+    days_group = ggplot2::cut_width(upload_day, 4)
+    ) %>% 
+  dplyr::group_by(days_group) %>% 
+  dplyr::summarise(
+    frequency = n()
   )
 ```
 
 
-## Style
+```{r rel_freq, exercise=TRUE, exercise.lines=5}
 
-While we’re discussing good style, it is important to adopt consistent principles about how to name the objects you create in R. I recommend following Hadley Wickham's [tidyverse style guide](http://style.tidyverse.org/). The style guide has a lot to take in, so a few key tips are:
 
-* *Use lower case when naming things*: **R** is case sensitive so it will treat *myData* as a completely different object to *mydata*. One of the most common reasons why your code won't run will be because you forgot to capitalize an object that you capitalized when you created it. The simplest solution is to use lower case all of the time when naming objects.
-* *Use underscores to separate words*: when creating objects it improves readability if you use underscores to distinguish words. For example, you might import the data relating to mathematical achievement as *maths_data*, which is easier to read than *mathsdata*.
-* *Avoid long names*: naming something *great_experiment_to_test_whether_listening_to_heavy_metal_improves_your_statistical_ability_data* is certainly descriptive but you're going to really regret it when you want to refer to that object again - think of the potential for typos which would mean **R** doesn't recognise the object, not to mention the time wasted in typing it out. Keep it short but meaningful.
-* *consider consistent suffixes*: Although not in the style guide, and not essential, I find it useful to have a set of suffixes to indicate the types of objects that I have created. For example, you might use *dat* for data, *tib* for *tibbles* (they'll be explained in a later tutorial), *m* or *mod* for model, and *out* for output. For example, I might create these objects:
-    - *maths_dat*: data frame containing my data on mathematical achievement
-    - *maths_tib*: tibble containing my data on mathematical achievement
-    - *maths_3x_m*: object specifying a model in which maths achievement was predicted from 3 variables (i.e., 3 *X*s).
-    - *maths_3x_out*: object containing the summary output from the above model.
-* *Comment*: You can annotate your code by prefixing text with **#**. This enables you to describe what you are doing. You have no idea how helpful this can be when you revisit code 6 months later and can't remember what you were trying to do. It's a really good habit to get into.
-* *Spacing*: Your code will be much easier to read if you put spaces around operators such as `+`, `==`, `<-`. Put spaces after commas (but not before), but don't put them around `:`, `::` and `:::` (because these have special functions in **R**).
-
-**Good**:
-
-```{r style_good, echo = TRUE}
-# object containing the first names of the members of metallica
-metallica <- c("Lars","James","Jason", "Kirk")
 ```
 
-This example shows good practice. Note how I have annotated what I am doing by using '#', put spaces around the assignment operator (`<-`) and after commas, used lower case and an underscore for my object name and kept the name short.
-
-**Bad**:
-
-```{r style_bad, echo = TRUE}
-First_names_of_The.members_of.MetalliCa<-c("Lars","James","Jason", "Kirk")
-```
-
-This example shows bad practice. Note that I have not annotated what I am doing, there are no spaces around the assignment operator (`<-`) or after commas, I have some capital letters in my object name, have not been consistent with how I separate words in the object name, and have a name that is unnecessarily long.
-
-
-```{r style_quiz}
-  question("Which of these is **not** an example of good style?",
-    answer("Use upper case letters for important words when naming objects.", correct = TRUE, message = "This is poor style because capital letters increase the chance of making errors when later referring to objects that you have created. Use lower case throughout when naming objects."),
-    answer("Avoid long names when naming objects."),
-    answer("Place spaces around operators such as `+`, `<-`, `-` etc.."),
-    answer("Use comments to remind yourself of what your code is doing."),
-    correct = "Correct - well done!",
-    incorrect = "Sorry, that's incorrect. Try again.",
-    random_answer_order = TRUE,
-    allow_retry = T
+```{r rel_freq-solution}
+gp_freq_dist <- gp_freq_dist %>% 
+  dplyr::mutate(
+    relative_freq = frequency/sum(frequency)
   )
+gp_freq_dist
 ```
 
 
-##	Tidyverse and the pipe operator (`%>%`)
+### Efficient code
 
-The tidyverse is a set of packages built upon a common philosophy of data science developed by Hadley Wickham [@wickhamAdvanced2014; @wickhamDataScience2017; @wickhamGgplot2ElegantGraphics2016]. Some of them are shown in Figure 3.
+In the tasks above we created the table of relative frequencies step by step:
 
-![Figure 3: some of the tidyverse packages](./images/tidy_packages.png){width=50%}
+1. We created `gp_freq_dist` from `ice_tib` and added the variable `days_group` to it.
+2. We fed `gp_freq_dist` into a pipe that grouped by `days_group` and then calculated the frequency. We saved it using the same name (`gp_freq_dist`).
+3. We fed `gp_freq_dist` into a pipe that added a column with the relative frequency.
 
+Usually it's more efficient to carry out these steps in one piece of code. For example, if we combine all of the previous operations we get:
 
-In R there are always multiple ways to achieve the same goal, in general I will try to follow the tidyverse approach. You [install and load](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-installing-and-loading-packages) the tidyverse packages as you would any package in R. Having done that, all of the tidyverse packages will be at your disposal (i.e. you don’t need to load them individually).
-
-The tidyverse approach to R makes use of something called the pipe operator (`%>%`) to link functions together. To use the pipe operator the `magrttr` package  needs to be installed and loaded but this happens automatically if you install and load `tidyverse`.
-
-As the name suggests, the pipe operator involves thinking of any command as a ‘pipe’ through which instructions flow from left to right. To take a really simple example, in the [introduction to R and RStudio](http://milton-the-cat.rocks/learnr/r/r_getting_started/) tutorial, we used the `here::here()` function to create a path to a file that we wanted to open with the function `readr::read_csv()`. The command we used was:
-
-```
-my_data <- readr::read_csv(here::here("data/metallica.csv"))
-```
-
-We can pipe this command to make it clearer:
-
-```
-my_data <- here::here("data/metallica.csv") %>% readr::read_csv(.)
-```
-
-Instead of embedding the `here::here()` function within `readr::read_csv()`, we put it first and feed or ‘pipe’ its output into `readr::read_csv(.)` using `%>%`.The code is easier to read, it makes clear that we’re using  `here::here()` to generate a path to the file that we want to open, and that we’re feeding that file path into `readr::read_csv(.)`. Note that the `readr::read_csv(.)` function has a period (.) within it. This period represents whatever is coming through the pipe from the left. Often, you don't need the period but sometimes you do so it's worth being aware of it.
-
-```{r pipe_quiz}
-  question("What's going on in the command `here::here(\"data/metallica.csv\") %>% readr::read_csv(.)`?",
-    answer("`here::here(\"data/metallica.csv\")` generates the filepath to the data file called 'metallica.csv' and this filepath is fed into `readr::read_csv(.)`, which reads in that file.", correct = TRUE, message = "Well done."),
-    answer("`here::here(\"data/metallica.csv\")` opens the data file called 'metallica.csv' and `readr::read_csv(.)` converts it to a CSV file`", message = "the `here()` function generates a file path, it doesn;t open the file."),
-    answer("The `%>%` reads the data file back into the `here()` function", message = "The flow of commands is in the opposite direction"),
-    random_answer_order = TRUE,
-    allow_retry = T
-  )
-```
-
-
-
-## Data types
-
-Often when analysing data you will [input your data with an external software](http://milton-the-cat.rocks/learnr/r/r_getting_started/) such as Microsoft Excel, Google sheets, or Numbers and then import it into R. However, you can enter data directly. It's also useful to know about the different ways in which R stores data. R can store information using several different data types:
-
-* `int`: variables containing integers (i.e., whole numbers).
-*	`dbl`: variables containing doubles (i.e., real numbers).
-* `chr`: variables containing characters, or strings (i.e. text).
-*	`lgl`: variables that contain the logical values of TRUE or FALSE.
-*	`fctr`: variables that represent categories with fixed numeric values (so called factors, for example a variable where you have coded biological sex as 0 = male, 1 = female)
-*	`date`: variables that contain dates.
-
-We’re going to extend our earlier Metallica example to explore these different data types. Table 1 shows the data that we’re going to enter , which contains a character variable (name), two date variables (birth_date and death_date), a factor (the instrument they play), a logical (whether it is true or false that they are a current member of the band), two integers (how many songs they have written for metallica and their **net_worth**).
-
-```{r, results = 'asis'}
-tribble(
-  ~name, ~birth_date, ~death_date, ~instrument, ~current_member, ~songs_written, ~net_worth,
-  "Lars Ulrich", "1963-12-26", NA, "Drums", TRUE, 111, 300000000,
-  "James Hetfield", "1963-08-03", NA, "Guitar", TRUE, 112, 300000000,
-  "Kirk Hammett", "1962-11-18", NA, "Guitar", TRUE, 56, 200000000,
-  "Rob Trujillo", "1964-10-23", NA, "Bass",  TRUE, 16, 20000000,
-  "Jason Newsted", "1963-03-04", NA, "Bass", FALSE, 3, 40000000,
-  "Cliff Burton", "1962-02-10", "1986-09-27", "Bass", FALSE, 11, 1000000,
-  "Dave Mustaine", "1961-09-13", NA, "Guitar", FALSE, 6, 20000000
+```{r eval=FALSE}
+gp_freq_dist <- ice_tib %>% 
+  dplyr::mutate(
+    days_group = ggplot2::cut_width(upload_day, 4)
+    ) %>% 
+  dplyr::group_by(days_group) %>% 
+  dplyr::summarise(
+    frequency = n()
   ) %>% 
-  knitr::kable(caption = "Some data about the rock band Metallica", format = "html") %>% 
-  kableExtra::kable_styling(bootstrap_options = "striped")
+  dplyr::mutate(
+    relative_freq = frequency/sum(frequency),
+    percent = relative_freq*100
+  )
+  
+gp_freq_dist
 ```
 
 
-### Character variables
+This code takes the data in `ice_tib`, feeds it into `mutate()` to create a new variable called `days_group` which contains the 'bin' to which the score in `upload_day` belongs. Having added these 'variable'bins', we group the data by them using  `group_by()`, count how many scores fall into each bin using `summarize` and store these in a variable called `frequency`. We then feed this summary table into `mutate()` to create new variables containing the relative frequency in its raw form and expressed as a percentage. We store the summary table in an object called `gp_freq_dist`. Try this code in the box:
 
-We created a character variable (also called a string variable) when we entered the names of the members of metallica. To recap, we used the `c()` function to ‘collect’ together values. Each value (known as a character string) is separated by commas and placed in straight quotes so that R knows that it is text:
 
-```
-metallica <- c("Lars","James","Jason", "Kirk")
-```
+```{r rel_freq_eff, exercise=TRUE, exercise.lines=13}
 
-Extending this idea, we can enter the names in Table 1 and store these in an object cal;led `name` by exectuting:
 
 ```
-name <- c("Lars Ulrich", "James Hetfield", "Kirk Hammett", "Rob Trujillo", "Jason Newsted", "Cliff Burton", "Dave Mustaine")
+
+```{r rel_freq_eff-solution}
+gp_freq_dist <- ice_tib %>% 
+  dplyr::mutate(
+    days_group = ggplot2::cut_width(upload_day, 4)
+    ) %>% 
+  dplyr::group_by(days_group) %>% 
+  dplyr::summarise(
+    frequency = n()
+  ) %>% 
+  dplyr::mutate(
+    relative_freq = frequency/sum(frequency),
+    percent = relative_freq*100
+  )
+  
+gp_freq_dist
 ```
+
+## Histograms
+
+As well as tabulated frequency distributions, we can visualise distributions using histograms. `ggplot2` is a powerful package for producing data visualisations that we will explore in detail in the **discovr_05** tutorial. For now, we will use it to create a histogram without worrying about how it works.
+
+### A basic histogram using `ggplot2`
+
+Let's start by plotting a histogram of number of days between the original ice bucket challenge video and when subsequent videos were uploaded. Remember, the data are stored in a variable called `upload_day` in the `ice_tib` tibble. To initiate the plot we use the `ggplot()` function, which at its simplest has this general form:
+
+`ggplot2::ggplot(my_tib, aes(variable_for_x_axis, variable_for_y_axis))`
+
+Within the `ggplot()` function replace `my_tib` with the name of the tibble containing the data you want to plot, and within the `aes()` function replace `variable_for_x_axis` with the name of the variable to be plotted on the *x*-axis (horizontal), and replace `variable_for_y_axis` with the name of the variable to be plotted on the *y*-axis (vertical). To plot the days since the first ice bucket challenge video that each video was uploaded, we could execute:
+
+`ggplot2::ggplot(ice_tib, aes(upload_day))`
+
+This command uses the tibble called *ice_tib*, and plots the variable **upload_day** on the *x* axis (for a histogram we don't need to specify *y*). This command tells `ggplot2` *what* to plot, but not *how* to plot it. We need to add something called a **geom** to display the data. For a histogram we use `geom_histogram()`:
+
+```{r, eval = FALSE}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram()
+```
+
+This command tells **R** to take the object created by `ggplot2::ggplot(ice_tib, aes(upload_day))` and add (`+`) a layer to it using `geom_histogram()`. Try this code in the box below.
+
+
+```{r ice_hist, exercise=TRUE}
+
+```
+
+```{r ice_hist-solution}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram()
+```
+
+
+By default `ggplot2` constructs the bins of the histogram to be 1/30th the width of the data. You can over-ride this default by specifying `binwidth = ` within the `geom_histogram()` function. In the code box above, type `binwidth = 1` into the brackets after `geom_histogram` and execute the code. Note how the histogram changes. Feel free to try other binwidths, but 1 makes sense for these values because responses could only be whole numbers.
+
+### Changing the colours of the bars
+
+We can change the colour of the bars by including `fill = ` within the `geom_histogram()` function. For example, we could specify the colour red as:
+
+`geom_histogram(binwidth = 1, fill = "red")`
+
+Try this in the code box below and run the code.
+
+`r hint_text("TIP: Note that options within a function are separated by a comma. In this example, ")` `binwidth = 1, fill = "red"` `r hint_text("will work but ")` `binwidth = 1 fill = "red"` `r hint_text("(note the comma is missing) would throw an error.")`
+
+```{r ice_hist_fill, exercise=TRUE}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1)
+```
+
+You can also specify any [Hex colour code](http://www.color-hex.com/). For example, the shade of blue defined by hex code "#56B4E9" is good for colour blind people, so we could specify this:
+
+`geom_histogram(binwidth = 1, fill = "#56B4E9")`
+
+Try this below by replacing `"red"` with `"#56B4E9"` and running the code. Play around with other hex codes.
+
+```{r ice_hist_hex, exercise=TRUE}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1, fill = "red")
+```
+
+```{r ice_hist_hex-solution}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9")
+```
+
+You can also make filled objects semi-transparent by using `alpha = ` where alpha is a proportion (i.e., between 0 and 1). For example, if you want the histograms to have 20% opacity you could include  `alpha = 0.2` in the `geom_histogram()` function (remembering to separate it from other options with a comma). In the code box below try setting 50% opacity by editing the geom to be:
+
+`geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5)`
+
+Try out some other values of alpha.
+
+`r hint_text("Tip: Remember that values of alpha must fall between 0 and 1")`
+
+```{r ice_hist_alpha, exercise=TRUE}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1, fill = "red")
+```
+
+```{r ice_hist_alpha-solution}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5)
+```
+
+### Editing axis labels
+
+To change the labels on the *x*- and *y*-axis we can use the `labs()` function. To do this, we add a `+` after the `geom_histogram()` function and on the next line type:
+
+`labs(y = "label_for_y_axis", x = "label_for_x_axis")`
+
+Replacing `label_for_y_axis` with the text we want on the *y*-axis and `label_for_x_axis` with the text that we want on the *x*-axis. For the current plot, we are plotting the frequency of uploads (because it's a histogram) on the *y*-axis and the number of days since the original ice bucket challenge on the *x*-axis, so we might use:
+
+`labs(y = "Frequency", x = "Days since first ice bucket challenge video")`
+
+Try running the code in the box below, then adding the line above and running it again. You should see that the axis labels change.
+
+```{r ice_hist_labs, exercise = TRUE, exercise.lines=3}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5)
+```
+
+```{r ice_hist_labs-solution}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5) +
+  labs(y = "Frequency", x = "Days since first ice bucket challenge video")
+```
+
+### Changing theme
+
+`ggplot2` has various built in themes that change the appearance of the plot. The two we will use most often are `theme_bw()`, which applies a black and white theme and `theme_minimal()` which applies a minimalist theme. Both of thes ethemes are good for scientific plots (like the ones you'll find in journal artciles). To apply a theme we add `+` after the previous function and then type `theme_bw()` or `theme_minimal()`. For example, our histogram code so far is:
+
+```{r, eval = FALSE}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5) +
+  labs(y = "Frequency", x = "Days since first ice bucket challenge video")
+```
+
+To apply a minimalist theme, the code would be:
+
+```{r, eval = FALSE}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5) +
+  labs(y = "Frequency", x = "Days since first ice bucket challenge video") +
+  theme_minimal()
+```
+
+Notice that I added `+` after the `labs()` function and then included the function for the theme I wanted to apply.
+
+Run the code below to view the histogram so far. Then add the code to apply `theme_minimal()` like I have above, re-run the code and notice the theme change:
+
+```{r ice_hist_theme, exercise=TRUE, exercise.lines=4}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5) +
+  labs(y = "Frequency", x = "Days since first ice bucket challenge video")
+```
+
+```{r ice_hist_theme-solution}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5) +
+  labs(y = "Frequency", x = "Days since first ice bucket challenge video") +
+  theme_minimal()
+```
+
+Now try changing `theme_minimal()` to `theme_bw()`, `theme_classic()` and `theme_dark()` to see what effect it has on the plot.
+
+We'll return to the `ggplot2` package in more depth in **discovr_05**.
+
+## Summarizing data
+
+We've seen already that functions take the form of a command followed by brackets. We also saw that there are usually options that can be placed within those brackets (for example, in the previous section we changed the binwidth and bar colour of the histogram by placing instructions within the `geaom_histogram()` function). We'll explore this idea more by looking at the functiosn to estimate the mean and median of the ice bucket scores
+
+### The mean and median
+
+We can compute the mean using the built-in function `mean()`. The full format of the function is:
+
+```{r, eval=FALSE}
+mean(variable, trim = 0, na.rm = FALSE)
+```
+
+Which just says that you need to include a reference to the data that you want the mean for, and that you can set two arguments:
+
+* **trim**: allows you to trim the scores before calculating the mean by specifying a value between 0 and 0.5. The default is 0 (no trim), but if you wanted to trim 10% of scores from each end of the distribution you could set *trim = 0.1*, similarly to trim 20% from each end before computing the mean set *trim = 0.2*.
+* **na.rm**: you'll see this in many functions, it stands for 'NA remove'. In **R** missing values are denoted as `NA` (not available), so by setting `na.rm = TRUE` (or `na.rm = T` for short) you ask **R** to remove missing values before computing the mean. The default is `na.rm = FALSE` so if the function ever throws an error it's probably because you have missing values and you have forgotten to set na.rm to true.
+
+The function for the median has a similar format except that there isn't an argument to trim the data because that wouldn't make sense (the median is effectively the data with a 50% trim):
+
+```{r, eval=FALSE}
+median(variable, na.rm = FALSE)
+```
+
+If you are happy with the default settings you don't need to specify those arguments explicitly. For example, to find the mean of the variable `upload_day` from the `ice_tib` tibble, we could execute:
+
+`r hint_text("TIP: Remember from the discovr_01 tutorial that ")` `ice_tib$upload_day` `r hint_text("is a way to select the variable ")` `upload_day` `r hint_text("from the ")` `ice_tib` `r hint_text("tibble")`
+
+```{r, eval = FALSE}
+mean(ice_tib$upload_day)
+```
+
+However, if we wanted to remove missing values we need to override the default setting for the 'na.rm` argument:
+
+```{r, eval = FALSE}
+mean(ice_tib$upload_day, na.rm = TRUE)
+```
+
+We can obtain the median in much the same way.
+
+`r hint_text("TIP: To find the list of options available for a particular function remember that you can get help by executing ? and the name of the function (e.g., ?mean).")`
+
+Use the code box below to obtain the mean and median number of days after the original ice bucket video that other videos were uploaded. 
+
+```{r ice_mean, exercise = TRUE}
+
+```
+
+```{r ice_mean-solution}
+mean(ice_tib$upload_day)
+median(ice_tib$upload_day)
+```
+
+
+### Quantifying the 'fit' of the mean
+
+We can use the functions `var()`, `sd()` to get the variance and standard deviation of the ice bucket scores. These functions behave exactly like `mean()` in that we input the variable for which we want the variance and standard deviation and specify how we treat missing values (by default they are not removed):
+
+```{r, eval=FALSE}
+var(variable_name, na.rm = FALSE)
+sd(variable_name, na.rm = FALSE)
+```
+
+To get the variance and standard deviation of the days since the original ice bucket video that other videos were uploaded we'd execute:
+
+```{r, eval=FALSE}
+var(ice_tib$upload_day, na.rm = FALSE)
+sd(ice_tib$upload_day, na.rm = FALSE)
+```
+
+`r hint_text("TIP: Because the current data has no missing scores we can omit the default argument of 'na.rm=FALSE'")`
+
+Use the box below to calculate the variance and standard deviation of the `upload_day` variable.
+
+```{r ice_var, exercise = TRUE}
+
+```
+
+```{r ice_var-solution}
+var(ice_tib$upload_day)
+sd(ice_tib$upload_day)
+```
+
+### The inter-quartile range
+
+We can use the `IQR()` function to obtain the interquartile range of a set of scores. This function has an additional option of `type = ` which allows you to specify one of 8 different ways to calculate the IQR. The default is 7. There is an argument for using `type  = 8`, which uses a method recommended by [@hyndman_sample_1996]. 
+
+```{r, eval=FALSE}
+IQR(variable_name, na.rm = FALSE, type = 7)
+```
+
+To get the inter-quartile range of the days since the original ice bucket video we'd execute:
+
+```{r, eval=FALSE}
+IQR(ice_tib$upload_day, type = 8)
+```
+
+
+In the code box below, use this function to get the inter-quartile range of the `upload_day` variable.
+
+```{r ice_iqr, exercise = TRUE}
+
+```
+
+```{r ice_iqr-solution}
+IQR(ice_tib$upload_day, type = 8)
+```
+
+### Rounding values
+
+We can use the `round()` function to round off values. It 
+```{r, eval=FALSE}
+round(value, number_of_decimal_places = 0)
+```
+
+In which we input a `value`, and specify the number of decimal places we want (the default is 0, which returns a whole number). For example, to round the value 3.211420 to a whole number we would execute:
+```{r, eval=FALSE}
+round(3.211420)
+```
+
+But to round it to two decimal places we would include the number two after a comma:
+```{r, eval=FALSE}
+round(3.211420, 2)
+```
+
+We could also use a pipe to feed a mean, median or variance into the round function. For example, to round the value of the variance of `upload_day` to 3 decimal places we could execute:
+
+```{r, eval=FALSE}
+var(ice_tib$upload_day) %>%
+  round(3)
+```
+
+Try rounding the variance, standard deviation and mean of `upload_day` to 2 decimal places in the box below:
+
+```{r ice_rnd, exercise = TRUE}
+
+```
+
+```{r ice_rnd-solution}
+# Variance
+var(ice_tib$upload_day) %>% round(2)
+# SD
+sd(ice_tib$upload_day) %>% round(2)
+# Mean
+mean(ice_tib$upload_day) %>% round(2)
+```
+
+## Creating a summary table
+
+### Using `summarize()` to compute multiple summary statistics
+
+So far we have looked at computing individual statistics for a set of scores, but what if we want to combine these values into a table? We can do this using the `summarise()` function described earlier in the tutorial. The code looks like this:
+
+```{r eval = FALSE}
+ice_tib %>%
+  dplyr::summarise(
+    median =  median(upload_day),
+    mean =  mean(upload_day),
+    IQR = IQR(upload_day),
+    variance = var(upload_day),
+    std_dev = sd(upload_day)
+    ) %>%
+    round(., 2)
+```
+
+The code feeds the data stored in `ice_tib` into the `summarise()` function. In this function 5 new variables are created. The first we name `median` and it stores the output of `median(upload_day)`. In other words, we create a variable that we chose to call `median` (left hand side of the command) that stores the value of the median of the variable `upload_day` (right-hand side of the command). Similarly, we store the mean upload day in a variable called `mean`, the IQR in a variable called `IQR`, the variance in a variable called `variance` and the standard deviation in a variable called `std_dev`. All of these values are piped into the `round()` function which rounds them to two decimal places.
 
 Try this in the code box:
 
-```{r met_name, exercise=TRUE}
+```{r ice_sum, exercise = TRUE, exercise.lines=9}
 
 ```
 
-```{r met_name-solution}
-name <- c("Lars Ulrich", "James Hetfield", "Kirk Hammett", "Rob Trujillo", "Jason Newsted", "Cliff Burton", "Dave Mustaine")
-# To view this variable:
-name
+```{r ice_sum-solution}
+ice_tib %>%
+  dplyr::summarise(
+    median =  median(upload_day),
+    mean =  mean(upload_day),
+    IQR = IQR(upload_day),
+    variance = var(upload_day),
+    std_dev = sd(upload_day)
+    ) %>%
+    round(., 2)
 ```
 
-###	Double or integer variables
 
-We have two numeric variables in Table 1: the number of Metallica songs written by each member, and their net worth. A variable that contain numbers is called a numeric variable. By default, R stores numbers as double precision floating point numbers (double), which basically means it includes decimal places, but you can force R to store them as whole numbers (integer). Other things being equal storing numbers as doubles makes sense. To create a numeric variable, type the numeric values into the `c()` function in the order you want them. For example, to create the variables **songs_written** and **net_worth** we would execute:
-```
-songs_written <-  c(111, 112, 56, 16, 3, 11, 6)
-net_worth <- c(300000000, 300000000, 200000000, 20000000, 40000000, 1000000, 20000000)
-```
-
-Try entering these variables in the code box.
-
-```{r met_numeric, exercise=TRUE}
-
-```
-
-```{r met_numeric-solution}
-songs_written <-  c(111, 112, 56, 16, 3, 11, 6)
-net_worth <- c(300000000, 300000000, 200000000, 20000000, 40000000, 1000000, 20000000)
-
-# To view these variables:
-songs_written
-net_worth
-```
-
-### Date variables
-
-The second column of Table 1 contains dates. To create a date variable we do much the same as for a character variable except that we also need to tell R that the values are dates. The conversion from text to dates is important if you want to do computations on the dates. If your dates are stored as characters (rather than dates) computations won’t work. The most versatile way to handle dates is the `lubridate` package (part of the tidyverse), which contains a suite of functions specifically designed for working with times and dates.
-
-One function for converting character strings to dates is `ymd()`. The letters ‘ymd’ stand for ‘year’, ‘month’ and ‘day’ which expects the dates to be entered with the year first, then the month, then the day. To create a variable using lubridate you'd execute something like:
-
-```
-variable <- c("date 1", " date 2"," date 3", etc.) %>% lubridate::ymd()
-```
-
-Notice that I have used the pipe operator (`%>%`) to connect two commands, the first inputs the dates (`c("date 1", " date 2"," date 3", etc.)`) and this information is fed into `lubridate::ymd()` to convert it to date format.
-
-To create the variable called **birth_date** containing the dates of birth in Table 1 using lubridate, we’d need to
-
-* Make sure that `library(tidyverse)` is included in the setup code chunk of our markdown file
-* Type the following into a code chunk and execute:
-
-```
-birth_date <- c("1963-12-26", "1963-08-03", "1962-11-18", "1964-10-23", "1963-03-04", "1962-02-10", "1961-09-13") %>% lubridate::ymd()
-```
-
-Try entering this variable in the code box (the tidyverse package is already loaded so you don't need to include `library(tidyverse)` but you will need to include this when you try this in a markdown file).
-
-```{r met_dob, exercise=TRUE}
-
-```
-
-```{r met_dob-solution}
-birth_date <- c("1963-12-26", "1963-08-03", "1962-11-18", "1964-10-23", "1963-03-04", "1962-02-10", "1961-09-13") %>%
-  lubridate::ymd()
-# To view this variable:
-birth_date
-```
-
-###	Missing values
-
-Although as researchers we strive to collect complete sets of data, it is often the case that we have missing data. We denote missing values with `NA` (in capital letters), which stands for ‘not available’. Many functions in R have arguments to specify how you handle missing values so if you have missing values remember to set a value for these arguments.
-The dates of the member’s deaths are included in Table 1. At the time of writing all but one of the members are alive (Cliff Burton was tragically killed in a tour bus accident), so we (thankfully) have a lot of missing values. We enter these values as `NA` (not in quotes). Therefore, to create a variable called **death_date** containing the dates in Table 1 we execute (notice the use of the pipe, %>%, again):
-```
-death_date <- c(NA, NA, NA, NA, NA, "1986-09-27", NA) %>% lubridate::ymd()
-```
-
-Try entering this variable in the code box.
-
-```{r met_dod, exercise=TRUE}
-
-```
-
-```{r met_dod-solution}
-death_date <- c(NA, NA, NA, NA, NA, "1986-09-27", NA) %>% 
-  lubridate::ymd()
-# To view this variable:
-death_date
-```
-
-### logical variables
-
-Table 1 contains a logical variable, which is one that contains values of true and false. In this case true and false relate to whether the member is currently in the band. Logical variables are created much the same as integers and doubles except that you enter TRUE and FALSE instead of numbers into the `c()` function. For example, to create the variable **current_member** we would execute:
-```
-current_member <- c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
-```
-
-Try entering this variable in the code box.
-
-```{r met_current, exercise=TRUE}
-
-```
-
-```{r met_current-solution}
-current_member <- c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
-# To view this variable:
-current_member
-```
-
-### Factor variables
-
-A factor variable is one that uses numbers to represent different categories or groups of data. It is a numeric variable, but the numbers represent names (i.e., it is a nominal variable). These groups of data could be levels of a treatment variable in an experiment, different groups of people, different geographic locations, different organisations, etc. In Table 1 we have a factor variable that codes the instrument played by each member. We could enter this variable as a character variable and hope that R treats the variable sensibly when we try to enter it into a statistical model. Often it will, but it is usually a good idea to explicitly define these variables as factors and assign the numeric codes that you want to each category.
-
-When it comes to what instrument is played the codes can be somewhat arbitrary; for the sake of convention people typically use 0, 1, 2, 3, etc. We will use 0 = Guitar, 1 = Bass, 2 = drums.
-There are several ways to create factors in R. The first is to enter numeric values and then convert these values to a factor using the `factor()` function, the second is to enter the text and convert it to a factor using the `as_factor()` function from the forcats package (which is part of tidyverse). We’ll use each in turn.
-
-We want to enter the values Drums, Guitar, Guitar, Bass, Bass, Bass, Guitar. Using the coding I suggest above that means entering the numbers 2, 0, 0, 1, 1, 1, 0:
-```
-instrument <- c(2, 0, 0, 1, 1, 1, 0)
-```
-To turn these values into a factor, we use the `factor()` function, which takes the general form:
-
-`factor(variable, levels = c(x, y, … z), labels = c("label_1", "label_2", … "label_3"))`
-
-This function looks a bit scary, but it’s not too bad really. Let’s break it down:
-
-*	`factor(variable_name)`: this is all you really need to create the factor—in our case factor(instrument) would do the trick.
-*	`levels = c(x, y, … z)`: we need to tell R which values we want to use to denote different groups and we do this with the levels = argument. Often we use the `c()` function to list the values we have used. For example, with the metallica data where we have used values of 0, 1 and 2, we could use `levels = c(0, 1, 2)`. However, if you have used a regular series such as 1, 2, 3, 4 we can abbreviate this as `1:4`, the colon means ‘all the values between’. So, `1:4` is the same as `c(1, 2, 3, 4)`. For the metallica data we could, therefore, use `levels = 0:2` or `levels = c(0, 1, 2)`.
-*	`labels = c("label_1", "label_2", … "label_3")`: The final step is to assign labels to these levels. Again, we use `c()` to collect the labels that we wish to assign. You must list these labels in the same order as your numeric levels, and you must provide a label for each level. In our case, 0 corresponds to Guitar, 1 to Bass, and 2 to drums  so the argument would be `labels = c("Guitar", "Bass", "Drums")`.
-
-Putting all of this together we could execute:
-```
-instrument <- c(2, 0, 0, 1, 1, 1, 0) %>% factor(instrument, levels = 0:2, labels = c("Guitar", "Bass", "Drums"))
-```
-
-and then to 'see' the variable, exceute
-
-```
-instrument
-```
-
-Try this out:
-
-```{r met_inst, exercise=TRUE}
-
-```
-
-```{r met_inst-solution}
-instrument <- factor(c(2, 0, 0, 1, 1, 1, 0), levels = 0:2, labels = c("Guitar", "Bass", "Drums"))
-# To view this variable:
-instrument
-```
-
-You’ll see that the variable is made up of the category labels and not the numeric values:
-
-
-```{r, echo=FALSE}
-instrument <- factor(c(2, 0, 0, 1, 1, 1, 0), levels = 0:2, labels = c("Guitar", "Bass", "Drums"))
-instrument
-```
-
-The tidyverse method is slightly different. First, we create a character variable and then use the `forcats::as_factor()` function to convert it. For example, we could execute:
-```
-instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>%
-forcats::as_factor()
-```
-Notice that with this method we don’t specify the levels of labels of the factor. This is done automatically, ordering the levels by the order they appear in the data. You can see this if you try inputting and viewing this variable
-
-```{r met_insttidy, exercise=TRUE}
-
-```
-
-```{r met_insttidy-solution}
-instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>%
-  forcats::as_factor()
-# To view this variable:
-instrument
-```
-
-If we don’t want this order we can use the `forcats::fct_relevel()` function to change the order. For example, to order the levels as we did before we would execute:
-
-```
-instrument <- instrument %>% forcats::fct_relevel("Guitar", "Bass", "Drums")
-```
-
-Or we could have incorporated this command to the original command using the pipe:
-
-```
-instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>% forcats::as_factor() %>% forcats::fct_relevel("Guitar", "Bass", "Drums")
-```
-
-Try executing
-
-```
-instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>% forcats::as_factor()
-instrument
-```
-
-and then
-
-```
-instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>% forcats::as_factor() %>% forcats::fct_relevel("Guitar", "Bass", "Drums")
-instrument
-```
-
-and note how the order of factor levels change.
-
-```{r met_relevel, exercise=TRUE}
-
-```
-
-```{r met_relevel-solution}
-instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>%
-  forcats::as_factor()
-# To view this variable:
-instrument
-
-instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>% forcats::as_factor() %>% forcats::fct_relevel("Guitar", "Bass", "Drums")
-# To view this variable:
-instrument
-```
-
-With any factor variable you can see the factor levels and their order by using the `levels()` function, in which you enter the name of the factor. So, to see the levels of our variable instrument variable we would execute: `levels(instrument)`, try this:
-
-```{r met_level-setup}
-instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>% forcats::as_factor() %>% forcats::fct_relevel("Guitar", "Bass", "Drums")
-```
-
-```{r met_level, exercise=TRUE}
-
-```
-
-```{r met_level-solution}
-levels(instrument)
-```
-
-
-##	Tibbles
-
-We have looked at how to create variables, but what if we want to combine these variables into a tabulated data set. The tidyverse way to do this is using something called a **tibble**. To create a tibble we use the `tibble::tibble()` function, and inpout into it the names of the variables we have created:
-```
-metalli_tib <- tibble::tibble(name, birth_date, death_date, instrument, current_member, songs_written, net_worth)
-```
-This command creates an object called `metalli_tib` (I tend to use `_tib` to denote a tibble) that contains all of the variables we have created in columns. You view tibbles by executing its name. The contents of the tibble will be printed within the R markdown document itself below the code chunk. By default the first 10 rows will be displayed and as many columns as the width of the pane allows. The display is interactive so you can navigate across columns or down beyond the first 10 rows.
-
-Create a tibble of the metallica data (don't forget to execute its name to view it):
-
-```{r met_tibble-setup}
-current_member <- c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
-instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>% forcats::as_factor() %>% forcats::fct_relevel("Guitar", "Bass", "Drums")
-name <- c("Lars Ulrich", "James Hetfield", "Kirk Hammett", "Rob Trujillo", "Jason Newsted", "Cliff Burton", "Dave Mustaine")
-songs_written <-  c(111, 112, 56, 16, 3, 11, 6)
-net_worth <- c(300000000, 300000000, 200000000, 20000000, 40000000, 1000000, 20000000)
-birth_date <- c("1963-12-26", "1963-08-03", "1962-11-18", "1964-10-23", "1963-03-04", "1962-02-10", "1961-09-13") %>%
-  lubridate::ymd()
-death_date <- c(NA, NA, NA, NA, NA, "1986-09-27", NA) %>% 
-  lubridate::ymd()
-```
-
-```{r met_tibble, exercise=TRUE}
-
-```
-
-```{r met_tibble-solution}
-metalli_tib <- tibble::tibble(name, birth_date, death_date, instrument, current_member, songs_written, net_worth)
-# To view the tibble
-metalli_tib
-```
-
-From viewing the tibble, you can see that it collects together the objects called **name**, **birth_date**, **death_date**, **instrument**, **current_member**, **songs_written**, and **net_worth** into columns. When we created these variables we consistently entered the data in the order of Lars, James, Kirk, Rob, Jason, Cliff and Dave, therefore, each row represents the data for each member. For example, we can see that Lars plays drums and has a song writing credit on 111 songs. The whole thing looks like Table 1.
- 
-###	Creating new variables within a tibble
-
-We can create new variables within a tibble using the `mutate()` function from the `dplyr` (which is part of tidyverse) package. This function takes the general form:
-```
-dplyr::mutate(tibble_name,
-variable_name_1 = data_for_variable,
-variable_name_2 = data_for_variable
-)
-```
-In other words, we pass into the function the name of the tibble to which we want to add variables, followed by one or more commands that name the variables that we want to create and include the data for those variables or instructions to create that data (more on this later). We can also pipe a tibble into the function rather than specifying the tibble within the function itself:
-```
-tibble_name %>%
-dplyr::mutate(
-variable_name_1 = data_for_variable,
-variable_name_2 = data_for_variable
-)
-```
-
-Two things to note. First, variables are created using an equal sign (`=)`, not the assignment operator (`<-`). Second, every line within the mutate() function ends with a comma except for the last. When R sees a comma it expects to see another command, so the lack of comma after the last command tells R that it is the last command.
-
-Imagine that having created metalli_tib we decide that we’d like to include information about how many of their 10 studio albums of original songs each member played on. The data are 10 (Lars), 10 (James), 10 (Kirk), 2 (Rob), 4 (Jason), 3 (Cliff), 0 (Dave). We can create a variable called albums like this
-
-```
-metalli_tib <- metalli_tib %>% 
-  dplyr::mutate(
-    	albums = c(10, 10, 10, 2, 4, 3, 0)
-  )
-```
-
-The first line creates the object `metalli_tib` from a version of itself in which the original tibble is passed through the pipe into `dplyr::mutate()`, where the new variable is created. Look at this new tibble (by executing its name) and you’ll see that an extra column has appeared called albums that contains the values we entered. Try this below:
-
-```{r met_setup}
-current_member <- c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
-instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>% forcats::as_factor() %>% forcats::fct_relevel("Guitar", "Bass", "Drums")
-name <- c("Lars Ulrich", "James Hetfield", "Kirk Hammett", "Rob Trujillo", "Jason Newsted", "Cliff Burton", "Dave Mustaine")
-songs_written <-  c(111, 112, 56, 16, 3, 11, 6)
-net_worth <- c(300000000, 300000000, 200000000, 20000000, 40000000, 1000000, 20000000)
-birth_date <- c("1963-12-26", "1963-08-03", "1962-11-18", "1964-10-23", "1963-03-04", "1962-02-10", "1961-09-13") %>%
-  lubridate::ymd()
-death_date <- c(NA, NA, NA, NA, NA, "1986-09-27", NA) %>% 
-  lubridate::ymd()
-metalli_tib <- tibble::tibble(name, birth_date, death_date, instrument, current_member, songs_written, net_worth)
-```
-
-```{r met_mutate, exercise=TRUE, exercise.setup = "met_setup"}
-
-```
-
-```{r met_mutate-solution}
-metalli_tib <- metalli_tib %>% 
-  dplyr::mutate(
-    	albums = c(10, 10, 10, 2, 4, 3, 0)
-  )
-metalli_tib
-```
-
-We can also compute variables from existing variables. Let’s imagine we now wanted to work out how much money per song contributed each band member made. We know how many songs each member contributed to (**songs_written**) and their net worth (**net_worth**) so their ‘worth per song’ will be their net worth divided by the number of songs written. We can create a variable that takes the values for net_worth and divides them by the corresponding value of **songs_written** using one of the arithmetic operators build into R. Amongst other things, we can add, subtract, multiply and divide using `+`, `-`, `*` and `\` respectively. So, let’s use `/` to create a new variable that we’ll call **worth_per_song** that is **net_worth** divided by **songs_written**. We can again use `mutate()` to add this variable to our tibble:
-```
-metalli_tib <- metalli_tib %>% 
-  dplyr::mutate(
-    	worth_per_song = net_worth/songs_written
-  )
-```
-
-Note that within the `mutate()` function we create the new variable (which we name on the left hand side of the equals sign) by taking the existing variable **net_worth** from the tibble and divided it by another existing variable in the tibble, **songs_written**. If you execute this code and look at the resulting tibble (by executing its name) you’ll see that James and Lars earn about \$2.7 million per song they write, but the real winner here is Jason who contributed to only 3 songs which puts his earnings per song at around \$13 million. Nice work if you can get it.
-
-```{r met_mutate2, exercise=TRUE, exercise.setup = "met_setup"}
-
-```
-
-```{r met_mutate2-solution}
-metalli_tib <- metalli_tib %>% 
-  dplyr::mutate(
-    	worth_per_song = net_worth/songs_written
-  )
-metalli_tib
-```
-
-### Selecting variables
-
-Sometimes we might want to subset tibbles to focus on specific variables or cases of data. First we’ll look at selecting variables. The most extreme case would to look at or retain only at a single variable. To select variables from within a tibble we use the `select()` function from the `dplyr` package (which is loaded as part of tidyverse). The function takes this general form:
-```
-dplyr::select(tibble_name, list of variables)
-```
-
-Within the function you insert the name of the tibble and a list of the variable or variables that you want to retain. For example, to select the variables **name** and **instrument** we could execute:
-```
-dplyr::select(metalli_tib, name, instrument)
-```
-
-Better still, we could use a pipe (`%>%`) that takes the tibble and feeds it into the function:
-```
-metalli_tib %>% 
-  dplyr::select(name, instrument)
-```
- 
-You can also use the `dplyr::select()` function to drop variables from a tibble by placing a minus sign in front of the variable. For example, to show every variable *except* **name** we’d execute:
-```
-metalli_tib %>% 
-  dplyr::select(-name)
-```
-This command displays the tibble but *without* the column containing the band member’s names.
-
-To remove multiple variables, we can place them within `c()`,remembering to place the minus sign outside of the function so that it applies to everything within it:
-```
-metalli_tib %>% 
-  dplyr::select(-c(name, instrument))
-```
-
-This command will display the tibble but *without* the columns containing the band member’s names and instruments.
-
-Sometimes we’d like to store the subset of variables within a new object for future use. To do this you would need to assign the commands that subset the tibble to an object, using the assignment operator (`<-`). For example, to save a version of metalli_tib but without the band member’s names into an object called `metalli_anon_tib`, we’d execute:
-```
-metalli_anon_tib <- metalli_tib %>% 
-  dplyr::select(-name)
-```
-
-The object `metalli_anon_tib` is the same as metalli_tib except that it doesn’t contain the variable **name**. We can see this by executing its name to display it. Try out some of these examples below:
+### Storing summaries
 
-```{r met_select, exercise=TRUE, exercise.setup = "met_setup"}
-
-```
-
-```{r met_select-solution}
-# Selecting the variables name and instrument
-metalli_tib %>% 
-  dplyr::select(name, instrument)
-
-# Excluding the variables name and instrument
-metalli_tib %>% 
-  dplyr::select(-c(name, instrument))
-
-# Saving a version of metalli_tib by excluding the variable 'name'
-metalli_anon_tib <- metalli_tib %>% 
-  dplyr::select(-name)
-# To view the tibble:
-metalli_anon_tib
-```
-
-
-###	Selecting cases (filtering tibbles)
-
-Sometimes we want to select cases rather than (or as well as) variables. For example, maybe we want to work with only the current members of Metallica. To do this, we’d need to select rows of the tibble on the basis of whether the variable **current_member** was true. To filter rows of a tibble you use the `filter()` function from `dplyr`. Like the `select()` function in the previous section, you feed in the name of the tibble and some instructions about how to filter:
-```
-dplyr::filter(tibble_name, statement_about_how_to_filter)
-```
-Or using a pipe:
-```
-tibble_name %>%
-dplyr::filter(statement_about_how_to_filter)
-```
-For example, to select the rows that represent current band members, we need to filter the rows where the variable **current_member** is was equal to TRUE. We could do this by executing:
-```
-dplyr::filter(metalli_tib, current_member == TRUE)
-```
-or, better still, using a pipe:
-```
-metalli_tib %>% 
-dplyr::filter(current_member == TRUE)
-```
-
-Try this out:
-
-```{r met_filter, exercise=TRUE, exercise.setup = "met_setup"}
-
-```
-
-```{r met_filter-solution}
-metalli_tib %>% 
-dplyr::filter(current_member == TRUE)
-```
-
-Note that we use `==` to mean `equal to`. We can also use `!=` to mean 'not equal to. We can also use `<` to mean `less than` and `>` to mean `more than`. For example, if we wanted to return the rows of members who had written more than 50 songs, we could execute:
-```
-metalli_tib %>% 
-dplyr::filter(songs_written > 50)
-```
-
-This command returns the data for Lars, James and Kirk, who are the only members to have contributed to the writing of more than 50 songs.
-
-We can also combine conditions to select rows of a tibble. First, we can ask for rows that match both of two conditions by using the `&` operator. For example, if we want the members of metallica who play drums and have written more than 50 songs, we could combine the condition `songs_written > 50` with the condition of `instrument == "Drums"`. By using `&` we require both conditions to be true. The value of **songs_written** must be greater than 50 AND the value of instrument must be equal to ‘Drums’. To filter `metalli_tib` according to the above conditions, we can insert those condition into the `filter()` function that we have just learnt:
-```
-metalli_tib %>% 
-dplyr::filter(songs_written > 50 & instrument == "Drums")
-```
- 
-Try this out:
-
-```{r met_filter_and, exercise=TRUE, exercise.setup = "met_setup"}
-
-```
-
-```{r met_filter_and-solution}
-metalli_tib %>% 
-dplyr::filter(songs_written > 50 & instrument == "Drums")
-```
-
-We can also use the OR operator (`|`) to select cases based on whether one of many conditions is met. For example, let’s say we want to isolate the rhythm section, we need to include cases that either play drums or bass. We can achieve this with a statement such as:
-`instrument == "Drums" | instrument == "Bass"`. The `|` denotes 'or', so this command would read as ‘the value of the variable instrument is equal to the word ‘Drums’ OR the value of the variable instrument is equal to the phrase ‘Bass’. Again, we’d insert this statement into the `filter()` function.
-```
-metalli_tib %>% 
-dplyr::filter(instrument == "Drums" | instrument == "Bass")
-```
-Notice that the result displays only the bassists and drummers.
-
-```{r met_filter_or, exercise=TRUE, exercise.setup = "met_setup"}
-
-```
-
-```{r met_filter_or-solution}
-metalli_tib %>% 
-dplyr::filter(instrument == "Drums" | instrument == "Bass")
-```
- 
-###	Combining selecting cases with selecting variables
-
-We can combine what we have learnt in the previous sections to select variables *and* cases in a single command. For example, let’s say we want to create a new object called **metalli_worth** that contains only the names and net worth of the current members who have played on every album (i.e., Lars, James and Kirk). This involves two operations:
-
-1. Filter the cases to exclude everyone except Lars, James and Kirk.
-2. We want to exclude all of the variables except for net worth.
-
-Let’s first select the cases we want. We can do this in several ways, but one is to set a condition that the variable **current_member** is TRUE (this will give us Lars, James, Kirk and Rob) and a second condition that instrument is not equal (`!=`) to ‘Bass’, which will exclude Rob. This condition would be written as `current_member == TRUE & instrument != "Bass"`. We could place this command into the `filter()` function:
-```
-metalli_worth <- metalli_tib %>% 
-dplyr::filter(current_member == TRUE & instrument != "Bass")
-```
-
-This command creates an object called **metalli_worth** that contains the rows of *metalli_tib* that meet the conditions that the variable **current_member** is equal to TRUE and the variable **instrument** is NOT equal to (`!=`) the phrase "Bass". Having created this object, we could re-create it from itself but passed through the `select()` function to select only the variables called **name** and **net_worth**:
-```
-metalli_worth <- metalli_worth %>% 
-dplyr::select(name, net_worth)
-```
-Notice that by executing this command we overwrite the original object `metalli_worth` with a new version that contains only the variables **name** and **net_worth**.
-
-The method just described is inefficient (but helpful for showing you the explicit steps that we want to take). A more efficient way to do achieve the same goal is to do both operations as part of the same pipe:
-```
-metalli_worth <- metalli_tib %>% 
-  dplyr::filter(current_member == TRUE & instrument != "Bass") %>% 
-  dplyr::select(name, net_worth)
-```
-
-We now begin to see the beauty of the pipe: it enables us to put together a sequence of operations in very clear, readable, code. The above code creates an object called `metalli_worth` by taking the tibble called `metalli_tib` and passing it into the `filter()` function, where cases are selected if they are current members and don’t play bass, this filtered version of `metalli_tib` is then passed again through the pipe to the `select()` command in which the variables name and net_worth are selected. The result is a tibble containing Lars’, James’, and Kirk’s names and net worth. Remember to include `metalli_worth` to view the tibble. Try this out below:
-
-```{r met_filter_select, exercise=TRUE, exercise.setup = "met_setup"}
-
-```
+If we want to store this table of summary statistics we can do so by assigning it to a new object. Let's say we want to assign it to an object called `upload_summary` then we'd add `upload_summary <-` to the beginning of the command:
 
-```{r met_filter_select-solution}
-metalli_worth <- metalli_tib %>% 
-  dplyr::filter(current_member == TRUE & instrument != "Bass") %>% 
-  dplyr::select(name, net_worth)
-metalli_worth
+```{r eval = FALSE}
+upload_summary <- ice_tib %>%
+  dplyr::summarise(
+    median =  median(upload_day),
+    mean =  mean(upload_day),
+    IQR = IQR(upload_day),
+    variance = var(upload_day),
+    std_dev = sd(upload_day)
+    ) %>%
+    round(., 2) 
 ```
 
 ## Other resources

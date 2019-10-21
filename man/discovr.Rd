@@ -18,17 +18,11 @@ Anyone teaching from or reading \href{https://www.discoveringstatistics.com/book
 \section{Interactive tutorials}{
 
 
+I recommend working through \href{http://milton-the-cat.rocks/learnr/r/r_getting_started/}{this tutorial} on how to install, set up and work within R and RStudio before starting the interactive tutorials.
 \itemize{
-\item \strong{discovr_02}: Data basics in R and RStudio
+\item \strong{discovr_01}: Key concepts in R (functions and objects, packages and functions, style, data types, tidyverse, tibbles)
+\item \strong{discovr_02}: Summarizing data (frequency distributions, grouped frequency distributions, relative frequencies, histograms, mean, median, variance, standard deviation, interquartile range)
 }
-
-To run a tutorial execute:
-
-\code{learnr::run_tutorial("name_of_tutorial", package = "discovr")}
-
-replacing \emph{name_of_tutorial} with the name of the tutorial (see below). For example, to run the tutorial on data basics execute:
-
-\code{learnr::run_tutorial("discovr_02", package = "discovr")}
 }
 
 \section{Datasets}{
@@ -36,17 +30,55 @@ replacing \emph{name_of_tutorial} with the name of the tutorial (see below). For
 
 See the book or data descriptions for more details. This is a list of available datasets within the package. Raw CSV files are available from the book's website.
 \itemize{
-\item \strong{acdc}: Data from the file \emph{oxoby_2008.csv}. For more information execute \code{?acdc}.
-\item \strong{animal_bride}: Data from the file \emph{oxoby_2008.csv}. For more information execute \code{?animal_bride}.
-\item \strong{metallica}: Data from the file \emph{metallica.csv}. For more information execute \code{?metallica}.
-\item \strong{ong_2011}: Data from the file \emph{ong_2011.csv}. For more information execute \code{?ong_2011}.
-\item \strong{ong_tidy}: Data from the file \emph{ong_tidy.csv}. For more information execute \code{?ong_tidy}.
-\item \strong{teaching}: Data from the file \emph{method_of_teaching.csv}. For more information execute \code{?teaching}.
-\item \strong{shopping}: Data from the file \emph{shopping_exercise.csv}. For more information execute \code{?shopping}.
-\item \strong{tea15}: Data from the file \emph{tea_makes_you_brainy_15.csv}. For more information execute \code{?tea15}.
-\item \strong{zhang_sample}: Data from the file \emph{zhang_2013_subsample.csv}. For more information execute \code{?zhang_sample}.
-
+\item \strong{acdc}: Data from the file \emph{oxoby_2008.csv}. For more information execute \code{?acdc}
+\item \strong{animal_bride}: Data from the file \emph{oxoby_2008.csv}. For more information execute \code{?animal_bride}
+\item \strong{exam_anxiety}: Data from the file \emph{exam_anxiety.csv}. For more information execute \code{?exam_anxiety}
+\item \strong{ice_bucket}: Data from the file \emph{ice_bucket.csv}. For more information execute \code{?ice_bucket}
+\item \strong{invisibility_cloak}: Data from the file \emph{invisibility.csv}. For more information execute \code{?invisibility_cloak}
+\item \strong{invisibility_rm}: Data from the file \emph{invisibility_rm.csv}. For more information execute \code{?invisibility_rm}
+\item \strong{jiminy_cricket}: Data from the file \emph{jiminy_cricket.csv}. For more information execute \code{?jiminy_cricket}
+\item \strong{johns_2012}: Data from the file \emph{johns_2012.csv}. For more information execute \code{?johns_2012}
+\item \strong{metallica}: Data from the file \emph{metallica.csv}. For more information execute \code{?metallica}
+\item \strong{notebook}: Data from the file \emph{notebook.csv}. For more information execute \code{?notebook}
+\item \strong{ong_2011}: Data from the file \emph{ong_2011.csv}. For more information execute \code{?ong_2011}
+\item \strong{ong_tidy}: Data from the file \emph{ong_tidy.csv}. For more information execute \code{?ong_tidy}
+\item \strong{shopping}: Data from the file \emph{shopping_exercise.csv}. For more information execute \code{?shopping}
+\item \strong{tea15}: Data from the file \emph{tea_makes_you_brainy_15.csv}. For more information execute \code{?tea15}
+\item \strong{teaching}: Data from the file \emph{method_of_teaching.csv}. For more information execute \code{?teaching}
+\item \strong{zhang_sample}: Data from the file \emph{zhang_2013_subsample.csv}. For more information execute \code{?zhang_sample}
 }
+}
+
+\section{Installing \code{discovr}}{
+
+
+To use \code{discovr} you first need to install \strong{R} and \strong{RStudio} and familiarise yourself with R, RStudio and good workflow practice. You can do this using \href{http://milton-the-cat.rocks/learnr/r/r_getting_started/}{this interactive tutorial}. Once you have installed \strong{R} and \strong{RStudio} you can install \code{discovr}. The package is in development so you have to install it from github. To install the package execute (in \strong{RStudio}):\preformatted{install.packages("remotes") #if you don’t already have it installed
+library(remotes)
+install_github("profandyfield/discovr")
+}
+
+If you are trying to install on a networked computer the install might fail (it's to do install.packages not liking UNC paths, which I'm not even going to pretend to understand). The solution is to specify the location of your R library at the point of install. Most networks will map network locations to a drive name (for example, at my own University, users accounts are on the 'N' drive). Find the location of your R library (e.g., \code{N:/Documents/R/win-library/3.5}), possibly executing \code{.libPaths()} to help you, and specify this location using the \code{lib} argument:\preformatted{library(remotes)
+remotes::install_github("profandyfield/discovr", lib = "N:/Documents/R/win-library/3.5")
+}
+}
+
+\section{Running a tutorial}{
+
+
+To run a particular tutorial execute:\preformatted{library(discovr)
+learnr::run_tutorial("name_of_tutorial", package = "discovr")
+}
+
+and replace "name of tutorial" with the name of the tutorial you want to run. For example, to run tutorial 2 execute:\preformatted{learnr::run_tutorial("discovr_02", package = "discovr")
+}
+
+The name of each tutorial is in bold in the list above. Once the command to run the tutorial is executed it will spring to life in a web browser.
+}
+
+\section{Suggested workflow}{
+
+
+The tutorials are self-contained (you practice code in code boxes) so you don't need to use RStudio at the same time. However, to get the most from them I would recommend that you open two RStudio sessions (i.e. two RStudio windows running simultaneously). Use one RStudio session to run the tutorial. You won't then be able to use this RStudio window (because its resources are allocated to the tutorial). In the second RStudio session try replicating what you learn in the tutorial. That is, open a new script file and everything you do in the tutorial, practice in the script file (and save it). This workflow has the advantage of not just teaching you the code that you need to do certain things, but also provides practice in using RStudio itself.
 }
 
 \section{References}{

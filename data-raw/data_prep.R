@@ -66,20 +66,24 @@ ice_bucket <-  file.path("..", "..", "data", "dsu_spss_data", "dsus_development_
 upload_day <- numeric()
 for(i in 1:nrow(ice_bucket)){
   if(is.na(ice_bucket$YTVids[i]) == FALSE & ice_bucket$YTVids[i] > 0 & ice_bucket$YTVids[i] < 205){
-  temp <- rep(ice_bucket$Days[i], ice_bucket$YTVids[i])
+  temp <- rep(ice_bucket$Days[i], ice_bucket$YTVids[i]*1000)
   upload_day <- c(upload_day, temp)
   }
 }
 
 ice_bucket <- tibble::tibble(.rows = length(upload_day)) %>%
   dplyr::mutate(
-    upload_day = upload_day
-  )
+    upload_day = upload_day,
+    order = rnorm(length(upload_day))
+  ) %>%
+  dplyr::arrange(order) %>%
+  dplyr::select(-order) %>%
+  dplyr::filter(is.na(upload_day) == FALSE)
 
 here::here("data-raw/ice_bucket.csv") %>%
   readr::write_csv(ice_bucket, path = .)
 
-usethis::use_data(ice_bucket)
+usethis::use_data(ice_bucket, overwrite = TRUE)
 
 ######
 # Exam anxiety

@@ -11,7 +11,7 @@ bibliography: discovr_01.bib
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-	echo = FALSE,
+	echo = TRUE,
 	message = FALSE,
 	warning = FALSE
 )
@@ -49,7 +49,7 @@ The conversation that you have with R consists of you typing instructions, then 
 
 A simple ‘conversation’ with R is made up of commands that follow the common structure shown in Figure 1.
 
-```
+```{r, eval=FALSE}
 object <- instructions
 ```
 
@@ -60,7 +60,7 @@ Which you can read as object is created from instructions. In the middle of each
 
 For example, the first command in Figure 1:
 
-```
+```{r, eval=FALSE}
 metallica <- c("Lars","James","Jason", "Kirk")
 ```
 
@@ -82,7 +82,7 @@ metallica <- c("Lars","James","Jason", "Kirk")
 
 You should find that nothing happened, which will be disconcerting. That's because we told R to create the object *metallica* but not to show it to us. So, the object *metallica* has been created and stored in R’s memory and we can refer back to it, use it to do other things, change it, and view it. To view it we execute its name. So, let's try the exercise above but now ask to see the object *metallica* that we have created by executing:
 
-```
+```{r, eval=FALSE}
 metallica <- c("Lars","James","Jason", "Kirk")
 metallica
 ```
@@ -134,7 +134,7 @@ learnr::quiz(
 
 Try to think of a function as activating a dialog box and arguments as setting options within that dialog box. Let’s take a simple function `mean()`, which (no surprises here) calculates the mean (or average) of a set of scores. This function takes the general form:
 
-```
+```{r, eval=FALSE}
 mean(variable_name, na.rm = FALSE, trim = 0)
 ```
 
@@ -146,13 +146,13 @@ The function takes three arguments:
 
 Don't worry too much about understanding what the arguments do for now, we'll come back to this function in a later tutorial. Figure 2 maps this process of setting arguments within functions to ticking check boxes in a dialog box. In this imaginary statistics software, we have selected a menu called ‘mean’ that opens the dialog box in the figure. This action is comparable to typing `mean()`: it activates the function, but if we were to click *OK* nothing would happen because we haven’t told the computer which variable to compute the mean on. Imagine I've dragged the variable **songs_written** to the space labelled *Variable:*. Having selected the variable, two options are available: the first determines what we do with missing values, and the second determines how much we trim the scores. Each option or ‘argument’ has a tick box. Having specified a variable, we could click on *OK* and we’d get some output because the options/arguments have default values (Figure 2 left): the tick box for removing missing values is unchecked, which is the same as typing `na.rm = FALSE` into the function, and the checkbox for trimming the mean is unchecked which is the same as typing `trim = 0` into the function. In other words it would be like executing:
 
-```
+```{r, eval=FALSE}
 mean(songs_written)
 ```
 
 We don’t need to write `na.rm = FALSE, trim = 0` explicitly within the function because these are the defaults values that the function will use. However, we could change these defaults by changing these arguments. Going back to our imaginary dialog box, the right side of Figure 2 shows that same variable is selected (**songs_written**), but this time the user has selected the option for removing missing values, which equates to typing `na.rm = TRUE` into the function. The user has also selected to trim means and type in a value of 5 to set the amount of trim, which is equivalent to typing `trim = 5` into the function. Now, when we click on *OK* the mean will be calculated having trimmed 5% of scores from either side and excluding missing values. This process is equivalent to executing:
 
-```
+```{r, eval=FALSE}
 mean(songs_written, na.rm = TRUE, trim = 5)
 ```
 
@@ -162,29 +162,32 @@ mean(songs_written, na.rm = TRUE, trim = 5)
 
 When you load a package (see [this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-installing-and-loading-packages)) into your session you are loading in a collection of new functions that you can use in R.  You can refer to a function directly, to use a general example:
 
-```
+```{r, eval=FALSE}
 function()
 ```
 
 or you can include a reference to the package from which the function came, in general:
 
-```
+```{r, eval=FALSE}
 package::function()
 ```
 
 For example, you can use the `ggplot()` function from the **ggplot2** package within a command by executing either of these:
 
-```
+```{r, eval=FALSE}
 ggplot()
 ggplot2::ggplot()
 ```
 
 Although many people don’t include the package name, it is good style to include it when you refer to a function because you will occasionally stumble across two functions in two different packages that have the same name. For example, there is a `recode()` function in both the **Hmisc** and **car** packages. If you have both packages loaded and you try to use `recode()`, R won’t know which one to use or will guess incorrectly and throw an error. If you always specify the package as well as the function then R (and everyone else) will know which function you're using. For example, if we want to use the recode function in the car package we would use:
-```
+
+```{r, eval=FALSE}
 car::recode()
 ```
+
 but to use the one in Hmisc we would use:
-```
+
+```{r, eval=FALSE}
 Hmisc::recode()
 ```
 
@@ -260,13 +263,13 @@ The tidyverse approach to R makes use of something called the pipe operator (`%>
 
 As the name suggests, the pipe operator involves thinking of any command as a ‘pipe’ through which instructions flow from left to right. To take a really simple example, in the [introduction to R and RStudio](http://milton-the-cat.rocks/learnr/r/r_getting_started/) tutorial, we used the `here::here()` function to create a path to a file that we wanted to open with the function `readr::read_csv()`. The command we used was:
 
-```
+```{r, eval=FALSE}
 my_data <- readr::read_csv(here::here("data/metallica.csv"))
 ```
 
 We can pipe this command to make it clearer:
 
-```
+```{r, eval=FALSE}
 my_data <- here::here("data/metallica.csv") %>% readr::read_csv(.)
 ```
 
@@ -317,13 +320,13 @@ tribble(
 
 We created a character variable (also called a string variable) when we entered the names of the members of metallica. To recap, we used the `c()` function to ‘collect’ together values. Each value (known as a character string) is separated by commas and placed in straight quotes so that R knows that it is text:
 
-```
+```{r, eval=FALSE}
 metallica <- c("Lars","James","Jason", "Kirk")
 ```
 
 Extending this idea, we can enter the names in Table 1 and store these in an object cal;led `name` by exectuting:
 
-```
+```{r, eval=FALSE}
 name <- c("Lars Ulrich", "James Hetfield", "Kirk Hammett", "Rob Trujillo", "Jason Newsted", "Cliff Burton", "Dave Mustaine")
 ```
 
@@ -342,7 +345,7 @@ name
 ###	Double or integer variables
 
 We have two numeric variables in Table 1: the number of Metallica songs written by each member, and their net worth. A variable that contain numbers is called a numeric variable. By default, R stores numbers as double precision floating point numbers (double), which basically means it includes decimal places, but you can force R to store them as whole numbers (integer). Other things being equal storing numbers as doubles makes sense. To create a numeric variable, type the numeric values into the `c()` function in the order you want them. For example, to create the variables **songs_written** and **net_worth** we would execute:
-```
+```{r, eval=FALSE}
 songs_written <-  c(111, 112, 56, 16, 3, 11, 6)
 net_worth <- c(300000000, 300000000, 200000000, 20000000, 40000000, 1000000, 20000000)
 ```
@@ -368,7 +371,7 @@ The second column of Table 1 contains dates. To create a date variable we do muc
 
 One function for converting character strings to dates is `ymd()`. The letters ‘ymd’ stand for ‘year’, ‘month’ and ‘day’ which expects the dates to be entered with the year first, then the month, then the day. To create a variable using lubridate you'd execute something like:
 
-```
+```{r, eval=FALSE}
 variable <- c("date 1", " date 2"," date 3", etc.) %>% lubridate::ymd()
 ```
 
@@ -379,7 +382,7 @@ To create the variable called **birth_date** containing the dates of birth in Ta
 * Make sure that `library(tidyverse)` is included in the setup code chunk of our markdown file
 * Type the following into a code chunk and execute:
 
-```
+```{r, eval=FALSE}
 birth_date <- c("1963-12-26", "1963-08-03", "1962-11-18", "1964-10-23", "1963-03-04", "1962-02-10", "1961-09-13") %>% lubridate::ymd()
 ```
 
@@ -400,7 +403,7 @@ birth_date
 
 Although as researchers we strive to collect complete sets of data, it is often the case that we have missing data. We denote missing values with `NA` (in capital letters), which stands for ‘not available’. Many functions in R have arguments to specify how you handle missing values so if you have missing values remember to set a value for these arguments.
 The dates of the member’s deaths are included in Table 1. At the time of writing all but one of the members are alive (Cliff Burton was tragically killed in a tour bus accident), so we (thankfully) have a lot of missing values. We enter these values as `NA` (not in quotes). Therefore, to create a variable called **death_date** containing the dates in Table 1 we execute (notice the use of the pipe, %>%, again):
-```
+```{r, eval=FALSE}
 death_date <- c(NA, NA, NA, NA, NA, "1986-09-27", NA) %>% lubridate::ymd()
 ```
 
@@ -420,7 +423,7 @@ death_date
 ### logical variables
 
 Table 1 contains a logical variable, which is one that contains values of true and false. In this case true and false relate to whether the member is currently in the band. Logical variables are created much the same as integers and doubles except that you enter TRUE and FALSE instead of numbers into the `c()` function. For example, to create the variable **current_member** we would execute:
-```
+```{r, eval=FALSE}
 current_member <- c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
 ```
 
@@ -444,7 +447,7 @@ When it comes to what instrument is played the codes can be somewhat arbitrary; 
 There are several ways to create factors in R. The first is to enter numeric values and then convert these values to a factor using the `factor()` function, the second is to enter the text and convert it to a factor using the `as_factor()` function from the forcats package (which is part of tidyverse). We’ll use each in turn.
 
 We want to enter the values Drums, Guitar, Guitar, Bass, Bass, Bass, Guitar. Using the coding I suggest above that means entering the numbers 2, 0, 0, 1, 1, 1, 0:
-```
+```{r, eval=FALSE}
 instrument <- c(2, 0, 0, 1, 1, 1, 0)
 ```
 To turn these values into a factor, we use the `factor()` function, which takes the general form:
@@ -458,13 +461,13 @@ This function looks a bit scary, but it’s not too bad really. Let’s break it
 *	`labels = c("label_1", "label_2", … "label_3")`: The final step is to assign labels to these levels. Again, we use `c()` to collect the labels that we wish to assign. You must list these labels in the same order as your numeric levels, and you must provide a label for each level. In our case, 0 corresponds to Guitar, 1 to Bass, and 2 to drums  so the argument would be `labels = c("Guitar", "Bass", "Drums")`.
 
 Putting all of this together we could execute:
-```
+```{r, eval=FALSE}
 instrument <- c(2, 0, 0, 1, 1, 1, 0) %>% factor(instrument, levels = 0:2, labels = c("Guitar", "Bass", "Drums"))
 ```
 
 and then to 'see' the variable, exceute
 
-```
+```{r, eval=FALSE}
 instrument
 ```
 
@@ -489,7 +492,7 @@ instrument
 ```
 
 The tidyverse method is slightly different. First, we create a character variable and then use the `forcats::as_factor()` function to convert it. For example, we could execute:
-```
+```{r, eval=FALSE}
 instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>%
 forcats::as_factor()
 ```
@@ -508,26 +511,26 @@ instrument
 
 If we don’t want this order we can use the `forcats::fct_relevel()` function to change the order. For example, to order the levels as we did before we would execute:
 
-```
+```{r, eval=FALSE}
 instrument <- instrument %>% forcats::fct_relevel("Guitar", "Bass", "Drums")
 ```
 
 Or we could have incorporated this command to the original command using the pipe:
 
-```
+```{r, eval=FALSE}
 instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>% forcats::as_factor() %>% forcats::fct_relevel("Guitar", "Bass", "Drums")
 ```
 
 Try executing
 
-```
+```{r, eval=FALSE}
 instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>% forcats::as_factor()
 instrument
 ```
 
 and then
 
-```
+```{r, eval=FALSE}
 instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>% forcats::as_factor() %>% forcats::fct_relevel("Guitar", "Bass", "Drums")
 instrument
 ```
@@ -567,7 +570,7 @@ levels(instrument)
 ##	Tibbles
 
 We have looked at how to create variables, but what if we want to combine these variables into a tabulated data set. The tidyverse way to do this is using something called a **tibble**. To create a tibble we use the `tibble::tibble()` function, and inpout into it the names of the variables we have created:
-```
+```{r, eval=FALSE}
 metalli_tib <- tibble::tibble(name, birth_date, death_date, instrument, current_member, songs_written, net_worth)
 ```
 This command creates an object called `metalli_tib` (I tend to use `_tib` to denote a tibble) that contains all of the variables we have created in columns. You view tibbles by executing its name. The contents of the tibble will be printed within the R markdown document itself below the code chunk. By default the first 10 rows will be displayed and as many columns as the width of the pane allows. The display is interactive so you can navigate across columns or down beyond the first 10 rows.
@@ -598,17 +601,17 @@ metalli_tib
 
 From viewing the tibble, you can see that it collects together the objects called **name**, **birth_date**, **death_date**, **instrument**, **current_member**, **songs_written**, and **net_worth** into columns. When we created these variables we consistently entered the data in the order of Lars, James, Kirk, Rob, Jason, Cliff and Dave, therefore, each row represents the data for each member. For example, we can see that Lars plays drums and has a song writing credit on 111 songs. The whole thing looks like Table 1.
  
-###	Creating new variables within a tibble
+###	Creating new variables within a tibble with `dplyr::mutate()`
 
 We can create new variables within a tibble using the `mutate()` function from the `dplyr` (which is part of tidyverse) package. This function takes the general form:
-```
+```{r, eval=FALSE}
 dplyr::mutate(tibble_name,
 variable_name_1 = data_for_variable,
 variable_name_2 = data_for_variable
 )
 ```
 In other words, we pass into the function the name of the tibble to which we want to add variables, followed by one or more commands that name the variables that we want to create and include the data for those variables or instructions to create that data (more on this later). We can also pipe a tibble into the function rather than specifying the tibble within the function itself:
-```
+```{r, eval=FALSE}
 tibble_name %>%
 dplyr::mutate(
 variable_name_1 = data_for_variable,
@@ -616,11 +619,11 @@ variable_name_2 = data_for_variable
 )
 ```
 
-Two things to note. First, variables are created using an equal sign (`=)`, not the assignment operator (`<-`). Second, every line within the mutate() function ends with a comma except for the last. When R sees a comma it expects to see another command, so the lack of comma after the last command tells R that it is the last command.
+Two things to note. First, variables are created using an equal sign (`=`), not the assignment operator (`<-`). Second, every line within the `mutate()` function ends with a comma except for the last. When R sees a comma it expects to see another command, so the lack of comma after the last command tells R that it is the last command.
 
 Imagine that having created metalli_tib we decide that we’d like to include information about how many of their 10 studio albums of original songs each member played on. The data are 10 (Lars), 10 (James), 10 (Kirk), 2 (Rob), 4 (Jason), 3 (Cliff), 0 (Dave). We can create a variable called albums like this
 
-```
+```{r, eval=FALSE}
 metalli_tib <- metalli_tib %>% 
   dplyr::mutate(
     	albums = c(10, 10, 10, 2, 4, 3, 0)
@@ -655,7 +658,7 @@ metalli_tib
 ```
 
 We can also compute variables from existing variables. Let’s imagine we now wanted to work out how much money per song contributed each band member made. We know how many songs each member contributed to (**songs_written**) and their net worth (**net_worth**) so their ‘worth per song’ will be their net worth divided by the number of songs written. We can create a variable that takes the values for net_worth and divides them by the corresponding value of **songs_written** using one of the arithmetic operators build into R. Amongst other things, we can add, subtract, multiply and divide using `+`, `-`, `*` and `\` respectively. So, let’s use `/` to create a new variable that we’ll call **worth_per_song** that is **net_worth** divided by **songs_written**. We can again use `mutate()` to add this variable to our tibble:
-```
+```{r, eval=FALSE}
 metalli_tib <- metalli_tib %>% 
   dplyr::mutate(
     	worth_per_song = net_worth/songs_written
@@ -679,30 +682,30 @@ metalli_tib
 ### Selecting variables
 
 Sometimes we might want to subset tibbles to focus on specific variables or cases of data. First we’ll look at selecting variables. The most extreme case would to look at or retain only at a single variable. To select variables from within a tibble we use the `select()` function from the `dplyr` package (which is loaded as part of tidyverse). The function takes this general form:
-```
+```{r, eval=FALSE}
 dplyr::select(tibble_name, list of variables)
 ```
 
 Within the function you insert the name of the tibble and a list of the variable or variables that you want to retain. For example, to select the variables **name** and **instrument** we could execute:
-```
+```{r, eval=FALSE}
 dplyr::select(metalli_tib, name, instrument)
 ```
 
 Better still, we could use a pipe (`%>%`) that takes the tibble and feeds it into the function:
-```
+```{r, eval=FALSE}
 metalli_tib %>% 
   dplyr::select(name, instrument)
 ```
  
 You can also use the `dplyr::select()` function to drop variables from a tibble by placing a minus sign in front of the variable. For example, to show every variable *except* **name** we’d execute:
-```
+```{r, eval=FALSE}
 metalli_tib %>% 
   dplyr::select(-name)
 ```
 This command displays the tibble but *without* the column containing the band member’s names.
 
 To remove multiple variables, we can place them within `c()`,remembering to place the minus sign outside of the function so that it applies to everything within it:
-```
+```{r, eval=FALSE}
 metalli_tib %>% 
   dplyr::select(-c(name, instrument))
 ```
@@ -710,7 +713,7 @@ metalli_tib %>%
 This command will display the tibble but *without* the columns containing the band member’s names and instruments.
 
 Sometimes we’d like to store the subset of variables within a new object for future use. To do this you would need to assign the commands that subset the tibble to an object, using the assignment operator (`<-`). For example, to save a version of metalli_tib but without the band member’s names into an object called `metalli_anon_tib`, we’d execute:
-```
+```{r, eval=FALSE}
 metalli_anon_tib <- metalli_tib %>% 
   dplyr::select(-name)
 ```
@@ -737,24 +740,38 @@ metalli_anon_tib <- metalli_tib %>%
 metalli_anon_tib
 ```
 
+Sometimes, when you want to select only one variable from a tibble it is quicker to use the `$` symbol. For example, to select the variable `instrument` from the `metalli_tib` tibble, we could execute:
+
+`metalli_tib$instrument`
+
+which you can read as 'the variable `instrument` within the tibble `metalli_tib`'. Try this out below:
+
+```{r met_select_base, exercise=TRUE, exercise.setup = "met_setup"}
+
+```
+
+```{r met_select_base-solution}
+# Selecting the variable instrument from the metalli_tib tibble
+metalli_tib$instrument
+```
 
 ###	Selecting cases (filtering tibbles)
 
 Sometimes we want to select cases rather than (or as well as) variables. For example, maybe we want to work with only the current members of Metallica. To do this, we’d need to select rows of the tibble on the basis of whether the variable **current_member** was true. To filter rows of a tibble you use the `filter()` function from `dplyr`. Like the `select()` function in the previous section, you feed in the name of the tibble and some instructions about how to filter:
-```
+```{r, eval=FALSE}
 dplyr::filter(tibble_name, statement_about_how_to_filter)
 ```
 Or using a pipe:
-```
+```{r, eval=FALSE}
 tibble_name %>%
 dplyr::filter(statement_about_how_to_filter)
 ```
 For example, to select the rows that represent current band members, we need to filter the rows where the variable **current_member** is was equal to TRUE. We could do this by executing:
-```
+```{r, eval=FALSE}
 dplyr::filter(metalli_tib, current_member == TRUE)
 ```
 or, better still, using a pipe:
-```
+```{r, eval=FALSE}
 metalli_tib %>% 
 dplyr::filter(current_member == TRUE)
 ```
@@ -771,7 +788,7 @@ dplyr::filter(current_member == TRUE)
 ```
 
 Note that we use `==` to mean `equal to`. We can also use `!=` to mean 'not equal to. We can also use `<` to mean `less than` and `>` to mean `more than`. For example, if we wanted to return the rows of members who had written more than 50 songs, we could execute:
-```
+```{r, eval=FALSE}
 metalli_tib %>% 
 dplyr::filter(songs_written > 50)
 ```
@@ -779,7 +796,7 @@ dplyr::filter(songs_written > 50)
 This command returns the data for Lars, James and Kirk, who are the only members to have contributed to the writing of more than 50 songs.
 
 We can also combine conditions to select rows of a tibble. First, we can ask for rows that match both of two conditions by using the `&` operator. For example, if we want the members of metallica who play drums and have written more than 50 songs, we could combine the condition `songs_written > 50` with the condition of `instrument == "Drums"`. By using `&` we require both conditions to be true. The value of **songs_written** must be greater than 50 AND the value of instrument must be equal to ‘Drums’. To filter `metalli_tib` according to the above conditions, we can insert those condition into the `filter()` function that we have just learnt:
-```
+```{r, eval=FALSE}
 metalli_tib %>% 
 dplyr::filter(songs_written > 50 & instrument == "Drums")
 ```
@@ -797,7 +814,7 @@ dplyr::filter(songs_written > 50 & instrument == "Drums")
 
 We can also use the OR operator (`|`) to select cases based on whether one of many conditions is met. For example, let’s say we want to isolate the rhythm section, we need to include cases that either play drums or bass. We can achieve this with a statement such as:
 `instrument == "Drums" | instrument == "Bass"`. The `|` denotes 'or', so this command would read as ‘the value of the variable instrument is equal to the word ‘Drums’ OR the value of the variable instrument is equal to the phrase ‘Bass’. Again, we’d insert this statement into the `filter()` function.
-```
+```{r, eval=FALSE}
 metalli_tib %>% 
 dplyr::filter(instrument == "Drums" | instrument == "Bass")
 ```
@@ -820,20 +837,20 @@ We can combine what we have learnt in the previous sections to select variables 
 2. We want to exclude all of the variables except for net worth.
 
 Let’s first select the cases we want. We can do this in several ways, but one is to set a condition that the variable **current_member** is TRUE (this will give us Lars, James, Kirk and Rob) and a second condition that instrument is not equal (`!=`) to ‘Bass’, which will exclude Rob. This condition would be written as `current_member == TRUE & instrument != "Bass"`. We could place this command into the `filter()` function:
-```
+```{r, eval=FALSE}
 metalli_worth <- metalli_tib %>% 
 dplyr::filter(current_member == TRUE & instrument != "Bass")
 ```
 
 This command creates an object called **metalli_worth** that contains the rows of *metalli_tib* that meet the conditions that the variable **current_member** is equal to TRUE and the variable **instrument** is NOT equal to (`!=`) the phrase "Bass". Having created this object, we could re-create it from itself but passed through the `select()` function to select only the variables called **name** and **net_worth**:
-```
+```{r, eval=FALSE}
 metalli_worth <- metalli_worth %>% 
 dplyr::select(name, net_worth)
 ```
 Notice that by executing this command we overwrite the original object `metalli_worth` with a new version that contains only the variables **name** and **net_worth**.
 
 The method just described is inefficient (but helpful for showing you the explicit steps that we want to take). A more efficient way to do achieve the same goal is to do both operations as part of the same pipe:
-```
+```{r, eval=FALSE}
 metalli_worth <- metalli_tib %>% 
   dplyr::filter(current_member == TRUE & instrument != "Bass") %>% 
   dplyr::select(name, net_worth)

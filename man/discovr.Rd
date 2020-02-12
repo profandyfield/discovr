@@ -36,6 +36,8 @@ See the book or data descriptions for more details. This is a list of available 
 \item \strong{ice_bucket}: Data from the file \emph{ice_bucket.csv}. For more information execute \code{?ice_bucket}
 \item \strong{invisibility_cloak}: Data from the file \emph{invisibility.csv}. For more information execute \code{?invisibility_cloak}
 \item \strong{invisibility_rm}: Data from the file \emph{invisibility_rm.csv}. For more information execute \code{?invisibility_rm}
+\item \strong{grammar}: Data from the file \emph{social_media.csv}. For more information execute \code{?grammar}
+\item \strong{hiccups}: Data from the file \emph{hiccups.csv}. For more information execute \code{?hiccups}
 \item \strong{jiminy_cricket}: Data from the file \emph{jiminy_cricket.csv}. For more information execute \code{?jiminy_cricket}
 \item \strong{johns_2012}: Data from the file \emph{johns_2012.csv}. For more information execute \code{?johns_2012}
 \item \strong{metallica}: Data from the file \emph{metallica.csv}. For more information execute \code{?metallica}
@@ -43,6 +45,7 @@ See the book or data descriptions for more details. This is a list of available 
 \item \strong{ong_2011}: Data from the file \emph{ong_2011.csv}. For more information execute \code{?ong_2011}
 \item \strong{ong_tidy}: Data from the file \emph{ong_tidy.csv}. For more information execute \code{?ong_tidy}
 \item \strong{shopping}: Data from the file \emph{shopping_exercise.csv}. For more information execute \code{?shopping}
+\item \strong{student}: Data from the file \emph{student.csv}. For more information execute \code{?student}
 \item \strong{tea15}: Data from the file \emph{tea_makes_you_brainy_15.csv}. For more information execute \code{?tea15}
 \item \strong{teaching}: Data from the file \emph{method_of_teaching.csv}. For more information execute \code{?teaching}
 \item \strong{zhang_sample}: Data from the file \emph{zhang_2013_subsample.csv}. For more information execute \code{?zhang_sample}

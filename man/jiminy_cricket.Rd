@@ -4,7 +4,7 @@
 \name{jiminy_cricket}
 \alias{jiminy_cricket}
 \title{Jiminy Cricket data}
-\format{A tibble with 250 rows and 4 variables.}
+\format{A tibble with 500 rows and 4 variables.}
 \source{
 \url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
 }
@@ -26,8 +26,8 @@ The data contains the following variables:
 \itemize{
 \item \strong{id}: participant id
 \item \strong{strategy}: whether the person was allocated to the 'hard work' or 'wish upon a star' intervention
-\item \strong{success_pre}: the person's success from 0 (complete failure) to 100 (complete success) before the intervention using my dodgy composite measure.
-\item \strong{success_post}: the person's success from 0 (complete failure) to 100 (complete success) after 5 years of the intervention (again using my dodgy composite measure).
+\item \strong{time}: whether the measure of success was taken before the intervention (pre-intervention) aor after it (post-intervention)
+\item \strong{success}: the person's success from 0 (complete failure) to 100 (complete success) using my dodgy composite measure.
 }
 }
 \keyword{datasets}

@@ -23,9 +23,6 @@ This was based on strapping a pedometer on a mere 10 participants. Although I do
 \item \strong{sex}: biological sex of the individual
 \item \strong{distance}: the distance travelled in miles
 \item \strong{time}: the time spent shopping in minutes
-\item \strong{sex}: Biological sex of the individual
-\item \strong{distance}: The distance travelled in miles
-\item \strong{time}: The time spent shopping in minutes
 }
 }
 \keyword{datasets}

@@ -21,7 +21,6 @@ knitr::opts_chunk$set(
 ```{r setup, results="hide"}
 # Make sure to load these packages
 
-library(discovr)
 library(lubridate)
 library(tidyverse)
 ```
@@ -147,7 +146,7 @@ You use `![Image caption (optional)](path to image)` to insert images. For examp
 
 `![Figure 1: I love my spaniel](andy_milton.png)` knits as:
 
-![Figure 1: I love my spaniel](andy_milton.png)
+![Figure 1: I love my spaniel](../data-raw/images/andy_milton.png)
 
 ### Tables
 

@@ -19,32 +19,36 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(discovr)
-<<<<<<< HEAD
 library(tidyverse)
-=======
->>>>>>> 6a2adff7e9b12384dc4c29f43d98f870f6b23049
+library(GGally)
 ```
 
 ## Usage
 
-This file contains code relevant to chapter 1 of *Discovering Statistics Using R and RStudio* by [Andy Field](https://www.discoveringstatistics.com/). These files contain abridged sections from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/), ^[Basically you can use this material for teaching and non-profit activities but do not meddle with it or claim it as your own work.]
-<<<<<<< HEAD
+This file contains code relevant to chapter 5 of *Discovering Statistics Using R and RStudio* by [Andy Field](https://www.discoveringstatistics.com/). These files contain abridged sections from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/), ^[Basically you can use this material for teaching and non-profit activities but do not meddle with it or claim it as your own work.]
 
 ## Load the data
 
-Remember to load the package with `library(discovr)`. After which you can load data files by executing`data(name_of_data)`. For example, to load the data stored in `ong_tidy` execute:
+Remember to load the package with `library(discovr)`. After which you can load data into a tibble by executing:
 
-`data(ong_tidy)`
+`name_of_tib <- discovr::name_of_data`
+
+For example, execute these lines to create the three tibbles referred to in the chapter:
+
 ```{r}
-data(ong_tidy)
+cat_tib <- discovr::catterplot
+exam_tib <- discovr::exam_anxiety
+grammar_tib <- discovr::grammar
+notebook_tib <- discovr::notebook
+hiccups_tib <- discovr::hiccups
+ong_tib <- discovr::ong_tidy
+wish_tib <- discovr::jiminy_cricket
 ```
 
 If you want to read the file from the CSV and you have set up your project folder as I suggest in Chapter 1, then the general format of the code you would use is:
 
 ```{r, eval = FALSE}
-
-tibble_name <- here::here("data/name_of_file.csv") %>%
+tibble_name <- here::here("../data/name_of_file.csv") %>%
   readr::read_csv() %>%
   dplyr::mutate(
     ...
@@ -53,28 +57,217 @@ tibble_name <- here::here("data/name_of_file.csv") %>%
   )
 ```
 
-In which you'd replace `tibble_name` with the name you want to assign to the tibble (to keep things consistent with the book, I'd use the filename, so if you load in `ong_tidy.csv` call the tibble `ong_tidy`). Also, change `name_of_file.csv` to the name of the file that you're trying to load. You can use mutate to convert categorical variables to factors. For example, for the `ong_tidy` data you would load it by executing:
+In which you'd replace `tibble_name` with the name you want to assign to the tibble and change `name_of_file.csv` to the name of the file that you're trying to load. You can use mutate to convert categorical variables to factors. For example, for the `notebook` data you would load it by executing:
 
 ```{r, eval = FALSE}
-ong_tidy <- here::here("data/ong_tidy.csv") %>%
+library(here)
+
+notebook_tib <- here::here("data/notebook.csv") %>%
   readr::read_csv() %>%
   dplyr::mutate(
-    id = forcats::as_factor(id),
     sex = forcats::as_factor(sex),
-    rating_type = forcats::as_factor(rating_type)
+    film = forcats::as_factor(film)
   )
 ```
 
-## A quick example
+
+## Histograms
 
 ```{r}
-ong_plot <- ggplot(ong_tidy, aes(narcissism, rating, colour = sex))
-ong_plot + 
-  geom_point()
-
-
+ggplot2::ggplot(wish_tib, aes(success)) +
+ geom_histogram(binwidth = 5, fill = "#56B4E9", colour = "#336c8b", alpha = 0.2) +
+ labs(y = "Frequency", x = "Success scores (0-100)", title = "Histogram of success scores") +
+ theme_minimal()
 ```
 
 
-=======
->>>>>>> 6a2adff7e9b12384dc4c29f43d98f870f6b23049
+```{r}
+ggplot2::ggplot(wish_tib, aes(success)) +
+ geom_histogram(binwidth = 5, fill = "#56B4E9", colour = "#336c8b", alpha = 0.2) +
+ labs(y = "Frequency", x = "Success scores (0-100)", title = "Histogram of success scores") +
+ facet_grid(strategy~time) +
+ theme_minimal()
+```
+
+## Frequency polygon
+
+```{r}
+ggplot2::ggplot(wish_tib, aes(success)) +
+ geom_freqpoly(binwidth = 5, colour = "#336c8b") +
+ labs(y = "Frequency", x = "Success scores (0-100)", title = "Histogram of success scores") +
+ facet_grid(strategy~time) +
+ theme_minimal()
+```
+
+## Boxplots
+
+```{r}
+ggplot2::ggplot(wish_tib, aes(time, success)) +
+  geom_boxplot(fill = "#5c97bf", alpha = 0.7) +
+  scale_y_continuous(breaks = seq(0, 100, 10)) +
+  labs(x = "Time", y = "Success (out of 100)") +
+  theme_minimal()
+```
+
+```{r}
+ggplot2::ggplot(wish_tib, aes(time, success)) +
+  geom_boxplot(fill = "#5c97bf", alpha = 0.7) +
+  scale_y_continuous(breaks = seq(0, 100, 10)) +
+  labs(x = "Time", y = "Success (out of 100)") +
+  facet_wrap(~ strategy) +
+  theme_minimal()
+```
+
+```{r}
+ggplot2::ggplot(wish_tib, aes(time, success, fill = strategy)) +
+  geom_boxplot(alpha = 0.7) +
+  scale_y_continuous(breaks = seq(0, 100, 10)) +
+  labs(x = "Time", y = "Success (out of 100)", fill = "Success strategy") +
+  theme_minimal()
+```
+
+## Plotting means
+
+```{r}
+note_mean  <- ggplot2::ggplot(notebook_tib, aes(film, arousal))
+note_mean +
+  stat_summary(fun.y = "mean", geom = "point", size = 3)+
+  coord_cartesian(ylim = c(0, 50)) +
+  scale_y_continuous(breaks = seq(0, 50, 5)) +
+  labs(x = "Type of film", y = "Arousal (out of 100)") +
+  theme_minimal()
+```
+
+`
+```{r}
+note_mean +
+  stat_summary(fun.data = "mean_cl_normal", geom = "pointrange") +
+  coord_cartesian(ylim = c(0, 50)) +
+  scale_y_continuous(breaks = seq(0, 50, 5)) +
+  labs(x = "Type of film", y = "Arousal (out of 100)") +
+  theme_minimal()
+```
+
+```{r}
+ggplot2::ggplot(notebook_tib, aes(film, arousal)) +
+  stat_summary(fun.data = "mean_cl_normal", geom = "pointrange") +
+  coord_cartesian(ylim = c(0, 50)) +
+  scale_y_continuous(breaks = seq(0, 50, 5)) +
+  labs(x = "Type of film", y = "Arousal (out of 100)") +
+  facet_wrap(~sex) +
+  theme_minimal()
+```
+
+```{r}
+ggplot2::ggplot(notebook_tib, aes(film, arousal, colour = sex)) +
+  stat_summary(fun.data = "mean_cl_normal", geom = "pointrange", position = position_dodge(width = 0.5)) +
+  coord_cartesian(ylim = c(0, 50)) +
+  scale_y_continuous(breaks = seq(0, 50, 5)) +
+  labs(x = "Type of film", y = "Arousal (out of 100)", colour = "Biological sex") +
+  theme_minimal()
+```
+
+## Violin plots
+
+```{r}
+ggplot2::ggplot(notebook_tib, aes(film, arousal, fill = sex)) +
+  geom_violin() +
+  stat_summary(fun.data = "mean_cl_normal", geom = "pointrange", position = position_dodge(width = 0.9)) +
+  labs(x = "Biological sex", y = "Arousal", fill = "Film watched") +
+  coord_cartesian(ylim = c(0, 50)) +
+  scale_y_continuous(breaks = seq(0, 50, 5)) +
+  theme_minimal()
+```
+
+```{r}
+ggplot2::ggplot(notebook_tib, aes(film, arousal, fill = sex)) +
+  geom_violin() +
+  geom_boxplot(width = 0.2, position = position_dodge(width = 0.9)) +
+  labs(x = "Biological sex", y = "Arousal", fill = "Film watched") +
+  coord_cartesian(ylim = c(0, 50)) +
+  scale_y_continuous(breaks = seq(0, 50, 5)) +
+  theme_minimal()
+```
+
+## Repeated measures
+
+```{r}
+hiccups_tib %>% 
+  dplyr::arrange(id)
+```
+
+```{r}
+ggplot2::ggplot(hiccups_tib, aes(intervention, hiccups)) +
+  stat_summary(fun.data = "mean_cl_normal", geom = "pointrange") +
+  labs(x = "Intervention", y = "Number of hiccups") +
+  coord_cartesian(ylim = c(0, 20)) +
+  scale_y_continuous(breaks = seq(0, 20, 5)) +
+  theme_minimal()
+```
+
+## Line plots and mixed designs
+
+```{r}
+grammar_tib %>% 
+  dplyr::arrange(id)
+```
+
+```{r}
+ggplot2::ggplot(grammar_tib, aes(time, grammar, colour = media_use)) +
+  stat_summary(fun.data = "mean_cl_normal", geom = "pointrange", position = position_dodge(width = 0.05)) +
+  stat_summary(fun.y = "mean", geom = "line", position = position_dodge(width = 0.05), aes(group = media_use)) +
+  labs(x = "Time", y = "Grammar score (%)", colour = "Media use") +
+  coord_cartesian(ylim = c(0, 75)) +
+  scale_y_continuous(breaks = seq(0, 75, 5)) +
+  theme_minimal()
+```
+
+
+## Scatterplots
+
+### Simple scatterplot
+
+```{r}
+ggplot(exam_tib, aes(anxiety, exam_grade)) +
+  geom_point() +
+  labs(x = "Exam anxiety", y = "Exam performance (%)") +
+  scale_y_continuous(breaks = seq(0, 100, 10)) +
+  scale_x_continuous(breaks = seq(0, 100, 10)) +
+  theme_minimal()
+```
+
+### Catterplots
+
+```{r}
+ggplot(cat_tib, aes(dinner_time, meow)) +
+  geom_point(colour = "#d35400", size = 2) +
+  scale_y_continuous(breaks = seq(0, 16, 2)) +
+  scale_x_continuous(breaks = seq(0, 24, 2)) +
+  labs(x = "Time since dinner (hours)", y = "Purr volume") +
+  theme_minimal()
+```
+
+### Grouped scatteplots
+
+```{r}
+ggplot(exam_tib, aes(anxiety, exam_grade, colour = sex))  +
+  geom_point() +
+  geom_smooth(method = "lm", aes(fill = sex), alpha = 0.1) +
+  labs(x = "Exam anxiety", y = "Exam performance (%)", colour = "Biological sex", fill = "Biological sex") +
+  coord_cartesian(ylim = c(0, 130)) +
+  scale_y_continuous(breaks = seq(0, 130, 10)) +
+  scale_x_continuous(breaks = seq(0, 100, 10)) +
+  theme_minimal()
+```
+
+### Matrix scatterplots
+
+```{r}
+GGally::ggpairs(ong_tib, columns = c("rating", "extraversion", "narcissism"))
+```
+
+```{r}
+GGally::ggpairs(ong_tib, columns = c("rating", "extraversion", "narcissism"), mapping = aes(colour = rating_type, alpha = 0.1)) + theme_minimal()
+```
+
+

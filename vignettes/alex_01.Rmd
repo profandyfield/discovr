@@ -19,10 +19,10 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, echo = FALSE}
-library(discovr)
+
 ```
 
-![](dsus_smart_alex_banner.png)
+![](../data-raw/images/dsus_smart_alex_banner.png)
 
 This document may contain abridged sections from *Discovering Statistics Using R and RStudio* by [Andy Field](https://www.discoveringstatistics.com/) so there are some copyright considerations, but the material is offered under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Basically you can use this material for teaching and non-profit activities but please do not meddle with it or claim it as your own work.
 
@@ -86,7 +86,7 @@ tibble(.rows = 20) %>%
 ```
 
 
-The data can be found in the file [method_of_teaching.csv](./data/r_data/method_of_teaching.csv).
+The data can be found in `discovr::teaching`.
 
 ##  Task 1.4
 
@@ -111,7 +111,7 @@ oxoby_tib %>%
   readr::write_csv(., here::here("data/oxoby_2008.csv)
 ```
 
-The data can be found in the file [oxoby_2008.csv](./data/r_data/oxoby_2008.csv)
+The data can be found in `discovr::acdc`
 
 ##  Task 1.5
 
@@ -132,7 +132,7 @@ tibble(.rows = 10) %>%
   readr::write_csv(., here::here("data/shopping_exercise.csv"))
 ```
 
-The data can be found in the file [shopping_exercise.csv](./data/r_data/shopping_exercise.csv)
+The data can be found in `discovr::shopping`.
 
 
 ##  Task 1.6
@@ -154,7 +154,7 @@ tibble(.rows = 20) %>%
   readr::write_csv(., here::here("data/goat_or_dog.csv"))
 ```
 
-The data can be found in the file [goat_or_dog.csv](./data/r_data/goat_or_dog.csv).
+The data can be found in `discovr::animal_bride`.
 
 ##  Task 1.7
 
@@ -174,7 +174,7 @@ tibble(.rows = 15) %>%
   readr::write_csv(., here::here("data/tea_makes_you_brainy_15.csv"))
 ```
 
-The data can be found in the file [tea_makes_you_brainy_15.csv](./data/r_data/tea_makes_you_brainy_15.csv).
+The data can be found in `discovr::tea15`.
 
 ##  Task 1.8
 
@@ -182,7 +182,7 @@ The data can be found in the file [tea_makes_you_brainy_15.csv](./data/r_data/te
 
 The design of this study is such that different people were put in one of three different conditions (female fake name, male fake name, own name), but the groups are not equal. In the female fake name group there were 10 females but only 7 males, in the fake male name there were 10 females and 9 males, and in the own name condition 7 females and 9 males. With a bit of adding we can see that there were 27 females in total, and 25 males. We're going to have to use a lot of `rep()` statements and keep our wits about us!
 
-We have three variables: whether the participant was male or female (**sex**), which booklet condition they were in (**name_type**) and their test score (**accuracy**). I've also included a participant **id**, just so that your data matches the file [zhang_2013_subsample.csv](./data/r_data/zhang_2013_subsample.csv) that I provide for you. We can enter the data as follows (there are other ways too ...):
+We have three variables: whether the participant was male or female (**sex**), which booklet condition they were in (**name_type**) and their test score (**accuracy**). I've also included a participant **id**, just so that your data matches the file *zhang_2013_subsample.csv* that I provide for you. We can enter the data as follows (there are other ways too ...):
 
 ```{r 1_8, echo = TRUE, eval = FALSE}
 library(tidyverse) #if you haven't already executed this command
@@ -197,6 +197,8 @@ tibble(.rows = 52) %>%
     	) %>% 
   readr::write_csv(., here::here("data/zhang_2013_subsample.csv"))
 ```
+
+The data are in `discovr::zhang_sample`.
 
 ##  Task 1.9
 

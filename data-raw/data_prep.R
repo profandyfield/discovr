@@ -57,6 +57,20 @@ animal_bride <- tibble(.rows = 20) %>%
 
 usethis::use_data(animal_bride)
 
+#########
+
+# Catterplot
+
+catterplot <- get_spss("catterplot.sav") %>%
+  dplyr::rename_all(tolower) %>%
+  dplyr::rename(dinner_time = dinnertime)
+
+here::here("data-raw/catterplot.csv") %>%
+  readr::write_csv(catterplot, path = .)
+
+usethis::use_data(catterplot, overwrite = TRUE)
+
+
 ######
 # Ice bucket challenge
 
@@ -88,22 +102,51 @@ usethis::use_data(ice_bucket, overwrite = TRUE)
 ######
 # Exam anxiety
 
-  get_spss_dev("exam_anxiety.sav") %>%
+exam_anxiety <- get_spss("exam_anxiety.sav") %>%
   dplyr::rename_all(tolower) %>%
   dplyr::rename(id = code, exam_grade = exam) %>%
   dplyr::mutate(
     id = forcats::as_factor(id),
-    sex = forcats::as_factor(sex),
+    sex = forcats::as_factor(sex)
   )
 
 here::here("data-raw/exam_anxiety.csv") %>%
   readr::write_csv(exam_anxiety, path = .)
 
-usethis::use_data(exam_anxiety)
+usethis::use_data(exam_anxiety, overwrite = TRUE)
+########
+# Grammar and social media
+
+grammar <- get_spss("social_media.sav") %>%
+  dplyr::mutate(
+    id = get_ids(length = nrow(.)),
+    media_use = forcats::as_factor(Social_media_use)
+  ) %>%
+  dplyr::select(-Social_media_use) %>%
+  tidyr::gather(key = "time", value = "grammar", -c(id, media_use)) %>%
+  dplyr::mutate(
+    time = if_else(time == "Baseline", "Baseline", "6 months") %>% forcats::as_factor()
+  )
+
+here::here("data-raw/social_media.csv") %>%
+  readr::write_csv(grammar, path = .)
+
+usethis::use_data(grammar, overwrite = TRUE)
 
 #########
 
+# Hiccups
 
+hiccups <- get_spss("hiccups.sav") %>%
+  dplyr::mutate(id = get_ids(length = nrow(.))) %>%
+  tidyr::gather(key = "intervention", value = "hiccups", -id)
+
+here::here("data-raw/hiccups.csv") %>%
+  readr::write_csv(hiccups, path = .)
+
+usethis::use_data(hiccups, overwrite = TRUE)
+
+#########
 # Invisibility
 
 invisibility_cloak <- tibble::tibble(.rows = 24) %>%
@@ -118,6 +161,7 @@ here::here("data-raw/invisibility.csv") %>%
 
 usethis::use_data(invisibility_cloak)
 
+#########
 # Invisibility RM
 
 new_id <- rep(invisibility_cloak$id[1:12], 2)
@@ -134,31 +178,49 @@ here::here("data-raw/invisibility_rm.csv") %>%
 usethis::use_data(invisibility_rm)
 
 
+#########
 # Jiminy cricket
 
 jiminy_cricket <- get_spss("jiminy_cricket.sav") %>%
   dplyr::rename_all(tolower) %>%
   dplyr::mutate(
-    strategy = forcats::as_factor(strategy) %>%  tolower() %>% sub("(\\w)", "\\U\\1", perl = TRUE, .)
+    strategy = forcats::as_factor(strategy) %>%  tolower() %>% sub("(\\w)", "\\U\\1", perl = TRUE, .),
+  ) %>%
+  tidyr::gather(key = "time", value = "success", -c(id, strategy)) %>%
+  dplyr::mutate(
+    time = ifelse(time == "success_pre", "Baseline", "5 years later")
   )
 
 here::here("data-raw/jiminy_cricket.csv") %>%
   readr::write_csv(jiminy_cricket, path = .)
 
-usethis::use_data(jiminy_cricket)
-
-
-
-# Johns et al. (2012)
-
-johns_2012 <- get_data("johns_2012.csv") %>%
-  dplyr::rename_all(list(tolower)) %>%
+jiminy_cricket <- get_data("jiminy_cricket.csv") %>%
   dplyr::mutate(
-    partners = forcats::as_factor(partners)
+    strategy = forcats::as_factor(strategy),
+    time = forcats::as_factor(time) %>% forcats::fct_relevel(., "Baseline")
   )
 
-usethis::use_data(johns_2012)
+usethis::use_data(jiminy_cricket, overwrite = TRUE)
 
+#########
+# Johns et al. (2012)
+
+johns_2012 <- get_spss("johns_et_al._(2012).sav") %>%
+  dplyr::mutate(
+    id = get_ids(length = nrow(.)),
+    partners = forcats::as_factor(Partners)
+    ) %>%
+  dplyr::select(-Partners) %>%
+  tidyr::gather(key = "colour", value = "attractiveness", -c(id, partners)) %>%
+  dplyr::mutate(
+    colour = stringr::str_replace(colour, "Pink", " pink")
+  )
+
+here::here("data-raw/johns_2012.csv") %>%
+  readr::write_csv(johns_2012, path = .)
+
+usethis::use_data(johns_2012, overwrite = TRUE)
+#####
 # Metallica
 
 metallica <- tibble(.rows = 7) %>%
@@ -219,7 +281,7 @@ ong_2011 <- get_data("data_dev/ong_2011.csv") %>%
   ) %>%
   dplyr::mutate(
     id = forcats::as_factor(id),
-    sex = forcats::as_factor(sex)
+    sex = forcats::as_factor(sex) %>% dplyr::recode(M = "Male", F = "Female")
   )
 
 ong_tidy <- ong_2011 %>%
@@ -257,6 +319,21 @@ shopping <- get_data("shopping_exercise.csv") %>%
   )
 
 usethis::use_data(shopping)
+
+#########
+# Students and lecturers
+
+students <- get_spss("data_with_which_to_play.sav") %>%
+  dplyr::rename_all(tolower) %>%
+  dplyr::mutate(
+    group = forcats::as_factor(group),
+  )
+
+here::here("data-raw/students.csv") %>%
+  readr::write_csv(students, path = .)
+
+usethis::use_data(students, overwrite = TRUE)
+
 
 # Tea 15
 

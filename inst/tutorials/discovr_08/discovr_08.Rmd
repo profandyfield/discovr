@@ -1,0 +1,753 @@
+---
+title: "discovr: the GLM"
+author: "Andy Field"
+output:
+  learnr::tutorial:
+    progressive: false
+    theme: "paper"
+runtime: shiny_prerendered
+description: "The general linear model (GLM). Visualizing the data, fitting GLMs with one and two predictors. Viewing model parameters with broom, model parameters, standard errors, confidence intervals, fit statistics, significance."
+bibliography: discovr_08.bib
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+
+library(learnr)
+library(tidyverse)
+
+library(broom)
+library(GGally)
+library(parameters)
+
+hint_text <- function(text, text_color = "#E69F00"){
+  hint <- paste("<font color='", text_color, "'>", text, "</font>", sep = "")
+  return(hint)
+}
+
+#Read dat files needed for the tutorial
+
+album_tib <- discovr::album_sales
+soc_anx_tib <- discovr::social_anxiety
+metal_tib <- discovr::metal_health
+```
+
+
+# discovr: the General Linear Model (GLM)
+
+## Overview
+
+This tutorial is one of a series that accompanies [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/) [@fieldDiscoveringStatisticsUsing2020] by me, [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). These tutorials contain abridged sections from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/), ^[Basically you can use this tutorial for teaching and non-profit activities but do not meddle with it or claim it as your own work.]
+
+* Who is the tutorial aimed at?
+    - Anyone teaching from or reading [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)  may find them useful.
+* What is covered?
+    - This tutorial looks at some key concepts in using **R** and **RStudio**. It would be a useful tutorial to run at the start of a module, or alongside teaching based on Chapter 1 of [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/).
+    - This tutorial *does not* teach the background theory: it is assumed you have either attended my lecture or read the relevant chapter in the aforementioned book (or someone else's)
+
+If you haven't done so already, I recommend working through [this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/) on how to install, set up and work within R and RStudio before starting this tutorial.
+
+## Packages and data
+
+The tutorials are self-contained (you practice code in code boxes) so you don’t need to use RStudio at the same time. However, I recommend that you open another RStudio session to the one that you're using to run this tutorial. In this second RStudio session, open an R markdown file and practice everything you do in the tutorial in the R markdown file (and save it). This video explains the sort of workflow that I mean:
+
+![]("https://youtu.be/FE0ntX0dyc4")
+
+`r hint_text("Within the tutorial itself, everything will work. To replicate things outside of the tutorial you will need to load the relevant packages and data.")`
+
+### Packages
+
+To work *outside of this tutorial* you need to load the following packages:
+
+* `broom` [@robinsonBroomConvertStatistical2019]
+* `GGally` [@Schloerke_Crowley_Cook_Briatte_Marbach_Thoen_Elberg_Larmarange_2018]
+* `here` [@here]
+* `lm.beta` [@behrendtLmBetaAdd2014]
+* `tidyverse` [@tidyverse]
+
+
+If you haven't already done this, install a package at the command line using `install.packages("package_name")`, where *package_name* is the name of the package. If the package has already been installed, load it by typing `library(package_name)`, where *package_name* is the name of the package, within the first code chunk in your R markdown file.
+
+### Data
+
+To work *outside of this tutorial* you need to download the following data files:
+
+* [album_sales.csv](http://www.discoveringstatistics.com/repository/discovr_data/album_sales.csv)
+* [metal_health.csv](http://www.discoveringstatistics.com/repository/discovr_data/metal_health.csv)
+* [social_anxiety.csv](http://www.discoveringstatistics.com/repository/discovr_data/social_anxiety.csv)
+
+Assuming you set up an RStudio project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), then save the data files to the folder within your project folder called `data`. Then, in the first code chunk in your R Markdown document, execute:
+
+```{r, eval=FALSE}
+album_tib <- here::here("data/album_sales.csv") %>% readr::read_csv()
+soc_anx_tib <- here::here("data/social_anxiety.csv") %>% readr::read_csv()
+metal_tib <- here::here("data/metal_health.csv")  %>% readr::read_csv()
+```
+
+
+## The linear model process
+
+Figure 1 shows a general procedure to follow when computing a bivariate correlation coefficient. First, check for sources of bias as outlined. The two most important ones in this context are linearity and normality. Remember that we’re fitting linear model to the data, so if the relationship between variables is not linear then this model is invalid. To meet this requirement, the outcome variable needs to be measured at the interval or ratio level as does the predictor variable (one exception is that a predictor variable can be a categorical variable with only two categories). As far as normality is concerned, we care about this only if we want confidence intervals or significance tests and if the sample size is small.
+
+If the data have outliers, are not normal implying a non-normal sampling distribution (and the sample is small) or your variables are measured at the ordinal level then you can use Spearman’s rho or Kendall’s tau, which are versions of the correlation coefficient applied to ranked data. Ranking the data reduces the impact of outliers but we lose information so, we can instead fit a robust variant such as the percentile bend correlation or Winsorized correlation. Furthermore, given that normality of the sampling distribution matters only for inferring significance and computing confidence intervals in small samples, we could use a bootstrap to compute the confidence interval in small samples, then we don’t need to worry about this assumption.
+
+![Figure 1: The general process for fitting a linear model (regression)](./images/dsr2_fig_08_12_glm_process.png)
+ 
+## The example
+
+This tutorial follows the example from [@fieldDiscoveringStatisticsUsing2020] that looks at predicting physical, downloaded and streamed album sales (outcome variable) from various predictor variables. The data are in the file [album_sales.sav](./www/album_sales.sav). This data file has 200 rows, each one representing a different album. There are also several columns, one of which contains the sales (in thousands) of each album in the week after release (**sales**) and one containing the amount (in thousands of pounds/dollars/euro/whatever currency you use) spent promoting the album before release (**adverts**). The other columns represent how many times songs from the album were played on a prominent national radio station in the week before release (**airplay**), and the 'look' of the band out of 10 (**image**). The data are in a tibble called `album_tib`. Use the code box to look at the data.
+
+```{r album_data, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r album_data-solution}
+album_tib
+```
+
+Note how the data are laid out: each variable is in a column and each row represents a different album. So, the first album had £10,260 spent advertising it, sold 330,000 copies, received 43 plays on radio the week before release, and was made by a band with a pretty sick image (10 out of 10!).
+
+## Visualizing the data
+
+We can visualise the data easily using the `GGally` package. When you want to plot continuous variables, the `ggscatmat()` function from this package produces a matrix of scatterplots (below the diagonal), distributions (along the diagonal) and the correlation coefficient (above the diagonal). It takes the general form:
+
+```{r, eval = FALSE}
+GGally::ggscatmat(my_tibble, columns = c("variable 1", " variable 2", " variable 3" …))
+```
+
+Basically, you feed in the name of the tibble containing the variables, and use the columns argument to name the variables that you want to plot. For example, to plot all o fthe variables:
+
+```{r, eval = FALSE}
+GGally::ggscatmat(album_tib, columns = c("adverts", "airplay", "image", "sales"))
+```
+
+It’s as simple as that! Like other plots we have done, we can also apply a theme (I like `theme_minimal()`) in the usual way:
+
+```{r, eval = FALSE}
+GGally::ggscatmat(album_tib, columns = c("adverts", "airplay", "image", "sales")) +
+  theme_minimal()
+```
+
+Try this in the code box:
+
+`r hint_text("It’s a good idea to list the outcome variable last because it means that this variable is always plotted on the y-axis (which is appropriate for an outcome) and the plots of each predictor against the outcome variable will be along the bottom row of the grid.")`
+
+```{r album_plot, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r album_plot-solution}
+GGally::ggscatmat(album_tib, columns = c("adverts", "airplay", "image", "sales")) +
+  theme_minimal()
+```
+
+Although the data are messy, the three predictors have reasonably linear relationships with the album sales and there are no obvious outliers (except maybe in the bottom left of the scatterplot with band image). Across the diagonal, we see the distributions of scores. Advertising is very skewed and airplay and sales look quite heavy-tailed.
+
+We can use the correlations in the plot to get a sense of the relationships between predictors and the outcome. If we look only at the predictors (ignore album sales) then the highest correlation is between the ratings of the band’s image and the amount of airplay which is significant at the 0.01 level (r = 0.18). Focussing on the outcome variable, of all of the predictors, adverts and airplay correlate best with the outcome (rs = 0.58 and 0.6 respectively).
+
+## One predictor
+### Fitting the model
+
+To begin with we will predict sales from advertising alone. The model we're fitting is described by the following equation:
+
+$$
+\begin{aligned}
+Y_i & = b_0 + b_1X_i+ \epsilon_i\\
+\text{Sales}_i & = b_0 + b_1\text{Advertising}_i+ \epsilon_i
+\end{aligned}
+$$
+
+It should be clear from the earlier plot (look at the scatterplot in the bottom left corner) and correlation that a positive relationship exists: the more money spent advertising an album, the more it is likely to sell. Of course there are some albums that sell well regardless of advertising (top left of scatterplot), but there are none that sell badly when advertising levels are high (bottom right of scatterplot).
+
+To fit a linear model in R we use the `lm()` function. This function takes the general form:
+
+```{r, eval = FALSE}
+my_model <- lm(outcome ~ predictor(s), data = tibble, na.action = an action)
+```
+
+In which `my_model` is whatever name you choose to give to the model, `outcome` is the name of the outcome variable (in our example **sales**), and `predictor` is the name of the predictor variable (in our example **adverts**) or, as we shall see, is a list of variables separated by ‘+’ symbols. We can also specify a way to handle missing values and `tibble` is the name of the tibble containing the data (in our example `album_tib`).
+
+The observant among you might notice that within the function we write a formula that specifies the model that we want to estimate. This formula maps directly to the equation for the model. In this example `adverts ~ sales` maps onto $\text{Sales}_i = b_0 + b_1\text{Advertising}_i+ \epsilon_i$ except that we ignore the error term ($\epsilon_i$) and parameter estimates ($b$s) and we replace the equals sign with a tilde (~), which you can think of meaning ‘predicted from’.
+
+We can, therefore, fit the model with
+
+```{r, eval = FALSE}
+album_lm <- lm(sales ~ adverts, data = album_tib, na.action = na.exclude)
+```
+
+In fact, because there are no missing data in the data the `na.action = na.exclude` is optional. We now have an object called `album_lm` that has the model stored, and we can extract information from it.
+
+`r hint_text("I tend to name linear models with the suffix _lm but you don’t have to share my obsession with using suffixes that tell me what the object contains")`
+
+Try this in the code box below. Note nothing much happens. That's because the model has been created and stored, but we haven't asked R to show it to us. We'll look at how to inspect the model next.
+
+```{r fit_album, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r fit_album-solution}
+album_lm <- lm(sales ~ adverts, data = album_tib, na.action = na.exclude)
+```
+
+
+###	Extracting model information with `summary()` and `broom` 
+
+There are different ways to inspect the model we have just fitted. The bread and butter way is to use the `summary()` function, into which we place the name of model that we just created (`album_lm`):
+
+```{r, eval = FALSE}
+summary(album_lm)
+```
+
+Try this in the code box
+
+```{r album_lm_setup}
+album_lm <- lm(sales ~ adverts, data = album_tib, na.action = na.exclude)
+album_full_lm <- lm(sales ~ adverts + airplay + image, data = album_tib, na.action = na.exclude)
+```
+
+```{r album_lm_sum, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
+
+```
+
+```{r album_lm_sum-solution}
+summary(album_lm)
+```
+
+Looks pretty horrible doesn't it? This is where the `broom` package comes in handy. This package has functions that extract the key information from models, place this information in a tibble, and print them in a nice table. It has two main functions:
+
+* The `glance()` function extracts the overall model fit statistics.
+* The `tidy()` function extracts the model parameters.
+
+For both functions you simply place the model name into the function.
+
+### Overall model fit
+
+To get overall model fit statistics execute:
+
+```{r, eval = FALSE}
+broom::glance(album_lm)
+```
+
+Try this in the code box
+
+```{r album_lm_glance, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
+
+```
+
+```{r album_lm_glance-solution}
+broom::glance(album_lm)
+```
+
+The first summary table provides the value of *R* and $R^2$ for the model (labelled **r.squared**).
+
+```{r quiz_r2_ex1, echo = FALSE}
+quiz(
+  question(sprintf("What does the value of $R^2$ in the table tell us?"),
+    answer("33.5% of the variation in album sales cannot be accounted for by advertising expenditure"),
+    answer("Advertising expenditure accounts for 0.335% of the variation in album sales", message = sprintf("You need to multiply $R^2$ by 100 to convert it to a percentage")),
+    answer("Advertising expenditure accounts for 33.5% of the variation in album sales", correct = TRUE),
+    answer("Advertising expenditure and album sales have a correlation of 0.335", message = sprintf("With one predictor in the model (as is the case here) this would be true of *R* not $R^2$")),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  )
+)
+```
+
+It also reports an *F*-statistic (labelled **statistic**) and its *p*-value (labelled (**p.value**). Output 8.9 shows the results of this comparison. Note that the value of *F* is 99.58 and the value in column labelled **p.value** is `2.94198e-19`. I explain this notation a bit later, for now trust me that it means 2.94 with the decimal place moved 19 places to the left, or a very small value indeed. The degrees of freedom for this *F* are 2 (as shown in the variable **df**) and 198 (as shown in the variable **res.d**). Therefore, we can say that adding the predictor of **advertising** significantly improved the fit of the model to the data compared to having no predictors in the model, F(2, 198) = 99.58, p < .001. In other words, adding advertising as a predictor significantly improved the model fit.
+
+### Model parameters
+
+To see the model parameters we can use `broom::tidy()`, which takes the general form
+```{r, eval = FALSE}
+broom::tidy(model_name, conf.int = FALSE, conf.level = 0.95)
+```
+
+Basically, we put the model name into the function, then there are two main optional arguments. By default, the output does not include confidence intervals, so if you want them (hint: you do!) you’d override the default of `conf.int = FALSE` by changing it to `conf.int = TRUE`. By default you’ll get 95% confidence intervals, which you can override by setting `conf.level` to a different value from the default of 0.95 (e.g., `conf.level = 0.99` will give you 99% confidence intervals). You usually would leave the confidence level at 95%. To get the model parameters with 95% confidence intervals we could, therefore, execute:
+
+```{r, eval = FALSE}
+broom::tidy(album_lm, conf.int = TRUE)
+```
+
+Try this in the code box:
+
+```{r album_lm_tidy, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
+
+```
+
+```{r album_lm_tidy-solution}
+broom::tidy(album_lm, conf.int = TRUE)
+```
+
+The output provides estimates of the model parameters (the *b*-values) and the significance of these values. The *Y* intercept ($b_0$) is 134.14. This value can be interpreted as meaning that when no money is spent on advertising (when *X* = 0), the model predicts that 134,140 albums will be sold (remember that our unit of measurement is thousands of albums). The value of $b_1$ is 0.096. This value represents the change in the outcome associated with a unit change in the predictor. In other words, if our predictor variable is increased by one unit (if the advertising budget is increased by 1), then our model predicts that 0.096 extra albums will be sold. Our units of measurement were thousands of pounds and thousands of albums sold, so we can say that for an increase in advertising of £1000 the model predicts 96 (0.096 × 1000 = 96) extra album sales. This investment is pretty useless for the record company: it invests £1000 and gets only 96 extra sales! Fortunately, as we already know, advertising accounts for only one-third of the variance in album sales.
+
+If a predictor is having a significant impact on our ability to predict the outcome then its *b* should be different from 0 (and large relative to its standard error). The *t*-test (labelled **statistic**) and associated *p*-value tell us whether the *b*-value is significantly different from 0. The column **p.value** contains the exact probability that a value of *t* at least as big as the one in the table would occur if the value of *b* in the population were zero. If this probability is less than 0.05, then people interpret that as the predictor being a ‘significant’ predictor of the outcome. For both *t*s, the probabilities are given in scientific notation. For example for the effect of adverts the *p* is `2.91e-19`. This notation can seem confusing, but `e-x` is  shorthand for $\times 10^{-x}$ and `e+x` is  shorthand for $\times 10^{x}$. Here's two specific examples:
+
+* `2.91e-19` means $2.91 \times 10^{-19}$, which in plain English means 'move the decimal place 19 places to the *left*. In other words, this number is 0.000000000000000000291. A very small number.
+* `2.91e+19` means $2.91 \times 10^{19}$, which in plain English means 'move the decimal place 19 places to the *right*. In other words, this number is 29100000000000000000. A very large number.
+
+With respect the values in the column **p.value**, it means that both values are zero to 3 decimal places (0.000), and so the probability of the *t* values (or larger) occurring if the values of *b* in the population were zero is less than 0.001. In other words, the *b*s are significantly different from 0. In the case of the *b* for advertising budget this result means that the advertising budget makes a significant contribution (*p* < 0.001) to predicting album sales.
+
+If our sample is one of the 95% producing confidence intervals that contain the population value then the confidence interval tells us that the population value of b for advertising budget is likely to fall between 0.077 and 0.115 and because this interval doesn’t include zero we might conclude that there is a genuine positive relationship between advertising budget and album sales in the population.
+
+### Exploring the standard error of *b* (optional)
+
+This video shows a demonstration that may help you to get a better understanding of what the standard error and sampling distribution of a model parameter *b*-value represents.
+
+![Demonstration of sampling, the standard error and sampling distributions](https://youtu.be/3L9ZMdzJyyI)
+
+```{r quiz_se, echo = FALSE}
+quiz(
+  question("If a *b*-value has a large standard error what can we conclude?",
+    answer("That estimates of *b* vary widely across different samples. (Therefore, this estimate *could* be very different from the population value.)", correct = T),
+    answer("That estimates of *b* vary little across different samples. (Therefore, this estimate is likley to be very similar to the population value.)", message = "This describes a *small* standard error"),
+    answer("The sampling distribution of *b* is narrow.", message = "This describes a *small* standard error."),
+    answer("The estimate of *b* in our sample is bigger than most other samples.", message = "We have no way of knowing this."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+    )
+)
+```
+
+### Confidence intervals for *b*
+
+```{r echo = FALSE}
+album_lm <- lm(sales ~ adverts, data = album_tib, na.action = na.exclude)
+broom::tidy(album_lm, conf.int = TRUE)
+```
+
+A bit of revision. Imagine that we collected 100 samples of data measuring the same variables as our current model. For each sample we estimate the same model that we have in this chapter, including confidence intervals for the unstandardized beta values. These boundaries are constructed such that in 95% of samples they contain the population value of *b*. Therefore, 95 of our 100 samples will yield confidence intervals for b that contain the population value. The trouble is that we don’t know if our sample is one of the 95% with confidence intervals containing the population values or one of the 5% that misses.
+
+The typical pragmatic solution to this problem is to assume that your sample is one of the 95% that hits the population value. If you assume this, then you can reasonably interpret the confidence interval as providing information about the population value of *b*. A narrow confidence interval suggests that all samples would yield estimates of *b* that are fairly close to the population value, whereas wide intervals suggest a lot of uncertainty about what the population value of *b* might be. If the interval contains zero then it suggests that the population value of *b* might be zero – in other words, no relationship between that predictor and the outcome—and could be positive but might be negative. All of these statements are reasonable if you’re prepared to believe that your sample is one of the 95% for which the intervals contain the population value. Your belief will be wrong 5% of the time, though.
+
+Looking at the 95% confidence interval for advertising (reproduced above), if our sample is one of the 95% producing confidence intervals that contain the population value then the confidence interval tells us that the population value of *b* for advertising budget is likely to fall between 0.077 and 0.115 and because this interval doesn’t include zero we might conclude that there is a genuine positive relationship between advertising budget and album sales in the population.
+
+### Using the model	
+
+Let's use the model to make some predictions. First, replace the *b*-values with the values from the output:
+
+$$
+\begin{aligned}
+\text{Sales}_i & = b_0 + b_1\text{Advertising}_i+ \epsilon_i \\
+\text{Sales}_i & = 134.14 + (0.096\times\text{Advertising}_i)+ \epsilon_i \\
+\end{aligned}
+$$
+
+It is now possible to make a prediction about album sales, by replacing the advertising budget with a value of interest. For example, imagine a recording company executive wanted to spend £100,000 on advertising a new album. Remembering that our units are already in thousands of pounds, we can simply replace the advertising budget with 100. He would discover that album sales should be around 144,000 for the first week of sales:
+
+$$
+\begin{aligned}
+\text{Sales}_i & = 134.14 + (0.096\times \text{Advertising}_i)+ \epsilon_i \\
+\text{Sales}_i & = 134.14 + (0.096\times \text{100})+ \epsilon_i \\
+&= 143.74
+\end{aligned}
+$$
+
+## Several predictors
+
+Let's extend the model to include airplay and the band's image as additional predictors. The executive has past research indicating that advertising budget is a significant predictor of album sales, and so the new predictors (airplay and attract) should be entered into the model *after* advertising budget. This method is *hierarchical* (the researcher decides in which order to enter variables into the model based on past research). The model we're fitting is described by the following equation:
+
+$$
+\begin{aligned}
+Y_i & = b_0 + b_1X_{1i}+ b_2X_{2i} + \ldots + b_nX_{ni} + \epsilon_i\\
+\text{Sales}_i & = b_0 + b_1\text{Advertising}_i+ b_2\text{Airplay}_i + b_3\text{Image}_i + \epsilon_i
+\end{aligned}
+$$
+
+### Building the model
+
+We already have fitted a model predicting sales from advertising that is stored in `album_lm`. We’re now going to create a second model that builds upon this model by adding airplay and image as predictors. In other words, we’re building the model in the equation above.
+
+To create this second model, we need to specify additional predictor variables in the same way that we add predictors to the equation itself: we use ‘+’ to add them into the model. So we change the formula within `lm()` from `sales ~ adverts` to `sales ~ adverts + airplay + image`. Note that the formula we use within `lm()` maps directly to the equation for the model but excludes the bs and the error term. Therefore, we can create this model by executing:
+
+```{r, eval = FALSE}
+album_full_lm <- lm(sales ~ adverts + airplay + image, data = album_tib, na.action = na.exclude)
+```
+
+Because we have no missing data the `na.action = na.exclude` is optional. This code creates a model in which sales is predicted from advertising, airplay and the band’s image and stores it in an object called `album_full_lm`. Try this in the code box:
+
+```{r full_album, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r full_album-solution}
+album_full_lm <- lm(sales ~ adverts + airplay + image, data = album_tib, na.action = na.exclude)
+```
+
+Note again that nothing seems to have happened, but actually the model has been created and stored. Next we need to extractinformation from it.
+
+### Fit statistics
+
+As with our earlier model, we can obtain the (nicely formatted) fit statistics by placing the name of our model into glance():
+
+```{r, eval = FALSE}
+broom::glance(album_full_lm)
+```
+
+Try this in the code box:
+
+```{r album_full_lm_glance, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
+
+```
+
+```{r album_full_lm_glance-solution}
+broom::glance(album_full_lm)
+```
+
+As before, the variable **r.square** tells us the value of $R^2$. Remember that for the first model its value was 0.335, which we interpreted as advertising budget accounting for 33.5% of the variation in album sales. When the two new predictors are included, this value increases to 0.665 or 66.5% of the variance in album sales. If advertising accounts for 33.5%, then the change in $R^2$ is $R^2_\text{change} = 0.665 - 0.335 = 0.33$. In other words, image and airplay account for an additional 33% of the variance in sales.
+
+The adjusted $R^2$ (adj.r.squared) gives us some idea of how well our model generalizes and ideally we’d like its value to be the same as, or very close to, the value of $R^2$. In this example the difference for the final model is small (it is 0.665 − 0.660 = 0.005 or about 0.5%). This shrinkage means that if the model were derived from the population rather than a sample we’d conclude that it accounted for approximately 0.5% less variance in the outcome.
+
+```{r quiz_anova_ex1, echo = FALSE}
+quiz(
+  question(sprintf("How might we interpret the **statistic** and **p.value** in the table (assume $\\alpha = 0.05$)?"),
+    answer("The linear model accounts for a significant amount of the variance in album sales", correct = T, message = "Because the *p*-value associated with *F* is less than 0.05 most people would conclude that the model makes a significant improvement to predicting album sales."),
+    answer("The linear model is a poor fit of the data", message = "Because the *p*-value associated with *F* is less than 0.05 most people would conclude that the model was a *significant* fit of the data"),
+    answer("The error in the model is greater than the variance in album sales that it explains", message = sprintf("The *F*-statistic is $\\frac{\\text{MS}_\\text{model}}{\\text{MS}_\\text{residual}}$ so if this statement were true *F* would be less than 1 and *p* would be greater than 0.05.")),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  )
+)
+```
+
+The variable **statistic** contains the *F*-statistic. The *F*-statistic represents the ratio of the improvement in prediction that results from fitting the model, relative to the inaccuracy that still exists in the model. The variable **p.value** contains the *p*-value associated with *F*, which in this case is $2.88 \times 10^{-46}$, in other words a lot smaller than 0.001. The degrees of freedom for the *F*-statistic are (in terms of these variables) **df**−1 and **df.residual**, so we could report *F*(3, 196) = 129.50, *p* < .001. We can interpret this result as meaning that the model significantly improves our ability to predict the outcome variable compared to not fitting the model.
+
+### Comparing models
+
+We can compare hierarchical models using an *F*-statistic using the `anova()` function, which takes the general form:
+
+```{r, eval = FALSE}
+anova(model_1, model_2, … , model_n)
+```
+
+Basically, within the function we list the models that we want to compare in the order in which we want to compare them. To compare the models album_lm and album_full_lm we could execute this code to get text output:
+
+```{r, eval = FALSE}
+anova(album_lm, album_full_lm)
+```
+
+or use broom to tidy the output into a table for us:
+
+```{r, eval = FALSE}
+anova(album_lm, album_full_lm) %>% 
+  broom::tidy()
+```
+
+Try this in the code box below.
+
+`r hint_text("We can only compare hierarchical models, in other words, that is to say that the second model must contain everything that was in the first model plus something new, and the third model must contain everything in the second model plus something new, and so on")`
+
+```{r model_compare, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
+
+```
+
+```{r model_compare-solution}
+anova(album_lm, album_full_lm) %>% 
+  broom::tidy()
+```
+
+The value of *F* is 96.45 (**statistic**) and the corresponding *p* (**p.value**) is `6.88e-30` (i.e., $6.88 \times 10^{-30}$). The degrees of freedom for this *F* are the difference in the degrees of freedom between the two models (in this case 2 as shown in the variable **df**) and the degrees of freedom for the newer model (in this case 196 as shown in the variable **res.df**). Therefore, we can say that adding the predictors of image and airplay (`album_full_lm`) significantly improved the fit of the model to the data compared to having only advertising as a predictor (`album_lm`), *F*(2, 196) = 96.45, *p* < .001. In other words, adding airplay and image as predictors significantly improved the model fit.
+
+### Model parameters (*b*)
+
+As with our earlier model, we can obtain the parameter estimates and their confidence intervals as text by executing `summary(album_full_lm)` but it's better to use `broom::tidy()` to get a nicely formatted table:
+  
+```{r, eval = FALSE}
+broom::tidy(album_full_lm, conf.int = TRUE)
+```
+
+Try this in the code box:
+
+```{r album_lm_full_tidy, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
+
+```
+
+```{r album_lm_full_tidy-solution}
+broom::tidy(album_full_lm, conf.int = TRUE)
+```
+  
+The output gives us estimates for the *b*-values (column labelled **estimate**) and statistics that indicate the individual contribution of each predictor to the model. The *b*-values can be used to interpret the relationship between album sales and each predictor. All three predictors have positive *b*-values indicating positive relationships. So, as advertising budget increases, album sales increase; as plays on the radio increase, so do album sales; and finally more attractive bands will sell more albums. The *b*-values tell us more than this, though. They tell us to what degree each predictor affects the outcome if the effects of all other predictors are held constant.
+
+```{r quiz_b_raw, echo = FALSE}
+quiz(
+  question("How would we interpret the *b* (11.086) for band image?",
+    answer("If a band can increase their image rating by 1 unit they can expect additional album sales of 11,086 units", correct = T, message = "Although the *b* is 11.086 the units were *thousands* of albums, which is why this answer is correct."),
+    answer("If a band can increase their image rating by 1 unit they can expect additional album sales of 11.086 units", message = "This is nearly correct but remember that sales were measured in *thousands* of units"),
+    answer("A band rated one standard deviation higher on the image scale can expect additional album sales of 11.086 standard deviations", message = "This describes the *standardized* B, not the *unstandardized"),
+    answer("Band image explains 11.086% of the variance in album sales", message = sprintf("This would be what $R^2$ tells us")),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  )
+)
+
+```
+
+We've looked at the band's image, but for the other two predictors:
+
+* Advertising budget: *b* = 0.085 indicates that as advertising budget increases by one unit, album sales increase by 0.085 units. Both variables were measured in thousands; therefore, for every £1000 more spent on advertising, an extra 0.085 thousand albums (85 albums) are sold. This interpretation is true only if the effects of band image and airplay are held constant.
+* Airplay: *b* = 3.367 indicates that as the number of plays on radio in the week before release increases by one, album sales increase by 3.367 units. Every additional play of a song on radio (in the week before release) is associated with an extra 3.367 thousand albums (3367 albums) being sold. This interpretation is true only if the effects of the band’s image and advertising budget are held constant.
+
+### Standardized *b*s
+
+The `lm()` function does not produce standardized betas but you can get them using the `lm.beta()` function from the **lm.beta** package. Once you have loaded this package, you simply place your model name into it, for example:
+
+```{r, eval = FALSE}
+lm.beta::lm.beta(album_full_lm)
+```
+
+Try this in the code box:
+
+`r hint_text("It is possible to print the standardized betas within the main output itself, but I don’t advise it because it can create conflicts with other things in R")`
+
+```{r album_lm_b, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
+
+```
+
+```{r album_lm_b-solution}
+lm.beta::lm.beta(album_full_lm)
+```
+
+
+```{r quiz_b_std, echo = FALSE}
+quiz(
+  question("How would we interpret the *Standardized B* (0.512) for airplay?",
+    answer("As the number of plays on radio in the week before release increases by 1 standard deviation, album sales increase by 0.512 standard deviations", correct = T),
+    answer("As the number of plays on radio in the week before release increases by 0.512 standard deviation, album sales increase by 1 standard deviations", message = "Close but you have the variables thew rong way around!"),
+    answer("As the number of plays on radio in the week before release increases by 1 unit, album sales increase by 0.512 units", message = "This describes the *unstandardized* B, not the *standardized"),
+    answer("The correlation between airplay and album sales is 0.512", message = "This would be true if airplay were the only predictor, but because there are other predictors in the model this is not the case."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+    )
+)
+```
+
+
+Let's summarize the values for the remaining predictors:
+
+* Advertising budget: Standardized $\beta$ = 0.511 indicates that as advertising budget increases by one standard deviation (£485,655), album sales increase by 0.511 standard deviations. The standard deviation for album sales is 80,699, so this constitutes a change of 41,240 sales (0.511 × 80,699). Therefore, for every £485,655 more spent on advertising, an extra 41,240 albums are sold. This interpretation is true only if the effects of the band’s image and airplay are held constant.
+* Image: Standardized $\beta$ = 0.192 indicates that a band rated one standard deviation (1.40 units) higher on the image scale can expect additional album sales of 0.192 standard deviations units. This is a change of 15,490 sales (0.192 × 80,699). A band with an image rating 1.40 higher than another band can expect 15,490 additional sales. This interpretation is true only if the effects of airplay and advertising are held constant.
+
+### Confidence intervals
+
+```{r echo = FALSE}
+album_full_lm <- lm(sales ~ adverts + airplay + image, data = album_tib, na.action = na.exclude)
+broom::tidy(album_full_lm, conf.int = TRUE)
+```
+
+
+```{r quiz_ci_ex1, echo = FALSE}
+quiz(
+  question(sprintf("The confidence interval for airplay ranges from 2.82 to 3.92. What does this tell us?"),
+    answer("If this confidence interval is one of the 95% that contains the population value then the population value of *b* lies between 2.82 and 3.92.", correct = TRUE),
+    answer("There is a 95% chance that the population value of *b* lies between 2.82 and 3.92", message = "You cannot make probability statements from a confidence interval. We don't know whether this particular CI is one of the 95% that contains the population value of *b*."),
+    answer("The probability of this confidence interval containing the population value is 0.95.", message = "The probability of this confidence interval containing the population value is either 0 (it doesn't) or 1 (it does) but it's impossible to know which."),
+    answer("I can be 95% confident that the population value of *b* lies between 2.82 and 3.92", message = "Confidence intervals do not quantify your subjective confidence."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  )
+)
+
+```
+
+The quiz told you about the confidence interval for airplay, for the remaining predictors the confidence intervals tell us that **assuming that each confidence interval is one of the 95% that contains the population parameter**:
+
+* The true size of the relationship between advertising budget and album sales lies somewhere between 0.071 and 0.099.
+* The true size of the relationship between band image and album sales lies somewhere between 6.28 and 15.89.
+
+The two best predictors (advertising and airplay) have very tight confidence intervals indicating that the estimates for the current model are likely to be representative of the true population values. The interval for the band’s image is wider (but still does not cross zero) indicating that the parameter for this variable is less representative, but nevertheless significant.
+
+### Significance tests
+
+```{r echo = FALSE}
+album_full_lm <- lm(sales ~ adverts + airplay + image, data = album_tib, na.action = na.exclude)
+broom::tidy(album_full_lm, conf.int = TRUE)
+```
+
+The output also contains the confidence intervals for each model parameter (*b*). The values in **statistic** are the values of *t* associated with each *b* and **p.value** is the associated significance of the *t*-statistic. For every predictor the *b* is significantly different from 0 (*p* < .001), meaning that all predictors significantly predict album sales.
+
+```{r quiz_b_ex2, echo = FALSE}
+quiz(
+  question("How might we interpret the **statistic** and **p.value** for the three predictors?",
+    answer("They tell us that the probability of getting a value of *t* at least as big as these values if the value of *b* were, in fact, zero is smaller than 0.001 for all predictors.", correct = T),
+    answer("The probability that each *b* is a chance result is less than 0.001", message = "*p*-values do not tell us whether results occur by chance."),
+    answer("The probability of the null hypothesis is less than 0.001 in all cases", message = "*p*-values do not tell us about the probability of the null hypothesis"),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  )
+)
+
+```
+
+Many students and researchers think of *p*-values in terms of the 'probability of a chance result' or 'the probability of a hypothesis being true' but they are neither of these things. They are the long-run probability that you would get a test-statistic (in this case *t*) at least as large as the one you have if the null hypothesis were true. In other words, if there really were no relationship between advertising budget and album sales (the null hypothesis) then the population value of *b* would be zero. Imagine we sampled from this null population and computed *t*, and then repeated this process 1000 times. We'd have 1000 values of *t* from a population in which there was no effect. We could plot these values as a histogram. This would tell us how often certain values of *t* occur. From it we could work out the probability of getting a particular value of *t*. If we then took another sample, and computed *t* (because we're kind of obsessed with this sort of thing) we would be able to compare this value of *t* to the distribution of all the previous 1000 samples. Is the *t* in our current sample large of small compared to the others? Let's say it was larger than 999 of the previous values. That would be quite an unlikely value of *t* whereas if it was larger than 500 of them this would not surprise us. This is what a *p*-value is: it is the long run probability of getting test statistic at least as large as the one you have if the null hypothesis were true. If the value is less than 0.05, people typically take this as supporting the idea that the null hypothesis isn't true.
+
+The *p*-values in the table all tell us the long-run probability that we would get a a value of *t* at least as large as the ones we have if the the true relationship between each predictor and album sales was 0 (i.e., *b* = 0). In all cases the probabilities are less than 0.001, which researchers would generally take to mean that the observed *b*s are significantly different from zero. Given the *b*s quantify the relationship between each predictor and album sales, this conclusion implies that each predictor significantly predicts album sales.
+
+## Unguided example 1: Metal and mental health
+
+[@lacourse_heavy_2001] conducted a study to see whether suicide risk was related to listening to heavy metal music. They devised a scale to measure preference for bands falling into the category of heavy metal. This scale included heavy metal bands (Black Sabbath, [Iron Maiden](https://ironmaiden.com/)), speed metal bands ([Slayer](https://www.slayer.net/), [Metallica](https://www.metallica.com/)), death/black metal bands (Obituary, Burzum) and gothic bands (Marilyn Manson, Sisters of Mercy). They then used this (and other variables) as predictors of suicide risk based on a scale measuring suicidal ideation etc.
+
+Data are in the tibble `metal_tib` are from a fictitious replication. There are two variables representing scores on the scales described above: **hm** (the extent to which the person listens to heavy metal music) and **suicide** (the extent to which someone has suicidal ideation and so on). Use the code box below to fit a model to predict suicide risk from love of heavy metal and to answer the questions below.
+
+```{r metal_health, exercise = TRUE, exercise.lines = 6}
+
+```
+
+```{r metal_health-solution}
+metal_lm <- lm(suicide ~ hm, data = metal_tib, na.action = na.exclude)
+
+broom::glance(metal_lm)
+broom::tidy(metal_lm, conf.int = TRUE)
+```
+
+```{r quiz_ug, echo = FALSE}
+quiz(
+  question("How much variance does the final model explain?",
+    answer("12.5%", correct = T),
+    answer("0.125", message = sprintf("This is nearly correct but remember that you need to convert $R^2$ to a percentage by multiplying by 100")),
+    answer("35.3%", message = sprintf("Look at $R^2$ rather than *R*")),
+    answer("None of these values", message = "You may have done the analysis incorrectly. Try again!"),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  ),
+  question("What is the nature of the relationship between listening to heavy metal and suicide risk?",
+    answer("As love of heavy metal increases, suicide risk decreases", correct = T, message = "Yes, because the *b* value is negative"),
+    answer("As love of heavy metal increases, suicide risk also increases", message = "Look at the sign of the *b*-value"),
+    answer("As love of heavy metal increases, suicide risk doesn't change", message = "This seems unlikley given the value of *b* and the associated *p*-value."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+),
+  question("As listening to heavy metal increases by 1 unit, by how much does suicide risk change?",
+    answer("-0.612 units", correct = T),
+    answer("-0.353 units", message = "This is how many standard deviations suicide risk changes by as love of heavy metal increases by 1 standard deviation"),
+    answer("0.353 units", message = "This is the strength of relationship between the predicted values form the model and the observed values."),
+    answer("0.612 units", message = "Nearly, but look at the sign of *b*."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  )
+)
+
+```
+
+
+## Unguided example 2: predicting social anxiety
+
+In this example we’ll look at data collected from several questionnaires relating to clinical psychology, and we will use these measures to predict social anxiety. Anxiety disorders take on different shapes and forms, and each disorder is believed to be distinct and have unique causes. We can summarize the disorders and some popular theories as follows:
+
+* Social Anxiety: Social anxiety disorder is a marked and persistent fear of 1 or more social or performance situations in which the person is exposed to unfamiliar people or possible scrutiny by others. This anxiety leads to avoidance of these situations. People with social phobia are believed to feel elevated feelings of shame.
+* Obsessive Compulsive Disorder (OCD): OCD is characterized by the everyday intrusion into conscious thinking of intense, repetitive, personally abhorrent, absurd and alien thoughts (Obsessions), leading to the endless repetition of specific acts or to the rehearsal of bizarre and irrational mental and behavioural rituals (compulsions).  
+
+Social anxiety and obsessive compulsive disorder are seen as distinct disorders having different causes. However, there are some similarities. They both involve some kind of attentional bias: attention to bodily sensation in social anxiety and attention to things that could have negative consequences in OCD. They both involve repetitive thinking styles: social phobics ruminate about social encounters after the event (known as post-event processing), and people with OCD have recurring intrusive thoughts and images. They both involve safety behaviours (i.e. trying to avoid the thing that makes you anxious).
+
+This might lead us to think that, rather than being different disorders, they are manifestations of the same core processes [@field_shared_2008]. One way to research this possibility would be to see whether social anxiety can be predicted from measures of other anxiety disorders. If social anxiety disorder and OCD are distinct we should expect that measures of OCD will not predict social anxiety. However, if there are core processes underlying all anxiety disorders, then measures of OCD should predict social anxiety. The data are in `soc_anx_tib`. This tibble contains three variables of interest to us:
+
+* The Social Phobia and Anxiety Inventory (SPAI), which measures levels of social anxiety.
+* Obsessive Beliefs Questionnaire (OBQ), which measures the degree to which people experience obsessive beliefs like those found in OCD.
+* The Test of Self-Conscious Affect (TOSCA), which measures shame.
+
+Each of 134 people was administered all questionnaires. Fit a hierarchical linear model with two blocks:
+
+1. Block 1: the first block will contain any predictors that we expect to predict social anxiety. In this example we have only one variable that we expect, theoretically, to predict social anxiety and that is shame (measured by the TOSCA).
+2. Block 2: the second block contains OBQ, the predictor variable that we don’t necessarily expect to predict social anxiety.
+
+Use the code box to fit this model and answer the questions below.
+
+```{r soc_anx, exercise = TRUE, exercise.lines = 8}
+
+```
+
+```{r soc_anx-solution}
+soc_anx_lm <- lm(spai ~ tosca, data = soc_anx_tib, na.action = na.exclude)
+soc_anx_obq_lm <- lm(spai ~ tosca + obq, data = soc_anx_tib, na.action = na.exclude)
+
+broom::glance(soc_anx_lm)
+broom::glance(soc_anx_obq_lm)
+
+broom::tidy(soc_anx_obq_lm, conf.int = TRUE)
+
+lm.beta::lm.beta(soc_anx_obq_lm)
+```
+
+```{r quiz_soc_anx, echo = FALSE}
+quiz(
+  question("How much variance in social anxiety does OCD account for?",
+    answer("4.6%", correct = T),
+    answer("14.8%", message = "This is how much variance in social anxiety is accounted for by both OCD and shame"),
+    answer("10.2%", message = "This is how much variance in social anxiety is accounted for by shame, not OCD"),
+    answer("None of these values", message = "Get the r-square for the model with both tosca and obq as predictors and subtract from it the r-square for the model that has only tosca as a predictor"),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  ),
+  question(sprintf("The confidence interval for shame ranges from 7.77 to 36.42. What does this tell us?"),
+    answer("If this confidence interval is one of the 95% that contains the population value then the population value of *b* lies between 7.77 and 36.42.", correct = TRUE),
+    answer("There is a 95% chance that the population value of *b* lies between 7.77 and 36.42", message = "You cannot make probability statements from a confidence interval. We don't know whether this particular CI is one of the 95% that contains the population value of *b*."),
+    answer("The probability of this confidence interval containing the population value is 0.95.", message = "The probability of this confidence interval containing the population value is either 0 (it doesn't) or 1 (it does) but it's impossible to know which."),
+    answer("I can be 95% confident that the population value of *b* lies between 7.77 and 36.42", message = "Confidence intervals do not quantify your subjective confidence."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+    ),
+  question("As shame increases by 1 unit, by how much does social anxiety change?",
+    answer("22.10 units", correct = T),
+    answer("0.261 units", message = "This is how many standard deviations social anxiety changes by as shame increases by 1 standard deviation"),
+    answer("between 7.77 and 36.42 units", message = "If we could be sure that the confidence interval was one of the 95% that contained the true value then this answer would be correct, but we can't so it's not. Kudos for attempting asmart answer though."),
+    answer("-22.10 units", message = "Nearly, but look at the sign of *b*."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+    ),
+  question("As OCD increases by 1 standard deviation, by how many standard deviations does social anxiety change?",
+    answer("0.213", correct = T),
+    answer("7.249", message = "This is how many *units* (not standard deviations) social anxiety changes by as OCD increases by 1 unit"),
+    answer("0.261", message = "This is the correct answer for *shame* not OCD."),
+    answer("Some other value", message = "You may have done the analysis incorrectly. Try again!"),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  ),
+  question("The *p*-value for OCD is 0.014, what does this mean?",
+    answer("The probability of getting a value of *t* at least as big as 2.49 if the value of *b* were, in fact, zero is 0.014. I'm going to assume, therefore, that *b* isn't zero (i.e. OCD significantly predicts social anxiety.", correct = T),
+    answer("The probability that *b* = 7.25 is a chance result is 0.014", message = "*p*-values do not tell us whether results occur by chance."),
+    answer("The probability that OCD does not predict social anxiety is 0.014", message = "*p*-values do not tell us about the probability of the null hypothesis"),
+    answer("I got a different *p*-value than 0.014", message = "You may have done the analysis incorrectly. Try again!"),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  )
+)
+```
+
+## Other resources
+
+### Statistics
+
+* The tutorials typically follow examples described in detail in @fieldDiscoveringStatisticsUsing2020, so that book is an obvious place to go for further reading.
+* If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
+* There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/)
+* There are free statistical resources on my website [www.discoveringstatistics.com](http://www.discoveringstatistics.com)
+
+### R
+
+* [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on **R** and **RStudio**
+* [RStudio cheat sheets](https://www.rstudio.com/resources/cheatsheets/)
+* [RStudio list of online resources](https://www.rstudio.com/online-learning/)
+* [SwirlStats](http://swirlstats.com/students.html) is a package for *R* that launches a bunch of interactive tutorials.
+
+## References
+
+

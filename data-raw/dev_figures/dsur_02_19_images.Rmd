@@ -1,0 +1,50 @@
+---
+title: "DSUR 02 Chapter 19: Plots"
+author: "Andy P. Field"
+date: "25/11/2019"
+output: 
+  html_document:
+    toc: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(discovr)
+library(tidyverse)
+source("dsur_themes.R")
+
+
+if(stringr::str_detect(here::here(), "Alpha")){
+  volume_path <- file.path("/Volumes", "Alpha Lacertae")
+} else {
+  volume_path <- file.path("/Volumes", "the_repository")
+}
+
+dsr_image <- file.path(volume_path, "Documents", "Academic", "books", "discovering_statistics", "dsu_r", "dsr_02", "dsr2_docs", "dsr2_images", "dsr2_figures", "dsr2_ch_19_figures")
+dsr_image_dev <- file.path(volume_path, "Documents", "Academic", "books", "discovering_statistics", "dsu_r", "dsr_02", "dsr2_docs", "dsr2_images", "dsr2_image_dev", "dsr2_omni_files", "dsr2_omni_dev")
+
+
+
+dance_tib <- discovr::cat_dance
+```
+
+
+
+```{r}
+dance_tib %>% sample_n(10)
+
+```
+
+```{r}
+tibble::tribble(
+  ~`reward`, ~`no_dance`, ~`danced`,
+  "Food", 10, 28,
+  "Affection", 114, 48
+)
+
+```
+
+
+
+

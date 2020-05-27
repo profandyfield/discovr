@@ -1,5 +1,7 @@
 ---
 title: "Labcoat Leni Solutions: Chapter 1"
+author: "Andy P. Field"
+date: 'Last updated `r format(Sys.Date(), "%d %B %Y")`'
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Labcoat Leni Solutions: Chapter 1}
@@ -15,10 +17,10 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(discovr)
+
 ```
 
-![](leni_banner.png)
+![](images/leni_banner.png)
 
 This document may contain abridged sections from *Discovering Statistics Using R and RStudio* by [Andy Field](https://www.discoveringstatistics.com/) so there are some copyright considerations, but the material is offered under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Basically you can use this material for teaching and non-profit activities but please do not meddle with it or claim it as your own work.
 
@@ -28,7 +30,7 @@ There are several ways to enter the Oxoby data, here's one of them:
 library(tidyverse) #if you haven't already executed this command
 library(here) #if you haven't already executed this command
 
-oxoby_tib <- tibble(.rows = 36) %>% 
+oxoby_tib <- tibble::tibble(.rows = 36) %>% 
   dplyr::mutate(
     	singer = c(rep("Bon Scott", 18), rep("Brian Johnson", 18)) %>% forcats::as_factor(),
     	offer = c(1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5)

@@ -18,14 +18,18 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(tidyverse)
-library(GGally)
-```
-
 ## Usage
 
 This file contains code relevant to chapter 5 of *Discovering Statistics Using R and RStudio* by [Andy Field](https://www.discoveringstatistics.com/). These files contain abridged sections from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/), ^[Basically you can use this material for teaching and non-profit activities but do not meddle with it or claim it as your own work.]
+
+## Load packages
+
+Remember to load the relevant packages mentioned at the start of the chapter:
+
+```{r}
+library(GGally)
+library(tidyverse)
+```
 
 ## Load the data
 
@@ -33,12 +37,12 @@ Remember to load the package with `library(discovr)`. After which you can load d
 
 `name_of_tib <- discovr::name_of_data`
 
-For example, execute these lines to create the three tibbles referred to in the chapter:
+For example, execute these lines to create the tibbles referred to in the chapter:
 
 ```{r}
 cat_tib <- discovr::catterplot
 exam_tib <- discovr::exam_anxiety
-grammar_tib <- discovr::grammar
+grammar_tib <- discovr::social_media
 notebook_tib <- discovr::notebook
 hiccups_tib <- discovr::hiccups
 ong_tib <- discovr::ong_tidy
@@ -131,7 +135,7 @@ ggplot2::ggplot(wish_tib, aes(time, success, fill = strategy)) +
 ```{r}
 note_mean  <- ggplot2::ggplot(notebook_tib, aes(film, arousal))
 note_mean +
-  stat_summary(fun.y = "mean", geom = "point", size = 3)+
+  stat_summary(fun = "mean", geom = "point", size = 3)+
   coord_cartesian(ylim = c(0, 50)) +
   scale_y_continuous(breaks = seq(0, 50, 5)) +
   labs(x = "Type of film", y = "Arousal (out of 100)") +
@@ -215,7 +219,7 @@ grammar_tib %>%
 ```{r}
 ggplot2::ggplot(grammar_tib, aes(time, grammar, colour = media_use)) +
   stat_summary(fun.data = "mean_cl_normal", geom = "pointrange", position = position_dodge(width = 0.05)) +
-  stat_summary(fun.y = "mean", geom = "line", position = position_dodge(width = 0.05), aes(group = media_use)) +
+  stat_summary(fun = "mean", geom = "line", position = position_dodge(width = 0.05), aes(group = media_use)) +
   labs(x = "Time", y = "Grammar score (%)", colour = "Media use") +
   coord_cartesian(ylim = c(0, 75)) +
   scale_y_continuous(breaks = seq(0, 75, 5)) +

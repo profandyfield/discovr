@@ -1,0 +1,933 @@
+---
+title: "DSUR 02 Chapter 6: Plots"
+author: "Andy P. Field"
+output: 
+  html_document:
+    toc: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#install.packages("msm")
+
+
+library(discovr)
+library(here)
+library(Hmisc)
+library(msm)
+library(patchwork)
+library(qqplotr)
+library(tidyverse)
+library(stringr)
+source("dsur_themes.R")
+
+
+if(stringr::str_detect(here::here(), "Alpha")){
+  volume_path <- file.path("/Volumes", "Alpha Lacertae")
+} else {
+  volume_path <- file.path("/Volumes", "the_repository")
+}
+
+dsr_image <- file.path(volume_path, "Documents", "Academic", "books", "discovering_statistics", "dsu_r", "dsr_02", "dsr2_docs", "dsr2_images", "dsr2_figures", "dsr2_ch_06_figures")
+dsr_image_dev <- file.path(volume_path, "Documents", "Academic", "books", "discovering_statistics", "dsu_r", "dsr_02", "dsr2_docs", "dsr2_images", "dsr2_image_dev", "dsr2_omni_files", "dsr2_omni_dev")
+
+
+```
+
+# Chapter 6
+
+
+## Linear models
+
+```{r}
+
+lin_mods_tib <- tibble::tibble(
+  x = 0:10,
+  y1 = 50 + (5*x),
+  y2 = 50 + (2*x),
+  y3 = 50 + (-3*x),
+  y4 = 50 + (5*x),
+  y5 = 30 + (5*x),
+  y6 = 20 + (5*x),
+) %>% 
+  tidyr::pivot_longer(
+    cols = y1:y6,
+    names_to = "Model",
+    values_to = "y"
+  ) %>% 
+  dplyr::mutate(
+    panel = rep(c(rep("Same intercept, different slopes", 3), rep("Same slope, different intercept", 3)), 11),
+    line_col = rep(c("Orange", "Blue", "Green"), 22) %>% forcats::as_factor(.) %>% forcats::fct_relevel(., "Orange", "Blue", "Green")
+  )
+
+
+lin_mods <- ggplot(lin_mods_tib, aes(x, y, colour = line_col)) +
+  geom_path(size = line_size) +
+  facet_wrap(~panel) +
+  labs(x = "Predictor", y = "Outcome")  +
+  scale_colour_manual(values = c(ong, blu, grn)) +
+  scale_x_continuous(limits = c(0, 10), breaks = 0:10) +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 10)) + 
+  theme_minimal() +
+  theme(legend.position = "none")
+
+
+lin_mods %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_06_03_slopes_intercepts.pdf"), width = 20, height = 10, unit = "cm")
+
+```
+
+
+## Sampling models
+
+```{r, helper_functions}
+
+get_lm_plot <- function(tibble, y = y, colour = blu, smooth_colour = red, alpha = 0.6, size = 1, fill = red, se = FALSE, x_pos = position_identity(), ymin = 850, ymax = 1300, title_text = "", caption_text = "", text_colour = blu_dk){
+  plot <- ggplot2::ggplot(tibble, aes(x, !!enquo(y))) +
+    geom_point(colour = colour, alpha = alpha, size = size, position = x_pos) +
+    geom_smooth(method = "lm", fill = fill, se = se, colour = smooth_colour) +
+    labs(x = "Volume of concert (db)", y = "Ears ringing (mins)", title = title_text, caption = caption_text) +
+    coord_cartesian(xlim = c(85, 125), ylim = c(ymin, ymax)) +
+    scale_x_continuous(breaks = seq(85, 125, 5)) +
+    scale_y_continuous(breaks = seq(ymin, ymax, 50)) +
+    theme_minimal() +
+    theme(plot.title = element_text(hjust = 0.5, colour = text_colour), plot.caption = element_text(hjust=0.5, size=rel(1.2), colour = text_colour))
+}
+
+get_var_parameters <- function(var_min = 25, var_max = 50, xmin = 85, xmax = 120){
+  b1 <- (var_max-var_min)/(xmax-xmin)
+  x_y0 <- xmax-(var_max/b1)
+  b0 <- -(b1*x_y0)
+  c(b0, b1)
+}
+
+get_var_parameters(var_min = 15)[1]
+```
+
+
+
+```{r}
+bo <- 10.4
+b <- 10
+
+# generate data
+set.seed(666)
+lm_pop <- tibble::tibble(
+  id = stringi::stri_rand_strings(5000, 5),
+  x = round(rnorm(id, mean = 105, sd = 5)),
+  y = round(bo + b*x  + rnorm(x, mean = 0, sd = 25)),
+  sigma = get_var_parameters(var_min = 10, var_max = 70)[1] + get_var_parameters(var_min = 10, var_max = 70)[2]*x, #vary error as a linear function of x
+  y_het = round(bo + b*x  + rnorm(x, mean = 0, sd = sigma))
+)
+
+
+set.seed(1916)
+s_1 <- dplyr::sample_n(lm_pop, 100)
+set.seed(19731984)
+s_2 <- dplyr::sample_n(lm_pop, 100)
+set.seed(201416)
+s_3 <- dplyr::sample_n(lm_pop, 100)
+set.seed(635985652)
+s_4 <- dplyr::sample_n(lm_pop, 100)
+
+pop_lm <- lm(y ~ x, data = lm_pop) %>%  summary()
+s1_lm <- lm(y ~ x, data = s_1) %>%  summary()
+s2_lm <- lm(y ~ x, data = s_2) %>%  summary()
+s3_lm <- lm(y ~ x, data = s_3) %>%  summary()
+s4_lm <- lm(y ~ x, data = s_4) %>%  summary()
+
+pop_lm_plot <- get_lm_plot(lm_pop, alpha = 0.2, x_pos = position_jitter(width = 0.5), ymin = 800, ymax = 1350,
+                           title_text = bquote(italic(y)[italic(i)] == 5.50 + 10.05 * italic(x[i]) + italic(epsilon[i])), text_colour = ong)
+
+s1_lm_plot <- get_lm_plot(s_1, size = 2, text_colour = red,
+                          caption_text = bquote(hat(italic(y))[italic(i)] == 18.06 + 9.94 * italic(x[i]) + italic(e[i])))
+s2_lm_plot <- get_lm_plot(s_2, size = 2, text_colour = red,
+                          caption_text = bquote(hat(italic(y))[italic(i)] == -0.32 + "10.10" * italic(x[i]) + italic(e[i])))
+s3_lm_plot <- get_lm_plot(s_3, size = 2, text_colour = red,
+                          caption_text = bquote(hat(italic(y))[italic(i)] == 34.73 + 9.76 * italic(x[i]) + italic(e[i])))
+s4_lm_plot <- get_lm_plot(s_4, size = 2, text_colour = red,
+                          caption_text = bquote(hat(italic(y))[italic(i)] == 65.26 + 9.48 * italic(x[i]) + italic(e[i])))
+
+
+
+pop_rsd <- lm(y ~ x, data = lm_pop) %>% broom::augment()
+
+pop_error <- ggplot2::ggplot(pop_rsd, aes(x = .resid)) +
+  geom_histogram(aes(y = ..density..), colour = ong, fill = ong, alpha = 0.5) +
+  stat_function(fun = "dnorm", args = list(mean = 0, sd = 25), colour = blu, size = 1) +
+  labs(x = "Error", y = "Density", caption = expression(paste(mu == 0, ",    ", sigma^2 == 625))) +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(), plot.caption = element_text(hjust = 0.5, size=rel(1.2)))
+
+s1_rsd <- lm(y ~ x, data = s_1) %>% broom::augment()
+s1_error <- ggplot2::ggplot(s1_rsd, aes(x = .resid)) +
+  geom_histogram(aes(y = ..density..), colour = grn, fill = grn, alpha = 0.5) +
+  stat_function(fun = "dnorm", args = list(mean = 0, sd = 25), colour = mag_dk, size = 1) +
+  labs(x = "Residual", y = "Density") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(), plot.caption = element_text(hjust = 0.5, size=rel(1.2)))
+
+
+
+pop_lm_plot_caption <- get_lm_plot(lm_pop, alpha = 0.2, x_pos = position_jitter(width = 0.5), ymin = 800, ymax = 1350,
+                           caption_text = bquote(italic(hat(y)[i]) == 5.50 + 10.05 * italic(x[i]) + italic(epsilon[i])), text_colour = "black")
+
+
+
+layout <- "
+##AAAA##
+BBCCDDEE
+"
+set.seed(666)
+pop_lm_zoom <- get_lm_plot(lm_pop, alpha = 0.7, x_pos = position_jitter(width = 0.5), size = 1.5) +
+  coord_cartesian(xlim = c(115, 120), ylim = c(1100, 1260)) +
+  theme(plot.title = element_blank(), axis.text = element_blank(), axis.title = element_blank())
+
+set.seed(666)
+pop_lm_zoom2 <- get_lm_plot(lm_pop, alpha = 0.4, x_pos = position_jitter(width = 0.5), size = 1.5) +
+  coord_cartesian(xlim = c(115, 120), ylim = c(1100, 1260)) +
+  scale_x_continuous(breaks = seq(115, 120, 1)) +
+  scale_y_continuous(breaks = seq(1100, 1260, 10)) +
+  theme(plot.title = element_blank(), axis.title = element_blank())
+
+set.seed(666)
+sample_lm_zoom <- get_lm_plot(s_1, alpha = 0.7, x_pos = position_jitter(width = 0.5), size = 1.5) +
+  coord_cartesian(xlim = c(110, 115), ylim = c(1080, 1200)) +
+  scale_x_continuous(breaks = seq(110, 115, 1)) +
+  scale_y_continuous(breaks = seq(1080, 1200, 10)) +
+  theme(plot.title = element_blank(), axis.title = element_blank())
+
+
+patchwork::wrap_plots(A = pop_lm_plot, B = s1_lm_plot, C =  s2_lm_plot, D = s3_lm_plot, E = s4_lm_plot, design = layout) %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image_dev, "dsr2_fig_06_04_lm_samples.pdf"), width = 30, height = 15, unit = "cm")
+
+
+pop_lm_zoom2 %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image_dev, "dsr2_fig_06_05_errors_close_up.pdf"), width = 7, height = 10, unit = "cm")
+
+
+pop_lm_plot %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image_dev, "dsr2_fig_06_05_population_model.pdf"), width = 15, height = 10, unit = "cm")
+
+
+patchwork::wrap_plots(pop_lm_plot_caption, pop_error) %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image_dev, "dsr2_fig_06_06_disturbance_dist.pdf"), width = 30, height = 15, unit = "cm")
+
+
+pop_lm_zoom %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image_dev, "dsr2_fig_06_06_disturbance_dist_close_up.pdf"), width = 7, height = 10, unit = "cm")
+
+
+s1_lm_plot %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image_dev, "dsr2_fig_06_07_sample_model.pdf"), width = 15, height = 10, unit = "cm")
+
+sample_lm_zoom %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image_dev, "dsr2_fig_06_07_sample_errors_close_up.pdf"), width = 7, height = 10, unit = "cm")
+
+patchwork::wrap_plots(s1_lm_plot, s1_error) %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image_dev, "dsr2_fig_06_07_sample_residual_dist.pdf"), width = 30, height = 15, unit = "cm")
+
+
+```
+
+```{r estimation}
+
+set.seed(666)
+s1_zoom_tib <- s1_rsd %>%
+  dplyr::select(-c(.resid, .std.resid, .hat, .sigma, .cooksd)) %>% 
+  dplyr::mutate(
+    x_jit = x + runif(x, -0.4, 0.4),
+    y_pred = s1_lm$coefficients[[1]] + s1_lm$coefficients[[2]]*x_jit,
+    annotation = ifelse(y > y_pred, "+", "\u2212"),
+    x_anno = x_jit - 0.15,
+    y_anno = (y + y_pred)/2
+  ) %>% 
+  dplyr::filter(x_jit > 110.5 & x_jit < 115)
+
+
+sample_lm_zoom2 <- ggplot2::ggplot(s1_zoom_tib, aes(x_jit, y)) +
+  geom_linerange(aes(ymin = y_pred, ymax = y), linetype = 5, size = 0.75, colour = gry) +
+  geom_point(colour = blu, size = 3) +
+  geom_line(aes(y = y_pred), colour = red) +
+  geom_point(aes(y = y_pred), size = 3, colour = red_dk) +
+  annotate("text", x = s1_zoom_tib$x_anno, y = s1_zoom_tib$y_anno, label = s1_zoom_tib$annotation, colour = gry_dk) +
+  labs(x = "Volume of concert (db)", y = "Ears ringing (mins)") +
+  coord_cartesian(xlim = c(111, 115), ylim = c(1100, 1170)) +
+  scale_x_continuous(breaks = seq(110, 115, 1)) +
+  scale_y_continuous(breaks = seq(1100, 1170, 10)) +
+  theme_minimal()
+
+sample_lm_zoom2 %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_06_08_residuals_close_up.png"), width = 12, height = 12, unit = "cm")
+
+```
+
+## Outliers
+
+```{r}
+amazon <- tibble::tibble(
+  Rater = c(1:7),
+  Rating = c(2,5,4,5,5,5,5)
+  )
+annotations <- tibble::tibble(
+  text = c("Mean (with outlier)", "Mean (no outlier)"),
+  vertical_jitter = c(4.3, 4.7),
+  means = c(4.43, 4.83)
+)
+
+outlier_plot <- ggplot(amazon, aes(Rater, Rating)) +
+  geom_point(size = 6, colour = ong_dk) +
+  geom_point(size = 4, colour = ong) +
+  labs(x = "Rater", y = "Rating (out of 5)") +
+  geom_hline(yintercept = 4.43, colour = blu, size = line_size) + 
+  geom_hline(yintercept = 4.83, colour = ong_dk, size = line_size) +
+  geom_text(aes(x = 1.7, y = vertical_jitter, label = text),
+            data = annotations, colour = "grey35") +
+  scale_y_continuous(breaks = 1:5) +
+  scale_x_continuous(breaks = 0:7) +
+  coord_cartesian(ylim = c(1, 5)) +
+  theme_minimal()
+
+outlier_plot
+
+outlier_plot %>% ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_06_09_outlier_mean.pdf"), width = 15, height = 10, unit = "cm")
+
+```
+
+```{r outlier}
+
+s1_rsd <- s1_rsd %>% 
+  dplyr::mutate(
+    y_out = ifelse(y > 1200, 600, y)
+  )
+
+s1_out_lm <- lm(y_out ~ x, data = s1_rsd)
+s1_out_lm %>%  summary()
+s1_out_lm %>% broom::augment()
+
+outlier_lm <- ggplot2::ggplot(s1_rsd, aes(x, y)) +
+  geom_point(aes(y = y_out), colour = ong, size = 3) +
+  geom_point(colour = blu, size = 3) +
+  geom_smooth(method = "lm", colour = blu_dk, fill = blu_dk, alpha = 0.3) +
+  geom_smooth(aes(y = y_out), method = "lm", colour = ong, fill = ong, alpha = 0.3) +
+  annotate("text", x = 120, y = 600, label = "Outlier", colour = gry_dk) +
+  annotate("text", x = 105, y = 1200, label = bquote(hat(italic(y)[i]) == 18.06 + 9.94 * italic(x[i]) + italic(e[i])), colour = blu_dk) +
+  annotate("text", x = 105, y = 900, label = bquote(hat(italic(y)[i]) == 426.93 + 6.01 * italic(x[i]) + italic(e[i])), colour = ong) +
+  geom_curve(aes(x = 118.5, y = 1190, xend = 118.5, yend = 1136), arrow = arrow(length = unit(0.03, "npc")), curvature = -0.5, colour = grn) +
+  labs(x = "Volume of concert (db)", y = "Ears ringing (mins)") +
+  coord_cartesian(xlim = c(95, 120), ylim = c(600, 1250)) +
+  scale_x_continuous(breaks = seq(95, 120, 5)) +
+  scale_y_continuous(breaks = seq(600, 1250, 50)) +
+  theme_minimal() +
+  theme(panel.grid.minor = element_blank())
+
+outlier_lm %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_06_10_outlier_lm.pdf"), width = 15, height = 10, unit = "cm")
+
+```
+
+
+
+Outlier effect on SS
+
+```{r}
+
+friends <- c(1, 2, 3, 3, 4)
+friends_out <- c(1, 2, 3, 3, 10)
+
+m <- mean(friends)
+m_out <- mean(friends)
+
+
+get_ss <- function(x, outlier){
+  if(outlier == "Outlier"){
+    ss <- sum((friends_out - x)^2)
+  } else {
+    ss <- sum((friends - x)^2)
+  }
+  return(ss)
+}
+  
+normal_tib <- tibble::tibble(
+  b_values = seq(0, 2*m, 2*m/(m/0.05)),
+  dat = "No outlier"
+)
+
+out_tib <- tibble::tibble(
+  b_values = seq(0, 2*m_out, 2*m_out/(m_out/0.05)),
+  dat = "Outlier"
+  ) %>% 
+  dplyr::bind_rows(., normal_tib) %>%
+  dplyr::mutate(ss = 0)
+  
+
+for(i in 1:nrow(out_tib)){
+  out_tib$ss[i] <- get_ss(out_tib$b_values[i], outlier = out_tib$dat[i])
+}
+
+
+ss_plot <- ggplot(out_tib, aes(b_values, ss, colour = dat)) +
+  geom_line(size = 1) +
+  geom_segment(x = 2.6, xend = 2.6, y = -5, yend = 5.2, linetype = 2, size = 0.75, colour = "grey35") +
+  geom_segment(x = 3.8, xend = 3.8, y = -5, yend = 50.8, linetype = 2, size = 0.75, colour = "grey35") +
+  geom_segment(x = -5, xend = 2.6, y = 5.2, yend = 5.2, linetype = 2, size = 0.75, colour = "grey35") +
+  geom_segment(x = -5, xend = 3.8, y = 50.8, yend = 50.8, linetype = 2, size = 0.75, colour = "grey35") +
+  geom_segment(x = -0.25, xend = -0.25, y = 5.2, yend = 50.8, linetype = 2, size = 0.75, colour = "grey35", arrow = arrow(length=unit(0.30,"cm"), ends="last", type = "closed")) +
+  geom_segment(x = 2.6, xend = 3.8, y = 0, yend = 0, linetype = 2, size = 0.5, colour = "grey35", arrow = arrow(length=unit(0.30,"cm"), ends="last", type = "closed")) +
+  scale_y_continuous(breaks = seq(0,125, by = 10)) +
+  scale_x_continuous(breaks = 0:8) +
+  labs(x="Value of b", y = "Sum of squared error", colour = "Data set") +
+  geom_text(aes(x = 2.6, y = 0, label = "  2.6"), size = 5, hjust = 1.5, vjust = 1, colour = ong) +
+  geom_text(aes(x = 3.8, y = 0, label = "  3.8"), size = 5, hjust = 0, vjust = 1, colour = blu) +
+  geom_text(aes(x = 0, y = 5.2, label = "5.2"), size = 5, hjust = 0, vjust = 1.5, colour = ong) +
+  geom_text(aes(x = 0, y = 50.8, label = "50.8"), size = 5, hjust = 0, vjust = -0.5, colour = blu) +
+  theme_minimal() +
+  scale_colour_manual(values = c(ong, blu)) +
+  theme(legend.text = element_text(size = 14), legend.title = element_text(size = 16))
+
+ss_plot %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_06_11_outlier_ss.pdf"), width = 25, height = 20, unit = "cm")
+
+```
+
+#-------- bimodal normal
+
+
+```{r}
+bimode_tib <- readr::read_csv(
+  file.path(volume_path, "Documents", "Academic", "data", "an_adventure_in_statistics_data", "ais_development_data", "zombies_vs_humans.csv")
+  ) %>% 
+  dplyr::mutate(
+    entity = forcats::as_factor(entity)
+  )
+
+bimod <- ggplot(bimode_tib, aes(x = blows, fill = entity, colour = entity)) +
+  geom_density(alpha = .2) +
+  scale_y_continuous(limits = c(0, 0.2)) +
+  labs(x = "Happiness", y = "Density", colour = "Population", fill = "Population", title = "Population split into groups") +
+  scale_colour_manual(values = c(grn, blu)) +
+  scale_fill_manual(values = c(grn, blu)) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+
+
+bimod_comb <- ggplot(bimode_tib, aes(x = blows)) +
+  geom_density(alpha = .2, colour = ong_dk, fill = ong) +
+  scale_y_continuous(limits = c(0, 0.2)) +
+  labs(x = "Happiness", y = "Density", title = "Entire population") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+
+patchwork::wrap_plots(bimod_comb, bimod, nrow = 1) %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_06_12_bimodal.pdf"), width = 25, height = 10, unit = "cm")
+
+
+```
+
+## CLT
+
+```{r}
+set.seed(666)
+
+friends_tib <- tibble::tibble(
+  friends = as.integer(rtnorm(100000, mean = 0.5, sd = 3, lower = 0, upper = 8))
+)
+
+friend_pop <- ggplot(friends_tib, aes(friends)) +
+  geom_histogram(binwidth = 1, colour = ong_dk, fill = ong, alpha = 0.2) +
+  coord_cartesian(xlim = c(-0.5, 7.5), ylim=c(0, 25000)) +
+  scale_x_continuous(breaks = 0:7) +
+  scale_y_continuous(breaks = seq(0, 25000, 5000)) +
+  labs(x = "Number of friends", y = "Frequency") + 
+  theme_minimal()
+
+samples <- tibble::tibble(.rows = 5000, n_5, n_30, n_100)
+
+for(i in 1:nrow(samples)){
+  samples$n_5[i] <- sample(friends_tib$friends, 5, replace = TRUE) %>% mean()
+  samples$n_30[i] <- sample(friends_tib$friends, 30, replace = TRUE) %>% mean()
+  samples$n_100[i] <- sample(friends_tib$friends, 100, replace = TRUE) %>% mean()
+	}
+
+
+n5_plot <- ggplot(samples, aes(n_5)) +
+  geom_histogram(binwidth = 0.2, colour = blu_dk, fill = blu, alpha = 0.2) + 
+  labs(x = "Mean number of friends", y = "Frequency") + 
+  coord_cartesian(xlim = c(0, 6)) + 
+  theme_minimal()
+
+
+n30_plot <- ggplot(samples, aes(n_30)) +
+  geom_histogram(binwidth = 0.1, colour = blu_dk, fill = blu, alpha = 0.2) +
+  labs(x = "Mean number of friends", y = "Frequency") +
+  coord_cartesian(xlim = c(0, 4)) +
+  theme_minimal()
+
+
+n100_plot <- ggplot(samples, aes(n_100)) +
+  geom_histogram(binwidth = 0.05, colour = blu_dk, fill = blu, alpha = 0.2) +
+  labs(x = "Mean number of friends", y = "Frequency") + 
+  coord_cartesian(xlim = c(1, 3)) + 
+  scale_x_continuous(breaks = seq(1, 4)) + 
+  theme_minimal()
+
+
+
+layout <- "
+#AAAA#
+BBCCDD
+"
+
+patchwork::wrap_plots(A = friend_pop, B = n5_plot, C =  n30_plot, D = n100_plot, design = layout) %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image_dev, "dsr2_fig_06_13_clt_ggplot.pdf"), width = 25, height = 15, unit = "cm")
+
+```
+
+
+## Mixed normal
+
+```{r}
+n_hum<-18000
+n_mup<-2000
+n_tot = n_hum + n_mup
+
+humans = rnorm(n_hum, mean = 10, sd = 1.6)
+muppets = rnorm(n_mup, mean = 10, sd = 4.1)
+mixed_normal = c(humans, muppets)
+
+happy_tib <- tibble::tibble(
+  id = 1:(2*n_tot),
+  Population = c(rep("Humans", n_hum), rep("Muppets", n_mup), rep("Mixed normal", n_tot)) %>%
+    forcats::as_factor() %>%
+    forcats::fct_relevel("Humans", "Muppets", "Mixed normal")
+) %>% 
+  dplyr::mutate(
+    Happiness = ifelse(Population == "Humans", humans,
+                       ifelse(Population == "Muppets", muppets, mixed_normal)
+                       )
+  )
+
+
+separate_plot <- ggplot(happy_tib, aes(x = Happiness, fill = Population, colour = Population)) +
+  geom_density(alpha = .2) +
+  coord_cartesian(xlim = c(0, 20), ylim = c(0, 0.25)) +
+  scale_y_continuous(breaks = seq(0, 0.4, 0.05)) +
+  labs(x = "Happiness", y = "Density", colour = "Population", fill = "Population") +
+  scale_fill_manual(values = c(ong, grn, blu)) +
+  theme_minimal() +
+  theme(axis.title.y = element_blank(), axis.text.y = element_blank())
+
+mixed_plot <- ggplot(happy_tib %>% dplyr::filter(Population == "Mixed normal"), aes(x = Happiness)) +
+  geom_density(colour = blu, fill = blu, alpha = 0.2) +
+  coord_cartesian(xlim = c(0, 20), ylim = c(0, 0.25)) +
+  scale_y_continuous(breaks = seq(0, 0.4, 0.05)) +
+  labs(x = "Happiness", y = "Density") +
+  theme_minimal() +
+  theme(legend.position = 'none')
+
+patchwork::wrap_plots(mixed_plot, separate_plot, nrow = 1) %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_06_14_mixed_normal.pdf"), width = 25, height = 10, unit = "cm")
+
+
+```
+
+
+## Heteroscedasticity
+
+```{r}
+pop_het <- lm(y_het ~ x, data = lm_pop) %>%  summary()
+s1_het <- lm(y_het ~ x, data = s_1) %>%  summary()
+s2_het<- lm(y_het ~ x, data = s_2) %>%  summary()
+s3_het <- lm(y_het ~ x, data = s_3) %>%  summary()
+s4_het <- lm(y_het ~ x, data = s_4) %>%  summary()
+
+pop_het_plot <- get_lm_plot(lm_pop, y = y_het, alpha = 0.2, x_pos = position_jitter(width = 0.5), ymin = 800, ymax = 1350,
+                           title_text = bquote(italic(y[i]) == 24.17 + 9.86 * italic(x[i]) + italic(epsilon[i])), text_colour = ong)
+
+s1_het_plot <- get_lm_plot(s_1, y = y_het, size = 2, text_colour = red,
+                          caption_text = bquote(hat(italic(y))[italic(i)] == 13.82 + 9.97 * italic(x[i]) + italic(e[i])))
+s2_het_plot <- get_lm_plot(s_2, y = y_het, size = 2, text_colour = red,
+                          caption_text = bquote(hat(italic(y))[italic(i)] == 11.82 + 10.03 * italic(x[i]) + italic(e[i])))
+s3_het_plot <- get_lm_plot(s_3, y = y_het, size = 2, text_colour = red,
+                          caption_text = bquote(hat(italic(y))[italic(i)] == -87.22 + 10.94 * italic(x[i]) + italic(e[i])))
+s4_het_plot <- get_lm_plot(s_4, y = y_het, size = 2, text_colour = red,
+                          caption_text = bquote(hat(italic(y))[italic(i)] == -105.31 + 11.07 * italic(x[i]) + italic(e[i])))
+
+pop_het_plot %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image_dev, "dsr2_fig_06_15_het_pop.pdf"), width = 15, height = 10, unit = "cm")
+
+patchwork::wrap_plots(A = pop_het_plot, B = s1_het_plot, C =  s2_het_plot, D = s3_het_plot, E = s4_het_plot, design = layout) %>%
+  ggplot2::ggsave(filename = file.path(dsr_image_dev, "dsr2_fig_06_17_lm_samples_het.pdf"), width = 30, height = 15, unit = "cm")
+```
+
+```{r}
+
+manowar_tib <- haven::read_sav(
+  file.path(volume_path, "Documents", "Academic", "data", "dsu_spss_data", "chapter_06_exploring_data", "exploring_data_development", "motorhead_long.sav")
+  ) %>% 
+  dplyr::mutate(
+    Concert = forcats::as_factor(Concert),
+    Variance = forcats::as_factor(Variance)
+  )
+
+
+mano_plot <- ggplot(manowar_tib, aes(Concert, Ringing)) + 
+  geom_point(colour = blu, size = 2, alpha = 0.4) +
+  stat_summary(fun = mean, geom = "point", colour = red, shape = 8, size = 2) +
+  facet_wrap(~Variance) +
+  labs(y = "Ringing in ears (hours)") +
+  scale_y_continuous(limits = c(0, 70), breaks = seq(0, 70, 10)) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle=20, hjust=0.4),
+        strip.text = element_text(size = rel(1.5)),
+        axis.title.x = element_blank()
+        )
+
+mano_range <- ggplot(manowar_tib, aes(Concert, Ringing)) + 
+  stat_summary(fun.min = min, fun.max = max, geom = "linerange", colour = blu, size = 1) +
+  stat_summary(fun = mean, geom = "point", colour = red, shape = 8, size = 2) +
+  facet_wrap(~Variance) + 
+  labs(y = "Ringing in ears (hours)") +
+  scale_y_continuous(limits = c(0, 70), breaks = seq(0, 70, 10)) + 
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle=20, hjust=0.4),
+    strip.text = element_blank(),
+    )
+
+
+patchwork::wrap_plots(mano_plot, mano_range, nrow = 2) %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_06_16_hov.pdf"), width = 25, height = 25, unit = "cm")
+
+```
+
+## Histogram/boxplot day 1
+
+```{r}
+download_tib <- discovr::download
+
+hist_day_1 <- ggplot2::ggplot(download_tib, aes(day_1)) +
+  geom_histogram(binwidth = 0.2, fill = "#56B4E9", colour = "#336c8b", alpha = 0.2) +
+  labs(y = "Frequency", x = "Hygiene scores (0-5)", title = "Hygiene scores on day 1") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+
+
+box_day_1 <- ggplot2::ggplot(download_tib, aes(x = "Day 1", y = day_1)) +
+  geom_boxplot(fill = "#5c97bf", alpha = 0.7) +
+  scale_y_continuous(breaks = seq(0, 20, 2)) +
+  labs(x = "Day of festival", y = "Hygiene scores (0-5)") +
+  theme_minimal()
+
+patchwork::wrap_plots(hist_day_1, box_day_1, nrow = 1) %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_06_22_day_1.pdf"), width = 25, height = 10, unit = "cm")
+
+```
+
+```{r}
+download_tib <- download_tib %>%
+  dplyr::mutate(
+    day_1 = dplyr::recode(day_1, `20.02` = 2.02)
+  )
+
+hist_day_1_no <- ggplot2::ggplot(download_tib, aes(day_1)) +
+  geom_histogram(binwidth = 0.2, fill = "#56B4E9", colour = "#336c8b", alpha = 0.2) +
+  labs(y = "Frequency", x = "Hygiene scores (0-5)", title = "Hygiene scores on day 1") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+
+
+box_day_1_no <- ggplot2::ggplot(download_tib, aes(x = "Day 1", y = day_1)) +
+  geom_boxplot(fill = "#5c97bf", alpha = 0.7) +
+  coord_cartesian(ylim = c(0, 4)) +
+  scale_y_continuous(breaks = seq(0, 4, 1)) +
+  labs(x = "Day of festival", y = "Hygiene scores (0-5)") +
+  theme_minimal()
+
+patchwork::wrap_plots(hist_day_1_no, box_day_1_no, nrow = 1) %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_06_23_day_1_corrected.pdf"), width = 25, height = 10, unit = "cm")
+
+```
+
+## Boxplot of all days by gender
+
+```{r}
+download_tidy_tib <- download_tib %>% 
+  tidyr::pivot_longer(
+  cols = day_1:day_3,
+  names_to = "day",
+  values_to = "hygiene",
+) %>% 
+  dplyr::mutate(
+    day = stringr::str_to_sentence(day) %>%
+      stringr::str_replace(., "_", " ")
+  )
+
+box_alldays <- ggplot2::ggplot(download_tidy_tib, aes(day, hygiene, fill = gender)) +
+  geom_boxplot(alpha = 0.7) +
+  scale_y_continuous(breaks = seq(0, 4, 1)) +
+  labs(x = "Day of festival", y = "Hygiene scores (0-5)", fill = "Gender") +
+  facet_wrap(~ gender) +
+  theme_minimal()
+
+
+box_alldays %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_06_24_all days.pdf"), width = 25, height = 10, unit = "cm")
+```
+
+## histograms and q-q plots
+
+```{r}
+set.seed(666)
+n <- 1000
+dists <- tibble::tibble(
+  Normal = rnorm(n, 0, 1),
+  `Positive skew` = ifelse(Normal > 0, 3*Normal, Normal),
+  `Negative skew` = ifelse(Normal < 0, 3*Normal, Normal),
+  `Heavy tails` = c(rnorm(0.7*n), rnorm(0.3*n, 0, 3)),
+  `Light tails` = ifelse(abs(Normal) > 2, 0.7*Normal, Normal)
+  ) %>% 
+  tidyr::pivot_longer(
+    cols = Normal:`Light tails`,
+    names_to = "Distribution",
+    values_to = "Score"
+  ) %>% 
+  dplyr::mutate(
+    Distribution = forcats::as_factor(Distribution) %>% forcats::fct_relevel(., "Normal", "Positive skew", "Negative skew", "Heavy tails", "Light tails")
+  )
+
+distribution_qq <- ggplot2::ggplot(dists, aes(sample = Score)) +
+  qqplotr::stat_qq_band(fill = blu, alpha = 0.3) +
+  qqplotr::stat_qq_line(colour = blu) +
+  qqplotr::stat_qq_point(size = 0.5) +
+  labs(x = "Theoretical quantiles", y = "Sample quantiles") +
+  facet_wrap(~Distribution, scales = "free", ncol = 1) +
+  theme_minimal() +
+  theme(axis.text = element_blank())
+
+distribution_hists <- ggplot2::ggplot(dists, aes(x= Score)) +
+  geom_density(colour = ong, fill = ong, alpha = 0.3) +
+  labs(x = "Score", y = "Frequency") +
+  facet_wrap(~Distribution, scales = "free_y", ncol = 1) +
+  theme_minimal() +
+  theme(axis.text = element_blank())
+
+patchwork::wrap_plots(distribution_hists, distribution_qq, nrow = 1) %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_06_25_hists_qq.pdf"), width = 20, height = 30, unit = "cm")
+
+```
+
+```{r}
+
+hists_plot <- download_tidy_tib %>% 
+  ggplot2::ggplot(., aes(hygiene)) +
+  geom_histogram(binwidth = 0.2, fill = "#56B4E9", colour = "#336c8b", alpha = 0.2) +
+  labs(y = "Frequency", x = "Hygiene scores (0-5)") +
+  facet_wrap(~day, ncol = 1, scales = "free_y") +
+  theme_minimal()
+
+qq_plot <- download_tidy_tib %>%
+  ggplot2::ggplot(., aes(sample = hygiene)) +
+  qqplotr::stat_qq_band(fill = "#5c97bf", alpha = 0.3) +
+  qqplotr::stat_qq_line(colour = "#5c97bf") +
+  qqplotr::stat_qq_point(alpha = 0.2, size = 1) +
+  labs(x = "Theoretical quantiles", y = "Sample quantiles") +
+  facet_wrap(~day, ncol = 1) +
+  theme_minimal()
+
+
+patchwork::wrap_plots(hists_plot, qq_plot, nrow = 1) %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_06_26_download_hists_qq.pdf"), width = 20, height = 25, unit = "cm")
+```
+
+```{r}
+detrended_qq <- download_tidy_tib %>%
+  dplyr::filter(day == "Day 2") %>% 
+  ggplot2::ggplot(., aes(sample = hygiene)) +
+  qqplotr::stat_qq_band(fill = "#5c97bf", alpha = 0.3, detrend = T) +
+  qqplotr::stat_qq_line(colour = "#5c97bf", detrend = T) +
+  qqplotr::stat_qq_point(alpha = 0.2, size = 1, detrend = T) +
+  labs(x = "Theoretical quantiles", y = "Sample quantiles") +
+  theme_minimal()
+
+patchwork::wrap_plots(detrended_qq) %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_06_27_detrended_qq.pdf"), width = 15, height = 10, unit = "cm")
+```
+
+```{r}
+qq_by_gender <- download_tidy_tib %>%
+  ggplot2::ggplot(., aes(sample = hygiene)) +
+  qqplotr::stat_qq_band(fill = "#5c97bf", alpha = 0.3) +
+  qqplotr::stat_qq_line(colour = "#5c97bf") +
+  qqplotr::stat_qq_point(alpha = 0.2, size = 1) +
+  labs(x = "Theoretical quantiles", y = "Sample quantiles") +
+  facet_grid(day~gender, scales = "free_x") +
+  theme_minimal()
+
+qq_by_gender %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_06_28_gender_qq.pdf"), width = 15, height = 10, unit = "cm")
+```
+
+## Heteroscedasticity
+
+```{r}
+
+bo <- 0
+b <- 1
+
+# generate data
+set.seed(666)
+lms <- tibble::tibble(
+  id = stringi::stri_rand_strings(200, 5),
+  x = rep(1:100, 2),
+  y_normal = bo + b*x  + rnorm(x, mean = 0, sd = 10),
+  y_het = bo + b*x  + rnorm(x, mean = 0, sd = sqrt(x^1.5)),
+  y_cur = bo + b*x^1.3  + rnorm(x, mean = 0, sd = 10),
+  y_cur_het = bo + b*x^1.3  + rnorm(x, mean = 0, sd = sqrt(x^1.5))
+)
+
+# fit models
+n_mod <- lm(y_normal ~ x, data = lms)
+h_mod <- lm(y_het ~ x, data = lms)
+c_mod <- lm(y_cur ~ x, data = lms)
+ch_mod <- lm(y_cur_het ~ x, data = lms)
+
+normal_pred_resid <- ggplot2::autoplot(n_mod, which = 1, colour = blu, smooth.colour = red, label = F) + 
+  theme_minimal() +
+  theme(plot.title = element_blank())
+
+hetro_pred_resid <- ggplot2::autoplot(h_mod, which = 1, colour = blu, smooth.colour = red, label = F) + 
+  theme_minimal() +
+  theme(plot.title = element_blank())
+
+curve_pred_resid <- ggplot2::autoplot(c_mod, which = 1, colour = blu, smooth.colour = red, label = F) + 
+  theme_minimal() +
+  theme(plot.title = element_blank())
+
+fucked_pred_resid <- ggplot2::autoplot(ch_mod, which = 1, colour = blu, smooth.colour = red,label = F) + 
+  theme_minimal() +
+  theme(plot.title = element_blank())
+
+resid_plots <- list(a = normal_pred_resid, b = hetro_pred_resid, c = curve_pred_resid, d = fucked_pred_resid)
+
+autoplot(resid_plots) %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image_dev, "dsr2_fig_06_29_pred_resid.pdf"), width = 20, height = 20, unit = "cm")
+
+```
+
+```{r}
+set.seed(666)
+x <- tibble::tibble(
+  score = rchisq(100, 3) * 8
+  )
+
+max(x$score)
+
+raw_freq <- ggplot(data = x, aes(x = score)) + 
+  geom_histogram(binwidth = 5, colour = blu, fill = blu, alpha = 0.3) +
+  coord_cartesian(xlim = c(0, 100), ylim = c(0, 20)) +
+  scale_x_continuous(breaks = seq(0, 100, 10)) +
+  scale_y_continuous(breaks = seq(0, 20, 2)) +
+  labs(y = "Frequency", x = 'Score') +
+  theme_minimal()
+
+trans_freq <- ggplot(data = x, aes(x = sqrt(score))) + 
+  geom_histogram(binwidth = 0.5, colour = blu, fill = blu, alpha = 0.3) +
+  coord_cartesian(xlim = c(0, 100), ylim = c(0, 20)) +
+  scale_x_continuous(breaks = seq(0, 100, 10)) +
+  scale_y_continuous(breaks = seq(0, 20, 2)) +
+  labs(y = "Frequency", x = 'Score') +
+  theme_minimal()
+
+patchwork::wrap_plots(raw_freq, trans_freq) %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_06_30_sqrt_trans.pdf"), width = 20, height = 10, unit = "cm")
+```
+
+## Transforming data
+
+```{r}
+
+attract <- c(0, 0, 3, 4, 4, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8, 8, 9, 9, 10, 10)
+fear <- c(0, 1, 3, 4, 6, 5, 6, 5.5, 6.5, 5, 7, 7, 7.5, 8, 9, 8.5, 9.5, 9, 9.5, 10)
+
+rockit <- tibble::tibble(
+  trans = gl(3, 20, labels = c("Raw scores", "Square root of attractiveness", "Square root of both")),
+  Attractiveness = ifelse(trans == "Raw scores", attract, sqrt(attract)),
+  Fear = ifelse(trans == "Square root of both", sqrt(fear), fear)
+  )
+
+rockit_mean_tib <- rockit %>% 
+  tidyr::pivot_longer(
+    cols = c(Attractiveness, Fear),
+    names_to = "Measure",
+    values_to = "Value"
+  )
+
+rockit_scat <- ggplot(rockit, aes(Fear, Attractiveness)) +
+  geom_point(colour = blu, alpha = 0.7) +
+  geom_smooth(method = "lm", se = FALSE, colour = ong, size = 0.5) +
+  facet_wrap(~trans) + 
+  labs(y = "Attractiveness rating", x = "Fear during ride") + 
+  scale_x_continuous(breaks = seq(0, 10, 2)) +
+  scale_y_continuous(breaks = seq(0, 10, 2)) +
+  theme_minimal()
+
+
+rockit_error_bar <- ggplot(rockit_mean_tib, aes(Measure, Value, colour = Measure)) +
+  geom_point(position = position_jitter(width = 0.2), alpha = 0.40) +
+  geom_pointrange(stat = "summary_bin", fun.data = "mean_cl_normal", size = 0.5, colour = gry_dk) +
+  scale_colour_manual(values = c(blu, ong)) +
+  labs(y = "Rating", x = "Measure") +
+  scale_y_continuous(breaks = seq(0, 10, 2)) +
+  facet_wrap(~trans) +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+patchwork::wrap_plots(rockit_scat, rockit_error_bar, ncol = 1) %>%
+  ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_06_31_trans_effects.pdf"), width = 20, height = 15, unit = "cm")
+
+```
+
+
+
+
+
+
+
+
+
+
+```{r manual_ols}
+
+s_1_ols <- lm(y ~ x, data = s_1)
+
+X <- s_1_ols %>% model.matrix()                              
+e <- s1_rsd %>%  dplyr::select(.resid) %>% dplyr::pull()
+sig^2 <- 
+  
+  sum(e^2)/length(e)
+
+rdf = nrow(X) - ncol(X)                    # Residual degrees of freedom
+s.sq = (t(e)%*%e)/rdf
+sigma = sqrt(s.sq)                       # Residual standar error
+
+
+XtX = t(X) %*% X                                  # X transpose X
+Sigma = solve(XtX) * s.sq                         # Variance - covariance matrix for B
+vcov(s_1_ols) # check Sigma matches lm
+
+sqrt(diag(Sigma))                                 # Calculated Std. Errors of coef's
+
+summary(s_1_ols) # check standard errors match lm
+
+
+
+
+
+m <- matrix(c(2, 3, 4, 5), ncol = 1) 
+
+m%*%t(m)
+t(m)%*%m
+```
+

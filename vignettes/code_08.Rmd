@@ -18,10 +18,518 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-
-```
+***
 
 ## Usage
 
 This file contains code relevant to chapter 1 of *Discovering Statistics Using R and RStudio* by [Andy Field](https://www.discoveringstatistics.com/). These files contain abridged sections from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/), ^[Basically you can use this material for teaching and non-profit activities but do not meddle with it or claim it as your own work.]
+
+***
+
+## Load packages
+
+Remember to load the relevant packages mentioned at the start of the chapter:
+
+```{r}
+library(BayesFactor)
+library(broom)
+library(car)
+library(GGally)
+library(parameters)
+library(pixiedust)
+library(robust)
+library(tidyverse)
+```
+
+## Load the data
+
+Remember to load the package for the book with `library(discovr)`. After which you can load data into a tibble by executing:
+
+`name_of_tib <- discovr::name_of_data`
+
+For example, execute these lines to create the tibbles referred to in the chapter:
+
+```{r}
+album_tib <- discovr::album_sales
+df_tib <- discovr::df_beta
+pub_tib <- discovr::pubs
+```
+
+If you want to read the file from the CSV and you have set up your project folder as I suggest in Chapter 1, then the general format of the code you would use is:
+
+```{r, eval = FALSE}
+tibble_name <- here::here("../data/name_of_file.csv") %>%
+  readr::read_csv() %>%
+  dplyr::mutate(
+    ...
+    code to convert character variables to factors
+    ...
+  )
+```
+
+In which you'd replace `tibble_name` with the name you want to assign to the tibble and change `name_of_file.csv` to the name of the file that you're trying to load. You can use mutate to convert categorical variables to factors. For example, for the `album_sales` data you would load it by executing:
+
+```{r, eval = FALSE}
+library(here)
+
+album_tib <- here::here("data/album_sales.csv") %>%
+  readr::read_csv()
+```
+
+
+## Self test on df_beta
+
+Load the data and fit the model with all cases.
+
+```{r}
+df_tib <- discovr::df_beta
+
+df_lm <- df_tib %>% 
+  lm(y ~ x, data = .)
+
+df_lm %>% 
+  broom::tidy()
+```
+
+Fit the model with case 30 excluded.
+
+```{r}
+df_tib %>% 
+  dplyr::filter(case != 30) %>% 
+  lm(y ~ x, data = .) %>% 
+  broom::tidy()
+```
+
+Other diagnostics (look at the values for case 30):
+
+```{r}
+dfbeta(df_lm)
+```
+
+
+
+## Jane superbrain influential cases
+
+Load the data and fit the model with all cases.
+
+```{r}
+pub_tib <- discovr::pubs
+
+pub_lm <- pub_tib %>% 
+  lm(mortality ~ pubs, data = .) 
+
+pub_lm %>% 
+  broom::tidy()
+```
+
+Save influential cases
+
+```{r}
+pub_inf <- pub_lm %>% 
+  broom::augment() %>%
+  dplyr::rename(
+    Residual = .resid,
+    `Cook's distance` = .cooksd,
+    Leverage = .hat,
+  ) %>% dplyr::mutate(
+    District = 1:8,
+    `DF beta (intercept)` = dfbeta(pub_lm)[, 1] %>% round(., 3),
+    `DF beta (pubs)` = dfbeta(pub_lm)[, 2] %>% round(., 3),
+  ) %>% 
+  dplyr::select(District, Residual, `Cook's distance`, Leverage, `DF beta (intercept)`, `DF beta (pubs)`) %>% 
+  round(., 3)
+
+pub_inf
+```
+
+
+
+## Summary information for album sales
+### Summary statistics
+
+```{r}
+album_sum <- album_tib %>% 
+  tidyr::pivot_longer(
+    cols = adverts:image,
+    names_to = "Variable",
+    values_to = "value"
+    ) %>% 
+  dplyr::group_by(Variable) %>% 
+  dplyr::summarize(
+    Mean = mean(value, na.rm = TRUE),
+    SD = sd(value, na.rm = TRUE),
+    `95% CI Lower` = ggplot2::mean_cl_normal(value)$ymin,
+    `95% CI Upper` = ggplot2::mean_cl_normal(value)$ymax,
+    Min = min(value, na.rm = TRUE),
+    Max = max(value, na.rm = TRUE),
+  )
+album_sum
+```
+
+### Scatterplot of album sales against advertising
+
+```{r}
+ggplot2::ggplot(album_tib, aes(adverts, sales)) +
+  geom_point(colour = "#5c97bf") +
+  coord_cartesian(ylim = c(0, 400), xlim = c(0, 2500)) +
+  scale_x_continuous(breaks = seq(0, 2500, 500)) +
+  scale_y_continuous(breaks = seq(0, 400, 100)) +
+  labs(x = "Advertising budget (thousands)", y = "Album sales (thousands)") +
+  geom_smooth(method = "lm", colour = "#d47500", fill = "#d47500", alpha = 0.2) +
+  theme_minimal()
+```
+
+## Fit a model with one predictor
+
+```{r}
+album_lm <- lm(sales ~ adverts, data = album_tib, na.action = na.exclude)
+```
+
+get text output for the model:
+
+```{r}
+summary(album_lm)
+```
+
+Get the confidence intervals for the model parameters old-style:
+
+```{r}
+confint(album_lm)
+```
+
+Or, better .... use `broom()` to get nicely tabulated fit statistics:
+
+```{r}
+broom::glance(album_lm)
+```
+
+Finally, you can compute multiple *R*:
+
+```{r}
+summary(album_lm)$r.squared %>% 
+  sqrt()
+```
+
+
+
+Also use `broom()` to get nicely tabulated parameter estimates (including confidence intervals):
+
+```{r}
+broom::tidy(album_lm, conf.int = TRUE)
+```
+
+Impress your friends by rounding values to 3 decimal places using `mutate_if()`
+
+```{r}
+broom::tidy(album_lm, conf.int = TRUE) %>%
+  dplyr::mutate_if(
+    vars(is.numeric(.)),
+    list(~round(., 3))
+  )
+```
+
+Or by using the `pixiedust` package:
+
+```{r}
+broom::tidy(album_lm, conf.int = TRUE) %>%
+  pixiedust::dust() %>% 
+  pixiedust::sprinkle(col = 2:7, round = 3)
+```
+
+
+
+## Fit a model with several predictor
+
+### Bivariate correlations and scatterplots
+
+Plot the data
+
+```{r}
+GGally::ggscatmat(album_tib, columns = c("adverts", "airplay", "image", "sales")) +
+  theme_minimal()
+```
+
+
+### Build the model
+
+
+```{r}
+album_full_lm <- lm(sales ~ adverts + airplay + image, data = album_tib, na.action = na.exclude)
+```
+
+Or, use the update function:
+
+```{r}
+album_full_lm <- update(album_lm, .~. + airplay + image)
+```
+
+### Fit statistics
+
+```{r}
+broom::glance(album_full_lm)
+```
+
+multiple R-square:
+
+```{r}
+summary(album_full_lm)$r.squared %>% 
+  sqrt()
+```
+
+### Compare models
+
+```{r}
+anova(album_lm, album_full_lm) %>% 
+  broom::tidy()
+```
+
+### Parameter estimates
+
+As text:
+
+```{r}
+summary(album_full_lm)
+confint(album_full_lm)
+```
+
+As a nicely formatted table:
+
+```{r}
+broom::tidy(album_full_lm, conf.int = TRUE)
+```
+
+Restrict the output to 3 decimal places
+
+```{r}
+broom::tidy(album_full_lm, conf.int = TRUE) %>% 
+  dplyr::mutate_if(
+    vars(is.numeric(.)),
+    list(~round(., 3))
+  )
+```
+
+### Standardized betas
+
+
+```{r}
+parameters::model_parameters(album_full_lm, standardize = "refit", digits = 3)
+```
+
+
+### Influence measures
+
+```{r}
+album_full_rsd <- album_full_lm %>% 
+  broom::augment() %>% 
+  tibble::rowid_to_column(var = "case_no")
+
+album_full_rsd
+```
+
+
+
+
+```{r}
+album_full_inf <- influence.measures(album_full_lm)
+
+album_full_inf <- album_full_inf$infmat %>% 
+  tibble::as_tibble() %>%
+  tibble::rowid_to_column(var = "case_no")
+  
+
+album_full_inf
+```
+
+If you want to keep all of your diagnostic stats in one object:
+
+```{r}
+album_full_rsd <- album_full_rsd %>% 
+  dplyr::left_join(., album_full_inf, by = "case_no") %>% 
+  dplyr::select(-c(cook.d, hat))
+```
+
+### Variance inflation factor
+
+```{r}
+car::vif(album_full_lm)
+1/car::vif(album_full_lm)
+car::vif(album_full_lm) %>% 
+  mean()
+```
+
+### Casewise diagnostics
+
+```{r}
+get_cum_percent <- function(var,  cut_off = 1.96){
+  ecdf_var <- abs(var) %>% ecdf()
+  100*(1 - ecdf_var(cut_off))
+}
+
+
+album_full_rsd %>%
+  dplyr::summarize(
+    `z >= 1.96` = get_cum_percent(.std.resid),
+    `z >= 2.58` = get_cum_percent(.std.resid, cut_off = 2.58),
+    `z >= 3.29` = get_cum_percent(.std.resid, cut_off = 3.29)
+  )
+```
+
+```{r}
+album_full_rsd %>% 
+  dplyr::filter(abs(.std.resid) >= 1.96) %>%
+  dplyr::select(case_no, .std.resid, .resid) %>%
+  dplyr::arrange(.std.resid)
+```
+
+```{r}
+album_full_inf %>%
+  dplyr::arrange(desc(cook.d)) %>% 
+  dplyr::mutate_if(
+    vars(is.numeric(.)),
+    list(~round(., 3))
+  )
+```
+
+Show case with any df beta with an absolute value greater than 1.
+
+```{r}
+album_full_inf %>% 
+  dplyr::filter_at(
+    vars(starts_with("dfb")),
+    any_vars(abs(.) > 1)
+  ) %>% 
+  dplyr::select(case_no, starts_with("dfb")) %>% 
+  dplyr::mutate_if(
+    vars(is.numeric(.)),
+    list(~round(., 3))
+  )
+```
+
+Show cases with problematic leverage or CVR:
+
+```{r}
+leverage_thresh <- 3*mean(album_full_inf$hat, na.rm = TRUE)                
+
+album_full_inf %>%
+  dplyr::filter(
+    hat > leverage_thresh | !between(cov.r, 1 - leverage_thresh, 1 + leverage_thresh)
+    ) %>%  
+  dplyr::select(case_no, cov.r, hat, cook.d) %>% 
+  dplyr::mutate_if(
+    vars(is.numeric(.)),
+    list(~round(., 3))
+  )
+
+  
+```
+
+### Diagnostic plots
+
+Standard influence plots
+
+```{r}
+plot(album_full_lm, which = 4:6)
+```
+
+Residual plot:
+
+```{r}
+plot(album_full_lm, which = c(1, 3))
+```
+
+Q-Q plot:
+
+```{r}
+plot(album_full_lm, which = 2)
+```
+
+### Prettier diagnostic plots
+
+The `ggfortify` package allows us to pruduce prettier versions of the diagnostic plots. For example:
+
+ influence plots
+
+```{r}
+library(ggfortify)
+ggplot2::autoplot(album_full_lm, which = 4:6,
+                  colour = "#5c97bf",
+                  smooth.colour = "#ef4836",
+                  alpha = 0.5,
+                  size = 1) + 
+  theme_minimal()
+```
+
+Residual plot:
+
+```{r}
+ggplot2::autoplot(album_full_lm, which = c(1, 3),
+                  colour = "#5c97bf",
+                  smooth.colour = "#ef4836",
+                  alpha = 0.5,
+                  size = 1) + 
+  theme_minimal()
+```
+
+Q-Q plot:
+
+```{r}
+ggplot2::autoplot(album_full_lm, which = 2,
+                  colour = "#5c97bf",
+                  smooth.colour = "#ef4836",
+                  alpha = 0.5,
+                  size = 1) + 
+  theme_minimal()
+
+```
+
+
+
+### Robust linear model
+
+Robust estimates:
+
+```{r}
+album_full_rob <- robust::lmRob(sales ~ adverts + airplay + image, data = album_tib, na.action = na.exclude)
+summary(album_full_rob)
+```
+
+Robust standard errors and confidence intervals:
+
+```{r}
+parameters::model_parameters(
+  album_full_lm,
+  robust = TRUE,
+  vcov.type = "HC4",
+  digits = 3
+  )
+```
+
+Bootstrap
+
+```{r}
+parameters::model_parameters(
+  album_full_lm,
+  bootstrap = TRUE,
+  digits = 3
+  )
+```
+
+### Bayes factors
+
+```{r}
+album_bf <- album_tib %>%
+  BayesFactor::regressionBF(sales ~ adverts + airplay + image, rscaleCont = "medium", data = .)
+
+album_bf
+```
+
+### Bayesian parameter estimates
+
+```{r}
+album_full_bf <- album_tib %>%
+  BayesFactor::lmBF(sales ~ adverts + airplay + image, rscaleCont = "medium", data = .)
+
+album_full_post <- posterior(album_full_bf, iterations = 10000)
+summary(album_full_post)
+```
+

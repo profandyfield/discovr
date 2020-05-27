@@ -18,10 +18,363 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
 
-```
+***
 
 ## Usage
 
 This file contains code relevant to chapter 1 of *Discovering Statistics Using R and RStudio* by [Andy Field](https://www.discoveringstatistics.com/). These files contain abridged sections from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/), ^[Basically you can use this material for teaching and non-profit activities but do not meddle with it or claim it as your own work.]
+
+***
+
+## Load packages
+
+Remember to load the relevant packages mentioned at the start of the chapter:
+
+```{r}
+
+library(tidyverse)
+
+```
+
+## Load the data
+
+Remember to load the package for the book with `library(discovr)`. After which you can load data into a tibble by executing:
+
+`name_of_tib <- discovr::name_of_data`
+
+For example, execute these lines to create the tibbles referred to in the chapter:
+
+```{r}
+vids_tib <- discovr::video_games
+infidelity_tib <- discovr::lambert_2012
+newz_tib <- discovr::bronstein_2019
+newz_md_tib <- discovr::bronstein_miss_2019
+```
+
+If you want to read the file from the CSV and you have set up your project folder as I suggest in Chapter 1, then the general format of the code you would use is:
+
+```{r, eval = FALSE}
+tibble_name <- here::here("../data/name_of_file.csv") %>%
+  readr::read_csv() %>%
+  dplyr::mutate(
+    ...
+    code to convert character variables to factors
+    ...
+  )
+```
+
+In which you'd replace `tibble_name` with the name you want to assign to the tibble and change `name_of_file.csv` to the name of the file that you're trying to load. You can use mutate to convert categorical variables to factors. For example, for the `video_games` data you would load it by executing:
+
+```{r, eval = FALSE}
+library(here)
+
+vids_tib <- here::here("data/video_games.csv") %>%
+  readr::read_csv()
+```
+
+## Centering variables
+
+A basic method
+
+```{r eval = FALSE}
+
+vids_tib <- discovr::video_games
+
+vids_tib <- vids_tib %>% 
+  dplyr::mutate(
+    caunts_cent = caunts - mean(caunts, na.rm = TRUE),
+    vid_game_cent = vid_game - mean(vid_game, na.rm = TRUE)
+  )
+
+vids_tib
+```
+
+
+```{r}
+# Create a general function to do the centring
+centre <- function(var){
+  var - mean(var, na.rm = TRUE)
+}
+
+# use the general function to centre multiple variables at once
+vids_tib <- vids_tib %>% 
+  dplyr::mutate_at(
+    vars(vid_game, caunts),
+    list(cent = centre)
+  )
+
+vids_tib
+```
+
+```{r, eval = FALSE}
+
+vids_tib <- vids_tib %>% 
+  dplyr::mutate(
+    interaction = caunts_cent*vid_game_cent
+  )
+
+vids_tib
+```
+
+## Fitting the model
+
+```{r}
+aggress_lm <- lm(aggress ~ caunts_cent + vid_game_cent + caunts_cent:vid_game_cent, data = vids_tib)
+```
+
+Or
+
+```{r eval = FALSE}
+aggress_lm <- lm(aggress ~ caunts_cent*vid_game_cent, data = vids_tib)
+```
+
+Viewing the model:
+
+```{r}
+broom::glance(aggress_lm)
+broom::tidy(aggress_lm, conf.int = TRUE)
+```
+
+Or, also round the digits 
+
+```{r}
+aggress_lm %>%
+  broom::tidy() %>% 
+  dplyr::mutate_if(
+    vars(is.numeric(.)),
+    list(~round(., digits = 3))
+  )
+```
+
+Fit a robust model:
+
+```{r}
+parameters::model_parameters(aggress_lm, robust = TRUE, vcov.type = "HC4", digits = 3)
+```
+
+
+## Simple slopes and Johnson-Neyman interval
+
+```{r}
+interactions::sim_slopes(
+  aggress_lm,
+  pred = vid_game_cent,
+  modx = caunts_cent,
+  jnplot = TRUE,
+  robust = TRUE,
+  confint = TRUE
+  )
+
+```
+
+Simple slopes plot
+
+```{r}
+interactions::interact_plot(
+  aggress_lm,
+  pred = vid_game_cent,
+  modx = caunts_cent,
+  interval = TRUE,
+  x.label = "Time playing video games per week (hours)",
+  y.label = "Predicted agression",
+  legend.main = "Callous unemotional traits"
+  ) 
+```
+
+# Mediation
+## Self-test
+
+```{r}
+m1 <- lm(phys_inf ~ ln_porn, data = infidelity_tib)
+m2 <- lm(commit ~ ln_porn, data = infidelity_tib)
+m3 <- lm(phys_inf ~ ln_porn + commit, data = infidelity_tib)
+
+broom::tidy(m1, conf.int = TRUE)
+broom::tidy(m2, conf.int = TRUE)
+broom::tidy(m3, conf.int = TRUE) %>% mutate_if(vars(is.numeric(.)), list(~round(., 3)))
+
+
+```
+
+## The better method
+
+Look at patterns of missing data
+
+```{r}
+
+infidelity_tib %>% 
+  dplyr::select(id, commit, ln_porn, phys_inf) %>% 
+  mice::md.pattern()
+
+infidelity_tib %>% 
+  dplyr::select(id, commit, ln_porn, phys_inf) %>%
+  mice::ic()
+
+
+infidelity_tib <- infidelity_tib %>% 
+  dplyr::select(id, commit, ln_porn, phys_inf) %>% 
+  na.omit()
+
+```
+
+Fit the model
+
+```{r}
+
+infidelity_mod <- 'phys_inf ~ c*ln_porn + b*commit
+                   commit ~ a*ln_porn
+
+                   indirect_effect := a*b
+                   total_effect := c + (a*b)
+                   '
+
+infidelity_fit <- lavaan::sem(infidelity_mod, data = infidelity_tib, missing = "FIML", estimator = "MLR")
+
+broom::glance(infidelity_fit)
+
+broom::tidy(infidelity_fit, conf.int = TRUE) %>%
+  dplyr::mutate_if(
+    vars(is.numeric(.)),
+    list(~round(., 3))
+  )
+```
+
+Non-robust version for shits and giggles:
+
+```{r}
+infidelity_nonrob <- lavaan::sem(infidelity_mod, data = infidelity_tib, missing = "FIML")
+
+broom::tidy(infidelity_rob, conf.int = TRUE) %>%
+  dplyr::mutate_if(
+    vars(is.numeric(.)),
+    list(~round(., 3))
+  )
+```
+
+Standardized solution:
+
+```{r}
+lavaan::standardizedsolution(infidelity_fit)
+```
+
+
+## Two mediators
+
+```{r}
+newz_mod <- 'fake_newz ~ c*delusionz + b1*thinkz_open + b2*thinkz_anal
+                thinkz_open ~ a1*delusionz
+                thinkz_anal ~ a2*delusionz
+
+                indirect_open := a1*b1
+                indirect_anal := a2*b2
+                total_effect := c + (a1*b1) + (a2*b2)
+                thinkz_open ~~ thinkz_anal
+                '
+
+newz_fit <- lavaan::sem(newz_mod, data = newz_tib, se = "bootstrap")
+
+ broom::tidy(newz_fit, conf.int = TRUE) %>%
+  dplyr::mutate_if(
+    vars(is.numeric(.)),
+    list(~round(., 3))
+  )
+```
+
+# Missing data
+
+## Look for patterns of missingness
+
+```{r}
+newz_md_tib %>%
+  dplyr::select(-id) %>% 
+  mice::md.pattern(., rotate.names = TRUE)
+```
+
+```{r}
+newz_md_tib %>%
+  mice::ic()
+```
+
+
+## Casewise deletion
+
+```{r}
+
+fake_lm <- lm(fake_newz ~ delusionz + thinkz_open + thinkz_anal, data = newz_md_tib)
+
+broom::glance(fake_lm)
+
+broom::tidy(fake_lm, conf.int = TRUE) %>% 
+  dplyr::mutate_if(
+    vars(is.numeric(.)),
+    list(~round(., 3))
+    )
+```
+
+
+
+
+
+
+complete data
+
+```{r}
+lm(fake_newz ~ delusionz + thinkz_open + thinkz_anal, data = newz_tib) %>%
+  broom::tidy() %>% 
+    dplyr::mutate_if(
+    vars(is.numeric(.)),
+    list(~round(., 3))
+  )
+```
+
+## FIML
+
+```{r}
+newz_lm <- 'fake_newz ~ delusionz + thinkz_open + thinkz_anal
+            fake_newz ~ 1
+            '
+
+# don't need the intercept because variables are standardized, otherwise include fake_newz ~ 1)
+
+newz_lm_fit <- lavaan::sem(newz_lm, data = newz_tib)
+
+ broom::tidy(newz_lm_fit, conf.int = TRUE) %>%
+  dplyr::mutate_if(
+    vars(is.numeric(.)),
+    list(~round(., 3))
+  )
+ 
+newz_lm <- 'fake_newz ~ delusionz + thinkz_open + thinkz_anal
+            '
+newz_lm_fit <- lavaan::sem(newz_lm, data = newz_md_tib, missing = "FIML")
+
+ broom::tidy(newz_lm_fit, conf.int = TRUE) %>%
+  dplyr::mutate_if(
+    vars(is.numeric(.)),
+    list(~round(., 3))
+  ) 
+ 
+
+
+```
+
+## Multiple imputation
+
+
+
+Imputation
+
+```{r}
+newz_imps <- newz_md_tib %>% 
+  dplyr::select(-id) %>% 
+  mice::mice(method = "pmm", m = 20)
+
+
+
+newz_mi_fit <- with(newz_imps, lm(fake_newz ~ delusionz + thinkz_open + thinkz_anal))
+
+newz_pool_fit <- mice::pool(newz_mi_fit)
+summary(newz_pool_fit)
+```
+

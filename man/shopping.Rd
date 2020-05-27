@@ -4,9 +4,11 @@
 \name{shopping}
 \alias{shopping}
 \title{Shopping and exercise data}
-\format{A tibble with 10 rows and 3 variables.}
+\format{
+A tibble with 10 rows and 3 variables.
+}
 \source{
-\url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+\href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{https://www.discoveringstatistics.com/books/discovering-statistics-using-r}
 }
 \usage{
 shopping
@@ -18,7 +20,6 @@ A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (
 According to some highly unscientific research done by a UK department store chain and reported in Marie Claire magazine (\url{http://ow.ly/9Dxvy}), shopping is good for you.
 They found that the average woman spends 150 minutes and walks 2.6 miles when she shops, burning off around 385 calories. In contrast, men spend only about 50 minutes shopping, covering 1.5 miles.
 This was based on strapping a pedometer on a mere 10 participants. Although I don’t have the actual data, some simulated data based on these means are in this file.
-
 \itemize{
 \item \strong{sex}: biological sex of the individual
 \item \strong{distance}: the distance travelled in miles

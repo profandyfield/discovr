@@ -19,7 +19,6 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(gmodels)
 library(tidyverse)
 ```
 
@@ -27,7 +26,7 @@ library(tidyverse)
 
 This file contains code relevant to chapter 1 of *Discovering Statistics Using R and RStudio* by [Andy Field](https://www.discoveringstatistics.com/). These files contain abridged sections from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/), ^[Basically you can use this material for teaching and non-profit activities but do not meddle with it or claim it as your own work.]
 
-## Confidence intervals
+## Confidence intervals using `Hmisc` and `ggplot2`
 
 ```{r}
 
@@ -36,22 +35,21 @@ fb_tib <- tibble::tibble(.rows = 11) %>%
     friends = c(57, 40, 103, 234, 93, 53, 116, 98, 108, 121, 22)
   )
 
-gmodels::ci(fb_tib$friends, confidence = 0.95, na.rm = FALSE)
-gmodels::ci(fb_tib$friends)
+ggplot2::mean_cl_normal(fb_tib$friends)
 
 ```
 
 Something other than a 95% interval:
 
 ```{r}
-gmodels::ci(fb_tib$friends, confidence = 0.90)
+ggplot2::mean_cl_normal(fb_tib$friends, conf.int = 0.90)
 ```
 
-Access individual values by appending their label in square brackets to the function. Executing this gives us the lopwer boundary of the 95% confidence interval:
+Access individual values by using `$` to access the variable name (`y` for the estimate of the mean, `ymin` for the lower boundary of the CI and `ymax` for the upper boundary). Executing this gives us the lower boundary of the 95% confidence interval:
 
 ```{r}
 
-gmodels::ci(fb_tib$friends)['CI lower']
+ggplot2::mean_cl_normal(fb_tib$friends)$ymin
 ```
 
 Use extracted value to create tables of summary statistics:
@@ -61,20 +59,75 @@ Use extracted value to create tables of summary statistics:
 
 fb_tib %>%
   dplyr::summarize(
-    mean =  gmodels::ci(friends)['Estimate'],
-    `95% CI Lower` = gmodels::ci(friends)['CI lower'],
-    `95% CI Upper` = gmodels::ci(friends)['CI upper'],
+    Mean =  ggplot2::mean_cl_normal(friends)$y,
+    `95% CI Lower` = ggplot2::mean_cl_normal(friends)$ymin,
+    `95% CI Upper` = ggplot2::mean_cl_normal(friends)$ymax,
     ) %>% 
   round(., 2)
 ```
-You can also combine these with opther functions to get summary statistics:
+You can also combine these with other functions to get summary statistics:
 
 ```{r}
 fb_tib %>%
   dplyr::summarize(
-    Mean =  gmodels::ci(friends)['Estimate'],
-    `95% CI Lower` = gmodels::ci(friends)['CI lower'],
-    `95% CI Upper` = gmodels::ci(friends)['CI upper'],
+    Mean =  ggplot2::mean_cl_normal(friends)$y,
+    `95% CI Lower` = ggplot2::mean_cl_normal(friends)$ymin,
+    `95% CI Upper` = ggplot2::mean_cl_normal(friends)$ymax,
+    IQR = IQR(friends),
+    `Std. dev.` = sd(friends)
+    ) %>% 
+  round(., 2)
+
+```
+
+
+## Confidence intervals using `gmodels`
+
+```{r}
+
+fb_tib <- tibble::tibble(.rows = 11) %>% 
+  dplyr::mutate(
+    friends = c(57, 40, 103, 234, 93, 53, 116, 98, 108, 121, 22)
+  )
+
+ggplot2::mean_cl_normal(fb_tib$friends)
+
+```
+
+Something other than a 95% interval:
+
+```{r}
+ggplot2::mean_cl_normal(fb_tib$friends, conf.int = 0.90)
+```
+
+Access individual values by appending their label in square brackets to the function. Executing this gives us the lower boundary of the 95% confidence interval:
+
+```{r}
+
+ggplot2::mean_cl_normal(fb_tib$friends)$ymin
+```
+
+Use extracted value to create tables of summary statistics:
+
+```{r}
+# Tidyverse sumptuousness:
+
+fb_tib %>%
+  dplyr::summarize(
+    Mean =  ggplot2::mean_cl_normal(friends)$y,
+    `95% CI Lower` = ggplot2::mean_cl_normal(friends)$ymin,
+    `95% CI Upper` = ggplot2::mean_cl_normal(friends)$ymax,
+    ) %>% 
+  round(., 2)
+```
+You can also combine these with other functions to get summary statistics:
+
+```{r}
+fb_tib %>%
+  dplyr::summarize(
+    Mean =  ggplot2::mean_cl_normal(friends)$y,
+    `95% CI Lower` = ggplot2::mean_cl_normal(friends)$ymin,
+    `95% CI Upper` = ggplot2::mean_cl_normal(friends)$ymax,
     IQR = IQR(friends),
     `Std. dev.` = sd(friends)
     ) %>% 

@@ -4,9 +4,11 @@
 \name{ong_2011}
 \alias{ong_2011}
 \title{Ong et al. (2011) data: wide/messy format}
-\format{A tibble with 275 rows and 11 variables.}
+\format{
+A tibble with 275 rows and 12 variables.
+}
 \source{
-\url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+\href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{https://www.discoveringstatistics.com/books/discovering-statistics-using-r}
 }
 \usage{
 ong_2011
@@ -18,9 +20,9 @@ A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (
 A study by Ong et al., (2011) examining the relationship between a person's narcissism and other people’s ratings of their profile picture on Facebook.
 The pictures were rated on each of four dimensions: coolness, glamour, fashionableness, and attractiveness. In addition, each person was measures on introversion/extroversion and narcissism.
 These data are in messy/wide format. The data contains the following variables:
-
 \itemize{
 \item \strong{id}: a number identifying he participant
+\item \strong{grade}: participants grade at school (Sec 1, Sec 2 or Sec 3)
 \item \strong{age}: participant's age in years
 \item \strong{sex}: biological sex of the participant
 \item \strong{status}: frequency of changing ones Facebook status per week

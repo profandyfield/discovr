@@ -1,0 +1,349 @@
+---
+title: "discovr: Associations"
+author: "Andy Field"
+output:
+  learnr::tutorial:
+    progressive: false
+    theme: "paper"
+runtime: shiny_prerendered
+description: "Associations. Plotting data with GGally. Pearson's r, Spearman's Rho, Kendall's tau, robust correlations."
+bibliography: discovr_07.bib
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+
+library(magrittr)
+library(learnr)
+library(ggplot2)
+
+hint_text <- function(text, text_color = "#E69F00"){
+  hint <- paste("<font color='", text_color, "'>", text, "</font>", sep = "")
+  return(hint)
+}
+
+#Read dat files needed for the tutorial
+
+exam_tib <- discovr::exam_anxiety
+liar_tib <- discovr::biggest_liar
+```
+
+
+# discovr: Associations
+
+## Overview
+
+This tutorial is one of a series that accompanies [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/) [@fieldDiscoveringStatisticsUsing2020] by me, [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). These tutorials contain abridged sections from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/), ^[Basically you can use this tutorial for teaching and non-profit activities but do not meddle with it or claim it as your own work.]
+
+* Who is the tutorial aimed at?
+    - Anyone teaching from or reading [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)  may find them useful.
+* What is covered?
+    - This tutorial looks at some key concepts in using **R** and **RStudio**. It would be a useful tutorial to run at the start of a module, or alongside teaching based on Chapter 1 of [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/).
+    - This tutorial *does not* teach the background theory: it is assumed you have either attended my lecture or read the relevant chapter in the aforementioned book (or someone else's)
+
+If you haven't done so already, I recommend working through [this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/) on how to install, set up and work within R and RStudio before starting this tutorial.
+
+## Packages and data
+
+The tutorials are self-contained (you practice code in code boxes) so you don’t need to use RStudio at the same time. However, I recommend that you open another RStudio session to the one that you're using to run this tutorial. In this second RStudio session, open an R markdown file and practice everything you do in the tutorial in the R markdown file (and save it). This video explains the sort of workflow that I mean:
+
+![]("https://youtu.be/FE0ntX0dyc4")
+
+`r hint_text("Within the tutorial itself, everything will work. To replicate things outside of the tutorial you will need to load the relevant packages and data.")`
+
+### Packages
+
+To work *outside of this tutorial* you need to load the following packages:
+
+* `correlation` [@makowski_methods_2020]
+* `GGally` [@Schloerke_Crowley_Cook_Briatte_Marbach_Thoen_Elberg_Larmarange_2018]
+* `here` [@here]
+* `tidyverse` [@tidyverse]
+* `WRS2` [@Mair_Wilcox_2019]
+
+
+If you haven't already done this, install a package at the command line using `install.packages("package_name")`, where *package_name* is the name of the package. If the package has already been installed, load it by typing `library(package_name)`, where *package_name* is the name of the package, within the first code chunk in your R markdown file.
+
+### Data
+
+To work *outside of this tutorial* you need to download the following data files:
+
+* [biggest_liar.csv](http://www.discoveringstatistics.com/repository/discovr_data/biggest_liar.csv)
+* [exam_anxiety.csv](http://www.discoveringstatistics.com/repository/discovr_data/exam_anxiety.csv)
+
+
+Assuming you set up an RStudio project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), then save the data files to the folder within your project folder called `data`. Then, in the first code chunk in your R Markdown document, execute:
+
+```{r, eval=FALSE}
+liar_tib <- here::here("data/biggest_liar.csv") %>% readr::read_csv()
+exam_tib <- here::here("data/exam_anxiety.csv") %>% readr::read_csv()
+```
+
+### Preparing data
+
+To work *outside of this tutorial* you need to turn categorical variables into factors and set an appropriate baseline category using `forcats::as_factor` and `forcats::fct_relevel`.
+
+For `liar_tib` execute the following code:
+
+```{r, eval=FALSE}
+liar_tib <- liar_tib %>% 
+  dplyr::mutate(
+    novice = forcats::as_factor(novice)
+  )
+```
+
+For `exam_tib` execute the following code:
+
+```{r, eval=FALSE}
+exam_tib <- exam_tib %>%
+  dplyr::mutate(
+    id = forcats::as_factor(id),
+    sex = forcats::as_factor(sex)
+  )
+```
+
+
+## Correlation process
+
+Figure 1 shows a general procedure to follow when computing a bivariate correlation coefficient. First, check for sources of bias as outlined. The two most important ones in this context are linearity and normality. Remember that we’re fitting linear model to the data, so if the relationship between variables is not linear then this model is invalid. To meet this requirement, the outcome variable needs to be measured at the interval or ratio level as does the predictor variable (one exception is that a predictor variable can be a categorical variable with only two categories). As far as normality is concerned, we care about this only if we want confidence intervals or significance tests and if the sample size is small.
+
+If the data have outliers, are not normal implying a non-normal sampling distribution (and the sample is small) or your variables are measured at the ordinal level then you can use Spearman’s rho or Kendall’s tau, which are versions of the correlation coefficient applied to ranked data. Ranking the data reduces the impact of outliers but we lose information so, we can instead fit a robust variant such as the percentile bend correlation or Winsorized correlation. Furthermore, given that normality of the sampling distribution matters only for inferring significance and computing confidence intervals in small samples, we could use a bootstrap to compute the confidence interval in small samples, then we don’t need to worry about this assumption.
+
+![Figure 1: The general process for conducting correlation analysis](./images/dsr2_fig_07_05_correlation_process.png)
+ 
+## Visualizing the data
+
+In a previous tutorial we looked at an example relating to exam anxiety: a psychologist was interested in the effects of exam stress and revision on exam performance. She had devised and validated a questionnaire to assess state anxiety relating to exams (called the Exam Anxiety Questionnaire, or EAQ). This scale produced a measure of anxiety scored out of 100. Anxiety was measured before an exam, and the percentage mark of each student on the exam was used to assess the exam performance. She also measured the number of hours spent revising. These data are preloaded in this tutorial in a tibble called `exam_tib`. Use the code box to see these data.
+
+```{r exam_data, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r exam_data-solution}
+exam_tib
+```
+
+Note there are five variables: the participant **id**, the hours spent revising (**revise**), their **exam_grade**, their exam **anxiety**, and their biological **sex**. We can visualise the data easily using the `GGally` package. When you want to plot continuous variables, the `ggscatmat()` function from this package produces a matrix of scatterplots (below the diagonal), distributions (along the diagonal) and the correlation coefficient (above the diagonal). It takes the general form:
+
+```{r, eval = FALSE}
+GGally::ggscatmat(my_tibble, columns = c("variable 1", " variable 2", " variable 3" …))
+```
+
+Basically, you feed in the name of the tibble containing the variables, and use the columns argument to name the variables that you want to plot. For example, to plot the variables called **exam_grade**, **revise**, and **anxiety** we execute:
+
+```{r, eval = FALSE}
+GGally::ggscatmat(exam_tib, columns = c("exam_grade", "revise", "anxiety"))
+```
+
+It’s as simple as that! Like other plots we have done, we can also apply a theme (I like `theme_minimal()`) in the usual way:
+
+```{r, eval = FALSE}
+GGally::ggscatmat(exam_tib, columns = c("exam_grade", "revise", "anxiety")) +
+  theme_minimal()
+```
+
+Try this in the code box:
+
+```{r exam_plot, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r exam_plot-solution}
+GGally::ggscatmat(exam_tib, columns = c("exam_grade", "revise", "anxiety")) +
+  theme_minimal()
+```
+
+The resulting plot shows that all of the variables are skewed. This skew could be a problem if we want to do significance tests or look at confidence intervals. The sample contains 103 observations, which is reasonably large, and possibly large enough for the central limit theorem to relieve of us of concerns about normality. We should consider using a robust method to compute the correlation coefficient itself.
+
+##	Pearson's correlation using R
+
+The `correlation` package brings together lots of correlation-related stuff into a nice, easy-to-use bundle of loveliness. It has one workhorse function called … wait for it … `correlation()`. It takes the general form
+
+```{r eval = FALSE}
+correlation::correlation(tibble,
+                         method = "pearson",
+                         p_adjust = "holm",
+                         ci = 0.95
+                         )
+```
+
+I’ve listed the main arguments, but there are others. For now, we’ll just look at the main arguments that we will use:
+
+* `tibble`. This word should be replaced with the name of the tibble containing any variables that you wish to correlate.
+* `method`. This argument sets the method for the correlation coefficient. By default it is set to *pearson* (to calculate Pearson’s coefficient) but can be changed to *spearman*, *kendall*, *biserial*, *polychoric*, *tetrachoric*, and *percentage* (for percentage bend correlation) amongst others. We’ll look at some, but not all of these methods.
+* `p_adjust`. By default the function corrects the *p*-value for the number of tests you have performed (a good idea) using the Holm-Bonferroni method, which applies the Bonferroni criterion in a slightly less strict way that controls the Type I error rate but with less risk of a Type II error. You can change this argument to *none* (don’t correct for multiple tests, a bad idea), *bonferroni* (to apply the standard Bonferroni method) or several other methods.
+*	`ci`. This argument sets the confidence interval width. By default it is 0.95 for a 95% confidence interval, which will probably be what you’ll generally use.
+
+To use the function, take your tibble, pipe it into the `select()` function from `dplyr` to select the variables you want to correlate, then pipe that into the correlation function. You can use the same code structure whether you want to correlate two variables or produce all correlations between pairs of multiple variables. For example, to calculate the Pearson correlation between the variables **exam_grade** and **revise** in `exam_tib`, we’d execute:
+```{r eval = FALSE}
+exam_tib %>% 
+  dplyr::select(exam_grade, revise) %>% 
+  correlation::correlation()
+```
+
+This code takes the exam_tib and uses the `select()` function to select the variables exam_grade and revise. The result is that a tibble with these two variables in is fed into the `correlation()` function to compute the correlation between them. Try this code.
+
+```{r basicr, exercise = TRUE, exercise.lines = 3}
+
+```
+
+```{r basicr-solution}
+exam_tib %>% 
+  dplyr::select(exam_grade, revise) %>% 
+  correlation::correlation()
+```
+
+This approach scales up nicely. For example, if we now also want to see the correlations with exam anxiety we need only add this variable to the `select()` function:
+
+```{r eval = FALSE}
+exam_tib %>% 
+  dplyr::select(exam_grade, revise, anxiety) %>% 
+  correlation::correlation()
+```
+
+Try it out
+
+```{r tidypr, exercise = TRUE, exercise.lines = 3}
+
+```
+
+```{r tidypr-solution}
+exam_tib %>% 
+  dplyr::select(exam_grade, revise, anxiety) %>% 
+  correlation::correlation()
+```
+
+The resulting output tells us that exam grade has a correlation with revision of *r* = 0.40 (which we already knew), and a similar strength relationship with exam anxiety, *r* = -0.44 (but in the opposite direction). As revision increases so does exam performance, but as anxiety increase exam performance decreases. We also see that revision has a very strong negative relationship with exam anxiety, *r* = -0.71. The more you revise the less anxiety you have about the exam. All *p*-values are less than 0.001 (and, so also less than 0.05) and would be interpreted as the correlation coefficients being significantly different from zero. The significance values tell us that the probability of getting correlation coefficients at least this big as these in a sample of 103 people if the null hypothesis were true (there was no relationship between these variables) is very low (close to zero in fact). If we’re prepared to assume that the sample is one of the 95% of samples that will produce a confidence interval containing the population value, then the confidence intervals tell us about the uncertainty around the value of r. For example, under this assumption, the population value of the association between exam grade and revision falls between 0.22 and 0.55.
+
+TIP: If you want more decimal places in your output use the argument `ci_digits` to control the number of decimal places for the confidence intervals and `digits` to control the number of decimal places in the other columns. For example, the code to display the previous output to three decimal places is:
+
+```{r eval = FALSE}
+exam_tib %>% 
+  dplyr::select(exam_grade, revise, anxiety) %>% 
+  correlation::correlation(digits = 3, ci_digits = 3)
+```
+
+This won't work within this tutorial (for reasons I won't bore you with), but try it out in a markdown document.
+
+##	Robust correlation coefficients
+
+Given the skew in some of the variables, we are probably better off estimating a robust correlation coefficient, like the percentage bend correlation coefficient [@Wilcox_1994]. We can obtain this by setting `method = "percentage"` within the `correlation()`:
+
+```{r eval = FALSE}
+exam_tib %>% 
+  dplyr::select(exam_grade, revise, anxiety) %>% 
+  correlation::correlation(method = "percentage")
+```
+
+Try it out:
+
+```{r pball, exercise = TRUE, exercise.lines = 3}
+
+```
+
+```{r pball-solution}
+exam_tib %>% 
+  dplyr::select(exam_grade, revise, anxiety) %>% 
+  correlation::correlation(method = "percentage")
+```
+
+
+Compare the values of these robust correlations to the raw Pearson correlations you obtained earlier. Exam grade had a Pearson correlation with revision of $r = 0.40$, but the percentage bend correlation is smaller (0.34). Similarly the robust versions of the other correlations are smaller than the raw Pearson correlations (although they all remain significant with *p*s < 0.05).
+
+## Spearman’s Correlation Coefficient
+
+Spearman correlations are very easy once you've mastered `correlation()`. Let's switch example. Imagine I wanted to test a theory that more creative people will be better liars. I gathered together 68 past contestants from the World’s Biggest Liar competition (held annually at the Santon Bridge Inn in Wasdale in case you're interested) and noted where they were placed in the competition (first, second, third, etc.); I also gave them a creativity questionnaire (maximum score 60). The position in the competition is an ordinal variable because the places are categories but have a meaningful order (first place is better than second place and so on). Therefore, Spearman’s correlation coefficient should be used (Pearson’s *r* requires interval or ratio data). The data for this study are preloaded in this tutorial in a tibble called `liar_tib`. If you're working outside of this tutorial see the insteructions at the beginning for loading the data. Look at the tibble by executing its name:
+
+```{r liar, exercise = TRUE, exercise.lines = 3}
+
+```
+
+```{r liar-solution}
+liar_tib
+```
+
+The main variables are in two columns: one labelled **creativity** and one labelled **position**, but there’s also a variable **id** containing the participant’s id and a categorical variable called **novice** that specifies whether the participant was entering the contest for the first time or was a previous entrant. Note that the variable **position** is numeric (the position in the competition is represented with numbers).
+
+Plot **creativity** against **position** using `ggscatmat()`
+
+```{r create_plot, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r create_plot-solution}
+GGally::ggscatmat(liar_tib, columns = c("creativity", "position")) +
+  theme_minimal()
+```
+
+To get the Spearman correlation between **creativity** and **position** we can basically use `correlation()` exactly as we did for the Pearson correlation, except we need to add `method = "spearman"` to the function. For example, we could execute this code (compare it with the code we used for Pearson’s (r)*):
+
+```{r, eval = F}
+liar_tib %>%
+  dplyr::select(position, creativity) %>% 
+  correlation::correlation(method = "spearman")
+```
+
+Try this out:
+
+```{r liarr, exercise = TRUE, exercise.lines = 3}
+
+```
+
+```{r liarr-solution}
+liar_tib %>%
+  dplyr::select(position, creativity) %>% 
+  correlation::correlation(method = "spearman")
+```
+
+From the output we can see that the Spearman correlation coefficient between the two variables is $r_s = -0.37$, with an associated *p*-value of 0.0017 and a sample size of 68.  There was a significant negative relationship between creativity scores and how well someone did in the World’s Biggest Liar competition: as creativity increased, position decreased. This might seem contrary to what we predicted until you remember that a low number means that you did well in the competition (a low number such as 1 means you came first, and a high number like 4 means you came fourth). Therefore, our hypothesis is supported: as creativity increased, so did success in the competition.
+
+##	Kendall’s tau
+
+Kendall’s tau, denoted by $\tau$, is another non-parametric correlation and it should be used rather than Spearman’s coefficient when you have a small data set with a large number of tied ranks. The `correlation()` function will compute Kendall’s $\tau$ by including `method = "kendall"`
+
+```{r, eval = F}
+liar_tib %>% 
+  dplyr::select(position, creativity) %>% 
+  correlation::correlation(method = "kendall")
+```
+
+Try this out:
+
+```{r tau, exercise = TRUE, exercise.lines = 3}
+
+```
+
+```{r tau-solution}
+liar_tib %>% 
+  dplyr::select(position, creativity) %>% 
+  correlation::correlation(method = "kendall")
+```
+
+
+The output shows $\tau = -0.300$, which is closer to zero than the Spearman correlation (it has decreased from $-0.373$ to $-0.300$). Kendall’s value is likely a more accurate gauge of what the correlation in the population would be.
+
+## Other resources
+
+### Statistics
+
+* The tutorials typically follow examples described in detail in @fieldDiscoveringStatisticsUsing2020, so that book is an obvious place to go for further reading.
+* If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
+* There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/)
+* There are free statistical resources on my website [www.discoveringstatistics.com](http://www.discoveringstatistics.com)
+
+### R
+
+* [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on **R** and **RStudio**
+* [RStudio cheat sheets](https://www.rstudio.com/resources/cheatsheets/)
+* [RStudio list of online resources](https://www.rstudio.com/online-learning/)
+* [SwirlStats](http://swirlstats.com/students.html) is a package for *R* that launches a bunch of interactive tutorials.
+
+## References
+
+

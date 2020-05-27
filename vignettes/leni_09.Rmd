@@ -18,9 +18,121 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, echo = FALSE}
+library(Hmisc)
+library(effectsize)
+library(tidyverse)
 
+gelman_tib <- discovr::gelman_2009
+tuk_tib <- discovr::tuk_2011
 ```
-![](../data-raw/images/leni_banner.png)
+![](images/leni_banner.png)
 
+***
 This document may contain abridged sections from *Discovering Statistics Using R and RStudio* by [Andy Field](https://www.discoveringstatistics.com/) so there are some copyright considerations, but the material is offered under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Basically you can use this material for teaching and non-profit activities but please do not meddle with it or claim it as your own work.
+
+***
+
+## Bladder control
+### Load the file
+
+```{r, eval = FALSE}
+library(tidyverse)
+tuk_tib <- readr::read_csv("../data/tuk_2011.csv") %>% 
+  dplyr::mutate(
+    urgency = forcats::as_factor(urgency)
+  )
+```
+
+Alternative, load the data directly from the `discovr` package:
+
+```{r, eval=FALSE}
+library(discovr)
+library(tidyverse)
+
+tuk_tib <- discovr::tuk_2011
+```
+
+### Plot a graph
+
+```{r}
+ggplot2::ggplot(tuk_tib, aes(urgency, ll_sum)) +
+  geom_violin() +
+  stat_summary(fun.data = "mean_cl_normal") +
+  labs(x = "Urgency condition", y = "Number of long term rewards") +
+  theme_minimal()
+```
+
+
+
+### Fit the model
+
+We will conduct an independent samples *t*-test on these data because there were different participants in each of the two groups (independent design).
+
+```{r}
+tuk_mod <- t.test(ll_sum ~ urgency, data = tuk_tib)
+tuk_mod
+```
+
+
+Looking at the means in the *Group Statistics* table below, we can see that on average more participants in the High Urgency group (*M* = 4.5) chose the large financial reward for which they would wait longer than participants in the low urgency group (*M* = 3.8). This difference was significant, *p* = .03.
+
+To calculate the effect size *d*:
+
+```{r}
+effectsize::cohens_d(ll_sum ~ urgency, data = tuk_tib)
+```
+
+```{r, echo = FALSE}
+d_tuk <- effectsize::cohens_d(ll_sum ~ urgency, data = tuk_tib)
+```
+
+We could report this analysis as:
+
+* On average, participants who had full bladders (*M* = 4.5, *SD* = 1.59) were more likely to choose the large financial reward for which they would wait longer than participants who had relatively empty bladders (*M* = 3.8, *SD* = 1.49), *t*(`r round(tuk_mod$parameter, 3)`) = `r round(tuk_mod$statistic, 3)`, *p* = `r round(tuk_mod$p.value, 3)`, *d* = `r round(d_tuk, 2)`
+
+## The beautiful people
+### Load the file
+
+```{r, eval = FALSE}
+library(tidyverse)
+gelman_tib <- readr::read_csv("../data/gelman_2009.csv")
+```
+
+Alternative, load the data directly from the `discovr` package:
+
+```{r, eval=FALSE}
+library(discovr)
+library(tidyverse)
+
+gelman_tib <- discovr::gelman_2009
+```
+
+### Fit the model
+
+We need to run a paired samples *t*-test on these data because the researchers recorded the number of daughters and sons for each participant (repeated-measures design). We need to make sure we sort the file by id so that the pairing is done correctly, and there are missing values so we need to set an action for dealing with those.
+
+```{r}
+gelman_mod <- gelman_tib %>% 
+  dplyr::arrange(person) %>% 
+  t.test(number ~ child, data = ., paired = TRUE, na.action = "na.exclude")
+
+gelman_mod
+```
+
+Looking at the output, we can see that there was a non-significant difference between the number
+of sons and daughters produced by the 'beautiful' celebrities.
+
+To calculate the effect size *d*:
+
+```{r}
+effectsize::cohens_d(number ~ child, data = gelman_tib)
+```
+
+```{r, echo = FALSE}
+d_gel <- effectsize::cohens_d(number ~ child, data = gelman_tib)
+```
+
+We could write up this analysis as follows:
+
+* There was no significant difference between the number of daughters (*M* = 0.62, *SE* = 0.06) produced by the 'beautiful' celebrities and the number of sons (*M* = 0.68, *SE* = 0.06), *t*(`r round(gelman_mod$parameter, 3)`) = `r round(gelman_mod$statistic, 3)`, *p* = `r round(gelman_mod$p.value, 3)`, *d* = `r round(d_gel, 2)`

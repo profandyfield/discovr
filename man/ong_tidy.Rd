@@ -4,9 +4,11 @@
 \name{ong_tidy}
 \alias{ong_tidy}
 \title{Ong et al. (2011) data: tidy format}
-\format{A tibble with 1100 rows and 9 variables.}
+\format{
+A tibble with 1100 rows and 9 variables.
+}
 \source{
-\url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+\href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{https://www.discoveringstatistics.com/books/discovering-statistics-using-r}
 }
 \usage{
 ong_tidy
@@ -18,7 +20,6 @@ A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (
 A study by Ong et al., (2011) examining the relationship between a person's narcissism and other people’s ratings of their profile picture on Facebook.
 The pictures were rated on each of four dimensions: coolness, glamour, fashionableness, and attractiveness. In addition, each person was measures on introversion/extroversion and narcissism.
 These data are in tidy format. The data contains the following variables:
-
 \itemize{
 \item \strong{id}: a number identifying he participant
 \item \strong{age}: participant's age in years

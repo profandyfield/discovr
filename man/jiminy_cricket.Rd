@@ -4,9 +4,11 @@
 \name{jiminy_cricket}
 \alias{jiminy_cricket}
 \title{Jiminy Cricket data}
-\format{A tibble with 500 rows and 4 variables.}
+\format{
+A tibble with 500 rows and 4 variables.
+}
 \source{
-\url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+\href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{https://www.discoveringstatistics.com/books/discovering-statistics-using-r}
 }
 \usage{
 jiminy_cricket
@@ -22,7 +24,6 @@ Anyway, imagine that I collected some data from 250 people on their level of suc
 This gave me a score from 0 (complete failure) to 100 (complete success). I then implemented an intervention: I told people that for the next 5 years they should either wish upon a star for their dreams to come true or work as hard as they could to make their dreams come true.
 I measured their success again 5 years later. People were randomly allocated to these two instructions.
 The data contains the following variables:
-
 \itemize{
 \item \strong{id}: participant id
 \item \strong{strategy}: whether the person was allocated to the 'hard work' or 'wish upon a star' intervention

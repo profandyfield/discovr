@@ -4,9 +4,11 @@
 \name{notebook}
 \alias{notebook}
 \title{The notebook data}
-\format{A tibble with 40 rows and 3 variables.}
+\format{
+A tibble with 40 rows and 3 variables.
+}
 \source{
-\url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+\href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{https://www.discoveringstatistics.com/books/discovering-statistics-using-r}
 }
 \usage{
 notebook
@@ -19,7 +21,6 @@ Fictitious data about the film The Notebook. Imagine that a film company directo
 (a film that has the stereotype of appealing to women more than to men). He took 20 men and 20 women and showed half of each sample a film that was supposed to be a ‘chick flick’ (The Notebook).
 The other half watched a documentary about notebooks as a control. In all cases the company director measured participants’ arousal  as an indicator of how much they enjoyed the film.
 The data contains the following variables:
-
 \itemize{
 \item \strong{sex}: biological sex of the participant
 \item \strong{film}: whether the person watched The Notebook or a documentary about notebooks

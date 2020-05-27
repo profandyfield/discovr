@@ -4,7 +4,9 @@ author: "Andy Field"
 output:
   learnr::tutorial:
     progressive: false
+    theme: "paper"
 runtime: shiny_prerendered
+description: "Key concepts in R (functions and objects, packages and functions, style, data types, tidyverse, tibbles)."
 bibliography: discovr_01.bib
 ---
 
@@ -15,6 +17,8 @@ knitr::opts_chunk$set(
 	message = FALSE,
 	warning = FALSE
 )
+
+library(kableExtra)
 library(learnr)
 library(tidyverse)
 
@@ -105,7 +109,7 @@ metallica
 
 We can do other things with our newly created object too, but we'll save that fun for another time.
 
-```{r fun_quiz}
+```{r fun_quiz, echo=FALSE}
 learnr::quiz(
   learnr::question("What is a function in R?",
     learnr::answer("An instruction that typically creates an output from at least one input", correct = TRUE),
@@ -191,7 +195,7 @@ but to use the one in Hmisc we would use:
 Hmisc::recode()
 ```
 
-```{r packfun_quiz}
+```{r packfun_quiz, echo=FALSE}
   question("In the R command `dplyr::select()` ...",
     answer("`dplyr` is the name of a package and `select()` is a function within that package.", correct = TRUE),
     answer("`select()` is the name of a package and `dplyr` is a function within that package."),
@@ -236,7 +240,7 @@ First_names_of_The.members_of.MetalliCa<-c("Lars","James","Jason", "Kirk")
 This example shows bad practice. Note that I have not annotated what I am doing, there are no spaces around the assignment operator (`<-`) or after commas, I have some capital letters in my object name, have not been consistent with how I separate words in the object name, and have a name that is unnecessarily long.
 
 
-```{r style_quiz}
+```{r style_quiz, echo=FALSE}
   question("Which of these is **not** an example of good style?",
     answer("Use upper case letters for important words when naming objects.", correct = TRUE, message = "This is poor style because capital letters increase the chance of making errors when later referring to objects that you have created. Use lower case throughout when naming objects."),
     answer("Avoid long names when naming objects."),
@@ -275,7 +279,7 @@ my_data <- here::here("data/metallica.csv") %>% readr::read_csv(.)
 
 Instead of embedding the `here::here()` function within `readr::read_csv()`, we put it first and feed or ‘pipe’ its output into `readr::read_csv(.)` using `%>%`.The code is easier to read, it makes clear that we’re using  `here::here()` to generate a path to the file that we want to open, and that we’re feeding that file path into `readr::read_csv(.)`. Note that the `readr::read_csv(.)` function has a period (.) within it. This period represents whatever is coming through the pipe from the left. Often, you don't need the period but sometimes you do so it's worth being aware of it.
 
-```{r pipe_quiz}
+```{r pipe_quiz, echo=FALSE}
   question("What's going on in the command `here::here(\"data/metallica.csv\") %>% readr::read_csv(.)`?",
     answer("`here::here(\"data/metallica.csv\")` generates the filepath to the data file called 'metallica.csv' and this filepath is fed into `readr::read_csv(.)`, which reads in that file.", correct = TRUE, message = "Well done."),
     answer("`here::here(\"data/metallica.csv\")` opens the data file called 'metallica.csv' and `readr::read_csv(.)` converts it to a CSV file`", message = "the `here()` function generates a file path, it doesn;t open the file."),
@@ -300,7 +304,7 @@ Often when analysing data you will [input your data with an external software](h
 
 We’re going to extend our earlier Metallica example to explore these different data types. Table 1 shows the data that we’re going to enter , which contains a character variable (name), two date variables (birth_date and death_date), a factor (the instrument they play), a logical (whether it is true or false that they are a current member of the band), two integers (how many songs they have written for metallica and their **net_worth**).
 
-```{r, results = 'asis'}
+```{r, results = 'asis', echo=FALSE}
 tribble(
   ~name, ~birth_date, ~death_date, ~instrument, ~current_member, ~songs_written, ~net_worth,
   "Lars Ulrich", "1963-12-26", NA, "Drums", TRUE, 111, 300000000,

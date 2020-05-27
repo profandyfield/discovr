@@ -4,9 +4,11 @@
 \name{metallica}
 \alias{metallica}
 \title{Metallica data}
-\format{A tibble with 7 rows and 8 variables.}
+\format{
+A tibble with 7 rows and 8 variables.
+}
 \source{
-\url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+\href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{https://www.discoveringstatistics.com/books/discovering-statistics-using-r}
 }
 \usage{
 metallica
@@ -17,7 +19,6 @@ A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (
 \details{
 The data show various pieces of information about past and present members of the band Metallica that may or may not be accurate at the time of writing (2019).
 The data contains the following variables:
-
 \itemize{
 \item \strong{name}: the band member's name
 \item \strong{birth_date}: the band member's date of birth
@@ -27,14 +28,6 @@ The data contains the following variables:
 \item \strong{songs_written}: the number of songs the band member has contributed to
 \item \strong{net_worth}: the band member's net worth as of 2019 according to some dodgy website
 \item \strong{worth_per_song}: the members net worth per song contributed to
-\item \strong{name}: The band member's name
-\item \strong{birth_date}: The band member's date of birth
-\item \strong{death_date}: The band member's date of death (where applicable)
-\item \strong{instrument}: The instrument played by the band member
-\item \strong{current_member}: Is the member currently in the band? (True or False)
-\item \strong{songs_written}: The number of songs the band member has contributed to
-\item \strong{net_worth}: The band member's net worth as of 2019 according to some dodgy website
-\item \strong{worth_per_song}: The members net worth per song contributed to
 }
 }
 \keyword{datasets}

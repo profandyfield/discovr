@@ -18,23 +18,31 @@ knitr::opts_chunk$set(
   message = FALSE
 )
 
-library(GGally)
-library(tidyverse)
-
-goat_tib <- discovr::animal_bride
-shopping_tib <- discovr::shopping
-student_tib <- discovr::students
-tea15_tib <- discovr::tea15
-teaching_tib <- discovr::teaching
-zhang_tib <- discovr::zhang_sample
-
 ```
 
 
-![](../data-raw/images/dsus_smart_alex_banner.png)
+![](images/dsus_smart_alex_banner.png)
 
+***
 This document may contain abridged sections from *Discovering Statistics Using R and RStudio* by [Andy Field](https://www.discoveringstatistics.com/) so there are some copyright considerations, but the material is offered under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Basically you can use this material for teaching and non-profit activities but please do not meddle with it or claim it as your own work.
 
+***
+
+## Load libraries
+
+```{r load_libraries}
+library(GGally)
+library(tidyverse)
+```
+
+```{r get_data, echo = F}
+goat_tib <- discovr::animal_bride
+shopping_tib <- discovr::shopping
+student_tib <- discovr::students
+tea15_tib <- discovr::tea_15
+teaching_tib <- discovr::teaching
+zhang_tib <- discovr::zhang_sample
+```
 
 ## Task 5.1
 
@@ -360,10 +368,10 @@ We can conclude that for men married to both goats and dogs, as love of animals 
 Load the data. If you have the `discovr` package loaded you could execute:
 
 ```{r, eval = FALSE}
-tea15_tib <- discovr::tea15
+tea15_tib <- discovr::tea_15
 ```
 
-To find out more about the data execute `?tea15`.
+To find out more about the data execute `?tea_15`.
 
 To load the data into a tibble called `tea15_tib`. Alternatively, load it from the csv file by downloading that file and setting up an rstudio project (exactly as described in Chapter 1) and executing:
 

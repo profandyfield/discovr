@@ -4,9 +4,11 @@
 \name{students}
 \alias{students}
 \title{Students and lecturers data}
-\format{A tibble with 10 rows and 7 variables.}
+\format{
+A tibble with 10 rows and 7 variables.
+}
 \source{
-\url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+\href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{https://www.discoveringstatistics.com/books/discovering-statistics-using-r}
 }
 \usage{
 students
@@ -17,7 +19,6 @@ A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (
 \details{
 Some fictional data about students and lecturers.
 The object contains the following variables:
-
 \itemize{
 \item \strong{name}: Name of person
 \item \strong{birth_date}: Date of birth (Year-month-day)
@@ -26,7 +27,6 @@ The object contains the following variables:
 \item \strong{alcohol}: Units of alcohol consumed per week
 \item \strong{income}: income (per anum)
 \item \strong{neurotic}: Score on a neuroticism scale
-
 }
 }
 \keyword{datasets}

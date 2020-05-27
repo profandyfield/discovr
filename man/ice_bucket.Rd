@@ -4,9 +4,11 @@
 \name{ice_bucket}
 \alias{ice_bucket}
 \title{Ice bucket challenge data}
-\format{A tibble with 2,323,452 rows and 1 variable.}
+\format{
+A tibble with 2,323,452 rows and 1 variable.
+}
 \source{
-\url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+\href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{https://www.discoveringstatistics.com/books/discovering-statistics-using-r}
 }
 \usage{
 ice_bucket
@@ -18,10 +20,8 @@ A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (
 AGoogle data relating to the ice bucket challenge from 2014. Golfer Chris Kennedy tipped a bucket of iced water on his head to raise awareness of the disease amyotrophic lateral sclerosis (ALS, also known as Lou Gehrig's disease).
 The idea is that you are challenged and have 24 hours to post a video of you having a bucket of iced water poured over your head in this video you also challenge at least three other people.
 If you fail to complete the challenge your forfeit is to donate to charity (in this case ALS). The data show the the number of days after Chris Kennedy’s initial ice bucket challenge that each of 2,323,452 ice bucket challenge video was uploaded to YouTube.
-
 \itemize{
 \item \strong{upload_days}: the number of days after Chris Kennedy’s initial ice bucket challenge that an ice bucket challenge video was uploaded to YouTube
-
 }
 }
 \keyword{datasets}

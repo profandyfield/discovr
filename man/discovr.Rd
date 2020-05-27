@@ -3,26 +3,40 @@
 \docType{package}
 \name{discovr}
 \alias{discovr}
-\alias{discovr-package}
 \title{discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2020)}
 \description{
-The \emph{discovr} package contains resources for my 2020 textbook \href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{Discovering Statistics Using R and RStudio}.
+The `discovr`` package contains resources for my 2020 textbook \href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{Discovering Statistics Using R and RStudio}.
 There are tutorials written using learnr, datasets, solutions to tasks and so on.
 }
 \section{Who is the package aimed at?}{
 
 
-Anyone teaching from or reading \href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{Discovering statistics using R and RStudio} should find these resources useful.
+Anyone teaching from or reading \href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{Discovering Statistics Using R and RStudio} should find these resources useful.
 }
 
 \section{Interactive tutorials}{
 
 
+\strong{Getting started}:
+
 I recommend working through \href{http://milton-the-cat.rocks/learnr/r/r_getting_started/}{this tutorial} on how to install, set up and work within R and RStudio before starting the interactive tutorials.
-\itemize{
-\item \strong{discovr_01}: Key concepts in R (functions and objects, packages and functions, style, data types, tidyverse, tibbles)
-\item \strong{discovr_02}: Summarizing data (frequency distributions, grouped frequency distributions, relative frequencies, histograms, mean, median, variance, standard deviation, interquartile range)
+
+\strong{Running a tutorial}:
+
+To run each tutorial execute\preformatted{learnr::run_tutorial("name_of_tutorial", package = "discovr")
 }
+
+Replacing \code{name_of_tutorial} with the name in bold below. For example, to load the tutorial \code{discovr_02} execute:\preformatted{learnr::run_tutorial("discovr_02", package = "discovr")
+}
+\itemize{
+\item discovr_01: Key concepts in R (functions and objects, packages and functions, style, data types, tidyverse, tibbles)
+\item discovr_02: Summarizing data (frequency distributions, grouped frequency distributions, relative frequencies, histograms, mean, median, variance, standard deviation, interquartile range)
+\item discovr_05: Visualizing data (boxplots, error bar plots, violin plots, scatterplots)
+\item discovr_07: Associations (correlation coefficients)
+}
+
+\strong{Workflow}:
+The tutorials are self-contained (you practice code in code boxes) so you don't need to use RStudio at the same time. However, to get the most from them I would recommend that you open two RStudio sessions (i.e. two RStudio windows running simultaneously). Use one RStudio session to run the tutorial. You won't then be able to use this RStudio window (because its resources are allocated to the tutorial). In the second RStudio session try replicating what you learn in the tutorial. That is, open a new script file and everything you do in the tutorial, practice in the script file (and save it). This workflow has the advantage of not just teaching you the code that you need to do certain things, but also provides practice in using RStudio itself.
 }
 
 \section{Datasets}{
@@ -30,62 +44,66 @@ I recommend working through \href{http://milton-the-cat.rocks/learnr/r/r_getting
 
 See the book or data descriptions for more details. This is a list of available datasets within the package. Raw CSV files are available from the book's website.
 \itemize{
-\item \strong{acdc}: Data from the file \emph{oxoby_2008.csv}. For more information execute \code{?acdc}
-\item \strong{animal_bride}: Data from the file \emph{oxoby_2008.csv}. For more information execute \code{?animal_bride}
-\item \strong{exam_anxiety}: Data from the file \emph{exam_anxiety.csv}. For more information execute \code{?exam_anxiety}
-\item \strong{ice_bucket}: Data from the file \emph{ice_bucket.csv}. For more information execute \code{?ice_bucket}
-\item \strong{invisibility_cloak}: Data from the file \emph{invisibility.csv}. For more information execute \code{?invisibility_cloak}
-\item \strong{invisibility_rm}: Data from the file \emph{invisibility_rm.csv}. For more information execute \code{?invisibility_rm}
-\item \strong{grammar}: Data from the file \emph{social_media.csv}. For more information execute \code{?grammar}
-\item \strong{hiccups}: Data from the file \emph{hiccups.csv}. For more information execute \code{?hiccups}
-\item \strong{jiminy_cricket}: Data from the file \emph{jiminy_cricket.csv}. For more information execute \code{?jiminy_cricket}
-\item \strong{johns_2012}: Data from the file \emph{johns_2012.csv}. For more information execute \code{?johns_2012}
-\item \strong{metallica}: Data from the file \emph{metallica.csv}. For more information execute \code{?metallica}
-\item \strong{notebook}: Data from the file \emph{notebook.csv}. For more information execute \code{?notebook}
-\item \strong{ong_2011}: Data from the file \emph{ong_2011.csv}. For more information execute \code{?ong_2011}
-\item \strong{ong_tidy}: Data from the file \emph{ong_tidy.csv}. For more information execute \code{?ong_tidy}
-\item \strong{shopping}: Data from the file \emph{shopping_exercise.csv}. For more information execute \code{?shopping}
-\item \strong{student}: Data from the file \emph{student.csv}. For more information execute \code{?student}
-\item \strong{tea15}: Data from the file \emph{tea_makes_you_brainy_15.csv}. For more information execute \code{?tea15}
-\item \strong{teaching}: Data from the file \emph{method_of_teaching.csv}. For more information execute \code{?teaching}
-\item \strong{zhang_sample}: Data from the file \emph{zhang_2013_subsample.csv}. For more information execute \code{?zhang_sample}
+\item \link{acdc}: Data about whether Bon Scott or Brian Johnson is the best singer of AC/DC. (Also in the file \emph{acdc.csv}.)
+\item \link{album_sales}: Ficticious data about predicting album sales from advertising, airplay and the band's image. (Also in the file \emph{album_sales.csv}.)
+\item \link{animal_bride}: Ficticious data about life satisfaction when married to a dog or a goat. (Also in the file \emph{animal_bride.csv}.)
+\item \link{beckham_1929}: Data from a study by Beckham (1929). (Also in the file \emph{beckham_1929.csv}.)
+\item \link{big_hairy_spider}: Ficticious data about whether anxiety is greater after exposure to real spiders or pictures of spiders. (Also in the file \emph{big_hairy_spider.csv}.)
+\item \link{biggest_liar}: Ficticious data about creativity and telling lies. (Also in the file \emph{biggest_liar.csv}.)
+\item \link{bronstein_2019}: Data about whether delusion proneness predicts belief in fake news because of less analytic thinking. (Also in the file \emph{bronstein_2019.csv}.)
+\item \link{bronstein_miss_2019}: The data in \link{bronstein_2019} but with missing values inserted using MCAR amputation. (Also in the file \emph{bronstein_miss_2019.csv}.)
+\item \link{catterplot}: Ficticious data for plotting a catterplot. (Also in the file \emph{catterplot.csv}.)
+\item \link{cat_dance}: Ficticious data about training cats to dance. (Also in the file \emph{cat_dance.csv}.)
+\item \link{cat_reg}: Ficticious data about training cats to dance. (Also in the file \emph{cat_reg.csv}.)
+\item \link{chamorro_premuzic}: Data about what students want (personality wise) from their lecturers. (Also in the file \emph{chamorro_premuzic.csv}.)
+\item \link{child_aggression}: Ficticious data (based on real research) about predicting aggression in children. (Also in the file \emph{child_aggression.csv}.)
+\item \link{coldwell_2006}: Data predicting childhood adjustment from various parenting variables. (Also in the file \emph{coldwell_2006.csv}.)
+\item \link{daniels_2012}: Data about the effects of sexualised sports images on self-image. (Also in the file \emph{daniels_2012.csv}.)
+\item \link{dark_lord}: Ficticious data about the subliminal messages in songs. (Also in the file \emph{dark_lord.csv}.)
+\item \link{download}: Ficticious data about the download music festival and being smelly. (Also in the file \emph{download_festival.csv}.)
+\item \link{df_beta}: Ficticious data used to illustrate the DF Beta statistic. (Also in the file \emph{df_beta.csv}.)
+\item \link{essay_marks}: Ficticious data about essay marking. (Also in the file \emph{essay_marks.csv}.)
+\item \link{exam_anxiety}: Ficticious data about exam performance, anxiety and revision. (Also in the file \emph{exam_anxiety.csv}.)
+\item \link{gelman_2009}: Data used to critically evaluate the explanations (and claim) that there are more beautiful women than men in the world. (Also in the file \emph{gelman_2009.csv}.)
+\item \link{glastonbury}: More ficticious data about music festivals and being smelly. (Also in the file \emph{glastonbury.csv}.)
+\item \link{grades}: Ficticious data about statistics grades. (Also in the file \emph{grades.csv}.)
+\item \link{ice_bucket}: Data about the ice bucket challenge. (Also in the file \emph{ice_bucket.csv}.)
+\item \link{invisibility_cloak}: Ficticious data about how much mischief peopel would get up to if they had an invisibility cloak. (Also in the file \emph{invisibility.csv}.)
+\item \link{invisibility_rm}: Ficticious data about how much mischief peopel would get up to if they had an invisibility cloak but using a repeated measures design. (Also in the file \emph{invisibility_rm.csv}.)
+\item \link{hiccups}: Ficticious data on digital rectal stimulation and hiccups. (Also in the file \emph{hiccups.csv}.)
+\item \link{honesty_lab}: Ficticious data about perceptions of honesty. (Also in the file \emph{honesty_lab.csv}.)
+\item \link{jiminy_cricket}: Ficticious data about whether wishing on a star makes you successful. (Also in the file \emph{jiminy_cricket.csv}.)
+\item \link{johns_2012}: Data about whether the colour red is a mating signal to men. (Also in the file \emph{johns_2012.csv}.)
+\item \link{lambert_2012}: Data about whether pornography use is related to relationhsip commitment and infidelity. (Also in the file \emph{lambert_2012.csv}.)
+\item \link{massar_2012}: Data about whether gossiping has an evolutionary function. (Also in the file \emph{massar_2012.csv}.)
+\item \link{mcnulty_2008}: Simulated data to match the results of a study about whether attractivenes sis linked to the support given within a relationship. (Also in the file \emph{mcnulty_2008.csv}.)
+\item \link{men_dogs}: Ficticious data about whether men exhibit dog-like behaviours (compared to dogs). (Also in the file \emph{men_dog.csv}.)
+\item \link{metal_health}: Ficticious data about whether listening to heavy metal negatively affects mental health. (Also in the file \emph{metal_health.csv}.)
+\item \link{metallica}: Data about thrash metal nband, Metallica. (Also in the file \emph{metallica.csv}.)
+\item \link{notebook}: Ficticious data about whether watching the film the notebook is emotionally arousing. (Also in the file \emph{notebook.csv}.)
+\item \link{ong_2011}: Data about social media profile pictures and personality traits. (Also in the file \emph{ong_2011.csv}.)
+\item \link{ong_tidy}: Data about social media profile pictures and personality traits. (Also in the file \emph{ong_tidy.csv}.)
+\item \link{pubs}: Data illustrating the difference between an outlier and an influencial case. (Also in the file \emph{pubs.csv}.)
+\item \link{r_exam}: Fictitious data relating to an R exam at two universities. (Also in the file \emph{r_exam.csv}.)
+\item \link{roaming_cats}: Ficticious data about how far cats roam from their homes (Also in the file \emph{roaming_cats.csv}.)
+\item \link{self_help}: Ficticious data about whether self-help books improve relationship satisfaction. (Also in the file \emph{self_help.csv}.)
+\item \link{self_help_dsur}: Ficticious data about whether self-help books improve relationship satisfaction compared to statistics books. (Also in the file \emph{self_help_dsur.csv}.)
+\item \link{social_anxiety}: Ficticious (I think) data about whether social anxiety symptoms are specific to social anxiety. (Also in the file \emph{social_anxiety.csv}.)
+\item \link{social_media}: Ficticious data about the effects of social media on grammar. (Also in the file \emph{social_media.csv}.)
+\item \link{shopping}: Ficticious data about shopping (Also in the file \emph{shopping_exercise.csv}.)
+\item \link{students}: I can't even remember what this data file contains. (Also in the file \emph{student.csv}.)
+\item \link{supermodel}: Ficticious data about supermodel salaries. (Also in the file \emph{supermodel.csv}.)
+\item \link{tablets}: Ficticious data about predicting the desirability of computing tablets. (Also in the file \emph{tablets.csv}.)
+\item \link{tea_15}: Ficticious data based on real data about cognitive functioning and drinking tea. (Also in the file \emph{tea_makes_you_brainy_15.csv}.)
+\item \link{tea_716}: Ficticious data based on real data about cognitive functioning and drinking tea. (Also in the file \emph{tea_makes_you_brainy_716.csv}.)
+\item \link{teaching}: Ficticious data about the success of different methods of treaching. (Also in the file \emph{method_of_teaching.csv}.)
+\item \link{video_games}: Ficticious data about the relationship between video game use, callous unemotional traits and aggression. (Also in the file \emph{video_games.csv}.)
+\item \link{tuk_2011}: Data about whether needing to urinate helps decision making. (Also in the file \emph{tuk_2011.csv}.)
+\item \link{zhang_sample}: Data about whether performing a maths test under a different name assists performance. (Also in the file \emph{zhang_2013_subsample.csv}.)
 }
-}
-
-\section{Installing \code{discovr}}{
-
-
-To use \code{discovr} you first need to install \strong{R} and \strong{RStudio} and familiarise yourself with R, RStudio and good workflow practice. You can do this using \href{http://milton-the-cat.rocks/learnr/r/r_getting_started/}{this interactive tutorial}. Once you have installed \strong{R} and \strong{RStudio} you can install \code{discovr}. The package is in development so you have to install it from github. To install the package execute (in \strong{RStudio}):\preformatted{install.packages("remotes") #if you don’t already have it installed
-library(remotes)
-install_github("profandyfield/discovr")
-}
-
-If you are trying to install on a networked computer the install might fail (it's to do install.packages not liking UNC paths, which I'm not even going to pretend to understand). The solution is to specify the location of your R library at the point of install. Most networks will map network locations to a drive name (for example, at my own University, users accounts are on the 'N' drive). Find the location of your R library (e.g., \code{N:/Documents/R/win-library/3.5}), possibly executing \code{.libPaths()} to help you, and specify this location using the \code{lib} argument:\preformatted{library(remotes)
-remotes::install_github("profandyfield/discovr", lib = "N:/Documents/R/win-library/3.5")
-}
-}
-
-\section{Running a tutorial}{
-
-
-To run a particular tutorial execute:\preformatted{library(discovr)
-learnr::run_tutorial("name_of_tutorial", package = "discovr")
-}
-
-and replace "name of tutorial" with the name of the tutorial you want to run. For example, to run tutorial 2 execute:\preformatted{learnr::run_tutorial("discovr_02", package = "discovr")
-}
-
-The name of each tutorial is in bold in the list above. Once the command to run the tutorial is executed it will spring to life in a web browser.
-}
-
-\section{Suggested workflow}{
-
-
-The tutorials are self-contained (you practice code in code boxes) so you don't need to use RStudio at the same time. However, to get the most from them I would recommend that you open two RStudio sessions (i.e. two RStudio windows running simultaneously). Use one RStudio session to run the tutorial. You won't then be able to use this RStudio window (because its resources are allocated to the tutorial). In the second RStudio session try replicating what you learn in the tutorial. That is, open a new script file and everything you do in the tutorial, practice in the script file (and save it). This workflow has the advantage of not just teaching you the code that you need to do certain things, but also provides practice in using RStudio itself.
 }
 
 \section{References}{
-
 
 \itemize{
 \item Field, A. P. (2020). \emph{Discovering statistics using R and RStudio} (2nd ed.). London: Sage.

@@ -19,14 +19,19 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, echo = FALSE}
-library(tidyverse)
-```
 
-![](../data-raw/images/dsus_smart_alex_banner.png)
+![](images/dsus_smart_alex_banner.png)
 
+***
 This document may contain abridged sections from *Discovering Statistics Using R and RStudio* by [Andy Field](https://www.discoveringstatistics.com/) so there are some copyright considerations, but the material is offered under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Basically you can use this material for teaching and non-profit activities but please do not meddle with it or claim it as your own work.
 
+***
+
+## Load libraries
+
+```{r load_libraries}
+library(tidyverse)
+```
 
 ## Task 2.1
 
@@ -82,7 +87,7 @@ Measurement error is the difference between the true value of something and the 
 ### Normal
 ```{r, norm, echo = FALSE}
 
-p1 <- ggplot(data = data.frame(x = c(-4, 4)), aes(x))
+p1 <- ggplot2::ggplot(data = data.frame(x = c(-4, 4)), aes(x))
 p1 +
   stat_function(fun = dnorm, n = 101, args = list(mean = 0, sd = 1), colour = "#56B4E9", size = 1) +
   labs(y = "Density", x = "Score") +
@@ -96,7 +101,7 @@ p1 +
 
 ```{r, pos.skew, echo = FALSE}
 
-p1 <- ggplot(data = data.frame(x = c(0, 20)), aes(x))
+p1 <- ggplot2::ggplot(data = data.frame(x = c(0, 20)), aes(x))
 p1 +
   stat_function(fun = dchisq, args = list(df = 6), colour = "#56B4E9", size = 1) +
   labs(y = "Density", x = "Score") +
@@ -108,7 +113,7 @@ p1 +
 ### Negative skew
 ```{r, neg.skew, echo = FALSE}
 
-p1 <- ggplot(data = data.frame(x = c(0, 20)), aes(x))
+p1 <- ggplot2::ggplot(data = data.frame(x = c(0, 20)), aes(x))
 p1 +
   stat_function(fun = dchisq, args = list(df = 6), colour = "#56B4E9", size = 1) +
   labs(y = "Density", x = "Score") +
@@ -136,12 +141,12 @@ To calculate the sum of squares, first take the mean from each score, then squar
 
 ```{r t6.ss, echo = FALSE}
 
-score<- c(5, 13, 7, 14, 11, 9, 17)
-error<- round(score-mean(score), 2)
-error_2<-round(error^2, 2)
+score <- c(5, 13, 7, 14, 11, 9, 17)
+error <- round(score-mean(score), 2)
+error_2 <- round(error^2, 2)
 
-ss.tib<-tibble(score, error, error_2)
-names(ss.tib)<-c("Score", "Error (score - mean)", "Error squared")
+ss.tib <- tibble::tibble(score, error, error_2)
+names(ss.tib) <- c("Score", "Error (score - mean)", "Error squared")
 
 ```
 
@@ -185,13 +190,13 @@ To calculate the sum of squares, take the mean from each value, then square this
 
 ```{r t7.ss}
 
-Score<- c(18, 16, 18, 24, 23, 22, 22, 23, 26, 29, 32, 34, 34, 36, 36, 43, 42, 49, 46, 46, 57)
+Score <- c(18, 16, 18, 24, 23, 22, 22, 23, 26, 29, 32, 34, 34, 36, 36, 43, 42, 49, 46, 46, 57)
 Mean <- round(rep(mean(Score), length(Score)), 2)
-Difference<- Score - Mean
+Difference <- Score - Mean
 d2<-round(Difference^2, 2)
 
-t7.tib<-tibble(Score, Mean, Difference, d2)
-names(t7.tib)[4]<-"Difference squared"
+t7.tib <- tibble::tibble(Score, Mean, Difference, d2)
+names(t7.tib)[4] <- "Difference squared"
 
 ```
 
@@ -238,11 +243,11 @@ Then the standard deviation, which we do as follows:
 
 ```{r t8.ss}
 
-score<- c(10, 16, 8, 9, 6, 8, 9, 11, 12, 19, 5)
-error<- round(score-mean(score), 2)
-error_2<-round(error^2, 2)
+score <- c(10, 16, 8, 9, 6, 8, 9, 11, 12, 19, 5)
+error <- round(score-mean(score), 2)
+error_2 <-round(error^2, 2)
 
-t8.tib<-tibble(score, error, error_2)
+t8.tib <- tibble::tibble(score, error, error_2)
 names(t8.tib)<-c("Score", "Error (score - mean)", "Error squared")
 
 ```
@@ -303,11 +308,11 @@ Then the standard deviation, which we do as follows:
 
 ```{r t9.ss}
 
-score<- c(240,144,143,72,30,26,2,150,14,150,1657)
-error<- round(score-mean(score), 2)
-error_2<-round(error^2, 2)
+score <- c(240,144,143,72,30,26,2,150,14,150,1657)
+error <- round(score-mean(score), 2)
+error_2 <- round(error^2, 2)
 
-t9.tib<-tibble(score, error, error_2)
+t9.tib <- tibble::tibble(score, error, error_2)
 names(t9.tib)<-c("Score", "Error (score - mean)", "Error squared")
 
 ```
@@ -369,12 +374,12 @@ Let’s now calculate the standard deviation excluding Jennifer Aniston and Brad
 
 ```{r t10.ss, echo = FALSE}
 
-score<- c(240,144,143,72,30,26,2,150,14,150)
-error<- round(score-mean(score), 2)
-error_2<-round(error^2, 2)
+score <- c(240,144,143,72,30,26,2,150,14,150)
+error <- round(score-mean(score), 2)
+error_2 <- round(error^2, 2)
 
-t10.tib<-tibble(score, error, error_2)
-names(t10.tib)<-c("Score", "Error (score - mean)", "Error squared")
+t10.tib <- tibble::tibble(score, error, error_2)
+names(t10.tib) <- c("Score", "Error (score - mean)", "Error squared")
 
 ```
 

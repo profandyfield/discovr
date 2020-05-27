@@ -4,9 +4,11 @@
 \name{animal_bride}
 \alias{animal_bride}
 \title{Animal bride data}
-\format{A tibble with 20 rows and 3 variables.}
+\format{
+A tibble with 20 rows and 3 variables.
+}
 \source{
-\url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+\href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{https://www.discoveringstatistics.com/books/discovering-statistics-using-r}
 }
 \usage{
 animal_bride
@@ -21,7 +23,6 @@ I’d barely had time to recover from that story when another appeared about an 
 Why anyone would think it’s a good idea to enter a dog into matrimony with a man with a history of violent behaviour towards dogs is beyond me.
 Still, I wondered whether a goat or dog made a better spouse. I found (but not really) some other people who had been forced to marry goats and dogs and measured their life satisfaction and, also, how much they like animals.
 The data contains the following variables:
-
 \itemize{
 \item \strong{wife}: whether the person married a goat or a dog
 \item \strong{animal}: how much the person likes animals

@@ -4,9 +4,11 @@
 \name{acdc}
 \alias{acdc}
 \title{Oxoby (2008) data}
-\format{A tibble with 36 rows and 2 variables.}
+\format{
+A tibble with 36 rows and 2 variables.
+}
 \source{
-\url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+\href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{https://www.discoveringstatistics.com/books/discovering-statistics-using-r}
 }
 \usage{
 acdc
@@ -28,7 +30,6 @@ and the minimum offers that responders accepted (called the minimum acceptable o
 good factor when listening to Bon or Brian. There were 18 people per group.
 
 These data are approximated from graphs within Oxoby (2008). The object contains the following variables:
-
 \itemize{
 \item \strong{singer}: the type of teaching method used
 \item \strong{offer}: offer made (in dollars)

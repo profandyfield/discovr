@@ -146,7 +146,7 @@ You use `![Image caption (optional)](path to image)` to insert images. For examp
 
 `![Figure 1: I love my spaniel](andy_milton.png)` knits as:
 
-![Figure 1: I love my spaniel](../data-raw/images/andy_milton.png)
+![Figure 1: I love my spaniel](images/andy_milton.png)
 
 ### Tables
 
@@ -282,7 +282,7 @@ metalli_dat <- data.frame(name, birth_date, death_date, instrument, current_memb
 
 ###	Creating tibbles 
 ```{r create_tibble}
-metalli_tib <- tibble(name, birth_date, death_date, instrument, current_member, songs_written, net_worth)
+metalli_tib <- tibble::tibble(name, birth_date, death_date, instrument, current_member, songs_written, net_worth)
 ```
 
 ###	Viewing dataframes and tibbles 
@@ -300,7 +300,7 @@ metalli_tib
 
 #to create an empty tibble called empty_tib that has 50 rows, execute:
 
-empty_tib <- tibble(.rows = 10)
+empty_tib <- tibble::tibble(.rows = 10)
 
 ```
 
@@ -327,7 +327,7 @@ metalli_tib
 You can create your data set by initializing an empty tibble and then using `dplyr::mutate` to add variables. For example, we can create `metalli_tib` from scratch as follows:
 
 ```{r}
-metalli_tib <- tibble(.rows = 7) %>% 
+metalli_tib <- tibble::tibble(.rows = 7) %>% 
   dplyr::mutate(
     name = c("Lars Ulrich","James Hetfield", "Kirk Hammett", "Rob Trujillo", "Jason Newsted", "Cliff Burton", "Dave Mustaine"),
     birth_date = c("1963-12-26", "1963-08-03", "1962-11-18", "1964-10-23", "1963-03-04", "1962-02-10", "1961-09-13") %>% lubridate::ymd(),
@@ -610,5 +610,4 @@ metalli_lst
 # creates a data frame using cbind
 metalli_mtx <- cbind(name, instrument)
 metalli_mtx
-
 ```

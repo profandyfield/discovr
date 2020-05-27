@@ -1,0 +1,373 @@
+---
+title: "discovr: comparing two means"
+author: "Andy Field"
+output:
+  learnr::tutorial:
+    progressive: false
+    theme: "paper"
+runtime: shiny_prerendered
+description: "Categorical predictors with two cartegories (comparing two means). Comparing two independent means, comparing two related means, effect sizes."
+bibliography: discovr_09.bib
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+
+library(effectsize)
+library(Hmisc)
+library(kableExtra)
+library(learnr)
+library(tidyverse)
+library(WRS2)
+
+hint_text <- function(text, text_color = "#E69F00"){
+  hint <- paste("<font color='", text_color, "'>", text, "</font>", sep = "")
+  return(hint)
+}
+
+#Read dat files needed for the tutorial
+
+cloak_tib <- discovr::invisibility_cloak
+cloak_rm_tib <- discovr::invisibility_rm
+```
+
+
+# discovr: Comparing two means
+
+## Overview
+
+This tutorial is one of a series that accompanies [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/) [@fieldDiscoveringStatisticsUsing2020] by me, [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). These tutorials contain abridged sections from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/), ^[Basically you can use this tutorial for teaching and non-profit activities but do not meddle with it or claim it as your own work.]
+
+* Who is the tutorial aimed at?
+    - Anyone teaching from or reading [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)  may find them useful.
+* What is covered?
+    - This tutorial looks at some key concepts in using **R** and **RStudio**. It would be a useful tutorial to run at the start of a module, or alongside teaching based on Chapter 1 of [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/).
+    - This tutorial *does not* teach the background theory: it is assumed you have either attended my lecture or read the relevant chapter in the aforementioned book (or someone else's)
+
+If you haven't done so already, I recommend working through [this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/) on how to install, set up and work within R and RStudio before starting this tutorial.
+
+## Packages and data
+
+The tutorials are self-contained (you practice code in code boxes) so you don’t need to use RStudio at the same time. However, I recommend that you open another RStudio session to the one that you're using to run this tutorial. In this second RStudio session, open an R markdown file and practice everything you do in the tutorial in the R markdown file (and save it). This video explains the sort of workflow that I mean:
+
+![]("https://youtu.be/FE0ntX0dyc4")
+
+`r hint_text("Within the tutorial itself, everything will work. To replicate things outside of the tutorial you will need to load the relevant packages and data.")`
+
+### Packages
+
+To work *outside of this tutorial* you need to load the following packages:
+
+* `effectsize` [@makowski_compute_2019]
+* `here` [@here]
+* `Hmisc` [@Harrell_2019]
+* `tidyverse` [@tidyverse]
+* `WRS2` [@Mair_Wilcox_2019]
+
+
+If you haven't already done this, install a package at the command line using `install.packages("package_name")`, where *package_name* is the name of the package. If the package has already been installed, load it by typing `library(package_name)`, where *package_name* is the name of the package, within the first code chunk in your R markdown file.
+
+### Data
+
+To work *outside of this tutorial* you need to download the following data files:
+
+* [invisibility.csv](http://www.discoveringstatistics.com/repository/discovr_data/invisibility.csv)
+* [invisibility_rm.csv](http://www.discoveringstatistics.com/repository/discovr_data/invisibility_rm.csv)
+
+
+Assuming you set up an RStudio project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), then save the data files to the folder within your project folder called `data`. Then, in the first code chunk in your R Markdown document, execute:
+
+```{r, eval=FALSE}
+cloak_tib <- here::here("data/invisibility.csv") %>% readr::read_csv()
+cloak_rm_tib <- here::here("data/invisibility_rm.csv") %>% readr::read_csv()
+```
+
+### Preparing data
+
+To work *outside of this tutorial* you need to turn categorical variables into factors and set an appropriate baseline category using `forcats::as_factor` and `forcats::fct_relevel`.
+
+For `cloak_tib` execute the following code:
+
+```{r, eval=FALSE}
+cloak_tib <- cloak_tib %>% 
+  dplyr::mutate(
+    cloak = forcats::as_factor(cloak)
+  )
+```
+
+For `cloak_rm_tib` execute the following code:
+
+```{r, eval=FALSE}
+cloak_rm_tib <- cloak_rm_tib %>%
+  dplyr::mutate(
+    cloak = forcats::as_factor(cloak)
+  )
+```
+
+
+## Comparing two means: process
+
+Figure 1 shows the general process for performing a t-test. As with fitting any model, we start by looking for the sources of bias. Having satisfied ourselves that assumptions are met and outliers dealt with, we run the test. We can also consider using bootstrapping if any of the test assumptions were not met. Finally, we compute an effect size and Bayes factor.
+
+![Figure 1: The general process for conducting correlation analysis](./images/dsr2_fig_09_03_t_process.png)
+ 
+## Visualizing the data
+
+I imagine a future in which we have some cloaks of invisibility to test out. Given my slightly mischievous streak, the future me is interested in the effect that wearing a cloak of invisibility has on the tendency for mischief. I take 24 participants and placed them in an enclosed community. The community is riddled with hidden cameras so that we can record mischievous acts. Half of the participants are given cloaks of invisibility; they are told not to tell anyone else about their cloak and that they can wear it whenever they liked. I measure how many mischievous acts they performed in a week. These data are preloaded in this tutorial in a tibble called `cloak_tib`. Use the code box to see these data.
+
+```{r cloak_data, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r cloak_data-solution}
+cloak_tib
+```
+
+Note there are three variables: the participant **id**, the number of mischievous acts (**mischief**) and whether the person was given an invisibility cloak **cloak**. Use what you have learnt so far to replace the XXXs in the code in the box below to get some basic summary statistics:
+
+```{r cloak_sum, exercise = TRUE, exercise.lines = 9}
+cloak_tib %>% 
+  dplyr::group_by(XXXXXXXX) %>% 
+  dplyr::summarize(
+    n = n(),
+    mean = mean(XXXXXXXX),
+    ci_lower = ggplot2::mean_cl_normal(mischief)$XXXXXXX,
+    ci_upper = ggplot2::mean_cl_normal(mischief)$ymax,
+  )
+```
+
+```{r cloak_sum-solution}
+cloak_tib %>% 
+  dplyr::group_by(cloak) %>% 
+  dplyr::summarize(
+    n = n(),
+    mean = mean(mischief),
+    ci_lower = ggplot2::mean_cl_normal(mischief)$ymin,
+    ci_upper = ggplot2::mean_cl_normal(mischief)$ymax,
+
+  )
+```
+
+We can visualise the data using a violin plot with error bars (see `discovr_05`). Try to create such a plot below:
+
+```{r exam_plot, exercise = TRUE, exercise.lines = 5}
+
+```
+
+```{r exam_plot-solution}
+ggplot2::ggplot(cloak_tib, aes(cloak, mischief)) +
+  geom_violin() +
+  stat_summary(fun.data = "mean_cl_normal") +
+  labs(x = "Cloak group", y = "Acts of mischief") +
+  theme_minimal()
+```
+
+## Comparing two independent means
+
+You can do a *t*-test in *R* using the `t.test()` function:
+ 
+```{r, echo = T, eval = F}
+new_model <- t.test(outcome ~ predictor, data = tibble, paired = FALSE, var.equal = FALSE, conf.level = 0.95, na.action)
+```
+
+In which:
+
+* `new_model`: an object created that contains information about the model. We can get summary statistics for this model by executing the name of the model.
+* `outcome`: the variable that contains the scores for the outcome measure (in this case **mischief**).
+* `predictor`: the variable that contains information about to which group a score belongs (in this case **cloak**).
+* `tibble`: the name of the tibble containing the data (in this case `cloak_tib`) 
+* `paired`: by default scores are treated as independent (`paired = FALSE`), but if you have a repeated measures design and want to treat scores as dependent change this to `paired = TRUE`
+* `var.equal`: by default the function assumes that variances are unequal (`var.equal = FALSE`) and applies Welch's correction (a sensible thing to do). Leave this default alone.
+* `conf.level`: determines the alpha level for the *p*-value and confidence intervals. By default it is 0.95 (for 95% confidence intervals) and usually you’d exclude this option, but if you want to use a different value, say 99%, you could include `conf.level = 0.99`.
+* `na.action`: If you have complete data (as we have here) exclude this option, but if you have missing values (i.e., ‘NA’s in the data frame) then it can be useful to include `na.action = na.exclude`, which will exclude all cases with missing values
+
+To get a *t*-test for the current data we would execute:
+
+```{r echo = T, eval = F}
+t.test(mischief ~ cloak, data = cloak_tib)
+```
+
+or to create an object that we can use later:
+
+```{r, echo = T, results = 'hide'}
+cloak_mod <- t.test(mischief ~ cloak, data = cloak_tib)
+cloak_mod 
+```
+
+Try this in the code box:
+
+```{r t1, exercise = TRUE}
+
+```
+
+```{r t1-solution}
+cloak_mod <- t.test(mischief ~ cloak, data = cloak_tib)
+cloak_mod
+```
+
+The `t.test()` function calculates Welch’s *t*, *t*(`r round(cloak_mod$parameter, 2)`) = `r round(cloak_mod$statistic, 2)`, which does not assume homogeneity of variance but instead adjusts for it. This is a sensible thing to do because, when the assumption is met no adjustment is made, but when it is broken an adjustment is made proportionate to the difference in variances. The resulting (two-tailed) *p*-value is `r round(cloak_mod$p.value, 3)`, which represents the probability of getting a *t* of `r round(cloak_mod$statistic, 2)` or smaller if the null hypothesis were true. Assuming our alpha is 0.05, we’d conclude that there was no significant difference between the means of these two samples because the observed *p* of `r round(cloak_mod$p.value, 3)` is greater than the criterion of 0.05. In terms of the experiment, we can infer that having a cloak of invisibility did not significantly affect the amount of mischief a person got up to.
+
+Finally, the confidence interval gives us an estimate of the range of the true difference between means. If we were to assume that this sample were one of the 95% that yields a confidence interval containing the population value, we’d conclude that the population difference falls between `r round(cloak_mod$conf.int[1], 2)` to `r round(cloak_mod$conf.int[2], 2)`, but remember our assumption will be wrong 5% of the time.
+
+## Effect size
+
+We can use the `effectsize` package (Makowski et al., 2019) to calculate Cohen's *d*. There are three useful functions here:
+
+```{r, eval = F, echo= T}
+effectsize::cohens_d(outcome ~ predictor, data = tibble, pooled_sd = TRUE, paired = TRUE)
+effectsize::hedges_g(outcome ~ predictor, data = tibble, pooled_sd = TRUE, paired = TRUE)
+effectsize::glass_delta(outcome ~ predictor, data = tibble)
+```
+
+The function `glass_delta()` uses only the control group standard deviation so should be used when group standard deviations are very different (or you expect your experimental manipulation to affect both the mean and the standard deviation of scores). It will use the first level of the grouping variable as the control (in this case the no cloak group) . Therefore, we could execute:
+
+```{r, eval = F, echo= T}
+effectsize::glass_delta(mischief ~ cloak, data = cloak_tib)
+```
+
+The function `cohens_d()` uses (by default) the pooled standard deviation and `hedges_g()` applies a correction to Cohen’s d that is less biased for samples less than about 20. Both functions have an argument to specify whether data are paired (more on that later), but for now we want this argument to be false, which is the default. We can get Cohen’s d by executing
+
+```{r, eval = F, echo= T}
+effectsize::cohens_d(mischief ~ cloak, data = cloak_tib)
+```
+
+Try these in the code box below
+
+```{r d1, exercise = TRUE}
+
+```
+
+```{r d1-solution}
+effectsize::glass_delta(mischief ~ cloak, data = cloak_tib)
+effectsize::cohens_d(mischief ~ cloak, data = cloak_tib)
+```
+
+```{r, echo = F, results = 'hide'}
+d_cloak <- effectsize::cohens_d(mischief ~ cloak, data = cloak_tib)
+g_cloak <- effectsize::glass_delta(mischief ~ cloak, data = cloak_tib)
+```
+
+Using the pooled estimate, there is `r round(d_cloak, 2)`0.65 of a standard deviation difference between the two groups in terms of their mischief making, which is a fairly substantial effect. 
+
+```{r d_quiz, echo = F}
+question("Which of these statements about Cohen's *d* is **NOT** correct?",
+    answer("The value of *d* cannot exceed 1.", correct = TRUE, message = "This statement is false and so is the correct answer."),
+    answer("*d* is the difference between two means expressed in standard deviation units.", message = "This statement is true so is not the correct answer."),
+    answer("A *d* of 0.2 would be considered small", message = "This statement is true so is not the correct answer."),
+    answer("*d* can be computed using a control group standard deviation, the standard deviation of all scores or a pooled standard deviation.", message = "This statement is true so is not the correct answer."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  )
+```
+
+## Comparing two dependent means
+
+Let’s imagine that we had collected the cloak of invisibility data using a repeated-measures design: we might have recorded each participant’s natural level of mischievous acts in a week, then given them an invisibility cloak and counted the number of mischievous acts in the following week.  So, there are 12 participants (not 24) but each participant contributes two mischief scores: one from when they wore a cloak, one from when they didn’t. The data are `cloak_rm_tib`. Inspect the tibble below:
+
+```{r cloak_rm_data, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r cloak_rm_data-solution}
+cloak_rm_tib
+```
+
+Note that the mischief scores themselves are identical to the previous example, for example, the first ‘no cloak’ score is a 3 and the first ‘cloak’ score is a 4, the only difference is that both of these scores are now attributable to the same person (Alia). To summarize then, we’re using the same mischief scores as before, but we’re now imagining that they were generated by a repeated measures design rather than an independent design.
+
+We conduct a paired *t*-test in exactly the same way as an independent *t*-test except that we place `paired = TRUE` into the `t.test()` function. In short, we use the same code as before but with this additional argument:
+
+```{r, eval = F}
+cloak_rm_mod <- t.test(mischief ~ cloak, data = cloak_tib, paired = TRUE)
+cloak_rm_mod
+```
+
+The additional arguments listed earlier still apply should you wish to override any of the defaults. As before, this code creates a model called `cloak_rm_mod` based on predicting mischief scores (`mischief`) from group membership (`cloak`). We can view this model by executing its name (hence the second command).
+
+The above code will work provided that the data are ordered correctly. If the data is not ordered correctly then R will 'pair' the scores incorrectly and the resulting t-test will be incorrect. Let see this in action. Run the code below multiple times and note what happes to the output.
+
+```{r order_matters, exercise = TRUE, exercise.lines = 3}
+cloak_rm_tib %>% 
+  dplyr::sample_n(24) %>%
+  t.test(mischief ~ cloak, data = ., paired = TRUE)
+```
+
+You should find that the output changes each time you run the code. That's not good. The reason this happens is because this code pipes the data in `cloak_rm_tib` into the `t.test()` function but along the way I have sneakily piped it through `dplyr::sample_n(24)`, which randomly orders the rows. Each time the *t*-test is run, the rows of the tibble are ordered differently.
+
+The order of rows affects the results because the `t.test()` function pairs the first score it finds in one condition with the first score it finds in the next condition and so on. In our example, it will pair the first score it finds tagged as ‘no cloak’ with the first score it encounters tagged with ‘cloak’. Each time the rows are re-ordered different scores are being paired. Unfortunately there is no way to tell R how to pair the scores, we instead have to make sure that the rows are ordered correctly.
+
+This is easily achieved if you *always* to use an ‘id’ variable so that scores are associated with a particular entity’s id, and you sort the file by the id variable before it goes into the `t.test()` function. With our data, we have a variable called `id` so we’d execute something like:
+
+```{r, results = 'hide', echo = T}
+cloak_rm_mod <- cloak_rm_tib %>% 
+  dplyr::arrange(id) %>%
+  t.test(mischief ~ cloak, data = ., paired = TRUE)
+cloak_rm_mod
+```
+
+This code pipes the data in `cloak_rm_tib` into the `t.test()` function but before it gets there it goes through `dplyr::arrange(id)`, which sorts the tibble by the variable called `id`. Doing so ensures that the scores are paired correctly. Try this in the code box:
+
+```{r t2, exercise = TRUE, exercise.lines = 4}
+
+```
+
+```{r t2-solution}
+cloak_rm_mod <- cloak_rm_tib %>% 
+  dplyr::arrange(id) %>%
+  t.test(mischief ~ cloak, data = ., paired = TRUE)
+cloak_rm_mod
+```
+
+On average, participants given a cloak of invisibility engaged in more acts of mischief (*M* = 5, *SE* = 0.48), than those not given a cloak (*M* = 3.75, *SE* = 0.55). This difference, `r round(as.numeric(cloak_rm_mod$estimate), 2)`, 95% CI [`r round(cloak_rm_mod$conf.int[1], 2)`, `r round(cloak_rm_mod$conf.int[2], 2)`], was significant, *t*(`r round(as.numeric(cloak_rm_mod$parameter, 2))`) = `r round(cloak_rm_mod$statistic, 2)`, *p* = `r round(cloak_rm_mod$p.value, 2)`. In terms of the experiment, we might conclude that having a cloak of invisibility significantly affected the amount of mischief a person got up to. This doesn't mean the effect is important.
+
+```{r ci_quiz, echo = F}
+  question("The confidence interval for the mean difference ranged from -1.97 to -0.53. What does this tell us?",
+    answer("If this confidence interval is one of the 95% that contains the population value then the population value of the difference between group means lies between -1.97 to -0.54.", correct = TRUE),
+    answer("There is a 95% chance that the population value of the difference between group means lies between -1.97 to -0.53.", message = "You cannot make probability statements from a confidence interval. We don't know whether this particular CI is one of the 95% that contains the population value of the difference between means."),
+    answer("The probability of this confidence interval containing the population value is 0.95.", message = "The probability of this confidence interval containing the population value is either 0 (it doesn't) or 1 (it does) but it's impossible to know which."),
+    answer("I can be 95% confident that the population value of the difference between group means lies between -1.97 to -0.53.", message = "Confidence intervals do not quantify your subjective confidence."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  )
+```
+
+## Effect sizes
+
+We could compute Cohen’s *d* as we did earlier. However, some argue that you need to factor in the dependency between scores in treatment conditions by factoring in the correlation between the scores. We can do this in R by including `paired = TRUE` into the `cohens_d()` function. However, I don't think that this is a good idea because by including information about pairing of scores, the effect size now expresses information not just about the observed difference between means but about the study design used to measure it. Also, one of the core reasons for standardizing effect sizes is so that they can be compared across studies. However, if some effect sizes include information about study design and others don’t then they can’t be meaningfully compared.
+
+Instead then, we'll calculate the effect size in the same way as before (and you'll get the same value). Look back at the relevant sectiona nd try to atdapt the code to use with the repeated measures data in `cloak_rm_tib`:
+
+```{r d2, exercise = TRUE}
+
+```
+
+```{r d2-solution}
+effectsize::cohens_d(mischief ~ cloak, data = cloak_rm_tib)
+```
+
+## Other resources
+
+### Statistics
+
+* The tutorials typically follow examples described in detail in @fieldDiscoveringStatisticsUsing2020, so that book is an obvious place to go for further reading.
+* If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
+* There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/)
+* There are free statistical resources on my website [www.discoveringstatistics.com](http://www.discoveringstatistics.com)
+
+### R
+
+* [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on **R** and **RStudio**
+* [RStudio cheat sheets](https://www.rstudio.com/resources/cheatsheets/)
+* [RStudio list of online resources](https://www.rstudio.com/online-learning/)
+* [SwirlStats](http://swirlstats.com/students.html) is a package for *R* that launches a bunch of interactive tutorials.
+
+## References
+
+

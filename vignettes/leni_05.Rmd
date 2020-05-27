@@ -16,18 +16,15 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE
 )
+
+library(ggplot2)
 ```
 
 ```{r setup, echo=FALSE}
-library(tidyverse)
-oxoby_tib <- readr::read_csv("../data-raw/oxoby_2008.csv") %>% 
-  dplyr::mutate(
-    singer = forcats::as_factor(singer)
-  )
-
+oxoby_tib <- discovr::acdc
 johns_tib <- discovr::johns_2012
 ```
-![](../data-raw/images/leni_banner.png)
+![](images/leni_banner.png)
 
 > This document may contain abridged sections from *Discovering Statistics Using R and RStudio* by [Andy Field](https://www.discoveringstatistics.com/) so there are some copyright considerations, but the material is offered under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Basically you can use this material for teaching and non-profit activities but please do not meddle with it or claim it as your own work.
 
@@ -37,7 +34,7 @@ First, let's produce a histogram for the minimum acceptable offer data. Open the
 
 ```{r, eval = FALSE}
 library(tidyverse)
-oxoby_tib <- readr::read_csv("../data/oxoby_2008.csv") %>% 
+oxoby_tib <- readr::read_csv("../data/acdc.csv") %>% 
   dplyr::mutate(
     singer = forcats::as_factor(singer)
   )
@@ -65,7 +62,7 @@ ggplot2::ggplot(oxoby_tib, aes(mao)) +
 
 We can compare the resulting population pyramid above with Figure 2 from the original article (below). Both graphs show that MAOs were higher when participants heard the music of Bon Scott. This suggests that more offers would be rejected when listening to Bon Scott than when listening to Brian Johnson.
 
-![Oxoby (2008) Figure 2](../data-raw/images/ds_c05_leni_fig_01.png)
+![Oxoby (2008) Figure 2](images/ds_c05_leni_fig_01.png)
 
 Next we want to produce a population pyramid for number of offers made. To do this, use this code (the only things that change are the *x*-variable in the first line and the label for the *x*-axis):
 
@@ -80,7 +77,7 @@ ggplot2::ggplot(oxoby_tib, aes(offer)) +
 
 We can compare the resulting population pyramid above with Figure 1 from the original article (below). Both graphs show that offers made were lower when participants heard the music of Bon Scott.
 
-![Oxoby (2008) Figure 1](../data-raw/images/ds_c05_leni_fig_02.png)
+![Oxoby (2008) Figure 1](images/ds_c05_leni_fig_02.png)
 
 ## Seeing red
 

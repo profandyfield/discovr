@@ -185,7 +185,6 @@ fb_tib %>%
 
 Include options relating to `mean()` and `median()`
 
-
 ```{r}
 get_summary <- function(tibble, variable, na_remove = FALSE, trim_val = 0){
   variable <- enquo(variable)

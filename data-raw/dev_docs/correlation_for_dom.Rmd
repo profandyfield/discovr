@@ -1,0 +1,70 @@
+---
+title: "Partial correlation stuff"
+author: "Andy P. Field"
+date: "15/04/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(magrittr)
+```
+
+Load data:
+
+```{r}
+exam_tib <- readr::read_csv("http://discoveringstatistics.com/repository/dsr2/exam_anxiety.csv")
+```
+
+```{r}
+exam_tib %>% 
+  dplyr::select(exam_grade, revise, anxiety) %>% 
+  WRS2::winall()
+```
+
+```{r}
+exam_tib %>% 
+  dplyr::select(exam_grade, revise, anxiety) %>% 
+  WRS2::pball()
+```
+
+
+```{r}
+exam_tib %>% 
+  dplyr::select(exam_grade, revise, anxiety) %>% 
+  correlation::correlation(., method = "percentage")
+```
+
+
+
+
+
+## Partial correlation with `correlation`
+
+```{r}
+exam_tib %>% 
+  dplyr::select(exam_grade, revise, anxiety) %>% 
+  correlation::correlation(., partial = TRUE)
+```
+
+## Partial correlations with `ppcor`
+
+* Correlation 1: exam_grade-revise adjusting for anxiety. Note, *t* of 1.34 not 1.35 and *p* of 0.184 not 0.182.
+
+```{r}
+ppcor::pcor.test(exam_tib$exam_grade, exam_tib$revise, exam_tib$anxiety)
+```
+
+* Correlation 2: exam_grade-anxiety adjusting for revise Note, *t* of $-2.55$ not $-2.56$ and *p* of 0.012 not 0.024.
+
+
+```{r}
+ppcor::pcor.test(exam_tib$exam_grade, exam_tib$anxiety, exam_tib$revise)
+```
+
+* Correlation 2: exam_grade-anxiety adjusting for revise Note, *t* of $-8.52$ not $-8.56$.
+
+```{r}
+ppcor::pcor.test(exam_tib$revise, exam_tib$anxiety, exam_tib$exam_grade)
+```
+

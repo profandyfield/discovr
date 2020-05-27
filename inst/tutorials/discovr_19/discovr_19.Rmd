@@ -1,0 +1,332 @@
+---
+title: "discovr: categorical outomes"
+author: "Andy Field"
+output:
+  learnr::tutorial:
+    progressive: false
+    theme: "paper"
+runtime: shiny_prerendered
+bibliography: discovr_19.bib
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+
+library(BayesFactor)
+library(gmodels)
+library(learnr)
+library(kableExtra)
+library(tidyverse)
+
+hint_text <- function(text, text_color = "#E69F00"){
+  hint <- paste("<font color='", text_color, "'>", text, "</font>", sep = "")
+  return(hint)
+}
+
+#Read dat files needed for the tutorial
+
+dance_tib <- discovr::cat_dance
+```
+
+
+# discovr: categorical outomes
+
+## Overview
+
+This tutorial is one of a series that accompanies [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/) [@fieldDiscoveringStatisticsUsing2020] by me, [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). These tutorials contain abridged sections from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/), ^[Basically you can use this tutorial for teaching and non-profit activities but do not meddle with it or claim it as your own work.]
+
+* Who is the tutorial aimed at?
+    - Anyone teaching from or reading [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)  may find them useful.
+* What is covered?
+    - This tutorial looks at some key concepts in using **R** and **RStudio**. It would be a useful tutorial to run at the start of a module, or alongside teaching based on Chapter 1 of [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/).
+    - This tutorial *does not* teach the background theory: it is assumed you have either attended my lecture or read the relevant chapter in the aforementioned book (or someone else's)
+
+If you haven't done so already, I recommend working through [this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/) on how to install, set up and work within R and RStudio before starting this tutorial.
+
+## Packages and data
+
+The tutorials are self-contained (you practice code in code boxes) so you don’t need to use RStudio at the same time. However, I recommend that you open another RStudio session to the one that you're using to run this tutorial. In this second RStudio session, open an R markdown file and practice everything you do in the tutorial in the R markdown file (and save it). This video explains the sort of workflow that I mean:
+
+![]("https://youtu.be/FE0ntX0dyc4")
+
+`r hint_text("Within the tutorial itself, everything will work. To replicate things outside of the tutorial you will need to load the relevant packages and data.")`
+
+### Packages
+
+To work *outside of this tutorial* you need to load the following packages:
+
+* `BayesFactor` [@Morey_Rouder_2018] 
+* `gmodels` [@Warnes_Bolker_Lumley_Johnson_2018]
+* `here` [@here]
+* `tidyverse` [@tidyverse]
+
+
+If you haven't already done this, install a package at the command line using `install.packages("package_name")`, where *package_name* is the name of the package. If the package has already been installed, load it by typing `library(package_name)`, where *package_name* is the name of the package, within the first code chunk in your R markdown file.
+
+### Data
+
+To work *outside of this tutorial* you need to download the following data files:
+
+* [cat_dance.csv](http://www.discoveringstatistics.com/repository/discovr_data/cat_dance.csv)
+
+
+Assuming you set up an RStudio project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), then save the data files to the folder within your project folder called `data`. Then, in the first code chunk in your R Markdown document, execute:
+
+```{r, eval=FALSE}
+dance_tib <- here::here("data/cat_dance.csv") %>% readr::read_csv()
+```
+
+## Dancing cats
+
+A researcher was interested in whether animals could be trained to dance. He took 200 cats and tried to train them to dance by giving them either food or affection as a reward for dance-like behaviour. (Historically in this example the cats were taught to line dance. I was tempted to update the example to something more contemporary, like twerking cats, but I’m now haunted by intrusive images of lines of twerking cats slowly but purposefully following me around, which proves that sometimes it’s best to leave well alone.) At the end of the week he counted how many animals could line-dance and how many could not. There are two categorical variables here: **reward** (the animal was trained using either food or affection, not both) and **dance** (the animal either learnt to dance or it did not). By combining categories, we end up with four different categories. All we then need to do is to count how many cats fall into each category. Table 1 shows these frequencies.
+
+```{r, echo = FALSE}
+tibble::tribble(
+  ~`Reward`, ~`Danced`, ~`Did not dance`,
+  "Food", 28, 10,
+  "Affection", 48, 114
+) %>% 
+  knitr::kable(caption = "Table 1: Frequencies of cats dancing after training using different rewards") %>% 
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = FALSE)
+```
+
+## Entering raw scores
+
+The first way is to enter each cat’s data as a row of the data. You would create two variables (reward and dance) and reward might take on values of  “Food” and “Affection”, and dance would have values of “Yes” and “no”. These are what the data look like in `dance_tib`. Inspect this object using the code box.
+
+```{r dance_data, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r dance_data-solution}
+dance_tib
+```
+
+Note that there are 200 cats and, therefore, 200 rows of data. Having done this you’d convert these variables to factors and think about which category you’d want as your baseline or reference.  For reward it doesn’t matter too much, but for dance it makes sense to have “No” as the reference category. So, you might, for example, read the data in from the csv file using:
+
+```{r, eval= FALSE}
+dance_tib <- readr::read_csv("../data/cat_dance.csv") %>% 
+  dplyr::mutate(
+    dance = forcats::as_factor(dance) %>% forcats::fct_relevel(., "No"),
+    reward = forcats::as_factor(reward)
+  )
+```
+
+The data in this tutorial is already converted to factors with the levels set correctly.
+
+## Entering data as a contingency table
+
+The second way to enter data is to create a contingency table. For example, we could create a tibble that has a variable reward that specifies whether the food was reward or affection, then a variable danced containing the total number of cats that danced for food (28) and affection (10) and a variable called no_dance containing the total number of cats that did not dance when food (48) and affection (114) were used as rewards. We can create this a tibble like this called `cat_cont` using this code:
+
+```{r, eval= FALSE}
+cat_cont <- tibble::tribble(
+  ~`reward`, ~`danced`, ~`no_dance`,
+  "Food", 28, 10,
+  "Affection", 48, 114
+)
+```
+
+Try this below and inspect the object `cat_cont` by executing its name:
+
+```{r cat_cont, exercise = TRUE, exercise.lines = 7}
+
+```
+
+```{r cat_cont-solution}
+cat_cont <- tibble::tribble(
+  ~`reward`, ~`no_dance`, ~`danced`,
+  "Food", 10, 28,
+  "Affection", 114, 48
+)
+cat_cont
+```
+
+## The chi-square test
+### Running the chi-square test
+
+There is a function `chisq.test()` in base R to obtain a chi-square test, but you get a lot more (useful) information if you use the `CrossTable()` function (note the capital letters), in the `gmodels` package. This function takes two general forms depending on whether or not we’re inputting the raw data or a contingency table. For raw data, it takes the general form:
+
+`gmodels::CrossTable(predictor, outcome)`
+
+In which `predictor` and `outcome` are replaced with variable names (for example `dance_tib$reward`).
+
+If you want to input a contingency table then you’d use:
+`gmodels::CrossTable(contingency_table)`
+
+In which `contingency_table` is replaced with the columns of your contimgecny table that contain numbers. The function has a lot of arguments, the ones below are set to false by default, but I’d recommend setting them to true:
+
+*	chisq = TRUE gives us the chi-square test
+* fisher = TRUE gives us the Fisher exact test and an odds ratio
+* expected=TRUE displays the expected values of each cell of the contingency table
+* sresid = TRUE gives us standardized residuals, which are useful for breaking down a significant effect if we get one
+* format = "SPSS" is necessary to see the standardized residuals
+
+So, for raw scores we’d specify
+
+```{r, eval = FALSE}
+gmodels::CrossTable(dance_tib$reward, dance_tib$dance, fisher = TRUE, chisq = TRUE, expected = TRUE, sresid = TRUE, format = "SPSS")
+```
+
+Try this code below:
+
+```{r crosstab_raw, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r crosstab_raw-solution}
+gmodels::CrossTable(dance_tib$reward, dance_tib$dance, fisher = TRUE, chisq = TRUE, expected = TRUE, sresid = TRUE, format = "SPSS")
+```
+
+
+If we want to input a contingency table then we’d do something a little more tidyverse:
+
+```{r eval = FALSE}
+cat_cont %>% 
+  dplyr::select(-reward) %>% 
+  as.matrix() %>% 
+  gmodels::CrossTable(fisher = TRUE, chisq = TRUE, expected = TRUE, sresid = TRUE, format = "SPSS")
+```
+
+Try this code below:
+
+```{r crosstab_cont-setup}
+cat_cont <- tibble::tribble(
+  ~`reward`, ~`no_dance`, ~`danced`,
+  "Food", 10, 28,
+  "Affection", 114, 48
+)
+```
+
+```{r crosstab_cont, exercise = TRUE, exercise.lines = 6}
+
+```
+
+```{r crosstab_cont-solution}
+cat_cont %>% 
+  dplyr::select(-reward) %>% 
+  as.matrix() %>% 
+  gmodels::CrossTable(fisher = TRUE, chisq = TRUE, expected = TRUE, sresid = TRUE, format = "SPSS")
+```
+
+This code feeds our contingency table (`cat_cont`) into the `select()` function, where we strip off the **reward** variable (because it doesn’t contain any numeric data, it just codes whether scores related to affection or reward). What remains is piped into `as.matrix()` to convert it to a matrix (because `CrossTable()` doesn’t like tibbles) before being fed into `CrossTable()`.
+
+### Interpreting the chi-square test
+
+The output you got should contain this, which shows the chi-square test and other useful statistics:
+
+```
+Statistics for All Table Factors
+
+Pearson's Chi-squared test 
+------------------------------------------------------------
+Chi^2 =  25.35569     d.f. =  1     p =  4.767434e-07 
+
+Pearson's Chi-squared test with Yates' continuity correction 
+------------------------------------------------------------
+Chi^2 =  23.52028     d.f. =  1     p =  1.236041e-06 
+
+
+Fisher's Exact Test for Count Data
+------------------------------------------------------------
+Sample estimate odds ratio:  0.1519927 
+
+Alternative hypothesis: true odds ratio is not equal to 1
+p =  1.311709e-06 
+95% confidence interval:  0.06086544 0.352389 
+
+Alternative hypothesis: true odds ratio is less than 1
+p =  7.7122e-07 
+95% confidence interval:  0 0.3131634 
+
+Alternative hypothesis: true odds ratio is greater than 1
+p =  0.9999999 
+95% confidence interval:  0.07015399 Inf 
+
+ 
+       Minimum expected frequency: 14.44
+```
+
+The value of the chi-square statistic is given under the contingency table (together with the degrees of freedom), as is the significance value. The value of the chi-square statistic is 25.356, and this value is highly significant because the associated *p* is $4.467 \times 10^{-7}= 0.0000004467$, which is smaller than 0.05. (Note, in R when you see e-x it means $\times 10^{-x}$ and when you see e+x it means $\times 10^{x}$. For example, e-07 is $\times 10^{-7}$ and e+22 is $\times 10^{22}$.)
+
+## Using standardized residual
+
+The oputput also has a contingency table:
+
+```
+Cell Contents
+|-------------------------|
+|                   Count |
+|         Expected Values |
+| Chi-square contribution |
+|             Row Percent |
+|          Column Percent |
+|           Total Percent |
+|            Std Residual |
+|-------------------------|
+
+Total Observations in Table:  200 
+
+                 | dance_tib$dance 
+dance_tib$reward |       No  |      Yes  | Row Total | 
+-----------------|-----------|-----------|-----------|
+            Food |       10  |       28  |       38  | 
+                 |   23.560  |   14.440  |           | 
+                 |    7.804  |   12.734  |           | 
+                 |   26.316% |   73.684% |   19.000% | 
+                 |    8.065% |   36.842% |           | 
+                 |    5.000% |   14.000% |           | 
+                 |   -2.794  |    3.568  |           | 
+-----------------|-----------|-----------|-----------|
+       Affection |      114  |       48  |      162  | 
+                 |  100.440  |   61.560  |           | 
+                 |    1.831  |    2.987  |           | 
+                 |   70.370% |   29.630% |   81.000% | 
+                 |   91.935% |   63.158% |           | 
+                 |   57.000% |   24.000% |           | 
+                 |    1.353  |   -1.728  |           | 
+-----------------|-----------|-----------|-----------|
+    Column Total |      124  |       76  |      200  | 
+                 |   62.000% |   38.000% |           | 
+-----------------|-----------|-----------|-----------|
+```
+
+In a 2 × 2 contingency table like the one we have in this example, the nature of a significant association can be clear from just the cell percentages or counts. We can break the effect doen with the standardized residual. The standardized residual is a z-score: if the value lies outside of $\pm 1.96$ then it is significant at *p* < 0.05, if it lies outside $\pm 2.58$ then it is significant at *p* < 0.01, and if it lies outside $\pm 3.29$ then it is significant at *p* < 0.001.
+
+There are four residuals: one for each combination of the type of reward and whether the cats danced. When food was used as a reward the standardized residual was significant for both those that danced ($z = 3.6$) and those that didn’t dance ($z = −2.8$). The plus or minus sign tells us something about the direction of the effect, as do the counts and expected counts within the cells. We can interpret these standardized residuals as follows: when food was used as a reward significantly more cats than expected danced, and significantly fewer cats than expected did not dance. When affection was used as a reward the standardized residual was not significant  for both those that danced ($z = −1.7$) and those that didn’t dance ($z = 1.4$). This tells us that when affection was used a reward as many cats as expected danced and did not dance. In a nutshell, the cells for when food was used as a reward both significantly contribute to the overall chi-square statistic: the association between the type of reward and dancing is mainly driven by when food is a reward.
+
+## Assumptions
+
+Finally, let’s check the expected frequencies. We have a 2 × 2 table, so all expected frequencies need to be greater than 5. Looking at the expected counts (second row in each cell) in the contingency table, we see that the smallest expected count is 14.4 (for cats that were trained with food and did dance). This value exceeds 5 and so the assumption has been met.
+
+## The odds ratio
+
+A common and useful measure of effect size for categorical data is the odds ratio. The output includes the odds ratio and its confidence interval. The value of 0.152 and the limits of the 95% confidence interval are 0.06 and 0.35. An odds ratio of 1 represents no effect, so the important thing is that this 95% confidence interval does not cross 1. A value of 1 would mean that the odds of dancing after affection would be exactly the same as dancing after food. The fact that the interval does not include 1 suggests, if we assume that our sample is one of the 95% of samples that generates a 95% confidence interval containing the population value, that the population odds ratio is also not 1. In other words, there is a non-zero effect of reward on dancing.
+
+Finally, you can take the reciprocal of the odds ratio to look at the odds of dancing after food relative to affection (rather than vice versa). For example, we know that if a cat was trained with affection the odds of their dancing were 0.15 times the odds if they had been trained with affection. Another way of stating this effect is that if a cat was trained with food the odds of their dancing were 1/0.15 = 6.67 times greater than the odds if they had been trained with affection.
+
+
+## Other resources
+
+### Statistics
+
+* The tutorials typically follow examples described in detail in @fieldDiscoveringStatisticsUsing2020, so that book is an obvious place to go for further reading.
+* If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
+* There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/)
+* There are free statistical resources on my website [www.discoveringstatistics.com](http://www.discoveringstatistics.com)
+
+### R
+
+* [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on **R** and **RStudio**
+* [RStudio cheat sheets](https://www.rstudio.com/resources/cheatsheets/)
+* [RStudio list of online resources](https://www.rstudio.com/online-learning/)
+* [SwirlStats](http://swirlstats.com/students.html) is a package for *R* that launches a bunch of interactive tutorials.
+
+## References
+
+

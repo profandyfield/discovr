@@ -4,9 +4,11 @@
 \name{hiccups}
 \alias{hiccups}
 \title{Hiccups data}
-\format{A tibble with 60 rows and 3 variables.}
+\format{
+A tibble with 60 rows and 3 variables.
+}
 \source{
-\url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+\href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{https://www.discoveringstatistics.com/books/discovering-statistics-using-r}
 }
 \usage{
 hiccups
@@ -23,12 +25,10 @@ We took 15 hiccup sufferers, and during a bout of hiccups administered each of t
 (in random order and at intervals of 5 minutes) after taking a baseline of how many hiccups they had per minute.
 We counted the number of hiccups in the minute after each procedure. These data are fictional.
 The object contains the following variables:
-
 \itemize{
 \item \strong{id}: participant id
 \item \strong{intervention}: the 4 interventions that each participant tried
 \item \strong{hiccups}: the number of hiccups during the minute after the intervention
-
 }
 }
 \keyword{datasets}

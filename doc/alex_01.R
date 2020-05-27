@@ -1,21 +1,23 @@
-## ---- include = FALSE----------------------------------------------------
+## ---- include = FALSE---------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
 )
 
-## ----setup, echo = FALSE-------------------------------------------------
-library(discovr)
+## ----setup, echo = FALSE------------------------------------------------------
 
-## ----1_1, echo = TRUE, eval = FALSE--------------------------------------
+
+## ----1_1, echo = TRUE, eval = FALSE-------------------------------------------
 #  library(tidyverse) #if you haven't already executed this command
 #  readr::write_csv(metalli_tib, "../data/metallica.csv")
 
-## ----1_3, echo = TRUE, eval = FALSE--------------------------------------
+## ----1_3, echo = TRUE, eval = FALSE-------------------------------------------
 #  library(tidyverse) #if you haven't already executed this command
 #  library(here) #if you haven't already executed this command
 #  
-#  tibble(.rows = 20) %>%
+#  tibble::tibble(.rows = 20) %>%
 #    dplyr::mutate(
 #      	method = c(rep("Electric shock", 10), rep("Being nice", 10)) %>% forcats::as_factor(),
 #      	sex = c(rep("Female", 5), rep("Male", 5)) %>% rep(., 2) %>% forcats::as_factor(),
@@ -23,7 +25,7 @@ library(discovr)
 #      	) %>%
 #    readr::write_csv(., here::here("data/method_of_teaching.csv"))
 
-## ----1_4, echo = TRUE, eval = FALSE--------------------------------------
+## ----1_4, echo = TRUE, eval = FALSE-------------------------------------------
 #  library(tidyverse) #if you haven't already executed this command
 #  library(here) #if you haven't already executed this command
 #  
@@ -37,11 +39,11 @@ library(discovr)
 #  oxoby_tib %>%
 #    readr::write_csv(., here::here("data/oxoby_2008.csv)
 
-## ----1_5, echo = TRUE, eval = FALSE--------------------------------------
+## ----1_5, echo = TRUE, eval = FALSE-------------------------------------------
 #  library(tidyverse) #if you haven't already executed this command
 #  library(here) #if you haven't already executed this command
 #  
-#  tibble(.rows = 10) %>%
+#  tibble::tibble(.rows = 10) %>%
 #    dplyr::mutate(
 #      	sex = c(rep("Male", 5), rep("Female", 5)) %>% forcats::as_factor(),
 #      	distance = c(0.16, 0.40, 1.36, 1.99, 3.61, 1.40, 1.81, 1.96, 3.02, 4.82),
@@ -49,11 +51,11 @@ library(discovr)
 #      	) %>%
 #    readr::write_csv(., here::here("data/shopping_exercise.csv"))
 
-## ----1_6, echo = TRUE, eval = FALSE--------------------------------------
+## ----1_6, echo = TRUE, eval = FALSE-------------------------------------------
 #  library(tidyverse) #if you haven't already executed this command
 #  library(here) #if you haven't already executed this command
 #  
-#  tibble(.rows = 20) %>%
+#  tibble::tibble(.rows = 20) %>%
 #    dplyr::mutate(
 #      	wife = c(rep("Goat", 12), rep("Dog", 8)) %>% forcats::as_factor(),
 #      	animal = c(69, 25, 31, 29, 12, 49, 25, 35, 51, 40, 23, 37, 16, 65, 39, 35, 19, 53, 27, 44),
@@ -61,22 +63,22 @@ library(discovr)
 #      	) %>%
 #    readr::write_csv(., here::here("data/goat_or_dog.csv"))
 
-## ----1_7, echo = TRUE, eval = FALSE--------------------------------------
+## ----1_7, echo = TRUE, eval = FALSE-------------------------------------------
 #  library(tidyverse) #if you haven't already executed this command
 #  library(here) #if you haven't already executed this command
 #  
-#  tibble(.rows = 15) %>%
+#  tibble::tibble(.rows = 15) %>%
 #    dplyr::mutate(
 #      	tea = c(2, 4, 3, 4, 2, 3, 5, 5, 2, 5, 1, 3, 3, 4, 1),
 #      	cog_fun = c(60, 47, 31, 62, 44, 41, 49, 56, 45, 56, 57, 40, 54, 34, 46)
 #      	) %>%
 #    readr::write_csv(., here::here("data/tea_makes_you_brainy_15.csv"))
 
-## ----1_8, echo = TRUE, eval = FALSE--------------------------------------
+## ----1_8, echo = TRUE, eval = FALSE-------------------------------------------
 #  library(tidyverse) #if you haven't already executed this command
 #  library(here) #if you haven't already executed this command
 #  
-#  tibble(.rows = 52) %>%
+#  tibble::tibble(.rows = 52) %>%
 #    dplyr::mutate(
 #      id = c(171, 35, 57, 36, 53, 176, 76, 184, 64, 166, 14, 100, 30, 49, 157, 14, 68, 71, 4, 40, 66, 27, 61, 27, 36, 33, 120, 113, 95, 99, 78, 32, 43, 183, 103, 31, 86, 54, 5, 20, 13, 59, 58, 188, 187, 15, 50, 9, 45, 60, 73, 189) %>% forcats::as_factor(),
 #      sex = c(rep("Female", 27), rep("Male", 25)) %>% forcats::as_factor(),

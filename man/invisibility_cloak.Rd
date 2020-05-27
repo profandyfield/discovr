@@ -4,9 +4,11 @@
 \name{invisibility_cloak}
 \alias{invisibility_cloak}
 \title{Invisibility data (independent design)}
-\format{A tibble with 24 rows and 3 variables.}
+\format{
+A tibble with 24 rows and 3 variables.
+}
 \source{
-\url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+\href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{https://www.discoveringstatistics.com/books/discovering-statistics-using-r}
 }
 \usage{
 invisibility_cloak
@@ -21,12 +23,10 @@ that wearing a cloak of invisibility has on the tendency for mischief. I take 24
 The community is riddled with hidden cameras so that we can record mischievous acts. Half of the participants are given cloaks of invisibility;
 they are told not to tell anyone else about their cloak and that they can wear it whenever they liked. I measure how many mischievous acts they performed in one week.
 The object contains the following variables:
-
 \itemize{
 \item \strong{id}: participant id
 \item \strong{cloak}: whether the participant was assigned a cloak of invisibility
 \item \strong{mischief}: the number of mischievous acts committed during a week
-
 }
 }
 \keyword{datasets}

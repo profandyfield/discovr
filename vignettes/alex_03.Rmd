@@ -18,12 +18,18 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, echo = FALSE}
+![](images/dsus_smart_alex_banner.png)
+
+***
+This document may contain abridged sections from *Discovering Statistics Using R and RStudio* by [Andy Field](https://www.discoveringstatistics.com/) so there are some copyright considerations, but the material is offered under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Basically you can use this material for teaching and non-profit activities but please do not meddle with it or claim it as your own work.
+
+***
+
+## Load libraries
+
+```{r load_libraries}
 library(tidyverse)
 ```
-![](../data-raw/images/dsus_smart_alex_banner.png)
-
-This document may contain abridged sections from *Discovering Statistics Using R and RStudio* by [Andy Field](https://www.discoveringstatistics.com/) so there are some copyright considerations, but the material is offered under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Basically you can use this material for teaching and non-profit activities but please do not meddle with it or claim it as your own work.
 
 ## Task 3.1
 
@@ -174,12 +180,12 @@ Then the standard deviation, which we do as follows:
 
 ```{r t12.ss}
 
-score<- c(6,17,7,3,8,9,4,13,11,14,7)
-error<- round(score-mean(score), 2)
-error_2<-round(error^2, 2)
+score <- c(6,17,7,3,8,9,4,13,11,14,7)
+error <- round(score-mean(score), 2)
+error_2 <- round(error^2, 2)
 
-t12_tib<-tibble(score, error, error_2)
-names(t12_tib)<-c("Score", "Error (score - mean)", "Error squared")
+t12_tib <- tibble::tibble(score, error, error_2)
+names(t12_tib) <- c("Score", "Error (score - mean)", "Error squared")
 
 ```
 
@@ -240,12 +246,12 @@ Compute the standard deviation as follows:
 
 ```{r t13.ss}
 
-score<- c(210,91,3901,1339,662,453,16672,21963,222)
-error<- round(score-mean(score), 2)
-error_2<-round(error^2, 2)
+score <- c(210,91,3901,1339,662,453,16672,21963,222)
+error <- round(score-mean(score), 2)
+error_2 <- round(error^2, 2)
 
-t13_tib<-tibble(score, error, error_2)
-names(t13_tib)<-c("Score", "Error (score - mean)", "Error squared")
+t13_tib <- tibble::tibble(score, error, error_2)
+names(t13_tib) <- c("Score", "Error (score - mean)", "Error squared")
 
 ```
 

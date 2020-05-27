@@ -6,6 +6,7 @@ output:
     progressive: false
     theme: "paper"
 runtime: shiny_prerendered
+description: "Summarizing data (frequency distributions, grouped frequency distributions, relative frequencies, histograms, mean, median, variance, standard deviation, interquartile range)"
 bibliography: discovr_02.bib
 ---
 
@@ -449,7 +450,7 @@ We'll return to the `ggplot2` package in more depth in **discovr_05**.
 
 ## Summarizing data
 
-We've seen already that functions take the form of a command followed by brackets. We also saw that there are usually options that can be placed within those brackets (for example, in the previous section we changed the binwidth and bar colour of the histogram by placing instructions within the `geaom_histogram()` function). We'll explore this idea more by looking at the functiosn to estimate the mean and median of the ice bucket scores
+We've seen already that functions take the form of a command followed by brackets. We also saw that there are usually options that can be placed within those brackets (for example, in the previous section we changed the binwidth and bar colour of the histogram by placing instructions within the `geom_histogram()` function). We'll explore this idea more by looking at the functiosn to estimate the mean and median of the ice bucket scores
 
 ### The mean and median
 

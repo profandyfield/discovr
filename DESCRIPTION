@@ -1,22 +1,45 @@
 Package: discovr
 Type: Package
-Title: Materials for Discovering Statistics Using R and RStudio (Field 20xx)
+Title: Interactive Tutorials and Materials to Accompany "Discovering Statistics Using R and RStudio"" (Field 20xx)
 Version: 0.1.0
-Author:  person("Andy", "Field", email = "andyf@sussex.ac.uk", role = c("aut", "cre"))
+Authors@R: person("Andy", "Field", email = "andyf@sussex.ac.uk", role = c("aut", "cre"))
 Maintainer: Andy Field <andyf@sussex.ac.uk>
-Description: This package contains materials and datasets for the textbook Discovering Statistics Using R and RStudio.
+Description: Interactive R tutorials, datasets, materials and problem solutions for the textbook "Discovering Statistics Using R and RStudio" (Field, 2021).
+    Interactive tutorials cover general workflow in R and RStudio, summarizing data, visualizing data, fitting models and bias, correlation, the general linear model.
 License: GPL-3
 Depends:
   R (>= 3.6.0),
-  learnr,
-  tidyverse
+  learnr
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 Roxygen: list(markdown = TRUE)
 Imports:
-    tidyverse
+    BayesFactor,
+    broom,
+    car,
+    correlation,
+    dplyr,
+    effectsize,
+    forcats,
+    GGally,
+    ggplot2,
+    gmodels,
+    here,
+    Hmisc,
+    lubridate,
+    magrittr,
+    moments,
+    parameters,
+    pixiedust,
+    qqplotr,
+    readr,
+    robust,
+    tibble,
+    tidyr,
+    WRS2
 Suggests: 
+    kableExtra,
     knitr,
     rmarkdown
 VignetteBuilder: knitr

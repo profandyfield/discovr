@@ -25,3 +25,10 @@ theme_trans <- function(base_size = 12, base_family = "") {
       strip.text  = element_text(size = rel(1.3), colour = "white")
     )
 }
+
+
+point_size = 6
+bar_width = 0.6
+line_size = 1
+axis_rel = 1.3
+title_rel = 1.6

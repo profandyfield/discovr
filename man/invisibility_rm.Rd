@@ -4,9 +4,11 @@
 \name{invisibility_rm}
 \alias{invisibility_rm}
 \title{Invisibility data (repeated measures design)}
-\format{A tibble with 24 rows and 3 variables.}
+\format{
+A tibble with 24 rows and 3 variables.
+}
 \source{
-\url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+\href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{https://www.discoveringstatistics.com/books/discovering-statistics-using-r}
 }
 \usage{
 invisibility_rm
@@ -21,12 +23,10 @@ that wearing a cloak of invisibility has on the tendency for mischief. I take 12
 The community is riddled with hidden cameras so that we can record mischievous acts. For one week the participants are given cloaks of invisibility, during a different week they are not.
 I measure how many mischievous acts they performed in each week. These data are the same as in \strong{invisibility_cloak} but arranged in a repeated measures design.
 The object contains the following variables:
-
 \itemize{
 \item \strong{id}: participant id
 \item \strong{cloak}: whether the participant had access to a cloak of invisibility
 \item \strong{mischief}: the number of mischievous acts committed during a week
-
 }
 }
 \keyword{datasets}

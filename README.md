@@ -9,14 +9,20 @@ I recommend working through [this tutorial](http://milton-the-cat.rocks/learnr/r
 
 * **discovr_01**: Key concepts in R (functions and objects, packages and functions, style, data types, tidyverse, tibbles)
 * **discovr_02**: Summarizing data (frequency distributions, grouped frequency distributions, relative frequencies, histograms, mean, median, variance, standard deviation, interquartile range)
+* **discovr_05**: Visualizing data. The ggplot2 package, boxplots, plotting means, violin plots, scatterplots, grouping by colour, grouping using facets, adjusting scales, adjusting positions."
+* **discovr_06**:
+* **discovr_07**: Associations. Plotting data with GGally. Pearson's r, Spearman's Rho, Kendall's tau, robust correlations.
+* **discovr_08**: The general linear model (GLM). Visualizing the data, fitting GLMs with one and two predictors. Viewing model parameters with broom, model parameters, standard errors, confidence intervals, fit statistics, significance.
+* **discovr_09**: Categorical predictors with two cartegories (comparing two means). Comparing two independent means, comparing two related means, effect sizes.
+* **discovr_10**: 
 
 
 ### Datasets
 
 See the book or data descriptions for more details. This is a list of available datasets within the package. Raw CSV files are available from the book's website.
 
-* **acdc**: Data from the file *oxoby_2008.csv*. For more information execute `?acdc`
-* **animal_bride**: Data from the file *oxoby_2008.csv*. For more information execute `?animal_bride`
+* **acdc**: Data from the file *acdc.csv*. For more information execute `?acdc`
+* **animal_bride**: Data from the file *animal_bride.csv*. For more information execute `?animal_bride`
 * **exam_anxiety**: Data from the file *exam_anxiety.csv*. For more information execute `?exam_anxiety`
 * **ice_bucket**: Data from the file *ice_bucket.csv*. For more information execute `?ice_bucket`
 * **invisibility_cloak**: Data from the file *invisibility.csv*. For more information execute `?invisibility_cloak`

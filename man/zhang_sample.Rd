@@ -4,9 +4,11 @@
 \name{zhang_sample}
 \alias{zhang_sample}
 \title{Zhang et al. (2013) (subsample)}
-\format{A tibble with 52 rows and 4 variables}
+\format{
+A tibble with 52 rows and 4 variables
+}
 \source{
-\url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+\href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{https://www.discoveringstatistics.com/books/discovering-statistics-using-r}
 }
 \usage{
 zhang_sample
@@ -20,16 +22,11 @@ Zhang, Schmader and Hall (2013) did an intriguing study in which students comple
 whereas others were given a booklet that already had either a male or female name on. Participants in the latter two conditions were told that they would use this other person’s name for the purpose of the test.
 Women who completed the test using a different name performed significantly better than those who completed the test using their own name. (There were no such significant effects for men.)
 The data are a random subsample of Zhang et al.’s data with the following variables:
-
 \itemize{
 \item \strong{id}: participant ID
 \item \strong{sex}: participant's biological sex
 \item \strong{name_type}: the booklet condition to which the participant was allocated: Female fake name, Male fake name or Own name
 \item \strong{accuracy}: the participant's score on the maths test
-\item \strong{id}: Participant ID
-\item \strong{sex}: Participant's biological sex
-\item \strong{name_type}: The booklet condition to which the participant was allocated: Female fake name, Male fake name or Own name
-\item \strong{accuracy}: The participant's score on the maths test
 }
 }
 \references{

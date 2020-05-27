@@ -25,3 +25,104 @@ knitr::opts_chunk$set(
 ## Usage
 
 This file contains code relevant to chapter 1 of *Discovering Statistics Using R and RStudio* by [Andy Field](https://www.discoveringstatistics.com/). These files contain abridged sections from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/), ^[Basically you can use this material for teaching and non-profit activities but do not meddle with it or claim it as your own work.]
+
+
+## Load packages
+
+Remember to load the relevant packages mentioned at the start of the chapter:
+
+```{r}
+library(BayesFactor)
+library(broom)
+library(pixiedust)
+library(gmodels)
+library(tidyverse)
+
+```
+
+## Load the data
+
+Remember to load the package for the book with `library(discovr)`. After which you can load data into a tibble by executing:
+
+`name_of_tib <- discovr::name_of_data`
+
+For example, execute these lines to create the tibbles referred to in the chapter:
+
+```{r}
+cat_reg_tib <- discovr::cat_reg
+dance_tib <- discovr::cat_dance
+```
+
+If you want to read the file from the CSV and you have set up your project folder as I suggest in Chapter 1, then the general format of the code you would use is:
+
+```{r, eval = FALSE}
+tibble_name <- here::here("../data/name_of_file.csv") %>%
+  readr::read_csv() %>%
+  dplyr::mutate(
+    ...
+    code to convert character variables to factors
+    ...
+  )
+```
+
+In which you'd replace `tibble_name` with the name you want to assign to the tibble and change `name_of_file.csv` to the name of the file that you're trying to load. You can use mutate to convert categorical variables to factors (although we don['t need to for this tutorial). For example, for the `cat_dance` data you would load it by executing:
+
+```{r, eval = FALSE}
+library(here)
+dance_tib <- here::here("data/cat_dance.csv")
+```
+
+## Chi-square as a linear model
+
+Here's the code for the first two self-test tasks:
+
+```{r}
+lm(lnobserved ~ reward + dance + interaction, data = cat_reg_tib) %>% 
+  pixiedust::dust() %>% 
+  pixiedust::sprinkle(round = 3)
+```
+
+```{r}
+lm(lnexpected ~ reward + dance, data = cat_reg_tib) %>% 
+  pixiedust::dust() %>% 
+  pixiedust::sprinkle(round = 3)
+```
+
+## Chi-square test
+### From raw scores
+
+```{r}
+gmodels::CrossTable(dance_tib$reward, dance_tib$dance, fisher = TRUE, chisq = TRUE, expected = TRUE, sresid = TRUE, format = "SPSS")
+```
+
+
+
+### From a contingency tabel
+
+```{r}
+
+cat_cont <- tibble::tribble(
+  ~`reward`, ~`no_dance`, ~`danced`,
+  "Food", 10, 28,
+  "Affection", 114, 48
+)
+
+
+cat_cont %>% 
+  dplyr::select(-reward) %>% 
+  as.matrix() %>% 
+  gmodels::CrossTable(fisher = TRUE, chisq = TRUE, expected = TRUE, sresid = TRUE, format = "SPSS")
+
+```
+
+## Bayes factor
+
+```{r}
+cat_cont %>% 
+  dplyr::select(-reward) %>%
+  as.matrix() %>% 
+  BayesFactor::contingencyTableBF(sampleType = "indepMulti", fixedMargin = "rows")
+
+```
+
+

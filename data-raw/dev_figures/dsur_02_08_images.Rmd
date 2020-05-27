@@ -1,0 +1,171 @@
+---
+title: "DSUR 02 Chapter 8: Plots"
+author: "Andy P. Field"
+date: "25/11/2019"
+output: 
+  html_document:
+    toc: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+library(ggfortify)
+library(magrittr)
+
+source("dsur_themes.R")
+
+
+if(stringr::str_detect(here::here(), "Alpha")){
+  volume_path <- file.path("/Volumes", "Alpha Lacertae")
+} else {
+  volume_path <- file.path("/Volumes", "the_repository")
+}
+
+dsr_image <- file.path(volume_path, "Documents", "Academic", "books", "discovering_statistics", "dsu_r", "dsr_02", "dsr2_docs", "dsr2_images", "dsr2_figures", "dsr2_ch_08_figures")
+dsr_image_dev <- file.path(volume_path, "Documents", "Academic", "books", "discovering_statistics", "dsu_r", "dsr_02", "dsr2_docs", "dsr2_images", "dsr2_image_dev", "dsr2_omni_files", "dsr2_omni_dev")
+
+album_tib <- discovr::album_sales
+
+
+```
+
+
+
+## Sample size
+
+```{r}
+predictors <- rep(c(1:6, 10, 20), 3)
+effect_size <- gl(3,8)
+sample_size <-c(25, 31, 36, 40, 43, 46, 57, 77, 55, 68, 77, 85, 92, 98, 119, 157, 387, 476, 539, 590, 635, 667, 806, 1043)
+effect_size = factor(effect_size, levels = c(1:3), labels = c("Large effect", "Medium effect", "Small effect"))
+regression_sample<-data.frame(predictors, effect_size, sample_size)
+
+y_break<-c(25, 31, 36, 40, 43, 46, 55, 68, 77, 85, 92, 98, 119, 157, 387, 476, 539, 590, 635, 667, 806, 1043)
+
+lm_n_plot <- ggplot(regression_sample, aes(predictors, sample_size)) +
+  geom_line(aes(colour = effect_size), size = 1) +
+  geom_point(aes(colour = effect_size), size = 3) +
+  labs(x = "Number of predictors", y = "Required sample size", colour = "Effect size") +
+  scale_y_log10(breaks = y_break, labels = y_break) + 
+  scale_x_continuous(breaks = predictors, labels = predictors) + 
+  facet_wrap(~effect_size, scales = "free_y", ncol = 1) + 
+  scale_colour_manual(values = c(ong, blu, grn)) +
+  theme_minimal() +
+  theme(strip.text.x = element_text(size = rel(1.4)))
+
+lm_n_plot %>% ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_08_08_sample_size.pdf"), width = 20, height = 25, unit = "cm")
+```
+
+## Scatterplot of album sales
+
+```{r}
+
+album_scat <- ggplot2::ggplot(album_tib, aes(adverts, sales)) +
+  geom_point(colour = blu) +
+  coord_cartesian(ylim = c(0, 400), xlim = c(0, 2500)) +
+  scale_x_continuous(breaks = seq(0, 2500, 500)) +
+  scale_y_continuous(breaks = seq(0, 400, 100)) +
+  labs(x = "Advertising budget (thousands)", y = "Album sales (thousands)") +
+  geom_smooth(method = "lm", colour = "#d47500", fill = "#d47500", alpha = 0.2) +
+  theme_minimal()
+
+album_scat %>% ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_08_04_album_scat.pdf"), width = 15, height = 10, unit = "cm")
+
+```
+
+## Matrix scatterplot
+
+GGally::ggscatmat(album_tib, columns = c("sales", "adverts", "airplay", "image")) +
+  theme_minimal()
+```{r}
+album_mtrx_scat <- GGally::ggscatmat(album_tib, columns = c("adverts", "airplay", "image", "sales")) +
+  theme_minimal()
+
+album_mtrx_scat %>% ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_08_10_album_mtrx_scat.pdf"), width = 20, height = 20, unit = "cm")
+
+```
+
+## Diagnostics
+
+### Leverage plots
+
+Raw plots from `lm()`
+
+```{r, eval = F}
+pdf(file=file.path(dsr_image, "dsr2_fig_08_11_leverage_plots.pdf"), width = 10, height = 10)
+layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE))
+plot(album_full_lm, which = 5)
+plot(album_full_lm, which = 4)
+plot(album_full_lm, which = 6)
+dev.off()
+```
+
+Pretty version
+
+```{r}
+
+lev_plot <- ggplot2::autoplot(album_full_lm,
+                              which = c(5, 4, 6),
+                              colour = "#5c97bf",
+                              smooth.colour = "#ef4836",
+                              alpha = 0.5,
+                              size = 1,
+                              nrow = 3) + theme_minimal()
+
+lev_plot %>% 
+  ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_08_11_leverage_plots.pdf"), width = 15, height = 20, unit = "cm")
+```
+
+
+### Fitted vs resid
+
+Rancid:
+
+```{r, eval = F}
+pdf(file=file.path(dsr_image, "dsr2_fig_08_12_zresid_zpred.pdf"), width = 10, height = 5)
+par(mfrow=c(1,2))
+plot(album_full_lm, which = 1)
+plot(album_full_lm, which = 3)
+dev.off()
+```
+
+Pretty:
+
+```{r}
+rsd_plot <- ggplot2::autoplot(album_full_lm,
+                              which = c(1, 3),
+                              colour = "#5c97bf",
+                              smooth.colour = "#ef4836",
+                              alpha = 0.5,
+                              size = 1,
+                              nrow = 1,
+                              ncol = 2) + theme_minimal()
+
+rsd_plot %>%
+  ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_08_12_pred_resid.pdf"), width = 10, height = 15, unit = "cm")
+```
+
+
+### qq plot
+
+```{r, eval = F}
+pdf(file=file.path(dsr_image, "dsr2_fig_08_13_qq_resid.pdf"), width = 10, height = 7)
+plot(album_full_lm, which = 2)
+dev.off()
+```
+
+```{r}
+qq_plot <- ggplot2::autoplot(album_full_lm,
+                              which = 2,
+                              colour = "#5c97bf",
+                              smooth.colour = "#ef4836",
+                              alpha = 0.5,
+                              size = 1) + theme_minimal()
+
+qq_plot %>%
+  ggplot2::ggsave(filename = file.path(dsr_image, "dsr2_fig_08_13_qq_resid.pdf"), width = 10, height = 7, unit = "cm")
+```
+
+

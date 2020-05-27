@@ -22,6 +22,287 @@ knitr::opts_chunk$set(
 
 ```
 
+***
+
 ## Usage
 
 This file contains code relevant to chapter 1 of *Discovering Statistics Using R and RStudio* by [Andy Field](https://www.discoveringstatistics.com/). These files contain abridged sections from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/), ^[Basically you can use this material for teaching and non-profit activities but do not meddle with it or claim it as your own work.]
+
+***
+
+## Load packages
+
+Remember to load the relevant packages mentioned at the start of the chapter:
+
+```{r}
+library(BayesFactor)
+library(effectsize)
+library(moments)
+library(qqplotr)
+library(tidyverse)
+library(WRS2)
+```
+
+## Load the data
+
+Remember to load the package for the book with `library(discovr)`. After which you can load data into a tibble by executing:
+
+`name_of_tib <- discovr::name_of_data`
+
+For example, execute these lines to create the tibbles referred to in the chapter:
+
+```{r}
+cloak_tib <- discovr::invisibility_cloak
+cloak_rm_tib <- discovr::invisibility_rm
+```
+
+If you want to read the file from the CSV and you have set up your project folder as I suggest in Chapter 1, then the general format of the code you would use is:
+
+```{r, eval = FALSE}
+tibble_name <- here::here("../data/name_of_file.csv") %>%
+  readr::read_csv() %>%
+  dplyr::mutate(
+    ...
+    code to convert character variables to factors
+    ...
+  )
+```
+
+In which you'd replace `tibble_name` with the name you want to assign to the tibble and change `name_of_file.csv` to the name of the file that you're trying to load. You can use mutate to convert categorical variables to factors. For example, for the `invisibility_cloak` data you would load it by executing:
+
+```{r, eval = FALSE}
+library(here)
+
+cloak_tib <- here::here("data/invisibility.csv") %>%
+  readr::read_csv() %>%
+  dplyr::mutate(
+    cloak = forcats::as_factor(cloak)
+  )
+```
+
+## Entering data
+
+You were given the task to enter the data, there are several ways to do this, but here's one of them:
+
+```{r}
+cloak_tib <- tibble::tibble(
+    id = c("Kiara", "Anupama", "Collin", "Ian", "Vanessa", "Darrell", "Tyler", "Steven", "Katheryn", "Kirkpatrick", "Melissa", "Kinaana", "Shajee'a", "Sage", "Jorge", "Conan","Tamara","Man", "Joseph", "Israa", "Kathryn", "Luis", "Devante", "Jerry"),
+    cloak = gl(2, 12, labels = c("No cloak", "Cloak")),
+    mischief = c(3, 1, 5, 4, 6, 4, 6, 2, 0, 5, 4, 5, 4, 3, 6, 6, 8, 5, 5, 4, 2, 5, 7, 5)
+  )
+
+```
+
+## Descriptive statistics
+
+```{r}
+cloak_tib %>% 
+  dplyr::group_by(cloak) %>% 
+  dplyr::summarize(
+    n = n(),
+    mean = mean(mischief),
+    sd = sd(mischief),
+    ci_lower = ggplot2::mean_cl_normal(mischief)$ymin,
+    ci_upper = ggplot2::mean_cl_normal(mischief)$ymax,
+    iqr = IQR(mischief),
+    skew = moments::skewness(mischief),
+    kurtosis = moments::kurtosis(mischief)
+  )
+```
+
+```{r}
+cloak_lm <- lm(mischief ~ cloak, data = cloak_tib)
+summary(cloak_lm)
+```
+
+## t-test from summary data
+
+```{r}
+
+t_from_means <- function(m1, m2, sd1, sd2, n1, n2){
+  df <- n1 + n2 - 2
+	poolvar <- (((n1-1)*sd1^2)+((n2-1)*sd2^2))/df
+	t <- (m1-m2)/sqrt(poolvar*((1/n1)+(1/n2)))
+	sig <- 2*(1-(pt(abs(t),df)))
+	paste0("t(df = ", df, ") = ", round(t, 3), ", p = ", round(sig, 5))
+}
+
+t_from_means(m1 = 5, m2 = 3.75, sd1 = 1.651, sd2 = 1.913, n1 = 12, n2 = 12)
+
+```
+
+## Error bar plot
+
+```{r}
+ggplot2::ggplot(cloak_tib, aes(cloak, mischief)) +
+  geom_violin() +
+  stat_summary(fun.data = "mean_cl_normal") +
+  labs(x = "Cloak group", y = "Acts of mischief") +
+  theme_minimal()
+
+```
+
+## Independent t-test
+```{r}
+cloak_mod <- t.test(mischief ~ cloak, data = cloak_tib)
+cloak_mod 
+```
+
+## Robust tests
+
+### `yuen()`
+
+```{r}
+WRS2::yuen(mischief ~ cloak, data = cloak_tib)
+WRS2::yuen(mischief ~ cloak, data = cloak_tib, tr = 0.1)
+```
+
+### `yuenbt()`
+```{r}
+WRS2::yuenbt(mischief ~ cloak, data = cloak_tib, nboot = 1000, side = TRUE)
+```
+### `pb2gen()`
+
+```{r}
+WRS2::pb2gen(mischief ~ cloak, data = cloak_tib, nboot = 1000)
+```
+
+## Bayes factor for indepedent means
+
+```{r}
+cloak_bf <- BayesFactor::ttestBF(formula = mischief ~ cloak, data = cloak_tib)
+cloak_bf
+```
+
+```{r}
+BayesFactor::posterior(cloak_bf, iterations = 1000) %>% 
+  summary()
+```
+
+```{r}
+1/cloak_bf
+```
+
+## Effect sizes
+
+```{r}
+effectsize::t_to_r(t = cloak_mod$statistic, df_error = cloak_mod$parameter)
+
+effectsize::cohens_d(mischief ~ cloak, data = cloak_tib)
+effectsize::hedges_g(mischief ~ cloak, data = cloak_tib)
+effectsize::glass_delta(mischief ~ cloak, data = cloak_tib)
+```
+
+```{r}
+
+r_from_t <- function(t, df, digits = 5){
+  r <- sqrt(t^2/(t^2+df))
+  r <- round(r, digits)
+  return(paste0("r = ", r))
+}
+
+r_from_t(t = cloak_mod$statistic, df = cloak_mod$parameter)
+
+r_from_t(t = cloak_mod$statistic, df = cloak_mod$parameter, digits = 2)
+```
+
+## Entering data for related means
+
+```{r}
+cloak_rm_tib <- tibble::tibble(
+    id = rep(c("Alia", " Elisia", "Dominika", "Noah", "Haashid", "Zainab", "Reyna", "Victoria", "Najaat", "Jordyn", "Zaki", "Rajohn"), 2),
+    cloak = gl(2, 12, labels = c("No cloak", "Cloak")),
+    mischief = c(3, 1, 5, 4, 6, 4, 6, 2, 0, 5, 4, 5, 4, 3, 6, 6, 8, 5, 5, 4, 2, 5, 7, 5)
+  )
+```
+
+Or load it from the package:
+
+```{r}
+cloak_rm_tib <- discovr::invisibility_rm
+```
+
+Plot of the differences between scores:
+
+```{r}
+cloak_rm_tib %>% 
+  tidyr::pivot_wider(
+    id_cols = id,
+    values_from = mischief,
+    names_from = cloak
+    ) %>% 
+  dplyr::mutate(
+    diff = Cloak - `No cloak`
+  ) %>%  ggplot2::ggplot(., aes(sample = diff)) +
+    qqplotr::stat_qq_band(fill = "#5c97bf", alpha = 0.3) +
+    qqplotr::stat_qq_line(colour = "#5c97bf") +
+    qqplotr::stat_qq_point() +
+    labs(x = "Theoretical quantiles", y = "Sample quantiles") +
+    theme_minimal()
+```
+
+## Paired *t*-test
+
+```{r}
+cloak_rm_mod <- t.test(mischief ~ cloak, data = cloak_rm_tib, paired = TRUE)
+cloak_rm_mod 
+```
+
+Showing that order matters:
+
+```{r}
+cloak_rm_tib %>% 
+  dplyr::sample_n(24) %>%
+  t.test(mischief ~ cloak, data = ., paired = TRUE)
+```
+ 
+Making sure that data are in the correct order by sorting by participant id:
+
+```{r}
+cloak_rm_tib %>% 
+  dplyr::arrange(id) %>%
+  t.test(mischief ~ cloak, data = ., paired = TRUE)
+```
+
+## Robust tests of dependent means
+### `yuend()`
+
+```{r}
+cloak_messy_tib <- cloak_rm_tib %>% 
+  tidyr::spread(value = mischief, key = cloak)
+
+WRS2::yuend(cloak_messy_tib$Cloak, cloak_messy_tib$`No cloak`)
+```
+
+## Bayes factor for depedent means
+
+```{r}
+cloak_rm_bf <- BayesFactor::ttestBF(cloak_messy_tib$Cloak, cloak_messy_tib$`No cloak`, paired = TRUE, rscale = "medium")
+cloak_rm_bf
+```
+
+```{r}
+BayesFactor::posterior(cloak_rm_bf, iterations = 1000) %>% 
+  summary()
+```
+
+```{r}
+1/cloak_rm_bf
+```
+
+## Effect sizes for dependent means
+
+Do the same as for independent designs (see earlier). If you must, you can do this:
+
+```{r}
+cloak_rm_tib %>% 
+  dplyr::arrange(id) %>% 
+  effectsize::cohens_d(mischief ~ cloak, data = ., paired = TRUE)
+
+cloak_rm_tib %>% 
+  dplyr::arrange(id) %>%
+  effectsize::hedges_g(mischief ~ cloak, data = ., paired = TRUE)
+
+
+effectsize::t_to_r(t = cloak_mod$statistic, df_error = cloak_mod$parameter)
+```

@@ -4,9 +4,11 @@
 \name{exam_anxiety}
 \alias{exam_anxiety}
 \title{Exam anxiety data}
-\format{A tibble with 103 rows and 5 variables.}
+\format{
+A tibble with 103 rows and 5 variables.
+}
 \source{
-\url{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}
+\href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{https://www.discoveringstatistics.com/books/discovering-statistics-using-r}
 }
 \usage{
 exam_anxiety
@@ -19,14 +21,12 @@ a psychologist was interested in the effects of exam stress on exam performance.
 state anxiety relating to exams (called the Exam Anxiety Questionnaire, or EAQ). This scale produced a measure of anxiety scored out of 100.
 Anxiety was measured before an exam, and the percentage mark of each student on the exam was used to assess the exam performance. These data are fictional.
 The object contains the following variables:
-
 \itemize{
 \item \strong{id}: participant id
 \item \strong{revise}: the time spent revising for the exam (hours)
 \item \strong{exam_grade}: the percentage score of each student on the exam
 \item \strong{anxiety}: anxiety score on the EAQ out of 100
 \item \strong{sex}: biological sex of the participant
-
 }
 }
 \keyword{datasets}

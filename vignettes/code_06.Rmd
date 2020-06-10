@@ -29,12 +29,11 @@ This file contains code relevant to chapter 1 of *Discovering Statistics Using R
 
 ***
 
-## Load packages
+## Load general packages
 
 Remember to load the relevant packages mentioned at the start of the chapter:
 
 ```{r}
-
 library(tidyverse)
 ```
 
@@ -67,7 +66,7 @@ In which you'd replace `tibble_name` with the name you want to assign to the tib
 ```{r, eval = FALSE}
 library(here)
 
-here::here("data/download_festival.csv") %>%
+download_tib <- here::here("data/download_festival.csv") %>%
   readr::read_csv() %>% 
   dplyr::mutate(
     ticket_no = as.character(ticket_no),
@@ -241,7 +240,7 @@ ggplot2::ggplot(download_tidy_tib, aes(day, hygiene, fill = gender)) +
 
 Manually convert to z:
 
-```{r eval = FALSE}
+```{r}
 
 make_z <- function(x){
   (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)

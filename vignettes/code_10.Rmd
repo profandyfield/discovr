@@ -221,7 +221,6 @@ infidelity_tib <- infidelity_tib %>%
 Fit the model
 
 ```{r}
-
 infidelity_mod <- 'phys_inf ~ c*ln_porn + b*commit
                    commit ~ a*ln_porn
 
@@ -245,7 +244,7 @@ Non-robust version for shits and giggles:
 ```{r}
 infidelity_nonrob <- lavaan::sem(infidelity_mod, data = infidelity_tib, missing = "FIML")
 
-broom::tidy(infidelity_rob, conf.int = TRUE) %>%
+broom::tidy(infidelity_nonrob, conf.int = TRUE) %>%
   dplyr::mutate_if(
     vars(is.numeric(.)),
     list(~round(., 3))
@@ -292,18 +291,21 @@ newz_md_tib %>%
 ```
 
 ```{r}
-newz_md_tib %>%
-  mice::ic()
+mice::ic(newz_md_tib)
 ```
 
 
-## Casewise deletion
+## Listwise deletion (don't do it!)
 
 ```{r}
 
-fake_lm <- lm(fake_newz ~ delusionz + thinkz_open + thinkz_anal, data = newz_md_tib)
+fake_lm <- lm(fake_newz ~ 0 + delusionz + thinkz_open + thinkz_anal, data = newz_md_tib)
 
-broom::glance(fake_lm)
+broom::glance(fake_lm) %>% 
+  dplyr::mutate_if(
+    vars(is.numeric(.)),
+    list(~round(., 3))
+    )
 
 broom::tidy(fake_lm, conf.int = TRUE) %>% 
   dplyr::mutate_if(
@@ -312,69 +314,49 @@ broom::tidy(fake_lm, conf.int = TRUE) %>%
     )
 ```
 
-
-
-
-
-
-complete data
-
-```{r}
-lm(fake_newz ~ delusionz + thinkz_open + thinkz_anal, data = newz_tib) %>%
-  broom::tidy() %>% 
-    dplyr::mutate_if(
-    vars(is.numeric(.)),
-    list(~round(., 3))
-  )
-```
-
 ## FIML
 
 ```{r}
-newz_lm <- 'fake_newz ~ delusionz + thinkz_open + thinkz_anal
-            fake_newz ~ 1
-            '
 
-# don't need the intercept because variables are standardized, otherwise include fake_newz ~ 1)
+newz_lm <- 'fake_newz ~ delusionz + thinkz_open + thinkz_anal'
 
-newz_lm_fit <- lavaan::sem(newz_lm, data = newz_tib)
+# If you want the intercept include 1
+# newz_lm <- 'fake_newz ~ 1 + delusionz + thinkz_open + thinkz_anal'
 
- broom::tidy(newz_lm_fit, conf.int = TRUE) %>%
+newz_lm_fit <- lavaan::sem(newz_lm, data = newz_md_tib, missing = "fiml.x")
+
+broom::tidy(newz_lm_fit, conf.int = TRUE) %>%
   dplyr::mutate_if(
     vars(is.numeric(.)),
     list(~round(., 3))
   )
- 
-newz_lm <- 'fake_newz ~ delusionz + thinkz_open + thinkz_anal
-            '
-newz_lm_fit <- lavaan::sem(newz_lm, data = newz_md_tib, missing = "FIML")
-
- broom::tidy(newz_lm_fit, conf.int = TRUE) %>%
-  dplyr::mutate_if(
-    vars(is.numeric(.)),
-    list(~round(., 3))
-  ) 
- 
-
-
 ```
 
 ## Multiple imputation
 
+Find auxillary variables
+
+```{r}
+aux_vars <- mice::quickpred(newz_md_tib, exclude = "id", mincor = 0.1)
+aux_vars
+```
 
 
 Imputation
 
 ```{r}
-newz_imps <- newz_md_tib %>% 
-  dplyr::select(-id) %>% 
-  mice::mice(method = "pmm", m = 20)
+newz_imps <- mice::mice(newz_md_tib, pred = aux_vars, method = "pmm", m = 20)
 
+newz_mi_fit <- with(newz_imps, lm(fake_newz ~ 0 + delusionz + thinkz_open + thinkz_anal))
+newz_pool <- mice::pool(newz_mi_fit)
 
+summary(newz_pool, conf.int=TRUE)
 
-newz_mi_fit <- with(newz_imps, lm(fake_newz ~ delusionz + thinkz_open + thinkz_anal))
-
-newz_pool_fit <- mice::pool(newz_mi_fit)
-summary(newz_pool_fit)
+summary(newz_pool, conf.int=TRUE) %>% 
+  tibble::as_tibble() %>% 
+  dplyr::mutate_if(
+    vars(is.numeric(.)),
+    list(~round(., 3))
+    )
 ```
 

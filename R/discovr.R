@@ -1,8 +1,8 @@
-#' discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2020)
+#' discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2021)
 #'
 #' @description
 #'
-#' The `discovr`` package contains resources for my 2020 textbook [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/).
+#' The `discovr`` package contains resources for my 2021 textbook [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/).
 #' There are tutorials written using learnr, datasets, solutions to tasks and so on.
 #'
 #' @section Who is the package aimed at?:
@@ -30,10 +30,14 @@
 #' learnr::run_tutorial("discovr_02", package = "discovr")
 #' ```
 #'
-#' * discovr_01: Key concepts in R (functions and objects, packages and functions, style, data types, tidyverse, tibbles)
-#' * discovr_02: Summarizing data (frequency distributions, grouped frequency distributions, relative frequencies, histograms, mean, median, variance, standard deviation, interquartile range)
-#' * discovr_05: Visualizing data (boxplots, error bar plots, violin plots, scatterplots)
-#' * discovr_07: Associations (correlation coefficients)
+#' * **discovr_01**: Key concepts in R (functions and objects, packages and functions, style, data types, tidyverse, tibbles)
+#' * **discovr_02**: Summarizing data (frequency distributions, grouped frequency distributions, relative frequencies, histograms, mean, median, variance, standard deviation, interquartile range)
+#' * **discovr_05**: Visualizing data. The ggplot2 package, boxplots, plotting means, violin plots, scatterplots, grouping by colour, grouping using facets, adjusting scales, adjusting positions."
+#' * **discovr_06**:
+#' * **discovr_07**: Associations. Plotting data with GGally. Pearson's r, Spearman's Rho, Kendall's tau, robust correlations.
+#' * **discovr_08**: The general linear model (GLM). Visualizing the data, fitting GLMs with one and two predictors. Viewing model parameters with broom, model parameters, standard errors, confidence intervals, fit statistics, significance.
+#' * **discovr_09**: Categorical predictors with two cartegories (comparing two means). Comparing two independent means, comparing two related means, effect sizes.
+#' * **discovr_10**:
 #'
 #' **Workflow**:
 #' The tutorials are self-contained (you practice code in code boxes) so you don't need to use RStudio at the same time. However, to get the most from them I would recommend that you open two RStudio sessions (i.e. two RStudio windows running simultaneously). Use one RStudio session to run the tutorial. You won't then be able to use this RStudio window (because its resources are allocated to the tutorial). In the second RStudio session try replicating what you learn in the tutorial. That is, open a new script file and everything you do in the tutorial, practice in the script file (and save it). This workflow has the advantage of not just teaching you the code that you need to do certain things, but also provides practice in using RStudio itself.
@@ -103,7 +107,7 @@
 #'
 #' @section References:
 #'
-#' * Field, A. P. (2020). *Discovering statistics using R and RStudio* (2nd ed.). London: Sage.
+#' * Field, A. P. (2021). *Discovering statistics using R and RStudio* (2nd ed.). London: Sage.
 #'
 #' @import learnr
 #' @docType package

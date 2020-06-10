@@ -14,7 +14,7 @@ I recommend working through [this tutorial](http://milton-the-cat.rocks/learnr/r
 * **discovr_07**: Associations. Plotting data with GGally. Pearson's r, Spearman's Rho, Kendall's tau, robust correlations.
 * **discovr_08**: The general linear model (GLM). Visualizing the data, fitting GLMs with one and two predictors. Viewing model parameters with broom, model parameters, standard errors, confidence intervals, fit statistics, significance.
 * **discovr_09**: Categorical predictors with two cartegories (comparing two means). Comparing two independent means, comparing two related means, effect sizes.
-* **discovr_10**: 
+* **discovr_10**:  
 
 
 ### Datasets

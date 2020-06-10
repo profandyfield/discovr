@@ -29,7 +29,7 @@ knitr::opts_chunk$set(
 #  library(tidyverse) #if you haven't already executed this command
 #  library(here) #if you haven't already executed this command
 #  
-#  oxoby_tib <- here::here("data/oxoby_2008.csv") %>% read_csv()
+#  oxoby_tib <- here::here("data/acdc.csv") %>% read_csv()
 #  
 #  oxoby_tib %>%
 #    dplyr::mutate(
@@ -37,7 +37,7 @@ knitr::opts_chunk$set(
 #      	)
 #  
 #  oxoby_tib %>%
-#    readr::write_csv(., here::here("data/oxoby_2008.csv)
+#    readr::write_csv(., here::here("data/acdc.csv)
 
 ## ----1_5, echo = TRUE, eval = FALSE-------------------------------------------
 #  library(tidyverse) #if you haven't already executed this command

@@ -20,5 +20,5 @@ knitr::opts_chunk$set(
 #  # You can go on to save this tibble to a csv in your data folder using:
 #  
 #  oxoby_tib %>%
-#    readr::write_csv(., here::here("data/oxoby_2008.csv"))
+#    readr::write_csv(., here::here("data/acdc.csv"))
 

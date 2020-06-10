@@ -93,17 +93,17 @@ The data can be found in `discovr::teaching`.
 
 ##  Task 1.4
 
-> In the study discussed in Labcoat Leni’s Real Research 1.1, Oxoby also measured the minimum acceptable offer; these MAOs (in dollars) are below (again, they are approximations based on the graphs in the paper). Read in the file oxoby_2008.csv (which you should already have if you completed the task in Labcoat Leni’s Real Research 1.1 but if not grab it from my website and save it in your data folder) to a tibble called oxoby_tib. Add a variable called mao to the tibble using the values below and overwrite oxoby_2008.csv with this new tibble.
+> In the study discussed in Labcoat Leni’s Real Research 1.1, Oxoby also measured the minimum acceptable offer; these MAOs (in dollars) are below (again, they are approximations based on the graphs in the paper). Read in the file acdc.csv (which you should already have if you completed the task in Labcoat Leni’s Real Research 1.1 but if not grab it from my website and save it in your data folder) to a tibble called oxoby_tib. Add a variable called mao to the tibble using the values below and overwrite acdc.csv with this new tibble.
 * Bon Scott group: 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5
 * Brian Johnson group: 0, 1, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 1
 
-Assuming you have the original **oxoby_2008.csv** in the data folder of your project, this code should do the job:
+Assuming you have the original **acdc.csv** in the data folder of your project, this code should do the job:
 
 ```{r 1_4, echo = TRUE, eval = FALSE}
 library(tidyverse) #if you haven't already executed this command
 library(here) #if you haven't already executed this command
 
-oxoby_tib <- here::here("data/oxoby_2008.csv") %>% read_csv()
+oxoby_tib <- here::here("data/acdc.csv") %>% read_csv()
 
 oxoby_tib %>% 
   dplyr::mutate(
@@ -111,7 +111,7 @@ oxoby_tib %>%
     	) 
 
 oxoby_tib %>% 
-  readr::write_csv(., here::here("data/oxoby_2008.csv)
+  readr::write_csv(., here::here("data/acdc.csv)
 ```
 
 The data can be found in `discovr::acdc`

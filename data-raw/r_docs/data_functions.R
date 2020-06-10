@@ -50,7 +50,7 @@ add_ids <- function(tibble, code_length = 4, inc_numbers = FALSE){
 }
 
 get_data <- function(name){
-  paste0("data-raw/", name) %>%
+  paste0("data-raw/csv_files/", name) %>%
     here::here() %>%
     readr::read_csv()
 }

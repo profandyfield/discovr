@@ -1,6 +1,7 @@
 ## Convert csvs in raw-data to r data objects
+library(magrittr)
 
-here::here("/data-raw/data_functions.R") %>% source()
+here::here("data-raw/r_docs/data_functions.R") %>% source()
 
 #########
 # Album sales data
@@ -298,7 +299,7 @@ usethis::use_data(metal_health, overwrite = TRUE)
 #####
 # Metallica
 
-metallica <- tibble(.rows = 7) %>%
+metallica <- tibble::tibble(.rows = 7) %>%
   dplyr::mutate(
     name = c("Lars Ulrich","James Hetfield", "Kirk Hammett", "Rob Trujillo", "Jason Newsted", "Cliff Burton", "Dave Mustaine"),
     birth_date = c("1963-12-26", "1963-08-03", "1962-11-18", "1964-10-23", "1963-03-04", "1962-02-10", "1961-09-13") %>% lubridate::ymd(),
@@ -309,10 +310,15 @@ metallica <- tibble(.rows = 7) %>%
     current_member = c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE),
     songs_written =  c(111, 112, 56, 16, 3, 11, 6),
     net_worth = c(300000000, 300000000, 200000000, 20000000, 40000000, 1000000, 20000000),
+    albums = c(10, 10, 10, 2, 4, 3, 0),
     worth_per_song = net_worth/songs_written
   )
 
-usethis::use_data(metallica)
+here::here("data-raw/csv_files/metallica.csv") %>%
+  readr::write_csv(metallica, path = .)
+
+
+usethis::use_data(metallica, overwrite = TRUE)
 
 #########
 # Method of teaching

@@ -1,6 +1,8 @@
 ## code to prepare get spss data files and convert to csv
 
-here::here("/data-raw/data_functions.R") %>% source()
+library(magrittr)
+
+here::here("data-raw/r_docs/data_functions.R") %>% source()
 
 
 #########
@@ -12,7 +14,7 @@ album_sales <- get_spss("album_sales.sav") %>%
   dplyr::rename(album_id = id) %>%
   dplyr::select(album_id, adverts:image)
 
-here::here("data-raw/album_sales.csv") %>%
+here::here("data-raw/csv_files/album_sales.csv") %>%
   readr::write_csv(album_sales, path = .)
 #########
 # Animal bride
@@ -24,7 +26,7 @@ animal_bride <- tibble(.rows = 20) %>%
     life_satisfaction = c(47, 6, 47, 33, 13, 56, 42, 51, 42, 46, 27, 48, 52, 66, 65, 61, 60, 68, 37, 72)
   )
 
-here::here("data-raw/animal_bride.csv") %>%
+here::here("data-raw/csv_files/animal_bride.csv") %>%
   readr::write_csv(animal_bride, path = .)
 
 #######
@@ -38,7 +40,7 @@ beckham_1929 <- get_spss("beckham_1929.sav") %>%
     response = forcats::as_factor(response)
   )
 
-here::here("data-raw/beckham_1929.csv") %>%
+here::here("data-raw/csv_files/beckham_1929.csv") %>%
   readr::write_csv(beckham_1929, path = .)
 #########
 # Biggest liar
@@ -51,7 +53,7 @@ biggest_liar <- get_spss("the_biggest_liar.sav") %>%
     novice = forcats::as_factor(novice)
   )
 
-here::here("data-raw/biggest_liar.csv") %>%
+here::here("data-raw/csv_files/biggest_liar.csv") %>%
   readr::write_csv(biggest_liar, path = .)
 
 #########
@@ -64,7 +66,7 @@ big_hairy_spider <- get_spss("big_hairy_spider.sav") %>%
   ) %>%
   tidyr::gather(key = spider_type, value = anxiety, -id)
 
-here::here("data-raw/big_hairy_spider.csv") %>%
+here::here("data-raw/csv_files/big_hairy_spider.csv") %>%
   readr::write_csv(big_hairy_spider, path = .)
 
 ###########
@@ -74,7 +76,7 @@ catterplot <- get_spss("catterplot.sav") %>%
   dplyr::rename_all(tolower) %>%
   dplyr::rename(dinner_time = dinnertime)
 
-here::here("data-raw/catterplot.csv") %>%
+here::here("data-raw/csv_files/catterplot.csv") %>%
   readr::write_csv(catterplot, path = .)
 
 ###########
@@ -88,7 +90,7 @@ cat_reg <- get_spss("cat_regression.sav") %>%
     dance = as.numeric(dance)
   )
 
-here::here("data-raw/cat_regression.csv") %>%
+here::here("data-raw/csv_files/cat_regression.csv") %>%
   readr::write_csv(cat_reg, path = .)
 
 ###########
@@ -105,7 +107,7 @@ cat_dance <- get_spss("cats.sav") %>%
 
 levels(cat_dance$dance)
 
-here::here("data-raw/cat_dance.csv") %>%
+here::here("data-raw/csv_files/cat_dance.csv") %>%
   readr::write_csv(cat_dance, path = .)
 
 #########
@@ -129,7 +131,7 @@ chamorro_premuzic <- get_spss("chamorro-premuzic.sav") %>%
     sex = forcats::as_factor(sex)
   )
 
-here::here("data-raw/chamorro_premuzic.csv") %>%
+here::here("data-raw/csv_files/chamorro_premuzic.csv") %>%
   readr::write_csv(chamorro_premuzic, path = .)
 
 #########
@@ -138,7 +140,7 @@ here::here("data-raw/chamorro_premuzic.csv") %>%
 child_aggression <- get_spss("child_aggression.sav") %>%
   dplyr::rename_all(tolower)
 
-here::here("data-raw/child_aggression.csv") %>%
+here::here("data-raw/csv_files/child_aggression.csv") %>%
   readr::write_csv(child_aggression, path = .)
 #########
 # Coldwell et al. (2006)
@@ -152,7 +154,7 @@ coldwell_2006 <- get_spss("coldwell_et_al_2006.sav") %>%
     child_gender = forcats::as_factor(child_gender)
   )
 
-here::here("data-raw/coldwell_2006.csv") %>%
+here::here("data-raw/csv_files/coldwell_2006.csv") %>%
   readr::write_csv(coldwell_2006, path = .)
 
 #########
@@ -165,7 +167,7 @@ daniels_2012 <- get_spss("daniels_2012.sav") %>%
     theme_present = forcats::as_factor(theme_present)
   )
 
-here::here("data-raw/daniels_2012.csv") %>%
+here::here("data-raw/csv_files/daniels_2012.csv") %>%
   readr::write_csv(daniels_2012, path = .)
 
 #########
@@ -179,7 +181,7 @@ dark_lord <- get_spss("darklord.sav") %>%
   add_ids(.) %>%
   tidyr::gather(key = message, value = intrusions, -id)
 
-here::here("data-raw/dark_lord.csv") %>%
+here::here("data-raw/csv_files/dark_lord.csv") %>%
   readr::write_csv(dark_lord, path = .)
 
 #########
@@ -187,7 +189,7 @@ here::here("data-raw/dark_lord.csv") %>%
 
 df_beta <- get_spss("dfbeta.sav")
 
-here::here("data-raw/df_beta.csv") %>%
+here::here("data-raw/csv_files/df_beta.csv") %>%
   readr::write_csv(df_beta, path = .)
 
 #########
@@ -207,10 +209,10 @@ download_tidy <- get_spss("download_festival.sav") %>%
   ) %>% dplyr::select(-rng) %>%
   tidyr::gather(key = day, value = hygiene, -c(ticket_no, gender))
 
-here::here("data-raw/download_festival_tidy.csv") %>%
+here::here("data-raw/csv_files/download_festival_tidy.csv") %>%
   readr::write_csv(download_tidy, path = .)
 
-download <- here::here("data-raw/download_festival_tidy.csv") %>%
+download <- here::here("data-raw/csv_files/download_festival_tidy.csv") %>%
   readr::read_csv() %>%
   dplyr::mutate(
     ticket_no = as.character(ticket_no),
@@ -222,7 +224,7 @@ download <- here::here("data-raw/download_festival_tidy.csv") %>%
     values_from = hygiene
   )
 
-here::here("data-raw/download_festival.csv") %>%
+here::here("data-raw/csv_files/download_festival.csv") %>%
   readr::write_csv(download, path = .)
 
 ###########
@@ -235,7 +237,7 @@ essay_marks <- get_spss("essay_marks.sav") %>%
     grade = factor(grade, 1:4, labels = c("First class", "Upper second class", "Lower second class", "Third class")),
     )
 
-here::here("data-raw/essay_marks.csv") %>%
+here::here("data-raw/csv_files/essay_marks.csv") %>%
   readr::write_csv(essay_marks, path = .)
 ######
 # Exam anxiety
@@ -248,7 +250,7 @@ exam_anxiety <- get_spss("exam_anxiety.sav") %>%
     sex = forcats::as_factor(sex)
   )
 
-here::here("data-raw/exam_anxiety.csv") %>%
+here::here("data-raw/csv_files/exam_anxiety.csv") %>%
   readr::write_csv(exam_anxiety, path = .)
 ###########
 # gelman
@@ -258,7 +260,7 @@ gelman_2009 <- get_spss("gelman_&_weakliem_2009.sav") %>%
   tidyr::gather(key = child, value = number, -person) %>%
   dplyr::arrange(person)
 
-here::here("data-raw/gelman_2009.csv") %>%
+here::here("data-raw/csv_files/gelman_2009.csv") %>%
   readr::write_csv(gelman_2009, path = .)
 ##########
 #########
@@ -277,7 +279,7 @@ glastonbury <- get_spss("GlastonburyFestival.sav") %>%
   dplyr::rename(ticket_no = ticknumb)
 
 
-here::here("data-raw/glastonbury.csv") %>%
+here::here("data-raw/csv_files/glastonbury.csv") %>%
   readr::write_csv(glastonbury, path = .)
 
 
@@ -294,7 +296,7 @@ grades <- get_spss("grades.sav") %>%
     gcse = factor(gcse, 1:6, labels = c("A", "B", "C", "D", "E", "F")),
   )
 
-here::here("data-raw/grades.csv") %>%
+here::here("data-raw/csv_files/grades.csv") %>%
   readr::write_csv(grades, path = .)
 ########
 # Hiccups
@@ -303,7 +305,7 @@ hiccups <- get_spss("hiccups.sav") %>%
   add_ids(.) %>%
   tidyr::gather(key = "intervention", value = "hiccups", -id)
 
-here::here("data-raw/hiccups.csv") %>%
+here::here("data-raw/csv_files/hiccups.csv") %>%
   readr::write_csv(hiccups, path = .)
 ###########
 # Honest lab
@@ -313,7 +315,7 @@ honesty_lab <- get_spss("honesty_lab.sav") %>%
   dplyr::select(-participant) %>%
   add_ids(., code_length = 7)
 
-here::here("data-raw/honesty_lab.csv") %>%
+here::here("data-raw/csv_files/honesty_lab.csv") %>%
   readr::write_csv(honesty_lab, path = .)
 ######
 # Ice bucket challenge
@@ -338,7 +340,7 @@ ice_bucket <- tibble::tibble(.rows = length(upload_day)) %>%
   dplyr::select(-order) %>%
   dplyr::filter(is.na(upload_day) == FALSE)
 
-here::here("data-raw/ice_bucket.csv") %>%
+here::here("data-raw/csv_files/ice_bucket.csv") %>%
   readr::write_csv(ice_bucket, path = .)
 
 #########
@@ -351,7 +353,7 @@ invisibility_cloak <- tibble::tibble(.rows = 24) %>%
     mischief = c(3, 1, 5, 4, 6, 4, 6, 2, 0, 5, 4, 5, 4, 3, 6, 6, 8, 5, 5, 4, 2, 5, 7, 5),
     )
 
-here::here("data-raw/invisibility.csv") %>%
+here::here("data-raw/csv_files/invisibility.csv") %>%
   readr::write_csv(invisibility_cloak, path = .)
 #########
 # Invisibility RM
@@ -371,7 +373,7 @@ invisibility_rm <- invisibility_cloak %>%
   dplyr::arrange(row) %>%
   dplyr::select(-row)
 
-here::here("data-raw/invisibility_rm.csv") %>%
+here::here("data-raw/csv_files/invisibility_rm.csv") %>%
   readr::write_csv(invisibility_rm, path = .)
 ########
 # Jiminy cricket
@@ -386,7 +388,7 @@ jiminy_cricket <- get_spss("jiminy_cricket.sav") %>%
     time = ifelse(time == "success_pre", "Baseline", "5 years later")
   )
 
-here::here("data-raw/jiminy_cricket.csv") %>%
+here::here("data-raw/csv_files/jiminy_cricket.csv") %>%
   readr::write_csv(jiminy_cricket, path = .)
 #########
 # Johns et al. (2012)
@@ -402,7 +404,7 @@ johns_2012 <- get_spss("johns_et_al._(2012).sav") %>%
     colour = stringr::str_replace(colour, "Pink", " pink")
   )
 
-here::here("data-raw/johns_2012.csv") %>%
+here::here("data-raw/csv_files/johns_2012.csv") %>%
   readr::write_csv(johns_2012, path = .)
 
 #########
@@ -414,7 +416,7 @@ lambert_2012 <- get_spss("lambert_et_al_2012.sav") %>%
   add_ids(., code_length = 5, inc_numbers = TRUE)
 
 
-here::here("data-raw/lambert_2012.csv") %>%
+here::here("data-raw/csv_files/lambert_2012.csv") %>%
   readr::write_csv(lambert_2012, path = .)
 
 #########
@@ -425,7 +427,7 @@ massar_2012 <- get_spss("massar_et_al_2011.sav") %>%
   add_ids(., code_length = 5, inc_numbers = TRUE)
 
 
-here::here("data-raw/massar_2012.csv") %>%
+here::here("data-raw/csv_files/massar_2012.csv") %>%
   readr::write_csv(massar_2012, path = .)
 
 #########
@@ -444,7 +446,7 @@ mcnulty_2008 <- get_spss("mcnulty_et_al_2008.sav") %>%
       forcats::fct_relevel(., "Husband")
   )
 
-here::here("data-raw/mcnulty_2008.csv") %>%
+here::here("data-raw/csv_files/mcnulty_2008.csv") %>%
   readr::write_csv(mcnulty_2008, path = .)
 
 #########
@@ -457,7 +459,7 @@ men_dogs <- get_spss("men_like_dogs.sav") %>%
     species = forcats::as_factor(species)
   )
 
-here::here("data-raw/men_dogs.csv") %>%
+here::here("data-raw/csv_files/men_dogs.csv") %>%
   readr::write_csv(men_dogs, path = .)
 
 #########
@@ -465,7 +467,7 @@ here::here("data-raw/men_dogs.csv") %>%
 
 metal_health <- get_spss("metal_health.sav")
 
-here::here("data-raw/metal_health.csv") %>%
+here::here("data-raw/csv_files/metal_health.csv") %>%
   readr::write_csv(metal_health, path = .)
 
 #########
@@ -478,7 +480,7 @@ notebook <- get_spss("notebook.sav") %>%
     film = forcats::as_factor(film),
   )
 
-here::here("data-raw/notebook.csv") %>%
+here::here("data-raw/csv_files/notebook.csv") %>%
   readr::write_csv(notebook, path = .)
 #########
 # Ong et al (2011)
@@ -510,17 +512,17 @@ ong_tidy <- ong_2011 %>%
     rating_type = forcats::fct_recode(rating_type, Attractiveness = "attractive", Glamour = "glamour", Cool = "cool", Fashionable = "fashion")
   )
 
-here::here("data-raw/ong_2011_tidy.csv") %>%
+here::here("data-raw/csv_files/ong_2011_tidy.csv") %>%
   readr::write_csv(ong_tidy, path = .)
 
-here::here("data-raw/ong_2011.csv") %>%
+here::here("data-raw/csv_files/ong_2011.csv") %>%
   readr::write_csv(ong_2011, path = .)
 #########
 # Pubs
 
 pubs <- get_spss("pubs.sav")
 
-here::here("data-raw/pubs.csv") %>%
+here::here("data-raw/csv_files/pubs.csv") %>%
   readr::write_csv(pubs, path = .)
 #########
 # R exam
@@ -531,7 +533,7 @@ r_exam <- get_spss("spssexam.sav") %>%
     uni = forcats::as_factor(uni)
   )
 
-here::here("data-raw/r_exam.csv") %>%
+here::here("data-raw/csv_files/r_exam.csv") %>%
   readr::write_csv(r_exam, path = .)
 #########
 # roaming cats
@@ -544,7 +546,7 @@ roaming_cats <- get_spss("roaming_cats.sav") %>%
     sex = forcats::as_factor(sex)
   )
 
-here::here("data-raw/roaming_cats.csv") %>%
+here::here("data-raw/csv_files/roaming_cats.csv") %>%
   readr::write_csv(roaming_cats, path = .)
 #########
 # self help
@@ -556,7 +558,7 @@ self_help <- get_spss("penis.sav") %>%
     book = forcats::as_factor(book)
   )
 
-here::here("data-raw/self_help.csv") %>%
+here::here("data-raw/csv_files/self_help.csv") %>%
   readr::write_csv(self_help, path = .)
 #########
 # self help dsur
@@ -569,14 +571,14 @@ self_help_dsur <- get_spss("field&hole.sav") %>%
   ) %>%
   tidyr::gather(key = book, value = happiness, -id)
 
-here::here("data-raw/self_help_dsur.csv") %>%
+here::here("data-raw/csv_files/self_help_dsur.csv") %>%
   readr::write_csv(self_help_dsur, path = .)
 #########
 # Social anxiety
 
 social_anxiety <- get_spss("social_anxiety.sav")
 
-here::here("data-raw/social_anxiety.csv") %>%
+here::here("data-raw/csv_files/social_anxiety.csv") %>%
   readr::write_csv(social_anxiety, path = .)
 #########
 # Social media and grammar
@@ -592,7 +594,7 @@ grammar <- get_spss("social_media.sav") %>%
     time = if_else(time == "Baseline", "Baseline", "6 months") %>% forcats::as_factor()
   )
 
-here::here("data-raw/social_media.csv") %>%
+here::here("data-raw/csv_files/social_media.csv") %>%
   readr::write_csv(grammar, path = .)
 #########
 # Students and lecturers
@@ -603,7 +605,7 @@ students <- get_spss("data_with_which_to_play.sav") %>%
     group = forcats::as_factor(group)
   )
 
-here::here("data-raw/students.csv") %>%
+here::here("data-raw/csv_files/students.csv") %>%
   readr::write_csv(students, path = .)
 #########
 # Supermodel data
@@ -614,7 +616,7 @@ supermodel <- get_spss("supermodel.sav") %>%
     status = beauty
   )
 
-here::here("data-raw/supermodel.csv") %>%
+here::here("data-raw/csv_files/supermodel.csv") %>%
   readr::write_csv(supermodel, path = .)
 #########
 # Tablet sales data
@@ -624,7 +626,7 @@ tablets <- get_spss("tablets.sav") %>%
   add_ids(., code_length = 4, inc_numbers = TRUE) %>%
   dplyr::mutate(product_cool = abs(product_cool))
 
-here::here("data-raw/tablets.csv") %>%
+here::here("data-raw/csv_files/tablets.csv") %>%
   readr::write_csv(tablets, path = .)
 
 #########
@@ -637,7 +639,7 @@ tea_15 <- tibble(.rows = 15) %>%
     cog_fun = c(60, 47, 31, 62, 44, 41, 49, 56, 45, 56, 57, 40, 54, 34, 46)
   )
 
-here::here("data-raw/tea_makes_you_brainy_15.csv") %>%
+here::here("data-raw/csv_files/tea_makes_you_brainy_15.csv") %>%
   readr::write_csv(tea_15, path = .)
 #########
 # Tea 716
@@ -650,7 +652,7 @@ tea_716 <- get_spss("tea_makes_you_brainy_716.sav") %>%
     cog_fun = cognitive_function
   )
 
-here::here("data-raw/tea_makes_you_brainy_716.csv") %>%
+here::here("data-raw/csv_files/tea_makes_you_brainy_716.csv") %>%
   readr::write_csv(tea_716, path = .)
 #########
 
@@ -666,7 +668,7 @@ tuk_2011 <- get_spss("tuk_et_al_2011.sav") %>%
       urgency = forcats::as_factor(urgency) %>% tolower() %>% sub("(\\w)", "\\U\\1", perl = TRUE, .),
   )
 
-here::here("data-raw/tuk_2011.csv") %>%
+here::here("data-raw/csv_files/tuk_2011.csv") %>%
   readr::write_csv(tuk_2011, path = .)
 
 ########
@@ -677,7 +679,7 @@ video_games <- get_spss("video_games.sav") %>%
   add_ids(., code_length = 4, inc_numbers = TRUE)
 
 
-here::here("data-raw/video_games.csv") %>%
+here::here("data-raw/csv_files/video_games.csv") %>%
   readr::write_csv(video_games, path = .)
 
 

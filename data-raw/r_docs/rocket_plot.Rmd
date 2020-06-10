@@ -1,0 +1,32 @@
+---
+title: "rocket"
+author: "Andy P. Field"
+date: "27/04/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+rocket <- readr::read_csv("./data-raw/rocket.csv") %>% 
+  dplyr::mutate(
+    colour = forcats::as_factor(colour) %>%  forcats::fct_relevel(., "red", "ong", "ylw", "gry_dk", "blu"),
+    y = 610 - y
+  )
+
+rocket_plot <- ggplot(rocket, aes(x, y, colour = colour)) +
+  geom_point(size = 4) +
+  scale_color_manual(values = c(red, ong, ylw, gry_dk, blu)) +
+  labs(x = "Amount daddy is a 'proper scientist'", y = "Love for daddy", title = "Rocket plot") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+rocket_plot %>%
+  ggplot2::ggsave(filename = file.path(here::here("data-raw"), "ggrocket.png"), width = 10, height = 10, unit = "cm")
+  
+
+```
+

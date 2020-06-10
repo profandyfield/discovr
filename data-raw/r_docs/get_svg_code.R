@@ -47,4 +47,19 @@ get_code <- function(filename){
 get_code("alien-monster")
 
 
+# get other svgs
+
+file_path <- file.path(Sys.getenv("HOME"), "Dropbox", "System Settings", "fontawesome-pro-5.13.0-desktop", "svgs")
+
+filenames <- here::here("data-raw/dev_tutorials/svgs") %>%
+  list.files(., pattern="*.svg", full.names=TRUE)
+
+svgs <- tibble::tibble(.rows = length(filenames)) %>%
+  dplyr::mutate(
+    filename = basename(filenames) %>% gsub(".svg", "", .),
+    filepath = filenames,
+    contents = purrr::map(filepath, ~readr::read_file(.)) %>% as.character(.)
+  )
+
+get_code("rstudio")
 

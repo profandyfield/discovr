@@ -37,16 +37,6 @@ newz_md_tib <- discovr::bronstein_miss_2019
 ## Categorical moderator
 
 ```{r}
-
-vidGames<-read.spss(file.path(spssDataDirectory, "Chapter 11 (Mediation)", "Video Games.sav"), to.data.frame = T)
-names(vids_tib)
-
-vids_tib <- vids_tib %>% 
-  dplyr::mutate(
-    callous_cat = ifelse(caunts > 26, "Callous", "Not Callous")
-  )
-
-
 cut_cat_plot <- ggplot(vids_tib, aes(vid_game, aggress, colour = callous_cat)) +
   geom_point(size = 2, alpha = 0.7) +
   geom_smooth(method = "lm", aes(fill = callous_cat), alpha = 0.1) +
@@ -117,11 +107,46 @@ newz_md_tib %>%
   mice::md.pattern(., rotate.names = TRUE)
 dev.off()
 ```
+multiple imputation
+
+```{r eval = FALSE}
+newz_imps <- newz_md_tib %>% 
+  mice::mice(method = "pmm", m = 5)
+
+ids <- c("R_tEANRrR9dhnELbH", "R_UYHM5dj6jNuwnyV", "R_1Nac0KH2yUIf8FL", "R_8uMt5tRNiusnHTr", "R_3rM7LolOYmX4RkG")
+
+newz_md_tib_sample  <- newz_md_tib %>% 
+  dplyr::filter(id %in% ids) %>% 
+  dplyr::mutate_if(
+    vars(is.numeric(.)),
+    list(~round(., 2))
+  )
+
+newz_md_tib_imps <- newz_imps %>% mice::complete(., "long") %>% 
+  dplyr::filter(id %in% ids) %>%  
+  dplyr::mutate_if(
+    vars(is.numeric(.)),
+    list(~round(., 2))
+  )
+
+newz_md_tib_sample %>% 
+  dplyr::bind_rows(., newz_md_tib_imps) %>% 
+  readr::write_csv(., here::here("/data-raw/dev_figures/multiple_imputation_data.csv"))
 
 
+```
 
 
+```{r}
 
+newz_imps <- newz_md_tib %>% 
+  mice::mice(method = "pmm", m = 5)
+
+newz_fit <- with(data = newz_imps, exp = lm(fake_newz ~ 0 + delusionz + thinkz_open + thinkz_anal))
+newz_fit$analyses
+
+summary(mice::pool(newz_fit))
+```
 
 
 

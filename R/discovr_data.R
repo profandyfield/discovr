@@ -860,9 +860,10 @@
 #'   * **current_member**: is the member currently in the band? (True or False)
 #'   * **songs_written**: the number of songs the band member has contributed to
 #'   * **net_worth**: the band member's net worth as of 2019 according to some dodgy website
+#'   * **albums**: the number of studio albums each member played on (up to 2020)
 #'   * **worth_per_song**: the members net worth per song contributed to
 #'
-#' @format A tibble with 7 rows and 8 variables.
+#' @format A tibble with 7 rows and 9 variables.
 #' @docType data
 #' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
 

@@ -3,9 +3,9 @@
 \docType{package}
 \name{discovr}
 \alias{discovr}
-\title{discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2020)}
+\title{discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2021)}
 \description{
-The `discovr`` package contains resources for my 2020 textbook \href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{Discovering Statistics Using R and RStudio}.
+The `discovr`` package contains resources for my 2021 textbook \href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{Discovering Statistics Using R and RStudio}.
 There are tutorials written using learnr, datasets, solutions to tasks and so on.
 }
 \section{Who is the package aimed at?}{
@@ -29,10 +29,14 @@ To run each tutorial execute\preformatted{learnr::run_tutorial("name_of_tutorial
 Replacing \code{name_of_tutorial} with the name in bold below. For example, to load the tutorial \code{discovr_02} execute:\preformatted{learnr::run_tutorial("discovr_02", package = "discovr")
 }
 \itemize{
-\item discovr_01: Key concepts in R (functions and objects, packages and functions, style, data types, tidyverse, tibbles)
-\item discovr_02: Summarizing data (frequency distributions, grouped frequency distributions, relative frequencies, histograms, mean, median, variance, standard deviation, interquartile range)
-\item discovr_05: Visualizing data (boxplots, error bar plots, violin plots, scatterplots)
-\item discovr_07: Associations (correlation coefficients)
+\item \strong{discovr_01}: Key concepts in R (functions and objects, packages and functions, style, data types, tidyverse, tibbles)
+\item \strong{discovr_02}: Summarizing data (frequency distributions, grouped frequency distributions, relative frequencies, histograms, mean, median, variance, standard deviation, interquartile range)
+\item \strong{discovr_05}: Visualizing data. The ggplot2 package, boxplots, plotting means, violin plots, scatterplots, grouping by colour, grouping using facets, adjusting scales, adjusting positions."
+\item \strong{discovr_06}:
+\item \strong{discovr_07}: Associations. Plotting data with GGally. Pearson's r, Spearman's Rho, Kendall's tau, robust correlations.
+\item \strong{discovr_08}: The general linear model (GLM). Visualizing the data, fitting GLMs with one and two predictors. Viewing model parameters with broom, model parameters, standard errors, confidence intervals, fit statistics, significance.
+\item \strong{discovr_09}: Categorical predictors with two cartegories (comparing two means). Comparing two independent means, comparing two related means, effect sizes.
+\item \strong{discovr_10}:
 }
 
 \strong{Workflow}:
@@ -106,7 +110,7 @@ See the book or data descriptions for more details. This is a list of available 
 \section{References}{
 
 \itemize{
-\item Field, A. P. (2020). \emph{Discovering statistics using R and RStudio} (2nd ed.). London: Sage.
+\item Field, A. P. (2021). \emph{Discovering statistics using R and RStudio} (2nd ed.). London: Sage.
 }
 }
 

@@ -4,7 +4,8 @@ author: "Andy Field"
 output:
   learnr::tutorial:
     progressive: false
-    theme: "paper"
+    theme: "united"
+    css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
 description: "Key concepts in R (functions and objects, packages and functions, style, data types, tidyverse, tibbles)."
 bibliography: discovr_01.bib
@@ -18,40 +19,56 @@ knitr::opts_chunk$set(
 	warning = FALSE
 )
 
-library(kableExtra)
 library(learnr)
-library(tidyverse)
+library(magrittr)
+library(ggplot2)
 
-hint_text <- function(text, text_color = "#E69F00"){
-  hint <- paste("<font color='", text_color, "'>", text, "</font>", sep = "")
-  return(hint)
-}
+source("./www/discovr_helpers.R")
 ```
 
-# discovr: Key Concepts in R
+# discovr: Key Concepts in `r rproj()`
 
 ## Overview
 
-This tutorial is one of a series that accompanies [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/) [@fieldDiscoveringStatisticsUsing2020] by me, [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). These tutorials contain abridged sections from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/), ^[Basically you can use this tutorial for teaching and non-profit activities but do not meddle with it or claim it as your own work.]
+<div class="infobox">
+  <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
+  
+  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/) [@field_discovering_2021] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
+  
+</div>
 
-* Who is the tutorial aimed at?
-    - Anyone teaching from or reading [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)  may find them useful.
-* What is covered?
-    - This tutorial looks at some key concepts in using **R** and **RStudio**. It would be a useful tutorial to run at the start of a module, or alongside teaching based on Chapter 1 of [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/).
-    - This tutorial *does not* teach the background theory: it is assumed you have either attended my lecture or read the relevant chapter in the aforementioned book (or someone else's)
+### `r cat_space(height = 2)` Welcome to space pirate academy
 
+Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
 
-## Getting started with R and R Studio
+On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-If you haven't done so already, I recommend working through [this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/) on how to install, set up and work within R and RStudio before starting this tutorial.
+* `r bmu2(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice.
+* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult.
+* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det.
 
-## Functions and objects
+It's not just me that's here to help though, you will meet other characters along the way:
 
-To communicate with R you type commands that tell it what to do. This process might seem strange to you if you are used to interacting with software by using your mouse to click on options and on-screen buttons. The problem with pointing and clicking is that the process isn't easily reproducible. Often when analysing data we want to reproduce what we have done. By typing commands and saving those commands as a script, we are able to reproduce our analysis exactly.
+* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you.
+* `r bug(height = 2)` we also have alien bugs that will, erm, help you to avoid bugs by setting you coding challenges. 
 
-The conversation that you have with R consists of you typing instructions, then doing something to execute those instructions. R will either dutifully carry out your instructions or complain that your instructions weren’t clear enough. In short, you type commands, try to execute them and R either does what you ask or throws an error. In the early days of learning R you will become very familiar with error messages, they are typically indecipherable so fear not if they seem like gibberish. 
+By for now and good luck - you'll be amazing!
 
-A simple ‘conversation’ with R is made up of commands that follow the common structure shown in Figure 1.
+### Workflow
+
+* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and ![](./images/rstudio_logo.png){height=1em}](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
+
+* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in ![](./images/rstudio_logo.png){height=1em} I strongly recommend that you create an `r rproj()` markdown file within an ![](./images/rstudio_logo.png){height=1em} project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
+
+![](https://youtu.be/FE0ntX0dyc4)
+
+## `r bmu2()` Functions and objects
+
+To communicate with `r rproj()` you type commands that tell it what to do. This process might seem strange to you if you are used to interacting with software by using your mouse to click on options and on-screen buttons. The problem with pointing and clicking is that the process isn't easily reproducible. Often when analysing data we want to reproduce what we have done. By typing commands and saving those commands as a script, we are able to reproduce our analysis exactly.
+
+The conversation that you have with `r rproj()` consists of you typing instructions, then doing something to execute those instructions. `r rproj()` will either dutifully carry out your instructions or complain that your instructions weren’t clear enough. In short, you type commands, try to execute them and `r rproj()` either does what you ask or throws an error. In the early days of learning `r rproj()` you will become very familiar with error messages, they are typically indecipherable so fear not if they seem like gibberish. 
+
+A simple ‘conversation’ with `r rproj()` is made up of commands that follow the common structure shown in Figure 1.
 
 ```{r, eval=FALSE}
 object <- instructions
@@ -68,13 +85,19 @@ For example, the first command in Figure 1:
 metallica <- c("Lars","James","Jason", "Kirk")
 ```
 
-creates an object called *metallica*, consisting of the four band members’ first names (pre 2001). The ‘instructions’ used to create the object *metallica* include the concatenate function, `c()`, which collects things together. A function is a bit of code that someone has written (and that you can write yourself) that typically has at least one argument and an output. **Functions** have a name followed by parenthesis, for example, `ggplot()`, `mean()` and `plot()`. **Arguments** are inputs to the function, which are pre-defined things that you specify within the parentheses. You can think of arguments like options that you set for the function.  Most functions return an output, which could be a new data set, a value, information about a statistical model, a graph and so on.
+creates an object called *metallica*, consisting of the first names of the members (pre 2001) of the band [Metallica](https://www.metallica.com/). The ‘instructions’ used to create the object *metallica* include the concatenate function, `c()`, which collects things together. A function is a bit of code that someone has written (and that you can write yourself) that typically has at least one argument and an output. **Functions** have a name followed by parenthesis, for example, `ggplot()`, `mean()` and `plot()`. **Arguments** are inputs to the function, which are pre-defined things that you specify within the parentheses. You can think of arguments like options that you set for the function.  Most functions return an output, which could be a new data set, a value, information about a statistical model, a graph and so on.
  
 In the first command in Figure 1 the arguments passed into the `c()` function are the band member’s names as four separate strings of text, and the output returned by the function is these strings collected together as a single entity. So, we input each band member’s name (in straight quotes and separated by commas), and by enclosing them in `c()` we bind them into a single entity, which is assigned (using `<-`) to an object that we have called ‘metallica’. Once this command is executed the object that we called ‘metallica’ is created and stored in memory so we can use it in future commands.
 
-`r hint_text("Tip: Simultaneously press the **alt** + **−** keys to insert the assignment operator (<-)") `
+<div class="tip">
+  `r cat_space()` **Tip: Keyboard shortcut**
+  
+  Simultaneously press the ![](./images/key_alt.png){height=1em} + ![](./images/key_hyphen.png){height=1em} keys to insert the assignment operator `<-`.
+</div>
 
-Let's try this out. In the code box below type `metallica <- c("Lars","James","Jason", "Kirk")` and then click ![](./images/learnr_run_code.png){width=10%}.
+#### `r bug()` Exercise
+
+Let's try this out. In the code box below type `metallica <- c("Lars","James","Jason", "Kirk")` and then click ![](./images/learnr_run_code.png){height=1em}.
 
 ```{r met_data, exercise=TRUE}
 
@@ -84,11 +107,10 @@ Let's try this out. In the code box below type `metallica <- c("Lars","James","J
 metallica <- c("Lars","James","Jason", "Kirk")
 ```
 
-You should find that nothing happened, which will be disconcerting. That's because we told R to create the object *metallica* but not to show it to us. So, the object *metallica* has been created and stored in R’s memory and we can refer back to it, use it to do other things, change it, and view it. To view it we execute its name. So, let's try the exercise above but now ask to see the object *metallica* that we have created by executing:
+You should find that nothing happened, which will be disconcerting. That's because we told `r rproj()` to create the object *metallica* but not to show it to us. So, the object *metallica* has been created and stored in `r rproj()`’s memory and we can refer back to it, use it to do other things, change it, and view it. To view it we execute its name. So, let's ask to see the object *metallica* that we have created by executing its name:
 
-```{r, eval=FALSE}
+```{r met_data_2-setup}
 metallica <- c("Lars","James","Jason", "Kirk")
-metallica
 ```
 
 ```{r met_data_2, exercise=TRUE}
@@ -96,13 +118,12 @@ metallica
 ```
 
 ```{r met_data_2-solution}
-metallica <- c("Lars","James","Jason", "Kirk")
 metallica
 ```
 
 Notice that the contents of the object *metallica* are displayed:
 
-```{r}
+```{r, echo = FALSE}
 metallica <- c("Lars","James","Jason", "Kirk")
 metallica
 ```
@@ -134,7 +155,7 @@ learnr::quiz(
 ```
 
 
-### Optional: still confused about functions and arguments then read on
+### `r user_visor()` Still confused about functions and arguments?
 
 Try to think of a function as activating a dialog box and arguments as setting options within that dialog box. Let’s take a simple function `mean()`, which (no surprises here) calculates the mean (or average) of a set of scores. This function takes the general form:
 
@@ -162,15 +183,15 @@ mean(songs_written, na.rm = TRUE, trim = 5)
 
 ![Figure 2: An imaginary dialog box to help you map the idea of setting arguments to selecting options in dialog boxes](./images/dsr2_fig_01_07_functions_dialog_analogy.png)
 
-##	Packages and functions
+## `r bmu2()`	Packages and functions
 
-When you load a package (see [this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-installing-and-loading-packages)) into your session you are loading in a collection of new functions that you can use in R.  You can refer to a function directly, to use a general example:
+When you load a package (see [this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-installing-and-loading-packages)) into your session you are loading in a collection of new functions that you can use in`r rproj()`.  You can refer to a function directly, to use a general example:
 
 ```{r, eval=FALSE}
 function()
 ```
 
-or you can include a reference to the package from which the function came, in general:
+or you can include a reference to the package (a.k.a. *namespace*) from which the function came, in general:
 
 ```{r, eval=FALSE}
 package::function()
@@ -183,7 +204,7 @@ ggplot()
 ggplot2::ggplot()
 ```
 
-Although many people don’t include the package name, it is good style to include it when you refer to a function because you will occasionally stumble across two functions in two different packages that have the same name. For example, there is a `recode()` function in both the **Hmisc** and **car** packages. If you have both packages loaded and you try to use `recode()`, R won’t know which one to use or will guess incorrectly and throw an error. If you always specify the package as well as the function then R (and everyone else) will know which function you're using. For example, if we want to use the recode function in the car package we would use:
+Although many people don’t include the package name, it is good style to include it when you refer to a function because you will occasionally stumble across two functions in two different packages that have the same name. For example, there is a `recode()` function in both the **Hmisc** and **car** packages. If you have both packages loaded and you try to use `recode()`, `r rproj()` won’t know which one to use or will guess incorrectly and throw an error. If you always specify the package as well as the function then `r rproj()` (and everyone else) will know which function you're using. For example, if we want to use the recode function in the car package we would use:
 
 ```{r, eval=FALSE}
 car::recode()
@@ -194,6 +215,14 @@ but to use the one in Hmisc we would use:
 ```{r, eval=FALSE}
 Hmisc::recode()
 ```
+
+<div class="tip">
+  `r cat_space()` **Tip: Using package names**
+  
+  If you use the format `package::function()` when you refer to functions you don't need to use `library()` to first load the package (although some people consider it good practice to do so anyway).
+
+</div>
+
 
 ```{r packfun_quiz, echo=FALSE}
   question("In the R command `dplyr::select()` ...",
@@ -207,22 +236,22 @@ Hmisc::recode()
 ```
 
 
-## Style
+## `r bmu2()` Style
 
-While we’re discussing good style, it is important to adopt consistent principles about how to name the objects you create in R. I recommend following Hadley Wickham's [tidyverse style guide](http://style.tidyverse.org/). The style guide has a lot to take in, so a few key tips are:
+While we’re discussing good style, it is important to adopt consistent principles about how to name the objects you create in `r rproj()`. I recommend following Hadley Wickham's [tidyverse style guide](http://style.tidyverse.org/). The style guide has a lot to take in, so a few key tips are:
 
-* *Use lower case when naming things*: **R** is case sensitive so it will treat *myData* as a completely different object to *mydata*. One of the most common reasons why your code won't run will be because you forgot to capitalize an object that you capitalized when you created it. The simplest solution is to use lower case all of the time when naming objects.
-* *Use underscores to separate words*: when creating objects it improves readability if you use underscores to distinguish words. For example, you might import the data relating to mathematical achievement as *maths_data*, which is easier to read than *mathsdata*.
-* *Avoid long names*: naming something *great_experiment_to_test_whether_listening_to_heavy_metal_improves_your_statistical_ability_data* is certainly descriptive but you're going to really regret it when you want to refer to that object again - think of the potential for typos which would mean **R** doesn't recognise the object, not to mention the time wasted in typing it out. Keep it short but meaningful.
-* *consider consistent suffixes*: Although not in the style guide, and not essential, I find it useful to have a set of suffixes to indicate the types of objects that I have created. For example, you might use *dat* for data, *tib* for *tibbles* (they'll be explained in a later tutorial), *m* or *mod* for model, and *out* for output. For example, I might create these objects:
+* **Use lower case when naming things**: `r rproj()` is case sensitive so it will treat *myData* as a completely different object to *mydata*. One of the most common reasons why your code won't run will be because you forgot to capitalize an object that you capitalized when you created it. The simplest solution is to use lower case all of the time when naming objects.
+* **Use underscores to separate words**: when creating objects it improves readability if you use underscores to distinguish words. For example, you might import the data relating to mathematical achievement as *maths_data*, which is easier to read than *mathsdata*.
+* **Avoid long names**: naming something *great_experiment_to_test_whether_listening_to_heavy_metal_improves_your_statistical_ability_data* is certainly descriptive but you're going to really regret it when you want to refer to that object again - think of the potential for typos which would mean `r rproj()` doesn't recognise the object, not to mention the time wasted in typing it out. Keep it short but meaningful.
+* **Consider consistent suffixes**: Although not in the style guide, I find it useful to have a set of suffixes to indicate the types of objects that I have created. For example, you might use *dat* for data, *tib* for *tibbles* (they'll be explained in a later tutorial), *m* or *mod* for model, and *out* for output. For example, I might create these objects:
     - *maths_dat*: data frame containing my data on mathematical achievement
     - *maths_tib*: tibble containing my data on mathematical achievement
     - *maths_3x_m*: object specifying a model in which maths achievement was predicted from 3 variables (i.e., 3 *X*s).
     - *maths_3x_out*: object containing the summary output from the above model.
-* *Comment*: You can annotate your code by prefixing text with **#**. This enables you to describe what you are doing. You have no idea how helpful this can be when you revisit code 6 months later and can't remember what you were trying to do. It's a really good habit to get into.
-* *Spacing*: Your code will be much easier to read if you put spaces around operators such as `+`, `==`, `<-`. Put spaces after commas (but not before), but don't put them around `:`, `::` and `:::` (because these have special functions in **R**).
+* **Comment**: You can annotate your code by prefixing text with **#**. This prefic enables you to describe what you are doing. You have no idea how helpful this can be when you revisit code 6 months later and can't remember what you were trying to do. It's a great habit to get into.
+* **Spacing**: Your code will be much easier to read if you put spaces around operators such as `+`, `==`, `<-`. Put spaces after commas (but not before), but don't put them around `:`, `::` and `:::` (because these have special functions in `r rproj()`).
 
-**Good**:
+#### Good style
 
 ```{r style_good, echo = TRUE}
 # object containing the first names of the members of metallica
@@ -231,13 +260,13 @@ metallica <- c("Lars","James","Jason", "Kirk")
 
 This example shows good practice. Note how I have annotated what I am doing by using '#', put spaces around the assignment operator (`<-`) and after commas, used lower case and an underscore for my object name and kept the name short.
 
-**Bad**:
+#### Poor style
 
 ```{r style_bad, echo = TRUE}
 First_names_of_The.members_of.MetalliCa<-c("Lars","James","Jason", "Kirk")
 ```
 
-This example shows bad practice. Note that I have not annotated what I am doing, there are no spaces around the assignment operator (`<-`) or after commas, I have some capital letters in my object name, have not been consistent with how I separate words in the object name, and have a name that is unnecessarily long.
+This example shows poor style. Note that I have not annotated what I am doing, there are no spaces around the assignment operator (`<-`) or after commas, I have some capital letters in my object name, have not been consistent with how I separate words in the object name, and have a name that is unnecessarily long.
 
 
 ```{r style_quiz, echo=FALSE}
@@ -254,18 +283,18 @@ This example shows bad practice. Note that I have not annotated what I am doing,
 ```
 
 
-##	Tidyverse and the pipe operator (`%>%`)
+##	`r bmu2() ` Tidyverse and the pipe operator (`%>%`)
 
 The tidyverse is a set of packages built upon a common philosophy of data science developed by Hadley Wickham [@wickhamAdvanced2014; @wickhamDataScience2017; @wickhamGgplot2ElegantGraphics2016]. Some of them are shown in Figure 3.
 
 ![Figure 3: some of the tidyverse packages](./images/tidy_packages.png){width=50%}
 
 
-In R there are always multiple ways to achieve the same goal, in general I will try to follow the tidyverse approach. You [install and load](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-installing-and-loading-packages) the tidyverse packages as you would any package in R. Having done that, all of the tidyverse packages will be at your disposal (i.e. you don’t need to load them individually).
+In `r rproj()` there are always multiple ways to achieve the same goal, in general I will try to follow the tidyverse approach. You [install and load](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-installing-and-loading-packages) the tidyverse packages as you would any package in `r rproj()`. Having done that, all of the tidyverse packages will be at your disposal (i.e. you don’t need to load them individually).
 
-The tidyverse approach to R makes use of something called the pipe operator (`%>%`) to link functions together. To use the pipe operator the `magrttr` package  needs to be installed and loaded but this happens automatically if you install and load `tidyverse`.
+The tidyverse approach to `r rproj()` makes use of something called the pipe operator (`%>%`) to link functions together. To use the pipe operator the `magrttr` package  needs to be installed and loaded but this happens automatically if you install and load `tidyverse`.
 
-As the name suggests, the pipe operator involves thinking of any command as a ‘pipe’ through which instructions flow from left to right. To take a really simple example, in the [introduction to R and RStudio](http://milton-the-cat.rocks/learnr/r/r_getting_started/) tutorial, we used the `here::here()` function to create a path to a file that we wanted to open with the function `readr::read_csv()`. The command we used was:
+As the name suggests, the pipe operator involves thinking of any command as a ‘pipe’ through which instructions flow from left to right. To take a really simple example, in the [introduction to `r rproj()` and ![](./images/rstudio_logo.png){height=1em}](http://milton-the-cat.rocks/learnr/r/r_getting_started/) tutorial, we used the `here::here()` function to create a path to a file that we wanted to open with the function `readr::read_csv()`. The command we used was:
 
 ```{r, eval=FALSE}
 my_data <- readr::read_csv(here::here("data/metallica.csv"))
@@ -290,10 +319,9 @@ Instead of embedding the `here::here()` function within `readr::read_csv()`, we 
 ```
 
 
+## `r bmu2()` Data types
 
-## Data types
-
-Often when analysing data you will [input your data with an external software](http://milton-the-cat.rocks/learnr/r/r_getting_started/) such as Microsoft Excel, Google sheets, or Numbers and then import it into R. However, you can enter data directly. It's also useful to know about the different ways in which R stores data. R can store information using several different data types:
+Often when analysing data you will [input your data with an external software](http://milton-the-cat.rocks/learnr/r/r_getting_started/) such as Microsoft Excel, Google sheets, or Numbers and then import it into `r rproj()`. However, you can enter data directly. It's also useful to know about the different ways in which `r rproj()` stores data. `r rproj()` can store information using several different data types:
 
 * `int`: variables containing integers (i.e., whole numbers).
 *	`dbl`: variables containing doubles (i.e., real numbers).
@@ -302,10 +330,10 @@ Often when analysing data you will [input your data with an external software](h
 *	`fctr`: variables that represent categories with fixed numeric values (so called factors, for example a variable where you have coded biological sex as 0 = male, 1 = female)
 *	`date`: variables that contain dates.
 
-We’re going to extend our earlier Metallica example to explore these different data types. Table 1 shows the data that we’re going to enter , which contains a character variable (name), two date variables (birth_date and death_date), a factor (the instrument they play), a logical (whether it is true or false that they are a current member of the band), two integers (how many songs they have written for metallica and their **net_worth**).
+We’re going to extend our earlier Metallica example to explore these different data types. Table 1 shows the data that we’re going to enter , which contains a character variable (name), two date variables (birth_date and death_date), a factor (the instrument they play), a logical (whether it is true or false that they are a current member of the band), two integers (how many songs they have written for Metallica and their **net_worth**).
 
 ```{r, results = 'asis', echo=FALSE}
-tribble(
+tibble::tribble(
   ~name, ~birth_date, ~death_date, ~instrument, ~current_member, ~songs_written, ~net_worth,
   "Lars Ulrich", "1963-12-26", NA, "Drums", TRUE, 111, 300000000,
   "James Hetfield", "1963-08-03", NA, "Guitar", TRUE, 112, 300000000,
@@ -320,39 +348,61 @@ tribble(
 ```
 
 
-### Character variables
+### `r bmu2()` Character variables
 
-We created a character variable (also called a string variable) when we entered the names of the members of metallica. To recap, we used the `c()` function to ‘collect’ together values. Each value (known as a character string) is separated by commas and placed in straight quotes so that R knows that it is text:
+We created a character variable (also called a string variable) when we entered the names of the members of Metallica. To recap, we used the `c()` function to ‘collect’ together values. Each value (known as a character string) is separated by commas and placed in straight quotes so that `r rproj()` knows that it is text:
+
+#### `r robot()` Code example
 
 ```{r, eval=FALSE}
 metallica <- c("Lars","James","Jason", "Kirk")
 ```
 
-Extending this idea, we can enter the names in Table 1 and store these in an object cal;led `name` by exectuting:
+#### `r bug()` Exercise
 
-```{r, eval=FALSE}
-name <- c("Lars Ulrich", "James Hetfield", "Kirk Hammett", "Rob Trujillo", "Jason Newsted", "Cliff Burton", "Dave Mustaine")
+Adapt the above code to enter the names in Table 1 and store these in an object called `name` by executing:
+
+
+```{r met_name, exercise = TRUE, exercise.lines = 4}
+
 ```
 
-Try this in the code box:
+```{r met_name-hint-1}
+# You were asked to call the object name, so start with:
 
-```{r met_name, exercise=TRUE}
+name <- .....
+```
 
+```{r met_name-hint-2}
+# To complete the right hand side adapt the sample code to include surnames, and add the pre-2001 members:
+
+c("Lars","James","Jason", "Kirk")
+```
+
+```{r met_name-hint-3}
+# This gives you
+name <- c("Lars Ulrich", "James Hetfield", "Kirk Hammett", "Rob Trujillo", "Jason Newsted", "Cliff Burton", "Dave Mustaine")
+
+# Don't forget that to see the object execute its name
 ```
 
 ```{r met_name-solution}
 name <- c("Lars Ulrich", "James Hetfield", "Kirk Hammett", "Rob Trujillo", "Jason Newsted", "Cliff Burton", "Dave Mustaine")
-# To view this variable:
 name
 ```
 
-###	Double or integer variables
+###	`r bmu2()` Double or integer variables
 
-We have two numeric variables in Table 1: the number of Metallica songs written by each member, and their net worth. A variable that contain numbers is called a numeric variable. By default, R stores numbers as double precision floating point numbers (double), which basically means it includes decimal places, but you can force R to store them as whole numbers (integer). Other things being equal storing numbers as doubles makes sense. To create a numeric variable, type the numeric values into the `c()` function in the order you want them. For example, to create the variables **songs_written** and **net_worth** we would execute:
+We have two numeric variables in Table 1: the number of Metallica songs written by each member, and their net worth. A variable that contain numbers is called a numeric variable. By default, `r rproj()` stores numbers as double precision floating point numbers (double), which basically means it includes decimal places, but you can force `r rproj()` to store them as whole numbers (integer). Other things being equal storing numbers as doubles makes sense. To create a numeric variable, type the numeric values into the `c()` function in the order you want them. For example, to create the variables **songs_written** and **net_worth** we would execute:
+
+#### `r robot()` Code example
+
 ```{r, eval=FALSE}
 songs_written <-  c(111, 112, 56, 16, 3, 11, 6)
 net_worth <- c(300000000, 300000000, 200000000, 20000000, 40000000, 1000000, 20000000)
 ```
+
+#### `r bug()` Exercise
 
 Try entering these variables in the code box.
 
@@ -369,138 +419,237 @@ songs_written
 net_worth
 ```
 
-### Date variables
+### `r user_visor()` Date variables
 
-The second column of Table 1 contains dates. To create a date variable we do much the same as for a character variable except that we also need to tell R that the values are dates. The conversion from text to dates is important if you want to do computations on the dates. If your dates are stored as characters (rather than dates) computations won’t work. The most versatile way to handle dates is the `lubridate` package (part of the tidyverse), which contains a suite of functions specifically designed for working with times and dates.
+The second column of Table 1 contains dates. To create a date variable we do much the same as for a character variable except that we also need to tell `r rproj()` that the values are dates. The conversion from text to dates is important if you want to do computations on the dates. If your dates are stored as characters (rather than dates) computations won’t work. The most versatile way to handle dates is the `lubridate` package (part of the tidyverse), which contains a suite of functions specifically designed for working with times and dates.
 
-One function for converting character strings to dates is `ymd()`. The letters ‘ymd’ stand for ‘year’, ‘month’ and ‘day’ which expects the dates to be entered with the year first, then the month, then the day. To create a variable using lubridate you'd execute something like:
+One function for converting character strings to dates is `ymd()`. The letters ‘ymd’ stand for ‘year’, ‘month’ and ‘day’ which expects the dates to be entered with the year first, then the month, then the day.
 
-```{r, eval=FALSE}
-variable <- c("date 1", " date 2"," date 3", etc.) %>% lubridate::ymd()
-```
+#### `r robot()` Code example
 
-Notice that I have used the pipe operator (`%>%`) to connect two commands, the first inputs the dates (`c("date 1", " date 2"," date 3", etc.)`) and this information is fed into `lubridate::ymd()` to convert it to date format.
-
-To create the variable called **birth_date** containing the dates of birth in Table 1 using lubridate, we’d need to
-
-* Make sure that `library(tidyverse)` is included in the setup code chunk of our markdown file
-* Type the following into a code chunk and execute:
+To create a variable using `lubridate` you'd execute something like:
 
 ```{r, eval=FALSE}
-birth_date <- c("1963-12-26", "1963-08-03", "1962-11-18", "1964-10-23", "1963-03-04", "1962-02-10", "1961-09-13") %>% lubridate::ymd()
+variable <- c("date 1", "date 2", "date 3", ... "final date") %>%
+  lubridate::ymd()
 ```
 
-Try entering this variable in the code box (the tidyverse package is already loaded so you don't need to include `library(tidyverse)` but you will need to include this when you try this in a markdown file).
+Notice that I have used the pipe operator (`%>%`) to connect two commands, the first inputs the dates (`c("date 1", "date 2", "date 3", ... "final date")`) and this information is fed into `lubridate::ymd()` to convert it to date format. Using `ymd()` each date would need to be in the format "year-month-day". For example, to enter Lars Ulrich's birthday we'd replace "date 1" with "1963-12-26".
+
+#### `r bug()` Exercise
+
+Create the variable called **birth_date** containing the dates of birth in Table 1.
 
 ```{r met_dob, exercise=TRUE}
 
 ```
 
-```{r met_dob-solution}
+```{r met_dob-hint-1}
+# The variable is called birth_date, so start with:
+
+birth_date <- .....
+```
+
+```{r met_dob-hint-2}
+# To complete the right hand side adapt the sample code:
+
+c("date 1", "date 2", "date 3", ... "final date")
+
+# Now replace date 1 with the first date, date 2 with the second and so on until all the dates are entered.
+```
+
+```{r met_dob-hint-3}
+# This gives you
+birth_date <- c("1963-12-26", "1963-08-03", "1962-11-18", "1964-10-23", "1963-03-04", "1962-02-10", "1961-09-13")
+
+# Now pipe it into lubridate::ymd
+```
+
+```{r met_name-hint-4}
 birth_date <- c("1963-12-26", "1963-08-03", "1962-11-18", "1964-10-23", "1963-03-04", "1962-02-10", "1961-09-13") %>%
   lubridate::ymd()
-# To view this variable:
+```
+
+```{r met_name-hint-5}
+# To see the object execute its name
+
+birth_date <- c("1963-12-26", "1963-08-03", "1962-11-18", "1964-10-23", "1963-03-04", "1962-02-10", "1961-09-13") %>%
+  lubridate::ymd()
+
 birth_date
 ```
 
-###	Missing values
+###	`r bmu2()` Missing values
 
-Although as researchers we strive to collect complete sets of data, it is often the case that we have missing data. We denote missing values with `NA` (in capital letters), which stands for ‘not available’. Many functions in R have arguments to specify how you handle missing values so if you have missing values remember to set a value for these arguments.
-The dates of the member’s deaths are included in Table 1. At the time of writing all but one of the members are alive (Cliff Burton was tragically killed in a tour bus accident), so we (thankfully) have a lot of missing values. We enter these values as `NA` (not in quotes). Therefore, to create a variable called **death_date** containing the dates in Table 1 we execute (notice the use of the pipe, %>%, again):
-```{r, eval=FALSE}
-death_date <- c(NA, NA, NA, NA, NA, "1986-09-27", NA) %>% lubridate::ymd()
-```
+Although as researchers we strive to collect complete sets of data, it is often the case that we have missing data. We denote missing values with `NA` (in capital letters), which stands for ‘not available’. Many functions in `r rproj()` have arguments to specify how you handle missing values so if you have missing values remember to set a value for these arguments.
+The dates of the member’s deaths are included in Table 1. At the time of writing all but one of the members are alive (Cliff Burton was tragically killed in a tour bus accident), so we (thankfully) have a lot of missing values. We enter these values as `NA` (not in quotes).
 
-Try entering this variable in the code box.
+#### `r bug()` Exercise
+
+Use what you learnt in the previous section to create a variable called **death_date** containing the corresponding dates in Table 1. Whenever the data is missing, use NA (no quotes) instead of a date.
 
 ```{r met_dod, exercise=TRUE}
-
+              
 ```
 
-```{r met_dod-solution}
-death_date <- c(NA, NA, NA, NA, NA, "1986-09-27", NA) %>% 
+```{r met_dod-hint-1}
+# To get you started
+death_date <- c(NA, ...
+                
+# Now enter the rest of the NAs and dates. 
+```
+
+```{r met_dod-hint-2}
+# The completed data is:
+death_date <- c(NA, NA, NA, NA, NA, "1986-09-27", NA)
+
+# Now use the pipe and ymd() function like you did before
+```
+
+```{r met_dod-hint-3}
+# This creates the variable death_date
+death_date <- c(NA, NA, NA, NA, NA, "1986-09-27", NA) %>%
   lubridate::ymd()
-# To view this variable:
+
+# If we want to view the object remember we need to execute its name
+```
+
+```{r met_dod-hint-4}
+# Solution
+death_date <- c(NA, NA, NA, NA, NA, "1986-09-27", NA) %>%
+  lubridate::ymd()
 death_date
 ```
 
-### logical variables
+### `r bmu2()` logical variables
 
-Table 1 contains a logical variable, which is one that contains values of true and false. In this case true and false relate to whether the member is currently in the band. Logical variables are created much the same as integers and doubles except that you enter TRUE and FALSE instead of numbers into the `c()` function. For example, to create the variable **current_member** we would execute:
+Table 1 contains a logical variable, which is one that contains values of true and false. In this case true and false relate to whether the member is currently in the band. Logical variables are created much the same as integers and doubles except that you enter TRUE and FALSE (in upper case) instead of numbers into the `c()` function.
+
+#### `r robot()` Code example
+
+In general you create a logical variable as:
+
 ```{r, eval=FALSE}
-current_member <- c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
+variable_name <- c(TRUE, TRUE, FALSE, TRUE ...)
 ```
 
-Try entering this variable in the code box.
+#### `r bug()` Exercise
+
+Create the variable **current_member** containing the corresponding dates in Table 1.
 
 ```{r met_current, exercise=TRUE}
-
+              
 ```
 
-```{r met_current-solution}
+```{r met_current-hint-1}
+# To get you started
+current_member <- c(TRUE, ...
+                
+# Now enter the rest of the TRUEs and FALSEs. 
+```
+
+```{r met_current-hint-2}
+# The completed data is:
 current_member <- c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
-# To view this variable:
+
+# If we want to view the object remember we need to execute its name
+```
+
+```{r met_current-hint-3}
+# Solution
+current_member <- c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
 current_member
 ```
 
-### Factor variables
+### `r bmu2()` Factor variables
 
-A factor variable is one that uses numbers to represent different categories or groups of data. It is a numeric variable, but the numbers represent names (i.e., it is a nominal variable). These groups of data could be levels of a treatment variable in an experiment, different groups of people, different geographic locations, different organisations, etc. In Table 1 we have a factor variable that codes the instrument played by each member. We could enter this variable as a character variable and hope that R treats the variable sensibly when we try to enter it into a statistical model. Often it will, but it is usually a good idea to explicitly define these variables as factors and assign the numeric codes that you want to each category.
+A factor variable is one that uses numbers to represent different categories or groups of data. It is a numeric variable, but the numbers represent names (i.e., it is a nominal variable). These groups of data could be levels of a treatment variable in an experiment, different groups of people, different geographic locations, different organisations, etc. In Table 1 we have a factor variable that codes the instrument played by each member. We could enter this variable as a character variable and hope that `r rproj()` treats the variable sensibly when we try to enter it into a statistical model. Often it will, but it is usually a good idea to explicitly define these variables as factors and assign the numeric codes that you want to each category.
 
 When it comes to what instrument is played the codes can be somewhat arbitrary; for the sake of convention people typically use 0, 1, 2, 3, etc. We will use 0 = Guitar, 1 = Bass, 2 = drums.
-There are several ways to create factors in R. The first is to enter numeric values and then convert these values to a factor using the `factor()` function, the second is to enter the text and convert it to a factor using the `as_factor()` function from the forcats package (which is part of tidyverse). We’ll use each in turn.
+There are several ways to create factors in `r rproj()`. The first is to enter numeric values and then convert these values to a factor using the `factor()` function, the second is to enter the text and convert it to a factor using the `forcats::as_factor()` function (which is part of tidyverse). We’ll use each in turn.
 
-We want to enter the values Drums, Guitar, Guitar, Bass, Bass, Bass, Guitar. Using the coding I suggest above that means entering the numbers 2, 0, 0, 1, 1, 1, 0:
+We want to enter the values Drums, Guitar, Guitar, Bass, Bass, Bass, Guitar. Using the coding I suggest above that means entering the numbers 2, 0, 0, 1, 1, 1, 0. To turn these values into a factor, we use the `factor()` function, which takes the general form:
+
 ```{r, eval=FALSE}
-instrument <- c(2, 0, 0, 1, 1, 1, 0)
+factor(variable, levels = c(x, y, … z), labels = c("label_1", "label_2", … "label_3"))
 ```
-To turn these values into a factor, we use the `factor()` function, which takes the general form:
-
-`factor(variable, levels = c(x, y, … z), labels = c("label_1", "label_2", … "label_3"))`
 
 This function looks a bit scary, but it’s not too bad really. Let’s break it down:
 
-*	`factor(variable_name)`: this is all you really need to create the factor—in our case factor(instrument) would do the trick.
-*	`levels = c(x, y, … z)`: we need to tell R which values we want to use to denote different groups and we do this with the levels = argument. Often we use the `c()` function to list the values we have used. For example, with the metallica data where we have used values of 0, 1 and 2, we could use `levels = c(0, 1, 2)`. However, if you have used a regular series such as 1, 2, 3, 4 we can abbreviate this as `1:4`, the colon means ‘all the values between’. So, `1:4` is the same as `c(1, 2, 3, 4)`. For the metallica data we could, therefore, use `levels = 0:2` or `levels = c(0, 1, 2)`.
+*	`factor(variable_name)`: this is all you really need to create the factor—in our case `factor(instrument)` would do the trick.
+*	`levels = c(x, y, … z)`: we need to tell `r rproj()` which values we want to use to denote different groups and we do this with the levels = argument. Often we use the `c()` function to list the values we have used. For example, with the Metallica data where we have used values of 0, 1 and 2, we could use `levels = c(0, 1, 2)`. However, if you have used a regular series such as 1, 2, 3, 4 we can abbreviate this as `1:4`, the colon means ‘all the values between’. So, `1:4` is the same as `c(1, 2, 3, 4)`. For the Metallica data we could, therefore, use `levels = 0:2` or `levels = c(0, 1, 2)`.
 *	`labels = c("label_1", "label_2", … "label_3")`: The final step is to assign labels to these levels. Again, we use `c()` to collect the labels that we wish to assign. You must list these labels in the same order as your numeric levels, and you must provide a label for each level. In our case, 0 corresponds to Guitar, 1 to Bass, and 2 to drums  so the argument would be `labels = c("Guitar", "Bass", "Drums")`.
 
+#### `r robot()` Code example
+
 Putting all of this together we could execute:
-```{r, eval=FALSE}
-instrument <- c(2, 0, 0, 1, 1, 1, 0) %>% factor(instrument, levels = 0:2, labels = c("Guitar", "Bass", "Drums"))
-```
 
-and then to 'see' the variable, exceute
-
-```{r, eval=FALSE}
+```{r met_inst, exercise=TRUE}
+instrument <- c(2, 0, 0, 1, 1, 1, 0)
+instrument <- factor(instrument, levels = 0:2, labels = c("Guitar", "Bass", "Drums"))
 instrument
 ```
 
-Try this out:
+The first line enters the numeric values, the second line converts the variable to a factor and applies labels to each numeric value, and the last line shows us the variable. Note that the variable is made up of the category labels and not the numeric values.
 
-```{r met_inst, exercise=TRUE}
+#### `r bug()` Exercise
+
+Rather than using two commands, we could create **instrument** in a single command by linking the data entry and the conversion to a factor with a pipe. Try to do that below. 
+
+<div class="tip">
+  `r cat_space()` **Tip: Using a dot for data in pipes**
+  
+  When a function requires data (i.e., a variable or tibble), but that data is being fed forward through a pipe we denote it with a period (.). The '.' means 'whatever is coming through the pipe'. So, for example, if we piped the data into the `factor()` function we would write:
+  
+  `factor(., ...)`
+  
+  instead of:
+  
+  `factor(instrument, ...)`
+  
+  Notice that we replace the explicit reference to the variable **instrument** with a dot.
+</div>
+
+```{r met_inst_pipe, exercise = TRUE, exercise.lines = 4}
 
 ```
 
-```{r met_inst-solution}
-instrument <- factor(c(2, 0, 0, 1, 1, 1, 0), levels = 0:2, labels = c("Guitar", "Bass", "Drums"))
+```{r met_inst_pipe-hint-1}
+# First enter the data
+instrument <- c(2, 0, ...
+
+# Complete the data entry and add a pipe               
+```
+
+```{r met_inst_pipe-hint-2}
+instrument <- c(2, 0, 0, 1, 1, 1, 0) %>%
+
+# Now add the factor() function remembering to denote the data
+#coming through the pipe as a '.'
+```
+
+```{r met_inst_pipe-hint-3}
+# Solution:
+instrument <- c(2, 0, 0, 1, 1, 1, 0) %>%
+  factor(., levels = 0:2, labels = c("Guitar", "Bass", "Drums"))
 # To view this variable:
 instrument
 ```
 
-You’ll see that the variable is made up of the category labels and not the numeric values:
+The tidyverse method is slightly different. First, we create a *character* variable and then use the `forcats::as_factor()` function to convert it to a factor.
 
+#### `r robot()` Code example
 
-```{r, echo=FALSE}
-instrument <- factor(c(2, 0, 0, 1, 1, 1, 0), levels = 0:2, labels = c("Guitar", "Bass", "Drums"))
-instrument
-```
+This generic code shows how to create factors the tidyverse way
 
-The tidyverse method is slightly different. First, we create a character variable and then use the `forcats::as_factor()` function to convert it. For example, we could execute:
 ```{r, eval=FALSE}
-instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>%
-forcats::as_factor()
+instrument <- c("Instrument 1", "Instrument 2", ... "Final instrument") %>%
+  forcats::as_factor()
 ```
-Notice that with this method we don’t specify the levels of labels of the factor. This is done automatically, ordering the levels by the order they appear in the data. You can see this if you try inputting and viewing this variable
+
+#### `r bug()` Exercise
+
+Try creating the variable *instrument* the tidyverse way 
 
 ```{r met_insttidy, exercise=TRUE}
 
@@ -513,53 +662,67 @@ instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %
 instrument
 ```
 
-If we don’t want this order we can use the `forcats::fct_relevel()` function to change the order. For example, to order the levels as we did before we would execute:
+Notice that with this method we don’t specify the levels or labels of the factor, they are set automatically with levels ordered by the order they appear in the data. In this case entered drums first, so this is the first level. Guitar was entered second and so is the second level and so on. Were told this in the output by `Levels: Drums Guitar Bass`.
 
-```{r, eval=FALSE}
-instrument <- instrument %>% forcats::fct_relevel("Guitar", "Bass", "Drums")
-```
+#### `r robot()` Code example
 
-Or we could have incorporated this command to the original command using the pipe:
+If we don’t want instruments ordered in this way we can use the `forcats::fct_relevel()` function to change the order. For example, to order the levels as we did in the earlier example (guitar, bass, drums) we would execute:
 
-```{r, eval=FALSE}
-instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>% forcats::as_factor() %>% forcats::fct_relevel("Guitar", "Bass", "Drums")
-```
-
-Try executing
-
-```{r, eval=FALSE}
-instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>% forcats::as_factor()
-instrument
-```
-
-and then
-
-```{r, eval=FALSE}
-instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>% forcats::as_factor() %>% forcats::fct_relevel("Guitar", "Bass", "Drums")
-instrument
-```
-
-and note how the order of factor levels change.
-
-```{r met_relevel, exercise=TRUE}
-
-```
-
-```{r met_relevel-solution}
+```{r, met_relevel-setup}
 instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>%
   forcats::as_factor()
-# To view this variable:
-instrument
+```
 
-instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>% forcats::as_factor() %>% forcats::fct_relevel("Guitar", "Bass", "Drums")
+```{r met_relevel, exercise=TRUE}
+instrument <- instrument %>%
+  forcats::fct_relevel("Guitar", "Bass", "Drums")
+instrument
+```
+
+Notice that the order of levels has changed from `Levels: Drums Guitar Bass` in the previous output to `Levels: Guitar Bass Drums` in the current output.
+
+
+#### `r bug()` Exercise
+
+We could have incorporated the `fct_relevel()` function in the original command by using the pipe. See if you can do this.
+
+```{r met_relevel2, exercise=TRUE}
+
+```
+
+```{r met_relevel2-hint-1}
+# Set up the variable and enter the data:
+instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar")
+
+# Now pipe this into as_factor() like we did before
+```
+
+```{r met_relevel2-hint-2}
+# The variable is created with default factor levels:
+
+instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>%
+  forcats::as_factor()
+
+# Now pipe the results into the fct_relevel() function
+```
+
+```{r met_relevel2-hint-3}
+# Solution
+instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>%
+  forcats::as_factor() %>%
+  forcats::fct_relevel("Guitar", "Bass", "Drums")
 # To view this variable:
 instrument
 ```
+
+#### `r bug()` Exercise
 
 With any factor variable you can see the factor levels and their order by using the `levels()` function, in which you enter the name of the factor. So, to see the levels of our variable instrument variable we would execute: `levels(instrument)`, try this:
 
 ```{r met_level-setup}
-instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>% forcats::as_factor() %>% forcats::fct_relevel("Guitar", "Bass", "Drums")
+instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>%
+  forcats::as_factor() %>%
+  forcats::fct_relevel("Guitar", "Bass", "Drums")
 ```
 
 ```{r met_level, exercise=TRUE}
@@ -571,15 +734,23 @@ levels(instrument)
 ```
 
 
-##	Tibbles
+##	`r bmu2()` Tibbles
 
-We have looked at how to create variables, but what if we want to combine these variables into a tabulated data set. The tidyverse way to do this is using something called a **tibble**. To create a tibble we use the `tibble::tibble()` function, and inpout into it the names of the variables we have created:
+We have looked at how to create variables, but what if we want to combine these variables into a tabulated data set. The tidyverse way to do this is to create something called a **tibble**. 
+
+#### `r robot()` Code example
+
+To create a tibble we use the `tibble::tibble()` function, and input into it the names of the variables you have created.
+
 ```{r, eval=FALSE}
-metalli_tib <- tibble::tibble(name, birth_date, death_date, instrument, current_member, songs_written, net_worth)
+my_tib <- tibble::tibble(variable_1, variable_2, variable_3, ... variable_n)
 ```
-This command creates an object called `metalli_tib` (I tend to use `_tib` to denote a tibble) that contains all of the variables we have created in columns. You view tibbles by executing its name. The contents of the tibble will be printed within the R markdown document itself below the code chunk. By default the first 10 rows will be displayed and as many columns as the width of the pane allows. The display is interactive so you can navigate across columns or down beyond the first 10 rows.
 
-Create a tibble of the metallica data (don't forget to execute its name to view it):
+This command creates an object called `my_tib` (I tend to use `_tib` to denote a tibble) that contains all of the variables listed in `tibble()`. They will be arranged in columns. You view a tibbles by executing its name. The contents of the tibble will be printed within the `r rproj()` markdown document below the code chunk. By default the first 10 rows will be displayed and as many columns as the width of the pane allows. The display is interactive so you can navigate across columns or down beyond the first 10 rows.
+
+#### `r bug()` Exercise
+
+Create a tibble of the Metallica data called `metalli_tib`, which is made up of all of the variables from Table 1 that we have created in this tutorial (don't forget to execute its name to view it):
 
 ```{r met_tibble-setup}
 current_member <- c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
@@ -597,7 +768,15 @@ death_date <- c(NA, NA, NA, NA, NA, "1986-09-27", NA) %>%
 
 ```
 
-```{r met_tibble-solution}
+```{r met_tibble-hint-1}
+# To get you started ...
+metalli_tib <- tibble::tibble(name, ...
+                              
+# Add the other variables (birth_date, death_date, instrument, current_member, songs_written, net_worth)
+```
+
+```{r met_tibble-hint-2}
+#Solution
 metalli_tib <- tibble::tibble(name, birth_date, death_date, instrument, current_member, songs_written, net_worth)
 # To view the tibble
 metalli_tib
@@ -605,52 +784,53 @@ metalli_tib
 
 From viewing the tibble, you can see that it collects together the objects called **name**, **birth_date**, **death_date**, **instrument**, **current_member**, **songs_written**, and **net_worth** into columns. When we created these variables we consistently entered the data in the order of Lars, James, Kirk, Rob, Jason, Cliff and Dave, therefore, each row represents the data for each member. For example, we can see that Lars plays drums and has a song writing credit on 111 songs. The whole thing looks like Table 1.
  
-###	Creating new variables within a tibble with `dplyr::mutate()`
+###	`r bmu2()` Creating new variables within a tibble with `dplyr::mutate()`
 
-We can create new variables within a tibble using the `mutate()` function from the `dplyr` (which is part of tidyverse) package. This function takes the general form:
+We can create new variables within a tibble using the `mutate()` function from the `dplyr` (which is part of `tidyverse` package).
+
+#### `r robot()` Code example
+
+The `dplyr::mutate()` function  takes the general form:
+
 ```{r, eval=FALSE}
 dplyr::mutate(tibble_name,
-variable_name_1 = data_for_variable,
-variable_name_2 = data_for_variable
-)
+              variable_name_1 = data_for_variable,
+              variable_name_2 = data_for_variable
+              ...
+              )
 ```
 In other words, we pass into the function the name of the tibble to which we want to add variables, followed by one or more commands that name the variables that we want to create and include the data for those variables or instructions to create that data (more on this later). We can also pipe a tibble into the function rather than specifying the tibble within the function itself:
 ```{r, eval=FALSE}
 tibble_name %>%
-dplyr::mutate(
-variable_name_1 = data_for_variable,
-variable_name_2 = data_for_variable
-)
+  dplyr::mutate(
+    variable_name_1 = data_for_variable,
+    variable_name_2 = data_for_variable
+    ...
+    )
 ```
 
-Two things to note. First, variables are created using an equal sign (`=`), not the assignment operator (`<-`). Second, every line within the `mutate()` function ends with a comma except for the last. When R sees a comma it expects to see another command, so the lack of comma after the last command tells R that it is the last command.
+<div class="tip">
+  `r cat_space()` **Tip: two things to note about `mutate()`**
+  
+  1. In `mutate()`, variables are created using an equal sign (`=`), not the assignment operator (`<-`).
+  2. Every line within the `mutate()` function ends with a comma except for the last. When `r rproj()` sees a comma it expects to see another command, so the lack of comma after the last command tells `r rproj()` that it is the last command.
+</div>
 
-Imagine that having created metalli_tib we decide that we’d like to include information about how many of their 10 studio albums of original songs each member played on. The data are 10 (Lars), 10 (James), 10 (Kirk), 2 (Rob), 4 (Jason), 3 (Cliff), 0 (Dave). We can create a variable called albums like this
+#### `r robot()` Code example
 
-```{r, eval=FALSE}
+Imagine that having created `metalli_tib` we decide that we’d like to include information about how many of their 10 studio albums of original songs each member played on. The data are 10 (Lars), 10 (James), 10 (Kirk), 2 (Rob), 4 (Jason), 3 (Cliff), 0 (Dave). We can create a variable called albums like this
+
+```{r met_setup}
+metalli_tib <- discovr::metallica %>% 
+  dplyr::select(-c(albums, worth_per_song))
+```
+
+```{r met_mutate, exercise=TRUE, exercise.setup = "met_setup"}
 metalli_tib <- metalli_tib %>% 
   dplyr::mutate(
     	albums = c(10, 10, 10, 2, 4, 3, 0)
   )
-```
-
-The first line creates the object `metalli_tib` from a version of itself in which the original tibble is passed through the pipe into `dplyr::mutate()`, where the new variable is created. Look at this new tibble (by executing its name) and you’ll see that an extra column has appeared called albums that contains the values we entered. Try this below:
-
-```{r met_setup}
-current_member <- c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
-instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>% forcats::as_factor() %>% forcats::fct_relevel("Guitar", "Bass", "Drums")
-name <- c("Lars Ulrich", "James Hetfield", "Kirk Hammett", "Rob Trujillo", "Jason Newsted", "Cliff Burton", "Dave Mustaine")
-songs_written <-  c(111, 112, 56, 16, 3, 11, 6)
-net_worth <- c(300000000, 300000000, 200000000, 20000000, 40000000, 1000000, 20000000)
-birth_date <- c("1963-12-26", "1963-08-03", "1962-11-18", "1964-10-23", "1963-03-04", "1962-02-10", "1961-09-13") %>%
-  lubridate::ymd()
-death_date <- c(NA, NA, NA, NA, NA, "1986-09-27", NA) %>% 
-  lubridate::ymd()
-metalli_tib <- tibble::tibble(name, birth_date, death_date, instrument, current_member, songs_written, net_worth)
-```
-
-```{r met_mutate, exercise=TRUE, exercise.setup = "met_setup"}
-
+metalli_tib
 ```
 
 ```{r met_mutate-solution}
@@ -661,21 +841,47 @@ metalli_tib <- metalli_tib %>%
 metalli_tib
 ```
 
-We can also compute variables from existing variables. Let’s imagine we now wanted to work out how much money per song contributed each band member made. We know how many songs each member contributed to (**songs_written**) and their net worth (**net_worth**) so their ‘worth per song’ will be their net worth divided by the number of songs written. We can create a variable that takes the values for net_worth and divides them by the corresponding value of **songs_written** using one of the arithmetic operators build into R. Amongst other things, we can add, subtract, multiply and divide using `+`, `-`, `*` and `\` respectively. So, let’s use `/` to create a new variable that we’ll call **worth_per_song** that is **net_worth** divided by **songs_written**. We can again use `mutate()` to add this variable to our tibble:
-```{r, eval=FALSE}
+The first line creates the object `metalli_tib` from a version of itself in which the original tibble is passed through the pipe into `dplyr::mutate()`, where the new variable is created. You’ll see that the new version of `metalli_tib` has an extra column called **albums** that contains the values we entered.
+
+###	`r bmu2()` Creating new variables from existing variables
+
+We can also compute variables from existing variables. Let’s imagine we now wanted to work out how much money per song contributed each band member made. We know how many songs each member contributed to (**songs_written**) and their net worth (**net_worth**) so their ‘worth per song’ will be their net worth divided by the number of songs written. We can create a variable that takes the values for net_worth and divides them by the corresponding value of **songs_written** using one of the arithmetic operators built into `r rproj()`. Amongst other things, we can add, subtract, multiply and divide using `+`, `-`, `*` and `\` respectively. So, let’s use `/` to create a new variable that we’ll call **worth_per_song** that is **net_worth** divided by **songs_written**. the command within `mutate()` to create this variable will be:
+
+`worth_per_song = net_worth/songs_written`
+
+#### `r bug()` Exercise
+
+By adapting the code in the previous section and using the code above that computes the worth per song to, add the variable **worth_per_song** to the `metalli_tib` tibble:
+
+```{r met_setup_albums}
+metalli_tib <- discovr::metallica %>% 
+  dplyr::select(-worth_per_song)
+```
+
+```{r met_mutate2, exercise=TRUE, exercise.lines = 5, exercise.setup = "met_setup_albums"}
+
+```
+
+```{r met_mutate2-hint-1}
+# Start with the code form the previous section, but remove the stuff
+# from within the mutate function:
+
+metalli_tib <- metalli_tib %>% 
+  dplyr::mutate(
+    
+  )
+```
+
+```{r met_mutate2-hint-2}
+# Now place the code that computes worth_per_song within mutate()
 metalli_tib <- metalli_tib %>% 
   dplyr::mutate(
     	worth_per_song = net_worth/songs_written
   )
 ```
 
-Note that within the `mutate()` function we create the new variable (which we name on the left hand side of the equals sign) by taking the existing variable **net_worth** from the tibble and divided it by another existing variable in the tibble, **songs_written**. If you execute this code and look at the resulting tibble (by executing its name) you’ll see that James and Lars earn about \$2.7 million per song they write, but the real winner here is Jason who contributed to only 3 songs which puts his earnings per song at around \$13 million. Nice work if you can get it.
-
-```{r met_mutate2, exercise=TRUE, exercise.setup = "met_setup"}
-
-```
-
-```{r met_mutate2-solution}
+```{r met_mutate2-hint-3}
+# Nice to view the tibble to see that the variable has, in fact, been added
 metalli_tib <- metalli_tib %>% 
   dplyr::mutate(
     	worth_per_song = net_worth/songs_written
@@ -683,212 +889,324 @@ metalli_tib <- metalli_tib %>%
 metalli_tib
 ```
 
-### Selecting variables
+Note that within the `mutate()` function we create the new variable (which we name on the left hand side of the equals sign) by taking the existing variable **net_worth** from the tibble and divided it by another existing variable in the tibble, **songs_written**. If you look at the resulting tibble you’ll see that James and Lars earn about \$2.7 million per song they write, but the real winner here is Jason who contributed to only 3 songs which puts his earnings per song at around \$13 million. Nice work if you can get it.
+
+### `r bmu2()` Selecting variables
 
 Sometimes we might want to subset tibbles to focus on specific variables or cases of data. First we’ll look at selecting variables. The most extreme case would to look at or retain only at a single variable. To select variables from within a tibble we use the `select()` function from the `dplyr` package (which is loaded as part of tidyverse). The function takes this general form:
+
 ```{r, eval=FALSE}
 dplyr::select(tibble_name, list of variables)
 ```
 
 Within the function you insert the name of the tibble and a list of the variable or variables that you want to retain. For example, to select the variables **name** and **instrument** we could execute:
+
 ```{r, eval=FALSE}
 dplyr::select(metalli_tib, name, instrument)
 ```
 
+#### `r robot()` Code example
+
 Better still, we could use a pipe (`%>%`) that takes the tibble and feeds it into the function:
-```{r, eval=FALSE}
+
+```{r met_select_ce1, exercise=TRUE, exercise.setup = "met_setup_albums"}
 metalli_tib %>% 
   dplyr::select(name, instrument)
 ```
- 
-You can also use the `dplyr::select()` function to drop variables from a tibble by placing a minus sign in front of the variable. For example, to show every variable *except* **name** we’d execute:
+
+You can also use `dplyr::select()` to drop variables from a tibble by placing a minus sign in front of the variable. For example, to show every variable *except* **name** we’d execute:
+
 ```{r, eval=FALSE}
 metalli_tib %>% 
   dplyr::select(-name)
 ```
+
 This command displays the tibble but *without* the column containing the band member’s names.
 
-To remove multiple variables, we can place them within `c()`,remembering to place the minus sign outside of the function so that it applies to everything within it:
-```{r, eval=FALSE}
+#### `r robot()` Code example
+
+To remove multiple variables, place them within `c()`. Remembering to place the minus sign outside of the function so that it applies to everything within it:
+
+```{r met_select_ce2, exercise=TRUE, exercise.setup = "met_setup_albums"}
 metalli_tib %>% 
   dplyr::select(-c(name, instrument))
 ```
 
 This command will display the tibble but *without* the columns containing the band member’s names and instruments.
 
-Sometimes we’d like to store the subset of variables within a new object for future use. To do this you would need to assign the commands that subset the tibble to an object, using the assignment operator (`<-`). For example, to save a version of metalli_tib but without the band member’s names into an object called `metalli_anon_tib`, we’d execute:
-```{r, eval=FALSE}
+Sometimes we’d like to store the subset of variables within a new object for future use. To do this you would need to assign the commands that subset the tibble to an object, using the assignment operator (`<-`). For example, to save a version of `metalli_tib` but without the band member’s names into an object called `metalli_anon_tib`, we’d execute:
+
+```{r met_select_ce3, exercise=TRUE, exercise.setup = "met_setup_albums"}
 metalli_anon_tib <- metalli_tib %>% 
   dplyr::select(-name)
-```
 
-The object `metalli_anon_tib` is the same as metalli_tib except that it doesn’t contain the variable **name**. We can see this by executing its name to display it. Try out some of these examples below:
-
-```{r met_select, exercise=TRUE, exercise.setup = "met_setup"}
-
-```
-
-```{r met_select-solution}
-# Selecting the variables name and instrument
-metalli_tib %>% 
-  dplyr::select(name, instrument)
-
-# Excluding the variables name and instrument
-metalli_tib %>% 
-  dplyr::select(-c(name, instrument))
-
-# Saving a version of metalli_tib by excluding the variable 'name'
-metalli_anon_tib <- metalli_tib %>% 
-  dplyr::select(-name)
-# To view the tibble:
 metalli_anon_tib
 ```
 
-Sometimes, when you want to select only one variable from a tibble it is quicker to use the `$` symbol. For example, to select the variable `instrument` from the `metalli_tib` tibble, we could execute:
+The object `metalli_anon_tib` is the same as `metalli_tib` except that it doesn’t contain the variable **name**.
+
+<div class="tip">
+  `r cat_space()` **Tip: Using `x:y` to specify 'all the consecutive variables between'**
+
+When selecting lots of variables it can be useful to use `x:y` to indicate 'all of the consecutive variables between x and y, including x and y'. For example the variables in `metalli_tib` are now: **name**, **birth_date**, **death_date**, **instrument**, **current_member**, **songs_written**, **net_worth**, **albums**, and **worth_per_song**. If we wanted to select the variables **name**, **songs_written**, **net_worth**, **albums** and **worth_per_song** we could use:
+
+`dplyr::select(name, songs_written:worth_per_song)`
+
+The `songs_written:worth_per_song` is shorthand for selecting **songs_written**, **worth_per_song** and all variables in between them in the tibble.
+</div>
+
+#### `r bug()` Exercise
+
+Select the variables **name**, **instrument**, and **net_worth**.
+
+```{r met_setup_all}
+current_member <- c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
+instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %>% forcats::as_factor() %>% forcats::fct_relevel("Guitar", "Bass", "Drums")
+name <- c("Lars Ulrich", "James Hetfield", "Kirk Hammett", "Rob Trujillo", "Jason Newsted", "Cliff Burton", "Dave Mustaine")
+songs_written <-  c(111, 112, 56, 16, 3, 11, 6)
+net_worth <- c(300000000, 300000000, 200000000, 20000000, 40000000, 1000000, 20000000)
+birth_date <- c("1963-12-26", "1963-08-03", "1962-11-18", "1964-10-23", "1963-03-04", "1962-02-10", "1961-09-13") %>%
+  lubridate::ymd()
+death_date <- c(NA, NA, NA, NA, NA, "1986-09-27", NA) %>% 
+  lubridate::ymd()
+metalli_tib <- tibble::tibble(name, birth_date, death_date, instrument, current_member, songs_written, net_worth) %>% 
+  dplyr::mutate(
+    albums = c(10, 10, 10, 2, 4, 3, 0),
+    worth_per_song = net_worth/songs_written
+  )
+```
+
+
+```{r met_select_ex1, exercise=TRUE, exercise.setup = "met_setup_all"}
+
+```
+
+```{r met_select_ex1-solution}
+# Selecting the variables **name**, **instrument**, and **net_worth**
+metalli_tib %>% 
+  dplyr::select(name, instrument, net_worth)
+```
+
+#### `r bug()` Exercise
+
+Exclude the variables **death_date** and **net_worth**.
+
+```{r met_select_ex2, exercise=TRUE, exercise.setup = "met_setup_all"}
+
+```
+
+```{r met_select_ex2-solution}
+# Excluding the variables **death_date**, and **net_worth**
+metalli_tib %>% 
+  dplyr::select(-c(death_date, net_worth))
+```
+
+#### `r bug()` Exercise
+
+Include the variables **name**, **birth_date**, **death_date**, **instrument**, **current_member** and **worth_per_song**.
+
+```{r met_select_ex3, exercise=TRUE, exercise.setup = "met_setup_all"}
+
+```
+
+```{r met_select_ex3-solution}
+# Include the variables **name**, **birth_date**, **death_date**, **instrument**, **current_member** and **worth_per_song**
+metalli_tib %>% 
+  dplyr::select(name:current_member, worth_per_song)
+
+# OR (this removes the three variables that we don't want to see)
+metalli_tib %>% 
+  dplyr::select(-c(songs_written:albums))
+```
+<div class="tip">
+  `r cat_space()` **Tip: Don't forget about $**
+  
+  Sometimes, when you want to select only one variable from a tibble it is quicker to use the `$` symbol. For example, to select the variable `instrument` from the `metalli_tib` tibble, we could execute:
 
 `metalli_tib$instrument`
 
-which you can read as 'the variable `instrument` within the tibble `metalli_tib`'. Try this out below:
+which you can read as 'the variable `instrument` within the tibble `metalli_tib`'. This will return the raw values not wrapped in a tibble (it can be handy sometimes to have the raw values).
 
-```{r met_select_base, exercise=TRUE, exercise.setup = "met_setup"}
+</div>
+
+#### `r bug()` Exercise
+
+Inspect the variable **worth_per_song** from `metalli_tib`.
+
+
+```{r met_select_base, exercise=TRUE, exercise.setup = "met_setup_all"}
 
 ```
 
 ```{r met_select_base-solution}
 # Selecting the variable instrument from the metalli_tib tibble
-metalli_tib$instrument
+metalli_tib$worth_per_song
 ```
 
-###	Selecting cases (filtering tibbles)
+###	`r bmu2()` Selecting cases (filtering tibbles)
 
 Sometimes we want to select cases rather than (or as well as) variables. For example, maybe we want to work with only the current members of Metallica. To do this, we’d need to select rows of the tibble on the basis of whether the variable **current_member** was true. To filter rows of a tibble you use the `filter()` function from `dplyr`. Like the `select()` function in the previous section, you feed in the name of the tibble and some instructions about how to filter:
+
 ```{r, eval=FALSE}
 dplyr::filter(tibble_name, statement_about_how_to_filter)
 ```
+
 Or using a pipe:
+
 ```{r, eval=FALSE}
 tibble_name %>%
 dplyr::filter(statement_about_how_to_filter)
 ```
+
+#### `r robot()` Code example
+
 For example, to select the rows that represent current band members, we need to filter the rows where the variable **current_member** is was equal to TRUE. We could do this by executing:
-```{r, eval=FALSE}
-dplyr::filter(metalli_tib, current_member == TRUE)
-```
-or, better still, using a pipe:
-```{r, eval=FALSE}
+
+```{r met_filter_ce1, exercise=TRUE, exercise.setup = "met_setup_all"}
 metalli_tib %>% 
-dplyr::filter(current_member == TRUE)
+  dplyr::filter(current_member == TRUE)
 ```
 
-Try this out:
 
-```{r met_filter, exercise=TRUE, exercise.setup = "met_setup"}
+Note that we use `==` to mean `equal to`. We can also use `!=` to mean 'not equal to. We can also use `<` to mean `less than` and `>` to mean `more than`. 
 
-```
+#### `r robot()` Code example
 
-```{r met_filter-solution}
+For example, if we wanted to return the rows of members who had written more than 50 songs, we could execute:
+
+```{r met_filter_ce2, exercise=TRUE, exercise.setup = "met_setup_all"}
 metalli_tib %>% 
-dplyr::filter(current_member == TRUE)
-```
-
-Note that we use `==` to mean `equal to`. We can also use `!=` to mean 'not equal to. We can also use `<` to mean `less than` and `>` to mean `more than`. For example, if we wanted to return the rows of members who had written more than 50 songs, we could execute:
-```{r, eval=FALSE}
-metalli_tib %>% 
-dplyr::filter(songs_written > 50)
+  dplyr::filter(songs_written > 50)
 ```
 
 This command returns the data for Lars, James and Kirk, who are the only members to have contributed to the writing of more than 50 songs.
 
-We can also combine conditions to select rows of a tibble. First, we can ask for rows that match both of two conditions by using the `&` operator. For example, if we want the members of metallica who play drums and have written more than 50 songs, we could combine the condition `songs_written > 50` with the condition of `instrument == "Drums"`. By using `&` we require both conditions to be true. The value of **songs_written** must be greater than 50 AND the value of instrument must be equal to ‘Drums’. To filter `metalli_tib` according to the above conditions, we can insert those condition into the `filter()` function that we have just learnt:
-```{r, eval=FALSE}
+We can also combine conditions to select rows of a tibble. First, we can ask for rows that match both of two conditions by using the `&` operator. For example, if we want the members of Metallica who play drums *and* have written more than 50 songs, we could combine the condition `songs_written > 50` with the condition of `instrument == "Drums"`. By using `&` we require both conditions to be true. The value of **songs_written** must be greater than 50 AND the value of instrument must be equal to ‘Drums’.
+
+#### `r robot()` Code example
+
+To filter `metalli_tib` according to the above conditions, we can insert those condition into the `filter()` function:
+
+```{r met_filter_ce3, exercise=TRUE, exercise.setup = "met_setup_all"}
 metalli_tib %>% 
-dplyr::filter(songs_written > 50 & instrument == "Drums")
-```
- 
-Try this out:
-
-```{r met_filter_and, exercise=TRUE, exercise.setup = "met_setup"}
-
+  dplyr::filter(songs_written > 50 & instrument == "Drums")
 ```
 
-```{r met_filter_and-solution}
-metalli_tib %>% 
-dplyr::filter(songs_written > 50 & instrument == "Drums")
-```
 
 We can also use the OR operator (`|`) to select cases based on whether one of many conditions is met. For example, let’s say we want to isolate the rhythm section, we need to include cases that either play drums or bass. We can achieve this with a statement such as:
-`instrument == "Drums" | instrument == "Bass"`. The `|` denotes 'or', so this command would read as ‘the value of the variable instrument is equal to the word ‘Drums’ OR the value of the variable instrument is equal to the phrase ‘Bass’. Again, we’d insert this statement into the `filter()` function.
-```{r, eval=FALSE}
+`instrument == "Drums" | instrument == "Bass"`. The `|` denotes 'or', so this command would read as ‘the value of the variable **instrument** is equal to the word ‘Drums’ OR the value of the variable instrument is equal to the phrase ‘Bass’. Again, we’d insert this statement into the `filter()` function.
+
+#### `r robot()` Code example
+
+To filter `metalli_tib` according to the above conditions, we can insert those condition into the `filter()` function:
+
+```{r met_filter_ce4, exercise=TRUE, exercise.setup = "met_setup_all"}
 metalli_tib %>% 
-dplyr::filter(instrument == "Drums" | instrument == "Bass")
+  dplyr::filter(instrument == "Drums" | instrument == "Bass")
 ```
+
 Notice that the result displays only the bassists and drummers.
 
-```{r met_filter_or, exercise=TRUE, exercise.setup = "met_setup"}
+###	`r bmu2()` Combining selecting cases with selecting variables
 
-```
-
-```{r met_filter_or-solution}
-metalli_tib %>% 
-dplyr::filter(instrument == "Drums" | instrument == "Bass")
-```
- 
-###	Combining selecting cases with selecting variables
-
-We can combine what we have learnt in the previous sections to select variables *and* cases in a single command. For example, let’s say we want to create a new object called **metalli_worth** that contains only the names and net worth of the current members who have played on every album (i.e., Lars, James and Kirk). This involves two operations:
+We can combine what we have learnt in the previous sections to select variables *and* cases in a single command. For example, let’s say we want to create a new object called `metalli_worth` that contains only the names and net worth of the current members who have played on every album (i.e., Lars, James and Kirk). This involves two operations:
 
 1. Filter the cases to exclude everyone except Lars, James and Kirk.
 2. We want to exclude all of the variables except for net worth.
 
 Let’s first select the cases we want. We can do this in several ways, but one is to set a condition that the variable **current_member** is TRUE (this will give us Lars, James, Kirk and Rob) and a second condition that instrument is not equal (`!=`) to ‘Bass’, which will exclude Rob. This condition would be written as `current_member == TRUE & instrument != "Bass"`. We could place this command into the `filter()` function:
-```{r, eval=FALSE}
+
+#### `r robot()` Code example
+
+To filter `metalli_tib` according to the above conditions, we can insert those condition into the `filter()` function:
+
+```{r met_filter_ce5, exercise=TRUE, exercise.setup = "met_setup_all"}
 metalli_worth <- metalli_tib %>% 
-dplyr::filter(current_member == TRUE & instrument != "Bass")
+  dplyr::filter(current_member == TRUE & instrument != "Bass")
+metalli_worth
 ```
 
-This command creates an object called **metalli_worth** that contains the rows of *metalli_tib* that meet the conditions that the variable **current_member** is equal to TRUE and the variable **instrument** is NOT equal to (`!=`) the phrase "Bass". Having created this object, we could re-create it from itself but passed through the `select()` function to select only the variables called **name** and **net_worth**:
-```{r, eval=FALSE}
+This command creates an object called **metalli_worth** that contains the rows of `metalli_tib` that meet the conditions that the variable **current_member** is equal to TRUE and the variable **instrument** is NOT equal to (`!=`) the phrase "Bass".
+
+#### `r robot()` Code example
+
+Having created this object, we could re-create it from itself but passed through the `select()` function to select only the variables called **name** and **net_worth**:
+
+```{r met_filter_ce6-setup}
+metalli_worth <- discovr::metallica %>% 
+  dplyr::filter(current_member == TRUE & instrument != "Bass")
+```
+
+
+```{r met_filter_ce6, exercise=TRUE}
 metalli_worth <- metalli_worth %>% 
-dplyr::select(name, net_worth)
-```
-Notice that by executing this command we overwrite the original object `metalli_worth` with a new version that contains only the variables **name** and **net_worth**.
-
-The method just described is inefficient (but helpful for showing you the explicit steps that we want to take). A more efficient way to do achieve the same goal is to do both operations as part of the same pipe:
-```{r, eval=FALSE}
-metalli_worth <- metalli_tib %>% 
-  dplyr::filter(current_member == TRUE & instrument != "Bass") %>% 
-  dplyr::select(name, net_worth)
-```
-
-We now begin to see the beauty of the pipe: it enables us to put together a sequence of operations in very clear, readable, code. The above code creates an object called `metalli_worth` by taking the tibble called `metalli_tib` and passing it into the `filter()` function, where cases are selected if they are current members and don’t play bass, this filtered version of `metalli_tib` is then passed again through the pipe to the `select()` command in which the variables name and net_worth are selected. The result is a tibble containing Lars’, James’, and Kirk’s names and net worth. Remember to include `metalli_worth` to view the tibble. Try this out below:
-
-```{r met_filter_select, exercise=TRUE, exercise.setup = "met_setup"}
-
-```
-
-```{r met_filter_select-solution}
-metalli_worth <- metalli_tib %>% 
-  dplyr::filter(current_member == TRUE & instrument != "Bass") %>% 
   dplyr::select(name, net_worth)
 metalli_worth
 ```
 
-## Other resources
+Notice that by executing this command we overwrite the original object `metalli_worth` with a new version that contains only the variables **name** and **net_worth**.
+
+#### `r bug()` Exercise
+
+The method just described is inefficient (but helpful for showing you the explicit steps that we want to take). A more efficient way to do achieve the same goal is to do both operations as part of the same pipe. See if you can combine the previous two code examples to create `metalli_worth` using a single pipe.
+
+```{r met_filter_select, exercise=TRUE, exercise.setup = "met_setup_all"}
+
+```
+
+```{r met_filter_select-hint-1}
+# Start by creating metalli_worth from metalli_tib
+metalli_worth <- metalli_tib
+# Now use the pipe to apply the filter command from the code example
+```
+
+```{r met_filter_select-hint-2}
+# So far:
+metalli_worth <- metalli_tib %>% 
+  dplyr::filter(current_member == TRUE & instrument != "Bass") 
+
+# Next use another pipe to apply the select function from the code example
+```
+
+```{r met_filter_select-hint-3}
+# Solution to create metalli_worth:
+metalli_worth <- metalli_tib %>% 
+  dplyr::filter(current_member == TRUE & instrument != "Bass") %>% 
+  dplyr::select(name, net_worth)
+# To view this tibble:
+metalli_worth
+```
+
+We now begin to see the beauty of the pipe: it enables us to put together a sequence of operations in very clear, readable, code. The above code creates an object called `metalli_worth` by taking the tibble called `metalli_tib` and passing it into the `filter()` function, where cases are selected if they are current members and don’t play bass, this filtered version of `metalli_tib` is then passed again through the pipe to the `select()` command in which the variables name and net_worth are selected. The result is a tibble containing Lars’, James’, and Kirk’s names and net worth.
+
+<div class="infobox">
+  <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
+  
+  **A message from Mae Jemstone:**
+  
+  Well done on completing this mission! You have worked very hard and gained a good foundation in how to use `r rproj()`. You know how to enter data, how to store it as a tibble, and how to filter cases and select variables within a tibble. Fantastic work!
+  
+</div>
+
+## Resources {data-progressive=FALSE}
 
 ### Statistics
 
-* The tutorials typically follow examples described in detail in @fieldDiscoveringStatisticsUsing2020, so that book is an obvious place to go for further reading.
+* The tutorials typically follow examples described in detail in @field_discovering_2021. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
 * If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
-* There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/)
-* There are free statistical resources on my website [www.discoveringstatistics.com](http://www.discoveringstatistics.com)
+* There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/).
+* There are free statistical resources on my websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [milton-the-cat.rocks](http://milton-the-cat.rocks).
 
-### R
+### `r rproj("h3")`
 
 * [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
-* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on **R** and **RStudio**
-* [RStudio cheat sheets](https://www.rstudio.com/resources/cheatsheets/)
-* [RStudio list of online resources](https://www.rstudio.com/online-learning/)
-* [SwirlStats](http://swirlstats.com/students.html) is a package for *R* that launches a bunch of interactive tutorials.
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and ![](./images/rstudio_logo.png){height=1em}.
+* [![](./images/rstudio_logo.png){height=1em} cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
+* [![](./images/rstudio_logo.png){height=1em} list of online resources](https://www.rstudio.com/online-learning/).
+
+### Acknowledgement
+
+I'm extremely grateful to [Allison Horst](https://www.allisonhorst.com/) for her very informative blog post on [styling learnr tutorials with CSS](https://education.rstudio.com/blog/2020/05/learnr-for-remote/) and also for sending me a CSS template file and allowing me to adapt it. Without Allison, these tutorials would look a lot worse (but she can't be blamed for my colour scheme).
 
 ## References
 

@@ -48,7 +48,7 @@ metal_tib <- discovr::metal_health
 
 ### `r cat_space(height = 2)` Welcome to space pirate academy
 
-Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj("tip")`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj("tip")`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
+Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
@@ -65,9 +65,9 @@ By for now and good luck - you'll be amazing!
 
 ### Workflow
 
-* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within R and RStudio](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
+* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and ![](./images/rstudio_logo.png){height=1em}](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
 
-* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in RStudio I strongly recommend that you create an `r rproj()` markdown file within an Rstudio project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
+* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in ![](./images/rstudio_logo.png){height=1em} I strongly recommend that you create an `r rproj()` markdown file within an ![](./images/rstudio_logo.png){height=1em} project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
 
 ![](https://youtu.be/FE0ntX0dyc4)
 
@@ -82,7 +82,7 @@ This tutorial uses the following packages:
 * `parameters` [@makowski_parameters_2019]
 * `tidyverse` [@tidyverse]
 
-I try to follow the [Google R style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) in always declaring the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will write `dplyr::mutate()`. 
+I try to follow the [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) in always declaring the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will write `dplyr::mutate()`. 
 
 It is good practice to be explicit about packages to avoid clashes where functions from different packages have the same name. It also means that you don't need to load packages at the start of your markdown document. 
 
@@ -91,7 +91,7 @@ There are two main exceptions to this rule.
 1. There are functions within some `tidyverse` packages that would be used within other functions. Including the package name makes the code difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
 2. To use the pipe operator (`%>%`) you need to have `magritrr` loaded.
 
-We can load all of the packages that are exceptions in one step by loading `tidyverse` at the beginning of our R Markdown document:
+We can load all of the packages that are exceptions in one step by loading `tidyverse` at the beginning of our `r rproj()` Markdown document:
 
 ```{r eval = FALSE}
 library(tidyverse)
@@ -105,7 +105,7 @@ To work *outside of this tutorial* you need to download the following data files
 * [metal_health.csv](http://www.discoveringstatistics.com/repository/discovr_data/metal_health.csv)
 * [social_anxiety.csv](http://www.discoveringstatistics.com/repository/discovr_data/social_anxiety.csv)
 
-Set up an RStudio project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called `data`. Place this code in the first code chunk in your `r rproj()` Markdown document:
+Set up an ![](./images/rstudio_logo.png){height=1em} project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called `data`. Place this code in the first code chunk in your `r rproj()` Markdown document:
 
 ```{r, eval=FALSE}
 album_tib <- here::here("data/album_sales.csv") %>% readr::read_csv()
@@ -247,11 +247,14 @@ There are different ways to inspect the model we have just fitted. The bread and
 
 #### `r robot()` Code example for `summary()`
 
-This code example shows how to get the summary information fpor the model that we just fitted.
+This code example shows how to get the summary information for the model that we just fitted.
 
 ```{r album_lm_setup}
 album_lm <- lm(sales ~ adverts, data = album_tib, na.action = na.exclude)
 album_full_lm <- lm(sales ~ adverts + airplay + image, data = album_tib, na.action = na.exclude)
+album_full_rsd <- album_full_lm %>% 
+  broom::augment() %>% 
+  tibble::rowid_to_column(var = "case_no") 
 ```
 
 ```{r album_lm_sum, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
@@ -319,7 +322,7 @@ If a predictor is having a significant impact on our ability to predict the outc
 <div class="tip">
   `r cat_space()` **Tip: scientific notation**
   
-   Scioentific notation can seem confusing, but e-x is shorthand for $\times 10^{-x}$ and e+x is shorthand for $\times 10^{x}$. Here's two specific examples:
+   Scientific notation can seem confusing, but e-x is shorthand for $\times 10^{-x}$ and e+x is shorthand for $\times 10^{x}$. Here's two specific examples:
 
 * 2.91e-19 means $2.91 \times 10^{-19}$, which in plain English means 'move the decimal place 19 places to the left. In other words, this number is 0.000000000000000000291. A very small number.
 * 2.91e+19 means $2.91 \times 10^{19}$ or 'move the decimal place 19 places to the right. In other words, this number is 29100000000000000000. A very large number.
@@ -339,8 +342,8 @@ This video shows a demonstration that may help you to get a better understanding
 quiz(
   question("If a *b*-value has a large standard error what can we conclude?",
     answer("That estimates of *b* vary widely across different samples. (Therefore, this estimate *could* be very different from the population value.)", correct = T),
-    answer("That estimates of *b* vary little across different samples. (Therefore, this estimate is likley to be very similar to the population value.)", message = "This describes a *small* standard error"),
-    answer("The sampling distribution of *b* is narrow.", message = "This describes a *small* standard error."),
+    answer("That estimates of *b* vary little across different samples. (Therefore, this estimate is likley to be very similar to the population value.)", message = "This answer describes a *small* standard error"),
+    answer("The sampling distribution of *b* is narrow.", message = "This answer describes a *small* standard error."),
     answer("The estimate of *b* in our sample is bigger than most other samples.", message = "We have no way of knowing this."),
     correct = "Correct - well done!",
     random_answer_order = TRUE,
@@ -740,7 +743,7 @@ quiz(
   question("What is the nature of the relationship between listening to heavy metal and suicide risk?",
     answer("As love of heavy metal increases, suicide risk decreases", correct = T, message = "Yes, because the *b* value is negative"),
     answer("As love of heavy metal increases, suicide risk also increases", message = "Look at the sign of the *b*-value"),
-    answer("As love of heavy metal increases, suicide risk doesn't change", message = "This seems unlikley given the value of *b* and the associated *p*-value."),
+    answer("As love of heavy metal increases, suicide risk doesn't change", message = "This interpretation is unlikley given the value of *b* and the associated *p*-value."),
     correct = "Correct - well done!",
     random_answer_order = TRUE,
     allow_retry = T
@@ -880,7 +883,7 @@ quiz(
     answer("4.6%", correct = T),
     answer("14.8%", message = "This is how much variance in social anxiety is accounted for by both OCD and shame"),
     answer("10.2%", message = "This is how much variance in social anxiety is accounted for by shame, not OCD"),
-    answer("None of these values", message = "Get the r-square for the model with both tosca and obq as predictors and subtract from it the r-square for the model that has only tosca as a predictor"),
+    answer("None of these values", message = "Get the R-square for the model with both tosca and obq as predictors and subtract from it the R-square for the model that has only tosca as a predictor"),
     correct = "Correct - well done!",
     random_answer_order = TRUE,
     allow_retry = T
@@ -924,11 +927,11 @@ quiz(
 )
 ```
 
-## The beast of bias
+## `r bmu2()` The beast of bias
 
 In this section we look at whether the model we have just fitted is biased.
 
-### Getting diagnostic plots
+### `r bmu2()` Getting diagnostic plots
 
 We can use the `plot()` function to produce diagnostic plots from the model, which takes the general form:
 
@@ -936,60 +939,97 @@ We can use the `plot()` function to produce diagnostic plots from the model, whi
 plot(my_model, which = numbers_of_the_plots_you_want)
 ```
 
-In other words, you place the name of your model into the function and use which if you want to override the default plots (more on that in a minute). For our final model, we could simply execute:
+In other words, you place the name of your model into the function and use which if you want to override the default plots (more on that in a minute). 
 
-```{r eval = FALSE}
+#### `r robot()` Code example
+
+For our final model, we could use this code to get a default set of plots:
+
+```{r zpred_resid_1, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
 plot(album_full_lm)
 ```
 
-The `plot()` function can produce the six plots described below:
+The `plot()` function can produce the six plots described below. By default, `plot()` displays plots 1, 2, 3 and 5.
 
-1. The predicted values from the model (*x*-axis) against the residuals (*y*-axis). You want to see a random pattern of dots with no funnelling and no non-linear patterns. The red line should be roughly flat. If you see funnelling and the red line shows an upwards or downward trend then you have heteroscedasticity.
-2. A Q-Q plot of the standardized residuals. You want the dots to fall along the diagonal line.
-3. The predicted values from the model (*x*-axis) against the square root of the standardized residuals (*y*-axis). This plot is interpreted in the same way as plot 1.
+1. The predicted values from the model (*x*-axis) against the residuals (*y*-axis). Use this plot to look for linearity and homoscedasticity.
+2. A Q-Q plot of the standardized residuals. Use this plot to look for normality of residuals.
+3. The predicted values from the model (*x*-axis) against the square root of the standardized residuals (*y*-axis). This is a variant of plot 1 and is used to look for linearity and homoscedasticity.
 4. The case number (*x*-axis) against the Cook’s distance (*y*-axis). This plot can help to identify influential cases (cases with large values for Cook’s distance).
-5. The leverage value for each case (*x*-axis) against the standardized residual (*y*-axis). You want to see a flat red line indicating that leverage does not vary as a function of the standardized residual (i.e. there are no cases with a large residual and large leverage). This plot is useful for identifying cases with large values of Cook's distance too because it superimposes red dotted lines representing Cook's distances of 0.5 and 1. Any cases falling outside of the red dotted boundary for a Cook's distance of 1 are likely to be influential cases.
-6. The leverage value for each case (*x*-axis) against the corresponding Cook’s distance (*y*-axis). There are also contours representing standardized residual boundaries of 2, 2.5, 3, 3.5 (the approximate criteria we have used in this chapter). We’re looking for cases with a large residual and large leverage and/or Cook’s distance.
+5. The leverage value for each case (*x*-axis) against the standardized residual (*y*-axis). This plot is used to identify influential cases and outliers.
+6. The leverage value for each case (*x*-axis) against the corresponding Cook’s distance (*y*-axis). This plot is used to identify influential cases and outliers.
 
-By default, `plot()` displays plots 1, 2, 3 and 5, but we can force it to produce all 6 plots by using the which argument to specify the plots we want. If we want all of the plots, 6 we can specify this as `which = 1:6`.
+We'll look at each of these plots in due course.
 
-```{r eval = FALSE}
-plot(album_full_lm, which = 1:6)
+#### `r robot()` Code example
+
+If we want to produce specific plots, we can use the *which* argument in conjunction with the number of the plot we want, or for several plots we can list them within `c()`. For example, to get plot 1 we would execute:
+
+```{r ce_zpred_resid, exercise = TRUE, exercise.lines = 1, exercise.setup = "album_lm_setup"}
+plot(album_full_lm, which = 1)
 ```
 
-Similarly, if we want to produce one of the plots in isolation, we can use the which argument in conjunction with the number of the plot we want. For example, to get plot 3 we would execute:
+and to get plots 1 and 2 we'd execute:
 
-```{r eval = FALSE}
-plot(album_full_lm, which = 3)
+```{r ce2_zpred_resid, exercise = TRUE, exercise.lines = 1, exercise.setup = "album_lm_setup"}
+plot(album_full_lm, which = c(1, 2))
 ```
 
-### Residual plots
+<div class="tip">
+  `r cat_space()` **Tip:**
+  
+  If we want all 6 plots we specify this using `which = 1:6`.
+</div>
 
-The Figure below (taken from [@field_discovering_2021]) shows that we're looking for a random scatter of dots. Curvature in the plot indicates a lack of linearity, and a funnel shape (residuals that 'fan out') indicates heteroscedasticity. 
+### `r bmu2()` Residual plots
 
-```{r, out.width = "600px", fig.cap = "Figure 2: Residual plots"}
+We use residuals plots (plots 1 and 3) to look for linearity and homoscedasticity. The Figure below (taken from [@field_discovering_2021]) shows that we're looking for a random scatter of dots. Curvature in the plot indicates a lack of linearity, and a funnel shape (residuals that 'fan out') indicates heteroscedasticity. 
+
+```{r, out.width = "600px", fig.cap = "Figure 2: Residual plots", echo = FALSE}
 knitr::include_graphics("./images/dsr2_fig_06_29_pred_resid.png")
 ```
 
-Let's look at the plots in our output to see whether we can see any of these patterns. Using what we learnt above, we can obtain these plots by asking for plot 1 and 3:
+Let's look at the plots for our model to see whether we can see any of these patterns.
 
-```{r eval = FALSE}
-plot(album_full_lm, which = c(1, 3))
-```
+#### `r bug()` Exercise
 
-Try this code in the box below.
+Using the code example above, obtain plots 1 and 3 for the model `album_full_lm`:
 
-```{r zpred_resid, exercise = TRUE, exercise.lines = 2}
+```{r zpred_resid, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
 
 ```
+
+```{r zpred_resid-hint-1}
+# To get default plots we'd put the model into `plot()`
+
+plot(album_full_lm)
+
+# To get only plots 1 and 3, we need to use `which = `
+
+```
+
+```{r zpred_resid-hint-2}
+# To specify more than one plot, us c(). For example, to get plots 1 and 2 you'd 
+# use
+
+c(1, 2)
+
+# Remember that we want plot 1 and 3. Combine this with `which = ` inside the plot() function
+```
+
 
 ```{r zpred_resid-solution}
+# To get plots 1 and 3 you'd use
+
+which = c(1, 3)
+
+# So, the solution is:
+
 plot(album_full_lm, which = c(1, 3))
 ```
 
 Both plots can be interpreted in the same way: if the assumptions of linearity and homoscedasticity are met then this graph should look like a random array of dots and the red trend line should be flat. The scale-location plot (right) tends to be more sensitive to violations of assumptions and so they are easier to spot on this plot.
 
-```{r quiz_zresid_ex1}
+```{r quiz_zresid_ex1, echo = FALSE}
 quiz(
   question("Comparing the plot to those in Figure 2, how would you interpret it?",
     answer("I can't see any problems", correct = TRUE, message = "The dots look like a random, evenly-dispersed pattern. No funnel shapes, no banana shapes, so all is fine."),
@@ -1004,26 +1044,30 @@ quiz(
 
 Even though normality is not a major concern (especially with a sample size of 200) we can check whether the residuals are normally distributed with a Q-Q plot, which we obtain by selecting plot 2 from the `plot()` function:
 
-```{r eval = FALSE}
-plot(album_full_lm, which = 2)
+#### `r bug()` Exercise
+
+Using the code example above, obtain plot 2 for the model `album_full_lm`:
+
+```{r album_qq, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
+
 ```
 
-Try this code in the box below.
-
-```{r album_qq, exercise = TRUE, exercise.lines = 2}
-
+```{r album_qq-hint-1}
+# You can select plot 2 using which = 2
 ```
 
 ```{r album_qq-solution}
+# Solution
 plot(album_full_lm, which = 2)
 ```
 
 
-```{r quiz_normal_ex1}
+```{r quiz_normal_ex1, echo = FALSE}
 quiz(
-  question("Based Q-Q plot, can we assume normality of the residuals?",
-    answer("Yes", correct = TRUE, message = "The distribution is very normal: the histogram is symmetrical and approximately bell-shaped and the dots in the P-P plot lie almost exactly along the diagonal, which   indicates a normal distribution."),
-    answer("No", message = "The distribution is very normal: the histogram is symmetrical and approximately bell-shaped and the dots in the P-P plot lie almost exactly along the diagonal, which   indicates a normal distribution."),
+  question("Based on the Q-Q plot, can we assume normality of the residuals?",
+    answer("Yes", correct = TRUE, message = "The distribution is very normal: the dots on the Q-Q plot lie almost exactly along the diagonal, which indicates a normal distribution."),
+    answer("No", message = "The distribution is not very normal: the dots on the Q-Q plot seem to deviate from the line at the extremes, which indicates a non-normal distribution."),
+    answer("Maybe", message = "Sorry, you're not allowed to sit on the fence!"),
     correct = "Correct - well done!",
     random_answer_order = TRUE,
     allow_retry = T
@@ -1031,45 +1075,46 @@ quiz(
 )
 ```
 
-### Pretty residual plots (optional)
+### `r user_astronaut()` Pretty residual plots
 
-With the `ggfortify` package loaded, you could execute
+With the `ggfortify` package loaded, you can use `ggplot2::autoplot()` to produce nicely formatted plots that are `ggplot2` objects, which means that you can add other `ggplot2` elements to them, such as themes.
 
-```{r eval = FALSE}
+<div class="tip">
+  `r cat_space()` **Tip:**
+  
+  Remember that to load a package you need to use `library()` in a code chunk at the start of your document. In this case, you'd need to include `library(ggfortify)` for the following code to work.
+</div>
+
+#### `r robot()` Code example
+
+For example, to produce a nicely formatted plot of the predicted values against the residuals you could use this code.
+
+```{r ce_resid_pred_fortify, exercise = TRUE, exercise.lines = 1, exercise.setup = "album_lm_setup"}
 ggplot2::autoplot(album_full_lm, which = 1)
 ```
 
-to produce a nicely formatted plot of the predicted values against the residuals. More important, the resulting plot is a ggplot object, which means that you can do things to it using ggplot2 functions. For example, you can apply a theme:
 
-```{r eval = FALSE}
+#### `r robot()` Code example
+
+Add a `ggplot2` element to this plot in the usual way with the `+` symbol. For example, to apply my ever-favourite `theme_minimal()` we could use:
+
+```{r ce_resid_pred_fortify2, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
 ggplot2::autoplot(album_full_lm, which = 1) + 
   theme_minimal()
 ```
 
-Also, some useful arguments are added to `autoplot()`, for example, you can use colour to set a colour in the usual way for the points plotted (the code below uses [hex code](https://www.color-hex.com/) "#5c97bf" to set the `colour` to blue) and `smooth.colour` to set the colour of the trend line on the plots (set as hex code "#ef4836"):
+`ggfortify` also adds some useful arguments to `autoplot()` that map onto aesthetics that we have met in earlier tutorials. As with any `ggplot2` plot we can change colours using [hex codes](https://www.color-hex.com/). Here's some properties that we can change within `autoplot()`:
 
-```{r}
- ggplot2::autoplot(album_full_lm,
-                  which = 3, 
-                  colour = "#5c97bf",
-                  smooth.colour = "#ef4836"
-                  )
-```
+* *colour*. Sets the colour of the points on the plot.
+* *smooth.colour*. Set the colour of the trend line on the plots.
+* *size*. Sets the size of the dots on the plot.
+* *alpha*. Sets the transparency of the points on the plot (0 = invisible, 1 = solid)
 
-You can also apply familiar `ggplot2` aesthetics such as `size` (to adjust the size of the dots plotted) and `alpha` (to set transparency of the data points):
+#### `r robot()` Code example
 
-```{r}
-ggplot2::autoplot(album_full_lm, which = 2,
-                  colour = "#5c97bf",
-                  smooth.colour = "#ef4836",
-                  alpha = 0.5,
-                  size = 1
-                  )
-```
+The code below plots the predicted values against the residuals but sets the colour of the data points to be blue using hex code #5c97bf, sets their transparency to 0.5, their size to 1, and the colour of the trend line to red using HEX code #ef4836. Try changing the HEX colours, size and alpha to see the effect they have on the plot.
 
-For example, we could get prettier versions of our residual plots using
-
-```{r eval = FALSE}
+```{r zpred_resid_pretty, exercise = TRUE, exercise.lines = 8, exercise.setup = "album_lm_setup"}
 ggplot2::autoplot(album_full_lm,
                   which = c(1, 3),
                   colour = "#5c97bf",
@@ -1079,37 +1124,12 @@ ggplot2::autoplot(album_full_lm,
   theme_minimal()
 ```
 
-Try this in the code box (and try adjusting the hex colours and sizes)
+#### `r bug()` Exercise
 
-```{r zpred_resid_pretty, exercise = TRUE, exercise.lines = 8}
+For the normality plot we can use the same code but change `which = c(1, 3)` to `which = 2`. Try this below.
 
-```
 
-```{r zpred_resid_pretty-solution}
-ggplot2::autoplot(album_full_lm,
-                  which = c(1, 3),
-                  colour = "#5c97bf",
-                  smooth.colour = "#ef4836",
-                  alpha = 0.5,
-                  size = 1) + 
-  theme_minimal()
-```
-
-For the normality plot we can use the same code but simply adjust `which = c(1, 3)` to `which = 2`:
-
-```{r eval = FALSE}
-ggplot2::autoplot(album_full_lm,
-                  which = 2,
-                  colour = "#5c97bf",
-                  smooth.colour = "#ef4836",
-                  alpha = 0.5,
-                  size = 1) +
-  theme_minimal()
-```
-
-Try this in the code box (and again try adjusting the hex colours and sizes)
-
-```{r albumqq_pretty, exercise = TRUE, exercise.lines = 8}
+```{r albumqq_pretty, exercise = TRUE, exercise.lines = 8, exercise.setup = "album_lm_setup"}
 
 ```
 
@@ -1124,41 +1144,42 @@ ggplot2::autoplot(album_full_lm,
 ```
 
 
-### Outliers and influential cases 
+### `r bmu2()` Influential cases and outliers: plots 
 
-As a bare minimum we should check the model for outliers using the standardized residuals and use Cook's distance to identify influential cases. [@field_discovering_2021] describes a much wider battery of values that you can use to check for these things so if you're starting to get the stats bug (?!) then check that out. Otherwise, we can apply the following heuristics:
+As a bare minimum we should use Cook's distance to identify influential cases and standardized residuals to check for outliers. [@field_discovering_2021] describes a much wider battery of values that you can use to check for these things so if you're starting to get the stats bug (?!) then check that out.
 
-* Standardized residuals: in an average sample, 95% of standardized residuals should lie between  2, 99% of standardized residuals should lie between  2.5, and any case for which the absolute value of the standardized residual is 3 or more, is likely to be an outlier.
-* Cook’s distance: measures the influence of a single case on the model as a whole. Absolute values greater than 1 may be cause for concern.
+<div class="tip">
+  `r cat_space()` **Tip: Outliers and influence**
+  
+*   In an average sample, 95% of standardized residuals should lie between  2, 99% of standardized residuals should lie between  2.5, and any case for which the absolute value of the standardized residual is 3 or more, is likely to be an outlier.
+* Cook's distance measures the influence of a single case on the model as a whole. Absolute values greater than 1 may be cause for concern.
+</div>
 
-A quick way to check for influential cases is to inspect the influence plots for the model, which we can obtain by selecting plots 4 to 6 from the `plot()` function (described earlier):
 
-```{r eval = FALSE}
+#### `r bug()` Exercise
+
+A quick way to check for influential cases is to inspect the influence plots for the model, which we can obtain by selecting plots 4 to 6 from the `plot()` function (described earlier). Use what you have learnt to create this plot. If you completed the optional section on *Pretty residual plots* try applying the code in that section to produce prettier versions of the influence plots.
+
+```{r album_inf_plot, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
+
+```
+
+```{r album_inf_plot-hint-1}
+# To select plots 4:6 use 
+
+which = 4:6
+
+# Place this code within the plot()) function.
+```
+
+```{r album_inf_plot-hint-2}
+# Basic solution
+
 plot(album_full_lm, which = 4:6)
 ```
 
-Again you can get prettier versions using: 
-
-```{r eval = FALSE}
-ggplot2::autoplot(album_full_lm,
-                  which = c(5, 4, 6),
-                  colour = "#5c97bf",
-                  smooth.colour = "#ef4836",
-                  alpha = 0.5,
-                  size = 1) +
-  theme_minimal()
-```
-
-Try one (or both) of these code in the box below.
-
-```{r album_inf_plot, exercise = TRUE, exercise.lines = 8}
-
-```
-
-```{r album_inf_plot-solution}
-plot(album_full_lm, which = 4:6)
-
-# Or
+```{r album_inf_plot-hint-3}
+# Pretty plot solution
 
 ggplot2::autoplot(album_full_lm,
                   which = 4:6,
@@ -1169,36 +1190,109 @@ ggplot2::autoplot(album_full_lm,
   theme_minimal()
 ```
 
-The first plot shows the value of Cook’s distance for each case and labels cases with the largest values (cases 1, 164 and 169). Looking at the y-axis it’s easy to see that the largest values are in the region of 0.06, which is well below the threshold of 1. The second plot shows leverage values plotted against standardized residuals. We want the trend line (the solid red line) to be flat and lie along the zero, which is what we see in this plot. If the red line deviates substantially from the horizontal then it can indicate that one of the assumptions of the model has been violated (more on that in the next section). This plot also usually has red dashed lines indicating values of Cook’s distance of 0.5 and 1. Notice that our plot has no dashed red lines, which is because all values of Cook’s distance are well below these thresholds. The final plot can be useful because it shows leverage, Cook’s distance and the standardized residual for each case on the same plot. It can be used to identify cases that have high leverage, high Cook’s distance, large residual or some combination of the three. For example, case 164 has a standardized residual between 2.5 and 3, the largest Cook’s distance (although still only in the region of 0.06) and higher than average leverage (remember the average leverage for this model is 0.2, and the value for case 164 looks to be around 0.4).
+The first plot shows the value of Cook’s distance for each case and labels cases with the largest values (cases 1, 164 and 169). Looking at the y-axis it’s easy to see that the largest values are in the region of 0.06, which is well below the threshold of 1. The second plot shows leverage values plotted against standardized residuals. We want the trend line (the solid red line) to be flat and lie along the zero, which is what we see in this plot. If the red line deviates substantially from the horizontal then it can indicate that one of the assumptions of the model has been violated. This plot also usually has red dashed lines indicating values of Cook’s distance of 0.5 and 1. Notice that our plot has no dashed red lines, which is because all values of Cook’s distance are well below these thresholds. The final plot shows leverage, Cook’s distance and the standardized residual for each case on the same plot. It can be used to identify cases that have high leverage, high Cook’s distance, large residual or some combination of the three. For example, case 164 has a standardized residual between 2.5 and 3, the largest Cook’s distance (although still only in the region of 0.06) and higher than average leverage (remember the average leverage for this model is 0.2, and the value for case 164 looks to be around 0.4).
 
-For a more precise look, we can 
+### `r user_visor()` Influential cases and outliers: numbers 
 
+For a more precise look, we can obtain values for Cooks distance and standardized residuals using `broom::augment()`. All we need to do is to pass our linear model object into this function and save the results as a new tibble. It's also useful to save the case number as a variable so that you can identify cases should you need to.
 
-We asked for a summary of standardized residuals when we selected these options:
+#### `r robot()` Code example
 
-![Figure 9: Requesting casewise diagnostics for the model](./images/lm03_fig_09.png)
+To save the a set of diagnostic statistics (including Cook's value and standardized residuals) we create a new tibble called `album_full_rsd` (I tend to use the suffix _rsd, short for residuals) by piping our model (`album_full_lm`) into `broom::augment()` to get the residuals and then into `tibble::rowid_to_column()` to create a variable that contains the row number. The *var = "case_no"* tells the function to name the variable containing the row numbers **case_no** (choose a different name if you like). The result is a tibble called `album_full_rsd` that contains the case number, the original data to which the model was fitted, and various diagnostic statistics.
 
-The resulting output (which should match that in your viewer window is):
+```{r album_rsd, exercise = TRUE, exercise.lines = 3, exercise.setup = "album_lm_setup"}
+album_full_rsd <- album_full_lm %>% 
+  broom::augment() %>% 
+  tibble::rowid_to_column(var = "case_no") 
+```
 
-![Output 1: Casewise diagnostic summary for the model](./images/lm03_out_01.png)
+#### `r bug()` Exercise
 
-When attempting the following quiz remember that there were 200 cases in total and that the absolute value is the value when you ignore the plus or minus sign. The standardized residuals are labelled *Std. Residual* in the output:
+Inspect the tibble that you have just created
 
-```{r quiz_casewise_ex1}
+```{r album_rsd_inspect, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
+ 
+```
+
+```{r album_rsd_inspect-hint-1}
+# To inspect a tibble just execute its name!
+
+album_full_rsd
+```
+
+Notice that the standardized residuals are in a variable called **.std.resid**, the raw residuals are in **.resid** and the Cook's distances are in **.cooksd** (you'll need to scroll across using the little black arrow).
+
+Let's look at standardized residuals first. Remember:
+
+* In an average sample, 95% of standardized residuals should lie between  2, 99% of standardized residuals should lie between 2.5, and any case for which the absolute value of the standardized residual is 3 or more, is likely to be an outlier.
+
+#### `r robot()` Code example
+
+To see what percentage of standardized residuals fall outside of these limits we can simply filter the tibble containing the residuals such that we see only cases with a standardized residual that is less than −1.96 or greater than 1.96. To simplify this task we can use the `abs()` function within the filter to return the absolute value (ignores the plus or minus sign) of the residual. Doing so means that we can simply filter by values above 1.96 (or whatever threshold we want to use). This won't change the value of the residual itself because it's being applied within the filter. Here's some code (the last two lines are optional), which is explained below.
+
+```{r album_zresid_inspect, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
+album_full_rsd %>% 
+  dplyr::filter(abs(.std.resid) >= 1.96) %>%
+  dplyr::select(case_no, .std.resid, .resid) %>% 
+  dplyr::arrange(.std.resid)
+```
+
+This code takes the tibble of residuals and pipes it into `filter()` where we set the criteria that the absolute value of the variable **.std.resid** must be greater or equal to 1.96 (that’s what `abs(.std.resid) >= 1.96` does). To make the output more focussed we can (but don't have to) pipe the filtered tibble into `select()` and select only the case number, the standardized residual and the raw residual. Finally (and optionally) we pipe the tibble into `arrange()` to sort it by the size of **.std.resid**, so that the resulting table will list cases from the smallest standardized residual to the largest.
+
+<div class="tip">
+  `r cat_space()` **Tip:**
+  
+  If you’d rather order from the largest standardized residual then use `dplyr::arrange(desc(.std.resid))` instead. 
+</div>
+
+We have 13 cases out of a sample of 200 that have standardized residuals outside of ±1.96.
+
+#### `r bug()` Exercise
+
+Use the code exercise above to check how many standardized residuals fall outside of the limits of 2.5 and 3.
+
+```{r album_zresid_inspect_2, exercise = TRUE, exercise.lines = 4, exercise.setup = "album_lm_setup"}
+
+```
+
+```{r album_zresid_inspect_2-hint-1}
+# The only thing you need to change is the value within the filter() function.
+
+```
+
+```{r album_zresid_inspect_2-hint-2}
+# so for the first threshold we'd use:
+album_full_rsd %>% 
+  dplyr::filter(abs(.std.resid) >= 2.5) %>%
+  dplyr::select(case_no, .std.resid, .resid) %>% 
+  dplyr::arrange(.std.resid)
+```
+
+```{r album_zresid_inspect_2-hint-3}
+# For the second threshold we'd use:
+album_full_rsd %>% 
+  dplyr::filter(abs(.std.resid) >= 3) %>%
+  dplyr::select(case_no, .std.resid, .resid) %>% 
+  dplyr::arrange(.std.resid)
+```
+
+When attempting the following quiz remember that there were 200 cases in total.
+
+```{r quiz_casewise_ex1, echo = FALSE}
 quiz(
-  question("What percentage of cases have standardized residuals with absolute values greater than 2?",
-    answer("6%", correct = TRUE, message = sprintf("12 cases have standardized residuals with absolute values greater than 2, and $\\frac{12}{200} \\times 100 = 6$")),
+  question("What percentage of cases have standardized residuals with absolute values greater than 1.96?",
+    answer("6.5%", correct = TRUE, message = sprintf("13 cases have standardized residuals with absolute values greater than 2, and $\\frac{13}{200} \\times 100 = 6.5$")),
     answer("3%", message = "You have only considered the positive standardized residuals. Remember that the absolute values means the value when you ignore the plus or minus sign.."),
-    answer("0.06", message = "This is the proportion of cases that have standardized residuals with absolute values greater than 2, not the percentage. Multiply the value by 100 to get the correct answer."),
+    answer("0.06", message = "This is the proportion of cases that have standardized residuals with absolute values greater than 1.96, not the percentage. Multiply the value by 100 to get the correct answer."),
     correct = "Correct - well done!",
     random_answer_order = TRUE,
     allow_retry = T
   ),
   question("What percentage of cases have standardized residuals with absolute values greater than 2.5?",
-    answer("1%", correct = TRUE, message = sprintf("2 cases has standardized residuals with absolute values greater than 2, and $\\frac{2}{200} \\times 100 = 1$")),
-    answer("3%", message = "You have only considered the positive standardized residuals. Remember that the absolute values means the value when you ignore the plus or minus sign."),
-    answer("0.01", message = "This is the proportion of cases that have standardized residuals with absolute values greater than 2, not the percentage. Multiply the value by 100 to get the correct answer."),
-    answer("0.5", message = "Did you forget to include the case with the residual of 3.061 or the one with a resodual of -2.577?"),
+    answer("1%", correct = TRUE, message = sprintf("2 cases has standardized residuals with absolute values greater than 2.5, and $\\frac{2}{200} \\times 100 = 1$")),
+    answer("0.5%", message = "You have only considered the positive standardized residuals. Remember that the absolute values means the value when you ignore the plus or minus sign."),
+    answer("0.01", message = "This is the proportion of cases that have standardized residuals with absolute values greater than 2,5, not the percentage. Multiply the value by 100 to get the correct answer."),
+    answer("2", message = "That's the number of cases with standardized residuals with absolute values greater than 2.5, not the *percentage*"),
     correct = "Correct - well done!",
     random_answer_order = TRUE,
     allow_retry = T
@@ -1215,16 +1309,23 @@ quiz(
 
 ```
 
-For Cook's distance it is a matter of screening the column in the data editor in which you saved these values and noting cases with values greater than 1.
+#### `r robot()` Code example
 
-![Figure 10: Values of Cook's distance in the data editor](./images/lm03_fig_10_cooks.png)
+We can do something similar to look at Cook's distance. We could either filter the tibble to look at cases with Cook's distance greater than 1, or simply sort the tibble in descending order using `arrange()` which will show us the cases with the largest Cook's distances. Again, we could use `select()` so that we see only the Cook's values and case numbers.
 
 
-```{r quiz_cooks_ex1}
+```{r album_cook_inspect, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
+album_full_rsd %>% 
+  dplyr::arrange(desc(.cooksd)) %>%
+  dplyr::select(case_no, .cooksd)
+```
+
+
+```{r quiz_cooks_ex1, echo = FALSE}
 quiz(
-  question("Are there any Cook's distances greater than 1 in the data editor?",
+  question("Are there any Cook's distances greater than 1?",
     answer("No", correct = TRUE, message = "The fact there are no Cook's distances greater than 1 suggests that no cases are having undue influence on the model as a whole."),
-    answer("Yes", message = "Are you sure? There really shouldn't be any!"),
+    answer("Yes", message = "The largest value is 7.076588e-02, but remember the e-02 is scientific notation, so the value is $7.08 \times 10^{-2}$. The e-02 means move move the decimal two places left, so the value is 0.0708"),
     correct = "Correct - well done!",
     random_answer_order = TRUE,
     allow_retry = T
@@ -1232,15 +1333,105 @@ quiz(
 )
 ```
 
+## `r user_visor()` Robust linear models
 
-## Bootstrap confidence intervals
+Our model appears, in most senses, to be both accurate for the sample and generalizable to the population. Sometimes this won’t be the case. There are two things we might want to do: (1) test whether the parameter estimates have been biased, and (2) check whether confidence intervals and significance tests have been biased.
 
-The next output contains the bootstrap confidence intervals for each model parameter. These bootstrap confidence intervals^[Because of how bootstrapping works the values in your output will be different than mine, and different if you re-run the analysis.] and significance values do not rely on assumptions of normality or homoscedasticity, so they give us an accurate estimate of the population value of *b* for each predictor (assuming our sample is one of the 95% with confidence intervals that contain the population value).
+### `r user_astronaut()` Robust parameter estimates
 
+To check the parameter estimates we can fit a robust model using the `robust::lmRob()` function. This function is used in the same way as `lm()`, so to get a robust version of our final model we can simply replace `lm()` with `lmRob()` in our earlier code. Unfortunately, we can’t use any `broom` functions with `lmRob()`, so we get text output using `summary()`.
 
-![Output 2: Bootstrapped model parameter estimates](./images/lm03_out_02.png)
+#### `r bug()` Exercise
 
-```{r quiz_cibs_ex1}
+Use `lmRob()` to refit the full model using robust methods and save it as `album_full_rob`
+
+```{r ce_lmrob, exercise = TRUE, exercise.lines = 1}
+
+```
+
+```{r ce_lmrob-hint-1}
+# We want to save the model as album_full_rob, so start with
+album_full_rob <- ....
+ 
+```
+
+```{r ce_lmrob-hint-2}
+# Now, remember that the earlier model we fitted was:
+lm(sales ~ adverts + airplay + image, data = album_tib, na.action = na.exclude)
+# Try changing the function name. 
+```
+
+```{r ce_lmrob-hint-3}
+# If you changed the function name, you should now have:
+album_full_rob <- robust::lmRob(sales ~ adverts + airplay + image, data = album_tib, na.action = na.exclude)
+# Now we need to view the model using summary()
+```
+
+```{r ce_lmrob-hint-4}
+# Solution:
+album_full_rob <- robust::lmRob(sales ~ adverts + airplay + image, data = album_tib, na.action = na.exclude)
+summary(album_full_rob)
+```
+
+<div class="tip">
+  `r cat_space()` **Tip:**
+
+I tend to use _rob to denote robust models
+
+</div>
+
+The bottom of the output shows significance tests of bias. With the usual caveats about significance tests needing to be interpreted within the context of the sample size, these tests suggest that bias in the original model is not problematic (because the *p*-value for these tests are not significant). Mainly we want to compare the robust parameter estimates to the original ones. For adverts the original *b* was 0.085 and the robust estimate is the same, for airplay the original *b* was 3.37 and the robust one is 3.42 and for image the original *b* was 11.09 and the robust estimate is 11.77. In short, the robust estimates are virtually identical to the originals suggesting the original model is unbiased. 
+
+### `r user_astronaut()` Robust confidence intervals and significance tests
+
+To test whether confidence intervals and significance tests are biased we can estimate the model with standard errors designed for heteroscedastic residuals or if the sample size is small use a bootstrap. We can do both of these by placing the model in the `parameters::model_parameters()` function. You might recall that we used this function to standardize the parameter estimates. There are three arguments in this function that we didn't explore before that we'll look at now.
+
+#### `r robot()` Code example
+
+We can obtain models based on robust standard errors by setting *robust = TRUE* and using the argument *vcov.type* to set which method to use. If we omit the argument it defaults to "HC3" (which is fine), but we can change it to "HC4" (which some consider better). This code makes our model robust by implementing HC4 standard errors.
+
+```{r hc4, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
+parameters::model_parameters(album_full_lm, robust = TRUE, vcov.type = "HC4", digits = 3)
+```
+
+#### `r bug()` Exercise
+
+Refit the model using "HC3" standard errors.
+
+```{r hc3, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
+
+```
+
+```{r hc3-hint-1}
+# We can change HC3 to HC4
+parameters::model_parameters(album_full_lm, robust = TRUE, vcov.type = "HC3", digits = 3)
+```
+
+```{r hc3-hint-2}
+# or omit the vcov.type argument altogether (because it defaults to HC3)
+parameters::model_parameters(album_full_lm, robust = TRUE, digits = 3)
+```
+
+The output shows the resulting *b*-values, their robust standard errors, confidence intervals and *p*-values. Compare these with the non-robust versions from earlier. The values are not much different (mainly because our original model didn’t seem to violate its assumptions); for example, the standard error for the *b* for image has changed from 2.44 to 2.25, the associated *t*-statistic has changed from 4.55 to 4.93, and the confidence interval has changed from [6.28, 15.89] to [6.65, 15.52]. These changes are not dramatic, our interpretation of the model won’t have changed. Nevertheless, this is a useful sensitivity analysis in that if a robust model yields basically the same values as the non-robust model then we know that the non-robust model has not been unduly biased. If the robust estimates are hugely different from the original estimates then use and report the robust versions. Fitting a robust model is a win-win.
+
+#### `r robot()` Code example
+
+In small samples we might prefer to bootstrap the confidence intervals. We can do this by setting the bootstrap argument within `model_parameters()` to TRUE.  By default, 1000 bootstrap samples are used, which is fine for most purposes. Therefore, we can bootstrap the model album_full_lm by executing:
+
+```{r album_boot, exercise = TRUE, exercise.lines = 1, exercise.setup = "album_lm_setup"}
+parameters::model_parameters(album_full_lm, bootstrap = TRUE, digits = 3)
+```
+
+These bootstrap confidence intervals and significance values do not rely on assumptions of normality or homoscedasticity, so they give us an accurate estimate of the population value of *b* for each predictor (assuming our sample is one of the 95% with confidence intervals that contain the population value). Again, nothing has changed much from the original model (because the original model didn't violate any assumptions or have influential cases or outliers.)
+
+<div class="tip">
+  `r cat_space()` **Tip: Bootstrapping**
+  
+  Because bootstrapping relies on random sampling from the data you will get slightly different estimates each time you bootstrap a model. This behaviour is normal and nothing to worry about.
+
+</div>
+
+```{r quiz_cibs_ex1, echo = FALSE}
 quiz(
   question("Bootstrapping is a technique from which the sampling distribution of a statistic is estimated by ...",
     answer("Taking repeated samples (with replacement) from the data set.", correct = TRUE),
@@ -1251,11 +1442,11 @@ quiz(
     random_answer_order = TRUE,
     allow_retry = T
   ),
-  question("The bootstrap confidence interval for image ranges from 6.26 to 15.28. What does this tell us?",
+  question("The bootstrap confidence interval for image ranges from 6.66 to 15.23 (the values might not exactly match these). What does this tell us?",
     answer("If this confidence interval is one of the 95% that contains the population value then the population value of *b* lies between 6.26 and 15.28.", correct = TRUE),
-    answer("There is a 95% chance that the population value of *b* lies between 6.26 and 15.28.", message = "You cannot make probability statements from a confidence interval. We don't know whether this particular CI is one of the 95% that contains the population value of *b*."),
+    answer("There is a 95% chance that the population value of *b* lies between 6.66 and 15.23.", message = "You cannot make probability statements from a confidence interval. We don't know whether this particular CI is one of the 95% that contains the population value of *b*."),
     answer("The probability of this confidence interval containing the population value is 0.95.", message = "The probability of this confidence interval containing the population value is either 0 (it doesn't) or 1 (it does) but it's impossible to know which."),
-    answer("I can be 95% confident that the population value of *b* lies between 6.26 and 15.28.", message = "Confidence intervals do not quantify your subjective confidence."),
+    answer("I can be 95% confident that the population value of *b* lies between 6.66 and 15.23.", message = "Confidence intervals do not quantify your subjective confidence."),
     correct = "Correct - well done!",
     random_answer_order = TRUE,
     allow_retry = T
@@ -1273,30 +1464,26 @@ quiz(
 
 ```
 
-The quiz told you about the confidence interval for image, for the remaining predictors the confidence intervals tell us that **assuming that each confidence interval is one of the 95% that contains the population parameter**:
 
-* The true size of the relationship between advertising budget and album sales lies somewhere between 0.07 and 0.10.
-* The true size of the relationship between airplay and album sales lies somewhere between 2.77 and 3.97.
-
-To sum up, the bootstrapped statistics tell us that advertising, *b* = 0.09 [0.07, 0.10], *p* = 0.001, airplay, *b* = 3.37 [2.77, 3.97], *p* = 0.001, and the band’s image, *b* = 11.09 [6.26, 15.28], *p* = 0.001, all significantly predict album sales. Basically we interpret bootstrap confidence intervals and significance tests in the same way as regular ones *but* the bootstrapped ones should be robust to violations of the assumptions of the model.
-
-
-
-## Other resources
+## Resources {data-progressive=FALSE}
 
 ### Statistics
 
-* The tutorials typically follow examples described in detail in [@field_discovering_2021], so that book is an obvious place to go for further reading.
+* The tutorials typically follow examples described in detail in @field_discovering_2021. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
 * If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
 * There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/).
 * There are free statistical resources on my websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [milton-the-cat.rocks](http://milton-the-cat.rocks).
 
-### R
+### `r rproj("h3")`
 
 * [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
-* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on **R** and **RStudio**.
-* [RStudio cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
-* [RStudio list of online resources](https://www.rstudio.com/online-learning/).
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and ![](./images/rstudio_logo.png){height=1em}.
+* [![](./images/rstudio_logo.png){height=1em} cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
+* [![](./images/rstudio_logo.png){height=1em} list of online resources](https://www.rstudio.com/online-learning/).
+
+### Acknowledgement
+
+I'm extremely grateful to [Allison Horst](https://www.allisonhorst.com/) for her very informative blog post on [styling learnr tutorials with CSS](https://education.rstudio.com/blog/2020/05/learnr-for-remote/) and also for sending me a CSS template file and allowing me to adapt it. Without Allison, these tutorials would look a lot worse (but she can't be blamed for my colour scheme).
 
 ## References
 

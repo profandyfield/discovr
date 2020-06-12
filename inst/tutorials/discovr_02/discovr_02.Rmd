@@ -4,7 +4,8 @@ author: "Andy Field"
 output:
   learnr::tutorial:
     progressive: false
-    theme: "paper"
+    theme: "united"
+    css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
 description: "Summarizing data (frequency distributions, grouped frequency distributions, relative frequencies, histograms, mean, median, variance, standard deviation, interquartile range)"
 bibliography: discovr_02.bib
@@ -17,13 +18,12 @@ knitr::opts_chunk$set(
 	message = FALSE,
 	warning = FALSE
 )
-library(learnr)
-library(tidyverse)
 
-hint_text <- function(text, text_color = "#E69F00"){
-  hint <- paste("<font color='", text_color, "'>", text, "</font>", sep = "")
-  return(hint)
-}
+library(learnr)
+library(magrittr)
+library(ggplot2)
+
+source("./www/discovr_helpers.R")
 
 #Read dat files needed for the tutorial
 
@@ -36,32 +36,59 @@ ice_tib <- discovr::ice_bucket
 
 ## Overview
 
-This tutorial is one of a series that accompanies [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/) [@fieldDiscoveringStatisticsUsing2020] by me, [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). These tutorials contain abridged sections from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/), ^[Basically you can use this tutorial for teaching and non-profit activities but do not meddle with it or claim it as your own work.]
+<div class="infobox">
+  <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
+  
+  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/) [@field_discovering_2021] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
+  
+</div>
 
-* Who is the tutorial aimed at?
-    - Anyone teaching from or reading [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)  may find them useful.
-* What is covered?
-    - This tutorial looks at some key concepts in using **R** and **RStudio**. It would be a useful tutorial to run at the start of a module, or alongside teaching based on Chapter 1 of [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/).
-    - This tutorial *does not* teach the background theory: it is assumed you have either attended my lecture or read the relevant chapter in the aforementioned book (or someone else's)
+### `r cat_space(height = 2)` Welcome to space pirate academy
 
-If you haven't done so already, I recommend working through [this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/) on how to install, set up and work within R and RStudio before starting this tutorial.
+Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
 
-## Packages and data
+On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-The tutorials are self-contained (you practice code in code boxes) so you don’t need to use RStudio at the same time. However, I recommend that you open another RStudio session to the one that you're using to run this tutorial. In this second RStudio session, open an R markdown file and practice everything you do in the tutorial in the R markdown file (and save it). This video explains the sort of workflow that I mean:
+* `r bmu2(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice.
+* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult.
+* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det.
 
-![]("https://youtu.be/FE0ntX0dyc4")
+It's not just me that's here to help though, you will meet other characters along the way:
 
-`r hint_text("Within the tutorial itself, everything will work. To replicate things outside of the tutorial you will need to load the relevant packages and data.")`
+* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you.
+* `r bug(height = 2)` we also have alien bugs that will, erm, help you to avoid bugs by setting you coding challenges. 
+
+By for now and good luck - you'll be amazing!
+
+### Workflow
+
+* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and ![](./images/rstudio_logo.png){height=1em}](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
+
+* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in ![](./images/rstudio_logo.png){height=1em} I strongly recommend that you create an `r rproj()` markdown file within an ![](./images/rstudio_logo.png){height=1em} project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
+
+![](https://youtu.be/FE0ntX0dyc4)
 
 ### Packages
 
-To work *outside of this tutorial* you need to load the following packages:
+This tutorial uses the following packages:
 
 * `here` [@here]
 * `tidyverse` [@tidyverse]
 
-If you haven't already done this, install a package at the command line using `install.packages("package_name")`, where *package_name* is the name of the package. If the package has already been installed, load it by typing `library(package_name)`, where *package_name* is the name of the package, within the first code chunk in your R markdown file.
+I try to follow the [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) in always declaring the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will write `dplyr::mutate()`. 
+
+It is good practice to be explicit about packages to avoid clashes where functions from different packages have the same name. It also means that you don't need to load packages at the start of your markdown document. 
+
+There are two main exceptions to this rule.
+
+1. There are functions within some `tidyverse` packages that would be used within other functions. Including the package name makes the code difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+2. To use the pipe operator (`%>%`) you need to have `magritrr` loaded.
+
+We can load all of the packages that are exceptions in one step by loading `tidyverse` at the beginning of our `r rproj()` Markdown document:
+
+```{r eval = FALSE}
+library(tidyverse)
+```
 
 ### Data
 
@@ -69,7 +96,7 @@ To work *outside of this tutorial* you need to download the following data file:
 
 * [ice_bucket.csv](http://www.discoveringstatistics.com/repository/discovr_data/ice_bucket.csv)
 
-Assuming you set up an RStudio project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), then save the data files to the folder within your project folder called `data`. Then, in the first code chunk in your R Markdown document, execute:
+Set up an ![](./images/rstudio_logo.png){height=1em} project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called `data`. Place this code in the first code chunk in your `r rproj()` Markdown document:
 
 ```{r, eval=FALSE}
 ice_tib <- here::here("data/ice_bucket.csv") %>% readr::read_csv()
@@ -102,17 +129,22 @@ freq_tbl <- ice_tib %>%
 
 To count the frequencies of scores we need to do two things:
 
-1. Tell R to treat values that are the same, as being in the same group or category. For example, tell it that scores of 21 are from the same group/category. We do this using `group_by(upload_day)`, which tells R to treat scores that are the same within `upload_day` as being in the same group. Any subsequent operation will be conducted on these 'groups'. 
+1. Tell `r rproj()` to treat values that are the same, as being in the same group or category. For example, tell it that scores of 21 are from the same group/category. We do this using `group_by(upload_day)`, which tells `r rproj()` to treat scores that are the same within `upload_day` as being in the same group. Any subsequent operation will be conducted on these 'groups'. 
 2. Count how many scores fall into each 'category'. This is done using `summarize()`, within which we create a variable called `frequency` that counts how many items are in each group created by `group_by()`. This variable will, therefore, contain the number of times each value of `upload_day` occurs.
 
 To sum up, the code feeds the data stored in `ice_tib` into the `group_by()` function and asks it to group the output by the variable `upload_day`. Having done this, a variable called `frequency` is created that counts how many scores is in each 'group'. Try this code in the box below.
 
-`r hint_text("TIP: remember to also execute")` `freq_tbl` `r hint_text("to see the table")`
+TIP: remember to also execute `freq_tbl` to see the table
 
 ```{r freq_dist, exercise=TRUE, exercise.lines=6}
 
 
 ```
+
+```{r }
+
+```
+
 
 ```{r freq_dist-solution}
 freq_tbl <- ice_tib %>%
@@ -153,7 +185,7 @@ This creates a new object called `gp_freq_tbl` that contains `ice_tib` biut with
 
 Try the above code in the box:
 
-`r hint_text("TIP: remember to also execute")` `gp_freq_tblt` `r hint_text("to see the table")`
+TIP: remember to also execute `gp_freq_tblt` to see the table
 
 
 ```{r cut_width, exercise=TRUE, exercise.lines=5}
@@ -186,7 +218,7 @@ gp_freq_tbl <- ice_tib %>%
 
 Try this below.
 
-`r hint_text("TIP: remember to also execute")` `gp_freq_tblt` `r hint_text("to see the table")`
+TIP: remember to also execute `gp_freq_tblt` to see the table
 
 ```{r gp_freq_dist, exercise=TRUE, exercise.lines=10}
 
@@ -344,7 +376,11 @@ We can change the colour of the bars by including `fill = ` within the `geom_his
 
 Try this in the code box below and run the code.
 
-`r hint_text("TIP: Note that options within a function are separated by a comma. In this example, ")` `binwidth = 1, fill = "red"` `r hint_text("will work but ")` `binwidth = 1 fill = "red"` `r hint_text("(note the comma is missing) would throw an error.")`
+<div class="tip">
+  `r cat_space()` **Tip: Check for missing commas!**
+  
+  Note that arguments within a function are separated by a comma. In this example `binwidth = 1, fill = "red"` will work but `binwidth = 1 fill = "red"` (note the comma is missing) would throw an error. If you get an error message, always check for these small syntax errors because a missing comma or quote can wreak more havoc than you could possibly imagine. Also remember that **everyone** makes these errors, even those of us who use `r rproj()` all day, every day.
+</div>
 
 ```{r ice_hist_fill, exercise=TRUE}
 ggplot2::ggplot(ice_tib, aes(upload_day)) +
@@ -373,7 +409,11 @@ You can also make filled objects semi-transparent by using `alpha = ` where alph
 
 Try out some other values of alpha.
 
-`r hint_text("Tip: Remember that values of alpha must fall between 0 and 1")`
+<div class="tip">
+  `r cat_space()` **Tip**
+  
+  Remember that values of alpha must fall between 0 and 1.
+</div>
 
 ```{r ice_hist_alpha, exercise=TRUE}
 ggplot2::ggplot(ice_tib, aes(upload_day)) +
@@ -473,7 +513,11 @@ median(variable, na.rm = FALSE)
 
 If you are happy with the default settings you don't need to specify those arguments explicitly. For example, to find the mean of the variable `upload_day` from the `ice_tib` tibble, we could execute:
 
-`r hint_text("TIP: Remember from the discovr_01 tutorial that ")` `ice_tib$upload_day` `r hint_text("is a way to select the variable ")` `upload_day` `r hint_text("from the ")` `ice_tib` `r hint_text("tibble")`
+<div class="tip">
+  `r cat_space()` **Tip: using $**
+  
+  Remember from the `discovr_01` tutorial that we can use `$` to refer to a variable within a tibble. In general, we use `tibble$variable`, for example, in the previous tutorial we used `ice_tib$upload_day` to select the variable **upload_day** from the `ice_tib` tibble.
+</div>
 
 ```{r, eval = FALSE}
 mean(ice_tib$upload_day)
@@ -487,7 +531,11 @@ mean(ice_tib$upload_day, na.rm = TRUE)
 
 We can obtain the median in much the same way.
 
-`r hint_text("TIP: To find the list of options available for a particular function remember that you can get help by executing ? and the name of the function (e.g., ?mean).")`
+<div class="tip">
+  `r cat_space()` **Tip: Finding the options of a function**
+  
+  To find the list of arguments (options) available for a particular function, remember that you can get help by executing `?` and the name of the function. For example, to remind yourself of the options for the `mean()` function, execute `?mean`
+</div>
 
 Use the code box below to obtain the mean and median number of days after the original ice bucket video that other videos were uploaded. 
 
@@ -517,7 +565,11 @@ var(ice_tib$upload_day, na.rm = FALSE)
 sd(ice_tib$upload_day, na.rm = FALSE)
 ```
 
-`r hint_text("TIP: Because the current data has no missing scores we can omit the default argument of 'na.rm=FALSE'")`
+<div class="tip">
+  `r cat_space()` **Tip**
+  
+  Because the current data has no missing scores we can omit the default argument of `na.rm=FALSE`.
+</div>
 
 Use the box below to calculate the variance and standard deviation of the `upload_day` variable.
 
@@ -649,22 +701,25 @@ upload_summary <- ice_tib %>%
     round(., 2) 
 ```
 
-## Other resources
+## Resources {data-progressive=FALSE}
 
 ### Statistics
 
-* The tutorials typically follow examples described in detail in @fieldDiscoveringStatisticsUsing2020, so that book is an obvious place to go for further reading.
+* The tutorials typically follow examples described in detail in @field_discovering_2021. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
 * If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
-* There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/)
-* There are free statistical resources on my website [www.discoveringstatistics.com](http://www.discoveringstatistics.com)
+* There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/).
+* There are free statistical resources on my websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [milton-the-cat.rocks](http://milton-the-cat.rocks).
 
-### R
+### `r rproj("h3")`
 
 * [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
-* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on **R** and **RStudio**
-* [RStudio cheat sheets](https://www.rstudio.com/resources/cheatsheets/)
-* [RStudio list of online resources](https://www.rstudio.com/online-learning/)
-* [SwirlStats](http://swirlstats.com/students.html) is a package for *R* that launches a bunch of interactive tutorials.
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and ![](./images/rstudio_logo.png){height=1em}.
+* [![](./images/rstudio_logo.png){height=1em} cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
+* [![](./images/rstudio_logo.png){height=1em} list of online resources](https://www.rstudio.com/online-learning/).
+
+### Acknowledgement
+
+I'm extremely grateful to [Allison Horst](https://www.allisonhorst.com/) for her very informative blog post on [styling learnr tutorials with CSS](https://education.rstudio.com/blog/2020/05/learnr-for-remote/) and also for sending me a CSS template file and allowing me to adapt it. Without Allison, these tutorials would look a lot worse (but she can't be blamed for my colour scheme).
 
 ## References
 

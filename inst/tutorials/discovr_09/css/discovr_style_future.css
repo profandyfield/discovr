@@ -1,0 +1,328 @@
+/* CSS
+
+Adapted from the sanddollar theme by Allison Horst, which uses these colours:
+
+sidebrown - #e4e0dc
+darkerbrown - #b8a48d
+fontgrey - #616161
+darkgreen - #217371
+lightgreen - #40b6b4
+button_hover #65bfb2
+------
+
+colours this theme uses:
+
+cedar chest #d35c54 (211, 92, 84)
+fire opal #E8655C (232, 101, 92)
+champagne #f3e2c4 (243, 226, 196)
+opal #9cbfbc (156, 191, 188)
+cadet blue #5ea5a8 (94, 165, 168)
+alabaster #E6E8E2 (230, 232, 226)
+platinum #e8eae5 (232, 234, 229)
+rythm #7c7da7 (124, 125, 167)
+cadet blue crayola #ababbc (171, 171, 188)
+slate-gray-dark: #2F4F4F;
+
+*/
+
+/*-------- Background color & body font --------*/
+body {
+  background-color: #e8eae5;
+  color: #616161;
+}
+
+/*-------- Main Panel ---------*/
+.topics {
+    width: 75%;
+    overflow-x: auto;
+    padding-bottom: 600px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: white;
+    border-left: 0;
+    border-right: 0;
+}
+
+/*------- padding sides --------*/
+.band {
+    padding-left: 2%;
+    padding-right: 2%;
+    position: relative;
+}
+
+/* Emphasis */
+em {
+    color: #3d3835;
+}
+
+/*--------- Headers ---------*/
+
+p {
+  font-size: 18px;
+}
+
+ul {
+  font-size: 18px;
+}
+
+h2 {
+  color: #5ea5a8;
+}
+
+h3 {
+  color: #9cbfbc;
+}
+
+h4 {
+  color: #7c7da7;
+}
+
+h5 {
+    color: #9cbfbc;
+    font-size: 16px;
+}
+
+
+
+/* Tutorial start over button */
+.topicsFooter .resetButton {
+    padding-left: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    opacity: .7;
+}
+
+/*-------- Code chunk header panel ---------*/
+.panel-default > .panel-heading {
+    color: #2F4F4F;
+    background-color: #e8eae5;
+    border-top: 1px solid #e8eae5;
+    border-left: 1px solid #e8eae5;
+    border-right: 1px solid #e8eae5;
+    font-size: 16px;
+}
+
+/*------- Rectangle panels --------*/
+.panel, pre {
+    border-radius: 10;
+    background-color: #f5f5f4;
+    border: 0;
+    font-size: 16px;
+}
+
+
+/*-------- Code chunk main panel --------*/
+
+.ace-tm {
+    background-color: white;
+    color: #3f3f3f;
+    border-bottom: 1px solid #e8eae5;
+    border-left: 1px solid #e8eae5;
+    border-right: 1px solid #e8eae5;
+    font-size: 15px;
+}
+
+/*-------- Line # cells --------*/
+
+.ace_gutter-cell {
+    padding-left: 10px;
+    padding-right: 4px;
+    background-repeat: no-repeat;
+    background-color: #e8eae5;
+    border: 0;
+    color: #2F4F4F;
+}
+
+/*-------- Code returns --------*/
+.tutorial-exercise-output > pre {
+    max-height: 500px;
+    overflow-y: auto;
+    background-color: white;
+    color: #3f3f3f;
+}
+
+
+/*------- In line code aesthetic --------*/
+code {
+    color: white;
+    background-color: #7c7da7;
+    font-size: 14px;
+}
+
+/*------- Hyperlinks --------*/
+a {
+    color: #E8655C;
+    text-decoration: none;
+}
+
+a:hover, a:focus {
+    color: #d35c54;
+    text-decoration: underline;
+}
+
+/*------- Main menu -------*/
+.topicsList .topic {
+    color: #5ea5a8;
+    line-height: 40px;
+    font-size: 20px;
+    padding-left: 10px;
+    cursor: pointer;
+    background-color: white;
+    background-repeat: no-repeat;
+    background-size: 2px 80px;
+    background-position: left 100%;
+    background-image: url(images/topicProgress.png);
+    border-bottom: 1px solid #edeae2;
+    border-top: 0;
+    -webkit-transition-property: background-position;
+    transition-property: background-position;
+    -webkit-transition-duration: 0.25s;
+    transition-duration: 0.25s;
+}
+
+/*------- Selected menu item -------*/
+.topicsList .topic.current {
+    background-color: #f3e2c4;
+    color: #2F4F4F;
+    border: 0;
+}
+/*--- When hovering ---*/
+.topicsList .topic:hover {
+    background-color: #9cbfbc;
+    color: white;
+    border: 0;
+}
+
+/*------- Solution / Hint buttons -------*/
+.tutorial-exercise-input .btn-tutorial-solution {
+    margin-left: 15px;
+    background-color: #9cbfbc;
+    color: white;
+    font-family: 'Jaldi', sans-serif;
+    font-size: 13px;
+    border: 0;
+    text-shadow: none;
+}
+
+/*------- Solution popover --------*/
+.popover-title {
+    margin: 0;
+    padding: 8px 14px;
+    font-size: 14px;
+    background-color: #65bfb2;
+    border-bottom: 1px solid #ebebeb;
+    border-radius: 5px 5px 0 0;
+    color: white;
+    text-shadow: none;
+    font-family: 'Jaldi', sans-serif;
+}
+
+/*------- Buttons -------*/
+
+.btn-primary, .btn-success, .btn-info, .btn-xs, .btn-default {
+    color: white;
+    background-color: #9cbfbc;
+    background-image: none;
+    border: 0;
+    font-size: 15px;
+    text-shadow: none;
+}
+
+/*------- Buttons when hovering -------*/
+.btn-default:hover, btn-success:hover, btn-info:hover, btn-primary:hover {
+  background-color: #5ea5a8;
+  color: white;
+}
+
+/*-------- Code chunk buttons hover aesthetic -------*/
+
+.tutorial-exercise-input .btn-xs{
+    font-size: 13px;
+}
+
+.tutorial-exercise-input .btn-xs:hover {
+    margin-right: 0;
+    margin-top: -1px;
+    font-size: 13px;
+    margin-left: 12px;
+    padding-right: 8px;
+    font-weight: normal;
+    background-color: #5ea5a8;
+    color: white;
+    border: 0;
+}
+
+/*------- Button disabled -------*/
+.btn-primary.disabled {
+    color: white;
+    background-color: lightgray;
+    background-image: none;
+    border: none;
+    font-size: 13px;
+}
+
+/*------- Update Next Section button -------*/
+.topicActions .btn-primary:hover {
+    color: white;
+    background-color: #5ea5a8;
+    background-image: none;
+    border: none;
+}
+
+/*-------- Answer alert --------*/
+.alert-success {
+    background-color: #E6E8E2;
+    border: 0;
+    color: #2F4F4F;
+}
+.alert-danger {
+    background-color: #f3e2c4;
+    border: 0;
+    color: #2F4F4F;
+}
+
+
+/* Pedagogic boxes */
+
+.tip {
+  border-radius: 10px;
+  padding: 10px;
+  border: 2px solid #7c7da7;
+  background-color: #7c7da7;
+  background-color: rgba(124, 125, 167, 0.1);
+  color: #7c7da7;
+}
+
+.warning {
+  border-radius: 10px;
+  padding: 10px;
+  border: 2px solid #E8655C;
+  background-color: #E8655C;
+  background-color: rgba(232, 101, 92, 0.1);
+  color: #d35c54;
+}
+
+.infobox {
+  border-radius: 10px;
+  padding: 10px;
+  border: 2px solid #868e96;
+  background-color: #868e96;
+  background-color: rgba(134, 142, 150, 0.1);
+  color: #2F4F4F;
+}
+
+.img_left {
+ float: left;
+ padding: 0 10px 0 0;
+}
+
+/* two column text */
+
+.left_txt {
+  float: left;
+  width: 25%;
+}
+
+.right_txt {
+  width: 75%;
+}

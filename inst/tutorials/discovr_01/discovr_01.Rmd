@@ -49,8 +49,9 @@ On your way you will face many challenges, but follow Mae's system to keep yours
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
-* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you.
-* `r bug(height = 2)` we also have alien bugs that will, erm, help you to avoid bugs by setting you coding challenges. 
+* `r alien(height = 2)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
+* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
+* `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
 
 By for now and good luck - you'll be amazing!
 
@@ -95,7 +96,7 @@ In the first command in Figure 1 the arguments passed into the `c()` function ar
   Simultaneously press the ![](./images/key_alt.png){height=1em} + ![](./images/key_hyphen.png){height=1em} keys to insert the assignment operator `<-`.
 </div>
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Let's try this out. In the code box below type `metallica <- c("Lars","James","Jason", "Kirk")` and then click ![](./images/learnr_run_code.png){height=1em}.
 
@@ -358,7 +359,7 @@ We created a character variable (also called a string variable) when we entered 
 metallica <- c("Lars","James","Jason", "Kirk")
 ```
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Adapt the above code to enter the names in Table 1 and store these in an object called `name` by executing:
 
@@ -402,7 +403,7 @@ songs_written <-  c(111, 112, 56, 16, 3, 11, 6)
 net_worth <- c(300000000, 300000000, 200000000, 20000000, 40000000, 1000000, 20000000)
 ```
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Try entering these variables in the code box.
 
@@ -436,7 +437,7 @@ variable <- c("date 1", "date 2", "date 3", ... "final date") %>%
 
 Notice that I have used the pipe operator (`%>%`) to connect two commands, the first inputs the dates (`c("date 1", "date 2", "date 3", ... "final date")`) and this information is fed into `lubridate::ymd()` to convert it to date format. Using `ymd()` each date would need to be in the format "year-month-day". For example, to enter Lars Ulrich's birthday we'd replace "date 1" with "1963-12-26".
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Create the variable called **birth_date** containing the dates of birth in Table 1.
 
@@ -484,7 +485,7 @@ birth_date
 Although as researchers we strive to collect complete sets of data, it is often the case that we have missing data. We denote missing values with `NA` (in capital letters), which stands for ‘not available’. Many functions in `r rproj()` have arguments to specify how you handle missing values so if you have missing values remember to set a value for these arguments.
 The dates of the member’s deaths are included in Table 1. At the time of writing all but one of the members are alive (Cliff Burton was tragically killed in a tour bus accident), so we (thankfully) have a lot of missing values. We enter these values as `NA` (not in quotes).
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Use what you learnt in the previous section to create a variable called **death_date** containing the corresponding dates in Table 1. Whenever the data is missing, use NA (no quotes) instead of a date.
 
@@ -533,7 +534,7 @@ In general you create a logical variable as:
 variable_name <- c(TRUE, TRUE, FALSE, TRUE ...)
 ```
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Create the variable **current_member** containing the corresponding dates in Table 1.
 
@@ -592,7 +593,7 @@ instrument
 
 The first line enters the numeric values, the second line converts the variable to a factor and applies labels to each numeric value, and the last line shows us the variable. Note that the variable is made up of the category labels and not the numeric values.
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Rather than using two commands, we could create **instrument** in a single command by linking the data entry and the conversion to a factor with a pipe. Try to do that below. 
 
@@ -647,7 +648,7 @@ instrument <- c("Instrument 1", "Instrument 2", ... "Final instrument") %>%
   forcats::as_factor()
 ```
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Try creating the variable *instrument* the tidyverse way 
 
@@ -682,7 +683,7 @@ instrument
 Notice that the order of levels has changed from `Levels: Drums Guitar Bass` in the previous output to `Levels: Guitar Bass Drums` in the current output.
 
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 We could have incorporated the `fct_relevel()` function in the original command by using the pipe. See if you can do this.
 
@@ -715,7 +716,7 @@ instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %
 instrument
 ```
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 With any factor variable you can see the factor levels and their order by using the `levels()` function, in which you enter the name of the factor. So, to see the levels of our variable instrument variable we would execute: `levels(instrument)`, try this:
 
@@ -748,7 +749,7 @@ my_tib <- tibble::tibble(variable_1, variable_2, variable_3, ... variable_n)
 
 This command creates an object called `my_tib` (I tend to use `_tib` to denote a tibble) that contains all of the variables listed in `tibble()`. They will be arranged in columns. You view a tibbles by executing its name. The contents of the tibble will be printed within the `r rproj()` markdown document below the code chunk. By default the first 10 rows will be displayed and as many columns as the width of the pane allows. The display is interactive so you can navigate across columns or down beyond the first 10 rows.
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Create a tibble of the Metallica data called `metalli_tib`, which is made up of all of the variables from Table 1 that we have created in this tutorial (don't forget to execute its name to view it):
 
@@ -809,11 +810,11 @@ tibble_name %>%
     )
 ```
 
-<div class="tip">
-  `r cat_space()` **Tip: two things to note about `mutate()`**
+<div class="warning">
+  `r bug()` **De-bug: common mistakes when using mutate()** 
   
-  1. In `mutate()`, variables are created using an equal sign (`=`), not the assignment operator (`<-`).
-  2. Every line within the `mutate()` function ends with a comma except for the last. When `r rproj()` sees a comma it expects to see another command, so the lack of comma after the last command tells `r rproj()` that it is the last command.
+  1. In `mutate()`, variables are created using an equal sign (`=`), not the assignment operator (`<-`). Remember to use an equals sign within mutate.
+  2. Every line within the `mutate()` function ends with a comma except for the last. When `r rproj()` sees a comma it expects to see another command, so the lack of comma after the last command tells `r rproj()` that it is the last command. If you get an error message when using mutate check you have remembered commas at the end of each line except the last.
 </div>
 
 #### `r robot()` Code example
@@ -849,7 +850,7 @@ We can also compute variables from existing variables. Let’s imagine we now wa
 
 `worth_per_song = net_worth/songs_written`
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 By adapting the code in the previous section and using the code above that computes the worth per song to, add the variable **worth_per_song** to the `metalli_tib` tibble:
 
@@ -955,7 +956,7 @@ When selecting lots of variables it can be useful to use `x:y` to indicate 'all 
 The `songs_written:worth_per_song` is shorthand for selecting **songs_written**, **worth_per_song** and all variables in between them in the tibble.
 </div>
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Select the variables **name**, **instrument**, and **net_worth**.
 
@@ -987,7 +988,7 @@ metalli_tib %>%
   dplyr::select(name, instrument, net_worth)
 ```
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Exclude the variables **death_date** and **net_worth**.
 
@@ -1001,7 +1002,7 @@ metalli_tib %>%
   dplyr::select(-c(death_date, net_worth))
 ```
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Include the variables **name**, **birth_date**, **death_date**, **instrument**, **current_member** and **worth_per_song**.
 
@@ -1029,7 +1030,7 @@ which you can read as 'the variable `instrument` within the tibble `metalli_tib`
 
 </div>
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Inspect the variable **worth_per_song** from `metalli_tib`.
 
@@ -1146,7 +1147,7 @@ metalli_worth
 
 Notice that by executing this command we overwrite the original object `metalli_worth` with a new version that contains only the variables **name** and **net_worth**.
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 The method just described is inefficient (but helpful for showing you the explicit steps that we want to take). A more efficient way to do achieve the same goal is to do both operations as part of the same pipe. See if you can combine the previous two code examples to create `metalli_worth` using a single pipe.
 

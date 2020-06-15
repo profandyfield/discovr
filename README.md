@@ -1,13 +1,13 @@
 # discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2020)
 
-The `discovr` package contains resources for my 2020 textbook [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/). There are tutorials written using [learnr](https://rstudio.github.io/learnr/). Once a tutorial is running it's a bit like reading a book but with places where you can practice the R code that you have just been taught. The `discovr` package is free and offered to support tutors and students using my textbook who want to learn R.
+The `discovr` package contains resources for my 2021 textbook [Discovering Statistics Using R and ![](./data-raw/images/rstudio_logo.png){height=1em}](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/). There are tutorials written using [learnr](https://rstudio.github.io/learnr/). Once a tutorial is running it's a bit like reading a book but with places where you can practice the R code that you have just been taught. The `discovr` package is free and offered to support tutors and students using my textbook who want to learn R.
  
 ## Contents of `discovr`
 ### Interactive tutorials
 
-I recommend working through [this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/) on how to install, set up and work within R and RStudio before starting the interactive tutorials.
+I recommend working through [this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/) on how to install, set up and work within ![](./data-raw/images/r_logo.png){height=1em} and ![](./data-raw/images/rstudio_logo.png){height=1em} before starting the interactive tutorials.
 
-* **discovr_01**: Key concepts in R (functions and objects, packages and functions, style, data types, tidyverse, tibbles)
+* **discovr_01**: Key concepts in ![](./data-raw/images/r_logo.png){height=1em} (functions and objects, packages and functions, style, data types, tidyverse, tibbles)
 * **discovr_02**: Summarizing data (frequency distributions, grouped frequency distributions, relative frequencies, histograms, mean, median, variance, standard deviation, interquartile range)
 * **discovr_05**: Visualizing data. The ggplot2 package, boxplots, plotting means, violin plots, scatterplots, grouping by colour, grouping using facets, adjusting scales, adjusting positions."
 * **discovr_06**:
@@ -43,7 +43,7 @@ See the book or data descriptions for more details. This is a list of available 
 
 ### Installing `discovr`
 
-To use `discovr` you first need to install **R** and **RStudio** and familiarise yourself with R, RStudio and good workflow practice. You can do this using [this interactive tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/). Once you have installed **R** and **RStudio** you can install `discovr`. The package is in development so you have to install it from github. To install the package execute (in **RStudio**):
+To use `discovr` you first need to install **R** and ![](./data-raw/images/rstudio_logo.png){height=1em} and familiarise yourself with ![](./data-raw/images/r_logo.png){height=1em}, ![](./data-raw/images/rstudio_logo.png){height=1em} and good workflow practice. You can do this using [this interactive tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/). Once you have installed **R** and ![](./data-raw/images/rstudio_logo.png){height=1em} you can install `discovr`. The package is in development so you have to install it from github. To install the package execute (in ![](./data-raw/images/rstudio_logo.png){height=1em}):
 
 ```{r, eval = FALSE}
 install.packages("remotes") #if you don’t already have it installed
@@ -51,7 +51,7 @@ library(remotes)
 install_github("profandyfield/discovr")
 ```
 
-If you are trying to install on a networked computer the install might fail (it's to do install.packages not liking UNC paths, which I'm not even going to pretend to understand). The solution is to specify the location of your R library at the point of install. Most networks will map network locations to a drive name (for example, at my own University, users accounts are on the 'N' drive). Find the location of your R library (e.g., `N:/Documents/R/win-library/3.5`), possibly executing `.libPaths()` to help you, and specify this location using the `lib` argument:
+If you are trying to install on a networked computer the install might fail (it's to do install.packages not liking UNC paths, which I'm not even going to pretend to understand). The solution is to specify the location of your ![](./data-raw/images/r_logo.png){height=1em} library at the point of install. Most networks will map network locations to a drive name (for example, at my own University, users accounts are on the 'N' drive). Find the location of your ![](./data-raw/images/r_logo.png){height=1em} library (e.g., `N:/Documents/R/win-library/3.5`), possibly executing `.libPaths()` to help you, and specify this location using the `lib` argument:
 
 ```
 library(remotes) 
@@ -76,4 +76,4 @@ The name of each tutorial is in bold in the list above. Once the command to run 
 
 ### Suggested workflow
 
-The tutorials are self-contained (you practice code in code boxes) so you don't need to use RStudio at the same time. However, to get the most from them I would recommend that you open two RStudio sessions (i.e. two RStudio windows running simultaneously). Use one RStudio session to run the tutorial. You won't then be able to use this RStudio window (because its resources are allocated to the tutorial). In the second RStudio session try replicating what you learn in the tutorial. That is, open a new script file and everything you do in the tutorial, practice in the script file (and save it). This workflow has the advantage of not just teaching you the code that you need to do certain things, but also provides practice in using RStudio itself.
+The tutorials are self-contained (you practice code in code boxes) so you don't need to use ![](./data-raw/images/rstudio_logo.png){height=1em} at the same time. However, to get the most from them I would recommend that you create an ![](./data-raw/images/rstudio_logo.png){height=1em} project and within that open (and save) a new RMarkdown file each time to work through a tutorial. Within that Markdown file, replicate parts of the code from the tutorial (in code chunks) and use Markdown to write notes about what you have done, and to reflect on things that you have struggled with, or note useful tips to help you remember things. Basically, write a learning journal. This workflow has the advantage of not just teaching you the code that you need to do certain things, but also provides practice in using ![](./data-raw/images/rstudio_logo.png){height=1em} itself.

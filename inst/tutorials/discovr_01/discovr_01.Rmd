@@ -37,7 +37,7 @@ source("./www/discovr_helpers.R")
   
 </div>
 
-### `r cat_space(height = 2)` Welcome to space pirate academy
+### `r cat_space(height = 2)` Welcome to the `discovr` space pirate academy
 
 Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
 
@@ -814,7 +814,7 @@ tibble_name %>%
   `r bug()` **De-bug: common mistakes when using mutate()** 
   
   1. In `mutate()`, variables are created using an equal sign (`=`), not the assignment operator (`<-`). Remember to use an equals sign within mutate.
-  2. Every line within the `mutate()` function ends with a comma except for the last. When `r rproj()` sees a comma it expects to see another command, so the lack of comma after the last command tells `r rproj()` that it is the last command. If you get an error message when using mutate check you have remembered commas at the end of each line except the last.
+  2. Every line within the `mutate()` function ends with a comma except for the last. When `r rproj()` sees a comma it expects to see another command, so the lack of comma after the last command tells `r rproj()` that it is the last command. If you get an error message when using `mutate()` check you have remembered commas at the end of each line except the last.
 </div>
 
 #### `r robot()` Code example

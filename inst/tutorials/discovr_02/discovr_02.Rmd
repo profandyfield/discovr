@@ -97,7 +97,7 @@ To work *outside of this tutorial* you need to download the following data file:
 
 * [ice_bucket.csv](http://www.discoveringstatistics.com/repository/discovr_data/ice_bucket.csv)
 
-Set up an ![](./images/rstudio_logo.png){height=1em} project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called `data`. Place this code in the first code chunk in your `r rproj()` Markdown document:
+Set up an ![](./images/rstudio_logo.png){height=1em} project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
 
 ```{r, eval=FALSE}
 ice_tib <- here::here("data/ice_bucket.csv") %>% readr::read_csv()
@@ -108,7 +108,7 @@ ice_tib <- here::here("data/ice_bucket.csv") %>% readr::read_csv()
 
 We will use data about memes, which typically have a common pattern: they start small, rapidly expand in popularity and then die out. Specifically we'll use data from the ice bucket challenge. You can check Wikipedia for the full story, but it all started (arguably) with golfer Chris Kennedy tipping a bucket of iced water on his head to raise awareness of the disease amyotrophic lateral sclerosis (ALS, also known as Lou Gehrig's disease).  The idea is that you are challenged and have 24 hours to post a video of you having a bucket of iced water poured over your head. In this video you also challenge at least three other people. If you fail to complete the challenge your forfeit is to donate to charity (in this case ALS). Many people completed the challenge and made donations.
 
-The ice bucket challenge generated something like 2.3 million on YouTube. The data are stored in `ice_tib`, which contains one variable `upload_day` that is the number of days after Chris Kennedy’s initial challenge that each of 2,323,452 ice bucket related videos were uploaded to YouTube. For example, if the value is 21 it means that the video was uploaded 21 days after Chris Kennedy’s initial challenge. We can't see the pattern of the data easily from 2,323,452 scores. However, we can if we count the frequency of each score and place it in a table.
+The ice bucket challenge generated something like 2.3 million on YouTube. The data are stored in [ice_tib]{.alt}, which contains one variable **upload_day** that is the number of days after Chris Kennedy’s initial challenge that each of 2,323,452 ice bucket related videos were uploaded to YouTube. For example, if the value is 21 it means that the video was uploaded 21 days after Chris Kennedy’s initial challenge. We can't see the pattern of the data easily from 2,323,452 scores. However, we can if we count the frequency of each score and place it in a table.
 
 ### `r bmu2()` Frequency tables
 
@@ -120,12 +120,12 @@ To get a basic frequency table we use the `group_by()` and `summarise()` and `n(
 
 To count the frequencies of scores we need to do two things:
 
-1. Tell `r rproj()` to treat values that are the same, as being in the same group or category. For example, tell it that scores of 21 are from the same group/category. We do this using `group_by(upload_day)`, which tells `r rproj()` to treat scores that are the same within `upload_day` as being in the same group. Any subsequent operation will be conducted on these 'groups'. 
-2. Count how many scores fall into each 'category'. This is done using `summarize()`, within which we create a variable called `frequency` that counts how many items are in each group created by `group_by()`. This variable will, therefore, contain the number of times each value of `upload_day` occurs.
+1. Tell `r rproj()` to treat values that are the same, as being in the same group or category. For example, tell it that scores of 21 are from the same group/category. We do this using `group_by(upload_day)`, which tells `r rproj()` to treat scores that are the same within **upload_day** as being in the same group. Any subsequent operation will be conducted on these 'groups'. 
+2. Count how many scores fall into each 'category'. This is done using `summarize()`, within which we create a variable called **frequency** that counts how many items are in each group created by `group_by()`. This variable will, therefore, contain the number of times each value of **upload_day** occurs.
 
 #### `r robot()` Code example
 
-We can create a frequency table called `freq_tbl` as follows:
+We can create a frequency table called [freq_tbl]{.alt} as follows:
 
 ```{r freq_dist, exercise=TRUE, exercise.lines=6}
 freq_tbl <- ice_tib %>%
@@ -136,13 +136,13 @@ freq_tbl <- ice_tib %>%
 freq_tbl
 ```
 
-To sum up, the code feeds the data stored in `ice_tib` into the `group_by()` function and asks it to group the output by the variable `upload_day`. Having done this, a variable called `frequency` is created that counts how many scores is in each 'group'. 
+To sum up, the code feeds the data stored in [ice_tib]{.alt} into the `group_by()` function and asks it to group the output by the variable **upload_day**. Having done this, a variable called **frequency** is created that counts how many scores is in each 'group'. 
 
 We can see, for example, that 29000 videos were uploaded 30 days after Chris Kennedy’s initial challenge, and 10000 were uploaded 27 days after.
 
 ### `r bmu2()` Grouped frequency tables
 
-The frequency table that we just produced is large and a little unwieldy. It might be useful to instead have a table that counts the frequencies for a range of scores. For example, how many videos were uploaded between 21 and 24 days, and 25 and 28 days. This is known as a *grouped* frequency distribution. To produce one of these, first we have to place the values of `upload_days` into what are known as *bins*. The values of the number of days range from 21 to 76 days after Chris Kennedy’s initial challenge. Imagine we wanted to group the data in such a way as to see how many videos were uploaded every 4 days (instead of every day). To do this, we'd need to group the values of days into bins of 21-24, 25-28, 29-32 and so on. Notice that each 'bin' is made up of 4 days worth of values.
+The frequency table that we just produced is large and a little unwieldy. It might be useful to instead have a table that counts the frequencies for a range of scores. For example, how many videos were uploaded between 21 and 24 days, and 25 and 28 days. This is known as a *grouped* frequency distribution. To produce one of these, first we have to place the values of **upload_days** into what are known as *bins*. The values of the number of days range from 21 to 76 days after Chris Kennedy’s initial challenge. Imagine we wanted to group the data in such a way as to see how many videos were uploaded every 4 days (instead of every day). To do this, we'd need to group the values of days into bins of 21-24, 25-28, 29-32 and so on. Notice that each 'bin' is made up of 4 days worth of values.
 
 #### `r robot()` Code example
 
@@ -152,13 +152,13 @@ We can create these bins using `ggplot2::cut_width()` which takes this form:
 ggplot2::cut_width(variable, width_of_bin)
 ```
 
-In which we place the variable that we wish to spread across bins, and `width_of_bin` is how wide we want the bins to be. If we want to split the variable `upload_day` into bins containing 4 days worth of data we'd use:
+In which we place the variable that we wish to spread across bins, and [width_of_bin]{.alt} is how wide we want the bins to be. If we want to split the variable **upload_day** into bins containing 4 days worth of data we'd use:
 
 ```{r, eval=FALSE}
 ggplot2::cut_width(upload_day, 4)
 ```
 
-Combining this function with `dplyr::mutate()` (which we encountered in the **discovr_01** tutorial) to create a new variable called `days_group`, we could execute:
+Combining this function with `dplyr::mutate()` (which we encountered in the **discovr_01** tutorial) to create a new variable called **days_group**, we could execute:
 
 #### `r robot()` Code example
 
@@ -170,19 +170,19 @@ gp_freq_tbl <- ice_tib %>%
 gp_freq_tbl
 ```
 
-This creates a new object called `gp_freq_tbl` that contains each value within `ice_tib` but with an extra column/variable called `days_group` that indicates into which 'bin' the value of `upload_day` falls.
+This creates a new object called [gp_freq_tbl]{.alt} that contains each value within [ice_tib]{.alt} but with an extra column/variable called **days_group** that indicates into which 'bin' the value of **upload_day** falls.
 
 <div class="tip">
   `r cat_space()` **Tip: Set notation**
   
-  Notice that each value of `upload_days` now has a corresponding value of `days_group` containing the 'bin' to which the score has been assigned. For example, the first score of 34 has been assigned to the bin labelled `(30, 34]`. This is the bin containing any score above 30 up to and including 34. The label uses standard mathematical notation for sets where `(` or `)` means 'not including' and `[` or `]` means 'including'.
+  Notice that each value of **upload_day** now has a corresponding value of **days_group** containing the 'bin' to which the score has been assigned. For example, the first score of 34 has been assigned to the bin labelled `(30, 34]`. This is the bin containing any score above 30 up to and including 34. The label uses standard mathematical notation for sets where `(` or `)` means 'not including' and `[` or `]` means 'including'.
 </div>
 
-Having done this we can again use `summarize()` and `n()` to count the scores like we did before. However, this time we want to group the summary by `days_group` instead of `upload_day`. Doing so means that the number of times a score falls within each bin will be counted rather than the number times each score occurs. 
+Having done this we can again use `summarize()` and `n()` to count the scores like we did before. However, this time we want to group the summary by **days_group** instead of **upload_day**. Doing so means that the number of times a score falls within each bin will be counted rather than the number times each score occurs. 
 
 #### `r alien()` Alien coding challenge
 
-Create a grouped frequency table called `gp_freq_tbl` by starting with the code in the code example and then using the code we used to create `freq_tbl` to create a pipe that summarizes the grouped scores.
+Create a grouped frequency table called [gp_freq_tbl]{.alt} by starting with the code in the code example and then using the code we used to create [freq_tbl]{.alt} to create a pipe that summarizes the grouped scores.
 
 
 ```{r gp_freq_dist, exercise=TRUE, exercise.lines=10}
@@ -249,7 +249,7 @@ We can see, for example that 534000 videos were uploaded after 38 days and up to
 
 ### `r bmu2()` Relative frequencies
 
-We now have an object `gp_freq_dist` that contains the number of days grouped into bins of 4 days (`days_group`) and the number of videos uploaded during each of the time periods represented by those bins (`frequency`).
+We now have an object [gp_freq_dist]{.alt} that contains the number of days grouped into bins of 4 days (**days_group**) and the number of videos uploaded during each of the time periods represented by those bins (**frequency**).
 
 #### `r robot()` Code example
 
@@ -262,11 +262,11 @@ If we want to calculate the relative frequency (i.e., the proportion of videos u
   )
 ```
 
-Within the `mutate()` function we create a new column called `relative_freq` using `frequency/sum(frequency)`. The effect of this command is that for each value of the variable `frequency` within `gp_freq_dist`, a new value is computed that is the original value divided by the sum (or total) of all of the frequencies. This process converts the raw frequency into a relative frequency.
+Within the `mutate()` function we create a new column called **relative_freq** using [frequency/sum(frequency)]{.alt}. The effect of this command is that for each value of the variable **frequency** within [gp_freq_dist]{.alt}, a new value is computed that is the original value divided by the sum (or total) of all of the frequencies. This process converts the raw frequency into a relative frequency.
 
 #### `r alien()` Alien coding challenge
 
-Using the code example, pipe the `gp_freq_dist` object into `mutate()`, calculate the relative frequency and store it as a variable called *relative_freq*. 
+Using the code example, pipe the [gp_freq_dist]{.alt} object into `mutate()`, calculate the relative frequency and store it as a variable called **relative_freq**. 
 
 ```{r rel_freq-setup}
 gp_freq_dist <- ice_tib %>% 
@@ -319,9 +319,9 @@ gp_freq_dist
 
 In the tasks above we created the table of relative frequencies step by step:
 
-1. We created `gp_freq_dist` from `ice_tib` and added the variable `days_group` to it.
-2. We fed `gp_freq_dist` into a pipe that grouped by `days_group` and then calculated the frequency. We saved it using the same name (`gp_freq_dist`).
-3. We fed `gp_freq_dist` into a pipe that added a column with the relative frequency.
+1. We created [gp_freq_dist]{.alt} from [ice_tib]{.alt} and added the variable **days_group** to it.
+2. We fed [gp_freq_dist]{.alt} into a pipe that grouped by **days_group** and then calculated the frequency. We saved it using the same name ([gp_freq_dist]{.alt}).
+3. We fed [gp_freq_dist]{.alt} into a pipe that added a column with the relative frequency.
 
 #### `r robot()` Code example
 
@@ -361,7 +361,7 @@ gp_freq_dist <- ice_tib %>%
 gp_freq_dist
 ```
 
-This code takes the data in `ice_tib`, feeds it into `mutate()` to create a new variable called `days_group` which contains the 'bin' to which the score in `upload_day` belongs. Having added these 'variabl 'bins', we group the data by them using  `group_by()`, count how many scores fall into each bin using `summarize` and store these in a variable called `frequency`. We then feed this summary table into `mutate()` to create new variables containing the relative frequency in its raw form and expressed as a percentage. We store the summary table in an object called `gp_freq_dist`. Try this code in the box:
+This code takes the data in [ice_tib]{.alt}, feeds it into `mutate()` to create a new variable called **days_group** which contains the 'bin' to which the score in **upload_day** belongs. Having added these 'variable bins', we group the data by them using  `group_by()`, count how many scores fall into each bin using `summarize()` and store these in a variable called **frequency**. We then feed this summary table into `mutate()` to create new variables containing the relative frequency in its raw form and expressed as a percentage. We store the summary table in an object called [gp_freq_dist]{.alt}.
 
 
 ## `r bmu2()` Histograms
@@ -371,12 +371,12 @@ As well as tabulated frequency distributions, we can visualise distributions usi
 <div class="tip">
   `r cat_space()` **Tip: Always load ggplot2!**
   
-  We've discussed elsewhere that if you include packages when you use functions (e.g., `dplyr::mutate()`) you don't need to explicitly load the package (in this case `dply`). However, to create plots with `ggplot2` you build them up layer by layer, which means you use a lot of `ggplot2` functions. For this reason, I advise loading it at the start of your markdown document and not worrying too much about including package references when you use functions. You can load it either with `library(ggplot2)` or by loading the entire tidyverse using `library(tidyverse)`.
+  We've discussed elsewhere that if you include packages when you use functions (e.g., `dplyr::mutate()`) you don't need to explicitly load the package (in this case `dplyr`). However, to create plots with `ggplot2` you build them up layer by layer, which means you use a lot of `ggplot2` functions. For this reason, I advise loading it at the start of your markdown document and not worrying too much about including package references when you use functions. You can load it either with `library(ggplot2)` or by loading the entire tidyverse using `library(tidyverse)`.
 </div>
 
 ### `r bmu2()` A basic histogram using `ggplot2`
 
-Let's start by plotting a histogram of number of days between the original ice bucket challenge video and when subsequent videos were uploaded. Remember, the data are stored in a variable called `upload_day` in the `ice_tib` tibble. To initiate the plot we use the `ggplot()` function, which at its simplest has this general form:
+Let's start by plotting a histogram of number of days between the original ice bucket challenge video and when subsequent videos were uploaded. Remember, the data are stored in a variable called **upload_day** in the [ice_tib]{.alt} tibble. To initiate the plot we use the `ggplot()` function, which at its simplest has this general form:
 
 #### `r robot()` Code example
 
@@ -384,9 +384,9 @@ Let's start by plotting a histogram of number of days between the original ice b
 `ggplot2::ggplot(my_tib, aes(variable_for_x_axis, variable_for_y_axis))`
 ```
 
-Within the `ggplot()` function replace `my_tib` with the name of the tibble containing the data you want to plot, and within the `aes()` function replace `variable_for_x_axis` with the name of the variable to be plotted on the *x*-axis (horizontal), and replace `variable_for_y_axis` with the name of the variable to be plotted on the *y*-axis (vertical).
+Within the `ggplot()` function replace [my_tib]{.alt} with the name of the tibble containing the data you want to plot, and within the `aes()` function replace [variable_for_x_axis]{.alt} with the name of the variable to be plotted on the *x*-axis (horizontal), and replace [variable_for_y_axis]{.alt} with the name of the variable to be plotted on the *y*-axis (vertical).
 
-To plot the days since the first ice bucket challenge video that each video was uploaded, we could execute the code below, which uses the tibble called *ice_tib*, and plots the variable **upload_day** on the *x* axis (for a histogram we don't need to specify *y*). Try it.
+To plot the days since the first ice bucket challenge video that each video was uploaded, we could execute the code below, which uses the tibble called [ice_tib]{.alt}, and plots the variable **upload_day** on the *x* axis (for a histogram we don't need to specify *y*). Try it.
 
 ```{r gg1, exercise=TRUE}
 ggplot2::ggplot(ice_tib, aes(upload_day))
@@ -413,7 +413,7 @@ The completed command tells `r rproj()` to take the object created by `ggplot2::
 
 ### `r bmu2()` Changing the bin widths
 
-By default `ggplot2` constructs the bins of the histogram to be 1/30th the width of the data. You can over-ride this default by specifying `binwidth = ` within the `geom_histogram()` function. In the code box below, type `binwidth = 1` into the brackets after `geom_histogram` and execute the code. Note how the histogram changes. A binwidth of 1 makes sense for these data because responses could only be whole numbers (days), but try some other values and note how the histogram changes.
+By default `ggplot2` constructs the bins of the histogram to be 1/30th the width of the data. You can over-ride this default by specifying [binwidth =]{.alt} within the `geom_histogram()` function. In the code box below, type [binwidth = 1]{.alt} into the brackets after `geom_histogram()` and execute the code. Note how the histogram changes. A binwidth of 1 makes sense for these data because responses could only be whole numbers (days), but try some other values and note how the histogram changes.
 
 ```{r ice_bin, exercise=TRUE}
 ggplot2::ggplot(ice_tib, aes(upload_day)) +
@@ -427,7 +427,7 @@ ggplot2::ggplot(ice_tib, aes(upload_day)) +
 
 ### `r bmu2()` Changing the colours of the bars
 
-We can change the colour of the bars by including `fill = ` within the `geom_histogram()` function.
+We can change the colour of the bars by including [fill =]{.alt} within the `geom_histogram()` function.
 
 #### `r robot()` Code example
 
@@ -441,7 +441,7 @@ geom_histogram(binwidth = 1, fill = "red")
 <div class="warning">
   `r bug()` **De-bug: Check for missing commas** 
 
-  Note that arguments within a function are separated by a comma. In this example `binwidth = 1, fill = "red"` will work but `binwidth = 1 fill = "red"` (note the comma is missing) would throw an error. If you get an error message, always check for these small syntax errors because a missing comma or quote can wreak more havoc than you could possibly imagine. Also remember that **everyone** makes these errors, even those of us who use `r rproj()` all day, every day.
+  Note that arguments within a function are separated by a comma. In this example [binwidth = 1, fill = "red"]{.alt} will work but [binwidth = 1 fill = "red"]{.alt} (note the comma is missing) would throw an error. If you get an error message, always check for these small syntax errors because a missing comma or quote can wreak more havoc than you could possibly imagine. Also remember that **everyone** makes these errors, even those of us who use `r rproj()` all day, every day.
 </div>
 
 #### `r alien()` Alien coding challenge
@@ -453,11 +453,11 @@ ggplot2::ggplot(ice_tib, aes(upload_day)) +
   geom_histogram(binwidth = 1)
 ```
 
-You can also specify any [HEX colour code](http://www.color-hex.com/). For example, the shade of blue defined by hex code "#56B4E9" is good for colour blind people, so we could specify this by replacing "red" with "#56B4E9".
+You can also specify any [HEX colour code](http://www.color-hex.com/). For example, the shade of blue defined by hex code #56B4E9 is good for colour blind people, so we could specify this by replacing ["red"]{.alt} with ["#56B4E9"]{.alt}.
 
 #### `r alien()` Alien coding challenge
 
-Replacing "red" with "#56B4E9" and run the code to see the effect this change has. Using the [HEX colour code](http://www.color-hex.com/) website, try changing the fill colour to a different colour using a hex code.
+Replacing ["red"]{.alt} with ["#56B4E9"]{.alt} and run the code to see the effect this change has. Using the [HEX colour code](http://www.color-hex.com/) website, try changing the fill colour to a different colour using a hex code.
 
 ```{r ice_hist_hex, exercise=TRUE}
 ggplot2::ggplot(ice_tib, aes(upload_day)) +
@@ -471,12 +471,12 @@ ggplot2::ggplot(ice_tib, aes(upload_day)) +
 
 ### `r bmu2()` Changing the transparency of the bars
 
-You can also make filled objects semi-transparent by using `alpha = ` where alpha is a proportion (i.e., between 0 and 1). For example, if you want the histograms to have 20% opacity you could include  `alpha = 0.2` in the `geom_histogram()` function (remembering to separate it from other options with a comma).
+You can also make filled objects semi-transparent by using [alpha =]{.alt} where alpha is a proportion (i.e., between 0 and 1). For example, if you want the histograms to have 20% opacity you could include [alpha = 0.2]{.alt} in the `geom_histogram()` function (remembering to separate it from other options with a comma).
 
 <div class="warning">
   `r bug()` **De-bug: inadmissible values** 
 
-Arguments within functions often have admissible values, an example would be that alpha *must* fall between 0 and 1. If you set a value outside of an argument's range, the argument is usually ignored, or you'll get an error. If changing a value within a function appears to have no effect (or you get an error) check that you have used admissible values. In the current example, check you haven't included `alpha = 100`.
+Arguments within functions often have admissible values, an example would be that alpha *must* fall between 0 and 1. If you set a value outside of an argument's range, the argument is usually ignored, or you'll get an error. If changing a value within a function appears to have no effect (or you get an error) check that you have used admissible values. In the current example, check you haven't included [alpha = 100]{.alt}.
 </div>
 
 
@@ -504,7 +504,7 @@ To change the labels on the *x*- and *y*-axis we can use the `labs()` function. 
 labs(y = "label_for_y_axis", x = "label_for_x_axis")
 ```
 
-Replacing `label_for_y_axis` with the text we want on the *y*-axis and `label_for_x_axis` with the text that we want on the *x*-axis. For the current plot, we are plotting the frequency of uploads (because it's a histogram) on the *y*-axis and the number of days since the original ice bucket challenge on the *x*-axis, so we might use:
+Replacing [label_for_y_axis]{.alt} with the text we want on the *y*-axis and [label_for_x_axis]{.alt} with the text that we want on the *x*-axis. For the current plot, we are plotting the frequency of uploads (because it's a histogram) on the *y*-axis and the number of days since the original ice bucket challenge on the *x*-axis, so we might use:
 
 ```{r, eval = FALSE}
 labs(y = "Frequency", x = "Days since first ice bucket challenge video")
@@ -597,13 +597,13 @@ mean(variable, trim = 0, na.rm = FALSE)
 
 Which just says that you need to include a reference to the variable/data that you want the mean for, and that you can set two arguments:
 
-* **trim**: allows you to trim the scores before calculating the mean by specifying a value between 0 and 0.5. The default is 0 (no trim), but if you wanted to trim 10% of scores from each end of the distribution you could set `trim = 0.1`, similarly to trim 20% from each end before computing the mean set `trim = 0.2`.
-* **na.rm**: you'll see this argument in many functions, it stands for 'NA remove'. In `r rproj()` missing values are denoted as `NA` (not available), so by setting `na.rm = TRUE` (or `na.rm = T` for short) you ask `r rproj()` to remove missing values before computing the mean. 
+* [trim]{.alt}: allows you to trim the scores before calculating the mean by specifying a value between 0 and 0.5. The default is 0 (no trim), but if you wanted to trim 10% of scores from each end of the distribution you could set [trim = 0.1]{.alt}, similarly to trim 20% from each end before computing the mean set [trim = 0.2]{.alt}.
+* [na.rm]{.alt}: you'll see this argument in many functions, it stands for 'NA remove'. In `r rproj()` missing values are denoted as [NA]{.alt} (not available), so by setting [na.rm = TRUE]{.alt} (or [na.rm = T]{.alt} for short) you ask `r rproj()` to remove missing values before computing the mean. 
 
 <div class="warning">
   `r bug()` **De-bug: missing values** 
 
-  The default in many functions is not to remove missing values (e.g. `na.rm = FALSE`). If you have missing values in your data and don't change this default behaviour `r rproj()` will throw an error. Therefore, if you get an error from a function like `mean()`, check whether you have missing values and whether you have forgotten to set `na.rm = TRUE`.
+  The default in many functions is not to remove missing values (e.g. [na.rm = FALSE]{.alt}). If you have missing values in your data and don't change this default behaviour `r rproj()` will throw an error. Therefore, if you get an error from a function like `mean()`, check whether you have missing values and whether you have forgotten to set [na.rm = TRUE]{.alt}.
 </div>
 
 The function for the median has a similar format except that there isn't an argument to trim the data because that wouldn't make sense (the median is effectively the data with a 50% trim):
@@ -615,18 +615,18 @@ median(variable, na.rm = FALSE)
 <div class="tip">
   `r cat_space()` **Tip: using $**
   
-  Remember from the `discovr_01` tutorial that we can use `$` to refer to a variable within a tibble. In general, we use `tibble$variable`, for example, in the previous tutorial we used `ice_tib$upload_day` to select the variable **upload_day** from the `ice_tib` tibble.
+  Remember from the `discovr_01` tutorial that we can use `$` to refer to a variable within a tibble. In general, we use `tibble$variable`, for example, in the previous tutorial we used `ice_tib$upload_day` to select the variable **upload_day** from the [ice_tib]{.alt} tibble.
 </div>
 
 #### `r robot()` Code example
 
-If you are happy with the default settings you don't need to specify those arguments explicitly. For example, to find the mean of the variable `upload_day` from the `ice_tib` tibble, we could execute:
+If you are happy with the default settings you don't need to specify those arguments explicitly. For example, to find the mean of the variable **upload_day** from the [ice_tib]{.alt} tibble, we could execute:
 
 ```{r ice_mean_ce1, exercise = TRUE}
 mean(ice_tib$upload_day)
 ```
 
-However, if we wanted to remove missing values we need to override the default setting for the `na.rm` argument:
+However, if we wanted to remove missing values we need to override the default setting for the [na.rm]{.alt} argument:
 
 ```{r ice_mean_ce2, exercise = TRUE}
 mean(ice_tib$upload_day, na.rm = TRUE)
@@ -671,7 +671,7 @@ Use what you learned in the previous section and the code example above to get t
 <div class="tip">
   `r cat_space()` **Tip**
   
-  Because the current data has no missing scores we can omit the default argument of `na.rm=FALSE`.
+  Because the current data has no missing scores we can omit the default argument of [na.rm=FALSE]{.alt}.
 </div>
 
 ```{r ice_var, exercise = TRUE}
@@ -685,7 +685,7 @@ sd(ice_tib$upload_day)
 
 ### `r bmu2()` The inter-quartile range
 
-We can use the `IQR()` function to obtain the interquartile range of a set of scores. This function has an additional option of `type = ` which allows you to specify one of 8 different ways to calculate the IQR. The default is 7. There is an argument for using `type  = 8`, which uses a method recommended by [@hyndman_sample_1996].
+We can use the `IQR()` function to obtain the interquartile range of a set of scores. This function has an additional option of [type =]{.alt} which allows you to specify one of 8 different ways to calculate the IQR. The default is 7. There is an argument for using [type  = 8]{.alt}, which uses a method recommended by [@hyndman_sample_1996].
 
 #### `r robot()` Code example
 
@@ -701,8 +701,7 @@ Adapt the code example to get the inter-quartile range of the days since the ori
 IQR(ice_tib$upload_day, type = 8)
 ```
 
-
-In the code box below, use this function to get the inter-quartile range of the `upload_day` variable.
+In the code box below, use this function to get the inter-quartile range of the **upload_day** variable.
 
 ```{r ice_iqr, exercise = TRUE}
 
@@ -747,7 +746,7 @@ We can use the `round()` function to round values. It
 round(value, number_of_decimal_places = 0)
 ```
 
-In which we input a `value`, and specify the number of decimal places we want (the default is 0, which returns a whole number). For example, to round the value 3.211420 to a whole number we would execute:
+In which we input a [value]{.alt}, and specify the number of decimal places we want (the default is 0, which returns a whole number). For example, to round the value 3.211420 to a whole number we would execute:
 
 ```{r, eval=FALSE}
 round(3.211420)
@@ -759,7 +758,7 @@ But to round it to two decimal places we would include the number two after a co
 round(3.211420, 2)
 ```
 
-We could also use a pipe to feed a mean, median or variance into the round function. For example, to round the value of the variance of `upload_day` to 3 decimal places we could execute:
+We could also use a pipe to feed a mean, median or variance into the round function. For example, to round the value of the variance of **upload_day** to 3 decimal places we could execute:
 
 #### `r robot()` Code example
 
@@ -770,7 +769,7 @@ var(ice_tib$upload_day) %>%
 
 #### `r alien()` Alien coding challenge
 
-Round the standard deviation and mean of `upload_day` to 2 decimal places.
+Round the standard deviation and mean of **upload_day** to 2 decimal places.
 
 ```{r ice_rnd, exercise = TRUE}
 
@@ -803,7 +802,7 @@ ice_tib %>%
     round(., 2)
 ```
 
-The code feeds the data stored in `ice_tib` into the `summarise()` function. In this function new variables are created. The first variable we name `median` and it stores the output of `median(upload_day)`. In other words, we create a variable that we chose to call `median` (left hand side of the command) that stores the value of the median of the variable `upload_day` (right-hand side of the command). Similarly, we store the mean upload day in a variable called `mean` and so on. We can add as many new variables as we wish, but for the last variable we create we need to omit the comma at the end of the line (like we do when using `mutate()`). Finally, we pipe all of these values into the `round()` function, which rounds them to two decimal places.
+The code feeds the data stored in [ice_tib]{.alt} into the `summarise()` function. In this function new variables are created. The first variable we name `median` and it stores the output of `median(upload_day)`. In other words, we create a variable that we chose to call `median` (left hand side of the command) that stores the value of the median of the variable **upload_day** (right-hand side of the command). Similarly, we store the mean upload day in a variable called **mean** and so on. We can add as many new variables as we wish, but for the last variable we create we need to omit the comma at the end of the line (like we do when using `mutate()`). Finally, we pipe all of these values into the `round()` function, which rounds them to two decimal places.
 
 <div class="warning">
   `r bug()` **De-bug: commas at the end of commands** 
@@ -872,7 +871,7 @@ ice_tib %>%
 
 #### `r robot()` Code example
 
-If we want to store this table of summary statistics we can do so by assigning it to a new object. Let's say we want to assign it to an object called `upload_summary` then we'd add `upload_summary <-` to the beginning of the command
+If we want to store this table of summary statistics we can do so by assigning it to a new object. Let's say we want to assign it to an object called [upload_summary]{.alt} then we'd add `upload_summary <-` to the beginning of the command
 
 ```{r eval = FALSE}
 upload_summary <- ice_tib %>%

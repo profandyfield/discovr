@@ -43,7 +43,7 @@ liar_tib <- discovr::biggest_liar
   
 </div>
 
-### `r cat_space(height = 2)` Welcome to space pirate academy
+### `r cat_space(height = 2)` Welcome to the `discovr` space pirate academy
 
 Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
 
@@ -55,8 +55,9 @@ On your way you will face many challenges, but follow Mae's system to keep yours
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
-* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you.
-* `r bug(height = 2)` we also have alien bugs that will, erm, help you to avoid bugs by setting you coding challenges. 
+* `r alien(height = 2)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
+* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
+* `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
 
 By for now and good luck - you'll be amazing!
 
@@ -100,7 +101,7 @@ To work *outside of this tutorial* you need to download the following data files
 * [biggest_liar.csv](http://www.discoveringstatistics.com/repository/discovr_data/biggest_liar.csv)
 * [exam_anxiety.csv](http://www.discoveringstatistics.com/repository/discovr_data/exam_anxiety.csv)
 
-Set up an ![](./images/rstudio_logo.png){height=1em} project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called `data`. Place this code in the first code chunk in your `r rproj()` Markdown document:
+Set up an ![](./images/rstudio_logo.png){height=1em} project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
 
 ```{r, eval=FALSE}
 liar_tib <- here::here("data/biggest_liar.csv") %>% readr::read_csv()
@@ -111,7 +112,7 @@ exam_tib <- here::here("data/exam_anxiety.csv") %>% readr::read_csv()
 
 To work *outside of this tutorial* you need to turn categorical variables into factors and set an appropriate baseline category using `forcats::as_factor` and `forcats::fct_relevel`.
 
-For `liar_tib` execute the following code:
+For [liar_tib]{.alt} execute the following code:
 
 ```{r, eval=FALSE}
 liar_tib <- liar_tib %>% 
@@ -120,7 +121,7 @@ liar_tib <- liar_tib %>%
   )
 ```
 
-For `exam_tib` execute the following code:
+For [exam_tib]{.alt} execute the following code:
 
 ```{r, eval=FALSE}
 exam_tib <- exam_tib %>%
@@ -131,7 +132,7 @@ exam_tib <- exam_tib %>%
 ```
 
 
-## Correlation process
+## `r bmu2()` Correlation process
 
 Figure 1 shows a general procedure to follow when computing a bivariate correlation coefficient. First, check for sources of bias as outlined. The two most important ones in this context are linearity and normality. Remember that we’re fitting linear model to the data, so if the relationship between variables is not linear then this model is invalid. To meet this requirement, the outcome variable needs to be measured at the interval or ratio level as does the predictor variable (one exception is that a predictor variable can be a categorical variable with only two categories). As far as normality is concerned, we care about this only if we want confidence intervals or significance tests and if the sample size is small.
 
@@ -139,9 +140,13 @@ If the data have outliers, are not normal implying a non-normal sampling distrib
 
 ![Figure 1: The general process for conducting correlation analysis](./images/dsr2_fig_07_05_correlation_process.png)
  
-## Visualizing the data
+## `r bmu2()` Visualizing the data
 
-In a previous tutorial we looked at an example relating to exam anxiety: a psychologist was interested in the effects of exam stress and revision on exam performance. She had devised and validated a questionnaire to assess state anxiety relating to exams (called the Exam Anxiety Questionnaire, or EAQ). This scale produced a measure of anxiety scored out of 100. Anxiety was measured before an exam, and the percentage mark of each student on the exam was used to assess the exam performance. She also measured the number of hours spent revising. These data are preloaded in this tutorial in a tibble called `exam_tib`. Use the code box to see these data.
+In a previous tutorial we looked at an example relating to exam anxiety: a psychologist was interested in the effects of exam stress and revision on exam performance. She had devised and validated a questionnaire to assess state anxiety relating to exams (called the Exam Anxiety Questionnaire, or EAQ). This scale produced a measure of anxiety scored out of 100. Anxiety was measured before an exam, and the percentage mark of each student on the exam was used to assess the exam performance. She also measured the number of hours spent revising.
+
+#### `r alien()` Alien coding challenge
+
+These data are preloaded in this tutorial in a tibble called [exam_tib]{.alt}. Use the code box to see these data.
 
 ```{r exam_data, exercise = TRUE, exercise.lines = 2}
 
@@ -151,41 +156,53 @@ In a previous tutorial we looked at an example relating to exam anxiety: a psych
 exam_tib
 ```
 
-Note there are five variables: the participant **id**, the hours spent revising (**revise**), their **exam_grade**, their exam **anxiety**, and their biological **sex**. We can visualise the data easily using the `GGally` package. When you want to plot continuous variables, the `ggscatmat()` function from this package produces a matrix of scatterplots (below the diagonal), distributions (along the diagonal) and the correlation coefficient (above the diagonal). It takes the general form:
+Note there are five variables: the participant **id**, the hours spent revising (**revise**), their **exam_grade**, their exam **anxiety**, and their biological **sex**. We can visualise the data easily using the `GGally` package. When you want to plot continuous variables, the `ggscatmat()` function from this package produces a matrix of scatterplots (below the diagonal), distributions (along the diagonal) and the correlation coefficient (above the diagonal). 
+
+#### `r robot()` Code example
+
+The `ggscatmat()` function takes the general form:
 
 ```{r, eval = FALSE}
 GGally::ggscatmat(my_tibble, columns = c("variable 1", " variable 2", " variable 3" …))
 ```
 
-Basically, you feed in the name of the tibble containing the variables, and use the columns argument to name the variables that you want to plot. For example, to plot the variables called **exam_grade**, **revise**, and **anxiety** we execute:
+Basically, you feed in the name of the tibble containing the variables, and use the columns argument to name the variables that you want to plot.
 
-```{r, eval = FALSE}
-GGally::ggscatmat(exam_tib, columns = c("exam_grade", "revise", "anxiety"))
-```
+#### `r alien()` Alien coding challenge
 
-It’s as simple as that! Like other plots we have done, we can also apply a theme (I like `theme_minimal()`) in the usual way:
-
-```{r, eval = FALSE}
-GGally::ggscatmat(exam_tib, columns = c("exam_grade", "revise", "anxiety")) +
-  theme_minimal()
-```
-
-Try this in the code box:
+For example, to plot the variables called **exam_grade**, **revise**, and **anxiety** we replace ["variable 1"]{.alt} with ["exam_grade"]{.alt}, ["variable 2"]{.alt} with ["revise"]{.alt} and so on. It’s as simple as that! Plot the scatterplot of the three variables.
 
 ```{r exam_plot, exercise = TRUE, exercise.lines = 2}
 
 ```
 
 ```{r exam_plot-solution}
+GGally::ggscatmat(exam_tib, columns = c("exam_grade", "revise", "anxiety"))
+```
+
+
+#### `r alien()` Alien coding challenge
+
+Like other plots we have done, we can also apply a `ggplot2` theme in the usual way. Copy the code from the previous task and try applying `theme_minimal()`
+
+```{r exam_plot2, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r exam_plot2-solution}
 GGally::ggscatmat(exam_tib, columns = c("exam_grade", "revise", "anxiety")) +
   theme_minimal()
 ```
 
 The resulting plot shows that all of the variables are skewed. This skew could be a problem if we want to do significance tests or look at confidence intervals. The sample contains 103 observations, which is reasonably large, and possibly large enough for the central limit theorem to relieve of us of concerns about normality. We should consider using a robust method to compute the correlation coefficient itself.
 
-##	Pearson's correlation using R
+##	`r bmu2()` Pearson's correlation using `r rproj()`
 
-The `correlation` package brings together lots of correlation-related stuff into a nice, easy-to-use bundle of loveliness. It has one workhorse function called … wait for it … `correlation()`. It takes the general form
+The `correlation` package brings together lots of correlation-related stuff into a nice, easy-to-use bundle of loveliness. It has one workhorse function called … wait for it … `correlation()`. 
+
+#### `r robot()` Code example
+
+The `correlation()` function takes the general form:
 
 ```{r eval = FALSE}
 correlation::correlation(tibble,
@@ -197,42 +214,47 @@ correlation::correlation(tibble,
 
 I’ve listed the main arguments, but there are others. For now, we’ll just look at the main arguments that we will use:
 
-* `tibble`. This word should be replaced with the name of the tibble containing any variables that you wish to correlate.
-* `method`. This argument sets the method for the correlation coefficient. By default it is set to *pearson* (to calculate Pearson’s coefficient) but can be changed to *spearman*, *kendall*, *biserial*, *polychoric*, *tetrachoric*, and *percentage* (for percentage bend correlation) amongst others. We’ll look at some, but not all of these methods.
-* `p_adjust`. By default the function corrects the *p*-value for the number of tests you have performed (a good idea) using the Holm-Bonferroni method, which applies the Bonferroni criterion in a slightly less strict way that controls the Type I error rate but with less risk of a Type II error. You can change this argument to *none* (don’t correct for multiple tests, a bad idea), *bonferroni* (to apply the standard Bonferroni method) or several other methods.
-*	`ci`. This argument sets the confidence interval width. By default it is 0.95 for a 95% confidence interval, which will probably be what you’ll generally use.
+* [tibble]{.alt}. This word should be replaced with the name of the tibble containing any variables that you wish to correlate.
+* [method]{.alt}. This argument sets the method for the correlation coefficient. By default it is set to [pearson]{.alt} (to calculate Pearson’s coefficient) but can be changed to [spearman]{.alt}, [kendall]{.alt}, [biserial]{.alt}, [polychoric]{.alt}, [tetrachoric]{.alt}, and [percentage]{.alt} (for the percentage bend correlation) amongst others. We’ll look at some, but not all of these methods.
+* [p_adjust]{.alt}. By default the function corrects the *p*-value for the number of tests you have performed (a good idea) using the Holm-Bonferroni method, which applies the Bonferroni criterion in a slightly less strict way that controls the Type I error rate but with less risk of a Type II error. You can change this argument to [none]{.alt} (i.e. don’t correct for multiple tests, a bad idea), [bonferroni]{.alt} (to apply the standard Bonferroni method) or several other methods.
+*	[ci]{.alt}. This argument sets the confidence interval width. By default it is 0.95 for a 95% confidence interval, which will probably be what you’ll generally use.
 
-To use the function, take your tibble, pipe it into the `select()` function from `dplyr` to select the variables you want to correlate, then pipe that into the correlation function. You can use the same code structure whether you want to correlate two variables or produce all correlations between pairs of multiple variables. For example, to calculate the Pearson correlation between the variables **exam_grade** and **revise** in `exam_tib`, we’d execute:
-```{r eval = FALSE}
-exam_tib %>% 
-  dplyr::select(exam_grade, revise) %>% 
-  correlation::correlation()
-```
+To use the function, take your tibble, pipe it into the `select()` function from `dplyr` to select the variables you want to correlate, then pipe that into the correlation function. You can use the same code structure whether you want to correlate two variables or produce all correlations between pairs of multiple variables.
 
-This code takes the exam_tib and uses the `select()` function to select the variables exam_grade and revise. The result is that a tibble with these two variables in is fed into the `correlation()` function to compute the correlation between them. Try this code.
+#### `r robot()` Code example
+
+To calculate the Pearson correlation between the variables **exam_grade** and **revise** in [exam_tib]{.alt}, we’d execute:
 
 ```{r basicr, exercise = TRUE, exercise.lines = 3}
-
-```
-
-```{r basicr-solution}
 exam_tib %>% 
   dplyr::select(exam_grade, revise) %>% 
   correlation::correlation()
 ```
 
-This approach scales up nicely. For example, if we now also want to see the correlations with exam anxiety we need only add this variable to the `select()` function:
+This code takes the [exam_tib]{.alt} and uses the `select()` function to select the variables exam_grade and revise. The result is that a tibble with these two variables in is fed into the `correlation()` function to compute the correlation between them.
 
-```{r eval = FALSE}
+#### `r alien()` Alien coding challenge
+
+Calculate the Pearson correlation between the variables **exam_grade** and **anxiety**
+
+```{r basicr2, exercise = TRUE, exercise.lines = 3}
+
+```
+
+```{r basicr2-solution}
+exam_tib %>% 
+  dplyr::select(exam_grade, anxiety) %>% 
+  correlation::correlation()
+```
+
+#### `r robot()` Code example
+
+This approach scales up nicely. For example, if we now also want to see the correlations between all three variables we need only extend the list of variables within the `select()` function:
+
+```{r tidypr, exercise = TRUE, exercise.lines = 3}
 exam_tib %>% 
   dplyr::select(exam_grade, revise, anxiety) %>% 
   correlation::correlation()
-```
-
-Try it out
-
-```{r tidypr, exercise = TRUE, exercise.lines = 3}
-
 ```
 
 ```{r tidypr-solution}
@@ -241,9 +263,36 @@ exam_tib %>%
   correlation::correlation()
 ```
 
-The resulting output tells us that exam grade has a correlation with revision of *r* = 0.40 (which we already knew), and a similar strength relationship with exam anxiety, *r* = -0.44 (but in the opposite direction). As revision increases so does exam performance, but as anxiety increase exam performance decreases. We also see that revision has a very strong negative relationship with exam anxiety, *r* = -0.71. The more you revise the less anxiety you have about the exam. All *p*-values are less than 0.001 (and, so also less than 0.05) and would be interpreted as the correlation coefficients being significantly different from zero. The significance values tell us that the probability of getting correlation coefficients at least this big as these in a sample of 103 people if the null hypothesis were true (there was no relationship between these variables) is very low (close to zero in fact). If we’re prepared to assume that the sample is one of the 95% of samples that will produce a confidence interval containing the population value, then the confidence intervals tell us about the uncertainty around the value of r. For example, under this assumption, the population value of the association between exam grade and revision falls between 0.22 and 0.55.
+```{r quiz_pearson_ex1, echo = FALSE}
+quiz(
+  question(sprintf("The confidence interval for the association between exam grade and revision is 0.22 to 0.55. What does this tell us?"),
+    answer("If this confidence interval is one of the 95% that contains the population value then the population value of *r* lies between 0.22 and 0.55.", correct = TRUE),
+    answer("There is a 95% chance that the population value of *r* lies between 0.22 and 0.55", message = "You cannot make probability statements from a confidence interval. We don't know whether this particular CI is one of the 95% that contains the population value of *r*."),
+    answer("The probability of this confidence interval containing the population value is 0.95.", message = "The probability of this confidence interval containing the population value is either 0 (it doesn't) or 1 (it does) but it's impossible to know which."),
+    answer("I can be 95% confident that the population value of *r* lies between 0.22 and 0.55", message = "Confidence intervals do not quantify your subjective confidence."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  ),
+  question("The *p*-value for the association between exam grade and revision is < 0.001, what does this value mean?",
+    answer("The probability of getting a value of *t* at least as big as the value we have observed, if the value of *r* were, in fact, zero is less than 0.001. I'm going to assume, therefore, that the association between exam grade and revision is not zero.", correct = T),
+    answer("The probability that *r* = 0.40 is a chance result is less than 0.001", message = "*p*-values do not tell us whether results occur by chance."),
+    answer("The probability that exam grade and revision are not assciated is 0.001", message = "*p*-values do not tell us about the probability of the null hypothesis"),
+    answer("I got a different *p*-value to 0.0o1", message = "You may have done the analysis incorrectly. Try again!"),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  )
+)
 
-TIP: If you want more decimal places in your output use the argument `ci_digits` to control the number of decimal places for the confidence intervals and `digits` to control the number of decimal places in the other columns. For example, the code to display the previous output to three decimal places is:
+```
+
+The resulting output tells us that exam grade has a correlation with revision of $r = 0.40$, and a similar strength relationship with exam anxiety, $r = -0.44$ (but in the opposite direction). As revision increases so does exam performance, but as anxiety increase exam performance decreases. We also see that revision has a very strong negative relationship with exam anxiety, $r = -0.71$. The more you revise the less anxiety you have about the exam. All *p*-values are less than 0.001 (and, so also less than 0.05) and would be interpreted as the correlation coefficients being significantly different from zero. The significance values tell us that the probability of getting correlation coefficients at least this big as these in a sample of 103 people if the null hypothesis were true (there was no relationship between these variables) is very low (close to zero in fact). If we’re prepared to assume that the sample is one of the 95% of samples that will produce a confidence interval containing the population value, then the confidence intervals tell us about the uncertainty around the value of *r*. For example, under this assumption, the population value of the association between exam grade and revision falls between 0.22 and 0.55.
+
+<div class="tip">
+  `r cat_space()` **Tip: Rounding**
+  
+  If you want more decimal places in your output use the argument [ci_digits]{.alt} to control the number of decimal places for the confidence intervals and `digits` to control the number of decimal places in the other columns. For example, the code to display the previous output to three decimal places is:
 
 ```{r eval = FALSE}
 exam_tib %>% 
@@ -252,35 +301,41 @@ exam_tib %>%
 ```
 
 This won't work within this tutorial (for reasons I won't bore you with), but try it out in a markdown document.
+</div>
 
-##	Robust correlation coefficients
+##	`r user_visor()` Robust correlation coefficients
 
-Given the skew in some of the variables, we are probably better off estimating a robust correlation coefficient, like the percentage bend correlation coefficient [@Wilcox_1994]. We can obtain this by setting `method = "percentage"` within the `correlation()`:
+Given the skew in some of the variables, we are probably better off estimating a robust correlation coefficient, like the percentage bend correlation coefficient [@Wilcox_1994].
 
-```{r eval = FALSE}
-exam_tib %>% 
-  dplyr::select(exam_grade, revise, anxiety) %>% 
-  correlation::correlation(method = "percentage")
-```
+#### `r alien()` Alien coding challenge
 
-Try it out:
+We can obtain the percentage bend correlation coefficient by setting [method = "percentage"]{.alt} within the `correlation()`. The code that we just used is reproduced below. Adapt it to obtain the percentage bend correlation coefficient.
 
 ```{r pball, exercise = TRUE, exercise.lines = 3}
-
+exam_tib %>% 
+  dplyr::select(exam_grade, revise, anxiety) %>% 
+  correlation::correlation()
 ```
 
-```{r pball-solution}
+```{r pball-hint-1}
+# Include method = "percentage" in correlation()
+```
+
+```{r pball-hint-2}
 exam_tib %>% 
   dplyr::select(exam_grade, revise, anxiety) %>% 
   correlation::correlation(method = "percentage")
 ```
-
 
 Compare the values of these robust correlations to the raw Pearson correlations you obtained earlier. Exam grade had a Pearson correlation with revision of $r = 0.40$, but the percentage bend correlation is smaller (0.34). Similarly the robust versions of the other correlations are smaller than the raw Pearson correlations (although they all remain significant with *p*s < 0.05).
 
-## Spearman’s Correlation Coefficient
+## `r bmu2()` Spearman’s Correlation Coefficient
 
-Spearman correlations are very easy once you've mastered `correlation()`. Let's switch example. Imagine I wanted to test a theory that more creative people will be better liars. I gathered together 68 past contestants from the World’s Biggest Liar competition (held annually at the Santon Bridge Inn in Wasdale in case you're interested) and noted where they were placed in the competition (first, second, third, etc.); I also gave them a creativity questionnaire (maximum score 60). The position in the competition is an ordinal variable because the places are categories but have a meaningful order (first place is better than second place and so on). Therefore, Spearman’s correlation coefficient should be used (Pearson’s *r* requires interval or ratio data). The data for this study are preloaded in this tutorial in a tibble called `liar_tib`. If you're working outside of this tutorial see the insteructions at the beginning for loading the data. Look at the tibble by executing its name:
+Spearman correlations are very easy once you've mastered `correlation()`. Let's switch example. Imagine I wanted to test a theory that more creative people will be better liars. I gathered together 68 past contestants from the World’s Biggest Liar competition (held annually at the Santon Bridge Inn in Wasdale in case you're interested) and noted where they were placed in the competition (first, second, third, etc.); I also gave them a creativity questionnaire (maximum score 60). The position in the competition is an ordinal variable because the places are categories but have a meaningful order (first place is better than second place and so on). Therefore, Spearman’s correlation coefficient should be used (Pearson’s *r* requires interval or ratio data). The data for this study are preloaded in this tutorial in a tibble called [liar_tib]{.alt}. If you're working outside of this tutorial see the instructions at the beginning for loading the data. 
+
+#### `r alien()` Alien coding challenge
+
+Look at the tibble by executing its name:
 
 ```{r liar, exercise = TRUE, exercise.lines = 3}
 
@@ -292,50 +347,96 @@ liar_tib
 
 The main variables are in two columns: one labelled **creativity** and one labelled **position**, but there’s also a variable **id** containing the participant’s id and a categorical variable called **novice** that specifies whether the participant was entering the contest for the first time or was a previous entrant. Note that the variable **position** is numeric (the position in the competition is represented with numbers).
 
+#### `r alien()` Alien coding challenge
+
 Plot **creativity** against **position** using `ggscatmat()`
 
 ```{r create_plot, exercise = TRUE, exercise.lines = 2}
 
 ```
 
-```{r create_plot-solution}
+```{r create_plot-hint-1}
+# Use the GGally::ggscatmat() function (replace the xs)
+
+GGally::ggscatmat(xxxxxx, columns = c("xxxxxx", "xxxxxx"))
+```
+
+```{r create_plot-hint-2}
+# This will get you the plot:
+GGally::ggscatmat(liar_tib, columns = c("creativity", "position"))
+
+# Now add a theme
+```
+
+```{r create_plot-hint-3}
+# The plot with theme_minimal() applied
+
 GGally::ggscatmat(liar_tib, columns = c("creativity", "position")) +
   theme_minimal()
 ```
 
-To get the Spearman correlation between **creativity** and **position** we can basically use `correlation()` exactly as we did for the Pearson correlation, except we need to add `method = "spearman"` to the function. For example, we could execute this code (compare it with the code we used for Pearson’s (r)*):
+To get the Spearman correlation between **creativity** and **position** we can basically use `correlation()` exactly as we did for the Pearson correlation, except we add [method = "spearman"]{.alt} to the function.
+
+#### `r robot()` Code example
+
+In general, we could execute this code to get the Spearman correlation between **variable_1** and **variable_2** from the tibble called [my_tib]{.alt} (compare it with the code we used for Pearson’s *r*)
 
 ```{r, eval = F}
-liar_tib %>%
-  dplyr::select(position, creativity) %>% 
+my_tib %>%
+  dplyr::select(variable_1, variable_2) %>% 
   correlation::correlation(method = "spearman")
 ```
 
-Try this out:
+#### `r alien()` Alien coding challenge
+
+Use the code example to obtain the Spearman correlation between the variables **position** and **creativity** from [liar_tib]{.alt}.
 
 ```{r liarr, exercise = TRUE, exercise.lines = 3}
 
 ```
 
-```{r liarr-solution}
+```{r liarr-hint-1}
+#Start with the tibble containing the data
+liar_tib
+```
+
+```{r liarr-hint-2}
+# Now pipe it into the select() function
+liar_tib %>%
+  dplyr::select()
+# Now, put the variables names in select that you want to select
+```
+
+```{r liarr-hint-3}
+# Put the variables names in select that you want to select
+liar_tib %>%
+  dplyr::select(position, creativity)
+
+# Now pipe this into correlation()
+```
+
+```{r liarr-hint-4}
+liar_tib %>%
+  dplyr::select(position, creativity) %>% 
+  correlation::correlation()
+# set method to Spearman
+```
+
+```{r liarr-hint-5}
 liar_tib %>%
   dplyr::select(position, creativity) %>% 
   correlation::correlation(method = "spearman")
 ```
 
-From the output we can see that the Spearman correlation coefficient between the two variables is $r_s = -0.37$, with an associated *p*-value of 0.0017 and a sample size of 68.  There was a significant negative relationship between creativity scores and how well someone did in the World’s Biggest Liar competition: as creativity increased, position decreased. This might seem contrary to what we predicted until you remember that a low number means that you did well in the competition (a low number such as 1 means you came first, and a high number like 4 means you came fourth). Therefore, our hypothesis is supported: as creativity increased, so did success in the competition.
+From the output we can see that the Spearman correlation coefficient between the two variables is $r_s = -0.38$, with an associated *p*-value of 0.002 and a sample size of 68.  There was a significant negative relationship between creativity scores and how well someone did in the World’s Biggest Liar competition: as creativity increased, position decreased. This might seem contrary to what we predicted until you remember that a low number means that you did well in the competition (a low number such as 1 means you came first, and a high number like 4 means you came fourth). Therefore, our hypothesis is supported: as creativity increased, so did success in the competition.
 
-##	Kendall’s tau
+##	`r bmu2()` Kendall’s tau
 
-Kendall’s tau, denoted by $\tau$, is another non-parametric correlation and it should be used rather than Spearman’s coefficient when you have a small data set with a large number of tied ranks. The `correlation()` function will compute Kendall’s $\tau$ by including `method = "kendall"`
+Kendall’s tau, denoted by $\tau$, is another non-parametric correlation and it should be used rather than Spearman’s coefficient when you have a small data set with a large number of tied ranks. The `correlation()` function will compute Kendall’s $\tau$ by including [method = "kendall"]{.alt}.
 
-```{r, eval = F}
-liar_tib %>% 
-  dplyr::select(position, creativity) %>% 
-  correlation::correlation(method = "kendall")
-```
+#### `r alien()` Alien coding challenge
 
-Try this out:
+Repeat the previous exercise but replace [method = "spearman"]{.alt} with [method = "kendall"]{.alt}.
 
 ```{r tau, exercise = TRUE, exercise.lines = 3}
 
@@ -348,7 +449,17 @@ liar_tib %>%
 ```
 
 
-The output shows $\tau = -0.300$, which is closer to zero than the Spearman correlation (it has decreased from $-0.373$ to $-0.300$). Kendall’s value is likely a more accurate gauge of what the correlation in the population would be.
+The output shows $\tau = -0.30$, which is closer to zero than the Spearman correlation (it has decreased from $-0.38$ to $-0.30$). Kendall’s value is likely a more accurate gauge of what the correlation in the population would be.
+
+<div class="infobox">
+  <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
+  
+  **A message from Mae Jemstone:**
+  
+  Once when I was travelling through the constellation of *dragonis murralis* on our mission to improve statistical literacy, we crunched some data and discovered that high anxiety is often associated with poorer performance in Mathematical subjects. It's not that anxious people are less able, but their anxiety is a barrier that makes them feel that they can't do things, even though they can. Associations like this are helpful to get us thinking about relationships between variables, which is the first step towards predicting variables! You've taken that first step towards understanding how we use measured variables to predict what might happen. Well done!
+  
+  And if you're one of those anxious people, you are not alone, and you *can* do this. Think about ways that you can feel the anxious feelings but not let them disrupt your thinking: when you feel the anxiety take some controlled, deep breaths for a minute. Be mindful. Believe in yourself, because I do.
+</div>
 
 ## Resources {data-progressive=FALSE}
 

@@ -99,7 +99,7 @@ To work *outside of this tutorial* you need to download the following data files
 * [notebook.csv](http://www.discoveringstatistics.com/repository/discovr_data/notebook.csv)
 * [exam_anxiety.csv](http://www.discoveringstatistics.com/repository/discovr_data/exam_anxiety.csv)
 
-Set up an ![](./images/rstudio_logo.png){height=1em} project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called `data`. Place this code in the first code chunk in your `r rproj()` Markdown document:
+Set up an ![](./images/rstudio_logo.png){height=1em} project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
 
 ```{r, eval=FALSE}
 wish_tib <- here::here("data/jiminy_cricket.csv") %>% readr::read_csv()
@@ -111,7 +111,7 @@ exam_tib <- here::here("data/exam_anxiety.csv") %>% readr::read_csv()
 
 To work *outside of this tutorial* you need to turn categorical variables into factors and set an appropriate baseline category using `forcats::as_factor` and `forcats::fct_relevel`.
 
-For the `wish_tib` execute the following code:
+For the [wish_tib]{.alt} execute the following code:
 
 ```{r, eval=FALSE}
 wish_tib <- wish_tib %>%
@@ -121,7 +121,7 @@ wish_tib <- wish_tib %>%
   )
 ```
 
-For `notebook_tib` execute the following code:
+For [notebook_tib]{.alt} execute the following code:
 
 ```{r, eval=FALSE}
 notebook_tib <- notebook_tib %>%
@@ -131,7 +131,7 @@ notebook_tib <- notebook_tib %>%
   )
 ```
 
-For `exam_tib` execute the following code:
+For [exam_tib]{.alt} execute the following code:
 
 ```{r, eval=FALSE}
 exam_tib <- exam_tib %>%
@@ -166,7 +166,7 @@ This is a lot to take in, so consider this a reference point (rather than expect
 
 ## `r bmu2()` Boxplots (aka Box-Whisker plots)
 
-Dreams are good, but a completely blinkered view that they’ll come true without any work on your part is not. Imagine I collected some data from 250 people on their level of success using a composite measure involving their salary, quality of life and how closely their life matches their aspirations. This gave me a score from 0 (complete failure) to 100 (complete success). I then implemented an intervention: I told people that for the next 5 years they should either wish upon a star for their dreams to come true or work as hard as they could to make their dreams come true. I measured their success again 5 years later. People were randomly allocated to these two instructions. The data are in `star_tib`. The variables are **id** (the person's id), **strategy** (hard work or wishing upon a star), **time** (baseline or 5 years), and **success** (the rating on my dodgy scale).
+Dreams are good, but a completely blinkered view that they’ll come true without any work on your part is not. Imagine I collected some data from 250 people on their level of success using a composite measure involving their salary, quality of life and how closely their life matches their aspirations. This gave me a score from 0 (complete failure) to 100 (complete success). I then implemented an intervention: I told people that for the next 5 years they should either wish upon a star for their dreams to come true or work as hard as they could to make their dreams come true. I measured their success again 5 years later. People were randomly allocated to these two instructions. The data are in [star_tib]{.alt}. The variables are **id** (the person's id), **strategy** (hard work or wishing upon a star), **time** (baseline or 5 years), and **success** (the rating on my dodgy scale).
 
 First, we're going to create a boxplot of the success scores at baseline and after 5 years. To create a boxplot in `ggplot` we use the `geom_boxplot()` function. We've seen that the general setup of a plot uses this command:
 
@@ -174,7 +174,7 @@ First, we're going to create a boxplot of the success scores at baseline and aft
 ggplot2::ggplot(my_tib, aes(variable_for_x_axis, variable_for_y_axis))
 ```
 
-Within the `ggplot()` function replace `my_tib` with the name of the tibble containing the data you want to plot, and within the `aes()` function replace `variable_for_x_axis` with the name of the variable to be plotted on the *x*-axis (horizontal), and replace `variable_for_y_axis` with the name of the variable to be plotted on the *y*-axis (vertical).
+Within the `ggplot()` function replace [my_tib]{.alt} with the name of the tibble containing the data you want to plot, and within the `aes()` function replace [variable_for_x_axis]{.alt} with the name of the variable to be plotted on the *x*-axis (horizontal), and replace [variable_for_y_axis]{.alt} with the name of the variable to be plotted on the *y*-axis (vertical).
 
 #### `r robot()` Code example
 
@@ -188,8 +188,8 @@ wish_plot +
 
 Let's break down this command:
 
-* `wish_plot <- ggplot2::ggplot(wish_tib, aes(time, success))` creates an object called `wish_plot` that contains the plot. The `ggplot()` function is then used to specify that the plot uses the data in the `wish_tib` tibble and plots the variable **time** on the *x*-axis and the variable **success** on the *y*-axis.
-* `wish_plot + geom_boxplot()` takes the object `wish_plot` and adds a boxplot geom to it.
+* `wish_plot <- ggplot2::ggplot(wish_tib, aes(time, success))` creates an object called [wish_plot]{.alt} that contains the plot. The `ggplot()` function is then used to specify that the plot uses the data in the [wish_tib]{.alt} tibble and plots the variable **time** on the *x*-axis and the variable **success** on the *y*-axis.
+* `wish_plot + geom_boxplot()` takes the object [wish_plot]{.alt} and adds a boxplot geom to it.
 
 Job done. 
 
@@ -228,7 +228,7 @@ The boxplot shows that success increased (very slightly) after 5 years (the medi
 
 ### `r bmu2()` Grouping by colour
 
-The boxplot we have created shows how success changed over time, but it doesn't show us what effect wishing on a star had compared to hard work. We can see this by splitting the data by the variable **strategy**. We can do this in several ways. First, we can ask `ggplot` to vary the `fill` of the boxes or the `colour` of the lines around the boxes by the variable **strategy** by adding it to the `aes()` function in the original command to set up the plot For example, to vary the fill of the boxplots by **strategy**, we'd change the first line of our command to be:
+The boxplot we have created shows how success changed over time, but it doesn't show us what effect wishing on a star had compared to hard work. We can see this by splitting the data by the variable **strategy**. We can do this in several ways. First, we can ask `ggplot` to vary the [fill]{.alt} of the boxes or the [colour]{.alt} of the lines around the boxes by the variable **strategy** by adding it to the `aes()` function in the original command to set up the plot For example, to vary the fill of the boxplots by **strategy**, we'd change the first line of our command to be:
 
 #### `r robot()` Code example
 
@@ -236,11 +236,11 @@ The boxplot we have created shows how success changed over time, but it doesn't 
 wish_plot <- ggplot2::ggplot(wish_tib, aes(time, success, fill = strategy))
 ```
 
-Note that all I have done is to add `fill = strategy` to the initial aesthetic. The rest of the command stays the same.
+Note that all I have done is to add [fill = strategy]{.alt} to the initial aesthetic. The rest of the command stays the same.
 
 #### `r alien()` Alien coding challenge
 
-Your original code is reproduced below, adapt it to include `fill = strategy` and run it. Compare the plot to the previous version. Note that the plot still splits the data by **time** along the *x*-axis, but within each category the data from the wishing on a star group is shown in a different colour to the data from the hard work group.
+Your original code is reproduced below, adapt it to include [fill = strategy]{.alt} and run it. Compare the plot to the previous version. Note that the plot still splits the data by **time** along the *x*-axis, but within each category the data from the wishing on a star group is shown in a different colour to the data from the hard work group.
 
 ```{r wish_fill, exercise = TRUE, exercise.lines = 5}
 wish_plot <- ggplot2::ggplot(wish_tib, aes(time, success))
@@ -260,11 +260,11 @@ wish_plot +
 
 We can see that success only increases after 5 years in the hard work group (but the spread of success scores is huge too at 5 years in that group).
 
-Instead of using `fill` to differentiate the two **strategy** groups, we can use `colour`. This leaves the boxes white for all groups, but uses different colours for the lines around the boxes.
+Instead of using [fill]{.alt} to differentiate the two **strategy** groups, we can use [colour]{.alt}. This leaves the boxes white for all groups, but uses different colours for the lines around the boxes.
 
 #### `r robot()` Code example
 
-Like with `fill`, we adapt the first line of code, but this time to include `colour = strategy`:
+Like with [fill]{.alt}, we adapt the first line of code, but this time to include [colour = strategy]{.alt}:
 
 ```{r, eval = FALSE}
 wish_plot <- ggplot2::ggplot(wish_tib, aes(time, success, colour = strategy))
@@ -272,7 +272,7 @@ wish_plot <- ggplot2::ggplot(wish_tib, aes(time, success, colour = strategy))
 
 #### `r alien()` Alien coding challenge
 
-Add `colour = strategy` to the code below and see what happens when you run it.
+Add [colour = strategy]{.alt} to the code below and see what happens when you run it.
 
 ```{r wish_colour, exercise = TRUE, exercise.lines = 5}
 wish_plot <- ggplot2::ggplot(wish_tib, aes(time, success))
@@ -296,7 +296,7 @@ This is great but the legend for the variable **strategy** has a lower case 's' 
 labs(x = "Time", y = "Success (%)")
 ```
 
-To specify the label for the variable that is used to determine the fill or colour of the plot, we add it to the `labs()` function. For example, if we used **strategy** to determine the fill of the plot then we'd add `fill = "label"`, where *label* is the text we want to use:
+To specify the label for the variable that is used to determine the fill or colour of the plot, we add it to the `labs()` function. For example, if we used **strategy** to determine the fill of the plot then we'd add [fill = "label"]{.alt}, where *label* is the text we want to use:
 
 #### `r robot()` Code example
 
@@ -304,7 +304,7 @@ To specify the label for the variable that is used to determine the fill or colo
 labs(x = "Time", y = "Success (%)", fill = "Success strategy")
 ```
 
-Similarly, if we had used **strategy** to determine the colour of the plot then we'd add `colour = "label"` to the function
+Similarly, if we had used **strategy** to determine the colour of the plot then we'd add [colour = "label"]{.alt} to the function
 
 ```{r, eval = FALSE}
 labs(x = "Time", y = "Success (%)", colour = "Success strategy")
@@ -312,7 +312,7 @@ labs(x = "Time", y = "Success (%)", colour = "Success strategy")
 
 #### `r alien()` Alien coding challenge
 
-The code to create a boxplot that uses `fill` to differentiate the two success strategies is copied below. Edit the code, using what you've just learnt, to change the label for the `fill` property to be *Success strategy*. Run the code and see how the legend changes.
+The code to create a boxplot that uses [fill]{.alt} to differentiate the two success strategies is copied below. Edit the code, using what you've just learnt, to change the label for the [fill]{.alt} property to be *Success strategy*. Run the code and see how the legend changes.
 
 ```{r wish_fill2, exercise = TRUE, exercise.lines = 5}
 wish_plot <- ggplot2::ggplot(wish_tib, aes(time, success))
@@ -347,10 +347,10 @@ facet_wrap(facet, nrow = NULL, ncol = NULL, scales = "fixed")
 
 There are other arguments, but these are the main ones:
 
-* `facet` specifies how you want to create the facet. To create separate plots for the wish upon a star and hard work groups our facet would be `~strategy`.
-* `nrow` specifies how many rows of plots to display. There is no default, the function just tries to make sensible choices. If we wanted the wish upon a star and hard work plots side by side we want them arranged in 1 row, so we could be explicit and include the command `nrow = 1`.
-* `ncol` specifies how many columns of plots to display. Again, the function  tries to make sensible choices. If we wanted the wish upon a star and hard work plots on top of each other then we want them arranged in 1 column, so we could be explicit and include the command `ncol = 1`. In reality `nrow` and `ncol` become important when you have lots of plots to arrange. For example if you were plotting data from 12 different groups, you might want these arranged in 2 rows and 6 columns, 4 rows and 3 columns, 6 rows and two columns and so on.
-* `scales`. By default the scales of the plots are set to be the same ("fixed") but sometimes it's handy to let them vary across different plots, in which case set `scales = "free"` or use "free_x" or "free_y" to allow only the *x*-axis or *y*-axis to vary across plots.
+* [facet]{.alt} specifies how you want to create the facet. To create separate plots for the wish upon a star and hard work groups our facet would be [~strategy]{.alt}.
+* [nrow]{.alt} specifies how many rows of plots to display. There is no default, the function just tries to make sensible choices. If we wanted the wish upon a star and hard work plots side by side we want them arranged in 1 row, so we could be explicit and include the command [nrow = 1]{.alt}.
+* [ncol]{.alt} specifies how many columns of plots to display. Again, the function  tries to make sensible choices. If we wanted the wish upon a star and hard work plots on top of each other then we want them arranged in 1 column, so we could be explicit and include the command [ncol = 1]{.alt}. In reality [nrow]{.alt} and [ncol]{.alt} become important when you have lots of plots to arrange. For example if you were plotting data from 12 different groups, you might want these arranged in 2 rows and 6 columns, 4 rows and 3 columns, 6 rows and two columns and so on.
+* [scales]{.alt}. By default the scales of the plots are set to be the same ("fixed") but sometimes it's handy to let them vary across different plots, in which case set [scales = "free"]{.alt} or use ["free_x"]{.alt}  or ["free_y"]{.alt} to allow only the *x*-axis or *y*-axis to vary across plots.
 
 #### `r alien()` Alien coding challenge
 
@@ -405,7 +405,7 @@ stat_summary(fun = "mean", geom = "point", size = 4)
 ```
 
 
-In the `stat_summary()` function, we're asking `r rproj()` to calculate the means (`fun = "mean"`). The argument `geom = "point"` asks `ggplot2` to display the means as dots using `geom_point()`. The final argument, `size = 4`, determines the size of the dots and overrides the default (you can omit this argument if you like).
+In the `stat_summary()` function, we're asking `r rproj()` to calculate the means ([fun = "mean"]{.alt}). The argument [geom = "point"]{.alt} asks `ggplot2` to display the means as dots using `geom_point()`. The final argument, [size = 4]{.alt}, determines the size of the dots and overrides the default (you can omit this argument if you like).
 
 #### `r robot()` Code example
 
@@ -437,7 +437,7 @@ The plot we've just produced is all well and good, but `ggplot` has scaled the *
 coord_cartesian(ylim = c(lower_limit, upper_limit), xlim = c(lower_limit, upper_limit))
 ```
 
-This code adjusts the *y*-axis and *x*-axis to display values from `lower_limit` to `upper_limit`. You would replace each `lower_limit` and `upper_limit` with relevant numbers. We want to change only the *y*-axis so we'll ignore `xlim` for now. If we our *y*-axis to display values from 0 to 100 (the full range of the scale) we would add to the plot:
+This code adjusts the *y*-axis and *x*-axis to display values from [lower_limit]{.alt} to [upper_limit]{.alt}. You would replace each [lower_limit]{.alt} and [upper_limit]{.alt} with relevant numbers. We want to change only the *y*-axis so we'll ignore [xlim]{.alt} for now. If we our *y*-axis to display values from 0 to 100 (the full range of the scale) we would add to the plot:
 
 ```{r, eval = FALSE}
 coord_cartesian(ylim = c(0, 100))
@@ -449,7 +449,13 @@ coord_cartesian(ylim = c(0, 100))
 scale_y_continuous(breaks = seq(lower_limit, upper_limit, increment))
 ```
 
-I've used the function `seq()` which takes the form `seq(lower_limit, upper_limit, increment)` where `lower_limit` is the value you want to start at, `upper_limit` is the value you want to stop at, and `increment` is the size of the increment you want. For example, if we wanted breaks to be displayed at 0, 10, 20, 30 and so on up to 100, we'd specify `seq(0, 100, 10)` which will create a sequence from 0 to 100 in intervals of 10. There is a similar function `scale_x_continuous()` for changing the *x*-axis.
+I've used the function `seq()` which takes the form
+
+```{r, eval = FALSE}
+seq(lower_limit, upper_limit, increment)
+```
+
+where [lower_limit]{.alt} is the value you want to start at, [upper_limit]{.alt} is the value you want to stop at, and [increment]{.alt} is the size of the increment you want. For example, if we wanted breaks to be displayed at 0, 10, 20, 30 and so on up to 100, we'd specify `seq(0, 100, 10)` which will create a sequence from 0 to 100 in intervals of 10. There is a similar function `scale_x_continuous()` for changing the *x*-axis.
 
 #### `r robot()` Code example
 
@@ -507,7 +513,7 @@ wish_plot +
 
 Just like with boxplots we can also group means by the success strategy used using the same methods. For example, we can add `facet_wrap(~strategy)` to display the two strategies as different panels.
 
-#### `r alien()` Alien coding challenge
+#### `r alien()` Alien coding challenge {#facet_wish}
 
 Below is the code we have built up so far. Add `facet_wrap(~strategy) +` to the line before last.
 
@@ -534,8 +540,8 @@ wish_plot +
 
 Instead of using facets, we can display the two strategies in different colours, like we did for boxplots. To do this we need to make the same two adjustments to our code to earlier on:
 
-* Add `colour = strategy` to the first line, within `aes()`.
-* Add `colour = "Success strategy"` to the `labs()` function to apply a meaningful label to the variable **strategy**.
+* Add [colour = strategy]{.alt} to the first line, within `aes()`.
+* Add [colour = "Success strategy"]{.alt} to the `labs()` function to apply a meaningful label to the variable **strategy**.
 
 #### `r alien()` Alien coding challenge
 
@@ -581,7 +587,7 @@ There is a problem though, the dots at baseline overlap.
 
 ### `r bmu2()` Adjusting the position of geoms
 
-We can avoid the problem of dots overlapping by adjusting their horizontal position. The `stat_summary()` function (and most geoms) have a `position` argument that can be set using the function `position_dodge(width = value)`. This function plots geoms so that they 'dodge' each other on the horizontal plane. You have to replace `value` with a number that sets the size of the 'dodge'. Play around with values until it looks good, 0.9 works well for this plot.
+We can avoid the problem of dots overlapping by adjusting their horizontal position. The `stat_summary()` function (and most geoms) have a [position]{.alt} argument that can be set using the function [position_dodge(width = value)]{.alt}. This function plots geoms so that they 'dodge' each other on the horizontal plane. You have to replace [value]{.alt} with a number that sets the size of the 'dodge'. Play around with values until it looks good, 0.9 works well for this plot.
 
 #### `r robot()` Code example
 
@@ -599,7 +605,7 @@ stat_summary(fun = "mean", geom = "point", size = 4, position = position_dodge(w
 
 #### `r alien()` Alien coding challenge
 
-Execute the code below, then add `position = position_dodge(width = 0.9)` to `stat_summary()` and run the code again. Note that the dots no longer overlap.
+Execute the code below, then add [position = position_dodge(width = 0.9)]{.alt} to `stat_summary()` and run the code again. Note that the dots no longer overlap.
 
 ```{r wish_point_dodge, exercise = TRUE, exercise.lines = 7}
 wish_plot <- ggplot2::ggplot(wish_tib, aes(time, success, colour = strategy))
@@ -694,7 +700,7 @@ You should find that in the first plot the dots showing the means disappear. Thi
 
 #### `r alien()` Alien coding challenge
 
-To really drum this point home, look at the code below (which mirrors task 1 above). Note that within `geom_violin()` I have included `alpha = 1`. This arguments sets the transparency of the geom, and the default is 1. Run this code and note that it does exactly the same thing as the code for the first task above. The dots are concealed because we have specified `geom_violin()` **after** `stat_summary()`. Now change `alpha = 1` to `alpha = 0.9`. This makes the violins very slightly transparent. You should now see the dots behind the violins. Try running the code with values of alpha of 0.8, 0.6, 0.2 and 0 (fully transparent). As the violins get more transparent, the dots behind become more visible.
+To really drum this point home, look at the code below (which mirrors task 1 above). Note that within `geom_violin()` I have included [alpha = 1]{.alt}. This arguments sets the transparency of the geom, and the default is 1. Run this code and note that it does exactly the same thing as the code for the first task above. The dots are concealed because we have specified `geom_violin()` **after** `stat_summary()`. Now change [alpha = 1]{.alt} to [alpha = 0.9]{.alt}. This makes the violins very slightly transparent. You should now see the dots behind the violins. Try running the code with values of alpha of 0.8, 0.6, 0.2 and 0 (fully transparent). As the violins get more transparent, the dots behind become more visible.
 
 ```{r wish_violin_alpha, exercise = TRUE, exercise.lines = 8}
 wish_plot <- ggplot2::ggplot(wish_tib, aes(time, success, colour = strategy))
@@ -707,9 +713,87 @@ wish_plot +
   theme_minimal()
 ```
 
+## `r user_visor()` Plotting confidence intervals
+
+The mean in the sample is an estimate, and estimates have uncertainty attached to them. It’s a really good idea to include an indicator of this uncertainty on a plot. Typically, this is done by adding error bars to the means that show the 95% confidence interval. When we plotted a mean we added this layer to our plot:
+
+```{r, eval = FALSE}
+stat_summary(fun = "mean", geom = "point")
+```
+
+Basically we set the data to plot to be the function that returns the mean value ([fun = "mean"]{.adj}), and the geom to be a point ([geom = "point"]{.adj}). If we want to plot the 95% confidence interval around the mean both of these things change. The number of data points changes because for every mean we now want to plot three data points (the mean and the upper and lower limit of the corresponding confidence interval) instead of one (the mean). The geom changes because we can't plot three values using a single point.
+
+To change the number of data points we use [fun.data]{.adj} instead of [fun]{.adj}, and instead of specifying [mean]{.adj} we specify [mean_cl_normal]{.adj} for a normal confidence interval or [mean_cl_boot]{.adj} for a robust confidence interval based on a bootstrap. We change the geom to [geom = "pointrange"]{.adj} which is a geom that shows a point with a line through it representing a range (in this case, the limits of the confidence interval).
+
+These two adjustments are made within stat_summary():
+
+#### `r robot()` Code example
+
+```{r, eval = FALSE}
+stat_summary(fun.data = "mean_cl_normal", geom = "pointrange")
+```
+
+#### `r alien()` Alien coding challenge
+
+Below is a copy of the code used to create the last plot. Adapt it to add a 95% confidence interval to the means.
+
+<div class="tip">
+  `r cat_space()` **Tip: Size**
+  
+  I would delete [size = 4]{.adj} because `ggplot2` applies the [size]{.adj} attribute to both the dot and the bar of the [pointrange]{.adj} geom and, in this situation makes it look silly. However, there may be situations where you want to adjust the size of both the point and the line and it would be appropriate to include the [size]{.adj} argument
+</div>
+
+```{r wish_violin_ci, exercise = TRUE, exercise.lines = 8}
+wish_plot <- ggplot2::ggplot(wish_tib, aes(time, success, colour = strategy))
+wish_plot +
+  stat_summary(fun = "mean", geom = "point", size = 4, position = position_dodge(width = 0.9)) +
+  geom_violin() +
+  labs(x = "Time", y = "Success (%)", colour = "Success strategy") +
+  coord_cartesian(ylim = c(0, 100)) +
+  scale_y_continuous(breaks = seq(0, 100, 10)) +
+  theme_minimal()
+```
+
+```{r wish_violin_ci-solution}
+wish_plot <- ggplot2::ggplot(wish_tib, aes(time, success, colour = strategy))
+wish_plot +
+  geom_violin() +
+  stat_summary(fun.data = "mean_cl_normal", geom = "pointrange", position = position_dodge(width = 0.9)) +
+  labs(x = "Time", y = "Success (%)", colour = "Success strategy") +
+  coord_cartesian(ylim = c(0, 100)) +
+  scale_y_continuous(breaks = seq(0, 100, 10)) +
+  theme_minimal()
+```
+
+#### `r alien()` Alien coding challenge
+
+Below is a copy of the code used to create a plot from earlier that grouped means using `facet_wrap()`. Adapt it to add a 95% bootstrap confidence interval to the means.
+
+```{r wish_violin_ciboot, exercise = TRUE, exercise.lines = 8}
+wish_plot <- ggplot2::ggplot(wish_tib, aes(time, success))
+wish_plot +
+  stat_summary(fun = "mean", geom = "point", size = 4) +  
+  labs(x = "Time", y = "Success (%)") +
+  coord_cartesian(ylim = c(0, 70)) +
+  scale_y_continuous(breaks = seq(0, 70, 10)) +
+  facet_wrap(~strategy) +
+  theme_minimal()
+```
+
+```{r wish_violin_ciboot-solution}
+wish_plot <- ggplot2::ggplot(wish_tib, aes(time, success))
+wish_plot +
+  stat_summary(fun.data = "mean_cl_boot", geom = "pointrange") +  
+  labs(x = "Time", y = "Success (%)") +
+  coord_cartesian(ylim = c(0, 70)) +
+  scale_y_continuous(breaks = seq(0, 70, 10)) +
+  facet_wrap(~strategy) +
+  theme_minimal()
+```
+
 ## `r bmu2()` Transfer tasks
 
-Imagine that a film company director was interested in whether there was really such a thing as a ‘chick flick’ (a film that has the stereotype of appealing to women more than to men). He took 20 men and 20 women and showed half of each sample a film that was supposed to be a ‘chick flick’ (The Notebook). The other half watched a documentary about notebooks as a control. In all cases the company director measured participants’ emotional arousal as an indicator of how much they enjoyed the film. The data are in `notebook_tib` and contains three variables:
+Imagine that a film company director was interested in whether there was really such a thing as a ‘chick flick’ (a film that has the stereotype of appealing to women more than to men). He took 20 men and 20 women and showed half of each sample a film that was supposed to be a ‘chick flick’ (The Notebook). The other half watched a documentary about notebooks as a control. In all cases the company director measured participants’ emotional arousal as an indicator of how much they enjoyed the film. The data are in [notebook_tib]{.alt} and contains three variables:
 
 * **sex**: the biological sex of the participant
 * **film**: whether they watched the notebook or a documentary about notebooks
@@ -717,7 +801,7 @@ Imagine that a film company director was interested in whether there was really 
 
 #### `r alien()` Alien coding challenge task 1
 
-Plot a boxplot of the data that shows **sex** on the *x*-axis, and fills the boxplots in different colours for different films. Name the plot object `note_plot`.
+Plot a boxplot of the data that shows **sex** on the *x*-axis, and fills the boxplots in different colours for different films. Name the plot object [note_plot]{.alt}.
 
 ```{r transfer_1, exercise = TRUE, exercise.lines = 8}
 
@@ -785,10 +869,9 @@ note_plot +
 ```
 
 
-
 #### `r alien()` Alien coding challenge task 1
 
-Plot a violin plot (with means) of the data that shows **sex** on the *x*-axis, and plots points and violins for different films in different colours. Name the plot object `note_plot`.
+Plot a violin plot (with means) of the data that shows **sex** on the *x*-axis, and plots points and violins for different films in different colours. Name the plot object [note_plot]{.alt}.
 
 ```{r transfer_2, exercise = TRUE, exercise.lines = 8}
 
@@ -872,7 +955,7 @@ note_plot +
 
 ## `r bmu2()` Scatterplots
 
-A psychologist was interested in the effects of exam stress on exam performance. She devised and validated a questionnaire to assess state anxiety relating to exams (called the Exam Anxiety Questionnaire, or EAQ). This scale produced a measure of anxiety scored out of 100. Anxiety was measured before an exam, and the percentage mark of each student on the exam was used to assess the exam performance. The first thing that the psychologist should do is draw a scatterplot of the two variables. The data are in `exam_tib`, which contains 5 variables:
+A psychologist was interested in the effects of exam stress on exam performance. She devised and validated a questionnaire to assess state anxiety relating to exams (called the Exam Anxiety Questionnaire, or EAQ). This scale produced a measure of anxiety scored out of 100. Anxiety was measured before an exam, and the percentage mark of each student on the exam was used to assess the exam performance. The first thing that the psychologist should do is draw a scatterplot of the two variables. The data are in [exam_tib]{.alt}, which contains 5 variables:
 
 * **id**: participant id
 * **revise**: the time spent revising for the exam (hours)
@@ -890,7 +973,7 @@ If we wanted to plot **anxiety** on the *x*-axis and **exam_grade** on the *y* w
 exam_plot <- ggplot2::ggplot(exam_tib, aes(anxiety, exam_grade))
 ```
 
-This command creates an object called `exam_plot` using the data in `exam_tib`, and uses the `aes()` function to specify that **anxiety** is plotted on the *x*-axis and **exam_grade** on the *y*. We'd then need to simply add `geom_point()` to represent the data points:
+This command creates an object called [exam_plot]{.alt} using the data in [exam_tib]{.alt}, and uses the `aes()` function to specify that **anxiety** is plotted on the *x*-axis and **exam_grade** on the *y*. We'd then need to simply add `geom_point()` to represent the data points:
 
 ```{r, eval = F}
 exam_plot <- ggplot2::ggplot(exam_tib, aes(anxiety, exam_grade))
@@ -934,10 +1017,10 @@ exam_plot +
 
 We can use the options of `geom_point()` to change the colour of the points, their size, their shape and their transparency. Many of these arguments work with other geoms too:
 
-* `colour = `: use this argument to specify a manual colour for the points
-* `size = `: use this argument to specify a size for the points
-* `shape = `: use this argument to specify a shape for the points
-* `alpha = `: use this argument to specify transparency from 0 (fully transparent) to 1 (fully opaque)
+* [colour =]{.alt}: use this argument to specify a manual colour for the points
+* [size =]{.alt}: use this argument to specify a size for the points
+* [shape =]{.alt}: use this argument to specify a shape for the points
+* [alpha =]{.alt}: use this argument to specify transparency from 0 (fully transparent) to 1 (fully opaque)
 
 For colours it is useful to use hex codes. These are codes that specify exact colours and you can find lists of these codes on websites such as [color hex](https://www.color-hex.com/) which also contains various [palettes of colours](https://www.color-hex.com/color-palettes/popular.php).
 
@@ -962,7 +1045,7 @@ We could also change the shape of the geom. Figure 2 shows the numbers represent
 #### `r robot()` Code example
 
 We can combine these arguments to change lots of things at once. The code below 
-will make the points blue (`colour = "#56B4E9"`), larger than default (`size = 4`), triangles (`shape = 3`) and slightly transparent (alpha = 0.8). 
+will make the points blue ([colour = "#56B4E9"]{.alt}), larger than default ([size = 4]{.alt}), triangles ([shape = 3]{.alt}) and slightly transparent ([alpha = 0.8]{.alt}). 
 
 
 ```{r exam_scat_edit, exercise = TRUE, exercise.lines = 5}
@@ -987,7 +1070,7 @@ exam_plot +
 
 ### `r bmu2()` Summarizing the trend
 
-We can add a line summarizing the trend in the data using `geom_smooth()`. To fit a straight line we can set a method of "lm" (stands for linear model, more on that in later tutorials) and change its colour to be a nice orange (hex code #E69F00). By default, a confidence interval is plotted around the line, we can colour this interval orange by including `fill = "#E69F00"`.
+We can add a line summarizing the trend in the data using `geom_smooth()`. To fit a straight line we can set a method of "lm" (stands for linear model, more on that in later tutorials) and change its colour to be a nice orange (hex code #E69F00). By default, a confidence interval is plotted around the line, we can colour this interval orange by including [fill = "#E69F00"]{.alt}.
 
 #### `r robot()` Code example
 
@@ -1046,13 +1129,13 @@ exam_plot +
   theme_bw()
 ```
 
-We can also specifying different colours for men and women using `colour = sex` when we set up the plot:
+We can also specifying different colours for men and women using [colour = sex]{.alt} when we set up the plot:
 
 ```{r, eval = FALSE}
 exam_plot <- ggplot2::ggplot(exam_tib, aes(anxiety, exam_grade, colour = sex))
 ```
 
-To colour the interval around the line by sex, we'd also need to include `fill = sex`:
+To colour the interval around the line by sex, we'd also need to include [fill = sex`:
 
 ```{r, eval = FALSE}
 exam_plot <- ggplot2::ggplot(exam_tib, aes(anxiety, exam_grade, colour = sex, fill = sex))

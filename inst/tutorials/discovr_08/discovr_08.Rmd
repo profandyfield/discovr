@@ -46,7 +46,7 @@ metal_tib <- discovr::metal_health
   
 </div>
 
-### `r cat_space(height = 2)` Welcome to space pirate academy
+### `r cat_space(height = 2)` Welcome to the `discovr` space pirate academy
 
 Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
 
@@ -58,8 +58,9 @@ On your way you will face many challenges, but follow Mae's system to keep yours
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
-* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you.
-* `r bug(height = 2)` we also have alien bugs that will, erm, help you to avoid bugs by setting you coding challenges. 
+* `r alien(height = 2)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
+* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
+* `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
 
 By for now and good luck - you'll be amazing!
 
@@ -105,7 +106,7 @@ To work *outside of this tutorial* you need to download the following data files
 * [metal_health.csv](http://www.discoveringstatistics.com/repository/discovr_data/metal_health.csv)
 * [social_anxiety.csv](http://www.discoveringstatistics.com/repository/discovr_data/social_anxiety.csv)
 
-Set up an ![](./images/rstudio_logo.png){height=1em} project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called `data`. Place this code in the first code chunk in your `r rproj()` Markdown document:
+Set up an ![](./images/rstudio_logo.png){height=1em} project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
 
 ```{r, eval=FALSE}
 album_tib <- here::here("data/album_sales.csv") %>% readr::read_csv()
@@ -123,7 +124,7 @@ If the data have outliers, are not normal implying a non-normal sampling distrib
  
 ## `r bmu2()` The example
 
-This tutorial follows the example from [@field_discovering_2021] that looks at predicting physical, downloaded and streamed album sales (outcome variable) from various predictor variables. The data file has 200 rows, each one representing a different album. There are also several columns, one of which contains the sales (in thousands) of each album in the week after release (**sales**) and one containing the amount (in thousands of pounds/dollars/euro/whatever currency you use) spent promoting the album before release (**adverts**). The other columns represent how many times songs from the album were played on a prominent national radio station in the week before release (**airplay**), and the 'look' of the band out of 10 (**image**). The data are in a tibble called `album_tib`.
+This tutorial follows the example from [@field_discovering_2021] that looks at predicting physical, downloaded and streamed album sales (outcome variable) from various predictor variables. The data file has 200 rows, each one representing a different album. There are also several columns, one of which contains the sales (in thousands) of each album in the week after release (**sales**) and one containing the amount (in thousands of pounds/dollars/euro/whatever currency you use) spent promoting the album before release (**adverts**). The other columns represent how many times songs from the album were played on a prominent national radio station in the week before release (**airplay**), and the 'look' of the band out of 10 (**image**). The data are in a tibble called [album_tib]{.alt}.
 
 #### `r bug()` Exercise
 
@@ -219,19 +220,19 @@ To fit a linear model in `r rproj()` we use the `lm()` function. This function t
 my_model <- lm(outcome ~ predictor(s), data = tibble, na.action = an action)
 ```
 
-In which `my_model` is whatever name you choose to give to the model, `outcome` is the name of the outcome variable (in our example **sales**), and `predictor` is the name of the predictor variable (in our example **adverts**) or, as we shall see, is a list of variables separated by ‘+’ symbols. We can also specify a way to handle missing values and `tibble` is the name of the tibble containing the data (in our example `album_tib`).
+In which [my_model]{.alt} is whatever name you choose to give to the model, [outcome]{.alt} is the name of the outcome variable (in our example **sales**), and [predictor]{.alt} is the name of the predictor variable (in our example **adverts**) or, as we shall see, is a list of variables separated by ‘+’ symbols. We can also specify a way to handle missing values and [tibble]{.alt} is the name of the tibble containing the data (in our example [album_tib]{.alt}).
 
-The observant among you might notice that within the function we write a formula that specifies the model that we want to estimate. This formula maps directly to the equation for the model. In this example `adverts ~ sales` maps onto $\text{Sales}_i = b_0 + b_1\text{Advertising}_i+ \epsilon_i$ except that we ignore the error term ($\epsilon_i$) and parameter estimates ($b$s) and we replace the equals sign with a tilde (~), which you can think of meaning ‘predicted from’.
+The observant among you might notice that within the function we write a formula that specifies the model that we want to estimate. This formula maps directly to the equation for the model. In this example [adverts ~ sales]{.alt} maps onto $\text{Sales}_i = b_0 + b_1\text{Advertising}_i+ \epsilon_i$ except that we ignore the error term ($\epsilon_i$) and parameter estimates ($b$s) and we replace the equals sign with a tilde ([~]{.alt}), which you can think of meaning ‘predicted from’.
 
 #### `r robot()` Code example for `lm()`
 
-Based on the code above, we can fit the model with the code below. Because there are no missing values in the data the `na.action = na.exclude` is optional. Try executing this code.
+Based on the code above, we can fit the model with the code below. Because there are no missing values in the data the [na.action = na.exclude]{.alt} is optional. Try executing this code.
 
 ```{r fit_album, exercise = TRUE, exercise.lines = 2}
 album_lm <- lm(sales ~ adverts, data = album_tib, na.action = na.exclude)
 ```
 
-You might think that you've made a mistake because nothing much happens. In fact, we have created an object called `album_lm` that has the model stored, and we can extract information from it. The reason nothing has happened is because we haven't asked `r rproj()` to show us anything. Let's look at how to do that.
+You might think that you've made a mistake because nothing much happens. In fact, we have created an object called [album_lm]{.alt} that has the model stored, and we can extract information from it. The reason nothing has happened is because we haven't asked `r rproj()` to show us anything. Let's look at how to do that.
 
 <div class="tip">
   `r cat_space()` **Tip:**
@@ -243,7 +244,7 @@ You might think that you've made a mistake because nothing much happens. In fact
 
 ###	`r bmu2()` Extracting model information with `summary()` 
 
-There are different ways to inspect the model we have just fitted. The bread and butter way is to use the `summary()` function, into which we place the name of model that we just created (`album_lm`):
+There are different ways to inspect the model we have just fitted. The bread and butter way is to use the `summary()` function, into which we place the name of model that we just created ([album_lm]{.alt}):
 
 #### `r robot()` Code example for `summary()`
 
@@ -271,7 +272,7 @@ For both functions you simply place the model name into the function, like we di
 
 ###	`r bmu2()` Overall fit of the model`
 
-To get overall model fit statistics we place out model (`album_lm`) into `glance()`.
+To get overall model fit statistics we place out model ([album_lm]{.alt}) into `glance()`.
 
 #### `r robot()` Code example for `glance()`
 
@@ -295,7 +296,7 @@ quiz(
 )
 ```
 
-It also reports an *F*-statistic (labelled **statistic**) and its *p*-value (labelled (**p.value**). Output 8.9 shows the results of this comparison. Note that the value of *F* is 99.58 and the value in column labelled **p.value** is `2.94198e-19`. I explain this notation a bit later, for now trust me that it means 2.94 with the decimal place moved 19 places to the left, or a very small value indeed. The degrees of freedom for this *F* are 2 (as shown in the variable **df**) and 198 (as shown in the variable **res.d**). Therefore, we can say that adding the predictor of **advertising** significantly improved the fit of the model to the data compared to having no predictors in the model, *F*(2, 198) = 99.58, *p* < .001. In other words, adding advertising as a predictor significantly improved the model fit.
+It also reports an *F*-statistic (labelled **statistic**) and its *p*-value (labelled (**p.value**). Output 8.9 shows the results of this comparison. Note that the value of *F* is 99.58 and the value in column labelled **p.value** is [2.94198e-19]{.alt}. I explain this notation a bit later, for now trust me that it means 2.94 with the decimal place moved 19 places to the left, or a very small value indeed. The degrees of freedom for this *F* are 2 (as shown in the variable **df**) and 198 (as shown in the variable **res.d**). Therefore, we can say that adding the predictor of **advertising** significantly improved the fit of the model to the data compared to having no predictors in the model, *F*(2, 198) = 99.58, *p* < .001. In other words, adding advertising as a predictor significantly improved the model fit.
 
 ### `r bmu2()` Model parameters
 
@@ -305,7 +306,7 @@ To see the model parameters we can use `broom::tidy()`, which takes the general 
 broom::tidy(model_name, conf.int = FALSE, conf.level = 0.95)
 ```
 
-Basically, we put the model name into the function, then there are two main optional arguments. By default, the output does not include confidence intervals, so if you want them (hint: you do!) you’d override the default of `conf.int = FALSE` by changing it to `conf.int = TRUE`. By default you’ll get 95% confidence intervals, which you can override by setting `conf.level` to a different value from the default of 0.95 (e.g., `conf.level = 0.99` will give you 99% confidence intervals). You usually would leave the confidence level at 95%.
+Basically, we put the model name into the function, then there are two main optional arguments. By default, the output does not include confidence intervals, so if you want them (hint: you do!) you’d override the default of [conf.int = FALSE]{.alt} by changing it to [conf.int = TRUE]{.alt}. By default you’ll get 95% confidence intervals, which you can override by setting [conf.level]{.alt} to a different value from the default of 0.95 (e.g., [conf.level = 0.99]{.alt} will give you 99% confidence intervals). You usually would leave the confidence level at 95%.
 
 #### `r robot()` Code example for `tidy()`
 
@@ -399,13 +400,13 @@ $$
 
 ### `r bmu2()` Building the model
 
-We already have fitted a model predicting sales from advertising that is stored in `album_lm`. We’re now going to create a second model that builds upon this model by adding airplay and image as predictors. In other words, we’re building the model in the equation above.
+We already have fitted a model predicting sales from advertising that is stored in [album_lm]{.alt}. We’re now going to create a second model that builds upon this model by adding airplay and image as predictors. In other words, we’re building the model in the equation above.
 
-To create this second model, we need to specify additional predictor variables in the same way that we add predictors to the equation itself: we use ‘+’ to add them into the model. So we change the formula within `lm()` from `sales ~ adverts` to `sales ~ adverts + airplay + image`. Note that the formula we use within `lm()` maps directly to the equation for the model but excludes the *b*s and the error term.
+To create this second model, we need to specify additional predictor variables in the same way that we add predictors to the equation itself: we use ‘+’ to add them into the model. So we change the formula within `lm()` from [sales ~ adverts]{.alt} to [sales ~ adverts + airplay + image]{.alt}. Note that the formula we use within `lm()` maps directly to the equation for the model but excludes the *b*s and the error term.
 
 #### `r bug()` Exercise
 
-See if you can adapt the previous code (reproduced in the code box) to save the model as `album_full_lm` and to include the additional predictors
+See if you can adapt the previous code (reproduced in the code box) to save the model as [album_full_lm]{.alt} and to include the additional predictors
 
 ```{r full_album, exercise = TRUE, exercise.lines = 2}
 album_lm <- lm(sales ~ adverts, data = album_tib, na.action = na.exclude)
@@ -429,7 +430,7 @@ sales ~ adverts + ...
 album_full_lm <- lm(sales ~ adverts + airplay + image, data = album_tib, na.action = na.exclude)
 ```
 
-This code creates a model in which **sales** is predicted from **advertising**, **airplay** and the band’s **image** and stores it in an object called `album_full_lm`. Again nothing seems to have happened, but actually the model has been created and stored. Next we need to extract information from it.
+This code creates a model in which **sales** is predicted from **advertising**, **airplay** and the band’s **image** and stores it in an object called [album_full_lm]{.alt}. Again nothing seems to have happened, but actually the model has been created and stored. Next we need to extract information from it.
 
 ### Fit statistics
 
@@ -437,7 +438,7 @@ As with our earlier model, we can obtain the (nicely formatted) fit statistics b
 
 #### `r bug()` Exercise
 
-Adapt the previous code for `glance()` to view the full model (i.e. `album_full_lm`)
+Adapt the previous code for `glance()` to view the full model (i.e. [album_full_lm]{.alt})
 
 ```{r album_full_lm_glance, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
 
@@ -476,7 +477,7 @@ anova(model_1, model_2, … , model_n)
 
 #### `r robot()` Code example
 
-Basically, within the function we list the models that we want to compare in the order in which we want to compare them. To compare the models `album_lm` and `album_full_lm` we could execute this code to get text output:
+Basically, within the function we list the models that we want to compare in the order in which we want to compare them. To compare the models [album_lm]{.alt} and [album_full_lm]{.alt} we could execute this code to get text output:
 
 ```{r model_compare_basic, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
 anova(album_lm, album_full_lm)
@@ -515,7 +516,7 @@ anova(album_lm, album_full_lm) %>%
 </div>
 
 
-The value of *F* is 96.45 (**statistic**) and the corresponding *p* (**p.value**) is `6.88e-30` (i.e., $6.88 \times 10^{-30}$). The degrees of freedom for this *F* are the difference in the degrees of freedom between the two models (in this case 2 as shown in the variable **df**) and the degrees of freedom for the newer model (in this case 196 as shown in the variable **res.df**). Therefore, we can say that adding the predictors of image and airplay (`album_full_lm`) significantly improved the fit of the model to the data compared to having only advertising as a predictor (`album_lm`), *F*(2, 196) = 96.45, *p* < .001. In other words, adding airplay and image as predictors significantly improved the model fit.
+The value of *F* is 96.45 (**statistic**) and the corresponding *p* (**p.value**) is [6.88e-30]{.alt} (i.e., $6.88 \times 10^{-30}$). The degrees of freedom for this *F* are the difference in the degrees of freedom between the two models (in this case 2 as shown in the variable **df**) and the degrees of freedom for the newer model (in this case 196 as shown in the variable **res.df**). Therefore, we can say that adding the predictors of image and airplay ([album_full_lm]{.alt}) significantly improved the fit of the model to the data compared to having only advertising as a predictor ([album_lm]{.alt}), *F*(2, 196) = 96.45, *p* < .001. In other words, adding airplay and image as predictors significantly improved the model fit.
 
 ### `r bmu2()` Model parameters (*b*)
 
@@ -523,7 +524,7 @@ As with our earlier model, we can obtain the parameter estimates and their confi
 
 #### `r bug()` Exercise
 
-Use `tidy()` instead of `summary()` to extract the model parameters for `album_full_lm`. Don't forget the confidence intervals.
+Use `tidy()` instead of `summary()` to extract the model parameters for [album_full_lm]{.alt}. Don't forget the confidence intervals.
   
 ```{r album_lm_full_tidy, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
 
@@ -677,11 +678,11 @@ The *p*-values in the table all tell us the long-run probability that we would g
 
 [@lacourse_heavy_2001] conducted a study to see whether suicide risk was related to listening to heavy metal music. They devised a scale to measure preference for bands falling into the category of heavy metal. This scale included heavy metal bands (Black Sabbath, [Iron Maiden](https://ironmaiden.com/)), speed metal bands ([Slayer](https://www.slayer.net/), [Metallica](https://www.metallica.com/)), death/black metal bands (Obituary, Burzum) and gothic bands (Marilyn Manson, Sisters of Mercy). They then used this (and other variables) as predictors of suicide risk based on a scale measuring suicidal ideation etc.
 
-Data are in the tibble `metal_tib` are from a fictitious replication. There are two variables representing scores on the scales described above: **hm** (the extent to which the person listens to heavy metal music) and **suicide** (the extent to which someone has suicidal ideation and so on).
+Data are in the tibble [metal_tib]{.alt} are from a fictitious replication. There are two variables representing scores on the scales described above: **hm** (the extent to which the person listens to heavy metal music) and **suicide** (the extent to which someone has suicidal ideation and so on).
 
 #### `r bug()` Exercise
 
-Use the code box below to fit a model (call it `metal_lm`) to predict suicide risk from love of heavy metal and to answer the questions below.
+Use the code box below to fit a model (call it [metal_lm]{.alt}) to predict suicide risk from love of heavy metal and to answer the questions below.
 
 ```{r metal_health, exercise = TRUE, exercise.lines = 6}
 
@@ -778,7 +779,7 @@ In this example we’ll look at data collected from several questionnaires relat
 
 Social anxiety and obsessive compulsive disorder are seen as distinct disorders having different causes. However, there are some similarities. They both involve some kind of attentional bias: attention to bodily sensation in social anxiety and attention to things that could have negative consequences in OCD. They both involve repetitive thinking styles: social phobics ruminate about social encounters after the event (known as post-event processing), and people with OCD have recurring intrusive thoughts and images. They both involve safety behaviours (i.e. trying to avoid the thing that makes you anxious).
 
-This might lead us to think that, rather than being different disorders, they are manifestations of the same core processes [@field_shared_2008]. One way to research this possibility would be to see whether social anxiety can be predicted from measures of other anxiety disorders. If social anxiety disorder and OCD are distinct we should expect that measures of OCD will not predict social anxiety. However, if there are core processes underlying all anxiety disorders, then measures of OCD should predict social anxiety. The data are in `soc_anx_tib`. This tibble contains three variables of interest to us:
+This might lead us to think that, rather than being different disorders, they are manifestations of the same core processes [@field_shared_2008]. One way to research this possibility would be to see whether social anxiety can be predicted from measures of other anxiety disorders. If social anxiety disorder and OCD are distinct we should expect that measures of OCD will not predict social anxiety. However, if there are core processes underlying all anxiety disorders, then measures of OCD should predict social anxiety. The data are in [soc_anx_tib]{.alt}. This tibble contains three variables of interest to us:
 
 * **spai**: The Social Phobia and Anxiety Inventory (SPAI), which measures levels of social anxiety.
 * **obq**: Obsessive Beliefs Questionnaire (OBQ), which measures the degree to which people experience obsessive beliefs like those found in OCD.
@@ -786,8 +787,8 @@ This might lead us to think that, rather than being different disorders, they ar
 
 Each of 134 people was administered all questionnaires. Fit a hierarchical linear model with two blocks:
 
-1. Block 1: the first block (call it `soc_anx_lm`) will contain any predictors that we expect to predict social anxiety. In this example we have only one variable that we expect, theoretically, to predict social anxiety and that is shame (measured by the TOSCA).
-2. Block 2: the second block (call it `soc_anx_obq_lm`) adds OBQ, the predictor variable that we don’t necessarily expect to predict social anxiety.
+1. Block 1: the first block (call it [soc_anx_lm]{.alt}) will contain any predictors that we expect to predict social anxiety. In this example we have only one variable that we expect, theoretically, to predict social anxiety and that is shame (measured by the TOSCA).
+2. Block 2: the second block (call it [soc_anx_obq_lm]{.alt}) adds OBQ, the predictor variable that we don’t necessarily expect to predict social anxiety.
 
 #### `r bug()` Exercise
 
@@ -977,7 +978,7 @@ plot(album_full_lm, which = c(1, 2))
 <div class="tip">
   `r cat_space()` **Tip:**
   
-  If we want all 6 plots we specify this using `which = 1:6`.
+  If we want all 6 plots we specify this using [which = 1:6]{.alt}.
 </div>
 
 ### `r bmu2()` Residual plots
@@ -992,7 +993,7 @@ Let's look at the plots for our model to see whether we can see any of these pat
 
 #### `r bug()` Exercise
 
-Using the code example above, obtain plots 1 and 3 for the model `album_full_lm`:
+Using the code example above, obtain plots 1 and 3 for the model [album_full_lm]{.alt}:
 
 ```{r zpred_resid, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
 
@@ -1046,7 +1047,7 @@ Even though normality is not a major concern (especially with a sample size of 2
 
 #### `r bug()` Exercise
 
-Using the code example above, obtain plot 2 for the model `album_full_lm`:
+Using the code example above, obtain plot 2 for the model [album_full_lm]{.alt}:
 
 ```{r album_qq, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
 
@@ -1105,10 +1106,10 @@ ggplot2::autoplot(album_full_lm, which = 1) +
 
 `ggfortify` also adds some useful arguments to `autoplot()` that map onto aesthetics that we have met in earlier tutorials. As with any `ggplot2` plot we can change colours using [hex codes](https://www.color-hex.com/). Here's some properties that we can change within `autoplot()`:
 
-* *colour*. Sets the colour of the points on the plot.
-* *smooth.colour*. Set the colour of the trend line on the plots.
-* *size*. Sets the size of the dots on the plot.
-* *alpha*. Sets the transparency of the points on the plot (0 = invisible, 1 = solid)
+* [colour]{.alt}. Sets the colour of the points on the plot.
+* [smooth]{.alt}.colour*. Set the colour of the trend line on the plots.
+* [size]{.alt}. Sets the size of the dots on the plot.
+* [alpha]{.alt}. Sets the transparency of the points on the plot (0 = invisible, 1 = solid)
 
 #### `r robot()` Code example
 
@@ -1126,7 +1127,7 @@ ggplot2::autoplot(album_full_lm,
 
 #### `r bug()` Exercise
 
-For the normality plot we can use the same code but change `which = c(1, 3)` to `which = 2`. Try this below.
+For the normality plot we can use the same code but change [which = c(1, 3)]{.alt} to [which = 2]{.alt}. Try this below.
 
 
 ```{r albumqq_pretty, exercise = TRUE, exercise.lines = 8, exercise.setup = "album_lm_setup"}
@@ -1198,7 +1199,7 @@ For a more precise look, we can obtain values for Cooks distance and standardize
 
 #### `r robot()` Code example
 
-To save the a set of diagnostic statistics (including Cook's value and standardized residuals) we create a new tibble called `album_full_rsd` (I tend to use the suffix _rsd, short for residuals) by piping our model (`album_full_lm`) into `broom::augment()` to get the residuals and then into `tibble::rowid_to_column()` to create a variable that contains the row number. The *var = "case_no"* tells the function to name the variable containing the row numbers **case_no** (choose a different name if you like). The result is a tibble called `album_full_rsd` that contains the case number, the original data to which the model was fitted, and various diagnostic statistics.
+To save the a set of diagnostic statistics (including Cook's value and standardized residuals) we create a new tibble called [album_full_rsd]{.alt} (I tend to use the suffix _rsd, short for residuals) by piping our model ([album_full_lm]{.alt}) into `broom::augment()` to get the residuals and then into `tibble::rowid_to_column()` to create a variable that contains the row number. The *var = "case_no"* tells the function to name the variable containing the row numbers **case_no** (choose a different name if you like). The result is a tibble called [album_full_rsd]{.alt} that contains the case number, the original data to which the model was fitted, and various diagnostic statistics.
 
 ```{r album_rsd, exercise = TRUE, exercise.lines = 3, exercise.setup = "album_lm_setup"}
 album_full_rsd <- album_full_lm %>% 
@@ -1343,7 +1344,7 @@ To check the parameter estimates we can fit a robust model using the `robust::lm
 
 #### `r bug()` Exercise
 
-Use `lmRob()` to refit the full model using robust methods and save it as `album_full_rob`
+Use `lmRob()` to refit the full model using robust methods and save it as [album_full_rob`
 
 ```{r ce_lmrob, exercise = TRUE, exercise.lines = 1}
 

@@ -86,7 +86,7 @@ For example, the first command in Figure 1:
 metallica <- c("Lars","James","Jason", "Kirk")
 ```
 
-creates an object called *metallica*, consisting of the first names of the members (pre 2001) of the band [Metallica](https://www.metallica.com/). The ‘instructions’ used to create the object *metallica* include the concatenate function, `c()`, which collects things together. A function is a bit of code that someone has written (and that you can write yourself) that typically has at least one argument and an output. **Functions** have a name followed by parenthesis, for example, `ggplot()`, `mean()` and `plot()`. **Arguments** are inputs to the function, which are pre-defined things that you specify within the parentheses. You can think of arguments like options that you set for the function.  Most functions return an output, which could be a new data set, a value, information about a statistical model, a graph and so on.
+creates an object called [metallica]{.alt}, consisting of the first names of the members (pre 2001) of the band [Metallica](https://www.metallica.com/). The ‘instructions’ used to create the object [metallica]{.alt} include the concatenate function, `c()`, which collects things together. A function is a bit of code that someone has written (and that you can write yourself) that typically has at least one argument and an output. **Functions** have a name followed by parenthesis, for example, `ggplot()`, `mean()` and `plot()`. **Arguments** are inputs to the function, which are pre-defined things that you specify within the parentheses. You can think of arguments like options that you set for the function.  Most functions return an output, which could be a new data set, a value, information about a statistical model, a graph and so on.
  
 In the first command in Figure 1 the arguments passed into the `c()` function are the band member’s names as four separate strings of text, and the output returned by the function is these strings collected together as a single entity. So, we input each band member’s name (in straight quotes and separated by commas), and by enclosing them in `c()` we bind them into a single entity, which is assigned (using `<-`) to an object that we have called ‘metallica’. Once this command is executed the object that we called ‘metallica’ is created and stored in memory so we can use it in future commands.
 
@@ -98,7 +98,13 @@ In the first command in Figure 1 the arguments passed into the `c()` function ar
 
 #### `r alien()` Alien coding challenge
 
-Let's try this out. In the code box below type `metallica <- c("Lars","James","Jason", "Kirk")` and then click ![](./images/learnr_run_code.png){height=1em}.
+Let's try this out. In the code box below type
+
+```{r, eval = FALSE}
+metallica <- c("Lars","James","Jason", "Kirk")
+```
+
+and then click ![](./images/learnr_run_code.png){height=1em}.
 
 ```{r met_data, exercise=TRUE}
 
@@ -108,7 +114,7 @@ Let's try this out. In the code box below type `metallica <- c("Lars","James","J
 metallica <- c("Lars","James","Jason", "Kirk")
 ```
 
-You should find that nothing happened, which will be disconcerting. That's because we told `r rproj()` to create the object *metallica* but not to show it to us. So, the object *metallica* has been created and stored in `r rproj()`’s memory and we can refer back to it, use it to do other things, change it, and view it. To view it we execute its name. So, let's ask to see the object *metallica* that we have created by executing its name:
+You should find that nothing happened, which will be disconcerting. That's because we told `r rproj()` to create the object [metallica]{.alt} but not to show it to us. So, the object [metallica]{.alt} has been created and stored in `r rproj()`’s memory and we can refer back to it, use it to do other things, change it, and view it. To view it we execute its name. So, let's ask to see the object [metallica]{.alt} that we have created by executing its name:
 
 ```{r met_data_2-setup}
 metallica <- c("Lars","James","Jason", "Kirk")
@@ -122,7 +128,7 @@ metallica <- c("Lars","James","Jason", "Kirk")
 metallica
 ```
 
-Notice that the contents of the object *metallica* are displayed:
+Notice that the contents of the object [metallica]{.alt} are displayed:
 
 ```{r, echo = FALSE}
 metallica <- c("Lars","James","Jason", "Kirk")
@@ -166,17 +172,17 @@ mean(variable_name, na.rm = FALSE, trim = 0)
 
 The function takes three arguments:
 
-*	`variable_name` is the name of the variable for which you want to compute a mean.
-* `na.rm = FALSE` is an argument that sets whether to remove missing values (TRUE) or not (FALSE)
-*	`Trim = 0` is an argument that determines by how much you trim the scores before computing the mean. The default is 0 (include all scores) but you can set another value, such as 5 (trim 5% of scores from both extremes of the scores before computing the mean).
+*	[variable_name]{.alt} is the name of the variable for which you want to compute a mean.
+* [na.rm = FALSE]{.alt} is an argument that sets whether to remove missing values (TRUE) or not (FALSE)
+*	[Trim = 0]{.alt} is an argument that determines by how much you trim the scores before computing the mean. The default is 0 (include all scores) but you can set another value, such as 5 (trim 5% of scores from both extremes of the scores before computing the mean).
 
-Don't worry too much about understanding what the arguments do for now, we'll come back to this function in a later tutorial. Figure 2 maps this process of setting arguments within functions to ticking check boxes in a dialog box. In this imaginary statistics software, we have selected a menu called ‘mean’ that opens the dialog box in the figure. This action is comparable to typing `mean()`: it activates the function, but if we were to click *OK* nothing would happen because we haven’t told the computer which variable to compute the mean on. Imagine I've dragged the variable **songs_written** to the space labelled *Variable:*. Having selected the variable, two options are available: the first determines what we do with missing values, and the second determines how much we trim the scores. Each option or ‘argument’ has a tick box. Having specified a variable, we could click on *OK* and we’d get some output because the options/arguments have default values (Figure 2 left): the tick box for removing missing values is unchecked, which is the same as typing `na.rm = FALSE` into the function, and the checkbox for trimming the mean is unchecked which is the same as typing `trim = 0` into the function. In other words it would be like executing:
+Don't worry too much about understanding what the arguments do for now, we'll come back to this function in a later tutorial. Figure 2 maps this process of setting arguments within functions to ticking check boxes in a dialogue box. In this imaginary statistics software, we have selected a menu called ‘mean’ that opens the dialogue box in the figure. This action is comparable to typing `mean()`: it activates the function, but if we were to click *OK* nothing would happen because we haven’t told the computer which variable to compute the mean on. Imagine I've dragged the variable **songs_written** to the space labelled *Variable:*. Having selected the variable, two options are available: the first determines what we do with missing values, and the second determines how much we trim the scores. Each option or ‘argument’ has a tick box. Having specified a variable, we could click on *OK* and we’d get some output because the options/arguments have default values (Figure 2 left): the tick box for removing missing values is unchecked, which is the same as typing [na.rm = FALSE]{.alt} into the function, and the checkbox for trimming the mean is unchecked which is the same as typing [trim = 0]{.alt} into the function. In other words it would be like executing:
 
 ```{r, eval=FALSE}
 mean(songs_written)
 ```
 
-We don’t need to write `na.rm = FALSE, trim = 0` explicitly within the function because these are the defaults values that the function will use. However, we could change these defaults by changing these arguments. Going back to our imaginary dialog box, the right side of Figure 2 shows that same variable is selected (**songs_written**), but this time the user has selected the option for removing missing values, which equates to typing `na.rm = TRUE` into the function. The user has also selected to trim means and type in a value of 5 to set the amount of trim, which is equivalent to typing `trim = 5` into the function. Now, when we click on *OK* the mean will be calculated having trimmed 5% of scores from either side and excluding missing values. This process is equivalent to executing:
+We don’t need to write [na.rm = FALSE, trim = 0]{.alt} explicitly within the function because these are the defaults values that the function will use. However, we could change these defaults by changing these arguments. Going back to our imaginary dialog box, the right side of Figure 2 shows that same variable is selected (**songs_written**), but this time the user has selected the option for removing missing values, which equates to typing [na.rm = TRUE]{.alt} into the function. The user has also selected to trim means and type in a value of 5 to set the amount of trim, which is equivalent to typing [trim = 5]{.alt} into the function. Now, when we click on *OK* the mean will be calculated having trimmed 5% of scores from either side and excluding missing values. This process is equivalent to executing:
 
 ```{r, eval=FALSE}
 mean(songs_written, na.rm = TRUE, trim = 5)
@@ -205,7 +211,7 @@ ggplot()
 ggplot2::ggplot()
 ```
 
-Although many people don’t include the package name, it is good style to include it when you refer to a function because you will occasionally stumble across two functions in two different packages that have the same name. For example, there is a `recode()` function in both the **Hmisc** and **car** packages. If you have both packages loaded and you try to use `recode()`, `r rproj()` won’t know which one to use or will guess incorrectly and throw an error. If you always specify the package as well as the function then `r rproj()` (and everyone else) will know which function you're using. For example, if we want to use the recode function in the car package we would use:
+Although many people don’t include the package name, it is good style to include it when you refer to a function because you will occasionally stumble across two functions in two different packages that have the same name. For example, there is a `recode()` function in both the `Hmisc` and `car` packages. If you have both packages loaded and you try to use `recode()`, `r rproj()` won’t know which one to use or will guess incorrectly and throw an error. If you always specify the package as well as the function then `r rproj()` (and everyone else) will know which function you're using. For example, if we want to use the recode function in the car package we would use:
 
 ```{r, eval=FALSE}
 car::recode()
@@ -241,15 +247,15 @@ Hmisc::recode()
 
 While we’re discussing good style, it is important to adopt consistent principles about how to name the objects you create in `r rproj()`. I recommend following Hadley Wickham's [tidyverse style guide](http://style.tidyverse.org/). The style guide has a lot to take in, so a few key tips are:
 
-* **Use lower case when naming things**: `r rproj()` is case sensitive so it will treat *myData* as a completely different object to *mydata*. One of the most common reasons why your code won't run will be because you forgot to capitalize an object that you capitalized when you created it. The simplest solution is to use lower case all of the time when naming objects.
-* **Use underscores to separate words**: when creating objects it improves readability if you use underscores to distinguish words. For example, you might import the data relating to mathematical achievement as *maths_data*, which is easier to read than *mathsdata*.
-* **Avoid long names**: naming something *great_experiment_to_test_whether_listening_to_heavy_metal_improves_your_statistical_ability_data* is certainly descriptive but you're going to really regret it when you want to refer to that object again - think of the potential for typos which would mean `r rproj()` doesn't recognise the object, not to mention the time wasted in typing it out. Keep it short but meaningful.
-* **Consider consistent suffixes**: Although not in the style guide, I find it useful to have a set of suffixes to indicate the types of objects that I have created. For example, you might use *dat* for data, *tib* for *tibbles* (they'll be explained in a later tutorial), *m* or *mod* for model, and *out* for output. For example, I might create these objects:
-    - *maths_dat*: data frame containing my data on mathematical achievement
-    - *maths_tib*: tibble containing my data on mathematical achievement
-    - *maths_3x_m*: object specifying a model in which maths achievement was predicted from 3 variables (i.e., 3 *X*s).
-    - *maths_3x_out*: object containing the summary output from the above model.
-* **Comment**: You can annotate your code by prefixing text with **#**. This prefic enables you to describe what you are doing. You have no idea how helpful this can be when you revisit code 6 months later and can't remember what you were trying to do. It's a great habit to get into.
+* **Use lower case when naming things**: `r rproj()` is case sensitive so it will treat [myData]{.alt} as a completely different object to [mydata]{.alt}. One of the most common reasons why your code won't run will be because you forgot to capitalize an object that you capitalized when you created it. The simplest solution is to use lower case all of the time when naming objects.
+* **Use underscores to separate words**: when creating objects it improves readability if you use underscores to distinguish words. For example, you might import the data relating to mathematical achievement as [maths_data]{.alt}, which is easier to read than [mathsdata]{.alt}.
+* **Avoid long names**: naming something [great_experiment_to_test_whether_listening_to_heavy_metal_improves_your_statistical_ability_data]{.alt} is certainly descriptive but you're going to really regret it when you want to refer to that object again - think of the potential for typos which would mean `r rproj()` doesn't recognise the object, not to mention the time wasted in typing it out. Keep it short but meaningful.
+* **Consider consistent suffixes**: Although not in the style guide, I find it useful to have a set of suffixes to indicate the types of objects that I have created. For example, you might use [dat]{.alt} for data, [tib]{.alt} for [tibbles](#tibbles) (they'll be explained later), [m]{.alt} or [mod]{.alt} for model, and [ou]{.alt} for output. For example, I might create these objects:
+    - [maths_dat]{.alt}: data frame containing my data on mathematical achievement
+    - [maths_tib]{.alt}: tibble containing my data on mathematical achievement
+    - [maths_3x_m]{.alt}: object specifying a model in which maths achievement was predicted from 3 variables (i.e., 3 *X*s).
+    - [maths_3x_out]{.alt}: object containing the summary output from the above model.
+* **Comment**: You can annotate your code by prefixing text with `#`. This prefix enables you to describe what you are doing. You have no idea how helpful this can be when you revisit code 6 months later and can't remember what you were trying to do. It's a great habit to get into.
 * **Spacing**: Your code will be much easier to read if you put spaces around operators such as `+`, `==`, `<-`. Put spaces after commas (but not before), but don't put them around `:`, `::` and `:::` (because these have special functions in `r rproj()`).
 
 #### Good style
@@ -259,7 +265,7 @@ While we’re discussing good style, it is important to adopt consistent princip
 metallica <- c("Lars","James","Jason", "Kirk")
 ```
 
-This example shows good practice. Note how I have annotated what I am doing by using '#', put spaces around the assignment operator (`<-`) and after commas, used lower case and an underscore for my object name and kept the name short.
+This example shows good practice. Note how I have annotated what I am doing by using `#`, put spaces around the assignment operator (`<-`) and after commas, used lower case and an underscore for my object name and kept the name short.
 
 #### Poor style
 
@@ -307,7 +313,7 @@ We can pipe this command to make it clearer:
 my_data <- here::here("data/metallica.csv") %>% readr::read_csv(.)
 ```
 
-Instead of embedding the `here::here()` function within `readr::read_csv()`, we put it first and feed or ‘pipe’ its output into `readr::read_csv(.)` using `%>%`.The code is easier to read, it makes clear that we’re using  `here::here()` to generate a path to the file that we want to open, and that we’re feeding that file path into `readr::read_csv(.)`. Note that the `readr::read_csv(.)` function has a period (.) within it. This period represents whatever is coming through the pipe from the left. Often, you don't need the period but sometimes you do so it's worth being aware of it.
+Instead of embedding the `here::here()` function within `readr::read_csv()`, we put it first and feed or ‘pipe’ its output into `readr::read_csv(.)` using `%>%`.The code is easier to read, it makes clear that we’re using  `here::here()` to generate a path to the file that we want to open, and that we’re feeding that file path into `readr::read_csv(.)`. Note that the `readr::read_csv(.)` function has a period ([.]]{.alt}) within it. This period represents whatever is coming through the pipe from the left. Often, you don't need the period but sometimes you do so it's worth being aware of it.
 
 ```{r pipe_quiz, echo=FALSE}
   question("What's going on in the command `here::here(\"data/metallica.csv\") %>% readr::read_csv(.)`?",
@@ -324,14 +330,14 @@ Instead of embedding the `here::here()` function within `readr::read_csv()`, we 
 
 Often when analysing data you will [input your data with an external software](http://milton-the-cat.rocks/learnr/r/r_getting_started/) such as Microsoft Excel, Google sheets, or Numbers and then import it into `r rproj()`. However, you can enter data directly. It's also useful to know about the different ways in which `r rproj()` stores data. `r rproj()` can store information using several different data types:
 
-* `int`: variables containing integers (i.e., whole numbers).
-*	`dbl`: variables containing doubles (i.e., real numbers).
-* `chr`: variables containing characters, or strings (i.e. text).
-*	`lgl`: variables that contain the logical values of TRUE or FALSE.
-*	`fctr`: variables that represent categories with fixed numeric values (so called factors, for example a variable where you have coded biological sex as 0 = male, 1 = female)
-*	`date`: variables that contain dates.
+* [int]{.alt}: variables containing integers (i.e., whole numbers).
+*	[dbl]{.alt}: variables containing doubles (i.e., real numbers).
+* [chr]{.alt}: variables containing characters, or strings (i.e. text).
+*	[lgl]{.alt}: variables that contain the logical values of TRUE or FALSE.
+*	[fctr]{.alt}: variables that represent categories with fixed numeric values (so called factors, for example a variable where you have coded biological sex as 0 = male, 1 = female)
+*	[date]{.alt}: variables that contain dates.
 
-We’re going to extend our earlier Metallica example to explore these different data types. Table 1 shows the data that we’re going to enter , which contains a character variable (name), two date variables (birth_date and death_date), a factor (the instrument they play), a logical (whether it is true or false that they are a current member of the band), two integers (how many songs they have written for Metallica and their **net_worth**).
+We’re going to extend our earlier Metallica example to explore these different data types. Table 1 shows the data that we’re going to enter, which contains a character variable (name), two date variables (birth_date and death_date), a factor (the instrument they play), a logical (whether it is true or false that they are a current member of the band), two integers (how many songs they have written for Metallica and their **net_worth**).
 
 ```{r, results = 'asis', echo=FALSE}
 tibble::tribble(
@@ -361,7 +367,7 @@ metallica <- c("Lars","James","Jason", "Kirk")
 
 #### `r alien()` Alien coding challenge
 
-Adapt the above code to enter the names in Table 1 and store these in an object called `name` by executing:
+Adapt the above code to enter the names in Table 1 and store these in an object called [name]]{.alt} by executing:
 
 
 ```{r met_name, exercise = TRUE, exercise.lines = 4}
@@ -428,7 +434,7 @@ One function for converting character strings to dates is `ymd()`. The letters �
 
 #### `r robot()` Code example
 
-To create a variable using `lubridate` you'd execute something like:
+To create a variable using `lubridate::ymd()` you'd execute something like:
 
 ```{r, eval=FALSE}
 variable <- c("date 1", "date 2", "date 3", ... "final date") %>%
@@ -482,8 +488,8 @@ birth_date
 
 ###	`r bmu2()` Missing values
 
-Although as researchers we strive to collect complete sets of data, it is often the case that we have missing data. We denote missing values with `NA` (in capital letters), which stands for ‘not available’. Many functions in `r rproj()` have arguments to specify how you handle missing values so if you have missing values remember to set a value for these arguments.
-The dates of the member’s deaths are included in Table 1. At the time of writing all but one of the members are alive (Cliff Burton was tragically killed in a tour bus accident), so we (thankfully) have a lot of missing values. We enter these values as `NA` (not in quotes).
+Although as researchers we strive to collect complete sets of data, it is often the case that we have missing data. We denote missing values with [NA]{.alt} (in capital letters), which stands for ‘not available’. Many functions in `r rproj()` have arguments to specify how you handle missing values so if you have missing values remember to set a value for these arguments.
+The dates of the member’s deaths are included in Table 1. At the time of writing all but one of the members are alive (Cliff Burton was tragically killed in a tour bus accident), so we (thankfully) have a lot of missing values. We enter these values as [NA]{.alt} (not in quotes).
 
 #### `r alien()` Alien coding challenge
 
@@ -577,9 +583,9 @@ factor(variable, levels = c(x, y, … z), labels = c("label_1", "label_2", … "
 
 This function looks a bit scary, but it’s not too bad really. Let’s break it down:
 
-*	`factor(variable_name)`: this is all you really need to create the factor—in our case `factor(instrument)` would do the trick.
-*	`levels = c(x, y, … z)`: we need to tell `r rproj()` which values we want to use to denote different groups and we do this with the levels = argument. Often we use the `c()` function to list the values we have used. For example, with the Metallica data where we have used values of 0, 1 and 2, we could use `levels = c(0, 1, 2)`. However, if you have used a regular series such as 1, 2, 3, 4 we can abbreviate this as `1:4`, the colon means ‘all the values between’. So, `1:4` is the same as `c(1, 2, 3, 4)`. For the Metallica data we could, therefore, use `levels = 0:2` or `levels = c(0, 1, 2)`.
-*	`labels = c("label_1", "label_2", … "label_3")`: The final step is to assign labels to these levels. Again, we use `c()` to collect the labels that we wish to assign. You must list these labels in the same order as your numeric levels, and you must provide a label for each level. In our case, 0 corresponds to Guitar, 1 to Bass, and 2 to drums  so the argument would be `labels = c("Guitar", "Bass", "Drums")`.
+*	[factor(variable_name)]{.alt}: this is all you really need to create the factor—in our case [factor(instrument)]{.alt} would do the trick.
+*	[levels = c(x, y, … z)]{.alt}: we need to tell `r rproj()` which values we want to use to denote different groups and we do this with the levels = argument. Often we use the `c()` function to list the values we have used. For example, with the Metallica data where we have used values of 0, 1 and 2, we could use [levels = c(0, 1, 2)]{.alt}. However, if you have used a regular series such as 1, 2, 3, 4 we can abbreviate this as [1:4]{.alt}, the colon means ‘all the values between’. So, [1:4]{.alt} is the same as [c(1, 2, 3, 4)]{.alt}. For the Metallica data we could, therefore, use [levels = 0:2]{.alt} or [levels = c(0, 1, 2)]{.alt}.
+*	[labels = c("label_1", "label_2", … "label_3")]{.alt}: The final step is to assign labels to these levels. Again, we use `c()` to collect the labels that we wish to assign. You must list these labels in the same order as your numeric levels, and you must provide a label for each level. In our case, 0 corresponds to Guitar, 1 to Bass, and 2 to drums  so the argument would be [labels = c("Guitar", "Bass", "Drums")]{.alt}.
 
 #### `r robot()` Code example
 
@@ -637,7 +643,7 @@ instrument <- c(2, 0, 0, 1, 1, 1, 0) %>%
 instrument
 ```
 
-The tidyverse method is slightly different. First, we create a *character* variable and then use the `forcats::as_factor()` function to convert it to a factor.
+The tidyverse method is slightly different. First, we create a character variable and then use the `forcats::as_factor()` function to convert it to a factor.
 
 #### `r robot()` Code example
 
@@ -663,7 +669,7 @@ instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") %
 instrument
 ```
 
-Notice that with this method we don’t specify the levels or labels of the factor, they are set automatically with levels ordered by the order they appear in the data. In this case entered drums first, so this is the first level. Guitar was entered second and so is the second level and so on. Were told this in the output by `Levels: Drums Guitar Bass`.
+Notice that with this method we don’t specify the levels or labels of the factor, they are set automatically with levels ordered by the order they appear in the data. In this case entered drums first, so this is the first level. Guitar was entered second and so is the second level and so on. Were told this in the output by [Levels: Drums Guitar Bass]{.alt}.
 
 #### `r robot()` Code example
 
@@ -680,7 +686,7 @@ instrument <- instrument %>%
 instrument
 ```
 
-Notice that the order of levels has changed from `Levels: Drums Guitar Bass` in the previous output to `Levels: Guitar Bass Drums` in the current output.
+Notice that the order of levels has changed from [Levels: Drums Guitar Bass]{.alt} in the previous output to [Levels: Guitar Bass Drums]{.alt} in the current output.
 
 
 #### `r alien()` Alien coding challenge
@@ -735,7 +741,7 @@ levels(instrument)
 ```
 
 
-##	`r bmu2()` Tibbles
+##	`r bmu2()` Tibbles {#tibbles}
 
 We have looked at how to create variables, but what if we want to combine these variables into a tabulated data set. The tidyverse way to do this is to create something called a **tibble**. 
 
@@ -747,11 +753,11 @@ To create a tibble we use the `tibble::tibble()` function, and input into it the
 my_tib <- tibble::tibble(variable_1, variable_2, variable_3, ... variable_n)
 ```
 
-This command creates an object called `my_tib` (I tend to use `_tib` to denote a tibble) that contains all of the variables listed in `tibble()`. They will be arranged in columns. You view a tibbles by executing its name. The contents of the tibble will be printed within the `r rproj()` markdown document below the code chunk. By default the first 10 rows will be displayed and as many columns as the width of the pane allows. The display is interactive so you can navigate across columns or down beyond the first 10 rows.
+This command creates an object called [my_tib]{.alt} (I tend to use [_tib]{.alt} to denote a tibble) that contains all of the variables listed in `tibble()`. They will be arranged in columns. You view a tibbles by executing its name. The contents of the tibble will be printed within the `r rproj()` markdown document below the code chunk. By default the first 10 rows will be displayed and as many columns as the width of the pane allows. The display is interactive so you can navigate across columns or down beyond the first 10 rows.
 
 #### `r alien()` Alien coding challenge
 
-Create a tibble of the Metallica data called `metalli_tib`, which is made up of all of the variables from Table 1 that we have created in this tutorial (don't forget to execute its name to view it):
+Create a tibble of the Metallica data called [metalli_tib]{.alt}, which is made up of all of the variables from Table 1 that we have created in this tutorial (don't forget to execute its name to view it):
 
 ```{r met_tibble-setup}
 current_member <- c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
@@ -819,7 +825,7 @@ tibble_name %>%
 
 #### `r robot()` Code example
 
-Imagine that having created `metalli_tib` we decide that we’d like to include information about how many of their 10 studio albums of original songs each member played on. The data are 10 (Lars), 10 (James), 10 (Kirk), 2 (Rob), 4 (Jason), 3 (Cliff), 0 (Dave). We can create a variable called albums like this
+Imagine that having created [metalli_tib]{.alt} we decide that we’d like to include information about how many of their 10 studio albums of original songs each member played on. The data are 10 (Lars), 10 (James), 10 (Kirk), 2 (Rob), 4 (Jason), 3 (Cliff), 0 (Dave). We can create a variable called albums like this
 
 ```{r met_setup}
 metalli_tib <- discovr::metallica %>% 
@@ -842,17 +848,19 @@ metalli_tib <- metalli_tib %>%
 metalli_tib
 ```
 
-The first line creates the object `metalli_tib` from a version of itself in which the original tibble is passed through the pipe into `dplyr::mutate()`, where the new variable is created. You’ll see that the new version of `metalli_tib` has an extra column called **albums** that contains the values we entered.
+The first line creates the object [metalli_tib]{.alt} from a version of itself in which the original tibble is passed through the pipe into `dplyr::mutate()`, where the new variable is created. You’ll see that the new version of [metalli_tib]{.alt} has an extra column called **albums** that contains the values we entered.
 
 ###	`r bmu2()` Creating new variables from existing variables
 
-We can also compute variables from existing variables. Let’s imagine we now wanted to work out how much money per song contributed each band member made. We know how many songs each member contributed to (**songs_written**) and their net worth (**net_worth**) so their ‘worth per song’ will be their net worth divided by the number of songs written. We can create a variable that takes the values for net_worth and divides them by the corresponding value of **songs_written** using one of the arithmetic operators built into `r rproj()`. Amongst other things, we can add, subtract, multiply and divide using `+`, `-`, `*` and `\` respectively. So, let’s use `/` to create a new variable that we’ll call **worth_per_song** that is **net_worth** divided by **songs_written**. the command within `mutate()` to create this variable will be:
+We can also compute variables from existing variables. Let’s imagine we now wanted to work out how much money per song contributed each band member made. We know how many songs each member contributed to (**songs_written**) and their net worth (**net_worth**) so their ‘worth per song’ will be their net worth divided by the number of songs written. We can create a variable that takes the values for net_worth and divides them by the corresponding value of **songs_written** using one of the arithmetic operators built into `r rproj()`. Amongst other things, we can add, subtract, multiply and divide using [+]{.alt}, [-]{.alt}, [\*]{.alt} and [/]{.alt} respectively. So, let’s use [/]{.alt} to create a new variable that we’ll call **worth_per_song** that is **net_worth** divided by **songs_written**. The command within `mutate()` to create this variable will be:
 
-`worth_per_song = net_worth/songs_written`
+```{r, eval = FALSE}
+worth_per_song = net_worth/songs_written
+```
 
 #### `r alien()` Alien coding challenge
 
-By adapting the code in the previous section and using the code above that computes the worth per song to, add the variable **worth_per_song** to the `metalli_tib` tibble:
+By adapting the code in the previous section and using the code above that computes the worth per song to, add the variable **worth_per_song** to the [metalli_tib]{.alt} tibble:
 
 ```{r met_setup_albums}
 metalli_tib <- discovr::metallica %>% 
@@ -935,7 +943,7 @@ metalli_tib %>%
 
 This command will display the tibble but *without* the columns containing the band member’s names and instruments.
 
-Sometimes we’d like to store the subset of variables within a new object for future use. To do this you would need to assign the commands that subset the tibble to an object, using the assignment operator (`<-`). For example, to save a version of `metalli_tib` but without the band member’s names into an object called `metalli_anon_tib`, we’d execute:
+Sometimes we’d like to store the subset of variables within a new object for future use. To do this you would need to assign the commands that subset the tibble to an object, using the assignment operator (`<-`). For example, to save a version of [metalli_tib]{.alt} but without the band member’s names into an object called [metalli_anon_tib]{.alt}, we’d execute:
 
 ```{r met_select_ce3, exercise=TRUE, exercise.setup = "met_setup_albums"}
 metalli_anon_tib <- metalli_tib %>% 
@@ -944,16 +952,16 @@ metalli_anon_tib <- metalli_tib %>%
 metalli_anon_tib
 ```
 
-The object `metalli_anon_tib` is the same as `metalli_tib` except that it doesn’t contain the variable **name**.
+The object [metalli_anon_tib]{.alt}` is the same as [metalli_tib]{.alt} except that it doesn’t contain the variable **name**.
 
 <div class="tip">
   `r cat_space()` **Tip: Using `x:y` to specify 'all the consecutive variables between'**
 
-When selecting lots of variables it can be useful to use `x:y` to indicate 'all of the consecutive variables between x and y, including x and y'. For example the variables in `metalli_tib` are now: **name**, **birth_date**, **death_date**, **instrument**, **current_member**, **songs_written**, **net_worth**, **albums**, and **worth_per_song**. If we wanted to select the variables **name**, **songs_written**, **net_worth**, **albums** and **worth_per_song** we could use:
+When selecting lots of variables it can be useful to use `x:y` to indicate 'all of the consecutive variables between x and y, including x and y'. For example the variables in [metalli_tib]{.alt} are now: **name**, **birth_date**, **death_date**, **instrument**, **current_member**, **songs_written**, **net_worth**, **albums**, and **worth_per_song**. If we wanted to select the variables **name**, **songs_written**, **net_worth**, **albums** and **worth_per_song** we could use:
 
 `dplyr::select(name, songs_written:worth_per_song)`
 
-The `songs_written:worth_per_song` is shorthand for selecting **songs_written**, **worth_per_song** and all variables in between them in the tibble.
+The [songs_written:worth_per_song]{.alt} is shorthand for selecting **songs_written**, **worth_per_song** and all variables in between them in the tibble.
 </div>
 
 #### `r alien()` Alien coding challenge
@@ -1022,17 +1030,19 @@ metalli_tib %>%
 <div class="tip">
   `r cat_space()` **Tip: Don't forget about $**
   
-  Sometimes, when you want to select only one variable from a tibble it is quicker to use the `$` symbol. For example, to select the variable `instrument` from the `metalli_tib` tibble, we could execute:
+  Sometimes, when you want to select only one variable from a tibble it is quicker to use the `$` symbol. For example, to select the variable **instrument** from the [metalli_tib]{.alt} tibble, we could execute:
 
-`metalli_tib$instrument`
+```{r, eval = FALSE}
+metalli_tib$instrument
+```
 
-which you can read as 'the variable `instrument` within the tibble `metalli_tib`'. This will return the raw values not wrapped in a tibble (it can be handy sometimes to have the raw values).
+which you can read as 'the variable **instrument** within the tibble [metalli_tib]{.alt}'. This will return the raw values not wrapped in a tibble (it can be handy sometimes to have the raw values).
 
 </div>
 
 #### `r alien()` Alien coding challenge
 
-Inspect the variable **worth_per_song** from `metalli_tib`.
+Inspect the variable **worth_per_song** from [metalli_tib]{.alt}.
 
 
 ```{r met_select_base, exercise=TRUE, exercise.setup = "met_setup_all"}
@@ -1061,7 +1071,7 @@ dplyr::filter(statement_about_how_to_filter)
 
 #### `r robot()` Code example
 
-For example, to select the rows that represent current band members, we need to filter the rows where the variable **current_member** is was equal to TRUE. We could do this by executing:
+For example, to select the rows that represent current band members, we need to filter the rows where the variable **current_member** is was equal to [TRUE]{.alt}. We could do this by executing:
 
 ```{r met_filter_ce1, exercise=TRUE, exercise.setup = "met_setup_all"}
 metalli_tib %>% 
@@ -1069,7 +1079,7 @@ metalli_tib %>%
 ```
 
 
-Note that we use `==` to mean `equal to`. We can also use `!=` to mean 'not equal to. We can also use `<` to mean `less than` and `>` to mean `more than`. 
+Note that we use `==` to mean 'equal to'. We can also use `!=` to mean 'not equal to', `<` to mean 'less than' and `>` to mean 'more than'. 
 
 #### `r robot()` Code example
 
@@ -1082,11 +1092,11 @@ metalli_tib %>%
 
 This command returns the data for Lars, James and Kirk, who are the only members to have contributed to the writing of more than 50 songs.
 
-We can also combine conditions to select rows of a tibble. First, we can ask for rows that match both of two conditions by using the `&` operator. For example, if we want the members of Metallica who play drums *and* have written more than 50 songs, we could combine the condition `songs_written > 50` with the condition of `instrument == "Drums"`. By using `&` we require both conditions to be true. The value of **songs_written** must be greater than 50 AND the value of instrument must be equal to ‘Drums’.
+We can also combine conditions to select rows of a tibble. First, we can ask for rows that match both of two conditions by using the `&` operator. For example, if we want the members of Metallica who play drums *and* have written more than 50 songs, we could combine the condition [songs_written > 50]{.alt} with the condition of [instrument == "Drums"]]{.alt}. By using `&` we require both conditions to be true. The value of **songs_written** must be greater than 50 AND the value of instrument must be equal to ‘Drums’.
 
 #### `r robot()` Code example
 
-To filter `metalli_tib` according to the above conditions, we can insert those condition into the `filter()` function:
+To filter [metalli_tib]{.alt} according to the above conditions, we can insert those condition into the `filter()` function:
 
 ```{r met_filter_ce3, exercise=TRUE, exercise.setup = "met_setup_all"}
 metalli_tib %>% 
@@ -1095,11 +1105,11 @@ metalli_tib %>%
 
 
 We can also use the OR operator (`|`) to select cases based on whether one of many conditions is met. For example, let’s say we want to isolate the rhythm section, we need to include cases that either play drums or bass. We can achieve this with a statement such as:
-`instrument == "Drums" | instrument == "Bass"`. The `|` denotes 'or', so this command would read as ‘the value of the variable **instrument** is equal to the word ‘Drums’ OR the value of the variable instrument is equal to the phrase ‘Bass’. Again, we’d insert this statement into the `filter()` function.
+[instrument == "Drums" | instrument == "Bass"]{.alt}. The `|` denotes 'or', so this command would read as ‘the value of the variable **instrument** is equal to the word ‘Drums’ OR the value of the variable instrument is equal to the phrase ‘Bass’. Again, we’d insert this statement into the `filter()` function.
 
 #### `r robot()` Code example
 
-To filter `metalli_tib` according to the above conditions, we can insert those condition into the `filter()` function:
+To filter [metalli_tib]{.alt} according to the above conditions, we can insert those condition into the `filter()` function:
 
 ```{r met_filter_ce4, exercise=TRUE, exercise.setup = "met_setup_all"}
 metalli_tib %>% 
@@ -1110,16 +1120,16 @@ Notice that the result displays only the bassists and drummers.
 
 ###	`r bmu2()` Combining selecting cases with selecting variables
 
-We can combine what we have learnt in the previous sections to select variables *and* cases in a single command. For example, let’s say we want to create a new object called `metalli_worth` that contains only the names and net worth of the current members who have played on every album (i.e., Lars, James and Kirk). This involves two operations:
+We can combine what we have learnt in the previous sections to select variables *and* cases in a single command. For example, let’s say we want to create a new object called [metalli_worth]{.alt} that contains only the names and net worth of the current members who have played on every album (i.e., Lars, James and Kirk). This involves two operations:
 
 1. Filter the cases to exclude everyone except Lars, James and Kirk.
 2. We want to exclude all of the variables except for net worth.
 
-Let’s first select the cases we want. We can do this in several ways, but one is to set a condition that the variable **current_member** is TRUE (this will give us Lars, James, Kirk and Rob) and a second condition that instrument is not equal (`!=`) to ‘Bass’, which will exclude Rob. This condition would be written as `current_member == TRUE & instrument != "Bass"`. We could place this command into the `filter()` function:
+Let’s first select the cases we want. We can do this in several ways, but one is to set a condition that the variable **current_member** is TRUE (this will give us Lars, James, Kirk and Rob) and a second condition that instrument is not equal (`!=`) to ‘Bass’, which will exclude Rob. This condition would be written as [current_member == TRUE & instrument != "Bass"]{.alt}. We could place this command into the `filter()` function:
 
 #### `r robot()` Code example
 
-To filter `metalli_tib` according to the above conditions, we can insert those condition into the `filter()` function:
+To filter [metalli_tib]{.alt} according to the above conditions, we can insert those condition into the `filter()` function:
 
 ```{r met_filter_ce5, exercise=TRUE, exercise.setup = "met_setup_all"}
 metalli_worth <- metalli_tib %>% 
@@ -1127,7 +1137,7 @@ metalli_worth <- metalli_tib %>%
 metalli_worth
 ```
 
-This command creates an object called **metalli_worth** that contains the rows of `metalli_tib` that meet the conditions that the variable **current_member** is equal to TRUE and the variable **instrument** is NOT equal to (`!=`) the phrase "Bass".
+This command creates an object called [metalli_worth]{.alt} that contains the rows of [metalli_tib]{.alt} that meet the conditions that the variable **current_member** is equal to TRUE and the variable **instrument** is NOT equal to (`!=`) the phrase "Bass".
 
 #### `r robot()` Code example
 
@@ -1145,11 +1155,11 @@ metalli_worth <- metalli_worth %>%
 metalli_worth
 ```
 
-Notice that by executing this command we overwrite the original object `metalli_worth` with a new version that contains only the variables **name** and **net_worth**.
+Notice that by executing this command we overwrite the original object [metalli_worth]{.alt} with a new version that contains only the variables **name** and **net_worth**.
 
 #### `r alien()` Alien coding challenge
 
-The method just described is inefficient (but helpful for showing you the explicit steps that we want to take). A more efficient way to do achieve the same goal is to do both operations as part of the same pipe. See if you can combine the previous two code examples to create `metalli_worth` using a single pipe.
+The method just described is inefficient (but helpful for showing you the explicit steps that we want to take). A more efficient way to do achieve the same goal is to do both operations as part of the same pipe. See if you can combine the previous two code examples to create [metalli_worth]{.alt} using a single pipe.
 
 ```{r met_filter_select, exercise=TRUE, exercise.setup = "met_setup_all"}
 
@@ -1178,7 +1188,7 @@ metalli_worth <- metalli_tib %>%
 metalli_worth
 ```
 
-We now begin to see the beauty of the pipe: it enables us to put together a sequence of operations in very clear, readable, code. The above code creates an object called `metalli_worth` by taking the tibble called `metalli_tib` and passing it into the `filter()` function, where cases are selected if they are current members and don’t play bass, this filtered version of `metalli_tib` is then passed again through the pipe to the `select()` command in which the variables name and net_worth are selected. The result is a tibble containing Lars’, James’, and Kirk’s names and net worth.
+We now begin to see the beauty of the pipe: it enables us to put together a sequence of operations in very clear, readable, code. The above code creates an object called [metalli_worth]{.alt} by taking the tibble called [metalli_tib]{.alt} and passing it into the `filter()` function, where cases are selected if they are current members and don’t play bass, this filtered version of [metalli_tib]{.alt} is then passed again through the pipe to the `select()` command in which the variables name and net_worth are selected. The result is a tibble containing Lars’, James’, and Kirk’s names and net worth.
 
 <div class="infobox">
   <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">

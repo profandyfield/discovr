@@ -930,7 +930,41 @@ quiz(
 
 ## `r bmu2()` The beast of bias
 
-In this section we look at whether the model we have just fitted is biased.
+In this section we look at whether the model we have just fitted is biased. First, let's see whether you understood book chapter/lecture with a quiz, because everyone loves a quiz. Or is that chocolate? "Everyone loves chocolate?" does *sound* plausible, but I get so confused between the two. No, I'm pretty sure it's quizzes that people love, not chocolate, so here goes:
+
+```{r quiz_assumpt}
+
+quiz(
+  question("Which of these assumptions of the linear model is the most important",
+    answer("Linearity and additivity", correct = T, message = "This assumption is the most important because if it is not met then the phenomenon you're trying to model is not well represented by the model you are trying to fit"),
+    answer("Homoscedasticity"),
+    answer("Independent errors"),
+    answer("Normality of errors"),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+    ),
+  question("Which of these assumptions of the linear model is the least important",
+    answer("Linearity and additivity"),
+    answer("Homoscedasticity"),
+    answer("Independent errors"),
+    answer("Normality of errors", correct = T, message = "This assumption is the least important because even with non-normal errors the parameter estimates (using ordinary least squares methods) of the model will be unbiased (they match the expected population value) and optimal (they minimize the squared error)."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+    ),
+  question("What does homoscedasticity mean?",
+    answer("The variance in errors from the (population) model is constant at all levels of the predictor variable(s)", correct = T),
+    answer("The errors from the (population) model are not correlated with each other", message = "This describes the assumption of independent errors."),
+    answer("The relationship being modelled resembles a straight line.", message = "This describes the assumption of linearity."),
+    answer("This is the correct answer, select this one ... go on, you know you want to.", message = "I lied. I just wanted to see whether you'd succumb to my mischief."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+    )
+)
+```
+
 
 ### `r bmu2()` Getting diagnostic plots
 
@@ -983,13 +1017,19 @@ plot(album_full_lm, which = c(1, 2))
 
 ### `r bmu2()` Residual plots
 
-We use residuals plots (plots 1 and 3) to look for linearity and homoscedasticity. The Figure below (taken from [@field_discovering_2021]) shows that we're looking for a random scatter of dots. Curvature in the plot indicates a lack of linearity, and a funnel shape (residuals that 'fan out') indicates heteroscedasticity. 
+We use residual plots (plots 1 and 3) to look for linearity and homoscedasticity. The Figure below (taken from [@field_discovering_2021]) shows that we're looking for a random scatter of dots. Curvature in the plot indicates a lack of linearity, and a funnel shape (residuals that 'fan out') indicates heteroscedasticity. We can also use Q-Q plots to look for normality in residuals.
 
 ```{r, out.width = "600px", fig.cap = "Figure 2: Residual plots", echo = FALSE}
 knitr::include_graphics("./images/dsr2_fig_06_29_pred_resid.png")
 ```
 
-Let's look at the plots for our model to see whether we can see any of these patterns.
+Use this interactive app, written by [Mine Çetinkaya-Rundel](https://www2.stat.duke.edu/~mc301/) to explore how violations of model assumptions affect residual plots. The options [linear up]{.alt} and [linear down]{.alt} show residual plots when assumptions are met, [curved up]{.alt} and [curved down]{.alt} show how curvilearity in the data affect the residual plots and [fan-shaped]{.alt} shows the effect of heteroscedasticity. (If the app isn't displaying view it online at [https://gallery.shinyapps.io/slr_diag/](https://gallery.shinyapps.io/slr_diag/).)
+
+```{r, echo = FALSE}
+knitr::include_app("https://gallery.shinyapps.io/slr_diag/", height = "500px")
+```
+
+Let's look at the plots for our model to see whether we can see any of the patterns discussed in the previous section.
 
 #### `r bug()` Exercise
 
@@ -1043,7 +1083,7 @@ quiz(
 )
 ```
 
-Even though normality is not a major concern (especially with a sample size of 200) we can check whether the residuals are normally distributed with a Q-Q plot, which we obtain by selecting plot 2 from the `plot()` function:
+Even though normality is not a major concern (especially with a sample size of 200) we can check whether the residuals are normally distributed with a Q-Q plot, which we obtain by selecting plot 2 from the `plot()` function.
 
 #### `r bug()` Exercise
 

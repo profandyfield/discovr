@@ -113,11 +113,164 @@ metal_tib <- here::here("data/metal_health.csv")  %>% readr::read_csv()
 
 ## Assumptions
 
-Use this interactive app, written by [Mine Çetinkaya-Rundel](https://www2.stat.duke.edu/~mc301/) to explore how violations of model assumptions affect residual plots. The options [linear up]{.alt} and [linear down]{.alt} show residual plots when assumptions are met, [curved up]{.alt} and [curved down]{.alt} show how curvilearity in the data affect the residual plots and [fan-shaped]{.alt} shows the effect of heteroscedasticity. (If the app isn't displaying view it online at [https://gallery.shinyapps.io/slr_diag/](https://gallery.shinyapps.io/slr_diag/).)
+Use this interactive activity to explore how violations of model assumptions affect residual plots.
 
-```{r, echo = FALSE}
-knitr::include_app("https://gallery.shinyapps.io/slr_diag/", height = "500px")
+```{r assump_ui, echo = FALSE}
+
+fluidPage(
+
+    # Application title
+    titlePanel("Linear model assumption explorer"),
+
+    fluidRow(
+      wellPanel(
+        h3("Instructions"),
+            p("1. Choose whether you want to see a positive or negative relationship between variables."),
+            p("2. The resulting plots show data and diagnostic plots from a a linear model fitted to a linear relationship between a predictor and outcome with homoscedastic errors."),
+            p("3. Use the sliders to increase non-linearity and heteroscedasticity."),
+            p("4. Click 'Show me' to see data that has the levels of nonlinearity and heteroscedasticity that you have selected, and the resulting diagnostic plots for a linear model fitted to the data.")
+      )
+    ),
+    
+    fluidRow(
+      column(4,
+             wellPanel(
+               radioButtons("posneg",
+                            "Direction of effect:",
+                            c("Positive relationship", "Negative relationship")
+                            ),
+               sliderInput("lin",
+                           "Linear <-> Nonlinear",
+                           min = 1,
+                           max = 2,
+                           step = 0.1,
+                           value = 1, 
+                           ticks = FALSE),
+               sliderInput("hetro",
+                           "Homoscedasticity <-> Heteroscedasticity",
+                           min = 1,
+                           max = 2,
+                           step = 0.1,
+                           value = 1,
+                           ticks = FALSE),
+               actionButton("gen_dat", "Show me")
+               )
+             ),
+      column(8,
+             plotOutput("scatter") 
+             )
+      ),
+    
+    fluidRow(
+      plotOutput("diag")
+      )
+    )
 ```
+
+```{r assump_server, context = "server", echo = FALSE}
+library(ggfortify)
+cedar <- "#d35c54"
+    fire_opal <- "#E8655C"
+    field_drab <- "#775418"
+    champ <-  "#f3e2c4"
+    opal <-  "#9cbfbc" #greeny-blue light
+    cad_blu <- "#5ea5a8" #greeny-blue dark
+    alabaster<-  "#E6E8E2" #pale green/grey
+    platinum<-  "#e8eae5" # paler green/grey
+    ryhthm <- "#7c7da7" # purple
+   crayola <- "#ababbc" 
+    slate <- " #2F4F4F"
+    
+    
+    b <- reactiveVal()
+    bo <- reactiveVal()
+    
+        get_data <- function(bo = 0, b = 1, l = 1, h = 1){
+        h <- h - 1
+        tibble::tibble(
+            predictor = rep(1:100, 2),
+            outcome = bo + b*(predictor^(l))  + rnorm(predictor^(l), mean = 0, sd = 10*((predictor/100)^h)*(l^7))
+            )
+    }
+    
+    get_lm_plot <- function(tib){
+        ggplot2::ggplot(tib, aes(predictor, outcome)) +
+            geom_point(colour = cad_blu, alpha = 0.6, size = 1, position = position_identity()) +
+            geom_smooth(method = "lm", formula = y ~ x + I(x^2), fill = cedar, se = TRUE, colour = cedar) +
+            scale_y_continuous(NULL, breaks = NULL) +
+            labs(x = "Predictor", y = "Outcome") +
+            theme_bw() 
+    }
+    
+    get_pred_resid <- function(tib){
+        lm(outcome ~ predictor, data = tib) %>% 
+            ggplot2::autoplot(.,
+                              which = 1,
+                              colour = ryhthm,
+                              smooth.colour = fire_opal,
+                              alpha = 0.5,
+                              size = 1) + 
+            theme_minimal()
+    }
+    
+    get_pred_resid2 <- function(tib){
+        lm(outcome ~ predictor, data = tib) %>% 
+            ggplot2::autoplot(.,
+                              which = 3,
+                              colour = ryhthm,
+                              smooth.colour = fire_opal,
+                              alpha = 0.5,
+                              size = 1) + 
+            theme_minimal()
+    }
+    
+    get_qq <- function(tib){
+        lm(outcome ~ predictor, data = tib) %>% 
+            ggplot2::autoplot(.,
+                              which = 2,
+                              colour = ryhthm,
+                              smooth.colour = fire_opal,
+                              alpha = 0.5,
+                              size = 1) + 
+            theme_minimal()
+    }
+    
+    
+    tib <- reactiveValues(dat = tibble::tibble(
+        predictor = rep(1:100, 5),
+        outcome = predictor  + rnorm(predictor, mean = 0, sd = 10)
+        )
+        )
+        
+    output$scatter <- renderPlot({
+        get_lm_plot(tib$dat)
+        })
+    
+    
+    output$diag <- renderPlot({
+        zr1 <- get_pred_resid(tib$dat)
+        zr2 <- get_pred_resid2(tib$dat)
+        qq <- get_qq(tib$dat)
+        patchwork::wrap_plots(zr1@plots[[1]], zr2@plots[[1]], qq@plots[[1]], nrow = 1)
+        })
+    
+    
+
+    # observe events
+    
+    observeEvent(input$gen_dat, {
+        if(input$posneg == "Positive relationship"){
+            b <- 1
+            bo <- 25}
+        if(input$posneg == "Negative relationship"){
+            b <- -1
+            bo <- 150}
+        
+        tib$dat <- get_data(bo = bo, b = b, l = input$lin, h = input$hetro)
+    })
+```
+
+
 
 ## Bootstrapping
 
@@ -125,26 +278,24 @@ knitr::include_app("https://gallery.shinyapps.io/slr_diag/", height = "500px")
 # define UI
 fluidPage(
         
-        p("This app is designed to give you a sense of how bootstrapping works by letting you become a bootstrap machine!
-              Using the example from the book Chapter, Meston & Frohlich (2003) report a study showing that heterosexual people 
-              rate a picture of someone of the opposite sex as more attractive after riding a roller-coaster compared to before. 
-              Imagine we took 20 people as they came off the Rockit roller-coaster at Universal studios in Orlando and asked 
-              them to rate the attractiveness of someone in a photograph on a scale of 0 (looks like Jabba the Hut) to 10 
-              (looks like Princess Leia or Han Solo). The sample data below shows the 20 attractiveness ratings recorded in the study.
-              We want to bootstrap the mean attractiveness rating to get a robust estimate of the mean and its confidence interval.
-              Everytime you hit the button, a bootstrap sample will be taken, the mean in that sample calculated and then added to a histogram
-          showing the means from all of the bootstrap samples to date."),
-          p("To get the best results click the button 20-50 times. Each time you click the button note:"),
-            p("- Each bootstrap sample is the same size as the observed sample, but it does not contain the same scores because each observed 
-              score could be sampled more than once."),
+        p("This activity is designed to give you a sense of how bootstrapping works by letting you become a bootstrap machine!"),
+        p("Using the example from the book Chapter, Meston & Frohlich (2003) report a study showing that heterosexual people rate a picture of someone of the opposite sex as more attractive after riding a roller-coaster compared to before. Imagine we took 20 people as they came off the Rockit roller-coaster at Universal studios in Orlando and asked them to rate the attractiveness of someone in a photograph on a scale of 0 (looks like Jabba the Hut) to 10 (looks like Princess Leia or Han Solo). The sample data below shows the 20 attractiveness ratings recorded in the study. We want to bootstrap the mean attractiveness rating to get a robust estimate of the mean and its confidence interval."),
+        h3("Upper left panel: sample data"),
+        p("The sample data are shown in the upper left panel. We see the scores in that sample both as numbers, and as a histogram. These values/this histogram never changes - it's the data we actually collected. These are your reference points against which to compare each boortrap sample."),
+        h3("Upper right panel: bootstrap sample data"),
+        p("Each time you press the 'Take Bootstrap sample' button, a bootrap sample is taken from the observed data. The scorein this sample will be shown in the upper right panel. Compare the scores in the bootrap sample (the values and histogram) to the observed scores/histogram in the upper left panel. Note:"),
+        p("- The scores/histogram for the bootstrap sample differ from the original sample. Each bootstrap sample is the same size as the observed sample, but it does not contain the same scores because each observed score can be sampled more than once."),
         p("- Because each bootstrap sample is different to the observed sample, it usually has a slightly different mean."),
-            p("- Each bootstrap sample contains only values from the observed sample. For example, the value 2 doesn't occur in the observed data
-              and so won't occur in any bootstrap samples"),
-            p("- The centre of the distribution of bootstrap sample means (the black line) is our robust estimate of the mean. At first it fluctuates, but as you take
-            more samples it will stabilize."),
-            p("- The width of the distribution of bootstrap sample means relates to the estimate of the standard error of the mean"),
-        
-        
+        p("- Each bootstrap sample contains only values from the observed sample. For example, the value 2 doesn't occur in the observed data and so won't occur in any bootstrap samples"),
+        h3("Lower panel: Distribution of bootstrap means"),
+        p("- For each bootstrap sample you generate, the mean of the scores in the bootrap samples is calculated and added to the histogram in this panel (the means are displayed above it). As you take more bootstrap samples, you get more bootstrap sample means, and the histogram slowly develops a shape. The black vertical line shows the centre of the distribution. Note:"),
+        p("- The centre of the distribution of bootstrap sample means (the black line) is our robust estimate of the mean. At first it fluctuates, but as you take more samples it will stabilize."),
+        p("- The width of this distribution of bootstrap sample means relates to the bootstrap estimate of the standard error of the mean."),
+        h3("Your task:"),
+        p("- Press the 'Take Bootstrap sample' once and really reflect on the points above. Can you see how the bootstrap sample differs from the original data? Can you see that the bootstrap sample only contains scores that occurred in the original data?"),
+        p("- Press the 'Take Bootstrap sample' 5-6 more times and each time: Can you see how the bootstrap samples are different each time but always contain scores that occurred in the original data? Can you see the mean of the bootstrap sample usually changes from sample to sample? Can you see each bootsrap sample mean being added to the distribution in the bottom panel? Can you see the line at the centre of this distribution fluctuating?"),
+        p("- Press the 'Take Bootstrap sample' 20-50 more times (you can do these clicks quickly): Can you see the distribution of bootstrap sample means in the bottom panel taking shape? Can you see the line at the centre of this distribution stabilizing?"),
+
         div(actionButton("lets_boot", "Take bootstrap sample"), align = "center"),
         div(actionLink("reset", "Reset"), align = "center"),
         
@@ -172,7 +323,8 @@ fluidPage(
             h3("Distribution of bootstrap means"),
             div(p(textOutput("all_boot_mean")), align = "center"),
             div(h4(textOutput("all_boot_mean_mean")), align = "center"),
-            plotOutput("sd_plot", height = "200px")
+            plotOutput("sd_plot", height = "200px"),
+            p("The width of this distribution of bootstrap sample means relates to the bootstrap estimate of the standard error of the mean. A wider distribution equates to a larger standard error and wider confidence interval around the estimate of the mean whereas a narrow distribution equates to a smaller standard error and narrower confidence interval around the estimate of the mean."),
         )
     )
 ```

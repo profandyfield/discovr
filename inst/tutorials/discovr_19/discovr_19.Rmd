@@ -41,7 +41,7 @@ dance_tib <- discovr::cat_dance
   
 </div>
 
-### `r cat_space(height = 2)` Welcome to space pirate academy
+### `r cat_space(height = 2)` Welcome to the `discovr` space pirate academy
 
 Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
 
@@ -53,8 +53,13 @@ On your way you will face many challenges, but follow Mae's system to keep yours
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
-* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you.
-* `r bug(height = 2)` we also have alien bugs that will, erm, help you to avoid bugs by setting you coding challenges. 
+* `r alien(height = 2)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
+* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
+* `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
+
+Also, use hints and solutions to guide you through the exercises.
+
+![The hints button is your friend.](./images/discovr_hints.png)
 
 By for now and good luck - you'll be amazing!
 
@@ -96,7 +101,7 @@ To work *outside of this tutorial* you need to download the following data files
 
 * [cat_dance.csv](http://www.discoveringstatistics.com/repository/discovr_data/cat_dance.csv)
 
-Set up an ![](./images/rstudio_logo.png){height=1em} project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called `data`. Place this code in the first code chunk in your `r rproj()` Markdown document:
+Set up an ![](./images/rstudio_logo.png){height=1em} project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
 
 ```{r, eval=FALSE}
 dance_tib <- here::here("data/cat_dance.csv") %>% readr::read_csv()

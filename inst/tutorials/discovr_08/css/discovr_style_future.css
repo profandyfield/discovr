@@ -2,29 +2,32 @@
 
 Adapted from the sanddollar theme by Allison Horst, which uses these colours:
 
-sidebrown - #e4e0dc
-darkerbrown - #b8a48d
-fontgrey - #616161
-darkgreen - #217371
-lightgreen - #40b6b4
-button_hover #65bfb2
 ------
 
-colours this theme uses:
+Colours this theme uses:
 
-cedar chest #d35c54 (211, 92, 84) (dark red)
-fire opal #E8655C (232, 101, 92) (red)
+Burnt umber #912D25 (hyperlink hover only)
+Persian Red #CA3E34 (202, 62, 52) (dark red)
+
 Field drab #775418 (119, 84, 24) (dark champagne)
 champagne #f3e2c4 (243, 226, 196) (light browny-yellow)
-opal #9cbfbc (156, 191, 188) greeny-blue light
-cadet blue #5ea5a8 (94, 165, 168) greeny-blue dark
-alabaster #E6E8E2 (230, 232, 226) pale green/grey
+
+spanish blue #136CB9 (19, 108, 185)
+bedazzled blue #2C5577 (44, 85, 119)
+dark_blue_grey #6F709F (111, 112, 159) purple
+
 platinum #e8eae5 (232, 234, 229) paler green/grey
-rythm #7c7da7 (124, 125, 167) purple
-cadet blue crayola #ababbc (171, 171, 188)
 slate-gray-dark: #2F4F4F;
 
+Contrast compliancy grid at: http://contrast-grid.eightshapes.com/?background-colors=&foreground-colors=FFFFFF%0D%0A912D25%0D%0ACA3E34%0D%0A775418%0D%0AF3E2C4%0D%0A136CB9%0D%0A2C5577%0D%0A6F709F%0D%0AE8EAE5%0D%0A3F3F3F&es-color-form__tile-size=compact
+
+
 */
+
+.inline-image{
+  height: 1em;
+}
+
 
 /*-------- Background color & body font --------*/
 body {
@@ -67,22 +70,21 @@ ul {
 }
 
 h2 {
-  color: #5ea5a8;
+  color: #2C5577;
 }
 
 h3 {
-  color: #9cbfbc;
+  color: #136CB9;
 }
 
 h4 {
-  color: #7c7da7;
+  color: #CA3E34;
 }
 
-h5 {
-    color: #9cbfbc;
-    font-size: 16px;
+.alt {
+    color: #912D25;
+    font-size: 1em;
 }
-
 
 
 
@@ -147,31 +149,27 @@ h5 {
 /*------- In line code aesthetic --------*/
 code {
     color: white;
-    background-color: #7c7da7;
-    background-color: rgba(124, 125, 167, 0.8);
+    background-color: #136CB9;
+    background-color: rgba(19, 108, 185, 0.8);
     font-size: 14px;
 }
 
-.alt {
-    color: #5ea5a8;
-    font-size: 1em;
-}
 
 
 /*------- Hyperlinks --------*/
 a {
-    color: #E8655C;
+    color: #136CB9;
     text-decoration: none;
 }
 
 a:hover, a:focus {
-    color: #d35c54;
+    color: #2C5577;
     text-decoration: underline;
 }
 
 /*------- Main menu -------*/
 .topicsList .topic {
-    color: #5ea5a8;
+    color: #2C5577;
     line-height: 40px;
     font-size: 20px;
     padding-left: 10px;
@@ -197,7 +195,7 @@ a:hover, a:focus {
 }
 /*--- When hovering ---*/
 .topicsList .topic:hover {
-    background-color: #9cbfbc;
+    background-color: #2C5577;
     color: white;
     border: 0;
 }
@@ -205,7 +203,7 @@ a:hover, a:focus {
 /*------- Solution / Hint buttons -------*/
 .tutorial-exercise-input .btn-tutorial-solution {
     margin-left: 15px;
-    background-color: #9cbfbc;
+    background-color: #2C5577;
     color: white;
     font-family: 'Jaldi', sans-serif;
     font-size: 13px;
@@ -218,10 +216,10 @@ a:hover, a:focus {
     margin: 0;
     padding: 8px 14px;
     font-size: 14px;
-    background-color: #65bfb2;
-    border-bottom: 1px solid #ebebeb;
+    background-color: #E8EAE5;
+    border-bottom: 1px solid #2C5577;
     border-radius: 5px 5px 0 0;
-    color: white;
+    color: #3F3F3F;
     text-shadow: none;
     font-family: 'Jaldi', sans-serif;
 }
@@ -230,7 +228,7 @@ a:hover, a:focus {
 
 .btn-primary, .btn-success, .btn-info, .btn-xs, .btn-default {
     color: white;
-    background-color: #9cbfbc;
+    background-color: #2C5577;
     background-image: none;
     border: 0;
     font-size: 15px;
@@ -239,7 +237,7 @@ a:hover, a:focus {
 
 /*------- Buttons when hovering -------*/
 .btn-default:hover, btn-success:hover, btn-info:hover, btn-primary:hover {
-  background-color: #5ea5a8;
+  background-color: #136CB9;
   color: white;
 }
 
@@ -256,7 +254,7 @@ a:hover, a:focus {
     margin-left: 12px;
     padding-right: 8px;
     font-weight: normal;
-    background-color: #5ea5a8;
+    background-color: #136CB9;
     color: white;
     border: 0;
 }
@@ -273,7 +271,7 @@ a:hover, a:focus {
 /*------- Update Next Section button -------*/
 .topicActions .btn-primary:hover {
     color: white;
-    background-color: #5ea5a8;
+    background-color: #136CB9;
     background-image: none;
     border: none;
 }
@@ -296,10 +294,10 @@ a:hover, a:focus {
 .tip {
   border-radius: 10px;
   padding: 10px;
-  border: 2px solid #7c7da7;
-  background-color: #7c7da7;
-  background-color: rgba(124, 125, 167, 0.1);
-  color: #7c7da7;
+  border: 2px solid #136CB9;
+  background-color: #136CB9;
+  background-color: rgba(19, 108, 185, 0.1);
+  color: #2C5577;
 }
 
 .warning {

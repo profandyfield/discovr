@@ -10,7 +10,7 @@ runtime: shiny_prerendered
 description: "Categorical predictors with two cartegories (comparing two means). Comparing two independent means, comparing two related means, effect sizes."
 bibliography: discovr_09.bib
 ---
-
+<html lang="en">
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
@@ -43,15 +43,15 @@ cloak_rm_tib <- discovr::invisibility_rm
   
 </div>
 
-### `r cat_space(height = 2)` Welcome to the `discovr` space pirate academy
+### `r cat_space(fill = "h3", height = 2)` Welcome to the `discovr` space pirate academy
 
 Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu2(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice.
-* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult.
-* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det.
+* `r bmu(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
+* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
+* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
@@ -59,13 +59,21 @@ It's not just me that's here to help though, you will meet other characters alon
 * `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
 * `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
 
+Also, use hints and solutions to guide you through the exercises (Figure 1).
+
+<figure>
+<img src="./images/discovr_hints.png" alt="Each codebox has a hints or solution button that activates a popup window containing code and text to guide you through each exercise." style="width:100%">
+<figcaption>Figure 1: In a code exercise click the hints button to guide you through the exercise.</figcaption>
+</figure> 
+ 
+
 By for now and good luck - you'll be amazing!
 
 ### Workflow
 
-* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and ![](./images/rstudio_logo.png){height=1em}](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
+* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
 
-* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in ![](./images/rstudio_logo.png){height=1em} I strongly recommend that you create an `r rproj()` markdown file within an ![](./images/rstudio_logo.png){height=1em} project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
+* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an `r rproj()` markdown file within an `r rstudio()` project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
 
 ![](https://youtu.be/FE0ntX0dyc4)
 
@@ -86,7 +94,7 @@ It is good practice to be explicit about packages to avoid clashes where functio
 There are two main exceptions to this rule.
 
 1. There are functions within some `tidyverse` packages that would be used within other functions. Including the package name makes the code difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
-2. To use the pipe operator (`%>%`) you need to have `magritrr` loaded.
+2. To use the pipe operator (`%>%`) you need to have `magrittr` loaded.
 
 We can load all of the packages that are exceptions in one step by loading `tidyverse` at the beginning of our `r rproj()` Markdown document:
 
@@ -101,7 +109,7 @@ To work *outside of this tutorial* you need to download the following data files
 * [invisibility.csv](http://www.discoveringstatistics.com/repository/discovr_data/invisibility.csv)
 * [invisibility_rm.csv](http://www.discoveringstatistics.com/repository/discovr_data/invisibility_rm.csv)
 
-Set up an ![](./images/rstudio_logo.png){height=1em} project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
+Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
 
 ```{r, eval=FALSE}
 cloak_tib <- here::here("data/invisibility.csv") %>% readr::read_csv()
@@ -131,13 +139,17 @@ cloak_rm_tib <- cloak_rm_tib %>%
 ```
 
 
-## `r bmu2()` Comparing two means: process
+## `r bmu()` Comparing two means: process [(1)]{.alt}
 
-Figure 1 shows the general process for performing a *t*-test. As with fitting any model, we start by looking for the sources of bias. Having satisfied ourselves that assumptions are met and outliers dealt with, we run the test. We can also consider using bootstrapping if any of the test assumptions were not met. Finally, we compute an effect size and Bayes factor (see book Chapter).
+Figure 2 shows the general process for performing a *t*-test. As with fitting any model, we start by looking for the sources of bias. Having satisfied ourselves that assumptions are met and outliers dealt with, we run the test. We can also consider using bootstrapping if any of the test assumptions were not met. Finally, we compute an effect size and Bayes factor (see book Chapter).
 
-![Figure 1: The general process for conducting correlation analysis](./images/dsr2_fig_09_03_t_process.png)
+<figure>
+<img src="./images/dsr2_fig_09_03_t_process.png" alt="See main text for description." style="width:100%">
+<figcaption>Figure 2: The general process for comparing means.</figcaption>
+</figure>
+
  
-## `r bmu2()` Visualizing the data
+## `r bmu()` Visualizing the data [(1)]{.alt}
 
 I imagine a future in which we have some cloaks of invisibility to test out. Given my slightly mischievous streak, the future me is interested in the effect that wearing a cloak of invisibility has on the tendency for mischief. I take 24 participants and placed them in an enclosed community. The community is riddled with hidden cameras so that we can record mischievous acts. Half of the participants are given cloaks of invisibility; they are told not to tell anyone else about their cloak and that they can wear it whenever they liked. I measure how many mischievous acts they performed in a week. These data are preloaded in this tutorial in a tibble called [cloak_tib]{.alt}.
 
@@ -231,9 +243,9 @@ ggplot2::ggplot(cloak_tib, aes(cloak, mischief)) +
   theme_minimal()
 ```
 
-## `r bmu2()` Comparing two independent means
+## `r bmu()` Comparing two independent means [(1)]{.alt}
 
-### `r bmu2()` Fitting the model
+### `r bmu()` Fitting the model [(1)]{.alt}
 
 You can do a *t*-test in `r rproj()` using the `t.test()` function, which takes this general form
 
@@ -302,13 +314,13 @@ cloak_mod
 cloak_mod <- t.test(mischief ~ cloak, data = cloak_tib)
 ```
 
-### `r bmu2()` Interpreting the model
+### `r bmu()` Interpreting the model [(1)]{.alt}
 
 The `t.test()` function calculates Welch’s *t*, *t*(`r round(cloak_mod$parameter, 2)`) = `r round(cloak_mod$statistic, 2)`, which does not assume homogeneity of variance but instead adjusts for it. This default behaviour is sensible because, when the assumption is met no adjustment is made, but when it is broken an adjustment is made proportionate to the difference in variances. The resulting (two-tailed) *p*-value is `r round(cloak_mod$p.value, 3)`, which represents the probability of getting a *t* of `r round(cloak_mod$statistic, 2)` or smaller if the null hypothesis were true. Assuming our alpha is 0.05, we’d conclude that there was no significant difference between the means of these two samples because the observed *p* of `r round(cloak_mod$p.value, 3)` is greater than the criterion of 0.05. In terms of the experiment, we can infer that having a cloak of invisibility did not significantly affect the amount of mischief a person got up to.
 
 Finally, the confidence interval gives us an estimate of the range of the true difference between means. If we were to assume that this sample were one of the 95% that yields a confidence interval containing the population value, we’d conclude that the population difference falls between `r round(cloak_mod$conf.int[1], 2)` to `r round(cloak_mod$conf.int[2], 2)`, but remember our assumption will be wrong 5% of the time.
 
-### `r user_visor()` Effect size for independent means
+### `r user_visor()` Effect size for independent means [(2)]{.alt}
 
 We can use the `effectsize` package (Makowski et al., 2019) to calculate Cohen's *d*. There are three useful functions here:
 
@@ -358,9 +370,9 @@ question("Which of these statements about Cohen's *d* is **NOT** correct?",
   )
 ```
 
-## `r bmu2()` Comparing two dependent means
+## `r bmu()` Comparing two dependent means [(1)]{.alt}
 
-### `r bmu2()` Fitting the model
+### `r bmu()` Fitting the model [(1)]{.alt}
 
 Let’s imagine that we had collected the cloak of invisibility data using a repeated-measures design: we might have recorded each participant’s natural level of mischievous acts in a week, then given them an invisibility cloak and counted the number of mischievous acts in the following week.  So, there are 12 participants (not 24) but each participant contributes two mischief scores: one from when they wore a cloak, one from when they didn’t. The data are [cloak_rm_tib]{.alt}.
 
@@ -393,7 +405,7 @@ cloak_rm_mod
 
 The additional arguments listed earlier still apply should you wish to override any of the defaults. As before, this code creates a model called [cloak_rm_mod]{.alt} based on predicting mischief scores (**mischief**) from group membership (**cloak**). We can view this model by executing its name (hence the second command).
 
-### `r bmu2()` Order matters
+### `r bmu()` Order matters [(1)]{.alt}
 
 The above code will work provided that the data are ordered correctly. If the data is not ordered correctly then`r rproj()` will 'pair' the scores incorrectly and the resulting *t*-test will be incorrect. Let see this issue in action. Run the code below multiple times and note what happens to the output.
 
@@ -426,7 +438,7 @@ cloak_rm_mod <- cloak_rm_tib %>%
   t.test(mischief ~ cloak, data = ., paired = TRUE)
 ```
 
-### `r bmu2()` Interpreting the model
+### `r bmu()` Interpreting the model [(1)]{.alt}
 
 On average, participants given a cloak of invisibility engaged in more acts of mischief (*M* = 5, *SE* = 0.48), than those not given a cloak (*M* = 3.75, *SE* = 0.55). This difference, `r round(as.numeric(cloak_rm_mod$estimate), 2)`, 95% CI [`r round(cloak_rm_mod$conf.int[1], 2)`, `r round(cloak_rm_mod$conf.int[2], 2)`], was significant, *t*(`r round(as.numeric(cloak_rm_mod$parameter, 2))`) = `r round(cloak_rm_mod$statistic, 2)`, *p* = `r round(cloak_rm_mod$p.value, 2)`. In terms of the experiment, we might conclude that having a cloak of invisibility significantly affected the amount of mischief a person got up to. This doesn't mean the effect is important.
 
@@ -442,7 +454,7 @@ On average, participants given a cloak of invisibility engaged in more acts of m
   )
 ```
 
-### `r user_visor()` Effect sizes for dependent means
+### `r user_visor()` Effect sizes for dependent means [(2)]{.alt}
 
 We could compute Cohen’s *d* as we did earlier. However, some argue that you need to factor in the dependency between scores in treatment conditions by factoring in the correlation between the scores. We can do this in`r rproj()` by including [paired = TRUE]{.alt} into the `cohens_d()` function. However, I don't think that this is a good idea because by including information about pairing of scores, the effect size now expresses information not just about the observed difference between means but about the study design used to measure it. Also, one of the core reasons for standardizing effect sizes is so that they can be compared across studies. However, if some effect sizes include information about study design and others don’t then they can’t be meaningfully compared.
 
@@ -458,7 +470,7 @@ Instead then, we'll calculate the effect size in the same way as before (and you
 effectsize::cohens_d(mischief ~ cloak, data = cloak_rm_tib)
 ```
 
-## `r user_astronaut()` Robust models
+## `r user_astronaut()` Robust models [(3)]{.alt}
 
 The `WRS2` package has several functions for comparing independent means.
 
@@ -530,8 +542,6 @@ cloak_bt_rob
 
 ```{r, echo = F}
 cbt_rob <- WRS2::yuenbt(mischief ~ cloak, data = cloak_tib, nboot = 1000, side = TRUE)
-
-
 ```
 
 Based on this robust test there is not a significant difference (because the confidence interval crosses zero) in mischief scores across the two cloak groups, $Y_t = −1.36, p = 0.19$. We’re also told that on average the no cloak group performed one less mischievous act, $M = -1$ with a 95% confidence interval for the trimmed mean difference ranging from `r round(cbt_rob$conf.int[1], 2)` to `r round(cbt_rob$conf.int[2], 2)`.
@@ -565,9 +575,9 @@ Based on this robust test there is not a significant difference (because the con
 ### `r rproj("h3")`
 
 * [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
-* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and ![](./images/rstudio_logo.png){height=1em}.
-* [![](./images/rstudio_logo.png){height=1em} cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
-* [![](./images/rstudio_logo.png){height=1em} list of online resources](https://www.rstudio.com/online-learning/).
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and `r rstudio()`.
+* [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
+* [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
 
 ### Acknowledgement
 

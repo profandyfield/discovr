@@ -10,7 +10,7 @@ runtime: shiny_prerendered
 description: "Key concepts in R (functions and objects, packages and functions, style, data types, tidyverse, tibbles)."
 bibliography: discovr_01.bib
 ---
-
+<html lang="en">
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
@@ -37,15 +37,15 @@ source("./www/discovr_helpers.R")
   
 </div>
 
-### `r cat_space(height = 2)` Welcome to the `discovr` space pirate academy
+### `r cat_space(fill = "h3", height = 2)` Welcome to the `discovr` space pirate academy
 
 Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu2(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice.
-* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult.
-* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det.
+* `r bmu(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
+* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
+* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
@@ -53,21 +53,25 @@ It's not just me that's here to help though, you will meet other characters alon
 * `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
 * `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
 
-Also, use hints and solutions to guide you through the exercises.
+Also, use hints and solutions to guide you through the exercises (Figure 1).
 
-![The hints button is your friend.](./images/discovr_hints.png)
+<figure>
+<img src="./images/discovr_hints.png" alt="Each codebox has a hints or solution button that activates a popup window containing code and text to guide you through each exercise." style="width:100%">
+<figcaption>Figure 1: In a code exercise click the hints button to guide you through the exercise.</figcaption>
+</figure> 
+ 
 
 By for now and good luck - you'll be amazing!
 
 ### Workflow
 
-* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and ![](./images/rstudio_logo.png){height=1em}](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
+* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
 
-* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in ![](./images/rstudio_logo.png){height=1em} I strongly recommend that you create an `r rproj()` markdown file within an ![](./images/rstudio_logo.png){height=1em} project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
+* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an `r rproj()` markdown file within an `r rstudio()` project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
 
 ![](https://youtu.be/FE0ntX0dyc4)
 
-## `r bmu2()` Functions and objects
+## `r bmu()` Functions and objects [(1)]{.alt}
 
 To communicate with `r rproj()` you type commands that tell it what to do. This process might seem strange to you if you are used to interacting with software by using your mouse to click on options and on-screen buttons. The problem with pointing and clicking is that the process isn't easily reproducible. Often when analysing data we want to reproduce what we have done. By typing commands and saving those commands as a script, we are able to reproduce our analysis exactly.
 
@@ -82,9 +86,12 @@ object <- instructions
 Which you can read as object is created from instructions. In the middle of each command is an arrow (`<-`) known as the **assignment operator**, so called because it assigns the stuff on the right of the command to the thing on the left (hence the arrow points right-to-left). The ‘thing’ on the left is an **object** that is created when the command is executed. An object can be a single value (e.g., a median of a set of scores) or collections of information (e.g. the details of a statistical model). The ‘stuff’ on the right, which I’ve called instructions, are typically a set of operations or the results of applying a function.
 
 
-![Figure 1: The anatomy of a command](./images/dsr2_fig_01_06_functions_objects.png)
+<figure>
+<img src="./images/dsr2_fig_01_06_functions_objects.png" alt="See text for details.." style="width:100%">
+<figcaption>Figure 2: Examples of R commands.</figcaption>
+</figure> 
 
-For example, the first command in Figure 1:
+For example, the first command in Figure 2:
 
 ```{r, eval=FALSE}
 metallica <- c("Lars","James","Jason", "Kirk")
@@ -97,7 +104,7 @@ In the first command in Figure 1 the arguments passed into the `c()` function ar
 <div class="tip">
   `r cat_space()` **Tip: Keyboard shortcut**
   
-  Simultaneously press the ![](./images/key_alt.png){height=1em} + ![](./images/key_hyphen.png){height=1em} keys to insert the assignment operator `<-`.
+  Simultaneously press the ![alt](./images/key_alt.png){height=1em} + ![hyphen](./images/key_hyphen.png){height=1em} keys to insert the assignment operator `<-`.
 </div>
 
 #### `r alien()` Alien coding challenge
@@ -108,7 +115,7 @@ Let's try this out. In the code box below type
 metallica <- c("Lars","James","Jason", "Kirk")
 ```
 
-and then click ![](./images/learnr_run_code.png){height=1em}.
+and then click ![run code button](./images/learnr_run_code.png){height=1em}.
 
 ```{r met_data, exercise=TRUE}
 
@@ -166,9 +173,9 @@ learnr::quiz(
 ```
 
 
-### `r user_visor()` Still confused about functions and arguments?
+### `r bmu()` Still confused about functions and arguments? [(1)]{.alt}
 
-Try to think of a function as activating a dialog box and arguments as setting options within that dialog box. Let’s take a simple function `mean()`, which (no surprises here) calculates the mean (or average) of a set of scores. This function takes the general form:
+This section is optional. It's for people struggling to understand what a function is. Try to think of a function as activating a dialog box and arguments as setting options within that dialog box. Let’s take a simple function `mean()`, which (no surprises here) calculates the mean (or average) of a set of scores. This function takes the general form:
 
 ```{r, eval=FALSE}
 mean(variable_name, na.rm = FALSE, trim = 0)
@@ -180,7 +187,7 @@ The function takes three arguments:
 * [na.rm = FALSE]{.alt} is an argument that sets whether to remove missing values (TRUE) or not (FALSE)
 *	[Trim = 0]{.alt} is an argument that determines by how much you trim the scores before computing the mean. The default is 0 (include all scores) but you can set another value, such as 5 (trim 5% of scores from both extremes of the scores before computing the mean).
 
-Don't worry too much about understanding what the arguments do for now, we'll come back to this function in a later tutorial. Figure 2 maps this process of setting arguments within functions to ticking check boxes in a dialogue box. In this imaginary statistics software, we have selected a menu called ‘mean’ that opens the dialogue box in the figure. This action is comparable to typing `mean()`: it activates the function, but if we were to click *OK* nothing would happen because we haven’t told the computer which variable to compute the mean on. Imagine I've dragged the variable **songs_written** to the space labelled *Variable:*. Having selected the variable, two options are available: the first determines what we do with missing values, and the second determines how much we trim the scores. Each option or ‘argument’ has a tick box. Having specified a variable, we could click on *OK* and we’d get some output because the options/arguments have default values (Figure 2 left): the tick box for removing missing values is unchecked, which is the same as typing [na.rm = FALSE]{.alt} into the function, and the checkbox for trimming the mean is unchecked which is the same as typing [trim = 0]{.alt} into the function. In other words it would be like executing:
+Don't worry too much about understanding what the arguments do for now, we'll come back to this function in a later tutorial. Figure 3 maps this process of setting arguments within functions to ticking check boxes in a dialog box. In this imaginary statistics software, we have selected a menu called ‘mean’ that opens the dialog box in the figure. This action is comparable to typing `mean()`: it activates the function, but if we were to click *OK* nothing would happen because we haven’t told the computer which variable to compute the mean on. Imagine I've dragged the variable **songs_written** to the space labelled *Variable:*. Having selected the variable, two options are available: the first determines what we do with missing values, and the second determines how much we trim the scores. Each option or ‘argument’ has a tick box. Having specified a variable, we could click on *OK* and we’d get some output because the options/arguments have default values (Figure 2 left): the tick box for removing missing values is unchecked, which is the same as typing [na.rm = FALSE]{.alt} into the function, and the checkbox for trimming the mean is unchecked which is the same as typing [trim = 0]{.alt} into the function. In other words it would be like executing:
 
 ```{r, eval=FALSE}
 mean(songs_written)
@@ -192,9 +199,13 @@ We don’t need to write [na.rm = FALSE, trim = 0]{.alt} explicitly within the f
 mean(songs_written, na.rm = TRUE, trim = 5)
 ```
 
-![Figure 2: An imaginary dialog box to help you map the idea of setting arguments to selecting options in dialog boxes](./images/dsr2_fig_01_07_functions_dialog_analogy.png)
+<figure>
+<img src="./images/dsr2_fig_01_07_functions_dialog_analogy.png" alt="See main text for description." style="width:100%">
+<figcaption>Figure 3: An imaginary dialog box to help you map the idea of setting arguments to selecting options in dialog boxes.</figcaption>
+</figure> 
 
-## `r bmu2()`	Packages and functions
+
+## `r bmu()`	Packages and functions [(1)]{.alt}
 
 When you load a package (see [this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-installing-and-loading-packages)) into your session you are loading in a collection of new functions that you can use in`r rproj()`.  You can refer to a function directly, to use a general example:
 
@@ -247,7 +258,7 @@ Hmisc::recode()
 ```
 
 
-## `r bmu2()` Style
+## `r bmu()` Style [(1)]{.alt}
 
 While we’re discussing good style, it is important to adopt consistent principles about how to name the objects you create in `r rproj()`. I recommend following Hadley Wickham's [tidyverse style guide](http://style.tidyverse.org/). The style guide has a lot to take in, so a few key tips are:
 
@@ -294,18 +305,21 @@ This example shows poor style. Note that I have not annotated what I am doing, t
 ```
 
 
-##	`r bmu2() ` Tidyverse and the pipe operator (`%>%`)
+##	`r bmu() ` Tidyverse and the pipe operator (`%>%`) [(1)]{.alt}
 
-The tidyverse is a set of packages built upon a common philosophy of data science developed by Hadley Wickham [@wickhamAdvanced2014; @wickhamDataScience2017; @wickhamGgplot2ElegantGraphics2016]. Some of them are shown in Figure 3.
+The tidyverse is a set of packages built upon a common philosophy of data science developed by Hadley Wickham [@wickhamAdvanced2014; @wickhamDataScience2017; @wickhamGgplot2ElegantGraphics2016]. Some of them are shown in Figure 4.
 
-![Figure 3: some of the tidyverse packages](./images/tidy_packages.png){width=50%}
+<figure>
+<img src="./images/tidy_packages.png" alt="A selection of Hex logos for the tidyverse packages forcats, dplyr, ggplot2, purrr, readr, stringr, tidyr and tibble." style="width:100%">
+<figcaption>Figure 4: some of the tidyverse packages.</figcaption>
+</figure> 
 
 
 In `r rproj()` there are always multiple ways to achieve the same goal, in general I will try to follow the tidyverse approach. You [install and load](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-installing-and-loading-packages) the tidyverse packages as you would any package in `r rproj()`. Having done that, all of the tidyverse packages will be at your disposal (i.e. you don’t need to load them individually).
 
 The tidyverse approach to `r rproj()` makes use of something called the pipe operator (`%>%`) to link functions together. To use the pipe operator the `magrttr` package  needs to be installed and loaded but this happens automatically if you install and load `tidyverse`.
 
-As the name suggests, the pipe operator involves thinking of any command as a ‘pipe’ through which instructions flow from left to right. To take a really simple example, in the [introduction to `r rproj()` and ![](./images/rstudio_logo.png){height=1em}](http://milton-the-cat.rocks/learnr/r/r_getting_started/) tutorial, we used the `here::here()` function to create a path to a file that we wanted to open with the function `readr::read_csv()`. The command we used was:
+As the name suggests, the pipe operator involves thinking of any command as a ‘pipe’ through which instructions flow from left to right. To take a really simple example, in the [introduction tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/) to `r rproj()` and `r rstudio()`, we used the `here::here()` function to create a path to a file that we wanted to open with the function `readr::read_csv()`. The command we used was:
 
 ```{r, eval=FALSE}
 my_data <- readr::read_csv(here::here("data/metallica.csv"))
@@ -330,7 +344,7 @@ Instead of embedding the `here::here()` function within `readr::read_csv()`, we 
 ```
 
 
-## `r bmu2()` Data types
+## `r bmu()` Data types [(1)]{.alt}
 
 Often when analysing data you will [input your data with an external software](http://milton-the-cat.rocks/learnr/r/r_getting_started/) such as Microsoft Excel, Google sheets, or Numbers and then import it into `r rproj()`. However, you can enter data directly. It's also useful to know about the different ways in which `r rproj()` stores data. `r rproj()` can store information using several different data types:
 
@@ -359,7 +373,7 @@ tibble::tribble(
 ```
 
 
-### `r bmu2()` Character variables
+### `r bmu()` Character variables [(1)]{.alt}
 
 We created a character variable (also called a string variable) when we entered the names of the members of Metallica. To recap, we used the `c()` function to ‘collect’ together values. Each value (known as a character string) is separated by commas and placed in straight quotes so that `r rproj()` knows that it is text:
 
@@ -402,7 +416,7 @@ name <- c("Lars Ulrich", "James Hetfield", "Kirk Hammett", "Rob Trujillo", "Jaso
 name
 ```
 
-###	`r bmu2()` Double or integer variables
+###	`r bmu()` Double or integer variables [(1)]{.alt}
 
 We have two numeric variables in Table 1: the number of Metallica songs written by each member, and their net worth. A variable that contain numbers is called a numeric variable. By default, `r rproj()` stores numbers as double precision floating point numbers (double), which basically means it includes decimal places, but you can force `r rproj()` to store them as whole numbers (integer). Other things being equal storing numbers as doubles makes sense. To create a numeric variable, type the numeric values into the `c()` function in the order you want them. For example, to create the variables **songs_written** and **net_worth** we would execute:
 
@@ -430,7 +444,7 @@ songs_written
 net_worth
 ```
 
-### `r user_visor()` Date variables
+### `r user_visor()` Date variables [(2)]{.alt}
 
 The second column of Table 1 contains dates. To create a date variable we do much the same as for a character variable except that we also need to tell `r rproj()` that the values are dates. The conversion from text to dates is important if you want to do computations on the dates. If your dates are stored as characters (rather than dates) computations won’t work. The most versatile way to handle dates is the `lubridate` package (part of the tidyverse), which contains a suite of functions specifically designed for working with times and dates.
 
@@ -490,7 +504,7 @@ birth_date <- c("1963-12-26", "1963-08-03", "1962-11-18", "1964-10-23", "1963-03
 birth_date
 ```
 
-###	`r bmu2()` Missing values
+###	`r bmu()` Missing values [(1)]{.alt}
 
 Although as researchers we strive to collect complete sets of data, it is often the case that we have missing data. We denote missing values with [NA]{.alt} (in capital letters), which stands for ‘not available’. Many functions in `r rproj()` have arguments to specify how you handle missing values so if you have missing values remember to set a value for these arguments.
 The dates of the member’s deaths are included in Table 1. At the time of writing all but one of the members are alive (Cliff Burton was tragically killed in a tour bus accident), so we (thankfully) have a lot of missing values. We enter these values as [NA]{.alt} (not in quotes).
@@ -532,7 +546,7 @@ death_date <- c(NA, NA, NA, NA, NA, "1986-09-27", NA) %>%
 death_date
 ```
 
-### `r bmu2()` logical variables
+### `r bmu()` logical variables [(1)]{.alt}
 
 Table 1 contains a logical variable, which is one that contains values of true and false. In this case true and false relate to whether the member is currently in the band. Logical variables are created much the same as integers and doubles except that you enter TRUE and FALSE (in upper case) instead of numbers into the `c()` function.
 
@@ -572,7 +586,7 @@ current_member <- c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
 current_member
 ```
 
-### `r bmu2()` Factor variables
+### `r bmu()` Factor variables [(1)]{.alt}
 
 A factor variable is one that uses numbers to represent different categories or groups of data. It is a numeric variable, but the numbers represent names (i.e., it is a nominal variable). These groups of data could be levels of a treatment variable in an experiment, different groups of people, different geographic locations, different organisations, etc. In Table 1 we have a factor variable that codes the instrument played by each member. We could enter this variable as a character variable and hope that `r rproj()` treats the variable sensibly when we try to enter it into a statistical model. Often it will, but it is usually a good idea to explicitly define these variables as factors and assign the numeric codes that you want to each category.
 
@@ -745,7 +759,7 @@ levels(instrument)
 ```
 
 
-##	`r bmu2()` Tibbles {#tibbles}
+##	`r bmu()` Tibbles [(1)]{.alt}
 
 We have looked at how to create variables, but what if we want to combine these variables into a tabulated data set. The tidyverse way to do this is to create something called a **tibble**. 
 
@@ -795,7 +809,7 @@ metalli_tib
 
 From viewing the tibble, you can see that it collects together the objects called **name**, **birth_date**, **death_date**, **instrument**, **current_member**, **songs_written**, and **net_worth** into columns. When we created these variables we consistently entered the data in the order of Lars, James, Kirk, Rob, Jason, Cliff and Dave, therefore, each row represents the data for each member. For example, we can see that Lars plays drums and has a song writing credit on 111 songs. The whole thing looks like Table 1.
  
-###	`r bmu2()` Creating new variables within a tibble with `dplyr::mutate()`
+###	`r bmu()` Creating new variables within a tibble [(1)]{.alt}
 
 We can create new variables within a tibble using the `mutate()` function from the `dplyr` (which is part of `tidyverse` package).
 
@@ -854,7 +868,7 @@ metalli_tib
 
 The first line creates the object [metalli_tib]{.alt} from a version of itself in which the original tibble is passed through the pipe into `dplyr::mutate()`, where the new variable is created. You’ll see that the new version of [metalli_tib]{.alt} has an extra column called **albums** that contains the values we entered.
 
-###	`r bmu2()` Creating new variables from existing variables
+###	`r bmu()` Creating new variables from existing variables [(1)]{.alt}
 
 We can also compute variables from existing variables. Let’s imagine we now wanted to work out how much money per song contributed each band member made. We know how many songs each member contributed to (**songs_written**) and their net worth (**net_worth**) so their ‘worth per song’ will be their net worth divided by the number of songs written. We can create a variable that takes the values for net_worth and divides them by the corresponding value of **songs_written** using one of the arithmetic operators built into `r rproj()`. Amongst other things, we can add, subtract, multiply and divide using [+]{.alt}, [-]{.alt}, [\*]{.alt} and [/]{.alt} respectively. So, let’s use [/]{.alt} to create a new variable that we’ll call **worth_per_song** that is **net_worth** divided by **songs_written**. The command within `mutate()` to create this variable will be:
 
@@ -904,7 +918,7 @@ metalli_tib
 
 Note that within the `mutate()` function we create the new variable (which we name on the left hand side of the equals sign) by taking the existing variable **net_worth** from the tibble and divided it by another existing variable in the tibble, **songs_written**. If you look at the resulting tibble you’ll see that James and Lars earn about \$2.7 million per song they write, but the real winner here is Jason who contributed to only 3 songs which puts his earnings per song at around \$13 million. Nice work if you can get it.
 
-### `r bmu2()` Selecting variables
+### `r bmu()` Selecting variables [(1)]{.alt}
 
 Sometimes we might want to subset tibbles to focus on specific variables or cases of data. First we’ll look at selecting variables. The most extreme case would to look at or retain only at a single variable. To select variables from within a tibble we use the `select()` function from the `dplyr` package (which is loaded as part of tidyverse). The function takes this general form:
 
@@ -1058,7 +1072,7 @@ Inspect the variable **worth_per_song** from [metalli_tib]{.alt}.
 metalli_tib$worth_per_song
 ```
 
-###	`r bmu2()` Selecting cases (filtering tibbles)
+###	`r bmu()` Selecting cases (filtering tibbles) [(1)]{.alt}
 
 Sometimes we want to select cases rather than (or as well as) variables. For example, maybe we want to work with only the current members of Metallica. To do this, we’d need to select rows of the tibble on the basis of whether the variable **current_member** was true. To filter rows of a tibble you use the `filter()` function from `dplyr`. Like the `select()` function in the previous section, you feed in the name of the tibble and some instructions about how to filter:
 
@@ -1122,7 +1136,7 @@ metalli_tib %>%
 
 Notice that the result displays only the bassists and drummers.
 
-###	`r bmu2()` Combining selecting cases with selecting variables
+###	`r bmu()` Combining selecting cases with selecting variables [(1)]{.alt}
 
 We can combine what we have learnt in the previous sections to select variables *and* cases in a single command. For example, let’s say we want to create a new object called [metalli_worth]{.alt} that contains only the names and net worth of the current members who have played on every album (i.e., Lars, James and Kirk). This involves two operations:
 
@@ -1215,9 +1229,9 @@ We now begin to see the beauty of the pipe: it enables us to put together a sequ
 ### `r rproj("h3")`
 
 * [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
-* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and ![](./images/rstudio_logo.png){height=1em}.
-* [![](./images/rstudio_logo.png){height=1em} cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
-* [![](./images/rstudio_logo.png){height=1em} list of online resources](https://www.rstudio.com/online-learning/).
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and `r rstudio()`.
+* [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
+* [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
 
 ### Acknowledgement
 

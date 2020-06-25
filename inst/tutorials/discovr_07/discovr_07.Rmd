@@ -10,7 +10,7 @@ runtime: shiny_prerendered
 description: "Associations. Plotting data with GGally. Pearson's r, Spearman's Rho, Kendall's tau, robust correlations."
 bibliography: discovr_07.bib
 ---
-
+<html lang="en">
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
@@ -43,15 +43,15 @@ liar_tib <- discovr::biggest_liar
   
 </div>
 
-### `r cat_space(height = 2)` Welcome to the `discovr` space pirate academy
+### `r cat_space(fill = "h3", height = 2)` Welcome to the `discovr` space pirate academy
 
 Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu2(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice.
-* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult.
-* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det.
+* `r bmu(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
+* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
+* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
@@ -59,17 +59,21 @@ It's not just me that's here to help though, you will meet other characters alon
 * `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
 * `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
 
-Also, use hints and solutions to guide you through the exercises.
+Also, use hints and solutions to guide you through the exercises (Figure 1).
 
-![The hints button is your friend.](./images/discovr_hints.png)
+<figure>
+<img src="./images/discovr_hints.png" alt="Each codebox has a hints or solution button that activates a popup window containing code and text to guide you through each exercise." style="width:100%">
+<figcaption>Figure 1: In a code exercise click the hints button to guide you through the exercise.</figcaption>
+</figure> 
+ 
 
 By for now and good luck - you'll be amazing!
 
 ### Workflow
 
-* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and ![](./images/rstudio_logo.png){height=1em}](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
+* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
 
-* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in ![](./images/rstudio_logo.png){height=1em} I strongly recommend that you create an `r rproj()` markdown file within an ![](./images/rstudio_logo.png){height=1em} project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
+* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an `r rproj()` markdown file within an `r rstudio()` project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
 
 ![](https://youtu.be/FE0ntX0dyc4)
 
@@ -90,7 +94,7 @@ It is good practice to be explicit about packages to avoid clashes where functio
 There are two main exceptions to this rule.
 
 1. There are functions within some `tidyverse` packages that would be used within other functions. Including the package name makes the code difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
-2. To use the pipe operator (`%>%`) you need to have `magritrr` loaded.
+2. To use the pipe operator (`%>%`) you need to have `magrittr` loaded.
 
 We can load all of the packages that are exceptions in one step by loading `tidyverse` at the beginning of our `r rproj()` Markdown document:
 
@@ -105,14 +109,14 @@ To work *outside of this tutorial* you need to download the following data files
 * [biggest_liar.csv](http://www.discoveringstatistics.com/repository/discovr_data/biggest_liar.csv)
 * [exam_anxiety.csv](http://www.discoveringstatistics.com/repository/discovr_data/exam_anxiety.csv)
 
-Set up an ![](./images/rstudio_logo.png){height=1em} project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
+Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
 
 ```{r, eval=FALSE}
 liar_tib <- here::here("data/biggest_liar.csv") %>% readr::read_csv()
 exam_tib <- here::here("data/exam_anxiety.csv") %>% readr::read_csv()
 ```
 
-### Preparing data
+### Preparing data 
 
 To work *outside of this tutorial* you need to turn categorical variables into factors and set an appropriate baseline category using `forcats::as_factor` and `forcats::fct_relevel`.
 
@@ -136,15 +140,19 @@ exam_tib <- exam_tib %>%
 ```
 
 
-## `r bmu2()` Correlation process
+## `r bmu()` Correlation process [(1)]{.alt}
 
-Figure 1 shows a general procedure to follow when computing a bivariate correlation coefficient. First, check for sources of bias as outlined. The two most important ones in this context are linearity and normality. Remember that we’re fitting linear model to the data, so if the relationship between variables is not linear then this model is invalid. To meet this requirement, the outcome variable needs to be measured at the interval or ratio level as does the predictor variable (one exception is that a predictor variable can be a categorical variable with only two categories). As far as normality is concerned, we care about this only if we want confidence intervals or significance tests and if the sample size is small.
+Figure 2 shows a general procedure to follow when computing a bivariate correlation coefficient. First, check for sources of bias as outlined. The two most important ones in this context are linearity and normality. Remember that we’re fitting linear model to the data, so if the relationship between variables is not linear then this model is invalid. To meet this requirement, the outcome variable needs to be measured at the interval or ratio level as does the predictor variable (one exception is that a predictor variable can be a categorical variable with only two categories). As far as normality is concerned, we care about this only if we want confidence intervals or significance tests and if the sample size is small.
 
 If the data have outliers, are not normal implying a non-normal sampling distribution (and the sample is small) or your variables are measured at the ordinal level then you can use Spearman’s rho or Kendall’s tau, which are versions of the correlation coefficient applied to ranked data. Ranking the data reduces the impact of outliers but we lose information so, we can instead fit a robust variant such as the percentile bend correlation or Winsorized correlation. Furthermore, given that normality of the sampling distribution matters only for inferring significance and computing confidence intervals in small samples, we could use a bootstrap to compute the confidence interval in small samples, then we don’t need to worry about this assumption.
 
-![Figure 1: The general process for conducting correlation analysis](./images/dsr2_fig_07_05_correlation_process.png)
+<figure>
+<img src="./images/dsr2_fig_07_05_correlation_process.png" alt="See main text for description." style="width:100%">
+<figcaption>Figure 2: The general process for conducting correlation analysis.</figcaption>
+</figure> 
+
  
-## `r bmu2()` Visualizing the data
+## `r bmu()` Visualizing the data [(1)]{.alt}
 
 In a previous tutorial we looked at an example relating to exam anxiety: a psychologist was interested in the effects of exam stress and revision on exam performance. She had devised and validated a questionnaire to assess state anxiety relating to exams (called the Exam Anxiety Questionnaire, or EAQ). This scale produced a measure of anxiety scored out of 100. Anxiety was measured before an exam, and the percentage mark of each student on the exam was used to assess the exam performance. She also measured the number of hours spent revising.
 
@@ -200,7 +208,7 @@ GGally::ggscatmat(exam_tib, columns = c("exam_grade", "revise", "anxiety")) +
 
 The resulting plot shows that all of the variables are skewed. This skew could be a problem if we want to do significance tests or look at confidence intervals. The sample contains 103 observations, which is reasonably large, and possibly large enough for the central limit theorem to relieve of us of concerns about normality. We should consider using a robust method to compute the correlation coefficient itself.
 
-##	`r bmu2()` Pearson's correlation using `r rproj()`
+##	`r bmu()` Pearson's correlation using `r rproj()` [(1)]{.alt}
 
 The `correlation` package brings together lots of correlation-related stuff into a nice, easy-to-use bundle of loveliness. It has one workhorse function called … wait for it … `correlation()`. 
 
@@ -307,7 +315,7 @@ exam_tib %>%
 This won't work within this tutorial (for reasons I won't bore you with), but try it out in a markdown document.
 </div>
 
-##	`r user_visor()` Robust correlation coefficients
+##	`r user_astronaut()` Robust correlation coefficients [(3)]{.alt}
 
 Given the skew in some of the variables, we are probably better off estimating a robust correlation coefficient, like the percentage bend correlation coefficient [@Wilcox_1994].
 
@@ -333,7 +341,7 @@ exam_tib %>%
 
 Compare the values of these robust correlations to the raw Pearson correlations you obtained earlier. Exam grade had a Pearson correlation with revision of $r = 0.40$, but the percentage bend correlation is smaller (0.34). Similarly the robust versions of the other correlations are smaller than the raw Pearson correlations (although they all remain significant with *p*s < 0.05).
 
-## `r bmu2()` Spearman’s Correlation Coefficient
+## `r bmu()` Spearman’s Correlation Coefficient [(1)]{.alt}
 
 Spearman correlations are very easy once you've mastered `correlation()`. Let's switch example. Imagine I wanted to test a theory that more creative people will be better liars. I gathered together 68 past contestants from the World’s Biggest Liar competition (held annually at the Santon Bridge Inn in Wasdale in case you're interested) and noted where they were placed in the competition (first, second, third, etc.); I also gave them a creativity questionnaire (maximum score 60). The position in the competition is an ordinal variable because the places are categories but have a meaningful order (first place is better than second place and so on). Therefore, Spearman’s correlation coefficient should be used (Pearson’s *r* requires interval or ratio data). The data for this study are preloaded in this tutorial in a tibble called [liar_tib]{.alt}. If you're working outside of this tutorial see the instructions at the beginning for loading the data. 
 
@@ -434,7 +442,7 @@ liar_tib %>%
 
 From the output we can see that the Spearman correlation coefficient between the two variables is $r_s = -0.38$, with an associated *p*-value of 0.002 and a sample size of 68.  There was a significant negative relationship between creativity scores and how well someone did in the World’s Biggest Liar competition: as creativity increased, position decreased. This might seem contrary to what we predicted until you remember that a low number means that you did well in the competition (a low number such as 1 means you came first, and a high number like 4 means you came fourth). Therefore, our hypothesis is supported: as creativity increased, so did success in the competition.
 
-##	`r bmu2()` Kendall’s tau
+##	`r bmu()` Kendall’s tau [(1)]{.alt}
 
 Kendall’s tau, denoted by $\tau$, is another non-parametric correlation and it should be used rather than Spearman’s coefficient when you have a small data set with a large number of tied ranks. The `correlation()` function will compute Kendall’s $\tau$ by including [method = "kendall"]{.alt}.
 
@@ -479,9 +487,9 @@ The output shows $\tau = -0.30$, which is closer to zero than the Spearman corre
 ### `r rproj("h3")`
 
 * [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
-* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and ![](./images/rstudio_logo.png){height=1em}.
-* [![](./images/rstudio_logo.png){height=1em} cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
-* [![](./images/rstudio_logo.png){height=1em} list of online resources](https://www.rstudio.com/online-learning/).
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and `r rstudio()`.
+* [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
+* [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
 
 ### Acknowledgement
 

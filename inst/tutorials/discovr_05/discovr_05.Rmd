@@ -10,7 +10,7 @@ runtime: shiny_prerendered
 description: "Visualizing data. The ggplot2 package, boxplots, plotting means, violin plots, scatterplots, grouping by colour, grouping using facets, adjusting scales, adjusting positions."
 bibliography: discovr_05.bib
 ---
-
+<html lang="en">
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
@@ -43,15 +43,15 @@ exam_tib <- discovr::exam_anxiety
   
 </div>
 
-### `r cat_space(height = 2)` Welcome to the `discovr` space pirate academy
+### `r cat_space(fill = "h3", height = 2)` Welcome to the `discovr` space pirate academy
 
 Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu2(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice.
-* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult.
-* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det.
+* `r bmu(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
+* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
+* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
@@ -59,17 +59,21 @@ It's not just me that's here to help though, you will meet other characters alon
 * `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
 * `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
 
-Also, use hints and solutions to guide you through the exercises.
+Also, use hints and solutions to guide you through the exercises (Figure 1).
 
-![The hints button is your friend.](./images/discovr_hints.png)
+<figure>
+<img src="./images/discovr_hints.png" alt="Each codebox has a hints or solution button that activates a popup window containing code and text to guide you through each exercise." style="width:100%">
+<figcaption>Figure 1: In a code exercise click the hints button to guide you through the exercise.</figcaption>
+</figure> 
+ 
 
 By for now and good luck - you'll be amazing!
 
 ### Workflow
 
-* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and ![](./images/rstudio_logo.png){height=1em}](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
+* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
 
-* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in ![](./images/rstudio_logo.png){height=1em} I strongly recommend that you create an `r rproj()` markdown file within an ![](./images/rstudio_logo.png){height=1em} project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
+* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an `r rproj()` markdown file within an `r rstudio()` project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
 
 ![](https://youtu.be/FE0ntX0dyc4)
 
@@ -87,7 +91,7 @@ It is good practice to be explicit about packages to avoid clashes where functio
 There are two main exceptions to this rule.
 
 1. There are functions within some `tidyverse` packages that would be used within other functions. Including the package name makes the code difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
-2. To use the pipe operator (`%>%`) you need to have `magritrr` loaded.
+2. To use the pipe operator (`%>%`) you need to have `magrittr` loaded.
 
 We can load all of the packages that are exceptions in one step by loading `tidyverse` at the beginning of our `r rproj()` Markdown document:
 
@@ -103,7 +107,7 @@ To work *outside of this tutorial* you need to download the following data files
 * [notebook.csv](http://www.discoveringstatistics.com/repository/discovr_data/notebook.csv)
 * [exam_anxiety.csv](http://www.discoveringstatistics.com/repository/discovr_data/exam_anxiety.csv)
 
-Set up an ![](./images/rstudio_logo.png){height=1em} project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
+Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
 
 ```{r, eval=FALSE}
 wish_tib <- here::here("data/jiminy_cricket.csv") %>% readr::read_csv()
@@ -146,9 +150,9 @@ exam_tib <- exam_tib %>%
 ```
 
 
-## `r bmu2()` ggplot2
+## `r bmu()` ggplot2 [(1)]{.alt}
 
-The most versatile package for producing plots in `r rproj()` is [ggplot2](http://ggplot2.tidyverse.org/) which automatically installs as part of the `tidyverse` package. Figure 1 shows how `ggplot2` works. You begin with some data and you initialize a plot with the `ggplot()` function within which you name the tibble or data frame that you want to use, then you set a bunch of aesthetics using the `aes()` function. Primarily, you name the variable you want plotted on the *x*-axis, the variable for the *y*-axis and any aesthetics that you want to set for the plot using a variable (for example, you might want to vary the colour of bars by levels of a variable.). You then add layers to the plot that control what the plot shows and the visual properties. For example, you might add dots to show group means, then layer on top error bars. There are various key concepts that relate to controlling aspects of the layers of the plot:
+The most versatile package for producing plots in `r rproj()` is [ggplot2](http://ggplot2.tidyverse.org/) which automatically installs as part of the `tidyverse` package. Figure 2 shows how `ggplot2` works. You begin with some data and you initialize a plot with the `ggplot()` function within which you name the tibble or data frame that you want to use, then you set a bunch of aesthetics using the `aes()` function. Primarily, you name the variable you want plotted on the *x*-axis, the variable for the *y*-axis and any aesthetics that you want to set for the plot using a variable (for example, you might want to vary the colour of bars by levels of a variable.). You then add layers to the plot that control what the plot shows and the visual properties. For example, you might add dots to show group means, then layer on top error bars. There are various key concepts that relate to controlling aspects of the layers of the plot:
 
 * **Aesthetics**: objects in a plot have visual aesthetics that control how they look. Examples of aesthetics are the fill colour of points and bars, line colours (of lines, error bars, lines around bars), the shape of data points, the size of data points, the type of line (full, dashed, dotted etc.). These can be set directly for an object (e.g., making all data points red) or can be set using a variable (e.g., colouring data points based on whether it came from an experimental or control group). When setting an aesthetic based on a variable we use the `aes()` function.
 * **Geometric objects**: these are objects that represent data. Some examples are dots to represent raw data or a summary such as a mean, lines connecting data points or summarizing data (e.g., a line of best fit, lines connecting group means), error bars, and so on. For example:
@@ -166,9 +170,13 @@ The most versatile package for producing plots in `r rproj()` is [ggplot2](http:
 
 This is a lot to take in, so consider this a reference point (rather than expecting to remember all of the above). We'll get a feel for `ggplot2` by doing examples. You may also find the [official reference guide](http://ggplot2.tidyverse.org/reference/index.html) and, of course, my book chapter helpful.
 
-![Figure 1: the anatomy of *ggplot()*](./images/ds_r_04_fig_04_05.png)
+<figure>
+<img src="./images/ds_r_04_fig_04_05.png" alt="See main text for description." style="width:100%">
+<figcaption>Figure 2: A ggplot is made up of layers.</figcaption>
+</figure> 
 
-## `r bmu2()` Boxplots (aka Box-Whisker plots)
+
+## `r bmu()` Boxplots (aka Box-Whisker plots) [(1)]{.alt}
 
 Dreams are good, but a completely blinkered view that they’ll come true without any work on your part is not. Imagine I collected some data from 250 people on their level of success using a composite measure involving their salary, quality of life and how closely their life matches their aspirations. This gave me a score from 0 (complete failure) to 100 (complete success). I then implemented an intervention: I told people that for the next 5 years they should either wish upon a star for their dreams to come true or work as hard as they could to make their dreams come true. I measured their success again 5 years later. People were randomly allocated to these two instructions. The data are in [star_tib]{.alt}. The variables are **id** (the person's id), **strategy** (hard work or wishing upon a star), **time** (baseline or 5 years), and **success** (the rating on my dodgy scale).
 
@@ -230,7 +238,7 @@ Note that the axis have new labels, and a different theme has been applied (for 
 
 The boxplot shows that success increased (very slightly) after 5 years (the median, shown by the horizontal line within the box, is higher) but the spread of scores has also increased (the whiskers are longer at 5 years than at baseline).
 
-### `r bmu2()` Grouping by colour
+### `r bmu()` Grouping by colour [(1)]{.alt}
 
 The boxplot we have created shows how success changed over time, but it doesn't show us what effect wishing on a star had compared to hard work. We can see this by splitting the data by the variable **strategy**. We can do this in several ways. First, we can ask `ggplot` to vary the [fill]{.alt} of the boxes or the [colour]{.alt} of the lines around the boxes by the variable **strategy** by adding it to the `aes()` function in the original command to set up the plot For example, to vary the fill of the boxplots by **strategy**, we'd change the first line of our command to be:
 
@@ -341,7 +349,7 @@ wish_plot +
 </div>
 
 
-### `r bmu2()` Grouping using `facet_wrap()`
+### `r bmu()` Grouping using `facet_wrap()` [(1)]{.alt}
 
 A second way to split the data is to add a facet layer, for example, by adding `facet_wrap()` to the plot. This function takes the general form:
 
@@ -400,7 +408,7 @@ wish_plot +
   theme_minimal()
 ```
 
-## `r bmu2()` Plotting means
+## `r bmu()` Plotting means [(1)]{.alt}
 
 Plotting means is slightly more tricky. If you want to plot from the raw data (rather than a tibble containing the summary information) then your best bet is to use the `stat_summary()` function and then specify the geom to use within it. Let's begin by plotting the mean **success** split by **time**. We can do this by setting up the plot exactly as we did for the boxplot, but instead of using `geom_boxplot()` we use:
 
@@ -431,7 +439,7 @@ wish_plot +
   theme_minimal()
 ```
 
-### `r bmu2()` Adjusting the scales
+### `r bmu()` Adjusting the scales [(1)]{.alt}
 
 The plot we've just produced is all well and good, but `ggplot` has scaled the *y*-axis from 50 to 58 and has displayed breaks at the values 50, 52, 54, and 56. This maximizes the differences between means - the small difference looks huge. We shouldn't do this. There's two functions that we can use to add layers that control the scale of the axis.
 
@@ -513,7 +521,7 @@ wish_plot +
   theme_minimal()
 ```
 
-### `r bmu2()` Grouping means
+### `r bmu()` Grouping means [(1)]{.alt}
 
 Just like with boxplots we can also group means by the success strategy used using the same methods. For example, we can add `facet_wrap(~strategy)` to display the two strategies as different panels.
 
@@ -589,7 +597,7 @@ wish_plot +
 
 There is a problem though, the dots at baseline overlap.
 
-### `r bmu2()` Adjusting the position of geoms
+### `r bmu()` Adjusting the position of geoms [(1)]{.alt}
 
 We can avoid the problem of dots overlapping by adjusting their horizontal position. The `stat_summary()` function (and most geoms) have a [position]{.alt} argument that can be set using the function [position_dodge(width = value)]{.alt}. This function plots geoms so that they 'dodge' each other on the horizontal plane. You have to replace [value]{.alt} with a number that sets the size of the 'dodge'. Play around with values until it looks good, 0.9 works well for this plot.
 
@@ -631,7 +639,7 @@ wish_plot +
   theme_minimal()
 ```
 
-## `r bmu2()` Violin plots
+## `r bmu()` Violin plots [(1)]{.alt}
 
 As well plotting the mean success score across the various times and groups, it's also useful to plot the distribution of scores around that mean. We can do that using a violin plot. We can add a 'violin' using the `geom_violin()` function. Let's add a 'violin' to our previous plot. The box below shows the code we have built up so far. Run this code if you want to remind yourself of what the plot looks like.
 
@@ -643,9 +651,9 @@ To add the distribution of scores to the plot, simply add the line:
 violin_plot() +
 ```
 
-### r user_visor()` Exploring layers
+### r user_visor()` Exploring layers [(2)]{.alt}
 
-This is a good opportunity to remind you that each line of the command adds a layer to the plot *in the order you specify them*.
+This is a good opportunity to remind you that each line of the command adds a layer to the plot *in the order you specify them*. This optional section might help you to understand how layering works in `ggplot2`.
 
 
 #### `r alien()` Alien coding challenge
@@ -717,7 +725,7 @@ wish_plot +
   theme_minimal()
 ```
 
-## `r user_visor()` Plotting confidence intervals
+## `r user_visor()` Plotting confidence intervals [(2)]{.alt}
 
 The mean in the sample is an estimate, and estimates have uncertainty attached to them. It’s a really good idea to include an indicator of this uncertainty on a plot. Typically, this is done by adding error bars to the means that show the 95% confidence interval. When we plotted a mean we added this layer to our plot:
 
@@ -795,7 +803,7 @@ wish_plot +
   theme_minimal()
 ```
 
-## `r bmu2()` Transfer tasks
+## `r bmu()` Transfer tasks  [(1)]{.alt}
 
 Imagine that a film company director was interested in whether there was really such a thing as a ‘chick flick’ (a film that has the stereotype of appealing to women more than to men). He took 20 men and 20 women and showed half of each sample a film that was supposed to be a ‘chick flick’ (The Notebook). The other half watched a documentary about notebooks as a control. In all cases the company director measured participants’ emotional arousal as an indicator of how much they enjoyed the film. The data are in [notebook_tib]{.alt} and contains three variables:
 
@@ -957,7 +965,7 @@ note_plot +
 ```
 
 
-## `r bmu2()` Scatterplots
+## `r bmu()` Scatterplots [(1)]{.alt}
 
 A psychologist was interested in the effects of exam stress on exam performance. She devised and validated a questionnaire to assess state anxiety relating to exams (called the Exam Anxiety Questionnaire, or EAQ). This scale produced a measure of anxiety scored out of 100. Anxiety was measured before an exam, and the percentage mark of each student on the exam was used to assess the exam performance. The first thing that the psychologist should do is draw a scatterplot of the two variables. The data are in [exam_tib]{.alt}, which contains 5 variables:
 
@@ -1017,7 +1025,7 @@ exam_plot +
   theme_bw()
 ```
 
-### `r user_visor()` Changing the appearance of points
+### `r user_visor()` Changing the appearance of points [(2)]{.alt}
 
 We can use the options of `geom_point()` to change the colour of the points, their size, their shape and their transparency. Many of these arguments work with other geoms too:
 
@@ -1035,7 +1043,7 @@ To make the points blue using hex code #56B4E9, we could specify:
 geom_point(colour = "#56B4E9")
 ```
 
-We could also change the shape of the geom. Figure 2 shows the numbers representing particular shapes.
+We could also change the shape of the geom. Figure 3 shows the numbers representing particular shapes. For example, there are three variants of a circle a hollow circle (shape number 1), solid circle (shape number 16) and filled circle with border (shape number 21). Common shapes all have these three variants (numbers represent the hollow, solid and bordered versions respectively): square (0, 15, 22), triangle pointed upwards (2, 17, 24), and diamond (6, 18, 23).
 
 <div class="tip">
   `r cat_space()` **Tip: Mappings**
@@ -1043,8 +1051,11 @@ We could also change the shape of the geom. Figure 2 shows the numbers represent
   If you ever forget these mappings then execute `?points`. The resulting help file lists the numbers and shapes.
 </div>
 
+<figure>
+<img src="./images/shapes.png" alt="See main text for description." style="width:100%">
+<figcaption>Figure 3: Mapping of shapes to numeric values.</figcaption>
+</figure> 
 
-![Figure 2: Mapping of shapes to numeric values](./images/shapes.png)
 
 #### `r robot()` Code example
 
@@ -1072,7 +1083,7 @@ exam_plot +
   theme_bw()
 ```
 
-### `r bmu2()` Summarizing the trend
+### `r user_visor()` Summarizing the trend [(2)]{.alt}
 
 We can add a line summarizing the trend in the data using `geom_smooth()`. To fit a straight line we can set a method of "lm" (stands for linear model, more on that in later tutorials) and change its colour to be a nice orange (hex code #E69F00). By default, a confidence interval is plotted around the line, we can colour this interval orange by including [fill = "#E69F00"]{.alt}.
 
@@ -1105,7 +1116,7 @@ exam_plot +
   theme_bw()
 ```
 
-### `r bmu2()` Grouped scatterplots
+### `r bmu()` Grouped scatterplots [(1)]{.alt}
 
 As with the other plots we've seen we can split the data into categories. For example, if we wanted to compare the relationship between male and female students, we could do this by adding a facet:
 
@@ -1176,7 +1187,7 @@ exam_plot +
   theme_minimal()                  
 ```
 
-### `r bmu2()` Adjusting the axis
+### `r bmu()` Adjusting the axis [(1)]{.alt}
 
 #### `r alien()` Alien coding challenge
 
@@ -1222,9 +1233,9 @@ exam_plot +
 ### `r rproj("h3")`
 
 * [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
-* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and ![](./images/rstudio_logo.png){height=1em}.
-* [![](./images/rstudio_logo.png){height=1em} cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
-* [![](./images/rstudio_logo.png){height=1em} list of online resources](https://www.rstudio.com/online-learning/).
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and `r rstudio()`.
+* [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
+* [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
 
 ### Acknowledgement
 

@@ -87,7 +87,7 @@ It is good practice to be explicit about packages to avoid clashes where functio
 There are two main exceptions to this rule.
 
 1. There are functions within some `tidyverse` packages that would be used within other functions. Including the package name makes the code difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
-2. To use the pipe operator (`%>%`) you need to have `magritrr` loaded.
+2. To use the pipe operator (`%>%`) you need to have `magrittr` loaded.
 
 We can load all of the packages that are exceptions in one step by loading `tidyverse` at the beginning of our `r rproj()` Markdown document:
 

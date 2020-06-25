@@ -7,10 +7,10 @@ output:
     theme: "united"
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
-description: "The beast of bias. Restructuring data from messy to tidy format (and back)."
+description: "The beast of bias. Restructuring data from messy to tidy format (and back). Spotting outliers using histograms and boxplots. Calculating z-scores (standardizing scores). Writing your own function. Using z-scores to detect outliers. Q-Q plots. Calculating skewness, kurtosis and the number of valid cases. Grouping summary statistics by multiple categorical/grouping variables."
 bibliography: discovr_06.bib
 ---
-
+<html lang="en">
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
@@ -47,32 +47,37 @@ make_z <- function(x){
   
 </div>
 
-### `r cat_space(height = 2)` Welcome to space pirate academy
+### `r cat_space(fill = "h3", height = 2)` Welcome to the `discovr` space pirate academy
 
 Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu2(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice.
-* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult.
-* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det.
+* `r bmu(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
+* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
+* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
-* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you.
-* `r bug(height = 2)` we also have alien bugs that will, erm, help you to avoid bugs by setting you coding challenges. 
+* `r alien(height = 2)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
+* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
+* `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
 
-Also, use hints and solutions to guide you through the exercises.
+Also, use hints and solutions to guide you through the exercises (Figure 1).
 
-![The hints button is your friend.](./images/discovr_hints.png)
+<figure>
+<img src="./images/discovr_hints.png" alt="Each codebox has a hints or solution button that activates a popup window containing code and text to guide you through each exercise." style="width:100%">
+<figcaption>Figure 1: In a code exercise click the hints button to guide you through the exercise.</figcaption>
+</figure> 
+ 
 
 By for now and good luck - you'll be amazing!
 
 ### Workflow
 
-* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and ![](./images/rstudio_logo.png){height=1em}](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
+* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
 
-* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in ![](./images/rstudio_logo.png){height=1em} I strongly recommend that you create an `r rproj()` markdown file within an ![](./images/rstudio_logo.png){height=1em} project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
+* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an `r rproj()` markdown file within an `r rstudio()` project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
 
 ![](https://youtu.be/FE0ntX0dyc4)
 
@@ -91,7 +96,7 @@ It is good practice to be explicit about packages to avoid clashes where functio
 There are two main exceptions to this rule.
 
 1. There are functions within some `tidyverse` packages that would be used within other functions. Including the package name makes the code difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
-2. To use the pipe operator (`%>%`) you need to have `magritrr` loaded.
+2. To use the pipe operator (`%>%`) you need to have `magrittr` loaded.
 
 We can load all of the packages that are exceptions in one step by loading `tidyverse` at the beginning of our `r rproj()` Markdown document:
 
@@ -105,7 +110,7 @@ To work *outside of this tutorial* you need to download the following data file:
 
 * [download_festival.csv](http://www.discoveringstatistics.com/repository/discovr_data/download_festival.csv)
 
-Set up an ![](./images/rstudio_logo.png){height=1em} project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called `data`. Place this code in the first code chunk in your `r rproj()` Markdown document:
+Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called `data`. Place this code in the first code chunk in your `r rproj()` Markdown document:
 
 ```{r, eval=FALSE}
 download_tib <- here::here("data/download_festival.csv") %>% readr::read_csv()
@@ -125,7 +130,7 @@ dplyr::mutate(
 
 ```
 
-## `r bmu2()` The example
+## `r bmu()` The example [(1)]{.alt}
 
 Throughout this chapter we will use an example of a biologist worried about the potential health effects of music festivals. She went to the [Download Music Festival](https://downloadfestival.co.uk/)  (those of you outside the UK can pretend it is [Roskilde Festival](https://www.roskilde-festival.dk/en/), [Coachella](https://www.coachella.com/), [Wacken](https://www.wacken.com/en/) or something) and measured the hygiene of 810 concert-goers over the three days of the festival. She tried to measure every person on every day but, because it was difficult to track people down, there were missing data on days 2 and 3. Hygiene was measured using a standardized technique that results in a score ranging between 0 (you smell like a corpse that’s been left to rot up a skunk’s arse) and 4 (you smell of sweet roses on a fresh spring day). The biologist predicted that personal hygiene would go down dramatically over the three days of the festival.
 
@@ -166,11 +171,11 @@ quiz(
 )
 ``` 
 
-##	`r user_visor()` Restructuring data
+##	`r user_visor()` Restructuring data [(2)]{.alt}
 
 The data are in messy format because hygiene scores across the days have been spread across three columns rather than three rows. The package `tidyr` has two functions for converting data from tidy to messy and vice versa. The function `pivot_longer()` takes columns and puts them into rows and so helps you to make messy data tidy, whereas `pivot_wider()` takes rows and puts them into columns which helps you to make tidy data messy.
  
-###	`r user_visor()` Making messy data tidy
+###	`r user_visor()` Making messy data tidy [(2)]{.alt}
 
 The `pivot_longer()` function takes this general form:
 
@@ -258,7 +263,7 @@ download_tidy_tib <- download_tidy_tib %>%
 download_tidy_tib
 ```
 
-###	`r user_visor()` Making tidy data messy
+###	`r user_visor()` Making tidy data messy [(2)]{.alt}
 
 The `pivot_wider()` function reverses the process we’ve just been through by restructuring rows into columns. It's general form is:
 
@@ -288,7 +293,7 @@ download_tib
 ```
 
 
-## `r bmu2()` Spotting outliers
+## `r bmu()` Spotting outliers [(1)]{.alt}
 
 An outlier is  a score very different from the other scores. We will look at two ways to spot outliers:
 
@@ -311,7 +316,7 @@ quiz(
 ``` 
 
 
-### `r bmu2()`	Histograms and boxplots
+### `r bmu()`	Histograms and boxplots [(1)]{.alt}
 
 #### `r alien()` Alien coding challenge
 
@@ -565,7 +570,7 @@ ggplot2::ggplot(download_tidy_tib, aes(day, hygiene, fill = gender)) +
 
 The pattern of hygiene scores across the three days is consistent for all genders: hygiene decreases from day 1 to day 2, but stays at similar levels to day 2 on day 3. There look like some potential outliers for people who self-classified as male and female on day 2 (and some males on day 1).
  
-### `r bmu2()` Standardizing raw scores
+### `r bmu()` Standardizing raw scores [(1)]{.alt}
 
 Any score can be converted to a *z*-score, which has known distributional properties. This section looks at how to use these standardized scores to look for outliers. Everything in this section can be applied to model residuals too (see **discovr_08**). To standardize raw scores we take the score, subtract from it the mean of all scores and divide by the standard deviation of all scores:
 
@@ -619,7 +624,7 @@ download_tib <- download_tib %>%
 download_tib
 ```
 
-### `r user_astronaut()` Using a function to compute *z*
+### `r user_astronaut()` Using a function to compute *z* [(3)]{.alt}
 
 The previous method is fine, but we’re writing code to do the same thing multiple times, which is inefficient. If you're feeling confident with `r rproj()` try this optional section. Instead of repeating the code to compute *z* for each variable, we could instead write a function that we reuse.
 
@@ -708,7 +713,7 @@ download_tib
 
 This code pipes the data (download_tib) into the mutate_at() function, where two things happen. First, we select the variables to mutate using `vars()`. We specify the variables as [day_1:day_3]{.alt}, which means all the variables in the tibble starting with **day_1** and finishing with **day_3**. Next, we apply a mutation to the selected variables. The mutation we apply is whatever we write within `list()`, which in this case is the function that we wrote called `make_z()`. Basically, variables **day_1**, **day_2** and **day_3** get passed through the `make_z()` function simultaneously. The resulting variables will be named after the originals but with a ‘z’ appended (**day_1_z**, **day_2_z** and **day_3_z**) because I put a ‘z’ before the equals sign in `list()`. The new variables will be stored as the final three columns in the tibble.
 
-### `r user_visor()` Using standardized scores to detect outliers
+### `r user_visor()` Using standardized scores to detect outliers [(2)]{.alt}
 
 We now have *z*-scores of hygiene on each day of the festival. We can apply a filter to the data so that we see only large values of *z*.
 
@@ -750,12 +755,12 @@ Within the `filter_at()` function we use two other functions, `vars()` allows us
 It turns out that there are 8 cases (out of 200) who have *z*-scores greater than or equal to 2.58 on at least one of the days, which is about what we’d expect (4% of cases). There are only two cases with *z*-scores greater than 3.29 (case 3374 on day 2 and case 4564 on days 2 and 3).
  
 
-## `r bmu2()`	Spotting normality
+## `r bmu()` Spotting normality [(1)]{.alt}
 
 There are times when we want to know whether scores (or residuals are normally distributed. This section reviews some ways to do that, but return to the topic in **discovr_08**. 
 
 
-### `r bmu2()` Using plots to spot normality
+### `r bmu()` Using plots to spot normality [(1)]{.alt}
 
 Frequency distributions are not only good for spotting outliers, they are the natural choice for looking at the shape of the distribution as we saw from plotting the day 1 scores earlier. Two alternatives are a probability-probability plot or P-P plot and a quantile-quantile plot, or Q-Q plot. A P-P plot plots the cumulative probability of a variable against the cumulative probability of a particular distribution (in this case a normal distribution). The data are ranked and sorted, then for each rank the corresponding *z*-score is calculated to create an ‘expected value’ that the score should have in a normal distribution. Next, the score itself is converted to a *z*-score. The actual *z*-score is plotted against the expected *z*-score. The Q-Q plot does something similar except that it plots the quantiles of the data against the quantiles of the desired distribution instead of every individual score.
 
@@ -883,7 +888,7 @@ Adapt the code to do the following:
 
 We looked at the day 1 scores earlier with a histogram and concluded that they looked quite normal. The Q-Q plot echoes this view because the data points fall close to the ‘ideal’ diagonal line and within the confidence band around it. However, the distributions for days 2 and 3 look positively skewed. This can be seen in the Q-Q plots by the data points dipping in the middle to form a curve and points falling outside of the confidence band at the extremes. These plots suggest that relative to day 1, hygiene scores on days 2 and 3 were more clustered around the low end of the scale (more people were less hygienic); so people became smellier as the festival progressed. The skew on days 2 and 3 occurs because a minority insisted on upholding their levels of hygiene over the course of the festival (baby wet-wipes are indispensable, I find).
 
-### `r user_visor()`	More summary statistics
+### `r user_visor()`	More summary statistics [(1)]{.alt}
 
 In **discovr_02** we used the `summarize()` function to create a bunch of summary statistics such as the mean, confidence interval, and the IQR. We can expand what we include within `summarize()` to obtain values of skew and kurtosis using the `skewness()` and `kurtosis()` functions from the `moments` package.
 
@@ -1012,7 +1017,7 @@ download_tidy_tib %>%
 
 On average, hygiene scores were 1.77 (out of 5) on day 1 of the festival, but went down to 0.96 and 0.98 on days 2 and 3 respectively. For day 1 the skew value is very close to the expected value of zero (which is good) and kurtosis is a little negative (it is less than the expected value of 3). For days 2 and 3, though, there is a skewness of around 1 (positive skew) and kurtosis is larger than the expected value of 3, suggesting heavier tails than a normal distribution.
 
-### `r user_astronaut()` Calculated the number of valid cases
+### `r user_astronaut()` Calculated the number of valid cases [(3)]{.alt}
 
 Given we have missing data, it would also be nice to count the number of valid scores that we have on each day. There are various functions in tidyverse that will count cases, but they do not discriminate values from missing values. To count valid cases  (i.e. cases that have non-missing values) we can combine  the `is.na()` function, which returns a value of TRUE if a case is missing ([NA]{.alt}) and FALSE if it is not missing, with the `sum()` function, which adds stuff up. Numerically, TRUE is treated as a 1, and FALSE is treated as a 0 so by adding a bunch of TRUEs and FALSEs we are, in fact, counting the number of TRUEs. 
 
@@ -1060,7 +1065,7 @@ download_tidy_tib %>%
 ```
 
 
-### `r user_visor()`	Exploring multiple groups
+### `r user_visor()`	Exploring multiple groups [(2)]{.alt}
 
 We have already looked at how to use the `group_by()` function to apply code to groups of scores separately. For example, in the previous sections we used code such as
 
@@ -1119,313 +1124,6 @@ download_tidy_tib %>%
 </div>
 
 
-
-## Assumptions
-
-Use this interactive activity to explore how violations of model assumptions affect residual plots.
-
-```{r assump_ui, echo = FALSE}
-
-fluidPage(
-
-    # Application title
-    titlePanel("Linear model assumption explorer"),
-
-    fluidRow(
-      wellPanel(
-        h3("Instructions"),
-            p("1. Choose whether you want to see a positive or negative relationship between variables."),
-            p("2. The resulting plots show data and diagnostic plots from a a linear model fitted to a linear relationship between a predictor and outcome with homoscedastic errors."),
-            p("3. Use the sliders to increase non-linearity and heteroscedasticity."),
-            p("4. Click 'Show me' to see data that has the levels of nonlinearity and heteroscedasticity that you have selected, and the resulting diagnostic plots for a linear model fitted to the data.")
-      )
-    ),
-    
-    fluidRow(
-      column(4,
-             wellPanel(
-               radioButtons("posneg",
-                            "Direction of effect:",
-                            c("Positive relationship", "Negative relationship")
-                            ),
-               sliderInput("lin",
-                           "Linear <-> Nonlinear",
-                           min = 1,
-                           max = 2,
-                           step = 0.1,
-                           value = 1, 
-                           ticks = FALSE),
-               sliderInput("hetro",
-                           "Homoscedasticity <-> Heteroscedasticity",
-                           min = 1,
-                           max = 2,
-                           step = 0.1,
-                           value = 1,
-                           ticks = FALSE),
-               actionButton("gen_dat", "Show me")
-               )
-             ),
-      column(8,
-             plotOutput("scatter") 
-             )
-      ),
-    
-    fluidRow(
-      plotOutput("diag")
-      )
-    )
-```
-
-```{r assump_server, context = "server", echo = FALSE}
-library(ggfortify)
-cedar <- "#d35c54"
-    fire_opal <- "#E8655C"
-    field_drab <- "#775418"
-    champ <-  "#f3e2c4"
-    opal <-  "#9cbfbc" #greeny-blue light
-    cad_blu <- "#5ea5a8" #greeny-blue dark
-    alabaster<-  "#E6E8E2" #pale green/grey
-    platinum<-  "#e8eae5" # paler green/grey
-    ryhthm <- "#7c7da7" # purple
-   crayola <- "#ababbc" 
-    slate <- " #2F4F4F"
-    
-    
-    b <- reactiveVal()
-    bo <- reactiveVal()
-    
-        get_data <- function(bo = 0, b = 1, l = 1, h = 1){
-        h <- h - 1
-        tibble::tibble(
-            predictor = rep(1:100, 2),
-            outcome = bo + b*(predictor^(l))  + rnorm(predictor^(l), mean = 0, sd = 10*((predictor/100)^h)*(l^7))
-            )
-    }
-    
-    get_lm_plot <- function(tib){
-        ggplot2::ggplot(tib, aes(predictor, outcome)) +
-            geom_point(colour = cad_blu, alpha = 0.6, size = 1, position = position_identity()) +
-            geom_smooth(method = "lm", formula = y ~ x + I(x^2), fill = cedar, se = TRUE, colour = cedar) +
-            scale_y_continuous(NULL, breaks = NULL) +
-            labs(x = "Predictor", y = "Outcome") +
-            theme_bw() 
-    }
-    
-    get_pred_resid <- function(tib){
-        lm(outcome ~ predictor, data = tib) %>% 
-            ggplot2::autoplot(.,
-                              which = 1,
-                              colour = ryhthm,
-                              smooth.colour = fire_opal,
-                              alpha = 0.5,
-                              size = 1) + 
-            theme_minimal()
-    }
-    
-    get_pred_resid2 <- function(tib){
-        lm(outcome ~ predictor, data = tib) %>% 
-            ggplot2::autoplot(.,
-                              which = 3,
-                              colour = ryhthm,
-                              smooth.colour = fire_opal,
-                              alpha = 0.5,
-                              size = 1) + 
-            theme_minimal()
-    }
-    
-    get_qq <- function(tib){
-        lm(outcome ~ predictor, data = tib) %>% 
-            ggplot2::autoplot(.,
-                              which = 2,
-                              colour = ryhthm,
-                              smooth.colour = fire_opal,
-                              alpha = 0.5,
-                              size = 1) + 
-            theme_minimal()
-    }
-    
-    
-    tib <- reactiveValues(dat = tibble::tibble(
-        predictor = rep(1:100, 5),
-        outcome = predictor  + rnorm(predictor, mean = 0, sd = 10)
-        )
-        )
-        
-    output$scatter <- renderPlot({
-        get_lm_plot(tib$dat)
-        })
-    
-    
-    output$diag <- renderPlot({
-        zr1 <- get_pred_resid(tib$dat)
-        zr2 <- get_pred_resid2(tib$dat)
-        qq <- get_qq(tib$dat)
-        patchwork::wrap_plots(zr1@plots[[1]], zr2@plots[[1]], qq@plots[[1]], nrow = 1)
-        })
-    
-    
-
-    # observe events
-    
-    observeEvent(input$gen_dat, {
-        if(input$posneg == "Positive relationship"){
-            b <- 1
-            bo <- 25}
-        if(input$posneg == "Negative relationship"){
-            b <- -1
-            bo <- 150}
-        
-        tib$dat <- get_data(bo = bo, b = b, l = input$lin, h = input$hetro)
-    })
-```
-
-
-
-## Bootstrapping
-
-```{r bt_ui, echo = FALSE}
-# define UI
-fluidPage(
-        
-        p("This activity is designed to give you a sense of how bootstrapping works by letting you become a bootstrap machine!"),
-        p("Using the example from the book Chapter, Meston & Frohlich (2003) report a study showing that heterosexual people rate a picture of someone of the opposite sex as more attractive after riding a roller-coaster compared to before. Imagine we took 20 people as they came off the Rockit roller-coaster at Universal studios in Orlando and asked them to rate the attractiveness of someone in a photograph on a scale of 0 (looks like Jabba the Hut) to 10 (looks like Princess Leia or Han Solo). The sample data below shows the 20 attractiveness ratings recorded in the study. We want to bootstrap the mean attractiveness rating to get a robust estimate of the mean and its confidence interval."),
-        h3("Upper left panel: sample data"),
-        p("The sample data are shown in the upper left panel. We see the scores in that sample both as numbers, and as a histogram. These values/this histogram never changes - it's the data we actually collected. These are your reference points against which to compare each boortrap sample."),
-        h3("Upper right panel: bootstrap sample data"),
-        p("Each time you press the 'Take Bootstrap sample' button, a bootrap sample is taken from the observed data. The scorein this sample will be shown in the upper right panel. Compare the scores in the bootrap sample (the values and histogram) to the observed scores/histogram in the upper left panel. Note:"),
-        p("- The scores/histogram for the bootstrap sample differ from the original sample. Each bootstrap sample is the same size as the observed sample, but it does not contain the same scores because each observed score can be sampled more than once."),
-        p("- Because each bootstrap sample is different to the observed sample, it usually has a slightly different mean."),
-        p("- Each bootstrap sample contains only values from the observed sample. For example, the value 2 doesn't occur in the observed data and so won't occur in any bootstrap samples"),
-        h3("Lower panel: Distribution of bootstrap means"),
-        p("- For each bootstrap sample you generate, the mean of the scores in the bootrap samples is calculated and added to the histogram in this panel (the means are displayed above it). As you take more bootstrap samples, you get more bootstrap sample means, and the histogram slowly develops a shape. The black vertical line shows the centre of the distribution. Note:"),
-        p("- The centre of the distribution of bootstrap sample means (the black line) is our robust estimate of the mean. At first it fluctuates, but as you take more samples it will stabilize."),
-        p("- The width of this distribution of bootstrap sample means relates to the bootstrap estimate of the standard error of the mean."),
-        h3("Your task:"),
-        p("- Press the 'Take Bootstrap sample' once and really reflect on the points above. Can you see how the bootstrap sample differs from the original data? Can you see that the bootstrap sample only contains scores that occurred in the original data?"),
-        p("- Press the 'Take Bootstrap sample' 5-6 more times and each time: Can you see how the bootstrap samples are different each time but always contain scores that occurred in the original data? Can you see the mean of the bootstrap sample usually changes from sample to sample? Can you see each bootsrap sample mean being added to the distribution in the bottom panel? Can you see the line at the centre of this distribution fluctuating?"),
-        p("- Press the 'Take Bootstrap sample' 20-50 more times (you can do these clicks quickly): Can you see the distribution of bootstrap sample means in the bottom panel taking shape? Can you see the line at the centre of this distribution stabilizing?"),
-
-        div(actionButton("lets_boot", "Take bootstrap sample"), align = "center"),
-        div(actionLink("reset", "Reset"), align = "center"),
-        
-        hr(),
-        
-        fluidRow(
-            column(6,
-                   h3("Sample data"),
-                   div(p(textOutput("sample_data")), align = "center"),
-                   div(h4(textOutput("sample_mean")), align = "center"),
-                   plotOutput("sample_plot", height = "200px")
-                   ),
-            column(6,
-                   h3("Bootstrap sample data"),
-                   div(p(textOutput("boot_sample")), align = "center"),
-                   div(h4(textOutput("boot_mean")), align = "center"),
-                   plotOutput("boot_plot", height = "200px")
-                   )
-        ),
-        
-        hr(),
-        
-        
-        fluidRow(
-            h3("Distribution of bootstrap means"),
-            div(p(textOutput("all_boot_mean")), align = "center"),
-            div(h4(textOutput("all_boot_mean_mean")), align = "center"),
-            plotOutput("sd_plot", height = "200px"),
-            p("The width of this distribution of bootstrap sample means relates to the bootstrap estimate of the standard error of the mean. A wider distribution equates to a larger standard error and wider confidence interval around the estimate of the mean whereas a narrow distribution equates to a smaller standard error and narrower confidence interval around the estimate of the mean."),
-        )
-    )
-```
-
-
-```{r bt_server, context = "server", echo = FALSE}
-
-all_boot <- tibble::tibble(
-        mean = numeric()
-    )
-    
-    sample_dat <- tibble::tibble(
-        attractiveness = c(0, 0, 3, 4, 4, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8, 8, 9, 9, 10, 10)
-    )
-
-    get_hist <- function(tibble){
-        ggplot2::ggplot(tibble, aes(x = attractiveness)) + 
-            geom_histogram(binwidth = 1, fill = "#9cbfbc", colour = "#5ea5a8", alpha = 0.7) +
-            coord_cartesian(ylim = c(0, 10), xlim = c(0, 10)) +
-            scale_x_continuous(breaks = 0:10) +
-            scale_y_continuous(breaks = 0:10) +
-            labs(x = "Attractiveness", y = "Frequency") +
-            theme_minimal()
-    }
-    
-    get_text_data <- function(var){
-        paste(var, collapse = ", ") 
-    }
-    
-    output$sample_data <- renderText(
-        get_text_data(sample_dat$attractiveness)
-        )
-    
-    output$sample_mean <- renderText(
-        paste0("Boostrap sample mean = ", mean(sample_dat$attractiveness))
-    )
-    
-    output$sample_plot = renderPlot(
-        get_hist(sample_dat)
-    )
-    
-    
-    output$boot_plot <- NULL
-    output$sd_plot <- NULL
-    
-
-    observeEvent(input$lets_boot, {
-        current_boot <- tibble::tibble(
-            attractiveness = sample(sample_dat$attractiveness, nrow(sample_dat), replace=TRUE)
-            ) %>% 
-            dplyr::arrange(attractiveness)
-            
-        output$boot_sample = renderText(
-            get_text_data(current_boot$attractiveness)
-            )
-        output$boot_mean = renderText(
-            paste0("Boostrap sample mean = ", mean(current_boot$attractiveness))
-            )
-        output$boot_plot = renderPlot(get_hist(current_boot))
-        all_boot <<- all_boot %>% tibble::add_row(mean = mean(current_boot$attractiveness))  
-        output$all_boot_mean = renderText(get_text_data(all_boot$mean))
-        output$all_boot_mean_mean = renderText(
-            paste0("Mean of bootstrap means = ", round(mean(all_boot$mean), 2))
-        )
-        
-        output$sd_plot <- renderPlot(
-            ggplot2::ggplot(all_boot, aes(x = mean)) + 
-                geom_histogram(binwidth = 0.5, fill = "#E8655C", colour = "#d35c54", alpha = 0.7) +
-                coord_cartesian(xlim = c(2, 9)) +
-                scale_x_continuous(breaks = 2:9) +
-                geom_vline(xintercept = mean(all_boot$mean)) +
-                labs(x = "Bootstrap sample mean", y = "Frequency") +
-                theme_minimal()
-        )
-    })
-    
-     observeEvent(input$reset, {
-        output$boot_sample = NULL
-        output$boot_mean = NULL
-        output$boot_plot = NULL
-        all_boot <<- tibble::tibble(
-            mean = numeric()
-        ) 
-        output$all_boot_mean = NULL
-        output$all_boot_mean_mean = NULL
-        output$sd_plot <- NULL
-    })
-
-```
-
-
-
 ## Resources {data-progressive=FALSE}
 
 ### Statistics
@@ -1438,9 +1136,9 @@ all_boot <- tibble::tibble(
 ### `r rproj("h3")`
 
 * [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
-* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and ![](./images/rstudio_logo.png){height=1em}.
-* [![](./images/rstudio_logo.png){height=1em} cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
-* [![](./images/rstudio_logo.png){height=1em} list of online resources](https://www.rstudio.com/online-learning/).
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and `r rstudio()`.
+* [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
+* [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
 
 ### Acknowledgement
 

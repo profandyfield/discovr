@@ -1,0 +1,192 @@
+---
+title: "discovr: Moderation and mediation"
+author: "Andy Field"
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+    theme: "united"
+    css: ./css/discovr_style_future.css
+runtime: shiny_prerendered
+description: "Moderation and mediation."
+bibliography: discovr_10.bib
+---
+<html lang="en">
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+
+library(learnr)
+library(magrittr)
+library(ggplot2)
+library(dplyr)
+
+source("./www/discovr_helpers.R")
+
+
+#Read dat files needed for the tutorial
+
+vids_tib <- discovr::video_games
+infidelity_tib <- discovr::lambert_2012
+
+```
+
+# discovr: Moderation and mediation
+
+## Overview
+
+<div class="infobox">
+  <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
+  
+  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/) [@field_discovering_2021] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
+  
+</div>
+
+### `r cat_space(fill = "h3", height = 2)` Welcome to the `discovr` space pirate academy
+
+Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
+
+On your way you will face many challenges, but follow Mae's system to keep yourself on track:
+
+* `r bmu(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
+* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
+* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+
+It's not just me that's here to help though, you will meet other characters along the way:
+
+* `r alien(height = 2)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
+* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
+* `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
+
+Also, use hints and solutions to guide you through the exercises (Figure 1).
+
+<figure>
+<img src="./images/discovr_hints.png" alt="Each codebox has a hints or solution button that activates a popup window containing code and text to guide you through each exercise." style="width:100%">
+<figcaption>Figure 1: In a code exercise click the hints button to guide you through the exercise.</figcaption>
+</figure> 
+ 
+
+By for now and good luck - you'll be amazing!
+
+### Workflow
+
+* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
+
+* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an `r rproj()` markdown file within an `r rstudio()` project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
+
+![](https://youtu.be/FE0ntX0dyc4)
+
+### Packages
+
+This tutorial uses the following packages:
+
+* `broom` [@robinsonBroomConvertStatistical2019]
+* `here` [@here]
+* `interactions` [@interactions]
+* `lavaan` [@rosseel_lavaan_2012]
+* `parameters` [@makowski_parameters_2019]
+* `tidyverse` [@tidyverse]
+
+I try to follow the [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) in always declaring the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will write `dplyr::mutate()`. 
+
+It is good practice to be explicit about packages to avoid clashes where functions from different packages have the same name. It also means that you don't need to load packages at the start of your markdown document. 
+
+There are two main exceptions to this rule.
+
+1. There are functions within some `tidyverse` packages that would be used within other functions. Including the package name makes the code difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+2. To use the pipe operator (`%>%`) you need to have `magrittr` loaded.
+
+We can load all of the packages that are exceptions in one step by loading `tidyverse` at the beginning of our `r rproj()` Markdown document:
+
+```{r eval = FALSE}
+library(tidyverse)
+```
+
+### Data
+
+To work *outside of this tutorial* you need to download the following data files:
+
+* [video_games.csv](http://www.discoveringstatistics.com/repository/discovr_data/video_games.csv)
+* [lambert_2012.csv](http://www.discoveringstatistics.com/repository/discovr_data/lambert_2012.csv)
+
+
+Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
+
+```{r, eval=FALSE}
+vids_tib  <- here::here("data/video_games.csv") %>% readr::read_csv()
+infidelity_tib <- here::here("data/lambert_2012.csv") %>% readr::read_csv()
+```
+
+## `r bmu()` Centring variables
+
+We’ll use an example of whether violent video games make people antisocial. Video games have been linked to increased aggression in youths. Another predictor of aggression and conduct problems is callous-unemotional traits such as lack of guilt, lack of empathy, callous use of others for personal gain. Imagine that a scientist explored the relationship between playing violent video games. She measured aggressive behaviour (**aggress**), callous-traits (**caunts**), and the number of hours per week they play video games (**vid_game**) in 442 youths. These data are stored in [vids_tib]{.alt}.
+
+The model we're looking to fit is:
+
+$$
+\text{Aggression}_i = b_0 + b_1\text{Gaming}_i + b_2\text{Callous}_i + b_3\text{Gaming}\times\text{Callous}_i + \epsilon_i
+$$
+
+When an interaction term is included in the model the *b* parameters have a specific meaning: for the individual predictors they represent the regression of the outcome on that predictor when the other predictor is zero. So, $b_1$ represents the relationship between aggression and gaming when callous traits are zero, and $b_2$ represents the relationship between aggression and callous traits when someone spends zero hours gaming per week. This interpretation isn’t problematic because zero is a meaningful score for both predictors: it’s plausible both that a child spends no hours playing video games, and that a child gets a score of 0 on the continuum of callous-unemotional traits. However, there are often situations where it makes no sense for a predictor to have a score of zero. Imagine that rather than measuring how much a child played violent video games we’d measured their heart rate while playing the games as an indicator of their physiological reactivity to them:
+
+$$
+\text{Aggression}_i = b_0 + b_1\text{Heart rate}_i + b_2\text{Callous}_i + b_3\text{Heart rate}\times\text{Callous}_i + \epsilon_i
+$$
+
+In this model $b_2$ is the regression of the aggression on callous traits when someone has a heart rate of zero while playing the games. This *b* makes no sense because if you have a heart rate of zero while playing these games then you have died. The point is that the presence of the interaction term makes the *b*s for the main predictors uninterpretable in many situations.
+
+For this reason, it is common to transform the predictors using grand mean centring. ‘Centring’ refers to the process of transforming a variable into deviations around a fixed point. This fixed point can be any value that you choose, but typically it’s the grand mean. When we calculated z-scores in Chapter 6 we used grand mean centring because the first step was to take each score and subtract from it the mean of all scores. This is grand mean centring. Like z-scores, the subsequent scores are centred on zero, but unlike z-scores, we don’t care about expressing the centred scores as standard deviations.  Therefore, grand mean centring for a given variable is achieved by taking each score and subtracting from it the mean of all scores (for that variable). 
+Centring the predictors has no effect on the b for highest-order predictor, but will affect the bs for the lower-order predictors. Order refers to how many variables are involved: the gaming × callous traits interaction is a higher-order effect than the effect of gaming alone because it involves two variables rather than one. In our model (Eq. 10.4), whether we centre the predictors has no effect on b3 (the parameter for the interaction) but it changes the values of b1 and b2 (the parameters for gaming and callous traits). If we don’t centre the gaming and callous variables, the bs represent the effect of the predictor when the other predictor is zero. However, if we centre the gaming and callous variables, the bs represent the effect of the predictor when the other predictor is at its mean value. For example, b2 would represent the relationship between aggression and callous traits for someone who spends the average number of hours gaming per week.
+Centring is important when your model contains an interaction term because it makes the bs for lower-order effects interpretable. There are good reasons for not caring about the lower-order effects when the higher-order interaction involving those effects is significant; for example, if the gaming × callous traits interaction is significant, then it’s not clear why we would be interested in the individual effects of gaming and callous traits. However, when the interaction is not significant, centring makes interpreting the main effects easier. With centred variables the bs for individual predictors have two interpretations (1) they are the effect of that predictor at the mean value of the sample; and (2) they are the average effect of the predictor across the range of scores for the other predictors. To explain the second interpretation, imagine we took everyone who spent no hours gaming, estimated the linear model between aggression and callous traits and noted the b. We then took everyone who played games for 1 hour and did the same, and then took everyone who gamed for 2 hours per week and did the same. We continued doing this until we had estimated linear models for every different value of the hours spent gaming. We’d have a lot of bs, each one representing the relationship between callous traits and aggression for different amounts of gaming. If we took an average of these bs then we’d get the same value as the b for callous traits (centred) when we use it as a predictor with gaming (centred) and their interaction.
+The PROCESS tool does the centring for us so we don’t need to worry about how it’s done, but because centring is useful in other analyses Oliver Twisted has some additional material that shows you how to do it manually for this example.
+Centring variables using R (2)
+We can use the mutate() function to centre variables. For example, to centre the variables caunts within vids_tib, we could use this code:
+vids_tib <- vids_tib %>% 
+  dplyr::mutate(
+    caunts_cent = caunts - mean(caunts, na.rm = TRUE),
+    vid_game_cent = vid_game - mean(vid_game, na.rm = TRUE)
+  )
+This code takes the data (vids_tib) and adds two variables caunts_cent and vid_game_cent to it using mutate(). These new variable is created by taking the scores in the original variable and subtracting from them the mean score of that variable, which is calculated using the mean() function that we have used before. For example, caunts - mean(caunts, na.rm = TRUE) takes the scores in caunts and subtracts from the mean of the caunts scores.
+If you need to centre more than a couple of variables, you might find it useful to do something a bit cleverer (and trickier) using mutate_at(). We encountered this function in Section 6.12.2 and we saw that it is used to apply a mutation to multiple variables. In this case the mutation we want to apply is to subtract the mean score from each score. First, we need to write a general function to do that:
+centre <- function(var){
+  var - mean(var, na.rm = TRUE)
+}
+This code creates a function called centre() which takes a set of scores as its input. I’ve named this input var (short for variable), but it could be anything. Within the function, we take whatever scores are passed into the function (remember these scores are represented by var), and subtract the mean of those scores from them. The function will, therefore, return the scores you pass in with their mean subtracted. In other words, it returns the centred scores. For example, if we execute the code above (to create the function) and execute:
+centre(vids_tib$caunts)
+We’d see the centred caunts scores. However, we don’t want to do this, instead we want to use it within mutate_at() to centre all variables that we select. For example, we could use this code:
+vids_tib <- vids_tib %>% 
+  dplyr::mutate_at(
+    vars(vid_game, caunts),
+    list(cent = centre)
+  )
+This code uses mutate_at() to add variables to vids_tib that contain centred scores. Within mutate_at() we use vars() to select the variables to be mutated (in this case vid_game and caunts). These variables are then passed through the function in list(), which we have specified to be centre(), the function we created that calculates centred scores. To prevent the original variables from being overwritten I have specified cent = before the function,  which means that the centred variables will be named after the original variables but with the suffix ‘_cent’. The end result is two new variables called caunts_cent and vid_game_cent that contain the centred scores.
+
+
+
+## Resources {data-progressive=FALSE}
+
+### Statistics
+
+* The tutorials typically follow examples described in detail in @field_discovering_2021. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
+* If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
+* There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/).
+* There are free statistical resources on my websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [milton-the-cat.rocks](http://milton-the-cat.rocks).
+
+### `r rproj("h3")`
+
+* [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and `r rstudio()`.
+* [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
+* [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
+
+### Acknowledgement
+
+I'm extremely grateful to [Allison Horst](https://www.allisonhorst.com/) for her very informative blog post on [styling learnr tutorials with CSS](https://education.rstudio.com/blog/2020/05/learnr-for-remote/) and also for sending me a CSS template file and allowing me to adapt it. Without Allison, these tutorials would look a lot worse (but she can't be blamed for my colour scheme).
+
+## References
+
+

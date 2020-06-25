@@ -7,10 +7,10 @@ output:
     theme: "united"
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
-description: "Summarizing data (frequency distributions, grouped frequency distributions, relative frequencies, histograms, mean, median, variance, standard deviation, interquartile range)"
+description: "Summarizing data: frequency distributions, grouped frequency distributions, relative frequencies, histograms, mean, median, variance, standard deviation, interquartile range, tables of summary statistics."
 bibliography: discovr_02.bib
 ---
-
+<html lang="en">
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
@@ -43,15 +43,15 @@ ice_tib <- discovr::ice_bucket
   
 </div>
 
-### `r cat_space(height = 2)` Welcome to the `discovr` space pirate academy
+### `r cat_space(fill = "h3", height = 2)` Welcome to the `discovr` space pirate academy
 
 Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu2(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice.
-* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult.
-* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det.
+* `r bmu(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
+* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
+* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
@@ -59,17 +59,21 @@ It's not just me that's here to help though, you will meet other characters alon
 * `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
 * `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
 
-Also, use hints and solutions to guide you through the exercises.
+Also, use hints and solutions to guide you through the exercises (Figure 1).
 
-![The hints button is your friend.](./images/discovr_hints.png)
+<figure>
+<img src="./images/discovr_hints.png" alt="Each codebox has a hints or solution button that activates a popup window containing code and text to guide you through each exercise." style="width:100%">
+<figcaption>Figure 1: In a code exercise click the hints button to guide you through the exercise.</figcaption>
+</figure> 
+ 
 
 By for now and good luck - you'll be amazing!
 
 ### Workflow
 
-* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and ![](./images/rstudio_logo.png){height=1em}](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
+* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
 
-* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in ![](./images/rstudio_logo.png){height=1em} I strongly recommend that you create an `r rproj()` markdown file within an ![](./images/rstudio_logo.png){height=1em} project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
+* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an `r rproj()` markdown file within an `r rstudio()` project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
 
 ![](https://youtu.be/FE0ntX0dyc4)
 
@@ -87,7 +91,7 @@ It is good practice to be explicit about packages to avoid clashes where functio
 There are two main exceptions to this rule.
 
 1. There are functions within some `tidyverse` packages that would be used within other functions. Including the package name makes the code difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
-2. To use the pipe operator (`%>%`) you need to have `magritrr` loaded.
+2. To use the pipe operator (`%>%`) you need to have `magrittr` loaded.
 
 We can load all of the packages that are exceptions in one step by loading `tidyverse` at the beginning of our `r rproj()` Markdown document:
 
@@ -101,20 +105,20 @@ To work *outside of this tutorial* you need to download the following data file:
 
 * [ice_bucket.csv](http://www.discoveringstatistics.com/repository/discovr_data/ice_bucket.csv)
 
-Set up an ![](./images/rstudio_logo.png){height=1em} project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
+Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
 
 ```{r, eval=FALSE}
 ice_tib <- here::here("data/ice_bucket.csv") %>% readr::read_csv()
 ```
 
 
-## `r bmu2()` Frequency distributions
+## `r bmu()` Frequency distributions [(1)]{.alt}
 
 We will use data about memes, which typically have a common pattern: they start small, rapidly expand in popularity and then die out. Specifically we'll use data from the ice bucket challenge. You can check Wikipedia for the full story, but it all started (arguably) with golfer Chris Kennedy tipping a bucket of iced water on his head to raise awareness of the disease amyotrophic lateral sclerosis (ALS, also known as Lou Gehrig's disease).  The idea is that you are challenged and have 24 hours to post a video of you having a bucket of iced water poured over your head. In this video you also challenge at least three other people. If you fail to complete the challenge your forfeit is to donate to charity (in this case ALS). Many people completed the challenge and made donations.
 
 The ice bucket challenge generated something like 2.3 million on YouTube. The data are stored in [ice_tib]{.alt}, which contains one variable **upload_day** that is the number of days after Chris Kennedy’s initial challenge that each of 2,323,452 ice bucket related videos were uploaded to YouTube. For example, if the value is 21 it means that the video was uploaded 21 days after Chris Kennedy’s initial challenge. We can't see the pattern of the data easily from 2,323,452 scores. However, we can if we count the frequency of each score and place it in a table.
 
-### `r bmu2()` Frequency tables
+### `r bmu()` Frequency tables [(1)]{.alt}
 
 To get a basic frequency table we use the `group_by()` and `summarise()` and `n()` functions from the `dplyr` package (automatically loaded as part of tidyverse). These functions do the following:
 
@@ -144,7 +148,7 @@ To sum up, the code feeds the data stored in [ice_tib]{.alt} into the `group_by(
 
 We can see, for example, that 29000 videos were uploaded 30 days after Chris Kennedy’s initial challenge, and 10000 were uploaded 27 days after.
 
-### `r bmu2()` Grouped frequency tables
+### `r bmu()` Grouped frequency tables [(1)]{.alt}
 
 The frequency table that we just produced is large and a little unwieldy. It might be useful to instead have a table that counts the frequencies for a range of scores. For example, how many videos were uploaded between 21 and 24 days, and 25 and 28 days. This is known as a *grouped* frequency distribution. To produce one of these, first we have to place the values of **upload_days** into what are known as *bins*. The values of the number of days range from 21 to 76 days after Chris Kennedy’s initial challenge. Imagine we wanted to group the data in such a way as to see how many videos were uploaded every 4 days (instead of every day). To do this, we'd need to group the values of days into bins of 21-24, 25-28, 29-32 and so on. Notice that each 'bin' is made up of 4 days worth of values.
 
@@ -251,7 +255,7 @@ gp_freq_tbl
 
 We can see, for example that 534000 videos were uploaded after 38 days and up to and including 42 days. 
 
-### `r bmu2()` Relative frequencies
+### `r bmu()` Relative frequencies [(1)]{.alt}
 
 We now have an object [gp_freq_dist]{.alt} that contains the number of days grouped into bins of 4 days (**days_group**) and the number of videos uploaded during each of the time periods represented by those bins (**frequency**).
 
@@ -319,7 +323,7 @@ gp_freq_dist
 ```
 
 
-### `r user_visor()` Efficient code
+### `r user_visor()` Efficient code [(2)]{.alt}
 
 In the tasks above we created the table of relative frequencies step by step:
 
@@ -368,7 +372,7 @@ gp_freq_dist
 This code takes the data in [ice_tib]{.alt}, feeds it into `mutate()` to create a new variable called **days_group** which contains the 'bin' to which the score in **upload_day** belongs. Having added these 'variable bins', we group the data by them using  `group_by()`, count how many scores fall into each bin using `summarize()` and store these in a variable called **frequency**. We then feed this summary table into `mutate()` to create new variables containing the relative frequency in its raw form and expressed as a percentage. We store the summary table in an object called [gp_freq_dist]{.alt}.
 
 
-## `r bmu2()` Histograms
+## `r bmu()` Histograms [(1)]{.alt}
 
 As well as tabulated frequency distributions, we can visualise distributions using histograms. `ggplot2` is a powerful package for producing data visualisations that we will explore in detail in the **discovr_05** tutorial. For now, we will use it to create a histogram without worrying about how it works.
 
@@ -378,7 +382,7 @@ As well as tabulated frequency distributions, we can visualise distributions usi
   We've discussed elsewhere that if you include packages when you use functions (e.g., `dplyr::mutate()`) you don't need to explicitly load the package (in this case `dplyr`). However, to create plots with `ggplot2` you build them up layer by layer, which means you use a lot of `ggplot2` functions. For this reason, I advise loading it at the start of your markdown document and not worrying too much about including package references when you use functions. You can load it either with `library(ggplot2)` or by loading the entire tidyverse using `library(tidyverse)`.
 </div>
 
-### `r bmu2()` A basic histogram using `ggplot2`
+### `r bmu()` A basic histogram [(1)]{.alt}
 
 Let's start by plotting a histogram of number of days between the original ice bucket challenge video and when subsequent videos were uploaded. Remember, the data are stored in a variable called **upload_day** in the [ice_tib]{.alt} tibble. To initiate the plot we use the `ggplot()` function, which at its simplest has this general form:
 
@@ -415,7 +419,7 @@ ggplot2::ggplot(ice_tib, aes(upload_day)) +
 
 The completed command tells `r rproj()` to take the object created by `ggplot2::ggplot(ice_tib, aes(upload_day))` and add (`+`) a layer to it using `geom_histogram()`. You should see a beautiful histogram now!
 
-### `r bmu2()` Changing the bin widths
+### `r bmu()` Changing the bin widths [(1)]{.alt}
 
 By default `ggplot2` constructs the bins of the histogram to be 1/30th the width of the data. You can over-ride this default by specifying [binwidth =]{.alt} within the `geom_histogram()` function. In the code box below, type [binwidth = 1]{.alt} into the brackets after `geom_histogram()` and execute the code. Note how the histogram changes. A binwidth of 1 makes sense for these data because responses could only be whole numbers (days), but try some other values and note how the histogram changes.
 
@@ -429,7 +433,7 @@ ggplot2::ggplot(ice_tib, aes(upload_day)) +
   geom_histogram(binwidth = 1)
 ```
 
-### `r bmu2()` Changing the colours of the bars
+### `r bmu()` Changing the colours of the bars [(1)]{.alt}
 
 We can change the colour of the bars by including [fill =]{.alt} within the `geom_histogram()` function.
 
@@ -473,7 +477,7 @@ ggplot2::ggplot(ice_tib, aes(upload_day)) +
   geom_histogram(binwidth = 1, fill = "#56B4E9")
 ```
 
-### `r bmu2()` Changing the transparency of the bars
+### `r bmu()` Changing the transparency of the bars [(1)]{.alt}
 
 You can also make filled objects semi-transparent by using [alpha =]{.alt} where alpha is a proportion (i.e., between 0 and 1). For example, if you want the histograms to have 20% opacity you could include [alpha = 0.2]{.alt} in the `geom_histogram()` function (remembering to separate it from other options with a comma).
 
@@ -498,7 +502,7 @@ ggplot2::ggplot(ice_tib, aes(upload_day)) +
   geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5)
 ```
 
-### `r bmu2()` Editing axis labels
+### `r bmu()` Editing axis labels [(1)]{.alt}
 
 #### `r robot()` Code example
 
@@ -536,7 +540,7 @@ ggplot2::ggplot(ice_tib, aes(upload_day)) +
 </div>
 
 
-### `r bmu2()` Changing theme
+### `r bmu()` Changing theme [(1)]{.alt}
 
 `ggplot2` has various built in themes that change the appearance of the plot. The two we will use most often are `theme_bw()`, which applies a black and white theme and `theme_minimal()` which applies a minimalist theme. Both of these themes are good for scientific plots (like the ones you'll find in journal articles).
 
@@ -587,11 +591,11 @@ ggplot2::ggplot(ice_tib, aes(upload_day)) +
 
 We'll return to the `ggplot2` package in more depth in **discovr_05**.
 
-## `r bmu2()` Summarizing data
+## `r bmu()` Summarizing data [(1)]{.alt}
 
 We've seen already that functions take the form of a command followed by brackets. We also saw that there are usually options that can be placed within those brackets (for example, in the previous section we changed the binwidth and bar colour of the histogram by placing instructions within the `geom_histogram()` function). We'll explore this idea more by looking at the function to estimate the mean and median of the ice bucket scores.
 
-### `r bmu2()` The mean and median
+### `r bmu()` The mean and median [(1)]{.alt}
 
 We can compute the mean using the built-in function `mean()`. The full format of the function is:
 
@@ -657,7 +661,7 @@ median(ice_tib$upload_day)
 ```
 
 
-### `r bmu2()` Quantifying the 'fit' of the mean
+### `r bmu()` Quantifying the 'fit' of the mean [(1)]{.alt}
 
 We can use the functions `var()`, `sd()` to get the variance and standard deviation of the ice bucket scores. These functions behave exactly like `mean()` in that we input the variable for which we want the variance and standard deviation and specify how we treat missing values (by default they are not removed):
 
@@ -687,7 +691,7 @@ var(ice_tib$upload_day)
 sd(ice_tib$upload_day)
 ```
 
-### `r bmu2()` The inter-quartile range
+### `r bmu()` The inter-quartile range [(1)]{.alt}
 
 We can use the `IQR()` function to obtain the interquartile range of a set of scores. This function has an additional option of [type =]{.alt} which allows you to specify one of 8 different ways to calculate the IQR. The default is 7. There is an argument for using [type  = 8]{.alt}, which uses a method recommended by [@hyndman_sample_1996].
 
@@ -742,7 +746,7 @@ IQR(ice_tib$upload_day, type = 8)
 ```
 
 
-### `r user_visor()` Rounding values
+### `r user_visor()` Rounding values [(1)]{.alt}
 
 We can use the `round()` function to round values. It 
 
@@ -786,9 +790,7 @@ sd(ice_tib$upload_day) %>% round(2)
 mean(ice_tib$upload_day) %>% round(2)
 ```
 
-## `r user_visor()` Creating a summary table
-
-### `r user_visor()` Using `summarize()` to compute multiple summary statistics
+## `r user_visor()` Creating a summary table [(2)]{.alt}
 
 So far we have looked at computing individual statistics for a set of scores, but what if we want to combine these values into a table? We can do this using the `summarise()` function described earlier in the tutorial.
 
@@ -871,8 +873,6 @@ ice_tib %>%
 # Check that you have commas at the end of every line except the last within summarise.
 ```
 
-### `r bmu2()` Storing summaries
-
 #### `r robot()` Code example
 
 If we want to store this table of summary statistics we can do so by assigning it to a new object. Let's say we want to assign it to an object called [upload_summary]{.alt} then we'd add `upload_summary <-` to the beginning of the command
@@ -910,9 +910,9 @@ upload_summary <- ice_tib %>%
 ### `r rproj("h3")`
 
 * [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
-* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and ![](./images/rstudio_logo.png){height=1em}.
-* [![](./images/rstudio_logo.png){height=1em} cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
-* [![](./images/rstudio_logo.png){height=1em} list of online resources](https://www.rstudio.com/online-learning/).
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and `r rstudio()`.
+* [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
+* [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
 
 ### Acknowledgement
 

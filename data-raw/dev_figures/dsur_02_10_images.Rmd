@@ -14,7 +14,7 @@ library(discovr)
 library(here)
 library(patchwork)
 library(tidyverse)
-source("../dsur_themes.R")
+source("../r_docs/dsur_themes.R")
 
 
 if(stringr::str_detect(here::here(), "Alpha")){
@@ -80,7 +80,7 @@ agress_simslop <- interactions::interact_plot(
   modx = caunts_cent,
   interval = TRUE,
   x.label = "Time playing video games per week (hours)",
-  y.label = "Predicted agression",
+  y.label = "Predicted aggression",
   legend.main = "Callous unemotional traits"
   )
 

@@ -20,7 +20,7 @@ library(patchwork)
 library(qqplotr)
 library(tidyverse)
 library(stringr)
-source("dsur_themes.R")
+source("../r_docs/dsur_themes.R")
 
 
 if(stringr::str_detect(here::here(), "Alpha")){

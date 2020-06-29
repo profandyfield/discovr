@@ -1,0 +1,553 @@
+---
+title: "discovr: Confidence intervals"
+author: "Andy Field"
+output:
+  learnr::tutorial:
+    progressive: false
+    theme: "united"
+    css: ./css/discovr_style_future.css
+runtime: shiny_prerendered
+description: "Confidence intervals: interactive app demonstrating what a confidence interval is, adding confidence intervals to data summaries."
+bibliography: discovr_03.bib
+---
+<html lang="en">
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+
+library(learnr)
+library(magrittr)
+library(ggplot2)
+library(gganimate)
+
+source("./www/discovr_helpers.R")
+
+#Read dat files needed for the tutorial
+
+ice_tib <- discovr::ice_bucket
+
+```
+
+
+# discovr: Confidence intervals
+
+## Overview
+
+<div class="infobox">
+  <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
+  
+  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/) [@field_discovering_2021] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
+  
+</div>
+
+### `r cat_space(fill = "h3", height = 2)` Welcome to the `discovr` space pirate academy
+
+Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
+
+On your way you will face many challenges, but follow Mae's system to keep yourself on track:
+
+* `r bmu(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
+* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
+* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+
+It's not just me that's here to help though, you will meet other characters along the way:
+
+* `r alien(height = 2)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
+* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
+* `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
+
+Also, use hints and solutions to guide you through the exercises (Figure 1).
+
+<figure>
+<img src="./images/discovr_hints.png" alt="Each codebox has a hints or solution button that activates a popup window containing code and text to guide you through each exercise." style="width:100%">
+<figcaption>Figure 1: In a code exercise click the hints button to guide you through the exercise.</figcaption>
+</figure> 
+ 
+
+By for now and good luck - you'll be amazing!
+
+### Workflow
+
+* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
+
+* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an `r rproj()` markdown file within an `r rstudio()` project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
+
+![](https://youtu.be/FE0ntX0dyc4)
+
+### Packages
+
+This tutorial uses the following packages:
+
+* `here` [@here]
+* `tidyverse` [@tidyverse]
+
+I try to follow the [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) in always declaring the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will write `dplyr::mutate()`. 
+
+It is good practice to be explicit about packages to avoid clashes where functions from different packages have the same name. It also means that you don't need to load packages at the start of your markdown document. 
+
+There are two main exceptions to this rule.
+
+1. There are functions within some `tidyverse` packages that would be used within other functions. Including the package name makes the code difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+2. To use the pipe operator (`%>%`) you need to have `magrittr` loaded.
+
+We can load all of the packages that are exceptions in one step by loading `tidyverse` at the beginning of our `r rproj()` Markdown document:
+
+```{r eval = FALSE}
+library(tidyverse)
+```
+
+### Data
+
+To work *outside of this tutorial* you need to download the following data file:
+
+* [ice_bucket.csv](http://www.discoveringstatistics.com/repository/discovr_data/ice_bucket.csv)
+
+Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
+
+```{r, eval=FALSE}
+ice_tib <- here::here("data/ice_bucket.csv") %>% readr::read_csv()
+```
+
+
+## `r bmu()` What is a confidence interval? [(1)]{.alt}
+
+### version 1
+
+```{r ci_ui, echo = FALSE}
+fluidPage(
+
+    # Application title
+    titlePanel("Confidence interval explorer"),
+
+    fluidRow(
+      wellPanel(
+        h3("Instructions"),
+            p("1. Choose whether you want to see a positive or negative relationship between variables."),
+            p("2. The resulting plots show data and diagnostic plots from a a linear model fitted to a linear relationship between a predictor and outcome with homoscedastic errors."),
+            p("3. Use the sliders to increase non-linearity and heteroscedasticity."),
+            p("4. Click 'Show me' to see data that has the levels of nonlinearity and heteroscedasticity that you have selected, and the resulting diagnostic plots for a linear model fitted to the data.")
+      )
+    ),
+    
+    fluidRow(
+      column(6, align="center",
+             sliderInput("mu",
+                           "Population mean",
+                           min = 0,
+                           max = 100,
+                           step = 5,
+                           value = 15),
+              sliderInput("pop_sd",
+                           "Population variance",
+                           min = 1,
+                           max = 30,
+                           step = 1,
+                           value = 5,
+                           ticks = FALSE)
+             ),
+      column(6, align="center",
+            sliderInput("n_samp",
+                           "The size of each sample",
+                           min = 10,
+                           max = 200,
+                           step = 10,
+                           value = 30),
+            sliderInput("ci_level",
+                          "Confidence interval %",
+                           min = 50,
+                           max = 100,
+                           step = 1,
+                           value = 95),
+      ),
+      fluidRow(align = "centre",
+               actionButton("gen_dat", "Take samples")
+               )
+    ),
+    hr(),
+    fluidRow(align="center",
+               h4(textOutput("coverage"), align = "centre")
+             ),
+    fluidRow(align="center",
+               plotOutput("ci_plot", height = "1000px") 
+             )
+)
+```
+
+```{r ci_server, context = "server", echo = FALSE}
+
+blu <- "#5c97bf"
+ong <- "#d47500"
+
+counter = 0
+
+invalidateLaterNew <- function (millis, session = getDefaultReactiveDomain(), update = TRUE) 
+  {
+    if(update){
+      ctx <- shiny:::.getReactiveEnvironment()$currentContext()
+      shiny:::timerCallbacks$schedule(millis, function() {
+        if (!is.null(session) && session$isClosed()) {
+          return(invisible())
+        }
+        ctx$invalidate()
+      })
+      invisible()
+    }
+}
+
+  unlockBinding("invalidateLater", as.environment("package:shiny"))
+  assign("invalidateLater", invalidateLaterNew, "package:shiny")
+    #input <- tibble::tibble(mu = 0, pop_sd = 1, k = 50, n_samp = 30, ci_level = 95)
+    
+    #input$mu = 0
+    #input$pop_sd = 1
+   # input$k = 50
+    #input$n_samp = 30
+    #input$ci_level = 95
+  
+#my_timer <- reactiveValues(increment = 0, timer = reactiveTimer(500), started = FALSE)
+
+    
+  get_cis <- function(){
+      tibble::tibble(.rows = 100) %>% 
+        dplyr::mutate(
+          sample = as.numeric(rownames(.)),
+          data = purrr::map(sample, ~rnorm(n = input$n_samp, mean = input$mu, sd = input$pop_sd)),
+          mean_ci = purrr::map(data, ~ggplot2::mean_cl_normal(., conf.int = input$ci_level/100)),
+          mean = purrr::map_dbl(mean_ci, ~.$y),
+          ci_low = purrr::map_dbl(mean_ci, ~.$ymin),
+          ci_upp = purrr::map_dbl(mean_ci, ~.$ymax),
+          contains_mu = ifelse(input$mu >= ci_low & input$mu <= ci_upp, TRUE, FALSE)
+          )
+    }
+   
+
+  ci_tib <- reactiveValues(
+    data = tibble::tibble(.rows = 100) %>% 
+        dplyr::mutate(
+          sample = as.numeric(rownames(.)),
+          data = purrr::map(sample, ~rnorm(n = 30, mean = 15, sd = 5)),
+          mean_ci = purrr::map(data, ~ggplot2::mean_cl_normal(., conf.int = 0.95)),
+          mean = purrr::map_dbl(mean_ci, ~.$y),
+          ci_low = purrr::map_dbl(mean_ci, ~.$ymin),
+          ci_upp = purrr::map_dbl(mean_ci, ~.$ymax),
+          contains_mu = ifelse(15 >= ci_low & 15 <= ci_upp, TRUE, FALSE)
+          ),
+    show = FALSE
+    )
+
+  get_plot <- function(tib){
+    p = ggplot(tib, aes(mean, sample, colour = factor(contains_mu))) +
+        geom_vline(xintercept = input$mu, linetype = 1, colour = "grey45", size = 1) +
+        coord_cartesian(xlim = c(min(tib$ci_low), max(tib$ci_upp)), ylim = c(0, 100)) +
+       scale_y_continuous(breaks = 1:100) +
+       scale_colour_manual(values = c("TRUE" = blu, "FALSE" = ong)) +
+        labs(x = "", y = "Sample number") +
+        theme_minimal() +
+        theme(legend.position = "none") +
+        theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+    #plot data when button clicked   
+        if(ci_tib$show == TRUE){
+        p +
+          geom_errorbarh(xmax = tib$ci_upp, xmin = tib$ci_low, size = 0.75, height = 1) +
+          geom_point(size = 4)
+        } else {
+          p
+        }
+  }
+
+    # observe events
+    
+    observeEvent(input$gen_dat, {
+      counter <<- 0
+      ci_tib$data = get_cis()
+      ci_tib$show = TRUE
+      
+      output$ci_plot <- renderPlot(height = 1000, {
+        counter <<- counter + 1
+        invalidateLater(1000, session, counter < 100)
+        isolate(ci_tib$data) %>%
+          dplyr::filter(sample <= counter) %>% 
+          get_plot()
+        })
+
+      
+      #output$ci_plot = get_plot()
+      output$coverage <- renderText({
+        paste0("Confidence intervals containing the population value = ", round(100*(sum(ci_tib$data$contains_mu)/100), 2), "%")
+        })
+    })
+
+
+
+```
+
+### version 2
+
+```{r ci_ui2, echo = FALSE, eval = F}
+fluidPage(
+
+    # Application title
+    titlePanel("Confidence interval explorer"),
+
+    fluidRow(
+      wellPanel(
+        h3("Instructions"),
+            p("1. Choose whether you want to see a positive or negative relationship between variables."),
+            p("2. The resulting plots show data and diagnostic plots from a a linear model fitted to a linear relationship between a predictor and outcome with homoscedastic errors."),
+            p("3. Use the sliders to increase non-linearity and heteroscedasticity."),
+            p("4. Click 'Show me' to see data that has the levels of nonlinearity and heteroscedasticity that you have selected, and the resulting diagnostic plots for a linear model fitted to the data.")
+      )
+    ),
+    
+    fluidRow(
+      column(6, align="center",
+             sliderInput("mu",
+                           "Population mean",
+                           min = 0,
+                           max = 100,
+                           step = 5,
+                           value = 15),
+              sliderInput("pop_sd",
+                           "Population variance",
+                           min = 1,
+                           max = 30,
+                           step = 1,
+                           value = 5,
+                           ticks = FALSE)
+             ),
+      column(6, align="center",
+            sliderInput("n_samp",
+                           "The size of each sample",
+                           min = 10,
+                           max = 200,
+                           step = 10,
+                           value = 30),
+            sliderInput("ci_level",
+                          "Confidence interval %",
+                           min = 50,
+                           max = 100,
+                           step = 1,
+                           value = 95),
+      ),
+      fluidRow(align = "centre",
+               actionButton("gen_dat", "Take samples")
+               )
+    ),
+    hr(),
+    fluidRow(align="center",
+               h4(textOutput("coverage"), align = "centre")
+             ),
+    fluidRow(align="center",
+               plotOutput("ci_plot", height = "1000px") 
+             )
+)
+```
+
+```{r ci_server2, context = "server", echo = FALSE, eval = F}
+
+blu <- "#5c97bf"
+ong <- "#d47500"
+
+get_cis <- function(){
+      tibble::tibble(.rows = 100) %>% 
+        dplyr::mutate(
+          sample = as.numeric(rownames(.)),
+          data = purrr::map(sample, ~rnorm(n = input$n_samp, mean = input$mu, sd = input$pop_sd)),
+          mean_ci = purrr::map(data, ~ggplot2::mean_cl_normal(., conf.int = input$ci_level/100)),
+          mean = purrr::map_dbl(mean_ci, ~.$y),
+          ci_low = purrr::map_dbl(mean_ci, ~.$ymin),
+          ci_upp = purrr::map_dbl(mean_ci, ~.$ymax),
+          contains_mu = ifelse(input$mu >= ci_low & input$mu <= ci_upp, TRUE, FALSE)
+          )
+    }
+   
+
+  ci_tib <- reactiveValues(
+    data = tibble::tibble(.rows = 100) %>% 
+        dplyr::mutate(
+          sample = as.numeric(rownames(.)),
+          data = purrr::map(sample, ~rnorm(n = 30, mean = 15, sd = 5)),
+          mean_ci = purrr::map(data, ~ggplot2::mean_cl_normal(., conf.int = 0.95)),
+          mean = purrr::map_dbl(mean_ci, ~.$y),
+          ci_low = purrr::map_dbl(mean_ci, ~.$ymin),
+          ci_upp = purrr::map_dbl(mean_ci, ~.$ymax),
+          contains_mu = ifelse(15 >= ci_low & 15 <= ci_upp, TRUE, FALSE)
+          ),
+    show = FALSE
+    )
+
+  
+
+  
+get_plot <- function(tib){
+   renderImage({
+    # A temp file to save the output.
+    # This file will be removed later by renderImage
+    outfile <- tempfile(fileext='.gif')
+    
+    # now make the animation
+    
+    p = ggplot(tib, aes(mean, sample, colour = contains_mu)) +
+        geom_vline(xintercept = input$mu, linetype = 1, colour = "grey45", size = 1) +
+        coord_cartesian(xlim = c(min(tib$ci_low), max(tib$ci_upp)), ylim = c(0, 100)) +
+       scale_y_continuous(breaks = 1:100) +
+       scale_colour_manual(values = c(ong, blu)) +
+        labs(x = "", y = "Sample number") +
+        theme_minimal() +
+        theme(legend.position = "none") +
+        theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+    #plot data when button clicked   
+        if(ci_tib$show == TRUE){
+        p +
+          geom_errorbarh(xmax = tib$ci_upp, xmin = tib$ci_low, size = 0.75, height = 1) +
+          geom_point(size = 4) +
+          gganimate::transition_manual(frame = sample, cumulative = TRUE)
+          gganimate::animate(p, nframes = input$k, fps = 5, renderer = gifski_renderer(loop=FALSE)) %>% 
+          gganimate::anim_save("outfile.gif", animation = .) # New
+          
+        } else {
+          p
+        }
+     
+
+    
+    # Return a list containing the filename
+     list(src = "outfile.gif",
+          contentType = 'image/gif'
+          )
+     
+     })
+ }
+
+
+
+    # observe events
+    
+    observeEvent(input$gen_dat, {
+      counter <<- 0
+      ci_tib$data = get_cis()
+      ci_tib$show = TRUE
+      
+      output$ci_plot <- renderPlot(height = 1000, {
+        isolate(ci_tib$data) %>%
+          get_plot()
+        })
+
+      
+      #output$ci_plot = get_plot()
+      output$coverage <- renderText({
+        paste0("Confidence intervals containing the population value = ", round(100*(sum(ci_tib$data$contains_mu)/100), 2), "%")
+        })
+    })
+
+
+
+```
+
+
+
+```{r eval = F, echo = F}
+
+output$ci_plot <- renderPlot(height = 1000, {
+  #set up empty plot as placeholder
+        p = ggplot(ci_tib$data, aes(mean, sample, colour = contains_mu)) +
+        geom_vline(xintercept = input$mu, linetype = 1, colour = "grey45", size = 1) +
+        coord_cartesian(xlim = c(min(ci_tib$data$ci_low), max(ci_tib$data$ci_upp)), ylim = c(0, 100)) +
+       scale_y_continuous(breaks = 1:100) +
+       scale_colour_manual(values = c(ong, blu)) +
+        labs(x = "", y = "Sample number") +
+        theme_minimal() +
+        theme(legend.position = "none") +
+        theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+    #plot data when button clicked   
+        if(ci_tib$show == TRUE){
+        p +
+          geom_errorbarh(xmax = ci_tib$data$ci_upp, xmin = ci_tib$data$ci_low, size = 0.75, height = 1) +
+          geom_point(size = 4)
+        } else {
+          p
+        }
+        
+        })
+
+
+
+
+get_plot <- function(){
+   renderImage({
+    # A temp file to save the output.
+    # This file will be removed later by renderImage
+    outfile <- tempfile(fileext='.gif')
+    
+    # now make the animation
+    
+    p = ggplot(ci_tib$data, aes(mean, sample, colour = contains_mu)) +
+      geom_vline(xintercept = input$mu, linetype = 1, colour = "grey45", size = 1) +
+      geom_errorbarh(xmax = ci_tib$data$ci_upp, xmin = ci_tib$data$ci_low, size = 0.75, height = 1) +
+      geom_point(size = 4) +
+      coord_cartesian(xlim = c(min(ci_tib$data$ci_low), max(ci_tib$data$ci_upp)), ylim = c(0, input$k)) +
+      scale_y_continuous(breaks = 1:input$k) +
+      scale_colour_manual(values = c(ong, blu)) +
+      labs(x = "", y = "Sample number") +
+      theme_minimal() +
+      theme(legend.position = "none") +
+      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+      gganimate::transition_manual(frame = sample, cumulative = TRUE)
+      
+     
+    gganimate::animate(p, nframes = input$k, fps = 5, renderer = gifski_renderer(loop=FALSE)) %>% 
+      gganimate::anim_save("outfile.gif", animation = .) # New
+    
+    # Return a list containing the filename
+     list(src = "outfile.gif",
+          contentType = 'image/gif'
+          )
+     
+     })
+ }
+
+
+
+
+
+```
+
+
+
+
+<div class="infobox">
+  <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
+  
+  **A message from Mae Jemstone:**
+  
+  Well done on completing phase 2 of your mission! You have learnt how to summarize data using histograms and statistics such as the mean, median, variance and standard deviation. Remember to go over any parts that you don't fully understand, and ask questions!
+  
+</div>
+
+## Resources {data-progressive=FALSE}
+
+### Statistics
+
+* The tutorials typically follow examples described in detail in @field_discovering_2021. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
+* If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
+* There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/).
+* There are free statistical resources on my websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [milton-the-cat.rocks](http://milton-the-cat.rocks).
+
+### `r rproj("h3")`
+
+* [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and `r rstudio()`.
+* [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
+* [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
+
+### Acknowledgement
+
+I'm extremely grateful to [Allison Horst](https://www.allisonhorst.com/) for her very informative blog post on [styling learnr tutorials with CSS](https://education.rstudio.com/blog/2020/05/learnr-for-remote/) and also for sending me a CSS template file and allowing me to adapt it. Without Allison, these tutorials would look a lot worse (but she can't be blamed for my colour scheme).
+
+## References
+
+

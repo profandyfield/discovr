@@ -7,6 +7,7 @@ output:
     theme: "united"
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
+description: "Categorical outcomes. Entering categorical data, contingency tables, the chi-square test, standardized residuals."
 bibliography: discovr_19.bib
 ---
 
@@ -41,15 +42,15 @@ dance_tib <- discovr::cat_dance
   
 </div>
 
-### `r cat_space(height = 2)` Welcome to the `discovr` space pirate academy
+### `r cat_space(fill = "h3", height = 2)` Welcome to the `discovr` space pirate academy
 
 Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu2(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice.
-* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult.
-* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det.
+* `r bmu(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
+* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
+* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
@@ -57,17 +58,21 @@ It's not just me that's here to help though, you will meet other characters alon
 * `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
 * `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
 
-Also, use hints and solutions to guide you through the exercises.
+Also, use hints and solutions to guide you through the exercises (Figure 1).
 
-![The hints button is your friend.](./images/discovr_hints.png)
+<figure>
+<img src="./images/discovr_hints.png" alt="Each codebox has a hints or solution button that activates a popup window containing code and text to guide you through each exercise." style="width:100%">
+<figcaption>Figure 1: In a code exercise click the hints button to guide you through the exercise.</figcaption>
+</figure> 
+ 
 
 By for now and good luck - you'll be amazing!
 
 ### Workflow
 
-* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and ![](./images/rstudio_logo.png){height=1em}](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
+* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
 
-* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in ![](./images/rstudio_logo.png){height=1em} I strongly recommend that you create an `r rproj()` markdown file within an ![](./images/rstudio_logo.png){height=1em} project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
+* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an `r rproj()` markdown file within an `r rstudio()` project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
 
 ![](https://youtu.be/FE0ntX0dyc4)
 
@@ -97,17 +102,29 @@ library(tidyverse)
 
 ### Data
 
-To work *outside of this tutorial* you need to download the following data files:
+To work *outside of this tutorial* you need to download the following data file:
 
 * [cat_dance.csv](http://www.discoveringstatistics.com/repository/discovr_data/cat_dance.csv)
 
-Set up an ![](./images/rstudio_logo.png){height=1em} project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
+Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
 
 ```{r, eval=FALSE}
 dance_tib <- here::here("data/cat_dance.csv") %>% readr::read_csv()
 ```
 
-## Dancing cats
+### Preparing data
+
+To work *outside of this tutorial* you need to turn categorical variables into factors and set an appropriate baseline category using `forcats::as_factor` and `forcats::fct_relevel`. There are two categorical variables here: **reward** (the animal was trained using either food or affection, not both) and **dance** (the animal either learnt to dance or it did not). For each variable, think about which category you’d want as your baseline or reference.  For **reward** it doesn’t matter too much, but for **dance** it makes sense to have 'No' as the reference category. Therefore, you might convert these variables to factors using this code:
+
+```{r, eval= FALSE}
+dance_tib <- dance_tib %>% 
+  dplyr::mutate(
+    dance = forcats::as_factor(dance) %>% forcats::fct_relevel(., "No"),
+    reward = forcats::as_factor(reward)
+  )
+```
+
+## `r bmu()` Dancing cats and entering data [(1)]{.alt}
 
 A researcher was interested in whether animals could be trained to dance. He took 200 cats and tried to train them to dance by giving them either food or affection as a reward for dance-like behaviour. (Historically in this example the cats were taught to line dance. I was tempted to update the example to something more contemporary, like twerking cats, but I’m now haunted by intrusive images of lines of twerking cats slowly but purposefully following me around, which proves that sometimes it’s best to leave well alone.) At the end of the week he counted how many animals could line-dance and how many could not. There are two categorical variables here: **reward** (the animal was trained using either food or affection, not both) and **dance** (the animal either learnt to dance or it did not). By combining categories, we end up with four different categories. All we then need to do is to count how many cats fall into each category. Table 1 shows these frequencies.
 
@@ -121,9 +138,13 @@ tibble::tribble(
   kableExtra::kable_styling(bootstrap_options = "striped", full_width = FALSE)
 ```
 
-## Entering raw scores
+### `r bmu()` Entering raw scores [(1)]{.alt}
 
-The first way is to enter each cat’s data as a row of the data. You would create two variables (reward and dance) and reward might take on values of  “Food” and “Affection”, and dance would have values of “Yes” and “no”. These are what the data look like in `dance_tib`. Inspect this object using the code box.
+The first way is to enter each cat’s data as a row of the data. You would create two variables (**reward** and **dance**) and **reward** might take on values of 'Food' and 'Affection', and dance would have values of 'Yes' and 'no'.
+
+#### `r alien()` Alien coding challenge
+
+These are what the data look like in `dance_tib`. Inspect this object using the code box.
 
 ```{r dance_data, exercise = TRUE, exercise.lines = 2}
 
@@ -133,21 +154,15 @@ The first way is to enter each cat’s data as a row of the data. You would crea
 dance_tib
 ```
 
-Note that there are 200 cats and, therefore, 200 rows of data. Having done this you’d convert these variables to factors and think about which category you’d want as your baseline or reference.  For reward it doesn’t matter too much, but for dance it makes sense to have “No” as the reference category. So, you might, for example, read the data in from the csv file using:
+Note that there are 200 cats and, therefore, 200 rows of data. At this point you would convert **reward** and **dance** to factors (as described in [preparing the data]{.alt}). Within this tutorial the variables are already converted to factors with the levels set such that 'No' is the baseline category for **dance**, and 'food' is the baseline category for **reward**.
 
-```{r, eval= FALSE}
-dance_tib <- readr::read_csv("../data/cat_dance.csv") %>% 
-  dplyr::mutate(
-    dance = forcats::as_factor(dance) %>% forcats::fct_relevel(., "No"),
-    reward = forcats::as_factor(reward)
-  )
-```
+### `r bmu()` Entering data as a contingency table [(1)]{.alt}
 
-The data in this tutorial is already converted to factors with the levels set correctly.
+The second way to enter data is to create a contingency table. For example, we could create a tibble that has a variable **reward** that specifies whether the food was reward or affection, then a variable **danced** containing the total number of cats that danced for food (28) and affection (10) and a variable called **no_dance** containing the total number of cats that did not dance when food (48) and affection (114) were used as rewards.
 
-## Entering data as a contingency table
+#### `r robot()` Code example
 
-The second way to enter data is to create a contingency table. For example, we could create a tibble that has a variable reward that specifies whether the food was reward or affection, then a variable danced containing the total number of cats that danced for food (28) and affection (10) and a variable called no_dance containing the total number of cats that did not dance when food (48) and affection (114) were used as rewards. We can create this a tibble like this called `cat_cont` using this code:
+We can create this a tibble like this called `cat_cont` using this code:
 
 ```{r, eval= FALSE}
 cat_cont <- tibble::tribble(
@@ -156,6 +171,8 @@ cat_cont <- tibble::tribble(
   "Affection", 48, 114
 )
 ```
+
+#### `r alien()` Alien coding challenge
 
 Try this below and inspect the object `cat_cont` by executing its name:
 
@@ -172,53 +189,114 @@ cat_cont <- tibble::tribble(
 cat_cont
 ```
 
-## The chi-square test
-### Running the chi-square test
+## `r bmu()` The chi-square test [(1)]{.alt}
 
-There is a function `chisq.test()` in base R to obtain a chi-square test, but you get a lot more (useful) information if you use the `CrossTable()` function (note the capital letters), in the `gmodels` package. This function takes two general forms depending on whether or not we’re inputting the raw data or a contingency table. For raw data, it takes the general form:
+### `r bmu()` Running the chi-square test [(1)]{.alt}
 
-`gmodels::CrossTable(predictor, outcome)`
+There is a function `chisq.test()` in base R to obtain a chi-square test, but you get a lot more (useful) information if you use the `CrossTable()` function (note the capital letters), in the `gmodels` package. This function takes two general forms depending on whether or not we’re inputting the raw data or a contingency table. It has a lot of arguments, the ones below are set to FALSE by default, but I’d recommend setting them to true:
 
-In which `predictor` and `outcome` are replaced with variable names (for example `dance_tib$reward`).
+*	[chisq = TRUE]{.alt} gives us the chi-square test
+* [fisher = TRUE]{.alt} gives us the Fisher exact test and an odds ratio
+* [expected=TRUE]{.alt} displays the expected values of each cell of the contingency table
+* [sresid = TRUE]{.alt} gives us standardized residuals, which are useful for breaking down a significant effect if we get one
+* [format = "SPSS"]{.alt} is necessary to see the standardized residuals
 
-If you want to input a contingency table then you’d use:
-`gmodels::CrossTable(contingency_table)`
+#### `r robot()` Code example
 
-In which `contingency_table` is replaced with the columns of your contimgecny table that contain numbers. The function has a lot of arguments, the ones below are set to false by default, but I’d recommend setting them to true:
+Therefore, for raw data, I'd recommend the general form:
 
-*	chisq = TRUE gives us the chi-square test
-* fisher = TRUE gives us the Fisher exact test and an odds ratio
-* expected=TRUE displays the expected values of each cell of the contingency table
-* sresid = TRUE gives us standardized residuals, which are useful for breaking down a significant effect if we get one
-* format = "SPSS" is necessary to see the standardized residuals
-
-So, for raw scores we’d specify
-
-```{r, eval = FALSE}
-gmodels::CrossTable(dance_tib$reward, dance_tib$dance, fisher = TRUE, chisq = TRUE, expected = TRUE, sresid = TRUE, format = "SPSS")
+```{r, eval = F}
+gmodels::CrossTable(predictor, outcome, fisher = TRUE, chisq = TRUE, expected = TRUE, sresid = TRUE, format = "SPSS")
 ```
 
-Try this code below:
+In which [predictor]{.alt} and [outcome]{.alt} are replaced with variable names (for example [dance_tib$reward]{.alt}).
 
-```{r crosstab_raw, exercise = TRUE, exercise.lines = 2}
+#### `r alien()` Alien coding challenge
+
+[dance_tib]{.alt} has the data in raw form. Adapt the example code to get a chi-square test for **reward** as a predictor of **dance**
+
+```{r chi_1, exercise = TRUE, exercise.lines = 9, exercise.setup = "dl_tib"}
 
 ```
 
-```{r crosstab_raw-solution}
-gmodels::CrossTable(dance_tib$reward, dance_tib$dance, fisher = TRUE, chisq = TRUE, expected = TRUE, sresid = TRUE, format = "SPSS")
+```{r chi_1-hint-1}
+# The general form is:
+gmodels::CrossTable(
+  predictor,
+  outcome,
+  fisher = TRUE,
+  chisq = TRUE,
+  expected = TRUE,
+  sresid = TRUE,
+  format = "SPSS"
+  )
+# Replace predictor and outcome with the respective variables
+```
+
+```{r chi_1-hint-2}
+# Solution
+gmodels::CrossTable(
+  dance_tib$reward,
+  dance_tib$dance,
+  fisher = TRUE,
+  chisq = TRUE,
+  expected = TRUE,
+  sresid = TRUE,
+  format = "SPSS"
+  )
 ```
 
 
-If we want to input a contingency table then we’d do something a little more tidyverse:
+#### `r robot()` Code example
 
-```{r eval = FALSE}
+If you want to input a contingency table into `CrossTable` then you’d use:
+
+```{r, eval = F}
+gmodels::CrossTable(
+  contingency_table,
+  fisher = TRUE,
+  chisq = TRUE,
+  expected = TRUE,
+  sresid = TRUE,
+  format = "SPSS"
+  )
+```
+
+In which [contingency_table]{.alt} is replaced with the columns of your contingency table that contain numbers. For example, if you inspected object called [cat_cont]{.alt} that we created earlier, you'd have seen that it looks like this:
+
+```{r, echo = F}
+tibble::tribble(
+  ~`reward`, ~`no_dance`, ~`danced`,
+  "Food", 10, 28,
+  "Affection", 114, 48
+)
+```
+
+There are two columns with numbers in labelled **no_dance** and **danced**, these need to be entered into `CrossTable()`. We can do this by, for example, using `dplyr::select()` to select these columns (in the code below I de-select **reward** which will leave us with **no_dance** and **danced**):
+
+```{r, eval = F}
+cat_cont %>% 
+  dplyr::select(-reward)
+```
+
+Another complication is that `CrossTable()` doesn't play nicely with tibbles, so we need to strip the tibble of its bells and whilstles leaving only the numbers. We can do this with `as.matrix()`, which converts the tibble to a matrix. Having done this we can pipe everything into `CrossTable()`.
+
+#### `r robot()` Code example
+
+Putting all of this together we'd get:
+
+```{r, eval = F}
 cat_cont %>% 
   dplyr::select(-reward) %>% 
   as.matrix() %>% 
   gmodels::CrossTable(fisher = TRUE, chisq = TRUE, expected = TRUE, sresid = TRUE, format = "SPSS")
 ```
 
-Try this code below:
+To recap, this code feeds our contingency table ([cat_cont]{.alt}) into the `select()` function, where we strip off the **reward** variable (because it doesn’t contain any numeric data, it codes whether scores related to affection or reward). What remains is piped into `as.matrix()` to convert it to a matrix (because `CrossTable()` doesn’t like tibbles) before being fed into `CrossTable()`.
+
+#### `r alien()` Alien coding challenge
+
+Earlier we created an object called [cat_cont]{.alt} that contains the data in contingency table form. Use the example code to get a chi-square test for **reward** as a predictor of **dance**.
 
 ```{r crosstab_cont-setup}
 cat_cont <- tibble::tribble(
@@ -228,7 +306,7 @@ cat_cont <- tibble::tribble(
 )
 ```
 
-```{r crosstab_cont, exercise = TRUE, exercise.lines = 6}
+```{r crosstab_cont, exercise = TRUE, exercise.lines = 4}
 
 ```
 
@@ -239,9 +317,7 @@ cat_cont %>%
   gmodels::CrossTable(fisher = TRUE, chisq = TRUE, expected = TRUE, sresid = TRUE, format = "SPSS")
 ```
 
-This code feeds our contingency table (`cat_cont`) into the `select()` function, where we strip off the **reward** variable (because it doesn’t contain any numeric data, it just codes whether scores related to affection or reward). What remains is piped into `as.matrix()` to convert it to a matrix (because `CrossTable()` doesn’t like tibbles) before being fed into `CrossTable()`.
-
-### Interpreting the chi-square test
+### `r bmu()` Interpreting the chi-square test [(1)]{.alt}
 
 The output you got should contain this, which shows the chi-square test and other useful statistics:
 
@@ -277,11 +353,17 @@ p =  0.9999999
        Minimum expected frequency: 14.44
 ```
 
-The value of the chi-square statistic is given under the contingency table (together with the degrees of freedom), as is the significance value. The value of the chi-square statistic is 25.356, and this value is highly significant because the associated *p* is $4.467 \times 10^{-7}= 0.0000004467$, which is smaller than 0.05. (Note, in R when you see e-x it means $\times 10^{-x}$ and when you see e+x it means $\times 10^{x}$. For example, e-07 is $\times 10^{-7}$ and e+22 is $\times 10^{22}$.)
+<div class="tip">
+  `r cat_space()` **Tip: Reminder about scientific notation**
 
-## Using standardized residual
+Remember that in `r rproj()` when you see [e-x]{.alt} it means $\times 10^{-x}$ and when you see [e+x]{.alt} it means $\times 10^{x}$. For example, [e-07]{.alt} is $\times 10^{-7}$ and [e+22]{.alt} is $\times 10^{22}$. Therefore, the *p*-value of `4.767434e-07` is $4.467 \times 10^{-7}= 0.0000004467$
+</div>
 
-The oputput also has a contingency table:
+The value of the chi-square statistic is given under the contingency table (together with the degrees of freedom), as is the significance value. The value of the chi-square statistic is 25.356, and this value is highly significant because the associated *p* is is smaller than 0.05 (it is 0.0000004467).
+
+### `r user_astronaut()` Using standardized residuals [(3)]{.alt}
+
+The output also has a contingency table:
 
 ```
 Cell Contents
@@ -325,11 +407,11 @@ In a 2 × 2 contingency table like the one we have in this example, the nature o
 
 There are four residuals: one for each combination of the type of reward and whether the cats danced. When food was used as a reward the standardized residual was significant for both those that danced ($z = 3.6$) and those that didn’t dance ($z = −2.8$). The plus or minus sign tells us something about the direction of the effect, as do the counts and expected counts within the cells. We can interpret these standardized residuals as follows: when food was used as a reward significantly more cats than expected danced, and significantly fewer cats than expected did not dance. When affection was used as a reward the standardized residual was not significant  for both those that danced ($z = −1.7$) and those that didn’t dance ($z = 1.4$). This tells us that when affection was used a reward as many cats as expected danced and did not dance. In a nutshell, the cells for when food was used as a reward both significantly contribute to the overall chi-square statistic: the association between the type of reward and dancing is mainly driven by when food is a reward.
 
-## Assumptions
+## `r bmu()` Assumptions [(1)]{.alt}
 
 Finally, let’s check the expected frequencies. We have a 2 × 2 table, so all expected frequencies need to be greater than 5. Looking at the expected counts (second row in each cell) in the contingency table, we see that the smallest expected count is 14.4 (for cats that were trained with food and did dance). This value exceeds 5 and so the assumption has been met.
 
-## The odds ratio
+## `r user_visor()` The odds ratio [(2)]{.alt}
 
 A common and useful measure of effect size for categorical data is the odds ratio. The output includes the odds ratio and its confidence interval. The value of 0.152 and the limits of the 95% confidence interval are 0.06 and 0.35. An odds ratio of 1 represents no effect, so the important thing is that this 95% confidence interval does not cross 1. A value of 1 would mean that the odds of dancing after affection would be exactly the same as dancing after food. The fact that the interval does not include 1 suggests, if we assume that our sample is one of the 95% of samples that generates a 95% confidence interval containing the population value, that the population odds ratio is also not 1. In other words, there is a non-zero effect of reward on dancing.
 
@@ -348,9 +430,9 @@ Finally, you can take the reciprocal of the odds ratio to look at the odds of da
 ### `r rproj("h3")`
 
 * [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
-* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and ![](./images/rstudio_logo.png){height=1em}.
-* [![](./images/rstudio_logo.png){height=1em} cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
-* [![](./images/rstudio_logo.png){height=1em} list of online resources](https://www.rstudio.com/online-learning/).
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and `r rstudio()`.
+* [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
+* [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
 
 ### Acknowledgement
 

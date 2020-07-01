@@ -22,14 +22,14 @@ knitr::opts_chunk$set(
 library(learnr)
 library(magrittr)
 library(ggplot2)
-library(gganimate)
 
 source("./www/discovr_helpers.R")
 
-#Read dat files needed for the tutorial
+#Read data files needed for the tutorial
 
-ice_tib <- discovr::ice_bucket
-
+fb_tib <- tibble::tibble(
+    friends = c(57, 40, 103, 234, 93, 53, 116, 98, 108, 121, 22)
+   )
 ```
 
 
@@ -115,21 +115,35 @@ ice_tib <- here::here("data/ice_bucket.csv") %>% readr::read_csv()
 
 ## `r bmu()` What is a confidence interval? [(1)]{.alt}
 
-### version 1
+As a brief recap, we usually use a sample value as an estimate of a parameter (e.g., the mean) in the population. The estimate of a parameter (e.g., the mean) will differ across samples, and we can use the standard error to get some idea of the extent to which these estimates differ across samples. We can also use this information to calculate boundaries within which we believe the population value will fall. Such boundaries are called [confidence intervals]{.alt}. Although what I’m about to describe applies to any parameter, we’ll stick with the mean to keep things consistent with what you have already learnt.
+
+In the book we look at an example of how many followers someone has on their social media account. I think I used Facebook, but that's because I haven't yet realised that Facebook is populated only by people over the age of 40. I'm told that Instagram is the place to be, but no-one wants to see my wrinkly old scrotum of a face so I never use it. I pretty much don't use Facebook either. Did I mention I like statistics? Draw your own conclusions.
+
+Anyway, we looked at the number of followers people have on [*insert name of currently popular social media gizmo*]. We're interested in the average number of followers. There is a true mean (the mean in the population of all users). Let's imagine it's 120 (because most people are *not* statisticians). We take a sample of users and we find the mean number of followers is 100 Because we don’t know what the true value of the mean is (the population value), we don’t know how good (or bad) our sample value of 100 followers is as an estimate of it. So rather than fixating on a single value from the sample (the point estimate), we could use an interval estimate instead: we use our sample value as the midpoint, but set a lower and upper limit as well. So, we might say, we think the true value of the mean number of followers is somewhere between 70 and 130 followers (note that 100, our point estimate, falls exactly between these values). Of course, in this case the true value (100 followers) does falls within these limits. However, what if we’d set smaller limits – what if we’d said we think the true value falls between 90 and 110 followers (again, note that 100, our point estimate, is in the middle)? In this case the interval does not contain the population value of the mean.
+ 
+Let’s imagine that you were particularly fixated with Japanese quail sperm, and you took 100 different samples of social media users. In each sample, you calculate the mean and constructed an interval around it as I’ve just described. The crucial thing is to construct the intervals in such a way that they tell us something useful. For example, perhaps we might want to know how often, in the long run, an interval contains the true value of the parameter we’re trying to estimate (in this case, the population mean). This is what a confidence interval does. Typically, we look at 95% confidence intervals, and sometimes 99% confidence intervals, but they all have a similar interpretation: they are limits constructed such that for a certain percentage of samples (be that 95% or 99%) the true value of the population parameter falls within the limits (on average). So, when you see a 95% confidence interval for a mean, think of it like this: if we’d collected 100 samples, and for each sample calculated the mean and a confidence interval for it then for approximately 95 of these samples, the confidence interval contains the value of the mean in the population, and in approximately 5 of the samples the confidence interval does not contain the population mean. The trouble is, you do not know whether the confidence interval from a particular sample is one of the 95% that contain the true value or one of the 5% that do not.
+
+The parameter estimate (in this case the mean) is always in the centre of the confidence interval. We know that 95% of confidence intervals contain the population value, so we might assume that this confidence interval contains the true mean (but remember this is an assumption and 5% of the time we will be incorrect). Under this assumption, if the interval is small, the sample mean must be very close to the true mean and if the confidence interval is very wide then the sample mean could be very different from the true mean, indicating that the sample estimate is a poor representation of the population. We'll now use an interactive activity to explore this explanation of a confidence interval.
+
+## `r bmu()` Confidence interval explorer [(1)]{.alt}
 
 ```{r ci_ui, echo = FALSE}
 fluidPage(
 
     # Application title
-    titlePanel("Confidence interval explorer"),
+    titlePanel(""),
 
     fluidRow(
       wellPanel(
         h3("Instructions"),
-            p("1. Choose whether you want to see a positive or negative relationship between variables."),
-            p("2. The resulting plots show data and diagnostic plots from a a linear model fitted to a linear relationship between a predictor and outcome with homoscedastic errors."),
-            p("3. Use the sliders to increase non-linearity and heteroscedasticity."),
-            p("4. Click 'Show me' to see data that has the levels of nonlinearity and heteroscedasticity that you have selected, and the resulting diagnostic plots for a linear model fitted to the data.")
+        p("Use this interactive app to explore and understand confidence intervals. The idea is that you set up a population with a particular mean. When you click the", tags$code("Take samples"), "button 100 random samples will be taken from that population. In each sample we will calculate the mean and construct a confidence interval around it. We will then plot the mean as a dot and the confidence interval as a horizontal bar ranging from the lower limit of the interval to the upper limit. A vertical line, will show the population mean. By default, the data appears for each sample one at a time."),
+        p("Your main job is to pay attention to how often each confidence interval crosses the vertical line showing the population mean because in these situations the confidence interval contains the population value (i.e. contains the value we're trying to estimate). To help you out, samples that have confidence intervals that don't contain the population mean are plotted in a different colour to those that do."),
+        p("By default, the sliders are set up to mimic the example in the book chapter. Use these default settings first."),
+        p("1. Note that in each of the 100 samples we take, we are trying to estimate a population parameter (in this case the mean) using a point estimate (the sample mean) and an interval estimate (the 95% confidence interval). Normally, we don't know the value in the population, but in this simulation we do. By default it is 15. We want our samples to 'hit' this value, which is shown on the plot as a vertical line."),
+        p("2. Click",  tags$code("Take samples"), "and watch each sample appear on the plot. Note that (1) the samples yield different estimates (both the sample mean and the corresponding confidence interval differ from sample to sample); (2) some samples yield confidence intervals that contain the population value, others don't; (3) Note how many samples have confidence intervals that contain the population value (i.e. cross the grey, vertical, line)."),
+        p("3. Click",  tags$code("Take samples"), "again to take another 100 samples. Again, note the percentage of samples that have confidence intervals that contain the population value. (You can de-select the",  tags$code("Animate?"), "checkbox before clicking",  tags$code("Take samples"), "to display the final plot rather than having to wait for each sample to appear individually.)"),
+        p("4. Keeping everything else the same, change the slider for the confidence interval percentage to and repeat the process. What do you notice about the percentage of samples that have confidence intervals that contain the population value?"),
+        p("5. Keeping everything else the same, change the slider for the size of each sample and repeat the process. What do you notice about the width of the confidence intervals as the sample size increases and decreases?")
       )
     ),
     
@@ -142,12 +156,12 @@ fluidPage(
                            step = 5,
                            value = 15),
               sliderInput("pop_sd",
-                           "Population variance",
+                           "Population standard deviation",
                            min = 1,
                            max = 30,
                            step = 1,
-                           value = 5,
-                           ticks = FALSE)
+                           value = 5),
+             actionButton("gen_dat", "Take samples")
              ),
       column(6, align="center",
             sliderInput("n_samp",
@@ -162,10 +176,8 @@ fluidPage(
                            max = 100,
                            step = 1,
                            value = 95),
+            checkboxInput("animate_cbx", label = "Animate?", value = TRUE)
       ),
-      fluidRow(align = "centre",
-               actionButton("gen_dat", "Take samples")
-               )
     ),
     hr(),
     fluidRow(align="center",
@@ -200,17 +212,7 @@ invalidateLaterNew <- function (millis, session = getDefaultReactiveDomain(), up
 
   unlockBinding("invalidateLater", as.environment("package:shiny"))
   assign("invalidateLater", invalidateLaterNew, "package:shiny")
-    #input <- tibble::tibble(mu = 0, pop_sd = 1, k = 50, n_samp = 30, ci_level = 95)
-    
-    #input$mu = 0
-    #input$pop_sd = 1
-   # input$k = 50
-    #input$n_samp = 30
-    #input$ci_level = 95
-  
-#my_timer <- reactiveValues(increment = 0, timer = reactiveTimer(500), started = FALSE)
 
-    
   get_cis <- function(){
       tibble::tibble(.rows = 100) %>% 
         dplyr::mutate(
@@ -239,11 +241,28 @@ invalidateLaterNew <- function (millis, session = getDefaultReactiveDomain(), up
     show = FALSE
     )
 
-  get_plot <- function(tib){
+  set_x <- function(x_min, x_max){
+    ci = input$ci_level/100
+    area = (1 + ci)/2
+    width = round(4*qnorm(area)*(input$pop_sd/sqrt(10)))
+    
+    step <- floor(width/5)
+    
+    if(step > 0){
+      x_breaks <- input$mu + step*seq(-5, 5, 1)
+    } else {
+      x_breaks <- round(input$mu + (width/5)*seq(-5, 5, 1), 2)
+    }
+    return(x_breaks)
+  }
+  
+  
+  get_plot <- function(tib, x_min, x_max){
     p = ggplot(tib, aes(mean, sample, colour = factor(contains_mu))) +
         geom_vline(xintercept = input$mu, linetype = 1, colour = "grey45", size = 1) +
-        coord_cartesian(xlim = c(min(tib$ci_low), max(tib$ci_upp)), ylim = c(0, 100)) +
+        coord_cartesian(xlim = c(min(set_x()), max(set_x())), ylim = c(0, 100)) +
        scale_y_continuous(breaks = 1:100) +
+      scale_x_continuous(breaks = set_x(x_min, x_max)) +
        scale_colour_manual(values = c("TRUE" = blu, "FALSE" = ong)) +
         labs(x = "", y = "Sample number") +
         theme_minimal() +
@@ -258,6 +277,11 @@ invalidateLaterNew <- function (millis, session = getDefaultReactiveDomain(), up
           p
         }
   }
+  
+  output$ci_plot <- renderPlot(height = 1000, {
+        ci_tib$data %>%
+          get_plot(., min(.$ci_low),  max(.$ci_upp))
+        })
 
     # observe events
     
@@ -265,15 +289,24 @@ invalidateLaterNew <- function (millis, session = getDefaultReactiveDomain(), up
       counter <<- 0
       ci_tib$data = get_cis()
       ci_tib$show = TRUE
+      x_min = min(ci_tib$data$ci_low)
+      x_max = max(ci_tib$data$ci_upp)
       
-      output$ci_plot <- renderPlot(height = 1000, {
+      
+      if(input$animate_cbx){
+        output$ci_plot <- renderPlot(height = 1000, {
         counter <<- counter + 1
         invalidateLater(1000, session, counter < 100)
         isolate(ci_tib$data) %>%
           dplyr::filter(sample <= counter) %>% 
-          get_plot()
+          get_plot(., x_min, x_max)
         })
-
+      } else {
+        output$ci_plot <- renderPlot(height = 1000, {
+        isolate(ci_tib$data) %>%
+          get_plot(., x_min, x_max)
+        })
+      }
       
       #output$ci_plot = get_plot()
       output$coverage <- renderText({
@@ -285,238 +318,270 @@ invalidateLaterNew <- function (millis, session = getDefaultReactiveDomain(), up
 
 ```
 
-### version 2
+Based on your explorations of confidence intervals, please try to answer these questions.
 
-```{r ci_ui2, echo = FALSE, eval = F}
-fluidPage(
+```{r quiz_ci, echo = FALSE}
+quiz(caption = "Confidence interval quiz",
+  question("When the confidence interval width was 95% what did you observe?",
+    answer("The percentage of samples with confidence intervals that included the population value was always 95%", message = "This statement could be true if you tried pressing the 'Take samples' only a few times, but in general this staement is false. The percentage of samples with confidence intervals that included the population value should not *always* be 95%. Go back to the interactive demo and take some more samples."),
+    answer("The percentage of samples with confidence intervals that included the population value was never 95%", message = "This statement could be true if you tried pressing the 'Take samples' only a few times, but in general this staement is false. The percentage of samples with confidence intervals that included the population value should in the long run be 95%, so you'd expect a few of your sets of 100 samples to hit a 95% hit rate. Go back to the interactive demo and take some more samples."),
+    answer("The percentage of samples with confidence intervals that included the population value seemed to fluctuate around 95%. Sometimes it was a little more, sometimes a little less.", message = "This statement should reflect what you'd see. In the long run (i.e. over infinite numbers of samples), the hit rate for 95% confidence intervals will be 95% but in the short run (i.e. for 100 samples) it might be slightly off that value. Try re-doing the exercise 5-10 times but this time note the percentage of samples with confidence intervals that included the population value each time you press 'Take samples'. You should find that if you average these values you get 95% (or close to it) showing that as you atke larger numbers of samples, the percentage of samples with confidence intervals that included the population value converge on 95%.", correct = TRUE),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  ),
+  question("What happened to the percentage of samples with confidence intervals containing the population value as you increased and decreased the confidence interval percentage?",
+    answer("The percentage of samples with confidence intervals that included the population value seemed to fluctuate around the percentage I set.", correct = TRUE, message = "This statement should reflect what you'd see. In the long run (i.e. over infinite numbers of samples), the hit rate for confidence intervals will be the percentage you set but in the short run (i.e. for 100 samples) it might be slightly off that value. Note that as the percentage get higher you get less fluctuation, meaning that you have more certainty that your particular sample contains the population value."),
+    answer("The percentage of samples with confidence intervals that included the population value was always the value that I set.", message = "This statement could be true if you tried pressing the 'Take samples' only a few times, but in general this staement is false. The percentage of samples with confidence intervals that included the population value should in the long run match the % value that you set on the slider."),
+    answer("The percentage of samples with confidence intervals that included the population value was always 95%.", message = "This statement could be true if you didn't move the slider from the default position!  Go back to the interactive demo and take some more samples but change the percentage for the confidence interval."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  ),
+  question("What happened to the width of the confidence intervals as the sample size increased?",
+    answer("The confidence intervals got narrower.", correct = TRUE, message = "This statement should reflect what you'd see. Large samples typically provide estimates of population values that more closely match the true values. Large sample also typically provide extimates of population values that vary less from sample to sample. Hence you get narrow intervals. Small samples tend to be more different from each other, and have more potential to provide estimates of population values that are more distant from the true values. Hence confidence intervals in small samples tend to be wider than large samples."),
+    answer("The confidence intervals got wider.", message = "This should not have been what you saw. Re-do the exercise and pay particular attention to the values on the x-axis (which tell you about the width of the intervals)"),
+    answer("The width of the confidence intervals stayed the same.", message = "This statement could be true if you didn't move the slider very far from the default positions. Go back to the interactive demo and take some more samples but set the sample size slider to the extremes."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  )
+)
+``` 
 
-    # Application title
-    titlePanel("Confidence interval explorer"),
+## `r bmu()` Confidence intervals in R [(1)]{.alt}
 
-    fluidRow(
-      wellPanel(
-        h3("Instructions"),
-            p("1. Choose whether you want to see a positive or negative relationship between variables."),
-            p("2. The resulting plots show data and diagnostic plots from a a linear model fitted to a linear relationship between a predictor and outcome with homoscedastic errors."),
-            p("3. Use the sliders to increase non-linearity and heteroscedasticity."),
-            p("4. Click 'Show me' to see data that has the levels of nonlinearity and heteroscedasticity that you have selected, and the resulting diagnostic plots for a linear model fitted to the data.")
-      )
-    ),
-    
-    fluidRow(
-      column(6, align="center",
-             sliderInput("mu",
-                           "Population mean",
-                           min = 0,
-                           max = 100,
-                           step = 5,
-                           value = 15),
-              sliderInput("pop_sd",
-                           "Population variance",
-                           min = 1,
-                           max = 30,
-                           step = 1,
-                           value = 5,
-                           ticks = FALSE)
-             ),
-      column(6, align="center",
-            sliderInput("n_samp",
-                           "The size of each sample",
-                           min = 10,
-                           max = 200,
-                           step = 10,
-                           value = 30),
-            sliderInput("ci_level",
-                          "Confidence interval %",
-                           min = 50,
-                           max = 100,
-                           step = 1,
-                           value = 95),
-      ),
-      fluidRow(align = "centre",
-               actionButton("gen_dat", "Take samples")
-               )
-    ),
-    hr(),
-    fluidRow(align="center",
-               h4(textOutput("coverage"), align = "centre")
-             ),
-    fluidRow(align="center",
-               plotOutput("ci_plot", height = "1000px") 
-             )
+### `r bmu()` A basic confidence interval [(1)]{.alt}
+
+Let’s compute a confidence interval using `r rproj()`. In the book we have the number of followers for 11 Facebook users:
+
+```{r, eval = F}
+57, 40, 103, 234, 93, 53, 116, 98, 108, 121, 22
+```
+
+
+#### `r alien()` Alien coding challenge
+
+Use what you have learnt in previous tutorials to enter these scores into a variable called **friends** stored within a tibble called [fb_tib]{.alt}.
+
+```{r fb_dat, exercise = TRUE, exercise.lines = 4}
+
+```
+
+```{r fb_dat-hint-1}
+# There are numerous ways to do this task, this is the most efficient (probably)
+# You want to name the object fb_tib so start with ...
+fb_tib <- ...
+```
+
+```{r fb_dat-hint-2}
+# You are creating a tibble so ...
+fb_tib <- tibble::tibble(???????)
+# Within this function create the variable friends
+```
+
+```{r fb_dat-hint-3}
+# Create the variable friends
+fb_tib <- tibble::tibble(
+  friends = ??????
 )
 ```
 
-```{r ci_server2, context = "server", echo = FALSE, eval = F}
+```{r fb_dat-hint-4}
+# Solution:
+fb_tib <- tibble::tibble(
+  friends = c(57, 40, 103, 234, 93, 53, 116, 98, 108, 121, 22)
+)
+```
 
-blu <- "#5c97bf"
-ong <- "#d47500"
+As is often the case with `r rproj()`, you have a few options for obtaining confidence intervals. We’ll predominantly use two functions called `mean_cl_normal()` and `mean_cl_boot()` from the `ggplot2` package (which is installed with `tidyverse`). The function `mean_cl_normal()` produces a standard confidence interval, whereas `mean_cl_boot()` produces something called a bootstrap confidence interval (see [discovr_06]{.alt}).
 
-get_cis <- function(){
-      tibble::tibble(.rows = 100) %>% 
-        dplyr::mutate(
-          sample = as.numeric(rownames(.)),
-          data = purrr::map(sample, ~rnorm(n = input$n_samp, mean = input$mu, sd = input$pop_sd)),
-          mean_ci = purrr::map(data, ~ggplot2::mean_cl_normal(., conf.int = input$ci_level/100)),
-          mean = purrr::map_dbl(mean_ci, ~.$y),
-          ci_low = purrr::map_dbl(mean_ci, ~.$ymin),
-          ci_upp = purrr::map_dbl(mean_ci, ~.$ymax),
-          contains_mu = ifelse(input$mu >= ci_low & input$mu <= ci_upp, TRUE, FALSE)
-          )
-    }
-   
+#### `r robot()` Code example
 
-  ci_tib <- reactiveValues(
-    data = tibble::tibble(.rows = 100) %>% 
-        dplyr::mutate(
-          sample = as.numeric(rownames(.)),
-          data = purrr::map(sample, ~rnorm(n = 30, mean = 15, sd = 5)),
-          mean_ci = purrr::map(data, ~ggplot2::mean_cl_normal(., conf.int = 0.95)),
-          mean = purrr::map_dbl(mean_ci, ~.$y),
-          ci_low = purrr::map_dbl(mean_ci, ~.$ymin),
-          ci_upp = purrr::map_dbl(mean_ci, ~.$ymax),
-          contains_mu = ifelse(15 >= ci_low & 15 <= ci_upp, TRUE, FALSE)
-          ),
-    show = FALSE
-    )
+These functions take the general form:
 
-  
+```{r eval = FALSE}
+ggplot2::mean_cl_normal(object, conf.int = 0.95, na.rm = TRUE)
+ggplot2::mean_cl_boot(object, conf.int = 0.95, na.rm = TRUE)
+```
 
-  
-get_plot <- function(tib){
-   renderImage({
-    # A temp file to save the output.
-    # This file will be removed later by renderImage
-    outfile <- tempfile(fileext='.gif')
-    
-    # now make the animation
-    
-    p = ggplot(tib, aes(mean, sample, colour = contains_mu)) +
-        geom_vline(xintercept = input$mu, linetype = 1, colour = "grey45", size = 1) +
-        coord_cartesian(xlim = c(min(tib$ci_low), max(tib$ci_upp)), ylim = c(0, 100)) +
-       scale_y_continuous(breaks = 1:100) +
-       scale_colour_manual(values = c(ong, blu)) +
-        labs(x = "", y = "Sample number") +
-        theme_minimal() +
-        theme(legend.position = "none") +
-        theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-    #plot data when button clicked   
-        if(ci_tib$show == TRUE){
-        p +
-          geom_errorbarh(xmax = tib$ci_upp, xmin = tib$ci_low, size = 0.75, height = 1) +
-          geom_point(size = 4) +
-          gganimate::transition_manual(frame = sample, cumulative = TRUE)
-          gganimate::animate(p, nframes = input$k, fps = 5, renderer = gifski_renderer(loop=FALSE)) %>% 
-          gganimate::anim_save("outfile.gif", animation = .) # New
-          
-        } else {
-          p
-        }
-     
+in which [object]{.alt} is a model being passed into the function, [conf.int]{.alt} sets the probability level for the interval (95% by default), and (as in other functions) [na.rm]{.alt} determines whether to remove missing values before computing the interval (by default, they are removed, which is helpful because that’s usually what you’d want to do).
 
-    
-    # Return a list containing the filename
-     list(src = "outfile.gif",
-          contentType = 'image/gif'
-          )
-     
-     })
- }
+#### `r alien()` Alien coding challenge
 
+In this example, we want the 95% confidence interval for the variable **friends** within the tibble [fb_tib]{.alt}, so we could use the example code and replace [object]{.alt} with [fb_tib$friends]{.alt}. Try this out:
 
-
-    # observe events
-    
-    observeEvent(input$gen_dat, {
-      counter <<- 0
-      ci_tib$data = get_cis()
-      ci_tib$show = TRUE
-      
-      output$ci_plot <- renderPlot(height = 1000, {
-        isolate(ci_tib$data) %>%
-          get_plot()
-        })
-
-      
-      #output$ci_plot = get_plot()
-      output$coverage <- renderText({
-        paste0("Confidence intervals containing the population value = ", round(100*(sum(ci_tib$data$contains_mu)/100), 2), "%")
-        })
-    })
-
-
+```{r fb_ci, exercise = TRUE, exercise.lines = 2}
 
 ```
 
+```{r fb_ci-solution}
+ggplot2::mean_cl_normal(fb_tib$friends)
+# Note: we don't need to include conf.int = 0.95 and na.rm = TRUE
+# because the defaults of a 95% CI and removing missing values are what
+# we want
+```
 
+This function produces a tibble containing three variables: the mean (with the variable name **y**), the lower boundary of the confidence interval (**ymin**), and the upper boundary of the confidence interval (**ymax**). To get something other than a 95% confidence interval, we change the default of [conf.int = 0.95]{.alt} within the function.
 
-```{r eval = F, echo = F}
+#### `r alien()` Alien coding challenge
 
-output$ci_plot <- renderPlot(height = 1000, {
-  #set up empty plot as placeholder
-        p = ggplot(ci_tib$data, aes(mean, sample, colour = contains_mu)) +
-        geom_vline(xintercept = input$mu, linetype = 1, colour = "grey45", size = 1) +
-        coord_cartesian(xlim = c(min(ci_tib$data$ci_low), max(ci_tib$data$ci_upp)), ylim = c(0, 100)) +
-       scale_y_continuous(breaks = 1:100) +
-       scale_colour_manual(values = c(ong, blu)) +
-        labs(x = "", y = "Sample number") +
-        theme_minimal() +
-        theme(legend.position = "none") +
-        theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-    #plot data when button clicked   
-        if(ci_tib$show == TRUE){
-        p +
-          geom_errorbarh(xmax = ci_tib$data$ci_upp, xmin = ci_tib$data$ci_low, size = 0.75, height = 1) +
-          geom_point(size = 4)
-        } else {
-          p
-        }
-        
-        })
-
-
-
-
-get_plot <- function(){
-   renderImage({
-    # A temp file to save the output.
-    # This file will be removed later by renderImage
-    outfile <- tempfile(fileext='.gif')
-    
-    # now make the animation
-    
-    p = ggplot(ci_tib$data, aes(mean, sample, colour = contains_mu)) +
-      geom_vline(xintercept = input$mu, linetype = 1, colour = "grey45", size = 1) +
-      geom_errorbarh(xmax = ci_tib$data$ci_upp, xmin = ci_tib$data$ci_low, size = 0.75, height = 1) +
-      geom_point(size = 4) +
-      coord_cartesian(xlim = c(min(ci_tib$data$ci_low), max(ci_tib$data$ci_upp)), ylim = c(0, input$k)) +
-      scale_y_continuous(breaks = 1:input$k) +
-      scale_colour_manual(values = c(ong, blu)) +
-      labs(x = "", y = "Sample number") +
-      theme_minimal() +
-      theme(legend.position = "none") +
-      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
-      gganimate::transition_manual(frame = sample, cumulative = TRUE)
-      
-     
-    gganimate::animate(p, nframes = input$k, fps = 5, renderer = gifski_renderer(loop=FALSE)) %>% 
-      gganimate::anim_save("outfile.gif", animation = .) # New
-    
-    # Return a list containing the filename
-     list(src = "outfile.gif",
-          contentType = 'image/gif'
-          )
-     
-     })
- }
-
-
-
-
+Adapt the code from the previous challenge to get the 90% CI of the variable **friends**.
+  
+```{r fb_ci_90, exercise = TRUE, exercise.lines = 2}
 
 ```
 
+```{r fb_ci_90-solution}
+ggplot2::mean_cl_normal(fb_tib$friends, conf.int = 0.9)
+``` 
+ 
 
+### `r bmu()` Adding confidence intervals to summary tables [(1)]{.alt}
+
+In [discovr_02]{.alt} we explored code to compile a table of summary statistics for a variable. To recap, we produced a summary table for these Facebook scores by executing:
+
+```{r, eval = FALSE}
+fb_tib %>%
+  dplyr::summarize(
+    median =  median(friends),
+    mean =  mean(friends),
+    `trimmed mean 10%` =  mean(friends, trim = 0.1),
+    range = max(friends) - min(friends),
+    `lower quartile` = quantile(friends, probs = 0.25),
+    `upper quartile` = quantile(friends, probs = 0.75),
+    IQR = IQR(friends),
+    var = var(friends),
+    sd = sd(friends)
+    ) %>%
+    round(., 2)
+```
+
+If we want to add the 95% confidence interval to this summary table we can do so by extracting values from the output of `mean_cl_normal()`. The output of the function is a tibble within which each value is stored as a variable (called **y** for the estimate of the mean and **ymin** and  **ymax** for the lower and upper boundary of the CI). We can, therefore, use the `$` symbol to access each variable. 
+
+#### `r robot()` Code example
+
+For example, to obtain the lower boundary of the 95% confidence interval we’d execute:
+
+```{r, eval = FALSE}
+ggplot2::mean_cl_normal(fb_tib$friends)$ymin
+```
+
+Therefore, we can add the upper and lower bound of the 95% confidence interval to the summary by extracting the relevant values from the `mean_cl_normal()` function. We could also obtain the mean this way instead of using `mean()`. For example, to create a table including the mean and its 95% confidence interval we could execute:
+
+```{r, eval = FALSE}
+fb_tib %>%
+  dplyr::summarize(
+    Mean =  ggplot2::mean_cl_normal(friends)$y,
+    `95% CI Lower` = ggplot2::mean_cl_normal(friends)$ymin,
+    `95% CI Upper` = ggplot2::mean_cl_normal(friends)$ymax
+    ) %>% 
+  round(., 2)
+```
+
+You might wonder what the point of this is when the function itself spits out a summary table, but it is because it allows you to include other information in the table. For example, we could include all o fthe other summary statistics that we previously computed.
+
+#### `r alien()` Alien coding challenge
+
+Adapt the code below (which produces various summary statistics for the number of friends people have on social media) to include the mean, and lower and upper boundary of the 95% confidence interval.
+
+```{r fb_summary, exercise = TRUE, exercise.lines = 14}
+fb_tib %>%
+  dplyr::summarize(
+    median =  median(friends),
+    range = max(friends) - min(friends),
+    `lower quartile` = quantile(friends, probs = 0.25),
+    `upper quartile` = quantile(friends, probs = 0.75),
+    IQR = IQR(friends),
+    var = var(friends),
+    sd = sd(friends)
+    ) %>%
+    round(., 2)
+```
+
+```{r fb_summary-solution}
+fb_tib %>%
+  dplyr::summarize(
+    Mean =  ggplot2::mean_cl_normal(friends)$y,
+    `95% CI Lower` = ggplot2::mean_cl_normal(friends)$ymin,
+    `95% CI Upper` = ggplot2::mean_cl_normal(friends)$ymax,
+    median =  median(friends),
+    range = max(friends) - min(friends),
+    `lower quartile` = quantile(friends, probs = 0.25),
+    `upper quartile` = quantile(friends, probs = 0.75),
+    IQR = IQR(friends),
+    var = var(friends),
+    sd = sd(friends)
+    ) %>%
+    round(., 2)
+```
+
+```{r quiz_ci_ex1, echo = FALSE}
+question("The 95% confidence interval for friends ranges from 56.85 to 133.15. What does this tell us?",
+    answer("If this confidence interval is one of the 95% that contains the population value then the mean number of friends in the population lies between 56.85 and 133.15.", correct = TRUE),
+    answer("There is a 95% chance that the mean number of friends in the population lies between 56.85 and 133.15.", message = "You cannot make probability statements from a confidence interval. We don't know whether this particular CI is one of the 95% that contains the population value of the mean number of friends."),
+    answer("The probability of this confidence interval containing the population value is 0.95.", message = "The probability of this confidence interval containing the population value is either 0 (it doesn't) or 1 (it does) but it's impossible to know which."),
+    answer("I can be 95% confident that the mean number of friends in the population lies between 56.85 and 133.15.", message = "Confidence intervals do not quantify your subjective confidence."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+)
+```
+
+### `r bmu()` Robust confidence intervals [(1)]{.alt}
+
+To get a robust confidence interval (based on a bootstrap), we simply replace `mean_cl_normal` with `mean_cl_boot`.
+
+#### `r robot()` Code example
+
+For example, to get the robust confidence interval for the mean number of friends we could execute:
+
+
+```{r fb_ci_boot, exercise = TRUE, exercise.lines = 2}
+ggplot2::mean_cl_boot(fb_tib$friends)
+```
+
+<div class="tip">
+  `r cat_space()` **Tip: Bootstrapping**
+  
+  Bootstrapping works through resampling the data (see [discovr_06]{.alt}). Basically, bootstrapping is a way to estimate the confidence interval by repeatedly taking samples from the data. Consequently, you will get very slightly different values for the confidence interval each time you estimate it. In fact, try running the code above several times and note the values of **ymin** and **ymax**. You should find that they change very slightly each time you run the code. This is nothing to worry about - it's what's supposed to happen!
+</div>
+
+
+#### `r alien()` Alien coding challenge
+
+Adapt the code below (which produces various summary statistics for the number of friends people have on social media) to include the mean, and lower and upper boundary of the 95% [bootstrap]{.alt} confidence interval.
+
+```{r fb_summary_boot, exercise = TRUE, exercise.lines = 14}
+fb_tib %>%
+  dplyr::summarize(
+    median =  median(friends),
+    range = max(friends) - min(friends),
+    `lower quartile` = quantile(friends, probs = 0.25),
+    `upper quartile` = quantile(friends, probs = 0.75),
+    IQR = IQR(friends),
+    var = var(friends),
+    sd = sd(friends)
+    ) %>%
+    round(., 2)
+```
+
+```{r fb_summary_boot-solution}
+fb_tib %>%
+  dplyr::summarize(
+    Mean =  ggplot2::mean_cl_boot(friends)$y,
+    `95% CI Lower` = ggplot2::mean_cl_boot(friends)$ymin,
+    `95% CI Upper` = ggplot2::mean_cl_boot(friends)$ymax,
+    median =  median(friends),
+    range = max(friends) - min(friends),
+    `lower quartile` = quantile(friends, probs = 0.25),
+    `upper quartile` = quantile(friends, probs = 0.75),
+    IQR = IQR(friends),
+    var = var(friends),
+    sd = sd(friends)
+    ) %>%
+    round(., 2)
+```
 
 
 <div class="infobox">
@@ -524,7 +589,7 @@ get_plot <- function(){
   
   **A message from Mae Jemstone:**
   
-  Well done on completing phase 2 of your mission! You have learnt how to summarize data using histograms and statistics such as the mean, median, variance and standard deviation. Remember to go over any parts that you don't fully understand, and ask questions!
+  Confidence intervals are tricky things to understand and lots of people (including very experienced scientists) misunderstand what they represent. You, however, are well on your way to knowing more about confidence intervals than those supposedly clever academic types, because you have completed my amazing confidence interval explorer app. Little did you know that those sliders also controlled someone else's mind, but I'm not telling you whose. Play with them some more though and see if you can spot anyone swatting their head as though surrounded by flies. Anyway, well done and keep it up!!  
   
 </div>
 

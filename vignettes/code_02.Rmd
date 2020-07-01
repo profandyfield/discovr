@@ -31,8 +31,7 @@ This file contains code relevant to chapter 1 of *Discovering Statistics Using R
 
 ```{r median}
 
-fb_tib <- tibble::tibble(.rows = 11) %>% 
-  dplyr::mutate(
+fb_tib <- tibble::tibble(
     friends = c(57, 40, 103, 234, 93, 53, 116, 98, 108, 121, 22)
   )
 

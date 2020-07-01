@@ -310,7 +310,7 @@ empty_tib <- tibble::tibble(.rows = 10)
 Using base R:
 
 ```{r}
-metalli_tib$songs_written 
+metalli_tib$albums <-  c(10, 10, 10, 2, 4, 3, 0)
 ```
 
 Using `dplyrr:mutate()`:
@@ -324,11 +324,10 @@ metalli_tib <- metalli_tib %>%
 metalli_tib
 ```
 
-You can create your data set by initializing an empty tibble and then using `dplyr::mutate` to add variables. For example, we can create `metalli_tib` from scratch as follows:
+You can create your data set by initializing a tibble and then defining each variable. Note that in this context we use `=` rather than `<-` to assign values to each variable, and that each variable definition ends with a comma (except the last). For example, we can create `metalli_tib` from scratch as follows:
 
 ```{r}
-metalli_tib <- tibble::tibble(.rows = 7) %>% 
-  dplyr::mutate(
+metalli_tib <- tibble::tibble(
     name = c("Lars Ulrich","James Hetfield", "Kirk Hammett", "Rob Trujillo", "Jason Newsted", "Cliff Burton", "Dave Mustaine"),
     birth_date = c("1963-12-26", "1963-08-03", "1962-11-18", "1964-10-23", "1963-03-04", "1962-02-10", "1961-09-13") %>% lubridate::ymd(),
     death_date = c(NA, NA, NA, NA, NA, "1986-09-27", NA) %>% 
@@ -341,7 +340,7 @@ net_worth = c(300000000, 300000000, 200000000, 20000000, 40000000, 1000000, 2000
   )
 ```
 
-and now add one that quantifies how much they have earnt per they contributed to:
+and now add one that quantifies how much they have earned per song that they contributed to:
 
 ```{r}
 metalli_tib <- metalli_tib %>% 
@@ -356,7 +355,7 @@ metalli_tib
 You can enter the data directly as a tibble (rather than creating an empty one and using `dplyr::mutate()`:
 
 ```{r}
-metalli_tib <- tribble(
+metalli_tib <- tibble::tribble(
   ~name, ~birth_date, ~death_date, ~instrument, ~current_member, ~songs_written, ~net_worth,
   "Lars Ulrich", "1963-12-26", NA, "Drums", TRUE, 111, 300000000,
   "James Hetfield", "1963-08-03", NA, "Guitar", TRUE, 112, 300000000,

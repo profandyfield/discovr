@@ -30,8 +30,7 @@ This file contains code relevant to chapter 1 of *Discovering Statistics Using R
 
 ```{r}
 
-fb_tib <- tibble::tibble(.rows = 11) %>% 
-  dplyr::mutate(
+fb_tib <- tibble::tibble(
     friends = c(57, 40, 103, 234, 93, 53, 116, 98, 108, 121, 22)
   )
 
@@ -85,26 +84,21 @@ fb_tib %>%
 
 ```{r}
 
-fb_tib <- tibble::tibble(.rows = 11) %>% 
-  dplyr::mutate(
-    friends = c(57, 40, 103, 234, 93, 53, 116, 98, 108, 121, 22)
-  )
-
-ggplot2::mean_cl_normal(fb_tib$friends)
+gmodels::ci(fb_tib$friends)
 
 ```
 
 Something other than a 95% interval:
 
 ```{r}
-ggplot2::mean_cl_normal(fb_tib$friends, conf.int = 0.90)
+gmodels::ci(fb_tib$friends, confidence = 0.90)
 ```
 
 Access individual values by appending their label in square brackets to the function. Executing this gives us the lower boundary of the 95% confidence interval:
 
 ```{r}
 
-ggplot2::mean_cl_normal(fb_tib$friends)$ymin
+gmodels::ci(fb_tib$friends)["CI lower"]
 ```
 
 Use extracted value to create tables of summary statistics:
@@ -114,9 +108,9 @@ Use extracted value to create tables of summary statistics:
 
 fb_tib %>%
   dplyr::summarize(
-    Mean =  ggplot2::mean_cl_normal(friends)$y,
-    `95% CI Lower` = ggplot2::mean_cl_normal(friends)$ymin,
-    `95% CI Upper` = ggplot2::mean_cl_normal(friends)$ymax,
+    Mean =  gmodels::ci(friends)["Estimate"],
+    `95% CI Lower` = gmodels::ci(friends)["CI lower"],
+    `95% CI Upper` = gmodels::ci(friends)["CI upper"],
     ) %>% 
   round(., 2)
 ```
@@ -125,9 +119,9 @@ You can also combine these with other functions to get summary statistics:
 ```{r}
 fb_tib %>%
   dplyr::summarize(
-    Mean =  ggplot2::mean_cl_normal(friends)$y,
-    `95% CI Lower` = ggplot2::mean_cl_normal(friends)$ymin,
-    `95% CI Upper` = ggplot2::mean_cl_normal(friends)$ymax,
+    Mean =  gmodels::ci(friends)["Estimate"],
+    `95% CI Lower` = gmodels::ci(friends)["CI lower"],
+    `95% CI Upper` = gmodels::ci(friends)["CI upper"],
     IQR = IQR(friends),
     `Std. dev.` = sd(friends)
     ) %>% 

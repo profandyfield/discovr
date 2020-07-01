@@ -100,19 +100,6 @@ We can load all of the packages that are exceptions in one step by loading `tidy
 library(tidyverse)
 ```
 
-### Data
-
-To work *outside of this tutorial* you need to download the following data file:
-
-* [ice_bucket.csv](http://www.discoveringstatistics.com/repository/discovr_data/ice_bucket.csv)
-
-Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
-
-```{r, eval=FALSE}
-ice_tib <- here::here("data/ice_bucket.csv") %>% readr::read_csv()
-```
-
-
 ## `r bmu()` What is a confidence interval? [(1)]{.alt}
 
 As a brief recap, we usually use a sample value as an estimate of a parameter (e.g., the mean) in the population. The estimate of a parameter (e.g., the mean) will differ across samples, and we can use the standard error to get some idea of the extent to which these estimates differ across samples. We can also use this information to calculate boundaries within which we believe the population value will fall. Such boundaries are called [confidence intervals]{.alt}. Although what I’m about to describe applies to any parameter, we’ll stick with the mean to keep things consistent with what you have already learnt.

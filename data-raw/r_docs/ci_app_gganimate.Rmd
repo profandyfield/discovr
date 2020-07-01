@@ -1,0 +1,240 @@
+---
+title: "ci gganimate"
+author: "Andy P. Field"
+date: "30/06/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This is text code for when I developed the CI app in shiny. Includes code to use gganimate. Saving it in case it's useful at some point!
+
+
+
+```{r ci_ui2, echo = FALSE, eval = F}
+fluidPage(
+
+    # Application title
+    titlePanel("Confidence interval explorer"),
+
+    fluidRow(
+      wellPanel(
+        h3("Instructions"),
+            p("1. Choose whether you want to see a positive or negative relationship between variables."),
+            p("2. The resulting plots show data and diagnostic plots from a a linear model fitted to a linear relationship between a predictor and outcome with homoscedastic errors."),
+            p("3. Use the sliders to increase non-linearity and heteroscedasticity."),
+            p("4. Click 'Show me' to see data that has the levels of nonlinearity and heteroscedasticity that you have selected, and the resulting diagnostic plots for a linear model fitted to the data.")
+      )
+    ),
+    
+    fluidRow(
+      column(6, align="center",
+             sliderInput("mu",
+                           "Population mean",
+                           min = 0,
+                           max = 100,
+                           step = 5,
+                           value = 15),
+              sliderInput("pop_sd",
+                           "Population variance",
+                           min = 1,
+                           max = 30,
+                           step = 1,
+                           value = 5,
+                           ticks = FALSE)
+             ),
+      column(6, align="center",
+            sliderInput("n_samp",
+                           "The size of each sample",
+                           min = 10,
+                           max = 200,
+                           step = 10,
+                           value = 30),
+            sliderInput("ci_level",
+                          "Confidence interval %",
+                           min = 50,
+                           max = 100,
+                           step = 1,
+                           value = 95),
+      ),
+      fluidRow(align = "centre",
+               actionButton("gen_dat", "Take samples")
+               )
+    ),
+    hr(),
+    fluidRow(align="center",
+               h4(textOutput("coverage"), align = "centre")
+             ),
+    fluidRow(align="center",
+               plotOutput("ci_plot", height = "1000px") 
+             )
+)
+```
+
+```{r ci_server2, context = "server", echo = FALSE, eval = F}
+
+blu <- "#5c97bf"
+ong <- "#d47500"
+
+get_cis <- function(){
+      tibble::tibble(.rows = 100) %>% 
+        dplyr::mutate(
+          sample = as.numeric(rownames(.)),
+          data = purrr::map(sample, ~rnorm(n = input$n_samp, mean = input$mu, sd = input$pop_sd)),
+          mean_ci = purrr::map(data, ~ggplot2::mean_cl_normal(., conf.int = input$ci_level/100)),
+          mean = purrr::map_dbl(mean_ci, ~.$y),
+          ci_low = purrr::map_dbl(mean_ci, ~.$ymin),
+          ci_upp = purrr::map_dbl(mean_ci, ~.$ymax),
+          contains_mu = ifelse(input$mu >= ci_low & input$mu <= ci_upp, TRUE, FALSE)
+          )
+    }
+   
+
+  ci_tib <- reactiveValues(
+    data = tibble::tibble(.rows = 100) %>% 
+        dplyr::mutate(
+          sample = as.numeric(rownames(.)),
+          data = purrr::map(sample, ~rnorm(n = 30, mean = 15, sd = 5)),
+          mean_ci = purrr::map(data, ~ggplot2::mean_cl_normal(., conf.int = 0.95)),
+          mean = purrr::map_dbl(mean_ci, ~.$y),
+          ci_low = purrr::map_dbl(mean_ci, ~.$ymin),
+          ci_upp = purrr::map_dbl(mean_ci, ~.$ymax),
+          contains_mu = ifelse(15 >= ci_low & 15 <= ci_upp, TRUE, FALSE)
+          ),
+    show = FALSE
+    )
+
+  
+
+  
+get_plot <- function(tib){
+   renderImage({
+    # A temp file to save the output.
+    # This file will be removed later by renderImage
+    outfile <- tempfile(fileext='.gif')
+    
+    # now make the animation
+    
+    p = ggplot(tib, aes(mean, sample, colour = contains_mu)) +
+        geom_vline(xintercept = input$mu, linetype = 1, colour = "grey45", size = 1) +
+        coord_cartesian(xlim = c(min(tib$ci_low), max(tib$ci_upp)), ylim = c(0, 100)) +
+       scale_y_continuous(breaks = 1:100) +
+       scale_colour_manual(values = c(ong, blu)) +
+        labs(x = "", y = "Sample number") +
+        theme_minimal() +
+        theme(legend.position = "none") +
+        theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+    #plot data when button clicked   
+        if(ci_tib$show == TRUE){
+        p +
+          geom_errorbarh(xmax = tib$ci_upp, xmin = tib$ci_low, size = 0.75, height = 1) +
+          geom_point(size = 4) +
+          gganimate::transition_manual(frame = sample, cumulative = TRUE)
+          gganimate::animate(p, nframes = input$k, fps = 5, renderer = gifski_renderer(loop=FALSE)) %>% 
+          gganimate::anim_save("outfile.gif", animation = .) # New
+          
+        } else {
+          p
+        }
+     
+
+    
+    # Return a list containing the filename
+     list(src = "outfile.gif",
+          contentType = 'image/gif'
+          )
+     
+     })
+ }
+
+
+
+    # observe events
+    
+    observeEvent(input$gen_dat, {
+      counter <<- 0
+      ci_tib$data = get_cis()
+      ci_tib$show = TRUE
+      
+      output$ci_plot <- renderPlot(height = 1000, {
+        isolate(ci_tib$data) %>%
+          get_plot()
+        })
+
+      
+      #output$ci_plot = get_plot()
+      output$coverage <- renderText({
+        paste0("Confidence intervals containing the population value = ", round(100*(sum(ci_tib$data$contains_mu)/100), 2), "%")
+        })
+    })
+
+
+
+```
+
+
+
+```{r eval = F, echo = F}
+
+output$ci_plot <- renderPlot(height = 1000, {
+  #set up empty plot as placeholder
+        p = ggplot(ci_tib$data, aes(mean, sample, colour = contains_mu)) +
+        geom_vline(xintercept = input$mu, linetype = 1, colour = "grey45", size = 1) +
+        coord_cartesian(xlim = c(min(ci_tib$data$ci_low), max(ci_tib$data$ci_upp)), ylim = c(0, 100)) +
+       scale_y_continuous(breaks = 1:100) +
+       scale_colour_manual(values = c(ong, blu)) +
+        labs(x = "", y = "Sample number") +
+        theme_minimal() +
+        theme(legend.position = "none") +
+        theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+    #plot data when button clicked   
+        if(ci_tib$show == TRUE){
+        p +
+          geom_errorbarh(xmax = ci_tib$data$ci_upp, xmin = ci_tib$data$ci_low, size = 0.75, height = 1) +
+          geom_point(size = 4)
+        } else {
+          p
+        }
+        
+        })
+
+
+
+
+get_plot <- function(){
+   renderImage({
+    # A temp file to save the output.
+    # This file will be removed later by renderImage
+    outfile <- tempfile(fileext='.gif')
+    
+    # now make the animation
+    
+    p = ggplot(ci_tib$data, aes(mean, sample, colour = contains_mu)) +
+      geom_vline(xintercept = input$mu, linetype = 1, colour = "grey45", size = 1) +
+      geom_errorbarh(xmax = ci_tib$data$ci_upp, xmin = ci_tib$data$ci_low, size = 0.75, height = 1) +
+      geom_point(size = 4) +
+      coord_cartesian(xlim = c(min(ci_tib$data$ci_low), max(ci_tib$data$ci_upp)), ylim = c(0, input$k)) +
+      scale_y_continuous(breaks = 1:input$k) +
+      scale_colour_manual(values = c(ong, blu)) +
+      labs(x = "", y = "Sample number") +
+      theme_minimal() +
+      theme(legend.position = "none") +
+      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+      gganimate::transition_manual(frame = sample, cumulative = TRUE)
+      
+     
+    gganimate::animate(p, nframes = input$k, fps = 5, renderer = gifski_renderer(loop=FALSE)) %>% 
+      gganimate::anim_save("outfile.gif", animation = .) # New
+    
+    # Return a list containing the filename
+     list(src = "outfile.gif",
+          contentType = 'image/gif'
+          )
+     
+     })
+ }
+
+
+```

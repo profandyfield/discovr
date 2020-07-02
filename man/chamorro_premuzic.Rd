@@ -23,7 +23,7 @@ tested the hypothesis that students tend to like lecturers who are like themselv
 using a very well-established measure (the NEO-FFI) which measures five fundamental personality traits: neuroticism, extroversion,
 openness to experience, agreeableness and conscientiousness. Students also completed a questionnaire in which they were given descriptions
 (e.g., ‘warm: friendly, warm, sociable, cheerful, affectionate, outgoing’) and asked to rate how much they wanted to see this in a lecturer
-from −5 (I don’t want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer).
+from -5 (I don’t want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer).
 The characteristics were the same as those measured by the NEO-FFI. As such, the authors had a measure of how much a student had each of the
 five core personality characteristics, but also a measure of how much they wanted to see those same characteristics in their lecturer.
 These are the data from that study. The data contains the following variables:
@@ -35,11 +35,11 @@ These are the data from that study. The data contains the following variables:
 \item \strong{stu_open}: Student openness to experience score on the NEO-FFI
 \item \strong{stu_agree}: Student agreeableness  score on the NEO-FFI
 \item \strong{stu_consc}: Student conscientiousness score on the NEO-FFI
-\item \strong{lec_neurotic}: Student rating of how much they wanted the characteristic of neuroticism in their lecturers from −5 (I don’t want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer)
-\item \strong{lec_extro}: Student rating of how much they wanted the characteristic of extroversion in their lecturers from −5 (I don’t want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer)
-\item \strong{lec_open}: Student rating of how much they wanted the characteristic of openness to experience in their lecturers from −5 (I don’t want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer)
-\item \strong{lec_agree}: Student rating of how much they wanted the characteristic of agreeableness in their lecturers from −5 (I don’t want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer)
-\item \strong{lec_consc}: Student rating of how much they wanted the characteristic of conscientiousness in their lecturers from −5 (I don’t want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer)
+\item \strong{lec_neurotic}: Student rating of how much they wanted the characteristic of neuroticism in their lecturers from -5 (I don’t want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer)
+\item \strong{lec_extro}: Student rating of how much they wanted the characteristic of extroversion in their lecturers from -5 (I don’t want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer)
+\item \strong{lec_open}: Student rating of how much they wanted the characteristic of openness to experience in their lecturers from -5 (I don’t want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer)
+\item \strong{lec_agree}: Student rating of how much they wanted the characteristic of agreeableness in their lecturers from -5 (I don’t want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer)
+\item \strong{lec_consc}: Student rating of how much they wanted the characteristic of conscientiousness in their lecturers from -5 (I don’t want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer)
 }
 }
 \references{

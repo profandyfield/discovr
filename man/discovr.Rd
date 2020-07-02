@@ -31,13 +31,13 @@ Replacing \code{name_of_tutorial} with the name in bold below. For example, to l
 \itemize{
 \item \strong{discovr_01}: Key concepts in R (functions and objects, packages and functions, style, data types, tidyverse, tibbles)
 \item \strong{discovr_02}: Summarizing data (frequency distributions, grouped frequency distributions, relative frequencies, histograms, mean, median, variance, standard deviation, interquartile range)
-\item \strong{discovr_03}: Confidence intervals: interactive app demonstrating what a confidence interval is, computing nromal and bootstrap confidence intervals using R, adding confidence intervals to data summaries
+\item \strong{discovr_03}: Confidence intervals: interactive app demonstrating what a confidence interval is, computing normal and bootstrap confidence intervals using R, adding confidence intervals to data summaries
 \item \strong{discovr_05}: Visualizing data. The ggplot2 package, boxplots, plotting means, violin plots, scatterplots, grouping by colour, grouping using facets, adjusting scales, adjusting positions.
 \item \strong{discovr_06}: The beast of bias. Restructuring data from messy to tidy format (and back). Spotting outliers using histograms and boxplots. Calculating z-scores (standardizing scores). Writing your own function. Using z-scores to detect outliers. Q-Q plots. Calculating skewness, kurtosis and the number of valid cases. Grouping summary statistics by multiple categorical/grouping variables.
 \item \strong{discovr_07}: Associations. Plotting data with GGally. Pearson's r, Spearman's Rho, Kendall's tau, robust correlations.
 \item \strong{discovr_08}: The general linear model (GLM). Visualizing the data, fitting GLMs with one and two predictors. Viewing model parameters with broom, model parameters, standard errors, confidence intervals, fit statistics, significance.
-\item \strong{discovr_09}: Categorical predictors with two cartegories (comparing two means). Comparing two independent means, comparing two related means, effect sizes.
-\item \strong{discovr_10}: Moderation and mediation. Centering variables (grand mean centering), specifying interaction terms, moderation analysis, simple slopes analysis, Johnson-Neyman intervals, mediation with one predictor, direct and indirect effects, mediation using lavaan.
+\item \strong{discovr_09}: Categorical predictors with two categories (comparing two means). Comparing two independent means, comparing two related means, effect sizes.
+\item \strong{discovr_10}: Moderation and mediation. Centring variables (grand mean centring), specifying interaction terms, moderation analysis, simple slopes analysis, Johnson-Neyman intervals, mediation with one predictor, direct and indirect effects, mediation using lavaan.
 }
 
 \strong{Workflow}:

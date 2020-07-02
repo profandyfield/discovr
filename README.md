@@ -1,10 +1,10 @@
 # discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2020)
 
-The `discovr` package contains resources for my 2021 textbook [Discovering Statistics Using ![](./data-raw/images/r_logo.png){height=1em} and ![](./data-raw/images/rstudio_logo.png){height=1em}](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/). There are tutorials written using [learnr](https://rstudio.github.io/learnr/). Once a tutorial is running it's a bit like reading a book but with places where you can practice the ![](./data-raw/images/r_logo.png){height=1em} code that you have just been taught. The `discovr` package is free and offered to support tutors and students using my textbook who want to learn ![](./data-raw/images/r_logo.png){height=1em}.
- 
+The `discovr` package contains resources for my 2021 textbook [Discovering Statistics Using <img src="./data-raw/images/r_logo.png" width="18"> and <img src="./data-raw/images/rstudio_logo.png" width="48">](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/). There are tutorials written using [learnr](https://rstudio.github.io/learnr/). Once a tutorial is running it's a bit like reading a book but with places where you can practice the <img src="./data-raw/images/r_logo.png" width="18"> code that you have just been taught. The `discovr` package is free and offered to support tutors and students using my textbook who want to learn <img src="./data-raw/images/r_logo.png" width="18">.
+
 ## Installing `discovr`
 
-To use `discovr` you first need to install ![](./data-raw/images/r_logo.png){height=1em} and ![](./data-raw/images/rstudio_logo.png){height=1em} and familiarise yourself with ![](./data-raw/images/r_logo.png){height=1em}, ![](./data-raw/images/rstudio_logo.png){height=1em} and good workflow practice. You can do this using [this interactive tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/). Once you have installed ![](./data-raw/images/r_logo.png){height=1em} and ![](./data-raw/images/rstudio_logo.png){height=1em} you can install `discovr`. The package is in development so you have to install it from github. To install the package execute (in ![](./data-raw/images/rstudio_logo.png){height=1em}):
+To use `discovr` you first need to install <img src="./data-raw/images/r_logo.png" width="18"> and <img src="./data-raw/images/rstudio_logo.png" width="48"> and familiarise yourself with <img src="./data-raw/images/r_logo.png" width="18">, <img src="./data-raw/images/rstudio_logo.png" width="48"> and good workflow practice. You can do this using [this interactive tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/). Once you have installed <img src="./data-raw/images/r_logo.png" width="18"> and <img src="./data-raw/images/rstudio_logo.png" width="48"> you can install `discovr`. The package is in development so you have to install it from github. To install the package execute (in <img src="./data-raw/images/rstudio_logo.png" width="48">):
 
 ```
 if(!require(htmltools)){
@@ -14,7 +14,7 @@ if(!require(htmltools)){
 remotes::install_github("profandyfield/discovr", dependencies = TRUE)
 ```
 
-If you are trying to install on a networked computer the install might fail (it's to do install.packages not liking UNC paths, which I'm not even going to pretend to understand). The solution is to specify the location of your ![](./data-raw/images/r_logo.png){height=1em} library at the point of install. Most networks will map network locations to a drive name (for example, at my own University, users accounts are on the 'N' drive). Find the location of your ![](./data-raw/images/r_logo.png){height=1em} library (e.g., `N:/Documents/R/win-library/3.5`), possibly executing `.libPaths()` to help you, and specify this location using the `lib` argument:
+If you are trying to install on a networked computer the install might fail (it's to do install.packages not liking UNC paths, which I'm not even going to pretend to understand). The solution is to specify the location of your <img src="./data-raw/images/r_logo.png" width="18"> library at the point of install. Most networks will map network locations to a drive name (for example, at my own University, users accounts are on the 'N' drive). Find the location of your <img src="./data-raw/images/r_logo.png" width="18"> library (e.g., `N:/Documents/R/win-library/3.5`), possibly executing `.libPaths()` to help you, and specify this location using the `lib` argument:
 
 ```
 remotes::install_github("profandyfield/discovr", dependencies = TRUE, lib = "N:/Documents/R/win-library/3.5")
@@ -22,11 +22,11 @@ remotes::install_github("profandyfield/discovr", dependencies = TRUE, lib = "N:/
 
 ## Interactive tutorials
 
-I recommend working through [this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/) on how to install, set up and work within ![](./data-raw/images/r_logo.png){height=1em} and ![](./data-raw/images/rstudio_logo.png){height=1em} before starting the interactive tutorials.
+I recommend working through [this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/) on how to install, set up and work within <img src="./data-raw/images/r_logo.png" width="18"> and <img src="./data-raw/images/rstudio_logo.png" width="48"> before starting the interactive tutorials.
 
 ### List of tutorials
 
-* **discovr_01**: Key concepts in ![](./data-raw/images/r_logo.png){height=1em} (functions and objects, packages and functions, style, data types, tidyverse, tibbles)
+* **discovr_01**: Key concepts in <img src="./data-raw/images/r_logo.png" width="18"> (functions and objects, packages and functions, style, data types, tidyverse, tibbles)
 * **discovr_02**: Summarizing data (frequency distributions, grouped frequency distributions, relative frequencies, histograms, mean, median, variance, standard deviation, interquartile range)
 * **discovr_03**: Confidence intervals: interactive app demonstrating what a confidence interval is, computing nromal and bootstrap confidence intervals using R, adding confidence intervals to data summaries.
 * **discovr_05**: Visualizing data. The ggplot2 package, boxplots, plotting means, violin plots, scatterplots, grouping by colour, grouping using facets, adjusting scales, adjusting positions."
@@ -56,7 +56,7 @@ The name of each tutorial is in bold in the list above. Once the command to run 
 
 ### Suggested workflow
 
-The tutorials are self-contained (you practice code in code boxes) so you don't need to use ![](./data-raw/images/rstudio_logo.png){height=1em} at the same time. However, to get the most from them I would recommend that you create an ![](./data-raw/images/rstudio_logo.png){height=1em} project and within that open (and save) a new RMarkdown file each time to work through a tutorial. Within that Markdown file, replicate parts of the code from the tutorial (in code chunks) and use Markdown to write notes about what you have done, and to reflect on things that you have struggled with, or note useful tips to help you remember things. Basically, write a learning journal. This workflow has the advantage of not just teaching you the code that you need to do certain things, but also provides practice in using ![](./data-raw/images/rstudio_logo.png){height=1em} itself.
+The tutorials are self-contained (you practice code in code boxes) so you don't need to use <img src="./data-raw/images/rstudio_logo.png" width="48"> at the same time. However, to get the most from them I would recommend that you create an <img src="./data-raw/images/rstudio_logo.png" width="48"> project and within that open (and save) a new RMarkdown file each time to work through a tutorial. Within that Markdown file, replicate parts of the code from the tutorial (in code chunks) and use Markdown to write notes about what you have done, and to reflect on things that you have struggled with, or note useful tips to help you remember things. Basically, write a learning journal. This workflow has the advantage of not just teaching you the code that you need to do certain things, but also provides practice in using <img src="./data-raw/images/rstudio_logo.png" width="48"> itself.
 
 ## Datasets
 

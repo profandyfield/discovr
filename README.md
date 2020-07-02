@@ -1,6 +1,9 @@
 # discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2021)
 
-<p style = "border-radius: 10px; padding: 10px; border: 2px solid #CA3E34; background-color: #CA3E34; background-color: rgba(202, 62, 52, 0.1); color: #CA3E34;">**NOTE**: This package is incomplete but under active development. I have released it early in case it is useful for instructors needing to move rapidly to remote learning because of the current global pandemic. Check back here for updates/new tutorials.</p>
+***
+> **NOTE**: This package is incomplete but under active development. I have released it early in case it is useful for instructors needing to move rapidly to remote learning because of the current global pandemic. Check back here for updates/new tutorials.
+
+***
 
 The `discovr` package contains resources for my 2021 textbook [Discovering Statistics Using <img src="./data-raw/images/r_logo.png" width="18"> and <img src="./data-raw/images/rstudio_logo.png" width="48">](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/). There are tutorials written using [learnr](https://rstudio.github.io/learnr/). Once a tutorial is running it's a bit like reading a book but with places where you can practice the <img src="./data-raw/images/r_logo.png" width="18"> code that you have just been taught. The `discovr` package is free and offered to support tutors and students using my textbook who want to learn <img src="./data-raw/images/r_logo.png" width="18">.
 

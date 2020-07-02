@@ -16,6 +16,10 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE
 )
+
+library(magrittr)
+library(dplyr)
+library(ggplot2)
 ```
 
 ***
@@ -28,22 +32,15 @@ This file contains code relevant to chapter 1 of *Discovering Statistics Using R
 
 ## Load packages
 
-Remember to load the relevant packages mentioned at the start of the chapter:
+Remember to load the tidyverse:
 
-```{r}
-library(BayesFactor)
-library(broom)
-library(car)
-library(GGally)
-library(parameters)
-library(pixiedust)
-library(robust)
+```{r, eval = F}
 library(tidyverse)
 ```
 
 ## Load the data
 
-Remember to load the package for the book with `library(discovr)`. After which you can load data into a tibble by executing:
+Remember to install the package for the book with `library(discovr)`. After which you can load data into a tibble by executing:
 
 `name_of_tib <- discovr::name_of_data`
 
@@ -445,7 +442,7 @@ plot(album_full_lm, which = 2)
 
 ### Prettier diagnostic plots
 
-The `ggfortify` package allows us to pruduce prettier versions of the diagnostic plots. For example:
+The `ggfortify` package allows us to produce prettier versions of the diagnostic plots. For example:
 
  influence plots
 
@@ -529,7 +526,7 @@ album_bf
 album_full_bf <- album_tib %>%
   BayesFactor::lmBF(sales ~ adverts + airplay + image, rscaleCont = "medium", data = .)
 
-album_full_post <- posterior(album_full_bf, iterations = 10000)
+album_full_post <- BayesFactor::posterior(album_full_bf, iterations = 10000)
 summary(album_full_post)
 ```
 

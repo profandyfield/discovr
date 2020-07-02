@@ -16,6 +16,10 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE
 )
+
+library(magrittr)
+library(dplyr)
+library(ggplot2)
 ```
 
 ![](images/dsus_smart_alex_banner.png)
@@ -27,7 +31,7 @@ This document may contain abridged sections from *Discovering Statistics Using R
 
 ## Load libraries
 
-```{r load_libraries}
+```{r load_libraries, eval = F}
 library(tidyverse)
 ```
 
@@ -67,7 +71,7 @@ We also worked out that the sum of squared errors was 2685.24; the variance was 
 The standard error will be:
 $$ SE = \frac{s}{\sqrt{N}} = \frac{11.59}{\sqrt{21}} = 2.53$$
 
-The sample is small, so to calculate the confidence interval we need to find the appropriate value of *t*. First we need to calculate the degrees of freedom, $N − 1$. With 21 data points, the degrees of freedom are 20. For a 95% confidence interval we can look up the value in the column labelled ‘Two-Tailed Test’, ‘0.05’ in the table of critical values of the *t*-distribution (Appendix). The corresponding value is 2.09. The confidence intervals is, therefore, given by:
+The sample is small, so to calculate the confidence interval we need to find the appropriate value of *t*. First we need to calculate the degrees of freedom, $N - 1$. With 21 data points, the degrees of freedom are 20. For a 95% confidence interval we can look up the value in the column labelled ‘Two-Tailed Test’, ‘0.05’ in the table of critical values of the *t*-distribution (Appendix). The corresponding value is 2.09. The confidence intervals is, therefore, given by:
 
 - Lower boundary of confidence interval = $\overline{X}-(2.09\times SE)$ = 32.19 – (2.09 × 2.53) = 26.90
 - Upper boundary of confidence interval = $\overline{X}+(2.09\times SE)$ = 32.19 + (2.09 × 2.53) = 37.48
@@ -103,7 +107,7 @@ Power is the ability of a test to detect an effect of a particular size (a value
 In both groups, because they have a standard deviation of 3 and a sample size of 10, the standard error will be:
 $$ SE = \frac{s}{\sqrt{N}} = \frac{3}{\sqrt{10}} = 0.95$$
 
-The sample is small, so to calculate the confidence interval we need to find the appropriate value of *t*. First we need to calculate the degrees of freedom, $N − 1$. With 10 data points, the degrees of freedom are 9. For a 95% confidence interval we can look up the value in the column labelled ‘Two-Tailed Test’, ‘0.05’ in the table of critical values of the *t*-distribution (Appendix). The corresponding value is 2.26. The confidence interval for the singing group is, therefore, given by:
+The sample is small, so to calculate the confidence interval we need to find the appropriate value of *t*. First we need to calculate the degrees of freedom, $N - 1$. With 10 data points, the degrees of freedom are 9. For a 95% confidence interval we can look up the value in the column labelled ‘Two-Tailed Test’, ‘0.05’ in the table of critical values of the *t*-distribution (Appendix). The corresponding value is 2.26. The confidence interval for the singing group is, therefore, given by:
 
 - Lower boundary of confidence interval = $\overline{X}-(2.26\times SE)$ = 10 – (2.26 × 0.95) = 7.85
 - Upper boundary of confidence interval = $\overline{X}+(2.26\times SE)$ = 10 + (2.26 × 0.95) = 12.15
@@ -157,7 +161,7 @@ For the conversation group:
 
 We worked out in Chapter 1 that the mean was 10.27, the standard deviation 4.15, and there were 11 sportspeople in the sample. The standard error will be:
 $$ SE = \frac{s}{\sqrt{N}} = \frac{4.15}{\sqrt{11}} = 1.25$$
-The sample is small, so to calculate the confidence interval we need to find the appropriate value of *t*. First we need to calculate the degrees of freedom, $N − 1$. With 11 data points, the degrees of freedom are 10. For a 95% confidence interval we can look up the value in the column labelled ‘Two-Tailed Test’, ‘.05’ in the table of critical values of the *t*-distribution (Appendix). The corresponding value is 2.23. The confidence interval is, therefore, given by:
+The sample is small, so to calculate the confidence interval we need to find the appropriate value of *t*. First we need to calculate the degrees of freedom, $N - 1$. With 11 data points, the degrees of freedom are 10. For a 95% confidence interval we can look up the value in the column labelled ‘Two-Tailed Test’, ‘.05’ in the table of critical values of the *t*-distribution (Appendix). The corresponding value is 2.23. The confidence interval is, therefore, given by:
 
 - Lower boundary of confidence interval = $\overline{X}-(2.23\times SE)$ = 10.27 – (2.23 × 1.25) = 7.48
 - Upper boundary of confidence interval = $\overline{X}+(2.23\times SE)$ = 10.27 + (2.23 × 1.25) = 13.06
@@ -222,7 +226,7 @@ $$
 There were 11 sportspeople in the sample, so the standard error will be:
 $$ SE = \frac{s}{\sqrt{N}} = \frac{4.34}{\sqrt{11}} = 1.31$$
 
-The sample is small, so to calculate the confidence interval we need to find the appropriate value of *t*. First we need to calculate the degrees of freedom, $N − 1$. With 11 data points, the degrees of freedom are 10. For a 95% confidence interval we can look up the value in the column labelled ‘Two-Tailed Test’, ‘0.05’ in the table of critical values of the *t*-distribution (Appendix). The corresponding value is 2.23. The confidence intervals is, therefore, given by:
+The sample is small, so to calculate the confidence interval we need to find the appropriate value of *t*. First we need to calculate the degrees of freedom, $N - 1$. With 11 data points, the degrees of freedom are 10. For a 95% confidence interval we can look up the value in the column labelled ‘Two-Tailed Test’, ‘0.05’ in the table of critical values of the *t*-distribution (Appendix). The corresponding value is 2.23. The confidence intervals is, therefore, given by:
 
 - Lower boundary of confidence interval = $\overline{X}-(2.23\times SE)$ = 9 – (2.23 × 1.31) = 6.08
 - Upper boundary of confidence interval = $\overline{X}+(2.23\times SE)$ = 9 + (2.23 × 1.31) = 11.92
@@ -288,7 +292,7 @@ $$
 The standard error is:
 $$ SE = \frac{s}{\sqrt{N}} = \frac{8275.91}{\sqrt{9}} = 2758.64$$
 
-The sample is small, so to calculate the confidence interval we need to find the appropriate value of *t*. First we need to calculate the degrees of freedom, $N − 1$. With 9 data points, the degrees of freedom are 8. For a 95% confidence interval we can look up the value in the column labelled ‘Two-Tailed Test’, ‘0.05’ in the table of critical values of the *t*-distribution (Appendix). The corresponding value is 2.31. The confidence interval is, therefore, given by:
+The sample is small, so to calculate the confidence interval we need to find the appropriate value of *t*. First we need to calculate the degrees of freedom, $N - 1$. With 9 data points, the degrees of freedom are 8. For a 95% confidence interval we can look up the value in the column labelled ‘Two-Tailed Test’, ‘0.05’ in the table of critical values of the *t*-distribution (Appendix). The corresponding value is 2.31. The confidence interval is, therefore, given by:
 
 - Lower boundary of CI = $\overline{X}-(2.31\times SE)$ = 5057 – (2.31 × 2758.64) = 1315.46
 - Upper boundary of CI = $\overline{X}+(2.31\times SE)$ = 5057 + (2.31 × 2758.64) = 11429.46

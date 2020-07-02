@@ -18,9 +18,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, echo = F}
+library(magrittr)
+library(dplyr)
+library(ggplot2)
 chamorro_tib <- discovr::chamorro_premuzic
-
 ```
 ![](images/leni_banner.png)
 
@@ -47,9 +49,6 @@ chamorro_tib <- readr::read_csv("../data/chamorro_premuzic.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 chamorro_tib <- discovr::chamorro_premuzic
 ```
 
@@ -82,4 +81,4 @@ These values replicate the values reported in the original research paper (part 
 ![](images/ds_c07_leni_fig_01.png)
  
 
-As for what we can conclude, well, neurotic students tend to want agreeable lecturers, *r* = .10, *p* = .041; extroverted students tend to want extroverted lecturers, *r* = .15, *p* = .010; students who are open to experience tend to want lecturers who are open to experience, *r* = .20, *p* < .001, and don't want agreeable lecturers, *r* = −.16, *p* < .001; agreeable students want every sort of lecturer apart from neurotic. Finally, conscientious students tend to want conscientious lecturers, *r* = .22, *p* < .001, and extroverted ones, *r* = .10, *p* = .09 (note that the authors report the one-tailed *p*-value), but don't want neurotic ones, *r* = −.14, *p* = .005.
+As for what we can conclude, well, neurotic students tend to want agreeable lecturers, $r = .10$, $p = .041$; extroverted students tend to want extroverted lecturers, $r = .15$, $p = .010$; students who are open to experience tend to want lecturers who are open to experience, $r = .20$, $p < .001$, and don't want agreeable lecturers, $r = -.16$, $p < .001$; agreeable students want every sort of lecturer apart from neurotic. Finally, conscientious students tend to want conscientious lecturers, $r = .22$, $p < .001$, and extroverted ones, $r = .10$, $p = .09$ (note that the authors report the one-tailed *p*-value), but don't want neurotic ones, $r = -.14$, $p = .005$.

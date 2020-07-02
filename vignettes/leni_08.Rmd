@@ -17,6 +17,10 @@ knitr::opts_chunk$set(
   message = FALSE
 )
 
+library(magrittr)
+library(dplyr)
+library(ggplot2)
+
 ong_tib <- discovr::ong_2011
 chamorro_tib <- discovr::chamorro_premuzic
 ```
@@ -31,11 +35,9 @@ This document may contain abridged sections from *Discovering Statistics Using R
 
 ### Load packages
 
-To answer these questions you need to load the following packages:
+Remember to load the tidyverse:
 
-```{r}
-library(broom)
-library(parameters)
+```{r, eval = F}
 library(tidyverse)
 ```
 
@@ -56,8 +58,6 @@ ong_tib <- readr::read_csv("../data/chamorro_premuzic.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-
 ong_tib <- discovr::ong_2011
 ```
 
@@ -136,7 +136,6 @@ These results show that after adjusting for age, grade and gender, narcissism si
 ### Load the file
 
 ```{r, eval = FALSE}
-library(tidyverse)
 chamorro_tib <- readr::read_csv("../data/chamorro_premuzic.csv") %>% 
   dplyr::mutate(
     sex = forcats::as_factor(sex)
@@ -146,8 +145,6 @@ chamorro_tib <- readr::read_csv("../data/chamorro_premuzic.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-
 chamorro_tib <- discovr::chamorro_premuzic
 ```
 

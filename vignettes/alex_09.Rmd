@@ -16,6 +16,10 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE
 )
+
+library(magrittr)
+library(dplyr)
+library(ggplot2)
 ```
 
 
@@ -28,9 +32,8 @@ This document may contain abridged sections from *Discovering Statistics Using R
 
 ## Load libraries
 
-```{r load_libraries}
+```{r load_libraries, eval = F}
 library(tidyverse)
-library(WRS2)
 ```
 
 ```{r get_data, echo = F}
@@ -51,7 +54,6 @@ oxoby_tib <- discovr::acdc
 ### Load the data
 
 ```{r, eval = FALSE}
-library(tidyverse)
 spider_tib <- readr::read_csv("../data/big_hairy_spider.csv") %>% 
   dplyr::mutate(
     spider_type = forcats::as_factor(spider_type)
@@ -61,9 +63,6 @@ spider_tib <- readr::read_csv("../data/big_hairy_spider.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 spider_tib <- discovr::big_hairy_spider
 ```
 
@@ -156,7 +155,6 @@ The Bayes factor, $\mathrm{BF}_{10}$ = 2.40, suggested that the data were 2.4 ti
 ### Load the data
 
 ```{r, eval = FALSE}
-library(tidyverse)
 self_help_tib <- readr::read_csv("../data/self_help.csv") %>% 
   dplyr::mutate(
     book = forcats::as_factor(book)
@@ -166,9 +164,6 @@ self_help_tib <- readr::read_csv("../data/self_help.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 self_help_tib <- discovr::self_help
 ```
 
@@ -221,7 +216,6 @@ We could report this result as:
 ### Load the data
 
 ```{r, eval = FALSE}
-library(tidyverse)
 dsur_tib <- readr::read_csv("../data/self_help_dsur.csv") %>% 
   dplyr::mutate(
     book = forcats::as_factor(book)
@@ -231,9 +225,6 @@ dsur_tib <- readr::read_csv("../data/self_help_dsur.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 dsur_tib <- discovr::self_help_dsur
 ```
 
@@ -293,7 +284,6 @@ Of course, this latter interpretation would be unpopular with *Twaddle and Sons*
 ### Load the data
 
 ```{r, eval = FALSE}
-library(tidyverse)
 goat_tib <- readr::read_csv("../data/goat_or_dog.csv") %>% 
   dplyr::mutate(
     wife = forcats::as_factor(wife)
@@ -303,9 +293,6 @@ goat_tib <- readr::read_csv("../data/goat_or_dog.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 goat_tib <- discovr::animal_bride
 ```
 
@@ -376,7 +363,6 @@ The values of *t* and *p* are the same. (Technically, *t* is different because f
 ### Load the data
 
 ```{r, eval = FALSE}
-library(tidyverse)
 download_tib <- readr::read_csv("../data/download_festival.csv") %>% 
   dplyr::mutate(
     gender = forcats::as_factor(gender)
@@ -386,9 +372,6 @@ download_tib <- readr::read_csv("../data/download_festival.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 download_tib <- discovr::download
 ```
 
@@ -470,7 +453,6 @@ We could report:
 ### Load the data
 
 ```{r, eval = FALSE}
-library(tidyverse)
 dogs_tib <- readr::read_csv("../data/men_dogs.csv") %>% 
   dplyr::mutate(
     species = forcats::as_factor(species)
@@ -480,9 +462,6 @@ dogs_tib <- readr::read_csv("../data/men_dogs.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 dogs_tib <- discovr::men_dogs
 ```
 
@@ -539,7 +518,6 @@ The effect is not statistically significant, and is a small effect. We could rep
 ### Load the data
 
 ```{r, eval = FALSE}
-library(tidyverse)
 dark_tib <- readr::read_csv("../data/dark_lord.csv") %>% 
   dplyr::mutate(
     message = forcats::as_factor(message)
@@ -549,9 +527,6 @@ dark_tib <- readr::read_csv("../data/dark_lord.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 dark_tib <- discovr::dark_lord
 ```
 
@@ -609,7 +584,6 @@ d_dark <- effectsize::cohens_d(intrusions ~ message, data = dark_tib)
 ### Load the data
 
 ```{r, eval = FALSE}
-library(tidyverse)
 oxoby_tib <- readr::read_csv("../data/acdc.csv") %>% 
   dplyr::mutate(
     singer = forcats::as_factor(singer)
@@ -619,9 +593,6 @@ oxoby_tib <- readr::read_csv("../data/acdc.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 oxoby_tib <- discovr::acdc
 ```
 

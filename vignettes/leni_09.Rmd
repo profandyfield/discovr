@@ -19,9 +19,9 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, echo = FALSE}
-library(Hmisc)
-library(effectsize)
-library(tidyverse)
+library(magrittr)
+library(dplyr)
+library(ggplot2)
 
 gelman_tib <- discovr::gelman_2009
 tuk_tib <- discovr::tuk_2011
@@ -37,7 +37,6 @@ This document may contain abridged sections from *Discovering Statistics Using R
 ### Load the file
 
 ```{r, eval = FALSE}
-library(tidyverse)
 tuk_tib <- readr::read_csv("../data/tuk_2011.csv") %>% 
   dplyr::mutate(
     urgency = forcats::as_factor(urgency)
@@ -47,9 +46,6 @@ tuk_tib <- readr::read_csv("../data/tuk_2011.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 tuk_tib <- discovr::tuk_2011
 ```
 
@@ -95,16 +91,12 @@ We could report this analysis as:
 ### Load the file
 
 ```{r, eval = FALSE}
-library(tidyverse)
 gelman_tib <- readr::read_csv("../data/gelman_2009.csv")
 ```
 
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 gelman_tib <- discovr::gelman_2009
 ```
 

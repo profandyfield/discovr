@@ -18,6 +18,10 @@ knitr::opts_chunk$set(
   message = FALSE
 )
 
+library(magrittr)
+library(dplyr)
+library(ggplot2)
+
 ```
 
 
@@ -30,8 +34,7 @@ This document may contain abridged sections from *Discovering Statistics Using R
 
 ## Load libraries
 
-```{r load_libraries}
-library(GGally)
+```{r load_libraries, eval = F}
 library(tidyverse)
 ```
 

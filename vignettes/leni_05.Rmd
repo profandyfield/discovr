@@ -33,7 +33,6 @@ johns_tib <- discovr::johns_2012
 First, let's produce a histogram for the minimum acceptable offer data. Open the file and save it in a tibble called `oxoby_tib`. If you're working from the CSV file and you have set up your project in the way described in the book (with the CSV file in a folder called data and your markdown file in a folder called r_docs) then this code should read in the data and convert the variable **singer** to a factor:
 
 ```{r, eval = FALSE}
-library(tidyverse)
 oxoby_tib <- readr::read_csv("../data/acdc.csv") %>% 
   dplyr::mutate(
     singer = forcats::as_factor(singer)
@@ -43,9 +42,6 @@ oxoby_tib <- readr::read_csv("../data/acdc.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 oxoby_tib <- discovr::acdc
 ```
 
@@ -84,7 +80,6 @@ We can compare the resulting population pyramid above with Figure 1 from the ori
 Open the file and save it in a tibble called `johns_tib`. If you're working from the CSV file and you have set up your project in the way described in the book (with the CSV file in a folder called data and your markdown file in a folder called r_docs) then this code should read in the data and convert the variable **singer** to a factor:
 
 ```{r, eval = FALSE}
-library(tidyverse)
 johns_tib <- readr::read_csv("../data/johns_2012.csv") %>% 
   dplyr::mutate(
     singer = forcats::as_factor(singer)
@@ -94,9 +89,6 @@ johns_tib <- readr::read_csv("../data/johns_2012.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 johns_tib <- discovr::johns_2012
 ```
 

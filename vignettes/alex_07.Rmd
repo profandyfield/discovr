@@ -53,7 +53,6 @@ tea716_tib <- discovr::tea_716
 ### Load the data
 
 ```{r, eval = FALSE}
-library(tidyverse)
 essay_tib <- readr::read_csv("../data/essay_marks.csv") %>% 
   dplyr::mutate(
     grade = forcats::as_factor(grade)
@@ -63,9 +62,6 @@ essay_tib <- readr::read_csv("../data/essay_marks.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 essay_tib <- discovr::essay_marks
 ```
 
@@ -144,9 +140,6 @@ notebook_tib <- readr::read_csv("../data/essay_marks.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 notebook_tib <- discovr::notebook
 ```
 
@@ -190,7 +183,6 @@ There was a significant relationship between the film watched and arousal, $r_\t
 The categories in the data file have a meaningful order, so after importing the data we transform  **stats** and **gcse** to factors but also order the factor levels in the correct order (this is important!).
 
 ```{r, eval = FALSE}
-library(tidyverse)
 grade_tib <- readr::read_csv("../data/grades.csv") %>% 
   dplyr::mutate(
     stats = forcats::as_factor(stats) %>% forcats::fct_relevel("First class", "Upper second class", "Lower second class", "Third class", "Pass", "Fail"),
@@ -201,9 +193,6 @@ grade_tib <- readr::read_csv("../data/grades.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 grade_tib <- discovr::grades
 ```
 
@@ -271,9 +260,6 @@ honesty_tib <- readr::read_csv("../data/honesty_lab.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 honesty_tib <- discovr::honesty_lab
 ```
 
@@ -298,7 +284,6 @@ We could report the results as follows:
 ### Load the data
 
 ```{r, eval = FALSE}
-library(tidyverse)
 goat_tib <- readr::read_csv("../data/goat_or_dog.csv") %>% 
   dplyr::mutate(
     wife = forcats::as_factor(wife)
@@ -308,9 +293,6 @@ goat_tib <- readr::read_csv("../data/goat_or_dog.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 goat_tib <- discovr::animal_bride
 ```
 
@@ -354,16 +336,12 @@ Running this analysis has shown us that type of wife alone explains a large port
 ### Load the data
 
 ```{r, eval = FALSE}
-library(tidyverse)
 tea15_tib <- readr::read_csv("../data/tea_makes_you_brainy_15.csv")
 ```
 
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 tea15_tib <- discovr::tea_15
 ```
 
@@ -386,16 +364,12 @@ I chose a two-tailed test because it is never really appropriate to conduct a on
 ### Load the data
 
 ```{r, eval = FALSE}
-library(tidyverse)
 tea716_tib <- readr::read_csv("../data/tea_makes_you_brainy_716.csv")
 ```
 
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 tea716_tib <- discovr::tea_716
 ```
 
@@ -416,7 +390,6 @@ We can see that although the value of Pearson’s *r* has not changed, it is sti
 ### Load the data
 
 ```{r, eval = FALSE}
-library(tidyverse)
 download_tib <- readr::read_csv("../data/download_festival.csv") %>% 
   dplyr::mutate(
     gender = forcats::as_factor(gender)
@@ -426,9 +399,6 @@ download_tib <- readr::read_csv("../data/download_festival.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 download_tib <- discovr::download
 ```
 
@@ -453,7 +423,6 @@ The hygiene scores on day 1 of the festival correlated significantly with hygien
 ### Load the data
 
 ```{r, eval = FALSE}
-library(tidyverse)
 shopping_tib <- readr::read_csv("../data/shopping_exercise.csv") %>% 
   dplyr::mutate(
     sex = forcats::as_factor(sex)
@@ -463,9 +432,6 @@ shopping_tib <- readr::read_csv("../data/shopping_exercise.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 shopping_tib <- discovr::shopping
 ```
 

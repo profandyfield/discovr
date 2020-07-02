@@ -16,11 +16,13 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE
 )
+
+library(magrittr)
+library(dplyr)
+library(ggplot2)
 ```
 
-```{r setup}
 
-```
 ![](images/dsus_smart_alex_banner.png)
 
 ***
@@ -30,8 +32,7 @@ This document may contain abridged sections from *Discovering Statistics Using R
 
 ## Load libraries
 
-```{r load_libraries}
-library(qqplotr)
+```{r load_libraries, eval = F}
 library(tidyverse)
 ```
 

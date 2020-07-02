@@ -19,7 +19,9 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, echo = FALSE}
-library(tidyverse)
+library(magrittr)
+library(dplyr)
+library(ggplot2)
 
 massar_tib <- discovr::massar_2012
 
@@ -34,16 +36,12 @@ This document may contain abridged sections from *Discovering Statistics Using R
 ## Load the file
 
 ```{r, eval = FALSE}
-library(tidyverse)
 massar_tib <- readr::read_csv("../data/massar_2012.csv")
 ```
 
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-library(tidyverse)
-
 massar_tib <- discovr::massar_2012
 ```
 
@@ -67,21 +65,21 @@ m1 <- lm(gossip ~ age, data = massar_tib)
 parameters::model_parameters(m1, standardize = "refit") 
 ```
 
-Model 1 indicates that the first condition of mediation was met, in that participant age was a significant predictor of the tendency to gossip, *t*(80) = −2.59, *p* = .011.
+Model 1 indicates that the first condition of mediation was met, in that participant age was a significant predictor of the tendency to gossip, $t\text{(80)} = -2.59$, $p = .011$.
 
 ```{r}
 m2 <- lm(mate_value ~ age, data = massar_tib)
 parameters::model_parameters(m2, standardize = "refit") 
 ```
 
-Model 2 shows that the second condition of mediation was met: participant age was a significant predictor of mate value, *t*(79) = −3.67, *p* < .001.
+Model 2 shows that the second condition of mediation was met: participant age was a significant predictor of mate value, $t\text{(79)} = -3.67$, $p < .001$.
 
 ```{r}
 m3 <- lm(gossip ~ age + mate_value, data = massar_tib)
 parameters::model_parameters(m3, standardize = "refit") 
 ```
 
-Model 3 shows that the third condition of mediation has been met: mate value significantly predicted the tendency to gossip while adjusting for participant age, *t*(78) = 3.59, *p* < .001. The fourth condition of mediation has also been met: the parameter estimate  between participant age and tendency to gossip decreased substantially when adjusting for mate value, in fact it is no longer significant, *t*(78) = −1.28, *p*  = 0.21. Therefore, we can conclude that the author's prediction is supported, and the relationship between participant age and tendency to gossip is mediated by mate value.
+Model 3 shows that the third condition of mediation has been met: mate value significantly predicted the tendency to gossip while adjusting for participant age, $t\text{(78)} = 3.59$, $p < .001$. The fourth condition of mediation has also been met: the parameter estimate  between participant age and tendency to gossip decreased substantially when adjusting for mate value, in fact it is no longer significant, $t\text{(78)} = -1.28$, $p  = 0.21$. Therefore, we can conclude that the author's prediction is supported, and the relationship between participant age and tendency to gossip is mediated by mate value.
 
 ![Diagram of the mediation model, taken from Massar et al. (2012)](./images/ds_c10_leni_fig_01.png)
 
@@ -106,7 +104,6 @@ broom::tidy(massar_fit, conf.int = TRUE) %>%
   )
 ```
 
-The oputput shows that age significantly predicts mate value, *b* = −0.03, *t* = −3.64, *p* < .001. We can see that while age does not significantly predict tendency to gossip with mate value in the model, *b* = −0.01, *t* = −1.36, *p* = .17, mate value does
-significantly predict tendency to gossip, *b* = 0.45, *t* = 3.26, *p* = .0001. The negative *b* for age tells us that as age increases, tendency to gossip declines (and vice versa), but the positive *b* for mate value indicates that as mate value increases, tendency to gossip increases also. These relationships are in the predicted direction.
+The output shows that age significantly predicts mate value, $b = -0.03\text{, } t = -3.64\text{, } p < .001$. We can see that while age does not significantly predict tendency to gossip with mate value in the model, $b = -0.01\text{, } t = -1.36\text{, } p = .17$, mate value does significantly predict tendency to gossip, $b = 0.45\text{, } t = 3.26\text{, } p = .0001$. The negative *b* for age tells us that as age increases, tendency to gossip declines (and vice versa), but the positive *b* for mate value indicates that as mate value increases, tendency to gossip increases also. These relationships are in the predicted direction.
 
-The total effect shows that when mate value is not in the model, age significantly predicts tendency to gossip, *b* = −0.02, *t* = −2.89, *p* = .004. Finally, the indirect effect of age on gossip is significant, *b* = −0.012, 95% CI [−0.022, −0.0001], *t* = −2.21, *p*  = 0.027. Put another way, mate value is a significant mediator of the relationship between age and tendency to gossip.
+The total effect shows that when mate value is not in the model, age significantly predicts tendency to gossip, $b = -0.02\text{, } t = -2.89\text{, } p = .004$. Finally, the indirect effect of age on gossip is significant, $b = -0.012\text{, 95% CI} [-0.022, -0.0001] \text{, } t = -2.21\text{, } p = .027$. Put another way, mate value is a significant mediator of the relationship between age and tendency to gossip.

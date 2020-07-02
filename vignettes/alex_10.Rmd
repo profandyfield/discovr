@@ -16,11 +16,13 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE
 )
+
+library(magrittr)
+library(dplyr)
+library(ggplot2)
+library(lavaan)
 ```
 
-```{r setup}
-
-```
 
 ![](images/dsus_smart_alex_banner.png)
 
@@ -31,7 +33,7 @@ This document may contain abridged sections from *Discovering Statistics Using R
 
 ## Load general libraies
 
-```{r load_libraries}
+```{r load_libraries, eval = F}
 library(tidyverse)
 ```
 
@@ -59,8 +61,6 @@ mcnulty_tib <- readr::read_csv("../data/mcnulty_2008.csv") %>%
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-
 mcnulty_tib <- discovr::mcnulty_2008
 ```
 
@@ -158,8 +158,6 @@ infidelity_tib <- readr::read_csv("../data/lambert_2012.csv")
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-
 infidelity_tib <- discovr::lambert_2012
 ```
 
@@ -206,8 +204,6 @@ tablet_tib <- readr::read_csv("../data/tablets.csv")
 Alternative, load the data directly from the `discovr` package:
 
 ```{r, eval=FALSE}
-library(discovr)
-
 tablet_tib <- discovr::tablets
 ```
 

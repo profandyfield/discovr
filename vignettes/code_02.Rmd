@@ -16,10 +16,14 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE
 )
+
+library(magrittr)
+library(dplyr)
+library(ggplot2)
 ```
 
-```{r setup, results="hide"}
-# Make sure to load these packages
+```{r setup, results="hide", eval = F}
+# Make sure to load this package
 library(tidyverse)
 ```
 

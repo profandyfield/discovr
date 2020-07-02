@@ -16,6 +16,11 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE
 )
+
+library(magrittr)
+library(dplyr)
+library(ggplot2)
+library(lavaan)
 ```
 
 
@@ -29,17 +34,15 @@ This file contains code relevant to chapter 1 of *Discovering Statistics Using R
 
 ## Load packages
 
-Remember to load the relevant packages mentioned at the start of the chapter:
+Remember to load the tidyverse:
 
-```{r}
-
+```{r, eval = F}
 library(tidyverse)
-
 ```
 
 ## Load the data
 
-Remember to load the package for the book with `library(discovr)`. After which you can load data into a tibble by executing:
+Remember to install the package for the book with `library(discovr)`. After which you can load data into a tibble by executing:
 
 `name_of_tib <- discovr::name_of_data`
 

@@ -460,7 +460,7 @@ broom::glance(album_full_lm)
 
 As before, the variable **r.square** tells us the value of $R^2$. Remember that for the first model its value was 0.335, which we interpreted as advertising budget accounting for 33.5% of the variation in album sales. When the two new predictors are included, this value increases to 0.665 or 66.5% of the variance in album sales. If advertising accounts for 33.5%, then the change in $R^2$ is $R^2_\text{change} = 0.665 - 0.335 = 0.33$. In other words, image and airplay account for an additional 33% of the variance in sales.
 
-The adjusted $R^2$ (adj.r.squared) gives us some idea of how well our model generalizes and ideally we’d like its value to be the same as, or very close to, the value of $R^2$. In this example the difference for the final model is small (it is 0.665 − 0.660 = 0.005 or about 0.5%). This shrinkage means that if the model were derived from the population rather than a sample we’d conclude that it accounted for approximately 0.5% less variance in the outcome.
+The adjusted $R^2$ (adj.r.squared) gives us some idea of how well our model generalizes and ideally we’d like its value to be the same as, or very close to, the value of $R^2$. In this example the difference for the final model is small (it is $0.665 - 0.660 = 0.005$ or about 0.5%). This shrinkage means that if the model were derived from the population rather than a sample we’d conclude that it accounted for approximately 0.5% less variance in the outcome.
 
 ```{r quiz_anova_ex1, echo = FALSE}
 quiz(
@@ -1283,7 +1283,7 @@ Let's look at standardized residuals first. Remember:
 
 #### `r robot()` Code example
 
-To see what percentage of standardized residuals fall outside of these limits we can simply filter the tibble containing the residuals such that we see only cases with a standardized residual that is less than −1.96 or greater than 1.96. To simplify this task we can use the `abs()` function within the filter to return the absolute value (ignores the plus or minus sign) of the residual. Doing so means that we can simply filter by values above 1.96 (or whatever threshold we want to use). This won't change the value of the residual itself because it's being applied within the filter. Here's some code (the last two lines are optional), which is explained below.
+To see what percentage of standardized residuals fall outside of these limits we can simply filter the tibble containing the residuals such that we see only cases with a standardized residual that is less than $-1.96$ or greater than $1.96$. To simplify this task we can use the `abs()` function within the filter to return the absolute value (ignores the plus or minus sign) of the residual. Doing so means that we can simply filter by values above 1.96 (or whatever threshold we want to use). This won't change the value of the residual itself because it's being applied within the filter. Here's some code (the last two lines are optional), which is explained below.
 
 ```{r album_zresid_inspect, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
 album_full_rsd %>% 

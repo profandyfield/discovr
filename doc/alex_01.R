@@ -10,13 +10,9 @@ knitr::opts_chunk$set(
 
 
 ## ----1_1, echo = TRUE, eval = FALSE-------------------------------------------
-#  library(tidyverse) #if you haven't already executed this command
 #  readr::write_csv(metalli_tib, "../data/metallica.csv")
 
 ## ----1_3, echo = TRUE, eval = FALSE-------------------------------------------
-#  library(tidyverse) #if you haven't already executed this command
-#  library(here) #if you haven't already executed this command
-#  
 #  tibble::tibble(.rows = 20) %>%
 #    dplyr::mutate(
 #      	method = c(rep("Electric shock", 10), rep("Being nice", 10)) %>% forcats::as_factor(),
@@ -26,9 +22,6 @@ knitr::opts_chunk$set(
 #    readr::write_csv(., here::here("data/method_of_teaching.csv"))
 
 ## ----1_4, echo = TRUE, eval = FALSE-------------------------------------------
-#  library(tidyverse) #if you haven't already executed this command
-#  library(here) #if you haven't already executed this command
-#  
 #  oxoby_tib <- here::here("data/acdc.csv") %>% read_csv()
 #  
 #  oxoby_tib %>%
@@ -40,9 +33,6 @@ knitr::opts_chunk$set(
 #    readr::write_csv(., here::here("data/acdc.csv)
 
 ## ----1_5, echo = TRUE, eval = FALSE-------------------------------------------
-#  library(tidyverse) #if you haven't already executed this command
-#  library(here) #if you haven't already executed this command
-#  
 #  tibble::tibble(.rows = 10) %>%
 #    dplyr::mutate(
 #      	sex = c(rep("Male", 5), rep("Female", 5)) %>% forcats::as_factor(),
@@ -52,9 +42,6 @@ knitr::opts_chunk$set(
 #    readr::write_csv(., here::here("data/shopping_exercise.csv"))
 
 ## ----1_6, echo = TRUE, eval = FALSE-------------------------------------------
-#  library(tidyverse) #if you haven't already executed this command
-#  library(here) #if you haven't already executed this command
-#  
 #  tibble::tibble(.rows = 20) %>%
 #    dplyr::mutate(
 #      	wife = c(rep("Goat", 12), rep("Dog", 8)) %>% forcats::as_factor(),
@@ -64,9 +51,6 @@ knitr::opts_chunk$set(
 #    readr::write_csv(., here::here("data/goat_or_dog.csv"))
 
 ## ----1_7, echo = TRUE, eval = FALSE-------------------------------------------
-#  library(tidyverse) #if you haven't already executed this command
-#  library(here) #if you haven't already executed this command
-#  
 #  tibble::tibble(.rows = 15) %>%
 #    dplyr::mutate(
 #      	tea = c(2, 4, 3, 4, 2, 3, 5, 5, 2, 5, 1, 3, 3, 4, 1),
@@ -75,9 +59,6 @@ knitr::opts_chunk$set(
 #    readr::write_csv(., here::here("data/tea_makes_you_brainy_15.csv"))
 
 ## ----1_8, echo = TRUE, eval = FALSE-------------------------------------------
-#  library(tidyverse) #if you haven't already executed this command
-#  library(here) #if you haven't already executed this command
-#  
 #  tibble::tibble(.rows = 52) %>%
 #    dplyr::mutate(
 #      id = c(171, 35, 57, 36, 53, 176, 76, 184, 64, 166, 14, 100, 30, 49, 157, 14, 68, 71, 4, 40, 66, 27, 61, 27, 36, 33, 120, 113, 95, 99, 78, 32, 43, 183, 103, 31, 86, 54, 5, 20, 13, 59, 58, 188, 187, 15, 50, 9, 45, 60, 73, 189) %>% forcats::as_factor(),

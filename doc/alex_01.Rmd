@@ -34,7 +34,6 @@ This document may contain abridged sections from *Discovering Statistics Using R
 Answer is in the chapter, but to save the tibble as a csv use:
 
 ```{r 1_1, echo = TRUE, eval = FALSE}
-library(tidyverse) #if you haven't already executed this command
 readr::write_csv(metalli_tib, "../data/metallica.csv")
 ```
 
@@ -76,9 +75,6 @@ Just kidding, here’s words to describe my feelings about R:
 We have three variables here: **sex** (was the person male or female), the **method** of teaching they underwent and their **mark** on an assignment. Therefore, the tidy format is to arrange the data in three columns. There are several ways to do this, here's one of them:
 
 ```{r 1_3, echo = TRUE, eval = FALSE}
-library(tidyverse) #if you haven't already executed this command
-library(here) #if you haven't already executed this command
-
 tibble::tibble(.rows = 20) %>% 
   dplyr::mutate(
     	method = c(rep("Electric shock", 10), rep("Being nice", 10)) %>% forcats::as_factor(),
@@ -100,9 +96,6 @@ The data can be found in `discovr::teaching`.
 Assuming you have the original **acdc.csv** in the data folder of your project, this code should do the job:
 
 ```{r 1_4, echo = TRUE, eval = FALSE}
-library(tidyverse) #if you haven't already executed this command
-library(here) #if you haven't already executed this command
-
 oxoby_tib <- here::here("data/acdc.csv") %>% read_csv()
 
 oxoby_tib %>% 
@@ -123,9 +116,6 @@ The data can be found in `discovr::acdc`
 We have three variables here: **sex** (was the person male or female), the **distance** they walked and the **time** they spent shopping. Therefore, we arrange the data in three columns:
 
 ```{r 1_5, echo = TRUE, eval = FALSE}
-library(tidyverse) #if you haven't already executed this command
-library(here) #if you haven't already executed this command
-
 tibble::tibble(.rows = 10) %>% 
   dplyr::mutate(
     	sex = c(rep("Male", 5), rep("Female", 5)) %>% forcats::as_factor(),
@@ -145,9 +135,6 @@ The data can be found in `discovr::shopping`.
 We have three variables here: **wife** (did the person marry a goat or a dog?), their love of animals (**animal**) and their **life_satisfaction** score. The tidy format is to arrange the data in three columns. There are several ways to do this, here's one of them:
 
 ```{r 1_6, echo = TRUE, eval = FALSE}
-library(tidyverse) #if you haven't already executed this command
-library(here) #if you haven't already executed this command
-
 tibble::tibble(.rows = 20) %>% 
   dplyr::mutate(
     	wife = c(rep("Goat", 12), rep("Dog", 8)) %>% forcats::as_factor(),
@@ -166,9 +153,6 @@ The data can be found in `discovr::animal_bride`.
 We have two variables here: the number of cups of tea a person drinks per day (**tea**) and their cognitive functioning out of 80 (**cog_fun**) The tidy format is to arrange the data in three columns. There are several ways to do this, here's one of them:
 
 ```{r 1_7, echo = TRUE, eval = FALSE}
-library(tidyverse) #if you haven't already executed this command
-library(here) #if you haven't already executed this command
-
 tibble::tibble(.rows = 15) %>% 
   dplyr::mutate(
     	tea = c(2, 4, 3, 4, 2, 3, 5, 5, 2, 5, 1, 3, 3, 4, 1),
@@ -188,9 +172,6 @@ The design of this study is such that different people were put in one of three 
 We have three variables: whether the participant was male or female (**sex**), which booklet condition they were in (**name_type**) and their test score (**accuracy**). I've also included a participant **id**, just so that your data matches the file *zhang_2013_subsample.csv* that I provide for you. We can enter the data as follows (there are other ways too ...):
 
 ```{r 1_8, echo = TRUE, eval = FALSE}
-library(tidyverse) #if you haven't already executed this command
-library(here) #if you haven't already executed this command
-
 tibble::tibble(.rows = 52) %>% 
   dplyr::mutate(
     id = c(171, 35, 57, 36, 53, 176, 76, 184, 64, 166, 14, 100, 30, 49, 157, 14, 68, 71, 4, 40, 66, 27, 61, 27, 36, 33, 120, 113, 95, 99, 78, 32, 43, 183, 103, 31, 86, 54, 5, 20, 13, 59, 58, 188, 187, 15, 50, 9, 45, 60, 73, 189) %>% forcats::as_factor(),

@@ -544,7 +544,7 @@ cloak_bt_rob
 cbt_rob <- WRS2::yuenbt(mischief ~ cloak, data = cloak_tib, nboot = 1000, side = TRUE)
 ```
 
-Based on this robust test there is not a significant difference (because the confidence interval crosses zero) in mischief scores across the two cloak groups, $Y_t = −1.36, p = 0.19$. We’re also told that on average the no cloak group performed one less mischievous act, $M = -1$ with a 95% confidence interval for the trimmed mean difference ranging from `r round(cbt_rob$conf.int[1], 2)` to `r round(cbt_rob$conf.int[2], 2)`.
+Based on this robust test there is not a significant difference (because the confidence interval crosses zero) in mischief scores across the two cloak groups, $Y_t = -1.36, p = 0.19$. We’re also told that on average the no cloak group performed one less mischievous act, $M = -1$ with a 95% confidence interval for the trimmed mean difference ranging from `r round(cbt_rob$conf.int[1], 2)` to `r round(cbt_rob$conf.int[2], 2)`.
 
 <div class="tip">
   `r cat_space()` **Tip: Bootstrapping**

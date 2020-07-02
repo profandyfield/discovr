@@ -1,3 +1,5 @@
+<div style="float: right"><img style="float: left;" src="./data-raw/images/discovr_hex.png" width="150"></div>
+
 # discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2021)
 
 ***

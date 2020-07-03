@@ -1,4 +1,4 @@
-<div style="float: right"><img style="float: left;" src="./data-raw/images/discovr_hex.png" width="150"></div>
+<div style="float: right"><img src="./data-raw/images/discovr_hex.png" width="150"></div>
 
 # discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2021)
 
@@ -46,7 +46,17 @@ I recommend working through [this tutorial](http://milton-the-cat.rocks/learnr/r
 
 ### Running a tutorial
 
-To run a particular tutorial execute:
+In <img src="./data-raw/images/rstudio_logo.png" width="48"> Version 1.3 onwards there is a tutorial pane. Having executed
+
+```
+library(discovr)
+```
+
+A list of tutorials appears in this pane. Scroll through them and click on the ![](./data-raw/images/start_tutorial.png){height=1em} button to run the tutorial:
+
+<img src="./data-raw/images/run_tutorial_pane_discovr.png" width="700">
+
+Alternatively, to run a particular tutorial from the console execute:
 
 ```
 library(discovr)

@@ -947,6 +947,32 @@
 
 "ong_tidy"
 
+#' Puppy therapy data
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Despite this increase in puppies on my campus (which can only be a good thing) to reduce stress,
+#' the evidence base is pretty mixed. Imagine we wanted to contribute to this literature by running a
+#' study in which we randomized people into three groups: (1) a control group (this could be a treatment as usual,
+#' a no treatment or ideally some kind of placebo group – for example, if our hypothesis was specifically
+#' about puppies we could give people in this group a cat disguised as a dog); (2) 15 minutes of puppy therapy
+#' (a low-dose group); and (3) 30 minutes of puppy contact (a high-dose group). The dependent variable was a
+#' measure of happiness ranging from 0 to 10. The design of this study mimics a very simple randomized controlled
+#' trial (as used in pharmacological, medical and psychological intervention trials) because people are randomized
+#' into a control group or groups containing the active intervention (in this case puppies,
+#' but in other cases a drug or a surgical procedure). The tibble contains the following variables:
+#'
+#' * **id**: Participant id
+#' * **dose**: Treatment group to which the participant was randomly assigned (control, 15 minutes of puppy therapy, 30 minutes of puppy therapy)
+#' * **happiness**: Self-reported happiness from 0 (as unhappy as I can possibly imagine being) to 10 (as happy as I can possibly imagine being)
+#'
+#' @format A tibble with 15 rows and 3 variables.
+#' @docType data
+#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+
+"puppies"
+
+
 #' Pub data
 #'
 #' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.

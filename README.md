@@ -52,7 +52,7 @@ In <img src="./data-raw/images/rstudio_logo.png" width="48"> Version 1.3 onwards
 library(discovr)
 ```
 
-A list of tutorials appears in this pane. Scroll through them and click on the ![](./data-raw/images/start_tutorial.png){height=1em} button to run the tutorial:
+A list of tutorials appears in this pane. Scroll through them and click on the <img src="./data-raw/images/start_tutorial.png" width="64"> button to run the tutorial:
 
 <img src="./data-raw/images/run_tutorial_pane_discovr.png" width="700">
 

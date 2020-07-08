@@ -19,9 +19,14 @@ knitr::opts_chunk$set(
 	warning = FALSE
 )
 
-library(learnr)
-library(magrittr)
+library(forcats)
 library(ggplot2)
+library(htmltools)
+library(kableExtra)
+library(lubridate)
+library(magrittr)
+library(tibble)
+
 
 source("./www/discovr_helpers.R")
 ```

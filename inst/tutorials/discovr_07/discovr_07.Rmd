@@ -19,9 +19,13 @@ knitr::opts_chunk$set(
 	warning = FALSE
 )
 
-library(learnr)
-library(magrittr)
+library(correlation)
+library(dplyr)
+library(GGally)
 library(ggplot2)
+library(htmltools)
+library(magrittr)
+library(psych)
 
 source("./www/discovr_helpers.R")
 

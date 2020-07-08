@@ -21,10 +21,18 @@ knitr::opts_chunk$set(
 	warning = FALSE
 )
 
-library(learnr)
-library(magrittr)
-library(ggplot2)
+library(broom)
+library(dplyr)
+library(GGally)
 library(ggfortify)
+library(ggplot2)
+library(htmltools)
+library(magrittr)
+library(parameters)
+library(robust)
+library(sandwich)
+library(tibble)
+
 
 source("./www/discovr_helpers.R")
 

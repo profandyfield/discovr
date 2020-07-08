@@ -19,9 +19,12 @@ knitr::opts_chunk$set(
 	warning = FALSE
 )
 
-library(learnr)
-library(magrittr)
+library(dplyr)
+library(effectsize)
 library(ggplot2)
+library(htmltools)
+library(magrittr)
+library(WRS2)
 
 source("./www/discovr_helpers.R")
 

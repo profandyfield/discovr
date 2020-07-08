@@ -138,42 +138,12 @@ See the book or data descriptions for more details. This is a list of available 
 
 ## Smart Alex solutions
 
-Solutions for end of chapter tasks are available as vignettes. To access solutions for a particular chapter execute this command within RStudio but replace `xx` with the chapter number:
-
-```
-vignette("alex_xx", package = "discovr")
-```
-
-For example, to access the solutions for Chapter 1 you would execute:
-
-```
-vignette("alex_01", package = "discovr")
-```
+Solutions for end of chapter tasks are available at [www.discovr.rocks](https://www.discovr.rocks/solutions/alex/).
 
 ## Labcoat Leni solutions
 
-Solutions for the Labcoat Leni tasks are available as vignettes. To access solutions for a particular chapter execute this command within RStudio but replace `xx` with the chapter number:
-
-```
-vignette("leni_xx", package = "discovr")
-```
-
-For example, to access the solutions for Chapter 1 you would execute:
-
-```
-vignette("leni_01", package = "discovr")
-```
+Solutions for the Labcoat Leni tasks are available at [www.discovr.rocks](https://www.discovr.rocks/solutions/leni/).
 
 ## Chapter code
 
-Although I recommend working through the interactive solutions, each book Chapter has a vignette containiong the code used within the chapter. To access the annotated code for a particular chapter execute this command within RStudio but replace `xx` with the chapter number:
-
-```
-vignette("code_xx", package = "discovr")
-```
-
-For example, to access the solutions for Chapter 1 you would execute:
-
-```
-vignette("code_01", package = "discovr")
-```
+Although I recommend working through the interactive solutions, each book Chapter has online code and a downloadable R Markdown file available from [www.discovr.rocks](https://www.discovr.rocks/solutions/code/).

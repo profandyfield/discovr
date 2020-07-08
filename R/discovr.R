@@ -111,6 +111,18 @@
 #' * [tuk_2011]: Data about whether needing to urinate helps decision making. (Also in the file *tuk_2011.csv*.)
 #' * [zhang_sample]: Data about whether performing a maths test under a different name assists performance. (Also in the file *zhang_2013_subsample.csv*.)
 #'
+#' @section Smart Alex solutions:
+#'
+#'Solutions for end of chapter tasks are available at [www.discovr.rocks](https://www.discovr.rocks/solutions/alex/).
+#'
+#' @section Labcoat Leni solutions:
+#'
+#'Solutions for the Labcoat Leni tasks are available at [www.discovr.rocks](https://www.discovr.rocks/solutions/leni/).
+#'
+#' @section Chapter code:
+#'
+#'Although I recommend working through the interactive solutions, each book Chapter has online code and a downloadable R Markdown file available from [www.discovr.rocks](https://www.discovr.rocks/solutions/code/).
+#'
 #'
 #' @section References:
 #'

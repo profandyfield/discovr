@@ -10,47 +10,15 @@ Description: Interactive 'R' tutorials, datasets, materials and problem solution
 License: GPL-3
 Depends:
   R (>= 4.0.0),
-  learnr
+  learnr (>= 0.10.0)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.0
 Roxygen: list(markdown = TRUE)
 Imports:
-    BayesFactor,
-    boot,
-    broom,
-    car,
-    correlation,
-    dplyr,
-    effectsize,
-    forcats,
-    GGally,
-    ggfortify,
-    ggplot2,
-    gmodels,
-    here,
-    Hmisc,
-    htmltools,
-    interactions,
-    lavaan,
-    lubridate,
-    magrittr,
-    mice,
-    moments,
-    parameters,
-    psych,
-    pixiedust,
-    qqplotr,
-    readr,
-    robust,
-    sandwich,
-    tibble,
-    tidyr,
-    WRS2
 Suggests: 
-    kableExtra,
     knitr,
     rmarkdown
-URL: http://milton-the-cat.rocks/home/discovr.html, https://github.com/profandyfield/discovr
+URL: https://www.discovr.rocks, https://github.com/profandyfield/discovr
 BugReports: https://github.com/profandyfield/discovr/issues
 VignetteBuilder: knitr

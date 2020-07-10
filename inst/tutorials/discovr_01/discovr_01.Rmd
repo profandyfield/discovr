@@ -400,7 +400,7 @@ Adapt the above code to enter the names in Table 1 and store these in an object 
 ```{r met_name-hint-1}
 # You were asked to call the object name, so start with:
 
-name <- .....
+name <- 
 ```
 
 ```{r met_name-hint-2}
@@ -483,7 +483,7 @@ birth_date <- .....
 ```{r met_dob-hint-2}
 # To complete the right hand side adapt the sample code:
 
-c("date 1", "date 2", "date 3", ... "final date")
+c("date 1", "date 2", "date 3", ...)
 
 # Now replace date 1 with the first date, date 2 with the second and so on until all the dates are entered.
 ```
@@ -524,7 +524,7 @@ Use what you learnt in the previous section to create a variable called **death_
 
 ```{r met_dod-hint-1}
 # To get you started
-death_date <- c(NA, ...
+death_date <- c(NA, ...)
                 
 # Now enter the rest of the NAs and dates. 
 ```
@@ -573,7 +573,7 @@ Create the variable **current_member** containing the corresponding dates in Tab
 
 ```{r met_current-hint-1}
 # To get you started
-current_member <- c(TRUE, ...
+current_member <- c(TRUE, ...)
                 
 # Now enter the rest of the TRUEs and FALSEs. 
 ```
@@ -646,7 +646,7 @@ Rather than using two commands, we could create **instrument** in a single comma
 
 ```{r met_inst_pipe-hint-1}
 # First enter the data
-instrument <- c(2, 0, ...
+instrument <- c(2, 0, ...)
 
 # Complete the data entry and add a pipe               
 ```
@@ -800,7 +800,7 @@ death_date <- c(NA, NA, NA, NA, NA, "1986-09-27", NA) %>%
 
 ```{r met_tibble-hint-1}
 # To get you started ...
-metalli_tib <- tibble::tibble(name, ...
+metalli_tib <- tibble::tibble(name, ...)
                               
 # Add the other variables (birth_date, death_date, instrument, current_member, songs_written, net_worth)
 ```

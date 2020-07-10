@@ -14,17 +14,17 @@ The `discovr` package contains resources for my 2021 textbook [Discovering Stati
 To use `discovr` you first need to install <img src="./data-raw/images/r_logo.png" width="18"> and <img src="./data-raw/images/rstudio_logo.png" width="48"> and familiarise yourself with <img src="./data-raw/images/r_logo.png" width="18">, <img src="./data-raw/images/rstudio_logo.png" width="48"> and good workflow practice. You can do this using [this interactive tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/). Once you have installed <img src="./data-raw/images/r_logo.png" width="18"> and <img src="./data-raw/images/rstudio_logo.png" width="48"> you can install `discovr`. The package is in development so you have to install it from github. To install the package execute (in <img src="./data-raw/images/rstudio_logo.png" width="48">):
 
 ```
-if(!require(htmltools)){
+if(!require(remotes)){
   install.packages('remotes')
 }
 
-remotes::install_github("profandyfield/discovr", dependencies = TRUE)
+remotes::install_github("profandyfield/discovr")
 ```
 
 If you are trying to install on a networked computer the install might fail (it's to do install.packages not liking UNC paths, which I'm not even going to pretend to understand). The solution is to specify the location of your <img src="./data-raw/images/r_logo.png" width="18"> library at the point of install. Most networks will map network locations to a drive name (for example, at my own University, users accounts are on the 'N' drive). Find the location of your <img src="./data-raw/images/r_logo.png" width="18"> library (e.g., `N:/Documents/R/win-library/3.5`), possibly executing `.libPaths()` to help you, and specify this location using the `lib` argument:
 
 ```
-remotes::install_github("profandyfield/discovr", dependencies = TRUE, lib = "N:/Documents/R/win-library/3.5")
+remotes::install_github("profandyfield/discovr", lib = "N:/Documents/R/win-library/3.5")
 ```
 
 ## Interactive tutorials

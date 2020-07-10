@@ -7,7 +7,7 @@
 
 ***
 
-The `discovr` package contains resources for my 2021 textbook [Discovering Statistics Using <img src="./data-raw/images/r_logo.png" width="18"> and <img src="./data-raw/images/rstudio_logo.png" width="48">](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/). There are tutorials written using [learnr](https://rstudio.github.io/learnr/). Once a tutorial is running it's a bit like reading a book but with places where you can practice the <img src="./data-raw/images/r_logo.png" width="18"> code that you have just been taught. The `discovr` package is free and offered to support tutors and students using my textbook who want to learn <img src="./data-raw/images/r_logo.png" width="18">.
+The `discovr` package contains resources for my 2021 textbook [Discovering Statistics Using <img src="./data-raw/images/r_logo.png" width="18"> and <img src="./data-raw/images/rstudio_logo.png" width="48">](https://www.discovr.rocks/). There are tutorials written using [learnr](https://rstudio.github.io/learnr/). Once a tutorial is running it's a bit like reading a book but with places where you can practice the <img src="./data-raw/images/r_logo.png" width="18"> code that you have just been taught. The `discovr` package is free and offered to support tutors and students using my textbook who want to learn <img src="./data-raw/images/r_logo.png" width="18">.
 
 ## Installing `discovr`
 

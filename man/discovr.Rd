@@ -5,13 +5,13 @@
 \alias{discovr}
 \title{discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2021)}
 \description{
-The `discovr`` package contains resources for my 2021 textbook \href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{Discovering Statistics Using R and RStudio}.
+The `discovr`` package contains resources for my 2021 textbook \href{https://www.discovr.rocks/}{Discovering Statistics Using R and RStudio}.
 There are tutorials written using learnr, datasets, solutions to tasks and so on.
 }
 \section{Who is the package aimed at?}{
 
 
-Anyone teaching from or reading \href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{Discovering Statistics Using R and RStudio} should find these resources useful.
+Anyone teaching from or reading \href{https://www.discovr.rocks/}{Discovering Statistics Using R and RStudio} should find these resources useful.
 }
 
 \section{Interactive tutorials}{
@@ -65,6 +65,7 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{catterplot}: Fictitious data for plotting a catterplot. (Also in the file \emph{catterplot.csv}.)
 \item \link{cat_dance}: Fictitious data about training cats to dance. (Also in the file \emph{cat_dance.csv}.)
 \item \link{cat_reg}: Fictitious data about training cats to dance. (Also in the file \emph{cat_reg.csv}.)
+\item \link{cetinkaya_2006}: data from a study by Cetinkaya and Domjan (2006) about quails with sexual fetishes. Seriously. (Also in the file \emph{cetinkaya_2006.csv}.)
 \item \link{chamorro_premuzic}: Data about what students want (personality wise) from their lecturers. (Also in the file \emph{chamorro_premuzic.csv}.)
 \item \link{child_aggression}: Fictitious data (based on real research) about predicting aggression in children. (Also in the file \emph{child_aggression.csv}.)
 \item \link{coldwell_2006}: Data predicting childhood adjustment from various parenting variables. (Also in the file \emph{coldwell_2006.csv}.)
@@ -74,6 +75,7 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{df_beta}: Fictitious data used to illustrate the DF Beta statistic. (Also in the file \emph{df_beta.csv}.)
 \item \link{essay_marks}: Fictitious data about essay marking. (Also in the file \emph{essay_marks.csv}.)
 \item \link{exam_anxiety}: Fictitious data about exam performance, anxiety and revision. (Also in the file \emph{exam_anxiety.csv}.)
+\item \link{gallup_2003}: Data that tests a hypothesis about why penises have a bell end. (Also in the file \emph{gallup_2003.csv}.)
 \item \link{gelman_2009}: Data used to critically evaluate the explanations (and claim) that there are more beautiful women than men in the world. (Also in the file \emph{gelman_2009.csv}.)
 \item \link{glastonbury}: More fictitious data about music festivals and being smelly. (Also in the file \emph{glastonbury.csv}.)
 \item \link{grades}: Fictitious data about statistics grades. (Also in the file \emph{grades.csv}.)
@@ -89,7 +91,8 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{mcnulty_2008}: Simulated data to match the results of a study about whether attractivenes sis linked to the support given within a relationship. (Also in the file \emph{mcnulty_2008.csv}.)
 \item \link{men_dogs}: Fictitious data about whether men exhibit dog-like behaviours (compared to dogs). (Also in the file \emph{men_dog.csv}.)
 \item \link{metal_health}: Fictitious data about whether listening to heavy metal negatively affects mental health. (Also in the file \emph{metal_health.csv}.)
-\item \link{metallica}: Data about thrash metal nband, Metallica. (Also in the file \emph{metallica.csv}.)
+\item \link{metallica}: Data about thrash metal band, Metallica. (Also in the file \emph{metallica.csv}.)
+\item \link{murder}: Fictitious data about the number of murder each month at three street locations (Ruskin Avenue, Acacia Avenue and Rue Morgue). (Also in the file \emph{murder.csv}.)
 \item \link{notebook}: Fictitious data about whether watching the film the notebook is emotionally arousing. (Also in the file \emph{notebook.csv}.)
 \item \link{ong_2011}: Data about social media profile pictures and personality traits. (Also in the file \emph{ong_2011.csv}.)
 \item \link{ong_tidy}: Data about social media profile pictures and personality traits. (Also in the file \emph{ong_tidy.csv}.)
@@ -99,15 +102,19 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{roaming_cats}: Fictitious data about how far cats roam from their homes (Also in the file \emph{roaming_cats.csv}.)
 \item \link{self_help}: Fictitious data about whether self-help books improve relationship satisfaction. (Also in the file \emph{self_help.csv}.)
 \item \link{self_help_dsur}: Fictitious data about whether self-help books improve relationship satisfaction compared to statistics books. (Also in the file \emph{self_help_dsur.csv}.)
+\item \link{shopping}: Fictitious data about shopping. (Also in the file \emph{shopping_exercise.csv}.)
 \item \link{social_anxiety}: Fictitious (I think) data about whether social anxiety symptoms are specific to social anxiety. (Also in the file \emph{social_anxiety.csv}.)
 \item \link{social_media}: Fictitious data about the effects of social media on grammar. (Also in the file \emph{social_media.csv}.)
-\item \link{shopping}: Fictitious data about shopping (Also in the file \emph{shopping_exercise.csv}.)
+\item \link{soya}: fictitious data about the effects of eating soya on sperm count. (Also in the file \emph{soya.csv}.)
 \item \link{students}: I can't even remember what this data file contains. (Also in the file \emph{student.csv}.)
+\item \link{superhero}: fictitious data about whether wearing different superhero costumes leads to more severe physical injuries. (Also in the file \emph{superhero.csv}.)
 \item \link{supermodel}: Fictitious data about supermodel salaries. (Also in the file \emph{supermodel.csv}.)
 \item \link{tablets}: Fictitious data about predicting the desirability of computing tablets. (Also in the file \emph{tablets.csv}.)
 \item \link{tea_15}: Fictitious data based on real data about cognitive functioning and drinking tea. (Also in the file \emph{tea_makes_you_brainy_15.csv}.)
 \item \link{tea_716}: Fictitious data based on real data about cognitive functioning and drinking tea. (Also in the file \emph{tea_makes_you_brainy_716.csv}.)
-\item \link{teaching}: Fictitious data about the success of different methods of treaching. (Also in the file \emph{method_of_teaching.csv}.)
+\item \link{teaching}: Fictitious data about the success of different methods of teaching. (Also in the file \emph{teaching.csv}.)
+\item \link{teach_method}: More fictitious data about the success of different methods of teaching. (Also in the file \emph{teach_method.csv}.)
+\item \link{tumour}: fictitious data about mobile phone use and brain tumours. (Also in the file \emph{tumour.csv}.)
 \item \link{video_games}: Fictitious data about the relationship between video game use, callous unemotional traits and aggression. (Also in the file \emph{video_games.csv}.)
 \item \link{tuk_2011}: Data about whether needing to urinate helps decision making. (Also in the file \emph{tuk_2011.csv}.)
 \item \link{zhang_sample}: Data about whether performing a maths test under a different name assists performance. (Also in the file \emph{zhang_2013_subsample.csv}.)

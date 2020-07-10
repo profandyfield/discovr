@@ -8,7 +8,7 @@
 A tibble with 2506 rows and 2 variables.
 }
 \source{
-\href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{https://www.discoveringstatistics.com/books/discovering-statistics-using-r}
+\url{https://www.discovr.rocks}
 }
 \usage{
 metal_health

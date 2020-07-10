@@ -8,7 +8,7 @@
 A tibble with 118 rows and 9 variables.
 }
 \source{
-\href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{https://www.discoveringstatistics.com/books/discovering-statistics-using-r}
+\url{https://www.discovr.rocks}
 }
 \usage{
 coldwell_2006

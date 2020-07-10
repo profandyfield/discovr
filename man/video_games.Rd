@@ -3,12 +3,12 @@
 \docType{data}
 \name{video_games}
 \alias{video_games}
-\title{Video game and aggression Data}
+\title{Video game and aggression data}
 \format{
 A tibble with 442 rows and 4 variables
 }
 \source{
-\href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{https://www.discoveringstatistics.com/books/discovering-statistics-using-r}
+\url{https://www.discovr.rocks}
 }
 \usage{
 video_games

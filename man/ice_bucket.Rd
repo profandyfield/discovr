@@ -8,7 +8,7 @@
 A tibble with 2,323,452 rows and 1 variable.
 }
 \source{
-\href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{https://www.discoveringstatistics.com/books/discovering-statistics-using-r}
+\url{https://www.discovr.rocks}
 }
 \usage{
 ice_bucket

@@ -3,12 +3,12 @@
 \docType{data}
 \name{tuk_2011}
 \alias{tuk_2011}
-\title{Tuk et al. (2011) Data}
+\title{Tuk et al. (2011) data}
 \format{
 A tibble with 102 rows and 3 variables
 }
 \source{
-\href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{https://www.discoveringstatistics.com/books/discovering-statistics-using-r}
+\url{https://www.discovr.rocks}
 }
 \usage{
 tuk_2011

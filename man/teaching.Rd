@@ -3,12 +3,12 @@
 \docType{data}
 \name{teaching}
 \alias{teaching}
-\title{Method of teaching data}
+\title{Method of teaching data (2 groups)}
 \format{
 A tibble with 20 rows and 3 variables.
 }
 \source{
-\href{https://www.discoveringstatistics.com/books/discovering-statistics-using-r/}{https://www.discoveringstatistics.com/books/discovering-statistics-using-r}
+\url{https://www.discovr.rocks}
 }
 \usage{
 teaching

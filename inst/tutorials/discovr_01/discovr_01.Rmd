@@ -400,17 +400,19 @@ Adapt the above code to enter the names in Table 1 and store these in an object 
 ```{r met_name-hint-1}
 # You were asked to call the object name, so start with:
 #
-# name <- 
+
+name <- c()
 ```
 
 ```{r met_name-hint-2}
 # To complete the right hand side adapt the sample code to include surnames, and add the pre-2001 members:
 
-c("Lars","James","Jason", "Kirk")
+c("Lars", "James", "Jason", "Kirk")
 ```
 
 ```{r met_name-hint-3}
-# This gives you
+# Put this together, this gives you:
+
 name <- c("Lars Ulrich", "James Hetfield", "Kirk Hammett", "Rob Trujillo", "Jason Newsted", "Cliff Burton", "Dave Mustaine")
 
 # Don't forget that to see the object execute its name
@@ -477,7 +479,7 @@ Create the variable called **birth_date** containing the dates of birth in Table
 ```{r met_dob-hint-1}
 # The variable is called birth_date, so start with:
 
-birth_date <- .....
+birth_date <- c()
 ```
 
 ```{r met_dob-hint-2}
@@ -489,7 +491,8 @@ c("date 1", "date 2", "date 3", ...)
 ```
 
 ```{r met_dob-hint-3}
-# This gives you
+# Together, this gives you
+
 birth_date <- c("1963-12-26", "1963-08-03", "1962-11-18", "1964-10-23", "1963-03-04", "1962-02-10", "1961-09-13")
 
 # Now pipe it into lubridate::ymd

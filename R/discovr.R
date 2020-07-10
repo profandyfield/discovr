@@ -2,12 +2,12 @@
 #'
 #' @description
 #'
-#' The `discovr`` package contains resources for my 2021 textbook [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/).
+#' The `discovr`` package contains resources for my 2021 textbook [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/).
 #' There are tutorials written using learnr, datasets, solutions to tasks and so on.
 #'
 #' @section Who is the package aimed at?:
 #'
-#' Anyone teaching from or reading [Discovering Statistics Using R and RStudio](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/) should find these resources useful.
+#' Anyone teaching from or reading [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) should find these resources useful.
 #'
 #'
 #' @section Interactive tutorials:
@@ -64,6 +64,7 @@
 #' * [catterplot]: Fictitious data for plotting a catterplot. (Also in the file *catterplot.csv*.)
 #' * [cat_dance]: Fictitious data about training cats to dance. (Also in the file *cat_dance.csv*.)
 #' * [cat_reg]: Fictitious data about training cats to dance. (Also in the file *cat_reg.csv*.)
+#' * [cetinkaya_2006]: data from a study by Cetinkaya and Domjan (2006) about quails with sexual fetishes. Seriously. (Also in the file *cetinkaya_2006.csv*.)
 #' * [chamorro_premuzic]: Data about what students want (personality wise) from their lecturers. (Also in the file *chamorro_premuzic.csv*.)
 #' * [child_aggression]: Fictitious data (based on real research) about predicting aggression in children. (Also in the file *child_aggression.csv*.)
 #' * [coldwell_2006]: Data predicting childhood adjustment from various parenting variables. (Also in the file *coldwell_2006.csv*.)
@@ -73,6 +74,7 @@
 #' * [df_beta]: Fictitious data used to illustrate the DF Beta statistic. (Also in the file *df_beta.csv*.)
 #' * [essay_marks]: Fictitious data about essay marking. (Also in the file *essay_marks.csv*.)
 #' * [exam_anxiety]: Fictitious data about exam performance, anxiety and revision. (Also in the file *exam_anxiety.csv*.)
+#' * [gallup_2003]: Data that tests a hypothesis about why penises have a bell end. (Also in the file *gallup_2003.csv*.)
 #' * [gelman_2009]: Data used to critically evaluate the explanations (and claim) that there are more beautiful women than men in the world. (Also in the file *gelman_2009.csv*.)
 #' * [glastonbury]: More fictitious data about music festivals and being smelly. (Also in the file *glastonbury.csv*.)
 #' * [grades]: Fictitious data about statistics grades. (Also in the file *grades.csv*.)
@@ -88,7 +90,8 @@
 #' * [mcnulty_2008]: Simulated data to match the results of a study about whether attractivenes sis linked to the support given within a relationship. (Also in the file *mcnulty_2008.csv*.)
 #' * [men_dogs]: Fictitious data about whether men exhibit dog-like behaviours (compared to dogs). (Also in the file *men_dog.csv*.)
 #' * [metal_health]: Fictitious data about whether listening to heavy metal negatively affects mental health. (Also in the file *metal_health.csv*.)
-#' * [metallica]: Data about thrash metal nband, Metallica. (Also in the file *metallica.csv*.)
+#' * [metallica]: Data about thrash metal band, Metallica. (Also in the file *metallica.csv*.)
+#' * [murder]: Fictitious data about the number of murder each month at three street locations (Ruskin Avenue, Acacia Avenue and Rue Morgue). (Also in the file *murder.csv*.)
 #' * [notebook]: Fictitious data about whether watching the film the notebook is emotionally arousing. (Also in the file *notebook.csv*.)
 #' * [ong_2011]: Data about social media profile pictures and personality traits. (Also in the file *ong_2011.csv*.)
 #' * [ong_tidy]: Data about social media profile pictures and personality traits. (Also in the file *ong_tidy.csv*.)
@@ -98,15 +101,19 @@
 #' * [roaming_cats]: Fictitious data about how far cats roam from their homes (Also in the file *roaming_cats.csv*.)
 #' * [self_help]: Fictitious data about whether self-help books improve relationship satisfaction. (Also in the file *self_help.csv*.)
 #' * [self_help_dsur]: Fictitious data about whether self-help books improve relationship satisfaction compared to statistics books. (Also in the file *self_help_dsur.csv*.)
+#' * [shopping]: Fictitious data about shopping. (Also in the file *shopping_exercise.csv*.)
 #' * [social_anxiety]: Fictitious (I think) data about whether social anxiety symptoms are specific to social anxiety. (Also in the file *social_anxiety.csv*.)
 #' * [social_media]: Fictitious data about the effects of social media on grammar. (Also in the file *social_media.csv*.)
-#' * [shopping]: Fictitious data about shopping (Also in the file *shopping_exercise.csv*.)
+#' * [soya]: fictitious data about the effects of eating soya on sperm count. (Also in the file *soya.csv*.)
 #' * [students]: I can't even remember what this data file contains. (Also in the file *student.csv*.)
+#' * [superhero]: fictitious data about whether wearing different superhero costumes leads to more severe physical injuries. (Also in the file *superhero.csv*.)
 #' * [supermodel]: Fictitious data about supermodel salaries. (Also in the file *supermodel.csv*.)
 #' * [tablets]: Fictitious data about predicting the desirability of computing tablets. (Also in the file *tablets.csv*.)
 #' * [tea_15]: Fictitious data based on real data about cognitive functioning and drinking tea. (Also in the file *tea_makes_you_brainy_15.csv*.)
 #' * [tea_716]: Fictitious data based on real data about cognitive functioning and drinking tea. (Also in the file *tea_makes_you_brainy_716.csv*.)
-#' * [teaching]: Fictitious data about the success of different methods of treaching. (Also in the file *method_of_teaching.csv*.)
+#' * [teaching]: Fictitious data about the success of different methods of teaching. (Also in the file *teaching.csv*.)
+#' * [teach_method]: More fictitious data about the success of different methods of teaching. (Also in the file *teach_method.csv*.)
+#' * [tumour]: fictitious data about mobile phone use and brain tumours. (Also in the file *tumour.csv*.)
 #' * [video_games]: Fictitious data about the relationship between video game use, callous unemotional traits and aggression. (Also in the file *video_games.csv*.)
 #' * [tuk_2011]: Data about whether needing to urinate helps decision making. (Also in the file *tuk_2011.csv*.)
 #' * [zhang_sample]: Data about whether performing a maths test under a different name assists performance. (Also in the file *zhang_2013_subsample.csv*.)

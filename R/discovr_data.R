@@ -23,7 +23,7 @@
 #'
 #' @docType data
 #' @format A tibble with 36 rows and 2 variables.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 #' @references
 #'
 #'    * Oxoby, R. J. (2008). On the efficiency of AC/DC: Bon Scott versus Brian Johnson. *Economic Enquiry*, *47*, 598-602. [https://doi.org/10.1111/j.1465-7295.2008.00138.x](https://doi.org/10.1111/j.1465-7295.2008.00138.x)
@@ -49,7 +49,7 @@
 #'
 #' @format A tibble with 200 rows and 5 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "album_sales"
 
@@ -73,7 +73,7 @@
 #'
 #' @format A tibble with 20 rows and 3 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "animal_bride"
 
@@ -109,7 +109,7 @@
 #'
 #' @format A tibble with 16 rows and 5 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 #' @references
 #'
 #'    * Beckham, A. S. (1929). Is the Negro happy? A psychological analysis. *Journal of Abnormal and Social Psychology*, 24, 186–190. [doi.org/10.1037/h0072938](https://doi.org/10.1037/h0072938).
@@ -133,7 +133,7 @@
 #'
 #' @docType data
 #' @format A tibble with 68 rows and 4 variables.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "biggest_liar"
 
@@ -152,7 +152,7 @@
 #'
 #' @format A tibble with 24 rows and 3 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "big_hairy_spider"
 
@@ -176,7 +176,7 @@
 #'
 #' @format A tibble with 947 rows and 5 variables
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 #' @references
 #'
 #'    * Bronstein, M. V., Pennycook, G., Bear, A., Rand, D. G., & Cannon, T. D. (2019). Belief in fake news is associated with delusionality, dogmatism, religious fundamentalism, and reduced analytic thinking. *Journal of Applied Research in Memory and Cognition*, 8(1), 108–117. [https://doi.org/10.1016/j.jarmac.2018.09.005](https://doi.org/10.1016/j.jarmac.2018.09.005)
@@ -193,7 +193,7 @@
 #'
 #' @format A tibble with 947 rows and 5 variables
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 #' @references
 #'
 #'    * Bronstein, M. V., Pennycook, G., Bear, A., Rand, D. G., & Cannon, T. D. (2019). Belief in fake news is associated with delusionality, dogmatism, religious fundamentalism, and reduced analytic thinking. *Journal of Applied Research in Memory and Cognition*, 8(1), 108–117. [https://doi.org/10.1016/j.jarmac.2018.09.005](https://doi.org/10.1016/j.jarmac.2018.09.005)
@@ -211,7 +211,7 @@
 #'
 #' @docType data
 #' @format A tibble with 78 rows and 2 variables.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "catterplot"
 
@@ -231,7 +231,7 @@
 #'
 #' @docType data
 #' @format A tibble with 200 rows and 7 variables.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "cat_reg"
 
@@ -249,9 +249,48 @@
 #'
 #' @docType data
 #' @format A tibble with 200 rows and 2 variables.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "cat_dance"
+
+#' Cetinkaya and Domjan (2006) data
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Some quail develop fetishes. Really. In studies where a terrycloth object acts as a sign that a mate will shortly
+#' become available, some quail start to direct their sexuial behaviour towards the terrycloth object.
+#' In evolutionary terms, this fetishistic behaviour seems counterproductive because sexual behaviour becomes directed
+#' towards something that cannot provide reproductive success. However, perhaps this behaviour serves to prepare the
+#' organism for the ‘real’ mating behaviour.
+#'
+#' Cetinkaya and Domjan (2006) sexually conditioned male quail.
+#' All quail experienced the terrycloth stimulus and an opportunity to mate, but for some the terrycloth stimulus
+#' immediately preceded the mating opportunity (paired group) whereas others experienced a 2-hour delay
+#' (this acted as a control group because the terrycloth stimulus did not predict a mating opportunity).
+#' In the paired group, quail were classified as fetishistic or not depending on whether they engaged in sexual
+#' behaviour with the terrycloth object.
+#'
+#' During a test trial the quail mated with a female and the researchers measured the percentage of eggs fertilized,
+#' the time spent near the terrycloth object, the latency to initiate copulation, and copulatory efficiency.
+#' If this fetishistic behaviour provides an evolutionary advantage then we would expect the fetishistic quail to
+#' fertilize more eggs, initiate copulation faster and be more efficient in their copulations.
+#' These are the data from that study. The data contains the following variables:
+#'
+#'   * **groups**: The group to which each quail belonged (Fetishistics, NonFetishistics, or Control)
+#'   * **paired**: whether the terrycloth predicted a mating opportunity (paired) or not (unpaired)
+#'   * **egg_percent**: percentage of eggs fetilised by male
+#'   * **duration**: Time spent near terrycloth object
+#'   * **latency**: Time taken to initiate copulation
+#'   * **efficiency**: Copulatory efficiancy
+#'
+#' @format A tibble with 59 rows and 6 variables.
+#' @docType data
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @references
+#'
+#'    * Cetinkaya, H., & Domjan, M. (2006). Sexual fetishism in a quail (*Coturnix japonica*) model system: Test of reproductive success. *Journal of Comparative Psychology*, *120*, 427–432. [doi.org/10.1037/0735-7036.120.4.427](https://doi.org/10.1037/0735-7036.120.4.427)
+
+"cetinkaya_2006"
 
 #' Chamorro-Premuzic, et al. (2008) data
 #'
@@ -283,7 +322,7 @@
 #'
 #' @format A tibble with 430 rows and 12 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 #' @references
 #'
 #'    * Chamorro-Premuzic, T., Furnham, A., Christopher, A. N., Garwood, J., & Neil Martin, G. (2008). Birds of a feather: Students’ preferences for lecturers’ personalities as predicted by their own personality and learning approaches. *Personality and Individual Differences*, 44(4), 965–976. [https://doi.org/10.1016/j.paid.2007.10.032](https://doi.org/10.1016/j.paid.2007.10.032).
@@ -311,7 +350,7 @@
 #'
 #' @docType data
 #' @format A tibble with 666 rows and 6 variables.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "child_aggression"
 
@@ -340,7 +379,7 @@
 #'
 #' @docType data
 #' @format A tibble with 118 rows and 9 variables.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "coldwell_2006"
 
@@ -369,7 +408,7 @@
 #'
 #' @format A tibble with 4 rows and 7 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 #' @references
 #'
 #'    * Daniels, E. (2012). Sexy versus strong: What girls and women think of female athletes. *Journal of Applied Developmental Psychology*, 33, 79–90. [doi.org/10.1016/j.appdev.2011.12.002](https://doi.org/10.1016/j.appdev.2011.12.002).
@@ -397,7 +436,7 @@
 #'
 #' @format A tibble with 64 rows and 3 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "dark_lord"
 
@@ -413,7 +452,7 @@
 #'
 #' @format A tibble with 30 rows and 3 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "df_beta"
 
@@ -436,7 +475,7 @@
 #'
 #' @docType data
 #' @format A tibble with 810 rows and 5 variables.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "download"
 
@@ -457,7 +496,7 @@
 #'
 #' @docType data
 #' @format A tibble with 45 rows and 4 variables.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "essay_marks"
 
@@ -478,9 +517,37 @@
 #'
 #' @docType data
 #' @format A tibble with 103 rows and 5 variables.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "exam_anxiety"
+
+#' Gelman & Weakliem (2009) data
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' It’s something of a wonder how evolution managed to produce such a monstrosity as the human penis.
+#' One theory is sperm competition: the human penis has an unusually large glans (the ‘bell-end’) compared to other primates,
+#' and this may have evolved so that the penis can displace seminal fluid from other males by ‘scooping it out’ during intercourse.
+#' Armed with various devices from Hollywood Exotic Novelties, an artificial vagina from California Exotic Novelties, and some water and cornstarch
+#' Gallup et al. (2003) put this theory to the test. They loaded the artificial vagina with 2.6 ml of fake sperm and inserted one
+#' of three female sex toys into it before withdrawing it: a control phallus that had no coronal ridge (i.e., no bell-end),
+#' a phallus with a minimal coronal ridge (small bell-end) and a phallus with a coronal ridge. They measured sperm displacement as a percentage:
+#' 100% means that all the sperm was displaced, and 0% means that none of the sperm was displaced. If the human penis evolved as a sperm displacement
+#' device then Gallup et al. predicted: (1) that having a bell-end would displace more sperm than not; and
+#' (2) that the phallus with the larger coronal ridge would displace more sperm than the phallus with the minimal coronal ridge. The data from the study has three variables:
+#'
+#' * **id**: The participant's id (these do not come from the study data file)
+#' * **phallus**: the type of phallus used (No coronal ridge, minimal coronal ridge and coronal ridge)
+#' * **displace**: percentage of sperm displaced by the phallus
+#'
+#' @format A tibble with 15 rows and 3 variables.
+#' @docType data
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @references
+#'
+#' * Gallup, G. G. J., Burch, R. L., Zappieri, M. L., Parvez, R., Stockwell, M., & Davis, J. A. (2003). The human penis as a semen displacement device. *Evolution and Human Behavior*, *24*, 277–289. [doi.org/10.1016/S1090-5138(03)00016-3](https://doi.org/10.1016/S1090-5138(03)00016-3)
+
+"gallup_2003"
 
 #' Gelman & Weakliem (2009) data
 #'
@@ -502,7 +569,7 @@
 #'
 #' @format A tibble with 548 rows and 3 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 #' @references
 #'
 #' * Gelman, A., & Weakliem, D. (2009). Of beauty, sex and power: Too little attention has been paid to the statistical challenges in estimating small effects. *American Scientist*, 97, 310–316. [https://www.jstor.org/stable/27859361](https://www.jstor.org/stable/27859361)
@@ -529,7 +596,7 @@
 #'
 #' @docType data
 #' @format A tibble with 810 rows and 5 variables.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "glastonbury"
 
@@ -549,7 +616,7 @@
 #'
 #' @docType data
 #' @format A tibble with 25 rows and 3 variables.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "grades"
 
@@ -572,7 +639,7 @@
 #'
 #' @docType data
 #' @format A tibble with 100 rows and 4 variables.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "social_media"
 
@@ -595,7 +662,7 @@
 #'
 #' @docType data
 #' @format A tibble with 60 rows and 3 variables.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "hiccups"
 
@@ -615,7 +682,7 @@
 #'
 #' @docType data
 #' @format A tibble with 100 rows and 3 variables.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "honesty_lab"
 
@@ -632,7 +699,7 @@
 #'
 #' @docType data
 #' @format A tibble with 2,323,452 rows and 1 variable.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "ice_bucket"
 
@@ -654,7 +721,7 @@
 #'
 #' @docType data
 #' @format A tibble with 24 rows and 3 variables.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "invisibility_cloak"
 
@@ -675,7 +742,7 @@
 #'
 #' @docType data
 #' @format A tibble with 24 rows and 3 variables.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 
 "invisibility_rm"
@@ -699,7 +766,7 @@
 #'
 #' @format A tibble with 500 rows and 4 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "jiminy_cricket"
 
@@ -721,7 +788,7 @@
 #'
 #' @format A tibble with 160 rows and 4 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 #' @references
 #'
 #'    * Johns, S. E., Hargrave, L. A., & Newton-Fisher, N. E. (2012). Red is not a proxy signal for female genitalia in humans. *PLoS One*, 7, e34669. [doi.org/10.1371/journal.pone.0034669]( https://doi.org/10.1371/journal.pone.0034669).
@@ -743,7 +810,7 @@
 #'
 #' @format A tibble with 240 rows and 6 variables
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 #' @references
 #'
 #'    * Lambert, N. M., Negash, S., Stillman, T. F., Olmstead, S. B., & Fincham, F. D. (2012). A love that doesn’t last: Pornography consumption and weakened commitment to one’s romantic partner. *Journal of Social and Clinical Psychology*, 31, 410–438. [doi.org/10.1521/jscp.2012.31.4.410](https://doi.org/10.1521/jscp.2012.31.4.410)
@@ -772,7 +839,7 @@
 #'
 #' @format A tibble with 83 rows and 4 variables
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 #' @references
 #'
 #'    * Massar, K., Buunk, A. P., & Rempt, S. (2012). Age differences in women’s tendency to gossip are mediated by their mate value. *Personality and Individual Differences*, 52, 106–109. [https://doi.org/10.1016/j.paid.2011.09.013](https://doi.org/10.1016/j.paid.2011.09.013)
@@ -795,7 +862,7 @@
 #'
 #' @format A tibble with 164 rows and 5 variables
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 #' @references
 #'
 #'    * McNulty, J. K., Neff, L. A., & Karney, B. R. (2008). Beyond initial attraction: Physical attractiveness in newlywed marriage. *Journal of Family Psychology*, 22, 135–143. [https://doi.org/10.1037/0893-3200.22.1.135](https://doi.org/10.1037/0893-3200.22.1.135)
@@ -818,7 +885,7 @@
 #'
 #' @format A tibble with 40 rows and 3 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "men_dogs"
 
@@ -838,7 +905,7 @@
 #'
 #' @format A tibble with 2506 rows and 2 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 #' @references
 #'
 #'    * Lacourse, E., Claes, M., & Villeneuve, M. (2001). Heavy metal music and adolescent suicidal risk. *Journal of Youth and Adolescence*, *30*, 321–332. [doi.org/10.1023/A:1010492128537](https://doi.org/10.1023/A:1010492128537).
@@ -865,9 +932,26 @@
 #'
 #' @format A tibble with 7 rows and 9 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "metallica"
+
+#' Murder in the streets data
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Fictitious data about murder. A sociologist wanted to compare murder rates (murder) each month in a year at
+#' three high-profile locations in London (street). The data contains the following variables:
+#'
+#'   * **month**: The month for the reported crime statistics
+#'   * **street**: The street location (Ruskin Avenue, Acacia Avenue and Rue Morgue)
+#'   * **murder**: the number of reported murders during each month
+#'
+#' @format A tibble with 36 rows and 3 variables.
+#' @docType data
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
+
+"murder"
 
 #' The notebook data
 #'
@@ -884,7 +968,7 @@
 #'
 #' @format A tibble with 40 rows and 3 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "notebook"
 
@@ -912,7 +996,7 @@
 #'
 #' @format A tibble with 275 rows and 12 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 #' @references
 #'
 #' * Ong, E. Y. L., Ang, R. P., Ho, J. C. M., Lim, J. C. Y., Goh, D. H., Lee, C. S., & Chua, A. Y. K. (2011). Narcissism, extraversion and adolescents’ self-presentation on Facebook. *Personality and Individual Differences*, 50, 180–185. [https://doi.org/10.1016/j.paid.2010.09.022](https://doi.org/10.1016/j.paid.2010.09.022)
@@ -940,7 +1024,7 @@
 #'
 #' @format A tibble with 1100 rows and 9 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 #' @references
 #'
 #'    * Ong, E. Y. L., Ang, R. P., Ho, J. C. M., Lim, J. C. Y., Goh, D. H., Lee, C. S., & Chua, A. Y. K. (2011). Narcissism, extraversion and adolescents’ self-presentation on Facebook. *Personality and Individual Differences*, 50, 180–185. [https://doi.org/10.1016/j.paid.2010.09.022](https://doi.org/10.1016/j.paid.2010.09.022)
@@ -968,7 +1052,7 @@
 #'
 #' @format A tibble with 15 rows and 3 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "puppies"
 
@@ -985,7 +1069,7 @@
 #'
 #' @format A tibble with 8 rows and 2 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "pubs"
 
@@ -1004,7 +1088,7 @@
 #'
 #' @format A tibble with 100 rows and 6 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "r_exam"
 
@@ -1022,7 +1106,7 @@
 #'
 #' @docType data
 #' @format A tibble with 60 rows and 4 variables.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "roaming_cats"
 
@@ -1041,7 +1125,7 @@
 #'
 #' @format A tibble with 20 rows and 3 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "self_help"
 
@@ -1060,7 +1144,7 @@
 #'
 #' @format A tibble with 1000 rows and 3 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "self_help_dsur"
 
@@ -1078,7 +1162,7 @@
 #'
 #' @format A tibble with 10 rows and 3 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "shopping"
 
@@ -1109,12 +1193,38 @@
 #'
 #' @format A tibble with 134 rows and 4 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 #' @references
 #'
 #'    * Field, A. P., & Cartwright-Hatton, S. (2008). Shared and unique cognitive factors in social anxiety. *International Journal of Cognitive Therapy*, *1*, 206–222. [doi.org/10.1521/ijct.2008.1.3.206](https://doi.org/10.1521/ijct.2008.1.3.206).
 
 "social_anxiety"
+
+#' Soya and sperm counts data
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' I read a story in a newspaper (yes, back when they existed) claiming that the chemical genistein, which is
+#' naturally occurring in soya, was linked to lowered sperm counts in Western males. When you read the actual study,
+#' it had been conducted on rats, it found no link to lowered sperm counts, but there was evidence of abnormal sexual
+#' development in male rats (probably because genistein acts like oestrogen). As journalists tend to do, a study showing no
+#' link between soya and sperm counts was used as the scientific basis for an article about soya being the cause of declining
+#' sperm counts in Western males. Imagine the rat study was enough for us to want to test this idea in humans.
+#' We recruit 80 males and split them into four groups that vary in the number of soya ‘meals’ (a dinner containing 75g of soya)
+#' they ate per week over a year: no soya meals (i.e., none in the whole year), one per week (52 over the year),
+#' four per week (208 over the year), and seven per week (364 over the year). At the end of the year, participants
+#' produced some sperm that I could count (when I say ‘I’, I mean someone else in a laboratory as far away from me as humanly possible).
+#' The fictitious data contain the following variables:
+#'
+#'   * **id**: The participant's id
+#'   * **soya**: How many soya meals per week consumed over a year (none, 1, 4 and 7)
+#'   * **sperm**: number of sperm cells per milliliter of semen in millions (yes, I did have to Google that)
+#'
+#' @docType data
+#' @format A tibble with 80 rows and 3 variables.
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
+
+"soya"
 
 #' Students and lecturers data
 #'
@@ -1133,9 +1243,32 @@
 #'
 #' @docType data
 #' @format A tibble with 10 rows and 7 variables.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "students"
+
+#' Superhero data
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Children wearing superhero costumes are more likely to harm themselves because of the unrealistic impression of
+#' invincibility that these costumes could create. For example, children have reported to hospital with severe injuries
+#' because of trying ‘to initiate flight without having planned for landing strategies’ (Davies, Surridge, Hole, & Munro-Davies, 2007).
+#' I can relate to the imagined power that a costume bestows upon you; indeed, I have been known to dress up as Fisher by donning a
+#' beard and glasses and trailing a goat around on a lead in the hope that it might make me more knowledgeable about statistics.
+#' These fictional data contain the severity of injury (on a scale from 0, no injury, to 100, death) for children reporting to the accident
+#' and emergency department at hospitals, and information on which superhero costume they were wearing (hero):
+#' Spiderman, Superman, the Hulk or a teenage mutant ninja turtle. The fictitious data contain the following variables:
+#'
+#'   * **id**: The participant's id
+#'   * **hero**: The costume being worn at the time of injury (Spiderman, Superman, the Hulk or a teenage mutant ninja turtle)
+#'   * **injury**: the severity of injury (on a scale from 0, no injury, to 100, death)
+#'
+#' @docType data
+#' @format A tibble with 30 rows and 3 variables.
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
+
+"superhero"
 
 #' Supermodel data
 #'
@@ -1153,7 +1286,7 @@
 #'
 #' @docType data
 #' @format A tibble with 231 rows and 4 variables.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "supermodel"
 
@@ -1172,11 +1305,11 @@
 #'
 #' @docType data
 #' @format A tibble with 240 rows and 4 variables.
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "tablets"
 
-#' Method of teaching data
+#' Method of teaching data (2 groups)
 #'
 #' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
@@ -1189,9 +1322,30 @@
 #'
 #' @format A tibble with 20 rows and 3 variables.
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "teaching"
+
+#' Method of teaching data (3 groups)
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' To test how different teaching methods affected students’ knowledge I took three statistics modules where
+#' I taught the same material. For one module I wandered around with a large cane and beat anyone who asked
+#' daft questions or got questions wrong (punish). In the second I encouraged students to discuss things that
+#' they found difficult and gave anyone working hard a nice sweet (reward). In the final course I neither
+#' punished nor rewarded students’ efforts (indifferent). I measured the students’ exam marks (percentage).
+#' This fictional data contains the following variables
+#'
+#'   * **id**: participant's id
+#'   * **group**: The type of teaching method used (Punish, Reward, Indifferent)
+#'   * **exam**: The exam mark (%)
+#'
+#' @format A tibble with 30 rows and 3 variables.
+#' @docType data
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
+
+"teach_method"
 
 #' Tea data (small sample)
 #'
@@ -1207,7 +1361,7 @@
 #'   * **cog_fun**: cognitive functioning (out of 80)
 #'
 #' @format A tibble with 15 rows and 3 variables:
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 #' @references
 #'
 #'    * Feng, L., Gwee, X., Kua, E. H., & Ng, T. P. (2010). Cognitive function and tea consumption in community dwelling older Chinese in Singapore. *Journal of Nutrition Health & Aging*, *14*, 433-438.
@@ -1228,14 +1382,14 @@
 #'   * **cog_fun**: cognitive functioning (out of 80)
 #'
 #' @format A tibble with 716 rows and 3 variables:
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 #' @references
 #'
 #'    * Feng, L., Gwee, X., Kua, E. H., & Ng, T. P. (2010). Cognitive function and tea consumption in community dwelling older Chinese in Singapore. *Journal of Nutrition Health & Aging*, *14*, 433-438.
 
 "tea_716"
 
-#' Tuk et al. (2011) Data
+#' Tuk et al. (2011) data
 #'
 #' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
@@ -1253,14 +1407,35 @@
 #'
 #' @format A tibble with 102 rows and 3 variables
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 #' @references
 #'
 #'    * Tuk, M. A., Trampe, D., & Warlop, L. (2011). Inhibitory spillover: increased urination urgency facilitates impulse control in unrelated domains. *Psychological Science*, 22, 627–633. [doi.org/10.1177/0956797611404901](https://doi.org/10.1177/0956797611404901)
 
 "tuk_2011"
 
-#' Video game and aggression Data
+#' Mobile phone use and brain tumour data
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Mobile phones emit microwaves, and so holding one next to your brain for large parts of the day is a bit like
+#' sticking your brain in a microwave oven and pushing the ‘cook until well done’ button. If we wanted to test this
+#' experimentally, we could get six groups of people and strap a mobile phone on their heads, then by remote control
+#' turn the phones on for a certain amount of time each day. After six months, we measure the size of any tumour (in mm^3)
+#'  close to the site of the phone antenna (just behind the ear). The six groups experienced 0, 1, 2, 3, 4 or 5 hours per
+#'  day of phone microwaves for six months. The fictitious data contains three variables:
+#'
+#'   * **id**: participant ID
+#'   * **usage**: how many hours per day were the phones active for (0, 1, 2, 3, 4, or 5 hours)
+#'   * **tumour**: Size of any tumour (in mm^3)
+#'
+#' @format A tibble with 102 rows and 3 variables
+#' @docType data
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
+
+"tumour"
+
+#' Video game and aggression data
 #'
 #' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
@@ -1276,7 +1451,7 @@
 #'
 #' @format A tibble with 442 rows and 4 variables
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 
 "video_games"
 
@@ -1299,7 +1474,7 @@
 #'
 #' @format A tibble with 52 rows and 4 variables
 #' @docType data
-#' @source [https://www.discoveringstatistics.com/books/discovering-statistics-using-r](https://www.discoveringstatistics.com/books/discovering-statistics-using-r/)
+#' @source [www.discovr.rocks](https://www.discovr.rocks)
 #' @references
 #'
 #'    * Field, A. P. (2010). Teaching Statistics. In D. Upton & A. Trapp (Eds.), *Teaching Psychology in Higher Education* (pp. 134-163). Chichester, UK: Wiley-Blackwell.

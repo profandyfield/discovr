@@ -156,26 +156,27 @@ exam_tib <- exam_tib %>%
 
 ## `r bmu()` ggplot2 [(1)]{.alt}
 
-The most versatile package for producing plots in `r rproj()` is [ggplot2](http://ggplot2.tidyverse.org/) which automatically installs as part of the `tidyverse` package. Figure 2 shows how `ggplot2` works. You begin with some data and you initialize a plot with the `ggplot()` function within which you name the tibble or data frame that you want to use, then you set a bunch of aesthetics using the `aes()` function. Primarily, you name the variable you want plotted on the *x*-axis, the variable for the *y*-axis and any aesthetics that you want to set for the plot using a variable (for example, you might want to vary the colour of bars by levels of a variable.). You then add layers to the plot that control what the plot shows and the visual properties. For example, you might add dots to show group means, then layer on top error bars. There are various key concepts that relate to controlling aspects of the layers of the plot:
+The most versatile package for producing plots in `r rproj()` is [ggplot2](http://ggplot2.tidyverse.org/) which automatically installs as part of the `tidyverse` package. Figure 2 shows how `ggplot2` works. You begin with some data and you initialize a plot with the `ggplot()` function within which you name the tibble or data frame that you want to use, then you set a bunch of aesthetics using the `aes()` function. Primarily, you name the variable you want plotted on the *x*-axis, the variable for the *y*-axis and any aesthetics that you want to set for the plot using a variable (for example, you might want to vary the colour of bars by levels of a variable.). You then add layers to the plot that control what the plot shows and perhaps adjust the visual properties of the objects on the layer. For example, you might add a layer of dots to show group means, change their appearance to be filled with different colours, then add a layer of error bars on top of them. There are various key concepts that relate to controlling aspects of the layers of the plot:
 
-* **Aesthetics**: objects in a plot have visual aesthetics that control how they look. Examples of aesthetics are the fill colour of points and bars, line colours (of lines, error bars, lines around bars), the shape of data points, the size of data points, the type of line (full, dashed, dotted etc.). These can be set directly for an object (e.g., making all data points red) or can be set using a variable (e.g., colouring data points based on whether it came from an experimental or control group). When setting an aesthetic based on a variable we use the `aes()` function.
 * **Geometric objects**: these are objects that represent data. Some examples are dots to represent raw data or a summary such as a mean, lines connecting data points or summarizing data (e.g., a line of best fit, lines connecting group means), error bars, and so on. For example:
     - `geom_point()` plots data points (by default dots)
     - `geom_boxplot()` plots boxplots
     - `geom_histogram()` plots histograms
     - `geom_errorbar()` plots error bars
     - `geom_smooth()` plots summary lines (e.g., linear models and splines)
-* **Statistics**: there are situations where rather than using a geom function to display the data it is easier to map a summary of the data directly to the plot with various `stat` functions (usually `stat_summary()`). It's a little complex to explain when you use stats instead of geoms, so we'll learn by doing!
+* **Objects or 'stats'**: there are situations where rather than using a geom function to display the data it is easier to map a summary of the data directly to the plot with various `stat` functions (usually `stat_summary()`). It's a little complex to explain when you use stats instead of geoms, so we'll learn by doing!
 * **Scales**: These control the details of how the data are mapped to their visual objects. For example, you can control what appears on the *x* and *y* axis (i.e. intervals between values) using `scale_x_continuous()` and `scale_y_continuous()`, axis labels are controlled with `labs()`.
 * **Coordinate system**: by default `ggplot2` uses a Cartesian system. We will use `coord_cartesian()` to set the limits of the *x* and *y* axis.
 * **Position adjustments**: sometimes elements of a plot overlap (e.g., lots of data points in the same place). There are various position adjustments that can be useful such as `position_dodge()` which forces objects not to overlap side by side (handy for complex bar charts) and `position_jitter()` which adds a small random adjustment to data points.
 * **Facets**: facets can be used to plot different parts of the data in different panels. For example, if you wanted a plot of data from dogs and a separate plot of the same data for cats and you wanted these plots side by side, you could do this with `facet_wrap()`.
 * **Themes**: There are a number of built in themes that you can apply to your plots. We will use these built-in themes, but occasionally over-ride defaults with the `theme()` function.
 
+Each of the things above is a layer/transparencies that can be added to a plot. There are also **aesthetics**, which control what the things on a layer look like (in other words, their the visual aesthetics). Examples of aesthetics are the fill colour of points and bars, line colours (of linear models, error bars, lines around bars etc.), the shape of data points, the size of data points, the type of line (full, dashed, dotted etc.). These aesthetics can be set directly for an object (e.g., making all data points red) or can be set using a variable (e.g., colouring data points based on whether it came from an experimental or control group).
+
 This is a lot to take in, so consider this a reference point (rather than expecting to remember all of the above). We'll get a feel for `ggplot2` by doing examples. You may also find the [official reference guide](http://ggplot2.tidyverse.org/reference/index.html) and, of course, my book chapter helpful.
 
 <figure>
-<img src="./images/ds_r_04_fig_04_05.png" alt="See main text for description." style="width:100%">
+<img src="./images/dsr2_fig_05_05_ggplot_2020.png" alt="See main text for description." style="width:100%">
 <figcaption>Figure 2: A ggplot is made up of layers.</figcaption>
 </figure> 
 

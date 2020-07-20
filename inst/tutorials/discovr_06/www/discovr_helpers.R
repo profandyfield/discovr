@@ -1,7 +1,3 @@
-if(!require(htmltools)){
-  install.packages('htmltools')
-}
-
 # set fontawesome icon colours
 
 h_col <- function(header_level){

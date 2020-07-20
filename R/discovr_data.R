@@ -513,7 +513,7 @@
 #'   * **revise**: the time spent revising for the exam (hours)
 #'   * **exam_grade**: the percentage score of each student on the exam
 #'   * **anxiety**: anxiety score on the EAQ out of 100
-#'   * **sex**: biological sex of the participant
+#'   * **sex**: whether the participant self-identified as male or female
 #'
 #' @docType data
 #' @format A tibble with 103 rows and 5 variables.
@@ -958,11 +958,11 @@
 #' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictitious data about the film The Notebook. Imagine that a film company director was interested in whether there was really such a thing as a ‘chick flick’
-#' (a film that has the stereotype of appealing to women more than to men). He took 20 men and 20 women and showed half of each sample a film that was supposed to be a ‘chick flick’ (The Notebook).
+#' (a film that has the stereotype of appealing to women more than to men). He took 20 people who mostly self identify as men and 20 who mostly self identify as women and showed half of each sample a film that was supposed to be a ‘chick flick’ (The Notebook).
 #' The other half watched a documentary about notebooks as a control. In all cases the company director measured participants’ arousal  as an indicator of how much they enjoyed the film.
 #' The data contains the following variables:
 #'
-#'   * **sex**: biological sex of the participant
+#'   * **sex**: sex to which the participant mostly self-identifies
 #'   * **film**: whether the person watched The Notebook or a documentary about notebooks
 #'   * **arousal**: the person's average physiological arousal (e.g., emotional response) during the film.
 #'
@@ -1313,7 +1313,7 @@
 #'
 #' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' The data show the score (out of 20) for 20 different students, some of whom are male and some female,
+#' The data show the score (out of 20) for 20 different students, some of whom are biologically male and others biologically female,
 #' and some of whom were taught using positive reinforcement (being nice) and others who were taught using punishment (electric shock)
 #'
 #'   * **method**: The type of teaching method used

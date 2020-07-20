@@ -688,16 +688,18 @@ download_tib <- download_tib %>%
 download_tib
 ```
 
-In situations like this, where we want to convert multiple variables, it can be quicker to use `mutate_at()` to apply our function `make_z()` to multiple variables simultaneously. Put simply the function applies a mutation at certain columns (hence, the name).
+In situations like this, where we want to convert multiple variables, it can be quicker to use `dplyr::across()` within `mutate()` to apply our function `make_z()` to multiple variables simultaneously. Put simply the function applies a mutation across certain columns (hence, the name).
 
 #### `r robot()` Code example
 
-The function takes the general form:
+In general, you'd use `mutate()` and `across()` in combination like this:
 
 ```{r eval = F}
-dplyr::mutate_at(
-    vars(variables_we_want_to_mutate),
-    mutation_to_be_applied
+dplyr::mutate(
+    dplyr::across(
+      variables_we_want_to_mutate,
+      mutation_to_be_applied
+      )
   )
 ```
 
@@ -709,15 +711,15 @@ For example, to apply the `make_z()` function to variables **day_1**, **day_2** 
 
 ```{r make_z_2, exercise = TRUE, exercise.lines = 5, exercise.setup = "dl_tib"}
 download_tib <- download_tib %>% 
-  dplyr::mutate_at(
-    vars(day_1:day_3),
-    list(z = make_z)
+  dplyr::mutate(
+    dplyr::across(day_1:day_3, list(make_z))
   )
+
 
 download_tib
 ```
 
-This code pipes the data (download_tib) into the mutate_at() function, where two things happen. First, we select the variables to mutate using `vars()`. We specify the variables as [day_1:day_3]{.alt}, which means all the variables in the tibble starting with **day_1** and finishing with **day_3**. Next, we apply a mutation to the selected variables. The mutation we apply is whatever we write within `list()`, which in this case is the function that we wrote called `make_z()`. Basically, variables **day_1**, **day_2** and **day_3** get passed through the `make_z()` function simultaneously. The resulting variables will be named after the originals but with a ‘z’ appended (**day_1_z**, **day_2_z** and **day_3_z**) because I put a ‘z’ before the equals sign in `list()`. The new variables will be stored as the final three columns in the tibble.
+This code pipes the data ([download_tib]{.alt}) into the `mutate()` function, inside which it goes into the `across()` function, where two things happen. First, we select the variables to mutate across. We specify the variables as [day_1:day_3]{.alt}, which means all the variables in the tibble starting with **day_1** and finishing with **day_3**. Next, we apply a mutation to the selected variables. Second, we tell across() what function we want to apply to these variables. In this case, we want to apply the function that we wrote called `make_z()`. Basically, variables **day_1**, **day_2** and **day_3** get passed through the `make_z()` function simultaneously. The resulting variables will be named after the originals but with a ‘z’ appended (**day_1_z**, **day_2_z** and **day_3_z**) because I put a ‘z’ before the equals sign and enclosed the whole shebang in `list()`. The new variables will be stored as the final three columns in the tibble.
 
 ### `r user_visor()` Using standardized scores to detect outliers [(2)]{.alt}
 
@@ -739,10 +741,9 @@ This code pipes the data into `filter()` where we set the criteria that the abso
 download_tib <- download_tib %>%
   dplyr::mutate(
     day_1 = dplyr::recode(day_1, `20.02` = 2.02)
-  ) %>% 
-  dplyr::mutate_at(
-    vars(day_1:day_3),
-    list(z = make_z)
+  ) %>%
+  dplyr::mutate(
+    dplyr::across(day_1:day_3, list(make_z))
   )
 ```
 

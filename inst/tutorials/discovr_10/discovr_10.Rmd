@@ -265,7 +265,7 @@ vids_tib$caunts
 centre(vids_tib$caunts)
 ```
 
-We can use this function within `mutate_at()` to centre all variables that we select.
+We can use this function in conjunction with `mutate()` and `across()` to centre all variables that we select.
 
 #### `r robot()` Code example
 
@@ -274,14 +274,14 @@ For example, having executed the code to create the function `centre()`, we coul
 
 ```{r cntr_mute_at, exercise = TRUE, exercise.lines = 6}
 vids_tib <- vids_tib %>% 
-  dplyr::mutate_at(
-    vars(vid_game, caunts),
-    list(cent = centre)
-  )
+  dplyr::mutate(
+    dplyr::across(c(vid_game, caunts), cent = centre)
+    )
+
 vids_tib
 ```
 
-This code uses `mutate_at()` to add variables to [vids_tib]{.alt} that contain centred scores. Within `mutate_at()` we use `vars()` to select the variables to be mutated (in this case **vid_game** and **caunts**). These variables are then passed through the function in `list()`, which we have specified to be `centre()`, the function we created that calculates centred scores. To prevent the original variables from being overwritten I have specified [cent = before]{.alt} the function,  which means that the centred variables will be named after the original variables but with the suffix [_cent]{.alt}. The end result, you should hopefully see, is two new variables called **caunts_cent** and **vid_game_cent** that contain the centred scores.
+This code uses `mutate()` to add variables to [vids_tib]{.alt} that contain centred scores. Within `mutate()` we use `across()` to select the variables to be mutated (in this case **vid_game** and **caunts**) and to apply the function `centre()`, which we created to centre scores, to them. To prevent the original variables from being overwritten I have specified [cent = before]{.alt} the function,  which means that the centred variables will be named after the original variables but with the suffix [_cent]{.alt}. The end result, you should hopefully see, is two new variables called **caunts_cent** and **vid_game_cent** that contain the centred scores.
 
 ### `r user_visor()` Secifying interaction terms  [(2)]{.alt}
 
@@ -332,10 +332,9 @@ Use the code example, and what you have learnt so far, to fit a linear model usi
 
 ```{r vid_gmc, echo = F}
 vids_tib <- vids_tib %>% 
-  dplyr::mutate_at(
-    vars(vid_game, caunts),
-    list(cent = centre)
-  )
+  dplyr::mutate(
+    dplyr::across(c(vid_game, caunts), cent = centre)
+    )
 ```
 
 
@@ -379,10 +378,9 @@ Use what you have learnt before to fit a robust version of the model by putting 
 
 ```{r, aggress_lm}
 vids_tib <- vids_tib %>% 
-  dplyr::mutate_at(
-    vars(vid_game, caunts),
-    list(cent = centre)
-  )
+  dplyr::mutate(
+    dplyr::across(c(vid_game, caunts), cent = centre)
+    )
 aggress_lm <- lm(aggress ~ caunts_cent*vid_game_cent, data = vids_tib)
 ```
 

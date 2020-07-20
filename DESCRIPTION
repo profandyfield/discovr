@@ -1,12 +1,12 @@
 Package: discovr
 Type: Package
-Title: Interactive Tutorials and Materials to Accompany "Discovering Statistics Using R and RStudio"" (Field 2021)
-Version: 0.1.1
+Title: Interactive Tutorials and Data for "Discovering Statistics Using R and RStudio"
+Version: 0.1.2
 Authors@R: person("Andy", "Field", email = "andyf@sussex.ac.uk", role = c("aut", "cre"))
 Maintainer: Andy Field <andyf@sussex.ac.uk>
-Description: Interactive 'R' tutorials, datasets, materials and problem solutions for the textbook "Discovering Statistics Using 'R' and 'RStudio'" (Field, 2021).
+Description: Interactive 'R' tutorials and datasets for the textbook Field (2016), "Discovering Statistics Using R and RStudio", <https://www.discovr.rocks/>.
     Interactive tutorials cover general workflow in 'R' and 'RStudio', summarizing data, visualizing data, fitting models and bias, correlation, the general linear model, 
-    moderation, mediation, missing values.
+    moderation, mediation, missing values. There are no functions, only datasets and interactive tutorials.
 License: GPL-3
 Depends:
   R (>= 4.0.0),
@@ -16,6 +16,7 @@ LazyData: true
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
 Imports:
+    htmltools
 Suggests: 
     knitr,
     rmarkdown

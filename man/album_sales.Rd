@@ -8,7 +8,7 @@
 A tibble with 200 rows and 5 variables.
 }
 \source{
-\url{https://www.discovr.rocks}
+\href{https://www.discovr.rocks}{www.discovr.rocks}
 }
 \usage{
 album_sales

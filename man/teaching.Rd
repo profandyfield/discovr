@@ -8,7 +8,7 @@
 A tibble with 20 rows and 3 variables.
 }
 \source{
-\url{https://www.discovr.rocks}
+\href{https://www.discovr.rocks}{www.discovr.rocks}
 }
 \usage{
 teaching
@@ -17,7 +17,7 @@ teaching
 A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
-The data show the score (out of 20) for 20 different students, some of whom are male and some female,
+The data show the score (out of 20) for 20 different students, some of whom are biologically male and others biologically female,
 and some of whom were taught using positive reinforcement (being nice) and others who were taught using punishment (electric shock)
 \itemize{
 \item \strong{method}: The type of teaching method used

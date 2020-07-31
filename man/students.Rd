@@ -8,7 +8,7 @@
 A tibble with 10 rows and 7 variables.
 }
 \source{
-\url{https://www.discovr.rocks}
+\href{https://www.discovr.rocks}{www.discovr.rocks}
 }
 \usage{
 students

@@ -8,7 +8,7 @@
 A tibble with 100 rows and 6 variables.
 }
 \source{
-\url{https://www.discovr.rocks}
+\href{https://www.discovr.rocks}{www.discovr.rocks}
 }
 \usage{
 r_exam

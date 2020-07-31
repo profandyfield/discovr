@@ -8,7 +8,7 @@
 A tibble with 15 rows and 3 variables.
 }
 \source{
-\url{https://www.discovr.rocks}
+\href{https://www.discovr.rocks}{www.discovr.rocks}
 }
 \usage{
 puppies
@@ -17,19 +17,20 @@ puppies
 A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
-Despite this increase in puppies on my campus (which can only be a good thing) to reduce stress,
+Despite the increase in puppies on my campus (which can only be a good thing) to reduce stress,
 the evidence base is pretty mixed. Imagine we wanted to contribute to this literature by running a
-study in which we randomized people into three groups: (1) a control group (this could be a treatment as usual,
-a no treatment or ideally some kind of placebo group – for example, if our hypothesis was specifically
-about puppies we could give people in this group a cat disguised as a dog); (2) 15 minutes of puppy therapy
-(a low-dose group); and (3) 30 minutes of puppy contact (a high-dose group). The dependent variable was a
-measure of happiness ranging from 0 to 10. The design of this study mimics a very simple randomized controlled
-trial (as used in pharmacological, medical and psychological intervention trials) because people are randomized
-into a control group or groups containing the active intervention (in this case puppies,
-but in other cases a drug or a surgical procedure). The tibble contains the following variables:
+study in which we randomized people into three groups (dose): (1) a control group, which could be
+a treatment as usual, a no treatment (no puppies) or ideally some kind of placebo group (we could
+give people in this group a cat disguised as a dog); (2) 15 minutes of puppy therapy (a low-dose
+group); and (3) 30 minutes of puppy contact (a high-dose group). The dependent variable was a
+measure of happiness ranging from 0 (as unhappy as I can possibly imagine) to 10 (as happy as I can
+possibly imagine). The design of this study mimics a very simple randomized controlled trial (as used
+in pharmacological, medical and psychological intervention trials) because people are randomized into
+a control group or groups containing the active intervention (in this case puppies, but in other cases
+a drug or a surgical procedure). The tibble contains the following variables:
 \itemize{
 \item \strong{id}: Participant id
-\item \strong{dose}: Treatment group to which the participant was randomly assigned (control, 15 minutes of puppy therapy, 30 minutes of puppy therapy)
+\item \strong{dose}: Treatment group to which the participant was randomly assigned (No puppies (control), 15 minutes of puppy therapy, 30 minutes of puppy therapy)
 \item \strong{happiness}: Self-reported happiness from 0 (as unhappy as I can possibly imagine being) to 10 (as happy as I can possibly imagine being)
 }
 }

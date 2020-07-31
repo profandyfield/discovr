@@ -8,7 +8,7 @@
 A tibble with 103 rows and 5 variables.
 }
 \source{
-\url{https://www.discovr.rocks}
+\href{https://www.discovr.rocks}{www.discovr.rocks}
 }
 \usage{
 exam_anxiety
@@ -26,7 +26,7 @@ The object contains the following variables:
 \item \strong{revise}: the time spent revising for the exam (hours)
 \item \strong{exam_grade}: the percentage score of each student on the exam
 \item \strong{anxiety}: anxiety score on the EAQ out of 100
-\item \strong{sex}: biological sex of the participant
+\item \strong{sex}: whether the participant self-identified as male or female
 }
 }
 \keyword{datasets}

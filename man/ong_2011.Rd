@@ -8,7 +8,7 @@
 A tibble with 275 rows and 12 variables.
 }
 \source{
-\url{https://www.discovr.rocks}
+\href{https://www.discovr.rocks}{www.discovr.rocks}
 }
 \usage{
 ong_2011

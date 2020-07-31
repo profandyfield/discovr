@@ -8,7 +8,7 @@
 A tibble with 947 rows and 5 variables
 }
 \source{
-\url{https://www.discovr.rocks}
+\href{https://www.discovr.rocks}{www.discovr.rocks}
 }
 \usage{
 bronstein_2019

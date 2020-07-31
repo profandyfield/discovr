@@ -8,7 +8,7 @@
 A tibble with 83 rows and 4 variables
 }
 \source{
-\url{https://www.discovr.rocks}
+\href{https://www.discovr.rocks}{www.discovr.rocks}
 }
 \usage{
 massar_2012

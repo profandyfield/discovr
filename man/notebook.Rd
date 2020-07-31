@@ -8,7 +8,7 @@
 A tibble with 40 rows and 3 variables.
 }
 \source{
-\url{https://www.discovr.rocks}
+\href{https://www.discovr.rocks}{www.discovr.rocks}
 }
 \usage{
 notebook
@@ -18,11 +18,11 @@ A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (
 }
 \details{
 Fictitious data about the film The Notebook. Imagine that a film company director was interested in whether there was really such a thing as a ‘chick flick’
-(a film that has the stereotype of appealing to women more than to men). He took 20 men and 20 women and showed half of each sample a film that was supposed to be a ‘chick flick’ (The Notebook).
+(a film that has the stereotype of appealing to women more than to men). He took 20 people who mostly self identify as men and 20 who mostly self identify as women and showed half of each sample a film that was supposed to be a ‘chick flick’ (The Notebook).
 The other half watched a documentary about notebooks as a control. In all cases the company director measured participants’ arousal  as an indicator of how much they enjoyed the film.
 The data contains the following variables:
 \itemize{
-\item \strong{sex}: biological sex of the participant
+\item \strong{sex}: sex to which the participant mostly self-identifies
 \item \strong{film}: whether the person watched The Notebook or a documentary about notebooks
 \item \strong{arousal}: the person's average physiological arousal (e.g., emotional response) during the film.
 }

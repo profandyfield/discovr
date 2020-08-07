@@ -38,6 +38,7 @@ Replacing \code{name_of_tutorial} with the name in bold below. For example, to l
 \item \strong{discovr_08}: The general linear model (GLM). Visualizing the data, fitting GLMs with one and two predictors. Viewing model parameters with broom, model parameters, standard errors, confidence intervals, fit statistics, significance.
 \item \strong{discovr_09}: Categorical predictors with two categories (comparing two means). Comparing two independent means, comparing two related means, effect sizes.
 \item \strong{discovr_10}: Moderation and mediation. Centring variables (grand mean centring), specifying interaction terms, moderation analysis, simple slopes analysis, Johnson-Neyman intervals, mediation with one predictor, direct and indirect effects, mediation using lavaan.
+\item \strong{discovr_11}: Comparing several means. Essentially 'One-way independent ANOVA' but taught using a general linear model framework. Covers setting contrasts (dummy coding, contrast coding, and linear and quadratic trends), the \emph{F}-statistic and Welch's robust \emph{F}, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of means based on trimmed data, \emph{post hoc} tests, Bayes factors.
 }
 
 \strong{Workflow}:

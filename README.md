@@ -99,17 +99,20 @@ See the book or data descriptions for more details. This is a list of available 
 * **dark_lord**: fictitious data about the subliminal messages in songs. For details execute `?dark_lord`.
 * **download**: fictitious data about the download music festival and being smelly. For details execute `?download`.
 * **df_beta**: fictitious data used to illustrate the DF Beta statistic. For details execute `?df_beta`.
+* **elephooty**: Fictitious data about elephants playing football (soccer). For details execute `?elephooty`.
 * **essay_marks**: fictitious data about essay marking. For details execute `?essay_marks`.
 * **exam_anxiety**: fictitious data about exam performance, anxiety and revision. For details execute `?exam_anxiety`.
 * **gallup_2003**: Data that tests a hypothesis aboput why penises have a bell end. For details execute `?gallup_2003`.
 * **gelman_2009**: Data used to critically evaluate the explanations (and claim) that there are more beautiful women than men in the world. For details execute `?gelman_2009`.
 * **glastonbury**: More fictitious data about music festivals and being smelly. For details execute `?glastonbury`.
 * **grades**: fictitious data about statistics grades. For details execute `?grades`.
-* **ice_bucket**: Data about the ice bucket challenge. For details execute `?ice_bucket`.
-* **invisibility_cloak**: fictitious data about how much mischief peopel would get up to if they had an invisibility cloak. For details execute `?invisibility`.
-* **invisibility_rm**: fictitious data about how much mischief peopel would get up to if they had an invisibility cloak but using a repeated measures design. For details execute `?invisibility_rm`.
+* **hangover**: fictitious data about the efficacy of different drinks as cures for a hangover. For details execute `?hangover`
 * **hiccups**: fictitious data on digital rectal stimulation and hiccups. For details execute `?hiccups`.
 * **honesty_lab**: fictitious data about perceptions of honesty. For details execute `?honesty_lab`.
+* **ice_bucket**: Data about the ice bucket challenge. For details execute `?ice_bucket`.
+* **invisibility_base**: Fictitious data about how much mischief people would get up to if they had an invisibility cloak using a pre-post study design.`?invisibility_base`
+* **invisibility_cloak**: fictitious data about how much mischief people would get up to if they had an invisibility cloak using an independent design. For details execute `?invisibility_cloak`.
+* **invisibility_rm**: fictitious data about how much mischief people would get up to if they had an invisibility cloak but using a repeated measures design. For details execute `?invisibility_rm`.
 * **jiminy_cricket**: fictitious data about whether wishing on a star makes you successful. For details execute `?jiminy_cricket`.
 * **johns_2012**: Data about whether the colour red is a mating signal to men. For details execute `?johns_2012`.
 * **lambert_2012**: Data about whether pornography use is related to relationhsip commitment and infidelity. For details execute `?lambert_2012`.
@@ -119,11 +122,13 @@ See the book or data descriptions for more details. This is a list of available 
 * **metal_health**: fictitious data about whether listening to heavy metal negatively affects mental health. For details execute `?metal_health`.
 * **metallica**: Data about thrash metal band, Metallica. For details execute `?metallica`.
 * **murder**: fictitious data about the number of murder each month at three street locations (Ruskin Avenue, Acacia Avenue and Rue Morgue). For details execute `?murder`.
+* **muris_2008**: Data about whether you can train children to interpret ambiguous situations in a particular way. For details execute `?muris_2008`.
 * **notebook**: fictitious data about whether watching the film the notebook is emotionally arousing. For details execute `?notebook`.
 * **ong_2011**: Data about social media profile pictures and personality traits. For details execute `?ong_2011`.
 * **ong_tidy**: Data about social media profile pictures and personality traits. For details execute `?ong_tidy`.
 * **pubs**: Data illustrating the difference between an outlier and an influencial case. For details execute `?pubs`.
 * **puppies**: Fictitious data related to whether puppy therapy works. For details execute `?puppies`.
+* **puppy_love**: Fictitious data related to whether puppy therapy works when you adjust for a person's love of puppies. For details execute `?puppy_love`.
 * **r_exam**: Fictitious data relating to an R exam at two universities. For details execute `?r_exam`.
 * **roaming_cats**: fictitious data about how far cats roam from their homes For details execute `?roaming_cats`.
 * **self_help**: fictitious data about whether self-help books improve relationship satisfaction. For details execute `?self_help`.
@@ -132,6 +137,7 @@ See the book or data descriptions for more details. This is a list of available 
 * **social_anxiety**: fictitious (I think) data about whether social anxiety symptoms are specific to social anxiety. For details execute `?social_anxiety`.
 * **social_media**: fictitious data about the effects of social media on grammar. For details execute `?social_media`.
 * **soya**: fictitious data about the effects of eating soya on sperm count. For details execute `?soya`.
+* **stalker**: fictitious data about therapy for stalking. For details execute `?stalker`.
 * **students**: I can't even remember what this data file contains. For details execute `?student`.
 * **superhero**: fictitious data about whether wearing different superhero costumes leads to more severe physical injuries. For details execute `?superhero`.
 * **supermodel**: fictitious data about supermodel salaries. For details execute `?supermodel`.

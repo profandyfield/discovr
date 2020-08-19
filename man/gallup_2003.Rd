@@ -8,7 +8,7 @@
 A tibble with 15 rows and 3 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/gallup_2003.csv}{www.discovr.rocks/csv/gallup_2003.csv}
 }
 \usage{
 gallup_2003

@@ -8,7 +8,7 @@
 A tibble with 45 rows and 4 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/essay_marks.csv}{www.discovr.rocks/csv/essay_marks.csv}
 }
 \usage{
 essay_marks

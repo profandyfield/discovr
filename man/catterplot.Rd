@@ -8,7 +8,7 @@
 A tibble with 78 rows and 2 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/catterplot.csv}{www.discovr.rocks/csv/catterplot.csv}
 }
 \usage{
 catterplot

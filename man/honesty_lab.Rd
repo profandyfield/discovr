@@ -8,7 +8,7 @@
 A tibble with 100 rows and 3 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/honesty_lab.csv}{www.discovr.rocks/csv/honesty_lab.csv}
 }
 \usage{
 honesty_lab

@@ -8,7 +8,7 @@
 A tibble with 52 rows and 4 variables
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/zhang_sample.csv}{www.discovr.rocks/csv/zhang_sample.csv}
 }
 \usage{
 zhang_sample

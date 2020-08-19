@@ -8,7 +8,7 @@
 A tibble with 7 rows and 9 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/metallica.csv}{www.discovr.rocks/csv/metallica.csv}
 }
 \usage{
 metallica

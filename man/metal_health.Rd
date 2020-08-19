@@ -8,7 +8,7 @@
 A tibble with 2506 rows and 2 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/metal_health.csv}{www.discovr.rocks/csv/metal_health.csv}
 }
 \usage{
 metal_health

@@ -8,7 +8,7 @@
 A tibble with 2,323,452 rows and 1 variable.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/ice_bucket.csv}{www.discovr.rocks/csv/ice_bucket.csv}
 }
 \usage{
 ice_bucket

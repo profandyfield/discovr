@@ -8,7 +8,7 @@
 A tibble with 947 rows and 5 variables
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/bronstein_2019.csv}{www.discovr.rocks/csv/bronstein_2019.csv}
 }
 \usage{
 bronstein_2019

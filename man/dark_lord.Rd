@@ -8,7 +8,7 @@
 A tibble with 64 rows and 3 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/dark_lord.csv}{www.discovr.rocks/csv/dark_lord.csv}
 }
 \usage{
 dark_lord

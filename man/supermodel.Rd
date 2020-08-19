@@ -8,7 +8,7 @@
 A tibble with 231 rows and 4 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/supermodel.csv}{www.discovr.rocks/csv/supermodel.csv}
 }
 \usage{
 supermodel

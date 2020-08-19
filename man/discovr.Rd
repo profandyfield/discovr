@@ -55,13 +55,13 @@ but also provides practice in using RStudio itself.
 
 See the book or data descriptions for more details. This is a list of available datasets within the package. Raw CSV files are available from the book's website.
 \itemize{
-\item \link{acdc}: Data about whether Bon Scott or Brian Johnson is the best singer of AC/DC. (Also in the file \emph{acdc.csv}.)
-\item \link{album_sales}: Fictitious data about predicting album sales from advertising, airplay and the band's image. (Also in the file \emph{album_sales.csv}.)
-\item \link{animal_bride}: Fictitious data about life satisfaction when married to a dog or a goat. (Also in the file \emph{animal_bride.csv}.)
-\item \link{beckham_1929}: Data from a study by Beckham (1929). (Also in the file \emph{beckham_1929.csv}.)
-\item \link{big_hairy_spider}: Fictitious data about whether anxiety is greater after exposure to real spiders or pictures of spiders. (Also in the file \emph{big_hairy_spider.csv}.)
-\item \link{biggest_liar}: Fictitious data about creativity and telling lies. (Also in the file \emph{biggest_liar.csv}.)
-\item \link{bronstein_2019}: Data about whether delusion proneness predicts belief in fake news because of less analytic thinking. (Also in the file \emph{bronstein_2019.csv}.)
+\item \link{acdc}: Data about whether Bon Scott or Brian Johnson is the best singer of AC/DC.
+\item \link{album_sales}: Fictitious data about predicting album sales from advertising, airplay and the band's image.
+\item \link{animal_bride}: Fictitious data about life satisfaction when married to a dog or a goat.
+\item \link{beckham_1929}: Data from a study by Beckham (1929).
+\item \link{big_hairy_spider}: Fictitious data about whether anxiety is greater after exposure to real spiders or pictures of spiders.
+\item \link{biggest_liar}: Fictitious data about creativity and telling lies.
+\item \link{bronstein_2019}: Data about whether delusion proneness predicts belief in fake news because of less analytic thinking.
 \item \link{bronstein_miss_2019}: The data in \link{bronstein_2019} but with missing values inserted using MCAR amputation. (Also in the file \emph{bronstein_miss_2019.csv}.)
 \item \link{catterplot}: Fictitious data for plotting a catterplot. (Also in the file \emph{catterplot.csv}.)
 \item \link{cat_dance}: Fictitious data about training cats to dance. (Also in the file \emph{cat_dance.csv}.)
@@ -92,13 +92,15 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{mcnulty_2008}: Simulated data to match the results of a study about whether attractivenes sis linked to the support given within a relationship. (Also in the file \emph{mcnulty_2008.csv}.)
 \item \link{men_dogs}: Fictitious data about whether men exhibit dog-like behaviours (compared to dogs). (Also in the file \emph{men_dog.csv}.)
 \item \link{metal_health}: Fictitious data about whether listening to heavy metal negatively affects mental health. (Also in the file \emph{metal_health.csv}.)
-\item \link{metallica}: Data about thrash metal band, Metallica. (Also in the file \emph{metallica.csv}.)
+\item \link{metallica}: Data about thrash metal band Metallica.
 \item \link{murder}: Fictitious data about the number of murder each month at three street locations (Ruskin Avenue, Acacia Avenue and Rue Morgue). (Also in the file \emph{murder.csv}.)
+\item \link{muris_2008}: Data about whether you can train children to interpret ambiguous situations in a particular way. (Also in the file \emph{muris_2008.csv}.)
 \item \link{notebook}: Fictitious data about whether watching the film the notebook is emotionally arousing. (Also in the file \emph{notebook.csv}.)
 \item \link{ong_2011}: Data about social media profile pictures and personality traits. (Also in the file \emph{ong_2011.csv}.)
 \item \link{ong_tidy}: Data about social media profile pictures and personality traits. (Also in the file \emph{ong_tidy.csv}.)
 \item \link{pubs}: Data illustrating the difference between an outlier and an influential case. (Also in the file \emph{pubs.csv}.)
 \item \link{puppies}: Fictitious data related to whether puppy therapy works. (Also in the file \emph{puppies.csv}.)
+\item \link{puppy_love}: Fictitious data related to whether puppy therapy works when you adjust for a person's love of puppies. (Also in the file \emph{puppy_love.csv}.)
 \item \link{r_exam}: Fictitious data relating to an R exam at two universities. (Also in the file \emph{r_exam.csv}.)
 \item \link{roaming_cats}: Fictitious data about how far cats roam from their homes (Also in the file \emph{roaming_cats.csv}.)
 \item \link{self_help}: Fictitious data about whether self-help books improve relationship satisfaction. (Also in the file \emph{self_help.csv}.)

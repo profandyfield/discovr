@@ -8,7 +8,7 @@
 A tibble with 1000 rows and 3 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/self_help_dsur.csv}{www.discovr.rocks/csv/self_help_dsur.csv}
 }
 \usage{
 self_help_dsur

@@ -8,7 +8,7 @@
 A tibble with 240 rows and 4 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/tablets.csv}{www.discovr.rocks/csv/tablets.csv}
 }
 \usage{
 tablets

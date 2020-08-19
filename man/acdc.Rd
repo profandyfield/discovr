@@ -8,7 +8,7 @@
 A tibble with 36 rows and 2 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/acdc.csv}{www.discovr.rocks/csv/acdc.csv}
 }
 \usage{
 acdc

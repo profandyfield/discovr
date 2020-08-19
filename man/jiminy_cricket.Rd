@@ -8,7 +8,7 @@
 A tibble with 500 rows and 4 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/jiminy_cricket.csv}{www.discovr.rocks/csv/jiminy_cricket.csv}
 }
 \usage{
 jiminy_cricket

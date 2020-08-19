@@ -8,7 +8,7 @@
 A tibble with 430 rows and 12 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/chamorro_premuzic.csv}{www.discovr.rocks/csv/chamorro_premuzic.csv}
 }
 \usage{
 chamorro_premuzic

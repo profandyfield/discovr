@@ -8,7 +8,7 @@
 A tibble with 666 rows and 6 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/child_aggression.csv}{www.discovr.rocks/csv/child_aggression.csv}
 }
 \usage{
 child_aggression

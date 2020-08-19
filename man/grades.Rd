@@ -8,7 +8,7 @@
 A tibble with 25 rows and 3 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/grades.csv}{www.discovr.rocks/csv/grades.csv}
 }
 \usage{
 grades

@@ -8,7 +8,7 @@
 A tibble with 134 rows and 4 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/social_anxiety.csv}{www.discovr.rocks/csv/social_anxiety.csv}
 }
 \usage{
 social_anxiety

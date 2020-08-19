@@ -8,7 +8,7 @@
 A tibble with 1100 rows and 9 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/ong_tidy.csv}{www.discovr.rocks/csv/ong_tidy.csv}
 }
 \usage{
 ong_tidy

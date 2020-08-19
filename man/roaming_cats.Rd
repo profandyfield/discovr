@@ -8,7 +8,7 @@
 A tibble with 60 rows and 4 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/roaming_cats.csv}{www.discovr.rocks/csv/roaming_cats.csv}
 }
 \usage{
 roaming_cats

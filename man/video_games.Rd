@@ -8,7 +8,7 @@
 A tibble with 442 rows and 4 variables
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/video_games.csv}{www.discovr.rocks/csv/video_games.csv}
 }
 \usage{
 video_games

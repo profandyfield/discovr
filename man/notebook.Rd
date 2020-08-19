@@ -3,12 +3,16 @@
 \docType{data}
 \name{notebook}
 \alias{notebook}
-\title{The notebook data}
+\title{Muris et al. (2008) data}
 \format{
+A tibble with 70 rows and 6 variables.
+
 A tibble with 40 rows and 3 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/muris_2008.csv}{www.discovr.rocks/csv/muris_2008.csv}
+
+\href{https://www.discovr.rocks/csv/notebook.csv}{www.discovr.rocks/csv/notebook.csv}
 }
 \usage{
 notebook
@@ -17,6 +21,38 @@ notebook
 A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
+Anxious people tend to interpret ambiguous information in a negative way. For example, being highly anxious myself,
+if I overheard a student saying "Andy Field's lectures are really different" I would assume that \emph{different}
+meant rubbish, but it could also mean ‘refreshing’ or ‘innovative’. Muris, Huijding, Mayer, and Hameetman (2008)
+addressed how these interpretational biases develop in children. Children imagined that they were astronauts who
+had discovered a new planet. They were given scenarios about their time on the planet (e.g., \emph{On the street, you
+encounter a spaceman. He has a toy handgun and he fires at you …}) and the child had to decide whether a positive
+(\emph{You laugh: it is a water pistol and the weather is fine anyway}) or negative (\emph{Oops, this hurts! The pistol
+produces a red beam which burns your skin!}) outcome occurred. After each response the child was told whether
+their choice was correct. Half of the children were always told that the negative interpretation was correct,
+and the reminder were told that the positive interpretation was correct.
+
+Over 30 scenarios children were trained to interpret their experiences on the planet as negative or positive.
+Muris et al. then measured interpretational biases in everyday life to see whether the training had created a
+bias to interpret things negatively. In doing so, they could ascertain whether children might learn interpretational
+biases through feedback (e.g., from parents).The data contains the following variables:
+\itemize{
+\item \strong{participant}: a number identifying he participant
+\item \strong{age}: participant's age in years
+\item \strong{gender}: self-reported gender of the participant
+\item \strong{scared}: score on The Screen for Child Anxiety Related Disorders (SCARED)
+\item \strong{training}: whether the child was assigned to positive interpretation training or negative interpretation training.
+\item \strong{int_bias}: interpretation bias for everyday events
+}
+}
+\references{
+\itemize{
+\item Muris, P., Huijding, J., Mayer, B., & Hameetman, M. (2008). A space odyssey: Experimental manipulation of threat perception and anxiety-related interpretation bias in children. \emph{Child Psychiatry and Human Development}, 39, 469–480. \url{https://doi.org/10.1007/s10578-008-0103-z}
+The notebook data
+}
+
+A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+
 Fictitious data about the film The Notebook. Imagine that a film company director was interested in whether there was really such a thing as a ‘chick flick’
 (a film that has the stereotype of appealing to women more than to men). He took 20 people who mostly self identify as men and 20 who mostly self identify as women and showed half of each sample a film that was supposed to be a ‘chick flick’ (The Notebook).
 The other half watched a documentary about notebooks as a control. In all cases the company director measured participants’ arousal  as an indicator of how much they enjoyed the film.

@@ -8,7 +8,7 @@
 A tibble with 10 rows and 3 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/shopping.csv}{www.discovr.rocks/csv/shopping.csv}
 }
 \usage{
 shopping

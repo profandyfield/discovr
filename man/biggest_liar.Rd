@@ -8,7 +8,7 @@
 A tibble with 68 rows and 4 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/biggest_liar.csv}{www.discovr.rocks/csv/biggest_liar.csv}
 }
 \usage{
 biggest_liar

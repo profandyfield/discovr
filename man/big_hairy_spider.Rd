@@ -8,7 +8,7 @@
 A tibble with 24 rows and 3 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/big_hairy_spider.csv}{www.discovr.rocks/csv/big_hairy_spider.csv}
 }
 \usage{
 big_hairy_spider

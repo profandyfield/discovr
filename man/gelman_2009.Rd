@@ -8,7 +8,7 @@
 A tibble with 548 rows and 3 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/gelman_2009.csv}{www.discovr.rocks/csv/gelman_2009.csv}
 }
 \usage{
 gelman_2009

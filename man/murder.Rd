@@ -8,7 +8,7 @@
 A tibble with 36 rows and 3 variables.
 }
 \source{
-\href{https://www.discovr.rocks}{www.discovr.rocks}
+\href{https://www.discovr.rocks/csv/muris_2008.csv}{www.discovr.rocks/csv/murder.csv}
 }
 \usage{
 murder

@@ -23,7 +23,7 @@
 #'
 #' @docType data
 #' @format A tibble with 36 rows and 2 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/acdc.csv](https://www.discovr.rocks/csv/acdc.csv)
 #' @references
 #'
 #'    * Oxoby, R. J. (2008). On the efficiency of AC/DC: Bon Scott versus Brian Johnson. *Economic Enquiry*, *47*, 598-602. [https://doi.org/10.1111/j.1465-7295.2008.00138.x](https://doi.org/10.1111/j.1465-7295.2008.00138.x)
@@ -49,7 +49,7 @@
 #'
 #' @format A tibble with 200 rows and 5 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/album_sales.csv](https://www.discovr.rocks/csv/album_sales.csv)
 
 "album_sales"
 
@@ -73,7 +73,7 @@
 #'
 #' @format A tibble with 20 rows and 3 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/animal_bride.csv](https://www.discovr.rocks/csv/animal_bride.csv)
 
 "animal_bride"
 
@@ -109,7 +109,7 @@
 #'
 #' @format A tibble with 16 rows and 5 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/beckham_1929.csv](https://www.discovr.rocks/csv/beckham_1929.csv)
 #' @references
 #'
 #'    * Beckham, A. S. (1929). Is the Negro happy? A psychological analysis. *Journal of Abnormal and Social Psychology*, 24, 186–190. [doi.org/10.1037/h0072938](https://doi.org/10.1037/h0072938).
@@ -133,7 +133,7 @@
 #'
 #' @docType data
 #' @format A tibble with 68 rows and 4 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/biggest_liar.csv](https://www.discovr.rocks/csv/biggest_liar.csv)
 
 "biggest_liar"
 
@@ -152,7 +152,7 @@
 #'
 #' @format A tibble with 24 rows and 3 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/big_hairy_spider.csv](https://www.discovr.rocks/csv/big_hairy_spider.csv)
 
 "big_hairy_spider"
 
@@ -176,7 +176,7 @@
 #'
 #' @format A tibble with 947 rows and 5 variables
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/bronstein_2019.csv](https://www.discovr.rocks/csv/bronstein_2019.csv)
 #' @references
 #'
 #'    * Bronstein, M. V., Pennycook, G., Bear, A., Rand, D. G., & Cannon, T. D. (2019). Belief in fake news is associated with delusionality, dogmatism, religious fundamentalism, and reduced analytic thinking. *Journal of Applied Research in Memory and Cognition*, 8(1), 108–117. [https://doi.org/10.1016/j.jarmac.2018.09.005](https://doi.org/10.1016/j.jarmac.2018.09.005)
@@ -193,7 +193,7 @@
 #'
 #' @format A tibble with 947 rows and 5 variables
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/bronstein_miss_2019.csv](https://www.discovr.rocks/csv/bronstein_miss_2019.csv)
 #' @references
 #'
 #'    * Bronstein, M. V., Pennycook, G., Bear, A., Rand, D. G., & Cannon, T. D. (2019). Belief in fake news is associated with delusionality, dogmatism, religious fundamentalism, and reduced analytic thinking. *Journal of Applied Research in Memory and Cognition*, 8(1), 108–117. [https://doi.org/10.1016/j.jarmac.2018.09.005](https://doi.org/10.1016/j.jarmac.2018.09.005)
@@ -211,7 +211,7 @@
 #'
 #' @docType data
 #' @format A tibble with 78 rows and 2 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/catterplot.csv](https://www.discovr.rocks/csv/catterplot.csv)
 
 "catterplot"
 
@@ -231,7 +231,7 @@
 #'
 #' @docType data
 #' @format A tibble with 200 rows and 7 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/cat_reg.csv](https://www.discovr.rocks/csv/cat_reg.csv)
 
 "cat_reg"
 
@@ -249,7 +249,7 @@
 #'
 #' @docType data
 #' @format A tibble with 200 rows and 2 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/cat_dance.csv](https://www.discovr.rocks/csv/cat_dance.csv)
 
 "cat_dance"
 
@@ -285,7 +285,7 @@
 #'
 #' @format A tibble with 59 rows and 6 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/cetinkaya_2006.csv](https://www.discovr.rocks/csv/cetinkaya_2006.csv)
 #' @references
 #'
 #'    * Cetinkaya, H., & Domjan, M. (2006). Sexual fetishism in a quail (*Coturnix japonica*) model system: Test of reproductive success. *Journal of Comparative Psychology*, *120*, 427–432. [doi.org/10.1037/0735-7036.120.4.427](https://doi.org/10.1037/0735-7036.120.4.427)
@@ -322,11 +322,10 @@
 #'
 #' @format A tibble with 430 rows and 12 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/chamorro_premuzic.csv](https://www.discovr.rocks/csv/chamorro_premuzic.csv)
 #' @references
 #'
 #'    * Chamorro-Premuzic, T., Furnham, A., Christopher, A. N., Garwood, J., & Neil Martin, G. (2008). Birds of a feather: Students’ preferences for lecturers’ personalities as predicted by their own personality and learning approaches. *Personality and Individual Differences*, 44(4), 965–976. [https://doi.org/10.1016/j.paid.2007.10.032](https://doi.org/10.1016/j.paid.2007.10.032).
-
 
 "chamorro_premuzic"
 
@@ -350,7 +349,7 @@
 #'
 #' @docType data
 #' @format A tibble with 666 rows and 6 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/child_aggression.csv](https://www.discovr.rocks/csv/child_aggression.csv)
 
 "child_aggression"
 
@@ -379,7 +378,7 @@
 #'
 #' @docType data
 #' @format A tibble with 118 rows and 9 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/coldwell_2006.csv](https://www.discovr.rocks/csv/coldwell_2006.csv)
 
 "coldwell_2006"
 
@@ -408,7 +407,7 @@
 #'
 #' @format A tibble with 4 rows and 7 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/daniels_2012.csv](https://www.discovr.rocks/csv/daniels_2012.csv)
 #' @references
 #'
 #'    * Daniels, E. (2012). Sexy versus strong: What girls and women think of female athletes. *Journal of Applied Developmental Psychology*, 33, 79–90. [doi.org/10.1016/j.appdev.2011.12.002](https://doi.org/10.1016/j.appdev.2011.12.002).
@@ -436,7 +435,7 @@
 #'
 #' @format A tibble with 64 rows and 3 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/dark_lord.csv](https://www.discovr.rocks/csv/dark_lord.csv)
 
 "dark_lord"
 
@@ -452,7 +451,7 @@
 #'
 #' @format A tibble with 30 rows and 3 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/df_beta.csv](https://www.discovr.rocks/csv/df_beta.csv)
 
 "df_beta"
 
@@ -475,9 +474,33 @@
 #'
 #' @docType data
 #' @format A tibble with 810 rows and 5 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/download.csv](https://www.discovr.rocks/csv/download.csv)
 
 "download"
+
+#' Elephant football data
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Fictional data about elephant football. The highlight of the elephant calendar is the annual elephant soccer event
+#' in Nepal. A heated argument burns between the African and Asian elephants. In 2010, the president of the
+#' Asian Elephant Football Association, an elephant named Boji, claimed that Asian elephants were more talented
+#' than their African counterparts. The head of the African Elephant Soccer Association, an elephant called Tunc,
+#' issued a press statement that read ‘I make it a matter of personal pride never to take seriously any remark made
+#' by something that looks like an enormous scrotum’. I was called in to settle things.
+#' I collected data from the two types of elephants (Asian or African) over a season and recorded how many goals
+#' each elephant scored and how many years of experience the elephant had. The data set has four variables:
+#'
+#'   * **id**: Elephant id
+#'   * **elephant**: Whether the elephant was an Asian elephant or an African elephant
+#'   * **experience**: how many years of football experience the elephant had
+#'   * **goals**: how many goals the elephant scored during the season
+#'
+#' @docType data
+#' @format A tibble with 120 rows and 4 variables.
+#' @source [www.discovr.rocks/csv/elephooty.csv](https://www.discovr.rocks/csv/elephooty.csv)
+
+"elephooty"
 
 #' Essay mark data
 #'
@@ -496,7 +519,7 @@
 #'
 #' @docType data
 #' @format A tibble with 45 rows and 4 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/essay_marks.csv](https://www.discovr.rocks/csv/essay_marks.csv)
 
 "essay_marks"
 
@@ -517,7 +540,7 @@
 #'
 #' @docType data
 #' @format A tibble with 103 rows and 5 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/exam_anxiety.csv](https://www.discovr.rocks/csv/exam_anxiety.csv)
 
 "exam_anxiety"
 
@@ -542,7 +565,7 @@
 #'
 #' @format A tibble with 15 rows and 3 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/gallup_2003.csv](https://www.discovr.rocks/csv/gallup_2003.csv)
 #' @references
 #'
 #' * Gallup, G. G. J., Burch, R. L., Zappieri, M. L., Parvez, R., Stockwell, M., & Davis, J. A. (2003). The human penis as a semen displacement device. *Evolution and Human Behavior*, *24*, 277–289. [doi.org/10.1016/S1090-5138(03)00016-3](https://doi.org/10.1016/S1090-5138(03)00016-3)
@@ -569,7 +592,7 @@
 #'
 #' @format A tibble with 548 rows and 3 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/gelman_2009.csv](https://www.discovr.rocks/csv/gelman_2009.csv)
 #' @references
 #'
 #' * Gelman, A., & Weakliem, D. (2009). Of beauty, sex and power: Too little attention has been paid to the statistical challenges in estimating small effects. *American Scientist*, 97, 310–316. [https://www.jstor.org/stable/27859361](https://www.jstor.org/stable/27859361)
@@ -596,7 +619,7 @@
 #'
 #' @docType data
 #' @format A tibble with 810 rows and 5 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/glastonbury.csv](https://www.discovr.rocks/csv/glastonbury.csv)
 
 "glastonbury"
 
@@ -616,7 +639,7 @@
 #'
 #' @docType data
 #' @format A tibble with 25 rows and 3 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/grades.csv](https://www.discovr.rocks/csv/grades.csv)
 
 "grades"
 
@@ -639,9 +662,33 @@
 #'
 #' @docType data
 #' @format A tibble with 100 rows and 4 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/social_media.csv](https://www.discovr.rocks/csv/social_media.csv)
 
 "social_media"
+
+#' Hangover cure data
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' A marketing manager tested the benefit of soft drinks for curing hangovers. He took 15 people and got
+#' them drunk. The next morning as they awoke, dehydrated and feeling as though they’d licked a camel’s
+#' sandy feet clean with their tongue, he gave five of them water to drink, five of them Lucozade
+#' (a very nice glucose-based UK drink) and the remaining five a leading brand of cola. He measured how well they felt
+#' (on a scale from 0 = I feel like death to 10 = I feel really full of beans and healthy) two hours later.
+#' He measured how drunk the person got the night before on a scale of 0 = as sober as a nun to 10 = flapping about
+#' like a haddock out of water on the floor in a puddle of their own vomit. These data are fictional.
+#' The object contains the following variables:
+#'
+#'   * **id**: participant id
+#'   * **drink**: whether the person drank water, Lucozade or Cola as a hangover cure
+#'   * **well**: how well the person felt two hours after the hangover cure (0 = I feel like death to 10 = I feel really full of beans and healthy)
+#'   * **drunk**: how drunk the person got the night before (0 = as sober as a nun to 10 = flapping about like a haddock out of water on the floor in a puddle of their own vomit)
+#'
+#' @docType data
+#' @format A tibble with 15 rows and 4 variables.
+#' @source [www.discovr.rocks/csv/hangover.csv](https://www.discovr.rocks/csv/hangover.csv)
+
+"hangover"
 
 #' Hiccups data
 #'
@@ -662,7 +709,7 @@
 #'
 #' @docType data
 #' @format A tibble with 60 rows and 3 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/hiccups.csv](https://www.discovr.rocks/csv/hiccups.csv)
 
 "hiccups"
 
@@ -682,7 +729,7 @@
 #'
 #' @docType data
 #' @format A tibble with 100 rows and 3 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/honesty_lab.csv](https://www.discovr.rocks/csv/honesty_lab.csv)
 
 "honesty_lab"
 
@@ -699,12 +746,12 @@
 #'
 #' @docType data
 #' @format A tibble with 2,323,452 rows and 1 variable.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/ice_bucket.csv](https://www.discovr.rocks/csv/ice_bucket.csv)
 
 "ice_bucket"
 
 
-#' Invisibility data (independent design)
+#' Cloak of invisibility data (independent design)
 #'
 #' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
@@ -721,11 +768,31 @@
 #'
 #' @docType data
 #' @format A tibble with 24 rows and 3 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/invisibility_cloak.csv](https://www.discovr.rocks/csv/invisibility_cloak.csv)
 
 "invisibility_cloak"
 
-#' Invisibility data (repeated measures design)
+#' Cloak of invisibility data (pre-post design)
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' In [invisibility_cloak] we compared the number of mischievous acts in people who had invisibility cloaks to
+#' those without. Imagine we replicated that study, but changed the design so that we recorded the number of
+#' mischievous acts in these participants before the study began as well as during the study.
+#' The data contains the following variables:
+#'
+#'   * **id**: participant id
+#'   * **cloak**: whether the participant was assigned a cloak of invisibility
+#'   * **mischief_pre**: the number of mischievous acts committed during the week before the study
+#'   * **mischief**: the number of mischievous acts committed during the week of the study
+#'
+#' @docType data
+#' @format A tibble with 80 rows and 4 variables.
+#' @source [www.discovr.rocks/csv/invisibility_base.csv](https://www.discovr.rocks/csv/invisibility_base.csv)
+
+"invisibility_base"
+
+#' Cloak of invisibility data (repeated measures design)
 #'
 #' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
@@ -733,7 +800,7 @@
 #' I imagined a future in which we have cloaks of invisibility to test out. Given my slightly mischievous streak, the future me is interested in the effect
 #' that wearing a cloak of invisibility has on the tendency for mischief. I take 12 participants and place them in an enclosed community.
 #' The community is riddled with hidden cameras so that we can record mischievous acts. For one week the participants are given cloaks of invisibility, during a different week they are not.
-#' I measure how many mischievous acts they performed in each week. These data are the same as in **invisibility_cloak** but arranged in a repeated measures design.
+#' I measure how many mischievous acts they performed in each week. These data are the same as in [invisibility_cloak] but arranged in a repeated measures design.
 #' The object contains the following variables:
 #'
 #'   * **id**: participant id
@@ -742,7 +809,7 @@
 #'
 #' @docType data
 #' @format A tibble with 24 rows and 3 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/invisibility_rm.csv](https://www.discovr.rocks/csv/invisibility_rm.csv)
 
 
 "invisibility_rm"
@@ -766,7 +833,7 @@
 #'
 #' @format A tibble with 500 rows and 4 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/jiminy_cricket.csv](https://www.discovr.rocks/csv/jiminy_cricket.csv)
 
 "jiminy_cricket"
 
@@ -788,7 +855,7 @@
 #'
 #' @format A tibble with 160 rows and 4 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/johns_2012.csv](https://www.discovr.rocks/csv/johns_2012.csv)
 #' @references
 #'
 #'    * Johns, S. E., Hargrave, L. A., & Newton-Fisher, N. E. (2012). Red is not a proxy signal for female genitalia in humans. *PLoS One*, 7, e34669. [doi.org/10.1371/journal.pone.0034669]( https://doi.org/10.1371/journal.pone.0034669).
@@ -810,7 +877,7 @@
 #'
 #' @format A tibble with 240 rows and 6 variables
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/lambert_2012.csv](https://www.discovr.rocks/csv/lambert_2012.csv)
 #' @references
 #'
 #'    * Lambert, N. M., Negash, S., Stillman, T. F., Olmstead, S. B., & Fincham, F. D. (2012). A love that doesn’t last: Pornography consumption and weakened commitment to one’s romantic partner. *Journal of Social and Clinical Psychology*, 31, 410–438. [doi.org/10.1521/jscp.2012.31.4.410](https://doi.org/10.1521/jscp.2012.31.4.410)
@@ -839,7 +906,7 @@
 #'
 #' @format A tibble with 83 rows and 4 variables
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/massar_2012.csv](https://www.discovr.rocks/csv/massar_2012.csv)
 #' @references
 #'
 #'    * Massar, K., Buunk, A. P., & Rempt, S. (2012). Age differences in women’s tendency to gossip are mediated by their mate value. *Personality and Individual Differences*, 52, 106–109. [https://doi.org/10.1016/j.paid.2011.09.013](https://doi.org/10.1016/j.paid.2011.09.013)
@@ -862,7 +929,7 @@
 #'
 #' @format A tibble with 164 rows and 5 variables
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/mcnulty_2008.csv](https://www.discovr.rocks/csv/mcnulty_2008.csv)
 #' @references
 #'
 #'    * McNulty, J. K., Neff, L. A., & Karney, B. R. (2008). Beyond initial attraction: Physical attractiveness in newlywed marriage. *Journal of Family Psychology*, 22, 135–143. [https://doi.org/10.1037/0893-3200.22.1.135](https://doi.org/10.1037/0893-3200.22.1.135)
@@ -885,7 +952,7 @@
 #'
 #' @format A tibble with 40 rows and 3 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/men_dogs.csv](https://www.discovr.rocks/csv/men_dogs.csv)
 
 "men_dogs"
 
@@ -905,7 +972,7 @@
 #'
 #' @format A tibble with 2506 rows and 2 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/metal_health.csv](https://www.discovr.rocks/csv/metal_health.csv)
 #' @references
 #'
 #'    * Lacourse, E., Claes, M., & Villeneuve, M. (2001). Heavy metal music and adolescent suicidal risk. *Journal of Youth and Adolescence*, *30*, 321–332. [doi.org/10.1023/A:1010492128537](https://doi.org/10.1023/A:1010492128537).
@@ -932,7 +999,7 @@
 #'
 #' @format A tibble with 7 rows and 9 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/metallica.csv](https://www.discovr.rocks/csv/metallica.csv)
 
 "metallica"
 
@@ -949,9 +1016,46 @@
 #'
 #' @format A tibble with 36 rows and 3 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/murder.csv](https://www.discovr.rocks/csv/muris_2008.csv)
 
 "murder"
+
+#' Muris et al. (2008) data
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Anxious people tend to interpret ambiguous information in a negative way. For example, being highly anxious myself,
+#' if I overheard a student saying "Andy Field's lectures are really different" I would assume that *different*
+#' meant rubbish, but it could also mean ‘refreshing’ or ‘innovative’. Muris, Huijding, Mayer, and Hameetman (2008)
+#' addressed how these interpretational biases develop in children. Children imagined that they were astronauts who
+#' had discovered a new planet. They were given scenarios about their time on the planet (e.g., *On the street, you
+#' encounter a spaceman. He has a toy handgun and he fires at you …*) and the child had to decide whether a positive
+#' (*You laugh: it is a water pistol and the weather is fine anyway*) or negative (*Oops, this hurts! The pistol
+#' produces a red beam which burns your skin!*) outcome occurred. After each response the child was told whether
+#' their choice was correct. Half of the children were always told that the negative interpretation was correct,
+#' and the reminder were told that the positive interpretation was correct.
+#'
+#' Over 30 scenarios children were trained to interpret their experiences on the planet as negative or positive.
+#' Muris et al. then measured interpretational biases in everyday life to see whether the training had created a
+#' bias to interpret things negatively. In doing so, they could ascertain whether children might learn interpretational
+#' biases through feedback (e.g., from parents).The data contains the following variables:
+#'
+#'   * **participant**: a number identifying he participant
+#'   * **age**: participant's age in years
+#'   * **gender**: self-reported gender of the participant
+#'   * **scared**: score on The Screen for Child Anxiety Related Disorders (SCARED)
+#'   * **training**: whether the child was assigned to positive interpretation training or negative interpretation training.
+#'   * **int_bias**: interpretation bias for everyday events
+#'
+#' @format A tibble with 70 rows and 6 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/muris_2008.csv](https://www.discovr.rocks/csv/muris_2008.csv)
+#' @references
+#'
+#' * Muris, P., Huijding, J., Mayer, B., & Hameetman, M. (2008). A space odyssey: Experimental manipulation of threat perception and anxiety-related interpretation bias in children. *Child Psychiatry and Human Development*, 39, 469–480. [https://doi.org/10.1007/s10578-008-0103-z](https://doi.org/10.1007/s10578-008-0103-z)
+
+
+
 
 #' The notebook data
 #'
@@ -968,7 +1072,7 @@
 #'
 #' @format A tibble with 40 rows and 3 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/notebook.csv](https://www.discovr.rocks/csv/notebook.csv)
 
 "notebook"
 
@@ -996,7 +1100,7 @@
 #'
 #' @format A tibble with 275 rows and 12 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/ong_2011.csv](https://www.discovr.rocks/csv/ong_2011.csv)
 #' @references
 #'
 #' * Ong, E. Y. L., Ang, R. P., Ho, J. C. M., Lim, J. C. Y., Goh, D. H., Lee, C. S., & Chua, A. Y. K. (2011). Narcissism, extraversion and adolescents’ self-presentation on Facebook. *Personality and Individual Differences*, 50, 180–185. [https://doi.org/10.1016/j.paid.2010.09.022](https://doi.org/10.1016/j.paid.2010.09.022)
@@ -1024,7 +1128,7 @@
 #'
 #' @format A tibble with 1100 rows and 9 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/ong_tidy.csv](https://www.discovr.rocks/csv/ong_tidy.csv)
 #' @references
 #'
 #'    * Ong, E. Y. L., Ang, R. P., Ho, J. C. M., Lim, J. C. Y., Goh, D. H., Lee, C. S., & Chua, A. Y. K. (2011). Narcissism, extraversion and adolescents’ self-presentation on Facebook. *Personality and Individual Differences*, 50, 180–185. [https://doi.org/10.1016/j.paid.2010.09.022](https://doi.org/10.1016/j.paid.2010.09.022)
@@ -1053,9 +1157,28 @@
 #'
 #' @format A tibble with 15 rows and 3 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/puppies.csv](https://www.discovr.rocks/csv/puppies.csv)
 
 "puppies"
+
+#' More puppy therapy data
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' The researchers who conducted the puppy therapy study in [puppies] suddenly realized that a
+#' participant’s love of dogs would affect whether puppy therapy would affect happiness. Therefore,
+#' they repeated the study on different participants, but included a self-report measure of love of puppies from 0 (I am a weird person who hates puppies, please be deeply suspicious of me) to 7 (puppies are the best thing ever, one day I might marry one).  The tibble contains the following variables:
+#'
+#' * **id**: Participant id
+#' * **dose**: Treatment group to which the participant was randomly assigned (No puppies (control), 15 minutes of puppy therapy, 30 minutes of puppy therapy)
+#' * **happiness**: Self-reported happiness from 0 (as unhappy as I can possibly imagine being) to 10 (as happy as I can possibly imagine being)
+#' * **puppy_love**: Self-reported love of puppies from 0 (I am a weird person who hates puppies, please be deeply suspicious of me) to 7 (puppies are the best thing ever, one day I might marry one)
+#'
+#' @format A tibble with 30 rows and 4 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/puppy_love.csv](https://www.discovr.rocks/csv/puppy_love.csv)
+
+"puppy_love"
 
 
 #' Pub data
@@ -1070,7 +1193,7 @@
 #'
 #' @format A tibble with 8 rows and 2 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/pubs.csv](https://www.discovr.rocks/csv/pubs.csv)
 
 "pubs"
 
@@ -1089,7 +1212,7 @@
 #'
 #' @format A tibble with 100 rows and 6 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/r_exam.csv](https://www.discovr.rocks/csv/r_exam.csv)
 
 "r_exam"
 
@@ -1107,7 +1230,7 @@
 #'
 #' @docType data
 #' @format A tibble with 60 rows and 4 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/roaming_cats.csv](https://www.discovr.rocks/csv/roaming_cats.csv)
 
 "roaming_cats"
 
@@ -1126,7 +1249,7 @@
 #'
 #' @format A tibble with 20 rows and 3 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/self_help.csv](https://www.discovr.rocks/csv/self_help.csv)
 
 "self_help"
 
@@ -1145,7 +1268,7 @@
 #'
 #' @format A tibble with 1000 rows and 3 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/self_help_dsur.csv](https://www.discovr.rocks/csv/self_help_dsur.csv)
 
 "self_help_dsur"
 
@@ -1163,7 +1286,7 @@
 #'
 #' @format A tibble with 10 rows and 3 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/shopping.csv](https://www.discovr.rocks/csv/shopping.csv)
 
 "shopping"
 
@@ -1194,7 +1317,7 @@
 #'
 #' @format A tibble with 134 rows and 4 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/social_anxiety.csv](https://www.discovr.rocks/csv/social_anxiety.csv)
 #' @references
 #'
 #'    * Field, A. P., & Cartwright-Hatton, S. (2008). Shared and unique cognitive factors in social anxiety. *International Journal of Cognitive Therapy*, *1*, 206–222. [doi.org/10.1521/ijct.2008.1.3.206](https://doi.org/10.1521/ijct.2008.1.3.206).
@@ -1223,9 +1346,34 @@
 #'
 #' @docType data
 #' @format A tibble with 80 rows and 3 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/soya.csv](https://www.discovr.rocks/csv/soya.csv)
 
 "soya"
+
+#' Stalking therapy
+#'
+#' A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Some fictional data about therapy for stalking. A few years back I was stalked. You’d think they could have found
+#' someone a bit more interesting to stalk, but apparently times were hard. It could have been a lot worse,
+#' but it wasn’t particularly pleasant. I imagined a world in which a psychologist tried two different therapies on
+#' different groups of stalkers (25 stalkers in each treatment). To the first group he gave cruel-to-be-kind therapy
+#' (every time the stalkers followed him around, or sent him a letter, the psychologist attacked them with a cattle prod).
+#' The second therapy was psychodyshamic therapy, in which stalkers were hypnotized and regressed into their childhood
+#' to discuss their penis (or lack of penis), their father’s penis, their dog’s penis, the seventh penis of a seventh penis,
+#' and any other penis that sprang to mind. The psychologist measured the number of hours stalking in one week both before
+#' (stalk_pre) and after (stalk_post) treatment.The object contains the following variables:
+#'
+#'   * **id**: Participant's id code
+#'   * **therapy**: Whether the person was assigned to *Cruel to be kind therapy* or *Psychodyshamic* therapy
+#'   * **stalk_pre**: number of hours the person spent stalking in one week before therapy
+#'   * **stalk_post**: number of hours the person spent stalking in one week after therapy
+#'
+#' @docType data
+#' @format A tibble with 50 rows and 4 variables.
+#' @source [www.discovr.rocks/csv/stalker.csv](https://www.discovr.rocks/csv/stalker.csv)
+
+"stalker"
 
 #' Students and lecturers data
 #'
@@ -1244,7 +1392,7 @@
 #'
 #' @docType data
 #' @format A tibble with 10 rows and 7 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/students.csv](https://www.discovr.rocks/csv/students.csv)
 
 "students"
 
@@ -1267,7 +1415,7 @@
 #'
 #' @docType data
 #' @format A tibble with 30 rows and 3 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/superhero.csv](https://www.discovr.rocks/csv/superhero.csv)
 
 "superhero"
 
@@ -1287,7 +1435,7 @@
 #'
 #' @docType data
 #' @format A tibble with 231 rows and 4 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/supermodel.csv](https://www.discovr.rocks/csv/supermodel.csv)
 
 "supermodel"
 
@@ -1306,7 +1454,7 @@
 #'
 #' @docType data
 #' @format A tibble with 240 rows and 4 variables.
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/tablets.csv](https://www.discovr.rocks/csv/tablets.csv)
 
 "tablets"
 
@@ -1323,7 +1471,7 @@
 #'
 #' @format A tibble with 20 rows and 3 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/teaching.csv](https://www.discovr.rocks/csv/teaching.csv)
 
 "teaching"
 
@@ -1344,7 +1492,7 @@
 #'
 #' @format A tibble with 30 rows and 3 variables.
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/teach_method.csv](https://www.discovr.rocks/csv/teach_method.csv)
 
 "teach_method"
 
@@ -1362,7 +1510,7 @@
 #'   * **cog_fun**: cognitive functioning (out of 80)
 #'
 #' @format A tibble with 15 rows and 3 variables:
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/tea_15.csv](https://www.discovr.rocks/csv/tea_15.csv)
 #' @references
 #'
 #'    * Feng, L., Gwee, X., Kua, E. H., & Ng, T. P. (2010). Cognitive function and tea consumption in community dwelling older Chinese in Singapore. *Journal of Nutrition Health & Aging*, *14*, 433-438.
@@ -1383,7 +1531,7 @@
 #'   * **cog_fun**: cognitive functioning (out of 80)
 #'
 #' @format A tibble with 716 rows and 3 variables:
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/tea_716.csv](https://www.discovr.rocks/csv/tea_716.csv)
 #' @references
 #'
 #'    * Feng, L., Gwee, X., Kua, E. H., & Ng, T. P. (2010). Cognitive function and tea consumption in community dwelling older Chinese in Singapore. *Journal of Nutrition Health & Aging*, *14*, 433-438.
@@ -1408,7 +1556,7 @@
 #'
 #' @format A tibble with 102 rows and 3 variables
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/tuk_2011.csv](https://www.discovr.rocks/csv/tuk_2011.csv)
 #' @references
 #'
 #'    * Tuk, M. A., Trampe, D., & Warlop, L. (2011). Inhibitory spillover: increased urination urgency facilitates impulse control in unrelated domains. *Psychological Science*, 22, 627–633. [doi.org/10.1177/0956797611404901](https://doi.org/10.1177/0956797611404901)
@@ -1432,7 +1580,7 @@
 #'
 #' @format A tibble with 102 rows and 3 variables
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/tumour.csv](https://www.discovr.rocks/csv/tumour.csv)
 
 "tumour"
 
@@ -1452,7 +1600,7 @@
 #'
 #' @format A tibble with 442 rows and 4 variables
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/video_games.csv](https://www.discovr.rocks/csv/video_games.csv)
 
 "video_games"
 
@@ -1475,7 +1623,7 @@
 #'
 #' @format A tibble with 52 rows and 4 variables
 #' @docType data
-#' @source [www.discovr.rocks](https://www.discovr.rocks)
+#' @source [www.discovr.rocks/csv/zhang_sample.csv](https://www.discovr.rocks/csv/zhang_sample.csv)
 #' @references
 #'
 #'    * Field, A. P. (2010). Teaching Statistics. In D. Upton & A. Trapp (Eds.), *Teaching Psychology in Higher Education* (pp. 134-163). Chichester, UK: Wiley-Blackwell.

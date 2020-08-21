@@ -14,7 +14,7 @@ A tibble with 134 rows and 4 variables.
 social_anxiety
 }
 \description{
-A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Anxiety disorders take on different shapes and forms, and each disorder is believed to be distinct and have unique causes.

@@ -18,7 +18,7 @@ A tibble with 40 rows and 3 variables.
 notebook
 }
 \description{
-A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Anxious people tend to interpret ambiguous information in a negative way. For example, being highly anxious myself,
@@ -51,7 +51,7 @@ biases through feedback (e.g., from parents).The data contains the following var
 The notebook data
 }
 
-A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 
 Fictitious data about the film The Notebook. Imagine that a film company director was interested in whether there was really such a thing as a ‘chick flick’
 (a film that has the stereotype of appealing to women more than to men). He took 20 people who mostly self identify as men and 20 who mostly self identify as women and showed half of each sample a film that was supposed to be a ‘chick flick’ (The Notebook).

@@ -14,7 +14,7 @@ A tibble with 59 rows and 6 variables.
 cetinkaya_2006
 }
 \description{
-A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Some quail develop fetishes. Really. In studies where a terrycloth object acts as a sign that a mate will shortly

@@ -14,7 +14,7 @@ A tibble with 83 rows and 4 variables
 massar_2012
 }
 \description{
-A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Everyone likes a good gossip from time to time, but apparently it has an evolutionary function.

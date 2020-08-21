@@ -14,7 +14,7 @@ A tibble with 60 rows and 4 variables.
 roaming_cats
 }
 \description{
-A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Fictional data about roaming cats. I was interested in the relationship between the sex of a cat and how much time it spent away from home.

@@ -14,7 +14,7 @@ A tibble with 10 rows and 3 variables.
 shopping
 }
 \description{
-A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 According to some highly unscientific research done by a UK department store chain and reported in Marie Claire magazine (\url{http://ow.ly/9Dxvy}), shopping is good for you.

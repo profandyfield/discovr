@@ -14,7 +14,7 @@ A tibble with 100 rows and 6 variables.
 r_exam
 }
 \description{
-A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Fictitious data relating to an R exam at two universities. The tibble contains the following variables:

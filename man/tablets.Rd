@@ -14,7 +14,7 @@ A tibble with 240 rows and 4 variables.
 tablets
 }
 \description{
-A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 A company owner was interested in how to make his brand of (computer) tablets more desirable.

@@ -14,7 +14,7 @@ A tibble with 36 rows and 3 variables.
 murder
 }
 \description{
-A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Fictitious data about murder. A sociologist wanted to compare murder rates (murder) each month in a year at

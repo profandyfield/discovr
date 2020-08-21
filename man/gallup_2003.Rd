@@ -14,7 +14,7 @@ A tibble with 15 rows and 3 variables.
 gallup_2003
 }
 \description{
-A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 It’s something of a wonder how evolution managed to produce such a monstrosity as the human penis.

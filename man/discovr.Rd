@@ -81,6 +81,7 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{gallup_2003}: Data that tests a hypothesis about why penises have a bell end.
 \item \link{gelman_2009}: Data used to critically evaluate the explanations (and claim) that there are more beautiful women than men in the world.
 \item \link{glastonbury}: More fictitious data about music festivals and being smelly.
+\item \link{goggles}: Fictitious data about whether alcohol affects perception of physical attractiveness.
 \item \link{grades}: Fictitious data about statistics grades.
 \item \link{ice_bucket}: Data about the ice bucket challenge.
 \item \link{invisibility_base}: Fictitious data about how much mischief people would get up to if they had an invisibility cloak using a pre-post study design.

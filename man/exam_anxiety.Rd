@@ -14,7 +14,7 @@ A tibble with 103 rows and 5 variables.
 exam_anxiety
 }
 \description{
-A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 a psychologist was interested in the effects of exam stress on exam performance. She devised and validated a questionnaire to assess

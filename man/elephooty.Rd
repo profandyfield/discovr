@@ -14,7 +14,7 @@ A tibble with 120 rows and 4 variables.
 elephooty
 }
 \description{
-A dataset from Field, A. P. (2020). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Fictional data about elephant football. The highlight of the elephant calendar is the annual elephant soccer event

@@ -1,5 +1,5 @@
 ---
-title: "discovr: Comparing severeal means (GLM 1)"
+title: "discovr: Comparing several means (GLM 1)"
 author: "Andy Field"
 output:
   learnr::tutorial:
@@ -44,7 +44,7 @@ hero_tib <- discovr::superhero
 
 ```
 
-# discovr: Comparing severeal means (GLM 1)
+# discovr: Comparing several means (GLM 1)
 
 ## Overview
 
@@ -489,7 +489,7 @@ quiz(caption = "Diagnostic plot quiz (level 2)",
     answer("Yes", message = "The dots on the Q-Q plot seem to deviate from the line at the extremes, which indicates a non-normal distribution."),
     answer("No", correct = TRUE),
     answer("Maybe", message = "Sorry, you're not allowed to sit on the fence!"),
-    correct = "Correct - The dots on the Q-Q plot seem to deviate from the line at the extremes, which indicates a non-normal distribution. Well done!",
+    correct = "Correct - Well done!",
     random_answer_order = TRUE,
     allow_retry = T
   ),
@@ -760,7 +760,7 @@ The resulting Output breaks down the experimental effect to see whether it can e
 
 We’re going to use the `estimate_contrasts()` function from the `modelbased` package [@makowski_modelbased_2020], which builds upon the `emmeans` package [@lenth_emmeans_2020] to provide more user-friendly experience. 
 
-#### `r alien()` Alien coding challenge
+#### `r robot()` Code example
 
 To get *post hoc* tests for a linear model, you simply place the linear model into the function. In general, then:
 
@@ -978,7 +978,7 @@ The overall test suggests a non-significant difference between trimmed means acr
 
 ## `r user_astronaut()` Bayes factors [(3)]{.alt}
 
-Like in previous tutorials (**discovr_08**, **discovr_09**) we can use the BayesFactor package [@morey_bayesfactor_2018]. In this scenario we use the `anovaBF()` function.
+Like in previous tutorials (**discovr_08**, **discovr_09**) we can use the `BayesFactor` package [@morey_bayesfactor_2018]. In this scenario we use the `anovaBF()` function.
 
 #### `r robot()` Code example
 

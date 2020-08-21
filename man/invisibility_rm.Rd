@@ -3,7 +3,7 @@
 \docType{data}
 \name{invisibility_rm}
 \alias{invisibility_rm}
-\title{Invisibility data (repeated measures design)}
+\title{Cloak of invisibility data (repeated measures design)}
 \format{
 A tibble with 24 rows and 3 variables.
 }
@@ -21,7 +21,7 @@ I got very excited by two news stories implying that scientists had made Harry P
 I imagined a future in which we have cloaks of invisibility to test out. Given my slightly mischievous streak, the future me is interested in the effect
 that wearing a cloak of invisibility has on the tendency for mischief. I take 12 participants and place them in an enclosed community.
 The community is riddled with hidden cameras so that we can record mischievous acts. For one week the participants are given cloaks of invisibility, during a different week they are not.
-I measure how many mischievous acts they performed in each week. These data are the same as in \strong{invisibility_cloak} but arranged in a repeated measures design.
+I measure how many mischievous acts they performed in each week. These data are the same as in \link{invisibility_cloak} but arranged in a repeated measures design.
 The object contains the following variables:
 \itemize{
 \item \strong{id}: participant id

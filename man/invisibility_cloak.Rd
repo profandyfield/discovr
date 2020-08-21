@@ -3,7 +3,7 @@
 \docType{data}
 \name{invisibility_cloak}
 \alias{invisibility_cloak}
-\title{Invisibility data (independent design)}
+\title{Cloak of invisibility data (independent design)}
 \format{
 A tibble with 24 rows and 3 variables.
 }

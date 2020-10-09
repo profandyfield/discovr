@@ -866,7 +866,7 @@ anova(soc_anx_lm, soc_anx_obq_lm) %>%
 
 ```{r soc_anx-hint-6}
 # You'll get an error message from the last step!
-# This is because obq has 2 missing values, which means that soc_anx_lm is based on 134 cases but when we include obq in the model, we exclude the missing cases so soc_anx_obq_lm is based on 132 cases. We, therefore, can't compare the models because they're based on different numbers of observations!
+# The error occurs because the variable obq has 2 missing values, which means that the model soc_anx_lm is based on the full number of cases (134), but when we include obq in the second model, the missing cases with missing obq scores get excluded meaning that soc_anx_obq_lm is based on only 132 cases. We, therefore, can't compare the models using anova() because they're based on different numbers of observations! The error message is telling you this - 'models were not all fitted to the same size of dataset' means that soc_anx_lm and soc_anx_obq_lm are based on different numbers of observations and so can't be compared. 
 # Now view parameters for the final model
 # Use tidy() to view parameters for the final model
 

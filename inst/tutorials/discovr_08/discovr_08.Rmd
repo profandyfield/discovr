@@ -835,7 +835,7 @@ lm(outcome ~ predictor, data = my_tibble, na.action = na.exclude)
 # lm(outcome ~ predictor, data = my_tibble, na.action = na.exclude)
 # from the previous hint, we get:
 
-soc_anx_lm <- lm(spai ~ tosca, data = my_tibble, na.action = na.exclude)
+soc_anx_lm <- lm(spai ~ tosca, data = soc_anx_tib, na.action = na.exclude)
 
 # This is the first model.
 # Remember that the second model is the same except we add in 
@@ -855,18 +855,19 @@ soc_anx_obq_lm <- lm(spai ~ tosca + obq, data = soc_anx_tib, na.action = na.excl
 broom::glance(soc_anx_lm)
 broom::glance(soc_anx_obq_lm)
 
-# Now compare the models using anova() in combination with tidy()
+# Now view parameters for the final model
 ```
 
 ```{r soc_anx-hint-5}
 # To compare the models use anova() in combination with tidy()
-anova(album_lm, album_full_lm) %>% 
+anova(soc_anx_lm, soc_anx_obq_lm) %>% 
   broom::tidy()
-
-# Now view parameters for the final model
 ```
 
 ```{r soc_anx-hint-6}
+# You'll get an error message from the last step!
+# This is because obq has 2 missing values, which means that soc_anx_lm is based on 134 cases but when we include obq in the model, we exclude the missing cases so soc_anx_obq_lm is based on 132 cases. We, therefore, can't compare the models because they're based on different numbers of observations!
+# Now view parameters for the final model
 # Use tidy() to view parameters for the final model
 
 broom::tidy(soc_anx_obq_lm, conf.int = TRUE)

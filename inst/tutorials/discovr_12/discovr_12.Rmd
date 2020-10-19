@@ -177,7 +177,7 @@ The variable **dose** is a factor (categorical variable), so having read the dat
 Using what you've learnt in previous tutorials check the order of the levels of the variable **dose**.
 
 ```{r chk_levels, exercise = TRUE, exercise.lines = 2}
-levels(pupluv_tib$dose)
+
 ```
 
 ```{r chk_levels-hint-1}
@@ -943,6 +943,8 @@ effectsize::omega_squared(anova_object, partial = TRUE, ci = 0.9)
 
 All we do is put the ANOVA object into the function (or pipe it in). By default you’ll get partial eta-squared ($\eta^2_p$) and partial omega-squared ($\omega^2_p$), but you can get the non-partial version by setting [partial = FALSE]{.alt}, and you’ll get a 90% confidence interval, which you might want to change to some other value.
 
+#### `r alien()` Alien coding challenge
+
 The function uses the sums of squares from the object that is passed into it, so it’s safest to re-use our earlier code with `car::Anova()` where we set the sums of squares and pipe it into the function. Try this below.
 
 ```{r eta, exercise = TRUE, exercise.lines = 2, exercise.setup = "pupluv_lm"}
@@ -954,7 +956,7 @@ These values show that puppy therapy condition explains 24% of the variance in h
 
 #### `r alien()` Alien coding challenge
 
-Use the code example to compute partial omega squared for the predoctors in [pupluv_lm]{.alt}.
+Use the code example to compute partial omega squared for the predictors in [pupluv_lm]{.alt}.
 
 ```{r omega, exercise = TRUE, exercise.lines = 2, exercise.setup = "pupluv_lm"}
 

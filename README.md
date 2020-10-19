@@ -44,7 +44,7 @@ I recommend working through [this tutorial](http://milton-the-cat.rocks/learnr/r
 * **discovr_10**: Moderation and mediation. Centring variables (grand mean centring), specifying interaction terms, moderation analysis, simple slopes analysis, Johnson-Neyman intervals, mediation with one predictor, direct and indirect effects, mediation using lavaan.
 * **discovr_11**: Comparing several means. Essentially 'One-way independent ANOVA' but taught using a general linear model framework. Covers setting contrasts (dummy coding, contrast coding, and linear and quadratic trends), the *F*-statistic and Welch's robust *F*, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of means based on trimmed data, *post hoc* tests, Bayes factors.
 * **discovr_12**: Comparing means adjusted for other variables. Essentially 'Analysis of Covariance (ANCOVA)' designs but taught using a general linear model framework. Covers setting contrasts, Type III sums of squares, the *F*-statistic, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of adjusted means, *post hoc* tests, Bayes factors.
-
+* **discovr_13**: Factorial designs. Fitting models for two-way factorial designs (independent measures) using both lm() and the afex package. This tutorial builds on previous ones to show how models can be fit with two categorical predictors to look at the interaction between them. We look at fitting the models, setting contrasts for the two categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, partial eta-squared and partial omega-squared, robust models and Bayes factors.
 
 
 ### Running a tutorial
@@ -148,6 +148,7 @@ See the book or data descriptions for more details. This is a list of available 
 * **students**: I can't even remember what this data file contains. For details execute `?student`.
 * **superhero**: fictitious data about whether wearing different superhero costumes leads to more severe physical injuries. For details execute `?superhero`.
 * **supermodel**: fictitious data about supermodel salaries. For details execute `?supermodel`.
+* **switch**: Fictitious data relating to whether injuries from playing video console games can be mitigated by a warm up.`?switch`
 * **tablets**: fictitious data about predicting the desirability of computing tablets. For details execute `?tablets`.
 * **tea_15**: fictitious data based on real data about cognitive functioning and drinking tea. For details execute `?tea_makes_you_brainy_15`.
 * **tea_716**: fictitious data based on real data about cognitive functioning and drinking tea. For details execute `?tea_makes_you_brainy_716`.
@@ -156,6 +157,7 @@ See the book or data descriptions for more details. This is a list of available 
 * **tumour**: fictitious data about mobile phone use and brain tumours. For details execute `?tumour`.
 * **video_games**: fictitious data about the relationship between video game use, callous unemotional traits and aggression. For details execute `?video_games`.
 * **tuk_2011**: Data about whether needing to urinate helps decision making. For details execute `?tuk_2011`.
+* **xbox**: Fictitious data relating injuries to the type of video console game played and the console it was played on. `?xbox`.
 * **zhang_sample**: Data about whether performing a maths test under a different name assists performance. For details execute `?zhang_2013_subsample`.
 
 ## Smart Alex solutions

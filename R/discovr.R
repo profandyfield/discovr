@@ -41,6 +41,7 @@
 #' * **discovr_10**: Moderation and mediation. Centring variables (grand mean centring), specifying interaction terms, moderation analysis, simple slopes analysis, Johnson-Neyman intervals, mediation with one predictor, direct and indirect effects, mediation using lavaan.
 #' * **discovr_11**: Comparing several means. Essentially 'One-way independent ANOVA' but taught using a general linear model framework. Covers setting contrasts (dummy coding, contrast coding, and linear and quadratic trends), the *F*-statistic and Welch's robust *F*, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of means based on trimmed data, *post hoc* tests, Bayes factors.
 #' * **discovr_12**: Comparing means adjusted for other variables. Essentially 'Analysis of Covariance (ANCOVA)' designs but taught using a general linear model framework. Covers setting contrasts, Type III sums of squares, the *F*-statistic, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of adjusted means, *post hoc* tests, Bayes factors.
+#' * **discovr_13**: Factorial designs. Fitting models for two-way factorial designs (independent measures) using both lm() and the afex package. This tutorial builds on previous ones to show how models can be fit with two categorical predictors to look at the interaction between them. We look at fitting the models, setting contrasts for the two categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, partial eta-squared and partial omega-squared, robust models and Bayes factors.
 #'
 #' **Workflow**:
 #' The tutorials are self-contained (you practice code in code boxes) so you don't need to use RStudio at the
@@ -80,6 +81,7 @@
 #' * [gallup_2003]: Data that tests a hypothesis about why penises have a bell end.
 #' * [gelman_2009]: Data used to critically evaluate the explanations (and claim) that there are more beautiful women than men in the world.
 #' * [glastonbury]: More fictitious data about music festivals and being smelly.
+#' * [goggles]: Fictitious data about whether alcohol affects perception of physical attractiveness.
 #' * [grades]: Fictitious data about statistics grades.
 #' * [ice_bucket]: Data about the ice bucket challenge.
 #' * [invisibility_base]: Fictitious data about how much mischief people would get up to if they had an invisibility cloak using a pre-post study design.
@@ -116,6 +118,7 @@
 #' * [students]: I can't even remember what this data file contains.
 #' * [superhero]: fictitious data about whether wearing different superhero costumes leads to more severe physical injuries.
 #' * [supermodel]: Fictitious data about supermodel salaries.
+#' * [switch]: Fictitious data relating to whether injuries from playing video console games can be mitigated by a warm up.
 #' * [tablets]: Fictitious data about predicting the desirability of computing tablets.
 #' * [tea_15]: Fictitious data based on real data about cognitive functioning and drinking tea.
 #' * [tea_716]: Fictitious data based on real data about cognitive functioning and drinking tea.
@@ -123,6 +126,7 @@
 #' * [teach_method]: More fictitious data about the success of different methods of teaching.
 #' * [tumour]: fictitious data about mobile phone use and brain tumours.
 #' * [video_games]: Fictitious data about the relationship between video game use, callous unemotional traits and aggression.
+#' * [xbox]: Fictitious data relating injuries to the type of video console game played and the console it was played on.
 #' * [tuk_2011]: Data about whether needing to urinate helps decision making.
 #' * [zhang_sample]: Data about whether performing a maths test under a different name assists performance.
 #'

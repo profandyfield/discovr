@@ -40,6 +40,7 @@ Replacing \code{name_of_tutorial} with the name in bold below. For example, to l
 \item \strong{discovr_10}: Moderation and mediation. Centring variables (grand mean centring), specifying interaction terms, moderation analysis, simple slopes analysis, Johnson-Neyman intervals, mediation with one predictor, direct and indirect effects, mediation using lavaan.
 \item \strong{discovr_11}: Comparing several means. Essentially 'One-way independent ANOVA' but taught using a general linear model framework. Covers setting contrasts (dummy coding, contrast coding, and linear and quadratic trends), the \emph{F}-statistic and Welch's robust \emph{F}, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of means based on trimmed data, \emph{post hoc} tests, Bayes factors.
 \item \strong{discovr_12}: Comparing means adjusted for other variables. Essentially 'Analysis of Covariance (ANCOVA)' designs but taught using a general linear model framework. Covers setting contrasts, Type III sums of squares, the \emph{F}-statistic, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of adjusted means, \emph{post hoc} tests, Bayes factors.
+\item \strong{discovr_13}: Factorial designs. Fitting models for two-way factorial designs (independent measures) using both lm() and the afex package. This tutorial builds on previous ones to show how models can be fit with two categorical predictors to look at the interaction between them. We look at fitting the models, setting contrasts for the two categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, partial eta-squared and partial omega-squared, robust models and Bayes factors.
 }
 
 \strong{Workflow}:
@@ -118,6 +119,7 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{students}: I can't even remember what this data file contains.
 \item \link{superhero}: fictitious data about whether wearing different superhero costumes leads to more severe physical injuries.
 \item \link{supermodel}: Fictitious data about supermodel salaries.
+\item \link{switch}: Fictitious data relating to whether injuries from playing video console games can be mitigated by a warm up.
 \item \link{tablets}: Fictitious data about predicting the desirability of computing tablets.
 \item \link{tea_15}: Fictitious data based on real data about cognitive functioning and drinking tea.
 \item \link{tea_716}: Fictitious data based on real data about cognitive functioning and drinking tea.
@@ -125,6 +127,7 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{teach_method}: More fictitious data about the success of different methods of teaching.
 \item \link{tumour}: fictitious data about mobile phone use and brain tumours.
 \item \link{video_games}: Fictitious data about the relationship between video game use, callous unemotional traits and aggression.
+\item \link{xbox}: Fictitious data relating injuries to the type of video console game played and the console it was played on.
 \item \link{tuk_2011}: Data about whether needing to urinate helps decision making.
 \item \link{zhang_sample}: Data about whether performing a maths test under a different name assists performance.
 }

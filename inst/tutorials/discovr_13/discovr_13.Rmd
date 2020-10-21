@@ -37,6 +37,7 @@ library(modelbased)
 library(parameters)
 library(sandwich)
 
+
 source("./www/discovr_helpers.R")
 
 
@@ -1032,9 +1033,9 @@ contrasts(xxxxx) <- switch_vs_xbox
 ```
 
 ```{r xbox_con_asw-solution}
-static_vs_active <- c(-1/2, 1/2)
+active_vs_static <- c(-1/2, 1/2)
 switch_vs_xbox <- c(-1/2, 1/2)
-contrasts(xbox_tib$game) <- static_vs_active
+contrasts(xbox_tib$game) <- active_vs_static
 contrasts(xbox_tib$console) <- switch_vs_xbox
 
 # To view the contrasts:
@@ -1047,9 +1048,9 @@ contrasts(xbox_tib$console)
 Use the code box to fit and look at the main model. Call the model [xbox_lm]{.alt} if you use `lm()` or [xbox_afx]{.alt} if you use `aov_4()`.
 
 ```{r xbox_oc}
-static_vs_active <- c(-1/2, 1/2)
+active_vs_static <- c(-1/2, 1/2)
 switch_vs_xbox <- c(-1/2, 1/2)
-contrasts(xbox_tib$game) <- static_vs_active
+contrasts(xbox_tib$game) <- active_vs_static
 contrasts(xbox_tib$console) <- switch_vs_xbox
 ```
 
@@ -1097,9 +1098,9 @@ xbox_afx
 Use the code box to get the mean injury score in all combinations of the type of game and the type of console.
 
 ```{r xbox_models}
-static_vs_active <- c(-1/2, 1/2)
+active_vs_static <- c(-1/2, 1/2)
 switch_vs_xbox <- c(-1/2, 1/2)
-contrasts(xbox_tib$game) <- static_vs_active
+contrasts(xbox_tib$game) <- active_vs_static
 contrasts(xbox_tib$console) <- switch_vs_xbox
 xbox_lm <- lm(injury ~ game*console, data = xbox_tib)
 xbox_afx <- afex::aov4(injury ~ game*console + (1|id), data = xbox_tib)
@@ -1155,7 +1156,7 @@ quiz(caption = "Interpretting interactions (level 2)",
     random_answer_order = TRUE,
     allow_retry = T
   ),
-  question("Having decomposed the interaction term with mmeans and simple effects, how would you interpret the interaction between the type of game and the type of console?",
+  question("Having decomposed the interaction term with emmeans and simple effects, how would you interpret the interaction between the type of game and the type of console?",
     answer("The effect of the type of game was significantly different between the Switch and Xbox: injury severity was not significantly different for active and static games when using the Xbox, whereas for the Switch injuries were more severe for active games compared to passive ones.", correct = T),
     answer("The effect of the type of game was significantly different between the Switch and Xbox: injury severity was significantly different for active and static games in both the Switch and Xbox.", message = "Sorry, that's not correct. Although it sort of nearly is. In fact the simple effect for the Xbox had p = 0.0523, which is hovering on the threshold and sort of illustrates how p can force you into quite arbitrary conclusions. One thing we can say is that the effect of active games compared to static ones on injuries is significantly stronger for Switch games compared to xbox games."),
     answer("The effect of the type of game was not significantly different between the Switch and Xbox: injury severity was not significantly different for active and static games in both the Switch and Xbox.", message = "The interaction effect was significant, not non-significant."),

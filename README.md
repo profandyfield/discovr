@@ -88,6 +88,7 @@ See the book or data descriptions for more details. This is a list of available 
 
 * **acdc**: Data about whether Bon Scott or Brian Johnson is the best singer of AC/DC. For details execute `?acdc`.
 * **album_sales**: fictitious data about predicting album sales from advertising, airplay and the band's image. For details execute `?album_sales`.
+* **alien_scents**: fictitious data about training sniffer dogs to detect alien space lizards when they try to mask their identity with different scents. For details execute `?alien_scents`.
 * **animal_bride**: fictitious data about life satisfaction when married to a dog or a goat. For details execute `?animal_bride`.
 * **beckham_1929**: Data from a study by Beckham (1929). For details execute `?beckham_1929`.
 * **big_hairy_spider**: fictitious data about whether anxiety is greater after exposure to real spiders or pictures of spiders. For details execute `?big_hairy_spider`.
@@ -141,6 +142,7 @@ See the book or data descriptions for more details. This is a list of available 
 * **self_help**: fictitious data about whether self-help books improve relationship satisfaction. For details execute `?self_help`.
 * **self_help_dsur**: fictitious data about whether self-help books improve relationship satisfaction compared to statistics books. For details execute `?self_help_dsur`.
 * **shopping**: fictitious data about shopping For details execute `?shopping_exercise`.
+* **sniffer_dogs**: fictitious data about training sniffer dogs to detect alien space lizards. For details execute `?sniffer_dogs`.
 * **social_anxiety**: fictitious (I think) data about whether social anxiety symptoms are specific to social anxiety. For details execute `?social_anxiety`.
 * **social_media**: fictitious data about the effects of social media on grammar. For details execute `?social_media`.
 * **soya**: fictitious data about the effects of eating soya on sperm count. For details execute `?soya`.

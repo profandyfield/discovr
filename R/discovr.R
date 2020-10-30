@@ -2,8 +2,7 @@
 #'
 #' @description
 #'
-#' The `discovr`` package contains resources for my 2021 textbook [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/).
-#' There are tutorials written using learnr, datasets, solutions to tasks and so on.
+#' The `discovr` package contains interactive `learnr` tutorials and datasets that accompany my 2021 textbook [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/).
 #'
 #' @section Who is the package aimed at?:
 #'
@@ -58,6 +57,7 @@
 #'
 #' * [acdc]: Data about whether Bon Scott or Brian Johnson is the best singer of AC/DC.
 #' * [album_sales]: Fictitious data about predicting album sales from advertising, airplay and the band's image.
+#' * [alien_scents]: Fictitious data about training sniffer dogs to detect alien space lizards when they try to mask their identity with different scents. See also [sniffer_dogs].
 #' * [animal_bride]: Fictitious data about life satisfaction when married to a dog or a goat.
 #' * [beckham_1929]: Data from a study by Beckham (1929).
 #' * [big_hairy_spider]: Fictitious data about whether anxiety is greater after exposure to real spiders or pictures of spiders.
@@ -111,6 +111,7 @@
 #' * [self_help]: Fictitious data about whether self-help books improve relationship satisfaction.
 #' * [self_help_dsur]: Fictitious data about whether self-help books improve relationship satisfaction compared to statistics books.
 #' * [shopping]: Fictitious data about shopping.
+#' * [sniffer_dogs]: Fictitious data about training sniffer dogs to detect alien space lizards when they try to mask their identity with different scents. See also [alien_scents].
 #' * [social_anxiety]: Fictitious (I think) data about whether social anxiety symptoms are specific to social anxiety.
 #' * [social_media]: Fictitious data about the effects of social media on grammar.
 #' * [soya]: fictitious data about the effects of eating soya on sperm count.

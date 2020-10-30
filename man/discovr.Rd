@@ -5,8 +5,7 @@
 \alias{discovr}
 \title{discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2021)}
 \description{
-The `discovr`` package contains resources for my 2021 textbook \href{https://www.discovr.rocks/}{Discovering Statistics Using R and RStudio}.
-There are tutorials written using learnr, datasets, solutions to tasks and so on.
+The \code{discovr} package contains interactive \code{learnr} tutorials and datasets that accompany my 2021 textbook \href{https://www.discovr.rocks/}{Discovering Statistics Using R and RStudio}.
 }
 \section{Who is the package aimed at?}{
 
@@ -59,6 +58,7 @@ See the book or data descriptions for more details. This is a list of available 
 \itemize{
 \item \link{acdc}: Data about whether Bon Scott or Brian Johnson is the best singer of AC/DC.
 \item \link{album_sales}: Fictitious data about predicting album sales from advertising, airplay and the band's image.
+\item \link{alien_scents}: Fictitious data about training sniffer dogs to detect alien space lizards when they try to mask their identity with different scents. See also \link{sniffer_dogs}.
 \item \link{animal_bride}: Fictitious data about life satisfaction when married to a dog or a goat.
 \item \link{beckham_1929}: Data from a study by Beckham (1929).
 \item \link{big_hairy_spider}: Fictitious data about whether anxiety is greater after exposure to real spiders or pictures of spiders.
@@ -112,6 +112,7 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{self_help}: Fictitious data about whether self-help books improve relationship satisfaction.
 \item \link{self_help_dsur}: Fictitious data about whether self-help books improve relationship satisfaction compared to statistics books.
 \item \link{shopping}: Fictitious data about shopping.
+\item \link{sniffer_dogs}: Fictitious data about training sniffer dogs to detect alien space lizards when they try to mask their identity with different scents. See also \link{alien_scents}.
 \item \link{social_anxiety}: Fictitious (I think) data about whether social anxiety symptoms are specific to social anxiety.
 \item \link{social_media}: Fictitious data about the effects of social media on grammar.
 \item \link{soya}: fictitious data about the effects of eating soya on sperm count.

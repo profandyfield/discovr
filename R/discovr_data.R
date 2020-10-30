@@ -53,6 +53,31 @@
 
 "album_sales"
 
+#' Alien scents
+#'
+#' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' The alien space lizards were getting fed up with the TERD-trained sniffer dogs being able to detect them and thwart their attempts at invasion (see [sniffer_dogs]).
+#' They decided that they could mask their alien smell to fool the dogs, and also decided that the two most effective masking scents would be human pheromones
+#' (which they hoped would make them smell human-like) and fox-pheromones (because they are a powerful, distracting smell for dogs). The aliens started smearing themselves with humans and foxes
+#' and prepared to invade. Meanwhile, the top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) had got wind of their plan and set about testing how effective it would be.
+#' They trained 50 sniffer dogs. During training, these dogs were rewarded for making vocalisations while sniffing alien space lizards.
+#' On the test trials, the 50 dogs were allowed to sniff 9 different entities for 1-minute each: 3 alien space lizards, 3 shapeshifting alien space
+#' lizard who had taken on humanoid form, and 3 humans. Within each type of entity, 1 had no masking scent, 1 was smothered in human pheromones and 1 wore fox pheromones
+#' The number of vocalisations made during each 1-minute sniffing session was recorded.
+#'
+#'   * **dog_id**: the id of the 50 sniffer dogs
+#'   * **entity**: the entity being sniffed by the sniffer dog (alien, alien in humanoid form (shapeshifter), human)
+#'   * **scent_mask**: the scent the entity used to mask their natural odour (None, human pheromones, fox pheromones)
+#'   * **vocalisations**: the number of vocalisations made by the dog during a 1-minute sniff
+#'
+#' @format A tibble with 50 rows and 4 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/alien_scents.csv](https://www.discovr.rocks/csv/alien_scents.csv)
+
+"alien_scents"
+
+
 #' Animal bride data
 #'
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
@@ -1313,6 +1338,29 @@
 #' @source [www.discovr.rocks/csv/shopping.csv](https://www.discovr.rocks/csv/shopping.csv)
 
 "shopping"
+
+#' Sniffer dogs
+#'
+#' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' When the alien invasion comes we’ll need spaniels (or possibly other dogs, but lets hope its mainly spaniels because spaniels are cool)
+#' to help us to identify the space lizards. The top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) was put together
+#' to test the plausibility of training sniffer dogs to detect aliens. Over many trials 8 of their best dogs (Milton, Woofy, Ramsey, Mr. Snifficus III,
+#' Willock, The Venerable Dr. Waggy, Lord Scenticle, and Professor Nose) were recruited for a pilot study. During training, these dogs were rewarded
+#' for making vocalisations while sniffing alien space lizards (which they happened to have a few of in Hangar 18).
+#' On the test trial, the 8 dogs were allowed to sniff 4 entities for 1-minute each: an alien space lizard, a shapeshifting alien space
+#' lizard who had taken on humanoid form and worked undetected as a statistics lecturer, a human, and a human mannequin). The number of vocalisations made
+#' during each 1-minute sniffing session was recorded. For more alien lizard and sniffer dog adventures see [alien_scents].
+#'
+#'   * **dog_name**: the name of the sniffer dog
+#'   * **entity**: the entity being sniffed by the sniffer dog (alien, alien in humanoid form (shapeshifter), human, human mannequin)
+#'   * **vocalisations**: the number of vocalisations made by the dog during a 1-minute sniff
+#'
+#' @format A tibble with 32 rows and 3 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/sniffer_dog.csv](https://www.discovr.rocks/csv/sniffer_dog.csv)
+
+"sniffer_dogs"
 
 #' Social anxiety data
 #'

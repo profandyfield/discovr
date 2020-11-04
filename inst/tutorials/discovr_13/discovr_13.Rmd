@@ -407,10 +407,10 @@ The results show significant main effects and interactions for all variables. Th
 A neat feature of `afex` is that you can get plots of the interaction without needing to do it using `ggplot2` (even though I forced you to do that for practice at the start of the tutorial). Having created an `afex` object we can feed it into the `afex_plot()`, which takes the general form:
 
 ```{r, eval = F}
-afex::afex_plot(afx_object, x_variable, line/shape_variable, panel_variable)
+afex::afex_plot(afx_object, x_variable, line_shape_variable, panel_variable)
 ```
 
-In which you replace [afx_object]{.alt} with the name of the the model you fitted with `aov_4()`, [x_variable]{.alt} with the predictor you want on the *x*-axis, [line/shape_variable]{.alt} with a predictor where you want to depict different levels using different lines/shapes and, if you have a third categorical predictor, replace [panel_variable]{.alt} with a predictor where you want to display different levels in different panels (e.g., `facet_wrap()` style). The result is a `ggplot` object so you can use `ggplot2` code to edit the results, for example, you can apply a standard `ggplot2` theme. 
+In which you replace [afx_object]{.alt} with the name of the the model you fitted with `aov_4()`, [x_variable]{.alt} with the predictor you want on the *x*-axis, [line_shape_variable]{.alt} with a predictor that you want to be depicted with using different lines/shapes. If you have a third categorical predictor, replace [panel_variable]{.alt} with a predictor the levels of which you want displayed in different panels (e.g., `facet_wrap()` style). The result is a `ggplot` object so you can use `ggplot2` code to edit the results, for example, you can apply a standard `ggplot2` theme. 
 
 #### `r robot()` Code example
 

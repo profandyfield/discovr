@@ -85,4 +85,18 @@ rstudio <- function(height = 1){
   htmltools::HTML(img_text)
 }
 
+# Colours
 
+ong <- "#d47500"
+ong_dk <- "#d35400"
+red <- "#CA3E34"
+red_dk <- "#912D25"
+grn <- "#82b1b0"
+grn_dk <- "#427479"
+blu <- "#136CB9"
+blu_dk <- "#2C5577"
+bwn <- "#F3E2C4"
+bwn_dk <- "#775418"
+gry <- "#E8EAE5"
+gry_dk <- "#3F3F3F"
+purp <- "#6F709F"

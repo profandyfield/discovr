@@ -32,4 +32,9 @@ constipated before treatment (a proxy of symptom severity). The (fictional) data
 \item \strong{duration}: the number of days before treatment that the patient had the problem
 }
 }
+\references{
+\itemize{
+\item Lo, S. F., Wong, S. H., Leung, L. S., Law, I. C., & Yip, A. W. C. (2004). Traumatic rectal perforation by an eel. Surgery, 135, 110–111. \url{https://doi.org/10.1016/S0039-6060(03)00076-X}.
+}
+}
 \keyword{datasets}

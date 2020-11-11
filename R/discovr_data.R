@@ -57,13 +57,16 @@
 #'
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' The alien space lizards were getting fed up with the TERD-trained sniffer dogs being able to detect them and thwart their attempts at invasion (see [sniffer_dogs]).
-#' They decided that they could mask their alien smell to fool the dogs, and also decided that the two most effective masking scents would be human pheromones
-#' (which they hoped would make them smell human-like) and fox-pheromones (because they are a powerful, distracting smell for dogs). The aliens started smearing themselves with humans and foxes
-#' and prepared to invade. Meanwhile, the top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) had got wind of their plan and set about testing how effective it would be.
+#' The aliens, excited by humans' apparent inability to train sniffer dogs to detect them (see [sniffer_dogs]), decided to move their invasion plan forward.
+#' Aliens are far too wedded to *p*-values in small samples. They decided that they could make themselves even
+#' harder to detect by fooling the sniffer dogs by masking their alien smell. After extensive research they agreed
+#' that the two most effective masking scents would be human pheromones (which they hoped would make them smell human-like)
+#' and fox-pheromones (because they are a powerful, distracting smell for dogs). The aliens started smearing themselves with humans
+#' and foxes and prepared to invade.
+#' Meanwhile, the top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) had got wind of their plan and set about testing how effective it would be.
 #' They trained 50 sniffer dogs. During training, these dogs were rewarded for making vocalisations while sniffing alien space lizards.
 #' On the test trials, the 50 dogs were allowed to sniff 9 different entities for 1-minute each: 3 alien space lizards, 3 shapeshifting alien space
-#' lizard who had taken on humanoid form, and 3 humans. Within each type of entity, 1 had no masking scent, 1 was smothered in human pheromones and 1 wore fox pheromones
+#' lizard who had taken on humanoid form, and 3 humans. Within each type of entity, 1 had no masking scent, 1 was smothered in human pheromones and 1 wore fox pheromones.
 #' The number of vocalisations made during each 1-minute sniffing session was recorded.
 #'
 #'   * **dog_id**: the id of the 50 sniffer dogs
@@ -503,6 +506,34 @@
 
 "download"
 
+#' Eel data
+#'
+#' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Lo, Wong, Leung, Law, and Yip (2004) describe a case of a 50-year-old man who reported to the emergency department of a hospital with abdominal pain.
+#' An X-ray of the man’s abdomen revealed the shadow of an eel. The patient claimed that he inserted the eel to ‘relieve constipation’.
+#' I’m no medic, but this 'remedy' appears counterintuitive. However, it is an empirical question.
+#'
+#' To test the hypothesis that an eel might cure constipation, we could do a randomized controlled trial.
+#' Our outcome variable would be ‘cured’ vs. ‘not cured’. The main predictor variable would be the intervention condition
+#' (eel treatment arm vs. waiting list/no treatment arm). We might also factor in how many days the patient had been
+#' constipated before treatment (a proxy of symptom severity). The (fictional) data contains the following variables:
+#'
+#' * **id**: Participant id
+#' * **cured**: Whether the participant cured or not after treatment
+#' * **intervention**: Whether the participant was randomized to the no intervention arm of the trial or the intervention arm
+#' * **duration**: the number of days before treatment that the patient had the problem
+#'
+#' @format A tibble with 113 rows and 4 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/eel.csv](https://www.discovr.rocks/csv/eel.csv)
+#'
+#' @references
+#'
+#' * Lo, S. F., Wong, S. H., Leung, L. S., Law, I. C., & Yip, A. W. C. (2004). Traumatic rectal perforation by an eel. Surgery, 135, 110–111. [https://doi.org/10.1016/S0039-6060(03)00076-X](https://doi.org/10.1016/S0039-6060(03)00076-X).
+
+"eel"
+
 #' Elephant football data
 #'
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
@@ -552,10 +583,10 @@
 #'
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' a psychologist was interested in the effects of exam stress on exam performance. She devised and validated a questionnaire to assess
+#' A psychologist was interested in the effects of exam stress on exam performance. She devised and validated a questionnaire to assess
 #' state anxiety relating to exams (called the Exam Anxiety Questionnaire, or EAQ). This scale produced a measure of anxiety scored out of 100.
 #' Anxiety was measured before an exam, and the percentage mark of each student on the exam was used to assess the exam performance. These data are fictional.
-#' The object contains the following variables:
+#' The fictional data contains the following variables:
 #'
 #'   * **id**: participant id
 #'   * **revise**: the time spent revising for the exam (hours)
@@ -1184,6 +1215,28 @@
 
 "ong_tidy"
 
+#' Profile picture data
+#'
+#' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#'  A researcher was interested in the effect of profile pictures on social media on unsolicited attention.
+#'  She took 40 people who had profiles on a social networking website; 17 of them had a relationship status of ‘single’
+#'  and the remaining 23 had their status as ‘in a relationship’. We asked these people to set their profile picture to a photo
+#'  of them on their own (alone) and to count how many friend request they got from random strangers over 3 weeks, then to switch
+#'  it to a photo of them very obviously as part of a romantic couple and record their friend requests from random
+#'  strangers over 3 weeks. The (fictional) data contains the following variables:
+#'
+#' * **id**: Participant id
+#' * **rel_status**: Whether the participant's relationship status is 'sing;le' or 'in a relationship'
+#' * **profile_pic**: Whether the participant's profile picture depicts them alone or as part of a couple
+#' * **requests**: The number of unsolicited friend requests (in 3 weeks) from random strangers who categorise their sexual orientation such that they are interested in people of the gender of the participant
+#'
+#' @format A tibble with 80 rows and 4 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/profile_pic.csv](https://www.discovr.rocks/csv/profile_pic.csv)
+
+"profile_pic"
+
 #' Puppy therapy data
 #'
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
@@ -1282,6 +1335,61 @@
 #' @source [www.discovr.rocks/csv/roaming_cats.csv](https://www.discovr.rocks/csv/roaming_cats.csv)
 
 "roaming_cats"
+
+#' Self-help book data
+#'
+#' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Let's begin with a Christmas tale. A year ago Santa was resting in his workshop studying his nice
+#' and naughty lists. He noticed a name on the naughty list in bold, upper case letters.
+#' It said **ANDY FIELD OF UNIVERSITY OF SUSSEX**. He went to look up the file of this Andy Field
+#' character. He stared into his snow globe, and as the mists cleared he saw a sad, lonely,
+#' friend-less character walking across campus. Under one arm a box of chocolates, under
+#' the other a small pink Hippo. As he walked the campus he enticed the young students
+#' around him to follow him by offering chocolate. Like the Pied Piper, he led them to
+#' a large hall. Once inside, the boys and girls' eyes glistened in anticipation of
+#' more chocolate. Instead he unleashed a monologue about the general linear model of
+#' such fearsome tedium that Santa began to wonder how anyone could have grown to be
+#' so soulless and cruel.
+#'
+#' Santa dusted off his sleigh and whizzed through the night sky to the Sussex campus.
+#' Once there he confronted the evil fiend that he had seen in his globe. "You've been
+#' a naughty boy," he said. "I give you a choice. Give up teaching statistics, or
+#' I will be forced to let the [Krampus](https://en.wikipedia.org/wiki/Krampus) pay
+#' you a visit."
+#'
+#' Andy looked sad, "But I love statistics," he said to Santa, "It's cool."
+#'
+#' Santa pulled out a candy cane, from it emerged a screen. Just as he was about to instruct
+#' the screen to call the Krampus, an incoming message appeared: some presents had not been delivered last Christmas!
+#'
+#' What was Santa to do? How could he find out what determines whether presents get delivered or not? He panicked.
+#'
+#' Just then, Santa heard a sad little voice. It said, "I can help you".
+#'
+#' "How? replied Santa.
+#'
+#' "My students," he replied, "they can save Christmas. All they need are some data."
+#'
+#' With that, Santa looked into his candy screen at the elves who had called him, and turned to Andy. "Tell them what you need."
+#'
+#' Andy discovered that to deliver presents Santa uses a large team of elves, and that at each house
+#' they usually consume treats. The treats might be Christmas pudding, or sometimes
+#' mulled wine. He also discovered that they consume different quantities.
+#' Sometimes nothing is left, but other times there might be 1, 2, 3 or even 4
+#' pieces of pudding or glasses of mulled wine. The Elves transmitted a log of
+#' 400 of the previous year's deliveries. The (fictional) data contains the following variables:
+#'
+#' * **id**: Name of the elf doing the delivery
+#' * **quantity**: How many treats the elf ate before attempting the delivery
+#' * **treat**: which kind of treats were consumed (Christmas pudding or mulled wine)
+#' * **delivered**: were the presents delivered (delivered or not delivered) The (fictional) data contains the following variables:
+#'
+#' @format A tibble with 400 rows and 4 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/santas_log.csv](https://www.discovr.rocks/csv/santas_log.csv)
+
+"santas_log"
 
 #' Self-help book data
 #'
@@ -1421,6 +1529,41 @@
 #' @source [www.discovr.rocks/csv/soya.csv](https://www.discovr.rocks/csv/soya.csv)
 
 "soya"
+
+#' Speed dating data
+#'
+#' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#'  Imagine a scientist designed a study to look at the interplay between looks, personality and
+#'  dating strategies on evaluations of a date. She set up a speed-dating night with 9 tables at which there
+#'  sat a ‘date’. All the dates were stooges selected to vary in their attractiveness (high, average and low),
+#'  their personality (high charisma, average charisma, writes statistics books), and also the strategy
+#'  they were told to employ during the conversation (normal or playing hard to get).
+#'  The dates were trained before the study to act charismatically to varying degrees, and also how to act
+#'  in a way that made them seem unobtainable (hard to get) or not. As such, across the nine dates/stooges
+#'  there were three 'high attractive' people one of whom acted charismatically, one who acted normally (average) and
+#'  another who acted with low charisma, likewise for the three average looking dates and the three low attractiveness dates.
+#'  Therefore, each participant attending a speed-dating night would be exposed to all combinations of attractiveness and charisma
+#'  (these are repeated measures).
+#'
+#'  Upon arrival participants were randomly assigned a blue or red sticker.
+#'  For the participants with the red sticker the stooges played hard to get (unobtainable) and for
+#'  those with a blue sticker they acted normally. Over the course a few nights 20 people attended,
+#'  spent 5-minutes with each of the 9 ‘dates’ and then rated how much they’d like to have a proper date with the person
+#'  as a percentage (100% = ‘I’d pay large sums of money for their phone number’, 0% = ‘I’d pay a large sum of money for a plane
+#'  ticket to get me as far away from them as possible’). The (fictional) data contains the following variables:
+#'
+#'   * **id**: participant ID
+#'   * **strategy**: Whether the stooge acted normally or played hard to get
+#'   * **looks**: Whether the stooge was rated as high, average or low on looks
+#'   * **personality**: Whether the stooge acted with high, average or low charisma
+#'   * **date**: rating how much the participant would like to have a proper date with the stooge as a percentage (100% = ‘I’d pay large sums of money for their phone number’, 0% = ‘I’d pay a large sum of money for a plane ticket to get me as far away from them as possible’)
+#'
+#' @format A tibble with 180 rows and 5 variables
+#' @docType data
+#' @source [www.discovr.rocks/csv/speed_date.csv](https://www.discovr.rocks/csv/speed_date.csv)
+
+"speed_date"
 
 #' Stalking therapy
 #'

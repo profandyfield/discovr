@@ -41,6 +41,8 @@
 #' * **discovr_11**: Comparing several means. Essentially 'One-way independent ANOVA' but taught using a general linear model framework. Covers setting contrasts (dummy coding, contrast coding, and linear and quadratic trends), the *F*-statistic and Welch's robust *F*, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of means based on trimmed data, *post hoc* tests, Bayes factors.
 #' * **discovr_12**: Comparing means adjusted for other variables. Essentially 'Analysis of Covariance (ANCOVA)' designs but taught using a general linear model framework. Covers setting contrasts, Type III sums of squares, the *F*-statistic, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of adjusted means, *post hoc* tests, Bayes factors.
 #' * **discovr_13**: Factorial designs. Fitting models for two-way factorial designs (independent measures) using both lm() and the afex package. This tutorial builds on previous ones to show how models can be fit with two categorical predictors to look at the interaction between them. We look at fitting the models, setting contrasts for the two categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, partial eta-squared and partial omega-squared, robust models and Bayes factors.
+#' * **discovr_14**: Repeated measures designs. Fitting models for one- and two-way repeated measures designs using the afex package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when these variables ahve been manipulated within the same entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors.
+#' * **discovr_15**: Mixed designs. Fitting models for mixed designs using the afex package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when at least one of these variables has been manipulated within the same entities and at least one other has been manipulated using different entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors.
 #'
 #' **Workflow**:
 #' The tutorials are self-contained (you practice code in code boxes) so you don't need to use RStudio at the
@@ -75,6 +77,7 @@
 #' * [dark_lord]: Fictitious data about the subliminal messages in songs.
 #' * [download]: Fictitious data about the download music festival and being smelly.
 #' * [df_beta]: Fictitious data used to illustrate the DF Beta statistic.
+#' * [eel]: Fictitious data about a randomized control trial to test whether eel therapy is an effective treatment of constipation.
 #' * [elephooty]: Fictitious data about elephants playing football (soccer).
 #' * [essay_marks]: Fictitious data about essay marking.
 #' * [exam_anxiety]: Fictitious data about exam performance, anxiety and revision.
@@ -103,11 +106,13 @@
 #' * [notebook]: Fictitious data about whether watching the film the notebook is emotionally arousing.
 #' * [ong_2011]: Data about social media profile pictures and personality traits.
 #' * [ong_tidy]: Data about social media profile pictures and personality traits.
+#' * [profile_pic]: Fictitious data related to whether the number of friend requests from random people on social media is affected by whether your profile picture depicts you as single or part of a romantic couple.
 #' * [pubs]: Data illustrating the difference between an outlier and an influential case.
 #' * [puppies]: Fictitious data related to whether puppy therapy works.
 #' * [puppy_love]: Fictitious data related to whether puppy therapy works when you adjust for a person's love of puppies.
 #' * [r_exam]: Fictitious data relating to an R exam at two universities.
 #' * [roaming_cats]: Fictitious data about how far cats roam from their homes.
+#' * [santas_log]: Fictitious data related to whether the type and quantity of treat consumed on Christmas night affects whether elves successfully deliver presents.
 #' * [self_help]: Fictitious data about whether self-help books improve relationship satisfaction.
 #' * [self_help_dsur]: Fictitious data about whether self-help books improve relationship satisfaction compared to statistics books.
 #' * [shopping]: Fictitious data about shopping.
@@ -115,6 +120,7 @@
 #' * [social_anxiety]: Fictitious (I think) data about whether social anxiety symptoms are specific to social anxiety.
 #' * [social_media]: Fictitious data about the effects of social media on grammar.
 #' * [soya]: fictitious data about the effects of eating soya on sperm count.
+#' * [speed_date]: Fictitious data related to the extent to which interest in dating someone is affected by their looks, personality or the dating strategy they adopt.
 #' * [stalker]: fictitious data about therapy for stalking.
 #' * [students]: I can't even remember what this data file contains.
 #' * [superhero]: fictitious data about whether wearing different superhero costumes leads to more severe physical injuries.

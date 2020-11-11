@@ -45,6 +45,8 @@ I recommend working through [this tutorial](http://milton-the-cat.rocks/learnr/r
 * **discovr_11**: Comparing several means. Essentially 'One-way independent ANOVA' but taught using a general linear model framework. Covers setting contrasts (dummy coding, contrast coding, and linear and quadratic trends), the *F*-statistic and Welch's robust *F*, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of means based on trimmed data, *post hoc* tests, Bayes factors.
 * **discovr_12**: Comparing means adjusted for other variables. Essentially 'Analysis of Covariance (ANCOVA)' designs but taught using a general linear model framework. Covers setting contrasts, Type III sums of squares, the *F*-statistic, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of adjusted means, *post hoc* tests, Bayes factors.
 * **discovr_13**: Factorial designs. Fitting models for two-way factorial designs (independent measures) using both lm() and the afex package. This tutorial builds on previous ones to show how models can be fit with two categorical predictors to look at the interaction between them. We look at fitting the models, setting contrasts for the two categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, partial eta-squared and partial omega-squared, robust models and Bayes factors.
+* **discovr_14**: Repeated measures designs. Fitting models for one- and two-way repeated measures designs using the afex package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when these variables ahve been manipulated within the same entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors.
+* **discovr_15**: Mixed designs. Fitting models for mixed designs using the afex package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when at least one of these variables has been manipulated within the same entities and at least one other has been manipulated using different entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors.
 
 
 ### Running a tutorial
@@ -106,6 +108,7 @@ See the book or data descriptions for more details. This is a list of available 
 * **dark_lord**: fictitious data about the subliminal messages in songs. For details execute `?dark_lord`.
 * **download**: fictitious data about the download music festival and being smelly. For details execute `?download`.
 * **df_beta**: fictitious data used to illustrate the DF Beta statistic. For details execute `?df_beta`.
+* **eel**: Fictitious data about a randomized control trial to test whether eel therapy is an effective treatment of constipation. For details execute `?eel`.
 * **elephooty**: Fictitious data about elephants playing football (soccer). For details execute `?elephooty`.
 * **essay_marks**: fictitious data about essay marking. For details execute `?essay_marks`.
 * **exam_anxiety**: fictitious data about exam performance, anxiety and revision. For details execute `?exam_anxiety`.
@@ -134,11 +137,13 @@ See the book or data descriptions for more details. This is a list of available 
 * **notebook**: fictitious data about whether watching the film the notebook is emotionally arousing. For details execute `?notebook`.
 * **ong_2011**: Data about social media profile pictures and personality traits. For details execute `?ong_2011`.
 * **ong_tidy**: Data about social media profile pictures and personality traits. For details execute `?ong_tidy`.
+* **profile_pic**: Fictitious data related to whether the number of friend requests from random people on social media is affected by whether your profile picture depicts you as single or part of a romantic couple. For details execute `?profile_pic`.
 * **pubs**: Data illustrating the difference between an outlier and an influencial case. For details execute `?pubs`.
 * **puppies**: Fictitious data related to whether puppy therapy works. For details execute `?puppies`.
 * **puppy_love**: Fictitious data related to whether puppy therapy works when you adjust for a person's love of puppies. For details execute `?puppy_love`.
 * **r_exam**: Fictitious data relating to an R exam at two universities. For details execute `?r_exam`.
 * **roaming_cats**: fictitious data about how far cats roam from their homes For details execute `?roaming_cats`.
+* **santas_log**: Fictitious data related to whether the type and quantity of treat consumed on Christmas night affects whether elves successfully deliver presents. For details execute `?santas_log`.
 * **self_help**: fictitious data about whether self-help books improve relationship satisfaction. For details execute `?self_help`.
 * **self_help_dsur**: fictitious data about whether self-help books improve relationship satisfaction compared to statistics books. For details execute `?self_help_dsur`.
 * **shopping**: fictitious data about shopping For details execute `?shopping_exercise`.
@@ -146,6 +151,7 @@ See the book or data descriptions for more details. This is a list of available 
 * **social_anxiety**: fictitious (I think) data about whether social anxiety symptoms are specific to social anxiety. For details execute `?social_anxiety`.
 * **social_media**: fictitious data about the effects of social media on grammar. For details execute `?social_media`.
 * **soya**: fictitious data about the effects of eating soya on sperm count. For details execute `?soya`.
+* **speed_date**: Fictitious data related to the extent to which interest in dating someone is affected by their looks, personality or the dating strategy they adopt. For details execute `?speed_date`.
 * **stalker**: fictitious data about therapy for stalking. For details execute `?stalker`.
 * **students**: I can't even remember what this data file contains. For details execute `?student`.
 * **superhero**: fictitious data about whether wearing different superhero costumes leads to more severe physical injuries. For details execute `?superhero`.

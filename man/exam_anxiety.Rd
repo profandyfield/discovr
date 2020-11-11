@@ -17,10 +17,10 @@ exam_anxiety
 A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
-a psychologist was interested in the effects of exam stress on exam performance. She devised and validated a questionnaire to assess
+A psychologist was interested in the effects of exam stress on exam performance. She devised and validated a questionnaire to assess
 state anxiety relating to exams (called the Exam Anxiety Questionnaire, or EAQ). This scale produced a measure of anxiety scored out of 100.
 Anxiety was measured before an exam, and the percentage mark of each student on the exam was used to assess the exam performance. These data are fictional.
-The object contains the following variables:
+The fictional data contains the following variables:
 \itemize{
 \item \strong{id}: participant id
 \item \strong{revise}: the time spent revising for the exam (hours)

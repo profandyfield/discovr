@@ -17,13 +17,16 @@ alien_scents
 A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
-The alien space lizards were getting fed up with the TERD-trained sniffer dogs being able to detect them and thwart their attempts at invasion (see \link{sniffer_dogs}).
-They decided that they could mask their alien smell to fool the dogs, and also decided that the two most effective masking scents would be human pheromones
-(which they hoped would make them smell human-like) and fox-pheromones (because they are a powerful, distracting smell for dogs). The aliens started smearing themselves with humans and foxes
-and prepared to invade. Meanwhile, the top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) had got wind of their plan and set about testing how effective it would be.
+The aliens, excited by humans' apparent inability to train sniffer dogs to detect them (see \link{sniffer_dogs}), decided to move their invasion plan forward.
+Aliens are far too wedded to \emph{p}-values in small samples. They decided that they could make themselves even
+harder to detect by fooling the sniffer dogs by masking their alien smell. After extensive research they agreed
+that the two most effective masking scents would be human pheromones (which they hoped would make them smell human-like)
+and fox-pheromones (because they are a powerful, distracting smell for dogs). The aliens started smearing themselves with humans
+and foxes and prepared to invade.
+Meanwhile, the top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) had got wind of their plan and set about testing how effective it would be.
 They trained 50 sniffer dogs. During training, these dogs were rewarded for making vocalisations while sniffing alien space lizards.
 On the test trials, the 50 dogs were allowed to sniff 9 different entities for 1-minute each: 3 alien space lizards, 3 shapeshifting alien space
-lizard who had taken on humanoid form, and 3 humans. Within each type of entity, 1 had no masking scent, 1 was smothered in human pheromones and 1 wore fox pheromones
+lizard who had taken on humanoid form, and 3 humans. Within each type of entity, 1 had no masking scent, 1 was smothered in human pheromones and 1 wore fox pheromones.
 The number of vocalisations made during each 1-minute sniffing session was recorded.
 \itemize{
 \item \strong{dog_id}: the id of the 50 sniffer dogs

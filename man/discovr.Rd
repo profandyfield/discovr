@@ -76,6 +76,7 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{dark_lord}: Fictitious data about the subliminal messages in songs.
 \item \link{download}: Fictitious data about the download music festival and being smelly.
 \item \link{df_beta}: Fictitious data used to illustrate the DF Beta statistic.
+\item \link{eel}: Fictitious data about a randomized control trial to test whether eel therapy is an effective treatment of constipation.
 \item \link{elephooty}: Fictitious data about elephants playing football (soccer).
 \item \link{essay_marks}: Fictitious data about essay marking.
 \item \link{exam_anxiety}: Fictitious data about exam performance, anxiety and revision.
@@ -104,11 +105,13 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{notebook}: Fictitious data about whether watching the film the notebook is emotionally arousing.
 \item \link{ong_2011}: Data about social media profile pictures and personality traits.
 \item \link{ong_tidy}: Data about social media profile pictures and personality traits.
+\item \link{profile_pic}: Fictitious data related to whether the number of friend requests from random people on social media is affected by whether your profile picture depicts you as single or part of a romantic couple.
 \item \link{pubs}: Data illustrating the difference between an outlier and an influential case.
 \item \link{puppies}: Fictitious data related to whether puppy therapy works.
 \item \link{puppy_love}: Fictitious data related to whether puppy therapy works when you adjust for a person's love of puppies.
 \item \link{r_exam}: Fictitious data relating to an R exam at two universities.
 \item \link{roaming_cats}: Fictitious data about how far cats roam from their homes.
+\item \link{santas_log}: Fictitious data related to whether the type and quantity of treat consumed on Christmas night affects whether elves successfully deliver presents.
 \item \link{self_help}: Fictitious data about whether self-help books improve relationship satisfaction.
 \item \link{self_help_dsur}: Fictitious data about whether self-help books improve relationship satisfaction compared to statistics books.
 \item \link{shopping}: Fictitious data about shopping.
@@ -116,6 +119,7 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{social_anxiety}: Fictitious (I think) data about whether social anxiety symptoms are specific to social anxiety.
 \item \link{social_media}: Fictitious data about the effects of social media on grammar.
 \item \link{soya}: fictitious data about the effects of eating soya on sperm count.
+\item \link{speed_date}: Fictitious data related to the extent to which interest in dating someone is affected by their looks, personality or the dating strategy they adopt.
 \item \link{stalker}: fictitious data about therapy for stalking.
 \item \link{students}: I can't even remember what this data file contains.
 \item \link{superhero}: fictitious data about whether wearing different superhero costumes leads to more severe physical injuries.

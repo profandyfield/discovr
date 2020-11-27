@@ -332,7 +332,7 @@ afex::aov_4(outcome ~ predictor + (1|id_variable), data = my_tib)
 In which we replace [my_tib]{.alt} with the name of our tibble. When we have a repeated measures design we make one important change to this code. Instead of using [1|id_variable]{.alt}, we need to tell the function that any repeated measures predictor variables (lets call them **rm_predictors**) are nested within individual participants. Therefore, this term changes to (in general) [(rm_predictors|id_variable)]{.alt}:
 
 ```{r, eval = F}
-afex::aov_4(outcome ~ rm_predictor + (rm_predictors|id_variable), data = my_tib)
+afex::aov_4(outcome ~ predictor + (rm_predictors|id_variable), data = my_tib)
 ```
 
 In the current design, there is only one repeated measures predictor variable, which is [entity]{.alt} and the variable that uniquely identifies the different dogs is [dog_name]{.alt}, therefore, we'd replace [(rm_predictors|id_variable)]{.alt} with [(entity|dog_name)]{.alt} to indicate that the variable **entity** is nested within the variable **dog_name**. Other than this change the function is used in the same way that we have used it before.
@@ -731,10 +731,10 @@ Remember that we can specify all main effects and their interactions using `*`. 
 We saw earlier that the `aov_4()` function has the following format:
 
 ```{r, eval = F}
-afex::aov_4(outcome ~ rm_predictors + (rm_predictors|id_variable), data = my_tib)
+afex::aov_4(outcome ~ predictors + (rm_predictors|id_variable), data = my_tib)
 ```
 
-In the current design, we can specify the two repeated measures predictors and their interaction using [entity\*scent_mask]{.alt}, therefore, we replace all instances of [rm_predictors]{.alt} in the code above with [entity\*scent_mask]{.alt}. For example, remembering that the variable that uniquely identifies the different dogs is [dog_id]{.alt}, we'd replace [(rm_predictors|id_variable)]{.alt} with [(entity\*scent_mask|dog_id)]{.alt} to indicate that the variables **entity**, **scent_mask** and their interaction are nested within the variable **dog_id**.
+In the current design, we can specify the two repeated measures predictors and their interaction using [entity\*scent_mask]{.alt}, therefore, we replace both [predictors]{.alt} and [rm_predictors]{.alt} in the code above with [entity\*scent_mask]{.alt}. For example, remembering that the variable that uniquely identifies the different dogs is [dog_id]{.alt}, we'd replace [(rm_predictors|id_variable)]{.alt} with [(entity\*scent_mask|dog_id)]{.alt} to indicate that the variables **entity**, **scent_mask** and their interaction are nested within the variable **dog_id**.
 
 #### `r robot()` Code example
 

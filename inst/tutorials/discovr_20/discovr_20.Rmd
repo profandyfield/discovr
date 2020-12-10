@@ -257,7 +257,7 @@ santa_tib %>%
   ) %>% 
   dplyr::ungroup() %>%
   gt::gt(rowname_col = "treat") %>% 
-  grand_summary_rows(
+  gt::grand_summary_rows(
     columns = vars(`Delivered`, `Not delivered`, Total),
     fns = list(Total = ~sum(.)),
     decimals = 0

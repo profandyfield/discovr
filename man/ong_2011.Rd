@@ -17,7 +17,7 @@ ong_2011
 A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
-A study by Ong et al., (2011) examining the relationship between a person's narcissism and other people’s ratings of their profile picture on Facebook.
+A study by Ong et al., (2011) examining the relationship between a person's narcissism and other people's ratings of their profile picture on Facebook.
 The pictures were rated on each of four dimensions: coolness, glamour, fashionableness, and attractiveness. In addition, each person was measures on introversion/extroversion and narcissism.
 These data are in messy/wide format. The data contains the following variables:
 \itemize{
@@ -37,7 +37,7 @@ These data are in messy/wide format. The data contains the following variables:
 }
 \references{
 \itemize{
-\item Ong, E. Y. L., Ang, R. P., Ho, J. C. M., Lim, J. C. Y., Goh, D. H., Lee, C. S., & Chua, A. Y. K. (2011). Narcissism, extraversion and adolescents’ self-presentation on Facebook. \emph{Personality and Individual Differences}, 50, 180–185. \url{https://doi.org/10.1016/j.paid.2010.09.022}
+\item Ong, E. Y. L., Ang, R. P., Ho, J. C. M., Lim, J. C. Y., Goh, D. H., Lee, C. S., & Chua, A. Y. K. (2011). Narcissism, extraversion and adolescents' self-presentation on Facebook. \emph{Personality and Individual Differences}, 50, 180–185. \url{https://doi.org/10.1016/j.paid.2010.09.022}
 }
 }
 \keyword{datasets}

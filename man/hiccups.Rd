@@ -20,7 +20,7 @@ A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (
 People have many methods for stopping hiccups (a surprise, holding your breath), and medical science has
 put its collective mind to the task too. The official treatment methods include tongue-pulling manoeuvres,
 massage of the carotid artery, and, believe it or not, digital rectal massage (Fesmire, 1988).
-Let’s say we wanted to put digital rectal massage to the test (erm, as a cure for hiccups).
+Let's say we wanted to put digital rectal massage to the test (erm, as a cure for hiccups).
 We took 15 hiccup sufferers, and during a bout of hiccups administered each of the three procedures
 (in random order and at intervals of 5 minutes) after taking a baseline of how many hiccups they had per minute.
 We counted the number of hiccups in the minute after each procedure. These data are fictional.

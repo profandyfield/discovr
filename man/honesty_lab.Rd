@@ -20,11 +20,11 @@ A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (
 Fictional data about the honesty lab. Imagine we were interested in how people evaluated dishonest acts.
 Participants evaluate the dishonesty of acts based on watching videos of people confessing to those acts.
 Imagine we took 100 people and showed them a random dishonest act described by the perpetrator.
-They then evaluated the honesty of the act (from 0 = appalling behaviour to 10 = it’s OK really)
+They then evaluated the honesty of the act (from 0 = appalling behaviour to 10 = it's OK really)
 and how much they liked the person (0 = not at all, 10 = a lot). The data set has three variables
 \itemize{
 \item \strong{id}: Participant's id
-\item \strong{deed}: evaluation of the honesty of the act (from 0 = appalling behaviour to 10 = it’s OK really)
+\item \strong{deed}: evaluation of the honesty of the act (from 0 = appalling behaviour to 10 = it's OK really)
 \item \strong{likeableness}: evaluation of the perpetrator (0 = not at all, 10 = a lot)
 }
 }

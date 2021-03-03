@@ -19,7 +19,7 @@ A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (
 \details{
 It is believed that males have a biological predispoition towards the colour red because it is sexually salient.
 The theory suggests that women use the colour red as a proxy signal for genital colour to indicate ovulation and sexual proceptivity.
-If this hypothesis is true then using the colour red in this way would have to attract men (otherwise it’s a pointless strategy).
+If this hypothesis is true then using the colour red in this way would have to attract men (otherwise it's a pointless strategy).
 In a novel study, Johns, Hargrave, and Newton-Fisher (2012) tested this idea by manipulating the colour of four pictures of female
 geneitalia to make them increasing shades of red (pale pink, light pink, dark pink, red). Heterosexual males rated the resulting 16
 pictures from 0 (unattractive) to 100 (attractive). These are the data from that study. The data contains the following variables:

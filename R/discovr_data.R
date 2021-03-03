@@ -10,9 +10,9 @@
 #' Using a task from experimental economics called the ultimatum game, individuals are assigned the role of either proposer or responder and paired randomly.
 #' Proposers are allocated $10 from which they have to make a financial offer to the responder (i.e., $2). The responder can accept or reject this offer. If the offer is rejected neither party gets any money,
 #' but if the offer is accepted the responder keeps the offered amount (e.g., $2), and the proposer keeps the original amount minus what they offered (e.g., $8). For half of the participants the song
-#' ‘It’s a long way to the top’ sung by Bon Scott was playing in the background, for the remainder ‘Shoot to thrill’ sung by Brian Johnson was playing. Oxoby measured the offers made by proposers,
+#' 'It's a long way to the top' sung by Bon Scott was playing in the background, for the remainder 'Shoot to thrill' sung by Brian Johnson was playing. Oxoby measured the offers made by proposers,
 #' and the minimum offers that responders accepted (called the minimum acceptable offer). He reasoned that people would accept lower offers and propose higher offers when listening to something they like
-#' (because of the ‘feel-good factor’ the music creates). Therefore, by comparing the value of offers made and the minimum acceptable offers in the two groups he could see whether people have more of a feel
+#' (because of the 'feel-good factor' the music creates). Therefore, by comparing the value of offers made and the minimum acceptable offers in the two groups he could see whether people have more of a feel
 #' good factor when listening to Bon or Brian. There were 18 people per group.
 #'
 #' These data are approximated from graphs within Oxoby (2008). The object contains the following variables:
@@ -45,7 +45,7 @@
 #' * **adverts**: advertising budget in thousands of whatever currency is used in your country.
 #' * **sales**: the number of album sales (physical, digital, streams)
 #' * **airplay**: the number of times songs from the album were played on radio thew eek before release
-#' * **image**: a rating of the band's image from scale from 0 (dad dancing at a disco) to 10 (sicker than a dog that’s eaten a bag of onions)
+#' * **image**: a rating of the band's image from scale from 0 (dad dancing at a disco) to 10 (sicker than a dog that's eaten a bag of onions)
 #'
 #' @format A tibble with 200 rows and 5 variables.
 #' @docType data
@@ -86,9 +86,9 @@
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictitious data inspired by two news stories that I enjoyed. The first was about a Sudanese man who was forced to marry a goat ([http://ow.ly/9DyyP](http://ow.ly/9DyyP))
-#' after being caught having sex with it. I’m not sure he treated the goat to a nice dinner in a posh restaurant before taking advantage of her, but either way you have to feel sorry for the goat.
-#' I’d barely had time to recover from that story when another appeared about an Indian man forced to marry a dog to atone for stoning two dogs and stringing them up in a tree 15 years earlier.
-#' Why anyone would think it’s a good idea to enter a dog into matrimony with a man with a history of violent behaviour towards dogs is beyond me.
+#' after being caught having sex with it. I'm not sure he treated the goat to a nice dinner in a posh restaurant before taking advantage of her, but either way you have to feel sorry for the goat.
+#' I'd barely had time to recover from that story when another appeared about an Indian man forced to marry a dog to atone for stoning two dogs and stringing them up in a tree 15 years earlier.
+#' Why anyone would think it's a good idea to enter a dog into matrimony with a man with a history of violent behaviour towards dogs is beyond me.
 #' Still, I wondered whether a goat or dog made a better spouse. I found (but not really) some other people who had been forced to marry goats and dogs and measured their life satisfaction and, also, how much they like animals.
 #' The data contains the following variables:
 #'
@@ -110,19 +110,19 @@
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' During my psychology degree I spent a lot of time reading about the civil rights movement in the USA. Instead of reading psychology,
-#' I read about Malcolm X and Martin Luther King Jr. For this reason I find Beckham’s 1929 study of black Americans
+#' I read about Malcolm X and Martin Luther King Jr. For this reason I find Beckham's 1929 study of black Americans
 #' a fascinating historical piece of research. Beckham was a black American who founded the psychology laboratory
 #' at Howard University, Washington, DC and his wife Ruth was the first black woman ever to be awarded a PhD
 #' (also in psychology) at the University of Minnesota. To put some context on the study, it was published
 #' 36 years before the Jim Crow laws were finally overthrown by the Civil Rights Act of 1964, and in a time when
 #' black Americans were segregated, openly discriminated against and victims of the most abominable violations of
-#' civil liberties and human rights (I recommend James Baldwin’s superb The fire next time for an insight into the times).
+#' civil liberties and human rights (I recommend James Baldwin's superb The fire next time for an insight into the times).
 #' The language of the study and the data from it are an uncomfortable reminder of the era in which it was conducted.
 #'
 #' Beckham sought to measure the psychological state of 3443 black Americans with three questions. He asked them to
 #' answer yes or no to whether they thought black Americans were happy, whether they personally were happy as a black
 #' American, and whether black Americans should be happy. Beckham did no formal statistical analysis of his data
-#' (Fisher’s article containing the popularized version of the chi-square test was published only 7 years earlier
+#' (Fisher's article containing the popularized version of the chi-square test was published only 7 years earlier
 #' in a statistics journal that would not have been read by psychologists).
 #' I love this study, because it demonstrates that you do not need elaborate methods to answer important and far-reaching questions;
 #' with just three questions, Beckham told the world an enormous amount about very real and important psychological and sociological phenomena.
@@ -149,7 +149,7 @@
 #'
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' Fictional data based on the World’s Biggest Liar competition held annually at the Santon Bridge Inn in Wasdale (in the Lake District, UK).
+#' Fictional data based on the World's Biggest Liar competition held annually at the Santon Bridge Inn in Wasdale (in the Lake District, UK).
 #' Each year locals are encouraged to attempt to tell the biggest lie in the world. I wanted to test a theory that more creative people will be able to create taller tales.
 #' I gathered together 68 past contestants from this competition and noted where they were placed in the competition (first, second, third, etc.);
 #' I also gave them a creativity questionnaire (maximum score 60). The data set has four variables
@@ -172,7 +172,7 @@
 #' Is arachnophobia (fear of spiders) specific to real spiders or will pictures of spiders evoke similar levels
 #' of anxiety? Twelve arachnophobes were asked to play with a big hairy tarantula with big fangs and an evil
 #' look in its eight eyes and at a different point in time were shown only photos of the same spider.
-#' The participants’ anxiety was measured in each case. The (fictional) data contains the following variables:
+#' The participants' anxiety was measured in each case. The (fictional) data contains the following variables:
 #'
 #' * **id**: the participant's first name
 #' * **spider_type**: whether the spider stimulus was a real spider or a photo of a spider
@@ -188,7 +188,7 @@
 #'
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#'  The rapid increase in ‘fake news’ and misinformation is a worrying trend in recent years.
+#'  The rapid increase in 'fake news' and misinformation is a worrying trend in recent years.
 #'  Perhaps more worrying is how widely some of this news is taken as fact. Researchers have started to look at what
 #'  characteristics predict susceptibility to fake news. Bronstein et al. (2019) hypothesised that delusion-prone individuals
 #'  may be more likely to believe fake news because of their tendency to engage in less analytic and open-minded thinking.
@@ -198,7 +198,7 @@
 #'
 #'   * **id** (ResponseID in the original dataset): participant ID
 #'   * **fake_newz** (ZBelief_Fake in the original dataset): participants viewed 12 fake news headlines, each with a brief description and photo, and rated their accuracy (1 = Not at all accurate, 4 = Very accurate). This variable is the average rating converted to a z-score.
-#'   * **delusionz** (ZPDI_Total in the original dataset): Peter's et al Delusion Inventory (PDI), which uses statements such as “Do you ever feel as if there is a conspiracy against you?” to gauge a person’s propensity for delusion-like thinking. Again, scores were converted to z-scores.
+#'   * **delusionz** (ZPDI_Total in the original dataset): Peter's et al Delusion Inventory (PDI), which uses statements such as “Do you ever feel as if there is a conspiracy against you?” to gauge a person's propensity for delusion-like thinking. Again, scores were converted to z-scores.
 #'   * **thinkz_open** (ZAOT_Total in the original dataset):  open minded thinking was assessed with the Actively Open-minded Thinking (AOT) scale, on which people endorse statements such as “A person should always consider new possibilities” using a six-point scale (1 = strongly disagree, 6 = strongly agree). The total score was again converted to z.
 #'   * **thinkz_anal** (ZRF_Total in the original dataset): Analytic thinking was assessed using the Cognitive Reflection Test (CRT), which uses several problems that have intuitive-but-incorrect responses. Participants must override their intuition to get the correct answer. Over 7 items, higher scores (converted to z-scores again) indicate a greater tendency to use an analytic cognitive style.
 #'
@@ -289,7 +289,7 @@
 #' become available, some quail start to direct their sexuial behaviour towards the terrycloth object.
 #' In evolutionary terms, this fetishistic behaviour seems counterproductive because sexual behaviour becomes directed
 #' towards something that cannot provide reproductive success. However, perhaps this behaviour serves to prepare the
-#' organism for the ‘real’ mating behaviour.
+#' organism for the 'real' mating behaviour.
 #'
 #' Cetinkaya and Domjan (2006) sexually conditioned male quail.
 #' All quail experienced the terrycloth stimulus and an opportunity to mate, but for some the terrycloth stimulus
@@ -326,11 +326,11 @@
 #'
 #' There is some evidence that students tend to pick courses of lecturers they perceive to be enthusastic and good communicators.
 #' In a fascinating study, Tomas Chamorro-Premuzic and his colleagues (Chamorro-Premuzic, Furnham, Christopher, Garwood, & Martin, 2008)
-#' tested the hypothesis that students tend to like lecturers who are like themselves. The authors measured students’ own personalities
+#' tested the hypothesis that students tend to like lecturers who are like themselves. The authors measured students' own personalities
 #' using a very well-established measure (the NEO-FFI) which measures five fundamental personality traits: neuroticism, extroversion,
 #' openness to experience, agreeableness and conscientiousness. Students also completed a questionnaire in which they were given descriptions
-#' (e.g., ‘warm: friendly, warm, sociable, cheerful, affectionate, outgoing’) and asked to rate how much they wanted to see this in a lecturer
-#' from -5 (I don’t want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer).
+#' (e.g., 'warm: friendly, warm, sociable, cheerful, affectionate, outgoing') and asked to rate how much they wanted to see this in a lecturer
+#' from -5 (I don't want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer).
 #' The characteristics were the same as those measured by the NEO-FFI. As such, the authors had a measure of how much a student had each of the
 #' five core personality characteristics, but also a measure of how much they wanted to see those same characteristics in their lecturer.
 #' These are the data from that study. The data contains the following variables:
@@ -342,18 +342,18 @@
 #'   * **stu_open**: Student openness to experience score on the NEO-FFI
 #'   * **stu_agree**: Student agreeableness  score on the NEO-FFI
 #'   * **stu_consc**: Student conscientiousness score on the NEO-FFI
-#'   * **lec_neurotic**: Student rating of how much they wanted the characteristic of neuroticism in their lecturers from -5 (I don’t want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer)
-#'   * **lec_extro**: Student rating of how much they wanted the characteristic of extroversion in their lecturers from -5 (I don’t want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer)
-#'   * **lec_open**: Student rating of how much they wanted the characteristic of openness to experience in their lecturers from -5 (I don’t want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer)
-#'   * **lec_agree**: Student rating of how much they wanted the characteristic of agreeableness in their lecturers from -5 (I don’t want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer)
-#'   * **lec_consc**: Student rating of how much they wanted the characteristic of conscientiousness in their lecturers from -5 (I don’t want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer)
+#'   * **lec_neurotic**: Student rating of how much they wanted the characteristic of neuroticism in their lecturers from -5 (I don't want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer)
+#'   * **lec_extro**: Student rating of how much they wanted the characteristic of extroversion in their lecturers from -5 (I don't want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer)
+#'   * **lec_open**: Student rating of how much they wanted the characteristic of openness to experience in their lecturers from -5 (I don't want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer)
+#'   * **lec_agree**: Student rating of how much they wanted the characteristic of agreeableness in their lecturers from -5 (I don't want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer)
+#'   * **lec_consc**: Student rating of how much they wanted the characteristic of conscientiousness in their lecturers from -5 (I don't want this characteristic at all) through 0 (the characteristic is not important) to +5 (I really want this characteristic in my lecturer)
 #'
 #' @format A tibble with 430 rows and 12 variables.
 #' @docType data
 #' @source [www.discovr.rocks/csv/chamorro_premuzic.csv](https://www.discovr.rocks/csv/chamorro_premuzic.csv)
 #' @references
 #'
-#'    * Chamorro-Premuzic, T., Furnham, A., Christopher, A. N., Garwood, J., & Neil Martin, G. (2008). Birds of a feather: Students’ preferences for lecturers’ personalities as predicted by their own personality and learning approaches. *Personality and Individual Differences*, 44(4), 965–976. [https://doi.org/10.1016/j.paid.2007.10.032](https://doi.org/10.1016/j.paid.2007.10.032).
+#'    * Chamorro-Premuzic, T., Furnham, A., Christopher, A. N., Garwood, J., & Neil Martin, G. (2008). Birds of a feather: Students' preferences for lecturers' personalities as predicted by their own personality and learning approaches. *Personality and Individual Differences*, 44(4), 965–976. [https://doi.org/10.1016/j.paid.2007.10.032](https://doi.org/10.1016/j.paid.2007.10.032).
 
 "chamorro_premuzic"
 
@@ -385,13 +385,13 @@
 #'
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' Coldwell, Pike and Dunn (2006) investigated whether household chaos predicted children’s problem behaviour
+#' Coldwell, Pike and Dunn (2006) investigated whether household chaos predicted children's problem behaviour
 #' over and above parenting. From 118 families they recorded the age and gender of the youngest child
-#' (**child_age** and **child_gender**). They measured dimensions of the child’s perceived relationship with
+#' (**child_age** and **child_gender**). They measured dimensions of the child's perceived relationship with
 #' their mum: (1) warmth/enjoyment (**child_warmth**), and (2) anger/hostility (**child_anger**). Higher scores
-#' indicate more warmth/enjoyment and anger/hostility respectively. They measured the mum’s perceived relationship
+#' indicate more warmth/enjoyment and anger/hostility respectively. They measured the mum's perceived relationship
 #' with her child, resulting in dimensions of positivity (**mum_pos**) and negativity (**mum_neg**).
-#' Household chaos (**chaos**) was assessed. The outcome variable was the child’s adjustment (**sdq**): the higher the score,
+#' Household chaos (**chaos**) was assessed. The outcome variable was the child's adjustment (**sdq**): the higher the score,
 #' the more problem behaviour the child was reported to be displaying. These data are from this study. The data contain the following variables:
 #'
 #'   * **family_id**: The family id
@@ -415,7 +415,7 @@
 #'
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' Women (and increasingly men) are bombared with ‘idealized’ images in the media and there is a growing concern
+#' Women (and increasingly men) are bombared with 'idealized' images in the media and there is a growing concern
 #' about how these images affect our perceptions of ourselves. Daniels (2012) showed young women images of successful
 #' female athletes (e.g., Anna Kournikova) in which they were either playing sport (performance athlete images) or posing
 #' in bathing suits (sexualized images). Participants completed a short writing exercise after viewing these images.
@@ -450,9 +450,9 @@
 #' Both Ozzy Osbourne and Judas Priest have been accused of putting backward masked messages on their albums
 #' that subliminally influence poor unsuspecting teenagers into doing things like blowing their heads off with
 #' shotguns. A psychologist was interested in whether backward masked messages could have an effect. He created
-#' a version of Britney Spears’ ‘Baby one more time’ that contained the masked message ‘deliver your soul to the
-#' dark lord’ repeated in the chorus. He took this version, and the original, and played one version (randomly)
-#' to a group of 32 people. Six months later he played them whatever version they hadn’t heard the time before.
+#' a version of Britney Spears' 'Baby one more time' that contained the masked message 'deliver your soul to the
+#' dark lord' repeated in the chorus. He took this version, and the original, and played one version (randomly)
+#' to a group of 32 people. Six months later he played them whatever version they hadn't heard the time before.
 #' So, each person heard both the original and the version with the masked message, but at different points in time.
 #' The psychologist measured the number of satanic intrusions the person had in the week after listening to each
 #' version. The (fictional) data contains the following variables:
@@ -490,7 +490,7 @@
 #' Fictional data about people stinking at music festivals. A biologist was worried about the potential health effects of
 #' music festivals. She went to the Download Music Festival and measured the hygiene of 810 concert-goers over the three days of the festival.
 #' She tried to measure every person on every day but, because it was difficult to track people down, there were missing data on days 2 and 3.
-#' Hygiene was measured using a standardized technique that results in a score ranging between 0 (you smell like a corpse that’s been left to rot up a skunk’s arse)
+#' Hygiene was measured using a standardized technique that results in a score ranging between 0 (you smell like a corpse that's been left to rot up a skunk's arse)
 #' and 4 (you smell of sweet roses on a fresh spring day). I know from bitter experience that sanitation is not always great at these places and so the biologist
 #' predicted that personal hygiene would go down dramatically over the three days of the festival. The object contains the following variables:
 #'
@@ -511,11 +511,11 @@
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Lo, Wong, Leung, Law, and Yip (2004) describe a case of a 50-year-old man who reported to the emergency department of a hospital with abdominal pain.
-#' An X-ray of the man’s abdomen revealed the shadow of an eel. The patient claimed that he inserted the eel to ‘relieve constipation’.
-#' I’m no medic, but this 'remedy' appears counterintuitive. However, it is an empirical question.
+#' An X-ray of the man's abdomen revealed the shadow of an eel. The patient claimed that he inserted the eel to 'relieve constipation'.
+#' I'm no medic, but this 'remedy' appears counterintuitive. However, it is an empirical question.
 #'
 #' To test the hypothesis that an eel might cure constipation, we could do a randomized controlled trial.
-#' Our outcome variable would be ‘cured’ vs. ‘not cured’. The main predictor variable would be the intervention condition
+#' Our outcome variable would be 'cured' vs. 'not cured'. The main predictor variable would be the intervention condition
 #' (eel treatment arm vs. waiting list/no treatment arm). We might also factor in how many days the patient had been
 #' constipated before treatment (a proxy of symptom severity). The (fictional) data contains the following variables:
 #'
@@ -542,8 +542,8 @@
 #' in Nepal. A heated argument burns between the African and Asian elephants. In 2010, the president of the
 #' Asian Elephant Football Association, an elephant named Boji, claimed that Asian elephants were more talented
 #' than their African counterparts. The head of the African Elephant Soccer Association, an elephant called Tunc,
-#' issued a press statement that read ‘I make it a matter of personal pride never to take seriously any remark made
-#' by something that looks like an enormous scrotum’. I was called in to settle things.
+#' issued a press statement that read 'I make it a matter of personal pride never to take seriously any remark made
+#' by something that looks like an enormous scrotum'. I was called in to settle things.
 #' I collected data from the two types of elephants (Asian or African) over a season and recorded how many goals
 #' each elephant scored and how many years of experience the elephant had. The data set has four variables:
 #'
@@ -604,9 +604,9 @@
 #'
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' It’s something of a wonder how evolution managed to produce such a monstrosity as the human penis.
-#' One theory is sperm competition: the human penis has an unusually large glans (the ‘bell-end’) compared to other primates,
-#' and this may have evolved so that the penis can displace seminal fluid from other males by ‘scooping it out’ during intercourse.
+#' It's something of a wonder how evolution managed to produce such a monstrosity as the human penis.
+#' One theory is sperm competition: the human penis has an unusually large glans (the 'bell-end') compared to other primates,
+#' and this may have evolved so that the penis can displace seminal fluid from other males by 'scooping it out' during intercourse.
 #' Armed with various devices from Hollywood Exotic Novelties, an artificial vagina from California Exotic Novelties, and some water and cornstarch
 #' Gallup et al. (2003) put this theory to the test. They loaded the artificial vagina with 2.6 ml of fake sperm and inserted one
 #' of three female sex toys into it before withdrawing it: a control phallus that had no coronal ridge (i.e., no bell-end),
@@ -636,8 +636,8 @@
 #' in terms of good-looking parents being more likely to have a baby daughter as their first child than a baby son.
 #' Perhaps more controversially, he suggests that, from an evolutionarily perspective, beauty is a more valuable trait for women than
 #' for men (Kanazawa, 2007). In a playful and very informative paper, Andrew Gelman and David Weakliem discuss various
-#' statistical errors and misunderstandings, some of which have implications for Kanazawa’s claims.
-#' The ‘playful’ part of the paper is that to illustrate their point they collected data on the 50 most beautiful celebrities
+#' statistical errors and misunderstandings, some of which have implications for Kanazawa's claims.
+#' The 'playful' part of the paper is that to illustrate their point they collected data on the 50 most beautiful celebrities
 #' (as listed by People magazine) of 1995-2000. They counted how many male and female children they had as of 2007.
 #' If Kanazawa is correct, these beautiful people would have produced more girls than boys.
 #' These are the data from that study. The data contains the following variables:
@@ -662,9 +662,9 @@
 #' More fictional data about people stinking at music festivals. The same biologist who was worried about the potential health effects of music festivals and
 #' collected data at a heavy metal festival (Download Festival), was worried that her findings might not generalize. To find out whether the type of music a person
 #' likes predicts whether hygiene decreases over the festival the biologist measured hygiene over the three days of the Glastonbury Music Festival, which has an eclectic clientele.
-#' Her hygiene measure ranged between 0 (you smell like you’ve bathed in sewage) and 4 (you smell like you’ve bathed in freshly baked bread).
-#' The biologist coded the festival-goer’s musical affiliations into the categories ‘hipster’ (people who mainly like alternative music), ‘metalhead’ (people who like heavy metal), and ‘raver’ (people who like dance/ambient stuff).
-#' Anyone not falling into these categories was labelled ‘no subculture’. The object contains the following variables:
+#' Her hygiene measure ranged between 0 (you smell like you've bathed in sewage) and 4 (you smell like you've bathed in freshly baked bread).
+#' The biologist coded the festival-goer's musical affiliations into the categories 'hipster' (people who mainly like alternative music), 'metalhead' (people who like heavy metal), and 'raver' (people who like dance/ambient stuff).
+#' Anyone not falling into these categories was labelled 'no subculture'. The object contains the following variables:
 #'
 #'   * **ticket_no**: the ticket number of the participant as a factor
 #'   * **subculture**: The musical subculture with which the participant self-identifies as a factor (no subculture, hipster, metalhead, raver)
@@ -751,7 +751,7 @@
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' A marketing manager tested the benefit of soft drinks for curing hangovers. He took 15 people and got
-#' them drunk. The next morning as they awoke, dehydrated and feeling as though they’d licked a camel’s
+#' them drunk. The next morning as they awoke, dehydrated and feeling as though they'd licked a camel's
 #' sandy feet clean with their tongue, he gave five of them water to drink, five of them Lucozade
 #' (a very nice glucose-based UK drink) and the remaining five a leading brand of cola. He measured how well they felt
 #' (on a scale from 0 = I feel like death to 10 = I feel really full of beans and healthy) two hours later.
@@ -777,7 +777,7 @@
 #' People have many methods for stopping hiccups (a surprise, holding your breath), and medical science has
 #' put its collective mind to the task too. The official treatment methods include tongue-pulling manoeuvres,
 #' massage of the carotid artery, and, believe it or not, digital rectal massage (Fesmire, 1988).
-#' Let’s say we wanted to put digital rectal massage to the test (erm, as a cure for hiccups).
+#' Let's say we wanted to put digital rectal massage to the test (erm, as a cure for hiccups).
 #' We took 15 hiccup sufferers, and during a bout of hiccups administered each of the three procedures
 #' (in random order and at intervals of 5 minutes) after taking a baseline of how many hiccups they had per minute.
 #' We counted the number of hiccups in the minute after each procedure. These data are fictional.
@@ -800,11 +800,11 @@
 #' Fictional data about the honesty lab. Imagine we were interested in how people evaluated dishonest acts.
 #' Participants evaluate the dishonesty of acts based on watching videos of people confessing to those acts.
 #' Imagine we took 100 people and showed them a random dishonest act described by the perpetrator.
-#' They then evaluated the honesty of the act (from 0 = appalling behaviour to 10 = it’s OK really)
+#' They then evaluated the honesty of the act (from 0 = appalling behaviour to 10 = it's OK really)
 #' and how much they liked the person (0 = not at all, 10 = a lot). The data set has three variables
 #'
 #'   * **id**: Participant's id
-#'   * **deed**: evaluation of the honesty of the act (from 0 = appalling behaviour to 10 = it’s OK really)
+#'   * **deed**: evaluation of the honesty of the act (from 0 = appalling behaviour to 10 = it's OK really)
 #'   * **likeableness**: evaluation of the perpetrator (0 = not at all, 10 = a lot)
 #'
 #' @docType data
@@ -820,9 +820,9 @@
 #'
 #' AGoogle data relating to the ice bucket challenge from 2014. Golfer Chris Kennedy tipped a bucket of iced water on his head to raise awareness of the disease amyotrophic lateral sclerosis (ALS, also known as Lou Gehrig's disease).
 #' The idea is that you are challenged and have 24 hours to post a video of you having a bucket of iced water poured over your head in this video you also challenge at least three other people.
-#' If you fail to complete the challenge your forfeit is to donate to charity (in this case ALS). The data show the the number of days after Chris Kennedy’s initial ice bucket challenge that each of 2,323,452 ice bucket challenge video was uploaded to YouTube.
+#' If you fail to complete the challenge your forfeit is to donate to charity (in this case ALS). The data show the the number of days after Chris Kennedy's initial ice bucket challenge that each of 2,323,452 ice bucket challenge video was uploaded to YouTube.
 #'
-#'   * **upload_days**: the number of days after Chris Kennedy’s initial ice bucket challenge that an ice bucket challenge video was uploaded to YouTube
+#'   * **upload_days**: the number of days after Chris Kennedy's initial ice bucket challenge that an ice bucket challenge video was uploaded to YouTube
 #'
 #' @docType data
 #' @format A tibble with 2,323,452 rows and 1 variable.
@@ -835,7 +835,7 @@
 #'
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' I got very excited by two news stories implying that scientists had made Harry Potter’s cloak of invisibility. Although the newspapers overstated the case,
+#' I got very excited by two news stories implying that scientists had made Harry Potter's cloak of invisibility. Although the newspapers overstated the case,
 #' I imagined a future in which we have cloaks of invisibility to test out. Given my slightly mischievous streak, the future me is interested in the effect
 #' that wearing a cloak of invisibility has on the tendency for mischief. I take 24 participants and place them in an enclosed community.
 #' The community is riddled with hidden cameras so that we can record mischievous acts. Half of the participants are given cloaks of invisibility;
@@ -876,7 +876,7 @@
 #'
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' I got very excited by two news stories implying that scientists had made Harry Potter’s cloak of invisibility. Although the newspapers overstated the case,
+#' I got very excited by two news stories implying that scientists had made Harry Potter's cloak of invisibility. Although the newspapers overstated the case,
 #' I imagined a future in which we have cloaks of invisibility to test out. Given my slightly mischievous streak, the future me is interested in the effect
 #' that wearing a cloak of invisibility has on the tendency for mischief. I take 12 participants and place them in an enclosed community.
 #' The community is riddled with hidden cameras so that we can record mischievous acts. For one week the participants are given cloaks of invisibility, during a different week they are not.
@@ -899,8 +899,8 @@
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictitious data inspired by my honeymoon at Disney in Orlando. The one blip in my tolerance of Disney, was their obsession with dreams coming true and wishing upon a star.
-#' Dreams are good, but a completely blinkered view that they’ll come true without any work on your part is not. I think it highly unlikely that merely ‘wishing upon a star’ will make my dream come true.
-#' I wonder if the seismic increase in youth internalizing disorders (Twenge, 2000, 2011) is, in part, caused by millions of Disney children reaching the rather depressing realization that ‘wishing upon a star’ didn’t work.
+#' Dreams are good, but a completely blinkered view that they'll come true without any work on your part is not. I think it highly unlikely that merely 'wishing upon a star' will make my dream come true.
+#' I wonder if the seismic increase in youth internalizing disorders (Twenge, 2000, 2011) is, in part, caused by millions of Disney children reaching the rather depressing realization that 'wishing upon a star' didn't work.
 #' Anyway, imagine that I collected some data from 250 people on their level of success using a composite measure involving their salary, quality of life and how closely their life matches their aspirations.
 #' This gave me a score from 0 (complete failure) to 100 (complete success). I then implemented an intervention: I told people that for the next 5 years they should either wish upon a star for their dreams to come true or work as hard as they could to make their dreams come true.
 #' I measured their success again 5 years later. People were randomly allocated to these two instructions.
@@ -923,7 +923,7 @@
 #'
 #' It is believed that males have a biological predispoition towards the colour red because it is sexually salient.
 #' The theory suggests that women use the colour red as a proxy signal for genital colour to indicate ovulation and sexual proceptivity.
-#' If this hypothesis is true then using the colour red in this way would have to attract men (otherwise it’s a pointless strategy).
+#' If this hypothesis is true then using the colour red in this way would have to attract men (otherwise it's a pointless strategy).
 #' In a novel study, Johns, Hargrave, and Newton-Fisher (2012) tested this idea by manipulating the colour of four pictures of female
 #' geneitalia to make them increasing shades of red (pale pink, light pink, dark pink, red). Heterosexual males rated the resulting 16
 #' pictures from 0 (unattractive) to 100 (attractive). These are the data from that study. The data contains the following variables:
@@ -953,14 +953,14 @@
 #'   * **ln_porn**: log transformed values of consumption
 #'   * **commit**: commitment to the participant's current relationship on a scale from 1 (low) to 5 (high)
 #'   * **phys_inf**: whether the person had committed a physical act that they or their partner would consider to be unfaithful (0 = no, 1 = one of them would consider it unfaithful, 2 = both of them would consider it unfaithful)
-#'   * **hook_up**: the number of people they had ‘hooked up’ with in the previous year. (A ‘hook-up’ was defined to participants as ‘when two people get together for a physical encounter and don’t necessarily expect anything further')
+#'   * **hook_up**: the number of people they had 'hooked up' with in the previous year. (A 'hook-up' was defined to participants as 'when two people get together for a physical encounter and don't necessarily expect anything further')
 #'
 #' @format A tibble with 240 rows and 6 variables
 #' @docType data
 #' @source [www.discovr.rocks/csv/lambert_2012.csv](https://www.discovr.rocks/csv/lambert_2012.csv)
 #' @references
 #'
-#'    * Lambert, N. M., Negash, S., Stillman, T. F., Olmstead, S. B., & Fincham, F. D. (2012). A love that doesn’t last: Pornography consumption and weakened commitment to one’s romantic partner. *Journal of Social and Clinical Psychology*, 31, 410–438. [doi.org/10.1521/jscp.2012.31.4.410](https://doi.org/10.1521/jscp.2012.31.4.410)
+#'    * Lambert, N. M., Negash, S., Stillman, T. F., Olmstead, S. B., & Fincham, F. D. (2012). A love that doesn't last: Pornography consumption and weakened commitment to one's romantic partner. *Journal of Social and Clinical Psychology*, 31, 410–438. [doi.org/10.1521/jscp.2012.31.4.410](https://doi.org/10.1521/jscp.2012.31.4.410)
 
 "lambert_2012"
 
@@ -981,7 +981,7 @@
 #'
 #'   * **id**: participant ID (not from the original data)
 #'   * **age**: participant age in years
-#'   * **gossip**: average response on a tendency to gossip scale. Participants responded to 16 items about their tendency to gossip following the presentation of a scenario. Particpants rated their likelihood to engage in certain behaviours such as ‘I would tell negative things about Karen to other people’ from 1 (strongly disagree) to 5 (strongly agree). This score is the average response across the 16 items.
+#'   * **gossip**: average response on a tendency to gossip scale. Participants responded to 16 items about their tendency to gossip following the presentation of a scenario. Particpants rated their likelihood to engage in certain behaviours such as 'I would tell negative things about Karen to other people' from 1 (strongly disagree) to 5 (strongly agree). This score is the average response across the 16 items.
 #'   * **mate_value**: average response to items from the Self-Perceived Mating Success Scale (each item ranged from 1 = not at all, 5 = very much, so a high score is a high mate value)
 #'
 #' @format A tibble with 83 rows and 4 variables
@@ -989,7 +989,7 @@
 #' @source [www.discovr.rocks/csv/massar_2012.csv](https://www.discovr.rocks/csv/massar_2012.csv)
 #' @references
 #'
-#'    * Massar, K., Buunk, A. P., & Rempt, S. (2012). Age differences in women’s tendency to gossip are mediated by their mate value. *Personality and Individual Differences*, 52, 106–109. [https://doi.org/10.1016/j.paid.2011.09.013](https://doi.org/10.1016/j.paid.2011.09.013)
+#'    * Massar, K., Buunk, A. P., & Rempt, S. (2012). Age differences in women's tendency to gossip are mediated by their mate value. *Personality and Individual Differences*, 52, 106–109. [https://doi.org/10.1016/j.paid.2011.09.013](https://doi.org/10.1016/j.paid.2011.09.013)
 
 "massar_2012"
 
@@ -998,7 +998,7 @@
 #'
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' McNulty et al. (2008) found a relationship between a person’s attractiveness and how much support they give their partner among newlywed heterosexual couples.
+#' McNulty et al. (2008) found a relationship between a person's attractiveness and how much support they give their partner among newlywed heterosexual couples.
 #' These data simulate the results of that study. The object contains the following variables:
 #'
 #'   * **id**: participant ID
@@ -1106,7 +1106,7 @@
 #'
 #' Anxious people tend to interpret ambiguous information in a negative way. For example, being highly anxious myself,
 #' if I overheard a student saying "Andy Field's lectures are really different" I would assume that *different*
-#' meant rubbish, but it could also mean ‘refreshing’ or ‘innovative’. Muris, Huijding, Mayer, and Hameetman (2008)
+#' meant rubbish, but it could also mean 'refreshing' or 'innovative'. Muris, Huijding, Mayer, and Hameetman (2008)
 #' addressed how these interpretational biases develop in children. Children imagined that they were astronauts who
 #' had discovered a new planet. They were given scenarios about their time on the planet (e.g., *On the street, you
 #' encounter a spaceman. He has a toy handgun and he fires at you …*) and the child had to decide whether a positive
@@ -1134,16 +1134,76 @@
 #'
 #' * Muris, P., Huijding, J., Mayer, B., & Hameetman, M. (2008). A space odyssey: Experimental manipulation of threat perception and anxiety-related interpretation bias in children. *Child Psychiatry and Human Development*, 39, 469–480. [https://doi.org/10.1007/s10578-008-0103-z](https://doi.org/10.1007/s10578-008-0103-z)
 
+"muris_2008"
 
+#' Internet addiction scale (IAS) data
+#'
+#' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' The increasing populatrity (and usefulness) of the Internet has led to the serious problem of internet addiction.
+#' To research this construct it's helpful to be able to measure it, so Laura Nichols and Richard Nicki developed the
+#' Internet Addiction Scale, IAS (Nichols & Nicki, 2004). This 36-item questionnaire contains items such as \emph{I have stayed on the Internet
+#' longer than I intended to} and \emph{My grades/work have suffered because of my Internet use} to which responses are made on a five-point scale
+#' (\emph{never}, \emph{rarely}, \emph{sometimes}, \emph{frequently}, \emph{always}). The authors dropped two items because they had low means and variances,
+#' and dropped three others because of relatively low correlations with other items. They performed a principal component analysis on the remaining 31 items (\emph{N} = 207).
+#'
+#' * **participant_code**: The participant id
+#' * **gender**: The participant biological sex
+#' * **ias1**: responses (1-5) to the question \emph{I find that I need to use the Internet more to get the same enjoyment as before.}
+#' * **ias2**: responses (1-5) to the question \emph{When I use the Internet now, I do not feel as good as I used to.}
+#' * **ias3**: responses (1-5) to the question \emph{Time spent on the Internet now is not as enjoyable as it was when I first started using the Internet.}
+#' * **ias4**: responses (1-5) to the question \emph{Since I first began using the Internet I would say that the amount of time I spend on line has increased but not the satisfaction.}
+#' * **ias5**: responses (1-5) to the question \emph{I feel depressed, moody or nervous when I am off the internet which goes away when I log on.}
+#' * **ias6**: responses (1-5) to the question \emph{I feel distressed when I am unable to spend as much time on the Internet as I usually do.}
+#' * **ias7**: responses (1-5) to the question \emph{The more time I spend away from the Internet, the more irritable I feel.}
+#' * **ias8**: responses (1-5) to the question \emph{When I attempt to cut back of stop using the Internet I find that the irritability that I experience is relieved by going back on the Internet}
+#' * **ias9**: responses (1-5) to the question \emph{I have stayed on the Internet  longer than I intended to.}
+#' * **ias10**: responses (1-5) to the question \emph{I have said to myself 'just a few more minutes on the Internet.'}
+#' * **ias11**: responses (1-5) to the question \emph{I find myself accessing more information on the Internet that I had planned to.}
+#' * **ias12**: responses (1-5) to the question \emph{I find myself doing more things on the Internet than I had intended to}
+#' * **ias13**: responses (1-5) to the question \emph{I have felt a persistent desire to cut down or control my use of the Internet.}
+#' * **ias14**: responses (1-5) to the question \emph{I have attempted to spend less time on the Internet but I have been unable to do so.}
+#' * **ias15**: responses (1-5) to the question \emph{I have tried unsuccessfully to restrict my Internet use because of previous over use.}
+#' * **ias16**: responses (1-5) to the question \emph{I would like to spend less time on the Internet.}
+#' * **ias17**: responses (1-5) to the question \emph{I have walked or driven to campus/work specifically to use the Internet at times when I normally would not go to campus/work}
+#' * **ias18**: responses (1-5) to the question \emph{After being on the Internet late into the night in sleep late the next morning because of my Internet use.}
+#' * **ias19**: responses (1-5) to the question \emph{Once I am on the Internet, I seem to stay on for a long time.}
+#' * **ias20**: responses (1-5) to the question \emph{I am on the Internet so much that I have to make up for the lost time.}
+#' * **ias21**: responses (1-5) to the question \emph{I have missed class/work so that I would have more time to spend on the Internet.}
+#' * **ias22**: responses (1-5) to the question \emph{I have neglected things, which are important and need doing.}
+#' * **ias23**: responses (1-5) to the question \emph{I see my friends less often because of the time that I spend on the Internet.}
+#' * **ias24**: responses (1-5) to the question \emph{I have given up a particular recreational activity in order that I would have more time on the Internet}
+#' * **ias25**: responses (1-5) to the question \emph{At  times I have tried to conceal how long I have been on the Internet}
+#' * **ias26**: responses (1-5) to the question \emph{My grades/work have suffered because of my Internet use.}
+#' * **ias27**: responses (1-5) to the question \emph{I have lost sleep because of my Internet use}
+#' * **ias28**: responses (1-5) to the question \emph{The Internet has affected my life in a negative way.}
+#' * **ias29**: responses (1-5) to the question \emph{The people I know through the Internet  know me better than my friends at university}
+#' * **ias30**: responses (1-5) to the question \emph{I prefer socializing on the Internet rather than in person with my friends and family}
+#' * **ias31**: responses (1-5) to the question \emph{I feel that life without the Internet would be boring and empty.}
+#' * **ias32**: responses (1-5) to the question \emph{I find myself thinking/longing about when I will go on the Internet again.}
+#' * **ias33**: responses (1-5) to the question \emph{When I feel lonely, I use the Internet to talk to others.}
+#' * **ias34**: responses (1-5) to the question \emph{When I use the Internet, I experience a buzz or a high (i.e., feeling elated).}
+#' * **ias35**: responses (1-5) to the question \emph{I use the Internet as a way of escaping the real world.}
+#' * **ias36**: responses (1-5) to the question \emph{I use the Internet as a way of escaping the “real world.”}
+#'
+#'
+#' @format A tibble with 207 rows and 38 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/nichols_2004.csv](https://www.discovr.rocks/csv/nichols_2004.csv)
+#' @references
+#'
+#' * Nichols, L. A., & Nicki, R. (2004). Development of a psychometrically sound internet addiction scale: A preliminary step. *Psychology of Addictive Behaviors*, 18, 381–384. [https://doi.org/10.1037/0893-164X.18.4.381](https://doi.org/10.1037/0893-164X.18.4.381)
+
+"nichols_2004"
 
 
 #' The notebook data
 #'
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' Fictitious data about the film The Notebook. Imagine that a film company director was interested in whether there was really such a thing as a ‘chick flick’
-#' (a film that has the stereotype of appealing to women more than to men). He took 20 people who mostly self identify as men and 20 who mostly self identify as women and showed half of each sample a film that was supposed to be a ‘chick flick’ (The Notebook).
-#' The other half watched a documentary about notebooks as a control. In all cases the company director measured participants’ arousal  as an indicator of how much they enjoyed the film.
+#' Fictitious data about the film The Notebook. Imagine that a film company director was interested in whether there was really such a thing as a 'chick flick'
+#' (a film that has the stereotype of appealing to women more than to men). He took 20 people who mostly self identify as men and 20 who mostly self identify as women and showed half of each sample a film that was supposed to be a 'chick flick' (The Notebook).
+#' The other half watched a documentary about notebooks as a control. In all cases the company director measured participants' arousal  as an indicator of how much they enjoyed the film.
 #' The data contains the following variables:
 #'
 #'   * **sex**: sex to which the participant mostly self-identifies
@@ -1161,7 +1221,7 @@
 #'
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' A study by Ong et al., (2011) examining the relationship between a person's narcissism and other people’s ratings of their profile picture on Facebook.
+#' A study by Ong et al., (2011) examining the relationship between a person's narcissism and other people's ratings of their profile picture on Facebook.
 #' The pictures were rated on each of four dimensions: coolness, glamour, fashionableness, and attractiveness. In addition, each person was measures on introversion/extroversion and narcissism.
 #' These data are in messy/wide format. The data contains the following variables:
 #'
@@ -1183,7 +1243,7 @@
 #' @source [www.discovr.rocks/csv/ong_2011.csv](https://www.discovr.rocks/csv/ong_2011.csv)
 #' @references
 #'
-#' * Ong, E. Y. L., Ang, R. P., Ho, J. C. M., Lim, J. C. Y., Goh, D. H., Lee, C. S., & Chua, A. Y. K. (2011). Narcissism, extraversion and adolescents’ self-presentation on Facebook. *Personality and Individual Differences*, 50, 180–185. [https://doi.org/10.1016/j.paid.2010.09.022](https://doi.org/10.1016/j.paid.2010.09.022)
+#' * Ong, E. Y. L., Ang, R. P., Ho, J. C. M., Lim, J. C. Y., Goh, D. H., Lee, C. S., & Chua, A. Y. K. (2011). Narcissism, extraversion and adolescents' self-presentation on Facebook. *Personality and Individual Differences*, 50, 180–185. [https://doi.org/10.1016/j.paid.2010.09.022](https://doi.org/10.1016/j.paid.2010.09.022)
 
 
 "ong_2011"
@@ -1192,7 +1252,7 @@
 #'
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' A study by Ong et al., (2011) examining the relationship between a person's narcissism and other people’s ratings of their profile picture on Facebook.
+#' A study by Ong et al., (2011) examining the relationship between a person's narcissism and other people's ratings of their profile picture on Facebook.
 #' The pictures were rated on each of four dimensions: coolness, glamour, fashionableness, and attractiveness. In addition, each person was measures on introversion/extroversion and narcissism.
 #' These data are in tidy format. The data contains the following variables:
 #'
@@ -1211,7 +1271,7 @@
 #' @source [www.discovr.rocks/csv/ong_tidy.csv](https://www.discovr.rocks/csv/ong_tidy.csv)
 #' @references
 #'
-#'    * Ong, E. Y. L., Ang, R. P., Ho, J. C. M., Lim, J. C. Y., Goh, D. H., Lee, C. S., & Chua, A. Y. K. (2011). Narcissism, extraversion and adolescents’ self-presentation on Facebook. *Personality and Individual Differences*, 50, 180–185. [https://doi.org/10.1016/j.paid.2010.09.022](https://doi.org/10.1016/j.paid.2010.09.022)
+#'    * Ong, E. Y. L., Ang, R. P., Ho, J. C. M., Lim, J. C. Y., Goh, D. H., Lee, C. S., & Chua, A. Y. K. (2011). Narcissism, extraversion and adolescents' self-presentation on Facebook. *Personality and Individual Differences*, 50, 180–185. [https://doi.org/10.1016/j.paid.2010.09.022](https://doi.org/10.1016/j.paid.2010.09.022)
 
 "ong_tidy"
 
@@ -1220,8 +1280,8 @@
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #'  A researcher was interested in the effect of profile pictures on social media on unsolicited attention.
-#'  She took 40 people who had profiles on a social networking website; 17 of them had a relationship status of ‘single’
-#'  and the remaining 23 had their status as ‘in a relationship’. We asked these people to set their profile picture to a photo
+#'  She took 40 people who had profiles on a social networking website; 17 of them had a relationship status of 'single'
+#'  and the remaining 23 had their status as 'in a relationship'. We asked these people to set their profile picture to a photo
 #'  of them on their own (alone) and to count how many friend request they got from random strangers over 3 weeks, then to switch
 #'  it to a photo of them very obviously as part of a romantic couple and record their friend requests from random
 #'  strangers over 3 weeks. The (fictional) data contains the following variables:
@@ -1268,7 +1328,7 @@
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' The researchers who conducted the puppy therapy study in [puppies] suddenly realized that a
-#' participant’s love of dogs would affect whether puppy therapy would affect happiness. Therefore,
+#' participant's love of dogs would affect whether puppy therapy would affect happiness. Therefore,
 #' they repeated the study on different participants, but included a self-report measure of love of puppies from 0 (I am a weird person who hates puppies, please be deeply suspicious of me) to 7 (puppies are the best thing ever, one day I might marry one).  The tibble contains the following variables:
 #'
 #' * **id**: Participant id
@@ -1298,6 +1358,57 @@
 #' @source [www.discovr.rocks/csv/pubs.csv](https://www.discovr.rocks/csv/pubs.csv)
 
 "pubs"
+
+#' R Anxiety Questionnaire (RAQ)
+#'
+#' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Fictitious data relating to a fictional questionnaire about R anxiety. I can't stress enough how fictional this example is. Like, don't email me for the questionnaire
+#' the whole thing is figment of my mind (and some data simulation). I thought this would be obvious from the
+#' questions, but apparently not. Imagine that I wanted to design a questionnaire to
+#' measure a trait that I termed 'R anxiety'. I devised a questionnaire to measure various aspects of students'
+#' anxiety towards learning R, the RAQ. I generated (in my imagination) questions based on interviews (that never happened in real life)
+#'  with anxious and non-anxious students and came up with 23 possible questions to include. Each question was a statement
+#'  followed by a five-point Likert scale: \emph{strongly disagree} = 1, \emph{disagree}, \emph{neither agree nor disagree}, \emph{agree} and \emph{strongly agree} (SD, D, N, A and SA respectively).
+#'  What's more, I wanted to know whether anxiety about R could be broken down into specific forms of anxiety. In other words,
+#'  what latent variables contribute to anxiety about R?
+#'
+#'  With a little help from a few lecturer friends (this never happened in real life) I collected 2571 completed questionnaires. The data are stored in this object with 2,571 rows and 24 columns.
+#'
+#' * **id**: The student's id
+#' * **raq_01**: responses (1-5) to the question \emph{Statistics make me cry}
+#' * **raq_02**: responses (1-5) to the question \emph{My friends will think I'm stupid for not being able to cope with R}
+#' * **raq_03**: responses (1-5) to the question \emph{Standard deviations excite me}
+#' * **raq_04**: responses (1-5) to the question \emph{I dream that Pearson is attacking me with correlation coefficients}
+#' * **raq_05**: responses (1-5) to the question \emph{I don't understand statistics}
+#' * **raq_06**: responses (1-5) to the question \emph{I have little experience of computers}
+#' * **raq_07**: responses (1-5) to the question \emph{All computers hate me}
+#' * **raq_08**: responses (1-5) to the question \emph{I have never been good at mathematics}
+#' * **raq_09**: responses (1-5) to the question \emph{My friends are better at statistics than me}
+#' * **raq_10**: responses (1-5) to the question \emph{Computers are useful only for playing games}
+#' * **raq_11**: responses (1-5) to the question \emph{I did badly at mathematics at school}
+#' * **raq_12**: responses (1-5) to the question \emph{People try to tell you that R makes statistics easier to understand but it doesn't}
+#' * **raq_13**: responses (1-5) to the question \emph{I worry that I will cause irreparable damage because of my incompetence with computers}
+#' * **raq_14**: responses (1-5) to the question \emph{Computers have minds of their own and deliberately go wrong whenever I use them}
+#' * **raq_15**: responses (1-5) to the question \emph{Computers are out to get me}
+#' * **raq_16**: responses (1-5) to the question \emph{I weep openly at the mention of central tendency}
+#' * **raq_17**: responses (1-5) to the question \emph{I slip into a coma whenever I see an equation}
+#' * **raq_18**: responses (1-5) to the question \emph{R always crashes when I try to use it}
+#' * **raq_19**: responses (1-5) to the question \emph{Everybody looks at me when I use R}
+#' * **raq_20**: responses (1-5) to the question \emph{I can't sleep for thoughts of eigenvectors}
+#' * **raq_21**: responses (1-5) to the question \emph{I wake up under my duvet thinking that I am trapped under a normal distribution}
+#' * **raq_22**: responses (1-5) to the question \emph{My friends are better at R than I am}
+#' * **raq_23**: responses (1-5) to the question \emph{If I am good at statistics people will think I am a nerd}
+#'
+#'
+#'
+#' @format A tibble with 2,571 rows and 24 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/raq.csv](https://www.discovr.rocks/csv/raq.csv)
+
+"raq"
+
+
 
 #' R exam data data
 #'
@@ -1395,7 +1506,7 @@
 #'
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' ‘Pop psychology’ books sometimes spout nonsense that is unsubstantiated by science. I took 20 people in
+#' 'Pop psychology' books sometimes spout nonsense that is unsubstantiated by science. I took 20 people in
 #' relationships and randomly assigned them to one of two groups. One group read the famous popular psychology
 #' book *Women are from Bras and men are from Penis*, and the other read *Marie Claire*. The outcome variable was
 #' their relationship happiness after their assigned reading. The (fictional) data contains the following variables:
@@ -1435,7 +1546,7 @@
 #'
 #' According to some highly unscientific research done by a UK department store chain and reported in Marie Claire magazine ([http://ow.ly/9Dxvy](http://ow.ly/9Dxvy)), shopping is good for you.
 #' They found that the average woman spends 150 minutes and walks 2.6 miles when she shops, burning off around 385 calories. In contrast, men spend only about 50 minutes shopping, covering 1.5 miles.
-#' This was based on strapping a pedometer on a mere 10 participants. Although I don’t have the actual data, some simulated data based on these means are in this file.
+#' This was based on strapping a pedometer on a mere 10 participants. Although I don't have the actual data, some simulated data based on these means are in this file.
 #'
 #'   * **sex**: biological sex of the individual
 #'   * **distance**: the distance travelled in miles
@@ -1451,7 +1562,7 @@
 #'
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' When the alien invasion comes we’ll need spaniels (or possibly other dogs, but lets hope its mainly spaniels because spaniels are cool)
+#' When the alien invasion comes we'll need spaniels (or possibly other dogs, but lets hope its mainly spaniels because spaniels are cool)
 #' to help us to identify the space lizards. The top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) was put together
 #' to test the plausibility of training sniffer dogs to detect aliens. Over many trials 8 of their best dogs (Milton, Woofy, Ramsey, Mr. Snifficus III,
 #' Willock, The Venerable Dr. Waggy, Lord Scenticle, and Professor Nose) were recruited for a pilot study. During training, these dogs were rewarded
@@ -1514,10 +1625,10 @@
 #' development in male rats (probably because genistein acts like oestrogen). As journalists tend to do, a study showing no
 #' link between soya and sperm counts was used as the scientific basis for an article about soya being the cause of declining
 #' sperm counts in Western males. Imagine the rat study was enough for us to want to test this idea in humans.
-#' We recruit 80 males and split them into four groups that vary in the number of soya ‘meals’ (a dinner containing 75g of soya)
+#' We recruit 80 males and split them into four groups that vary in the number of soya 'meals' (a dinner containing 75g of soya)
 #' they ate per week over a year: no soya meals (i.e., none in the whole year), one per week (52 over the year),
 #' four per week (208 over the year), and seven per week (364 over the year). At the end of the year, participants
-#' produced some sperm that I could count (when I say ‘I’, I mean someone else in a laboratory as far away from me as humanly possible).
+#' produced some sperm that I could count (when I say 'I', I mean someone else in a laboratory as far away from me as humanly possible).
 #' The fictitious data contain the following variables:
 #'
 #'   * **id**: The participant's id
@@ -1536,7 +1647,7 @@
 #'
 #'  Imagine a scientist designed a study to look at the interplay between looks, personality and
 #'  dating strategies on evaluations of a date. She set up a speed-dating night with 9 tables at which there
-#'  sat a ‘date’. All the dates were stooges selected to vary in their attractiveness (high, average and low),
+#'  sat a 'date'. All the dates were stooges selected to vary in their attractiveness (high, average and low),
 #'  their personality (high charisma, average charisma, writes statistics books), and also the strategy
 #'  they were told to employ during the conversation (normal or playing hard to get).
 #'  The dates were trained before the study to act charismatically to varying degrees, and also how to act
@@ -1549,15 +1660,15 @@
 #'  Upon arrival participants were randomly assigned a blue or red sticker.
 #'  For the participants with the red sticker the stooges played hard to get (unobtainable) and for
 #'  those with a blue sticker they acted normally. Over the course a few nights 20 people attended,
-#'  spent 5-minutes with each of the 9 ‘dates’ and then rated how much they’d like to have a proper date with the person
-#'  as a percentage (100% = ‘I’d pay large sums of money for their phone number’, 0% = ‘I’d pay a large sum of money for a plane
-#'  ticket to get me as far away from them as possible’). The (fictional) data contains the following variables:
+#'  spent 5-minutes with each of the 9 'dates' and then rated how much they'd like to have a proper date with the person
+#'  as a percentage (100% = 'I'd pay large sums of money for their phone number', 0% = 'I'd pay a large sum of money for a plane
+#'  ticket to get me as far away from them as possible'). The (fictional) data contains the following variables:
 #'
 #'   * **id**: participant ID
 #'   * **strategy**: Whether the stooge acted normally or played hard to get
 #'   * **looks**: Whether the stooge was rated as high, average or low on looks
 #'   * **personality**: Whether the stooge acted with high, average or low charisma
-#'   * **date**: rating how much the participant would like to have a proper date with the stooge as a percentage (100% = ‘I’d pay large sums of money for their phone number’, 0% = ‘I’d pay a large sum of money for a plane ticket to get me as far away from them as possible’)
+#'   * **date**: rating how much the participant would like to have a proper date with the stooge as a percentage (100% = 'I'd pay large sums of money for their phone number', 0% = 'I'd pay a large sum of money for a plane ticket to get me as far away from them as possible')
 #'
 #' @format A tibble with 180 rows and 5 variables
 #' @docType data
@@ -1569,13 +1680,13 @@
 #'
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' Some fictional data about therapy for stalking. A few years back I was stalked. You’d think they could have found
+#' Some fictional data about therapy for stalking. A few years back I was stalked. You'd think they could have found
 #' someone a bit more interesting to stalk, but apparently times were hard. It could have been a lot worse,
-#' but it wasn’t particularly pleasant. I imagined a world in which a psychologist tried two different therapies on
+#' but it wasn't particularly pleasant. I imagined a world in which a psychologist tried two different therapies on
 #' different groups of stalkers (25 stalkers in each treatment). To the first group he gave cruel-to-be-kind therapy
 #' (every time the stalkers followed him around, or sent him a letter, the psychologist attacked them with a cattle prod).
 #' The second therapy was psychodyshamic therapy, in which stalkers were hypnotized and regressed into their childhood
-#' to discuss their penis (or lack of penis), their father’s penis, their dog’s penis, the seventh penis of a seventh penis,
+#' to discuss their penis (or lack of penis), their father's penis, their dog's penis, the seventh penis of a seventh penis,
 #' and any other penis that sprang to mind. The psychologist measured the number of hours stalking in one week both before
 #' (stalk_pre) and after (stalk_post) treatment.The object contains the following variables:
 #'
@@ -1617,7 +1728,7 @@
 #'
 #' Children wearing superhero costumes are more likely to harm themselves because of the unrealistic impression of
 #' invincibility that these costumes could create. For example, children have reported to hospital with severe injuries
-#' because of trying ‘to initiate flight without having planned for landing strategies’ (Davies, Surridge, Hole, & Munro-Davies, 2007).
+#' because of trying 'to initiate flight without having planned for landing strategies' (Davies, Surridge, Hole, & Munro-Davies, 2007).
 #' I can relate to the imagined power that a costume bestows upon you; indeed, I have been known to dress up as Fisher by donning a
 #' beard and glasses and trailing a goat around on a lead in the hope that it might make me more knowledgeable about statistics.
 #' These fictional data contain the severity of injury (on a scale from 0, no injury, to 100, death) for children reporting to the accident
@@ -1683,8 +1794,8 @@
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' A company owner was interested in how to make his brand of (computer) tablets more desirable.
-#' He collected data on how cool people perceived a product’s advertising to be, how cool they thought the product was,
-#' and how desirable they found the product. Am I showing my age by using the word ‘cool’? The fictitious data contain the following variables:
+#' He collected data on how cool people perceived a product's advertising to be, how cool they thought the product was,
+#' and how desirable they found the product. Am I showing my age by using the word 'cool'? The fictitious data contain the following variables:
 #'
 #'   * **id**: Participant ID
 #'   * **advert_cool**: Perceived 'coolness' of the advertising campaign from 0 (as cool as Andy Field) to 5 (as cool as something that makes you go 'wow, that's sick', or whatever it is that people under the age of 25 say these days)
@@ -1718,11 +1829,11 @@
 #'
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' To test how different teaching methods affected students’ knowledge I took three statistics modules where
+#' To test how different teaching methods affected students' knowledge I took three statistics modules where
 #' I taught the same material. For one module I wandered around with a large cane and beat anyone who asked
 #' daft questions or got questions wrong (punish). In the second I encouraged students to discuss things that
 #' they found difficult and gave anyone working hard a nice sweet (reward). In the final course I neither
-#' punished nor rewarded students’ efforts (indifferent). I measured the students’ exam marks (percentage).
+#' punished nor rewarded students' efforts (indifferent). I measured the students' exam marks (percentage).
 #' This fictional data contains the following variables
 #'
 #'   * **id**: participant's id
@@ -1741,7 +1852,7 @@
 #'
 #' One of my favourite activities, especially when trying to do brain-melting things like writing statistics books, is drinking tea. I am English, after all.
 #' Fortunately, tea improves your cognitive function – well, it does in old Chinese people at any rate (Feng, Gwee, Kua, & Ng, 2010).
-#' I may not be Chinese and I’m not that old, but I nevertheless enjoy the idea that tea might help me think. Here are some (fictional) data based on Feng et al.’s
+#' I may not be Chinese and I'm not that old, but I nevertheless enjoy the idea that tea might help me think. Here are some (fictional) data based on Feng et al.'s
 #' study that measured the number of cups of tea drunk per day and cognitive functioning (out of 80) in 15 people.
 #'
 #'   * **id**: participant ID
@@ -1762,7 +1873,7 @@
 #'
 #' One of my favourite activities, especially when trying to do brain-melting things like writing statistics books, is drinking tea. I am English, after all.
 #' Fortunately, tea improves your cognitive function – well, it does in old Chinese people at any rate (Feng, Gwee, Kua, & Ng, 2010).
-#' I may not be Chinese and I’m not that old, but I nevertheless enjoy the idea that tea might help me think. Here are some (fictional) data based on Feng et al.’s
+#' I may not be Chinese and I'm not that old, but I nevertheless enjoy the idea that tea might help me think. Here are some (fictional) data based on Feng et al.'s
 #' study that measured the number of cups of tea drunk per day and cognitive functioning (out of 80) in 716 people.
 #'
 #'   * **id**: participant ID
@@ -1776,6 +1887,60 @@
 #'    * Feng, L., Gwee, X., Kua, E. H., & Ng, T. P. (2010). Cognitive function and tea consumption in community dwelling older Chinese in Singapore. *Journal of Nutrition Health & Aging*, *14*, 433-438.
 
 "tea_716"
+
+#' The Teaching of Statistics for Scientific Experiments—Revised (TOSSE-R) data
+#'
+#' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Fictitious data relating to a fictional questionnaire about The Teaching of Statistics for Scientific Experiments. Again, I stress that this example is fictional.
+#' I thought the name of the questionnaire would give it away, I mean, no-one is calling a questionnaire TOSSER are they? Don't email me for the questionnaire, it's all made up, you definitley
+#' don't want to base your research upon it. Imagine I wanted to revise the 'Teaching of Statistics for Scientific Experiments' (TOSSE) questionnaire, which is (I mean, it isn't because I made it up)
+#' based on Bland's theory that says that good research methods lecturers should have: (1) a profound love of statistics; (2) an enthusiasm for experimental design; (3) a love of teaching; and (4)
+#' a complete absence of normal interpersonal skills. These characteristics should be related (i.e., correlated).
+#' The revised version of this questionnaire (TOSSE – R) was given to 239 research methods lecturers to see if it supported Bland's theory. Each question was a statement
+#'  followed by a five-point Likert scale: \emph{strongly disagree} = 1, \emph{disagree}, \emph{neither agree nor disagree}, \emph{agree} and \emph{strongly agree} (SD, D, N, A and SA respectively).
+#'  The data contains the following variables
+#'
+#' * **id**: The student's id
+#' * **q_01**: responses (1-5) to the question \emph{I once woke up in the middle of a vegetable patch hugging a turnip that I'd mistakenly dug up thinking it was Roy's largest root}
+#' * **q_02**: responses (1-5) to the question \emph{Students are like irritating pigeons pecking away at my sanity}
+#' * **q_03**: responses (1-5) to the question \emph{I memorize probability values for the F-distribution}
+#' * **q_04**: responses (1-5) to the question \emph{I worship at the shrine of Pearson}
+#' * **q_05**: responses (1-5) to the question \emph{I still live with my mother and have little personal hygiene}
+#' * **q_06**: responses (1-5) to the question \emph{Teaching others makes me want to swallow a large bottle of bleach because the pain of my burning oesophagus would be light relief in comparison}
+#' * **q_07**: responses (1-5) to the question \emph{Helping others to understand sums of squares is a great feeling}
+#' * **q_08**: responses (1-5) to the question \emph{I like control conditions}
+#' * **q_09**: responses (1-5) to the question \emph{I calculate 3 ANOVAs in my head before getting out of bed every morning}
+#' * **q_10**: responses (1-5) to the question \emph{I could spend all day explaining statistics to people}
+#' * **q_11**: responses (1-5) to the question \emph{I like it when people tell me I've helped them to understand factor rotation}
+#' * **q_12**: responses (1-5) to the question \emph{People fall asleep as soon as I open my mouth to speak}
+#' * **q_13**: responses (1-5) to the question \emph{Designing experiments is fun}
+#' * **q_14**: responses (1-5) to the question \emph{I'd rather think about appropriate dependent variables than meet people}
+#' * **q_15**: responses (1-5) to the question \emph{I soil my pants with excitement at the mention of Factor Analysis}
+#' * **q_16**: responses (1-5) to the question \emph{Thinking about whether to use repeated- or independent-measures thrills me}
+#' * **q_17**: responses (1-5) to the question \emph{I enjoy sitting in the park contemplating whether to use participant observation in my next experiment}
+#' * **q_18**: responses (1-5) to the question \emph{Standing in front of 300 people in no way makes me lose control of my bowels}
+#' * **q_19**: responses (1-5) to the question \emph{I like to help students}
+#' * **q_20**: responses (1-5) to the question \emph{Passing on knowledge is the greatest gift you can bestow an individual}
+#' * **q_21**: responses (1-5) to the question \emph{Thinking about Bonferroni corrections gives me a tingly feeling in my groin}
+#' * **q_22**: responses (1-5) to the question \emph{I quiver with excitement when thinking about designing my next experiment}
+#' * **q_23**: responses (1-5) to the question \emph{I often spend my spare time talking to the pigeons ... and even they die of boredom}
+#' * **q_24**: responses (1-5) to the question \emph{I tried to build myself a time machine so that I could go back to the 1930s and follow Fisher around on my hands and knees licking the floor on which he'd just trodden}
+#' * **q_25**: responses (1-5) to the question \emph{I love teaching}
+#' * **q_26**: responses (1-5) to the question \emph{I spend lots of time helping students}
+#' * **q_27**: responses (1-5) to the question \emph{I love teaching because students have to pretend to like me or they'll get bad marks}
+#' * **q_28**: responses (1-5) to the question \emph{My cat is my only friend}
+#'
+#'
+#'
+#' @format A tibble with 239 rows and 29 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/tosser.csv](https://www.discovr.rocks/csv/tosser.csv)
+
+"tosser"
+
+
+
 
 #' Tuk et al. (2011) data
 #'
@@ -1807,7 +1972,7 @@
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Mobile phones emit microwaves, and so holding one next to your brain for large parts of the day is a bit like
-#' sticking your brain in a microwave oven and pushing the ‘cook until well done’ button. If we wanted to test this
+#' sticking your brain in a microwave oven and pushing the 'cook until well done' button. If we wanted to test this
 #' experimentally, we could get six groups of people and strap a mobile phone on their heads, then by remote control
 #' turn the phones on for a certain amount of time each day. After six months, we measure the size of any tumour (in mm^3)
 #'  close to the site of the phone antenna (just behind the ear). The six groups experienced 0, 1, 2, 3, 4 or 5 hours per
@@ -1844,6 +2009,55 @@
 "video_games"
 
 
+#' Williams' questionnaire of organizational ability data
+#'
+#' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Dr Sian Williams (University of Brighton) devised a questionnaire to measure organizational ability.
+#' She predicted five factors to do with organizational ability: (1) preference for organization; (2)
+#' goal achievement; (3) planning approach; (4) acceptance of delays; and (5) preference for routine.
+#' These dimensions are theoretically independent. Williams's questionnaire contains 28 items using a
+#' seven-point Likert scale (1 = \emph{strongly disagree}, 4 = \emph{neither}, 7 = \emph{strongly agree}).
+#' She gave it to 239 people.
+#'
+#' * **participant**: The participant id
+#' * **sex**: The participant biological sex
+#' * **org1**: responses (1-7) to the question \emph{I like to have a plan to work to in everyday life}
+#' * **org2**: responses (1-7) to the question \emph{I feel frustrated when things don't go to plan}
+#' * **org3**: responses (1-7) to the question \emph{I get most things done in a day that I want to}
+#' * **org4**: responses (1-7) to the question \emph{I stick to a plan once I have made it}
+#' * **org6**: responses (1-7) to the question \emph{I enjoy spontaneity and uncertainty}
+#' * **org7**: responses (1-7) to the question \emph{I feel frustrated if I can't find something I need}
+#' * **org9**: responses (1-7) to the question \emph{I find it difficult to follow a plan through}
+#' * **org10**: responses (1-7) to the question \emph{I am an organized person}
+#' * **org11**: responses (1-7) to the question \emph{I like to know what I have to do in a day}
+#' * **org12**: responses (1-7) to the question \emph{Disorganized people annoy me}
+#' * **org13**: responses (1-7) to the question \emph{I leave things to the last minute}
+#' * **org14**: responses (1-7) to the question \emph{I have many different plans relating to the same goal}
+#' * **org16**: responses (1-7) to the question \emph{I like to have my documents filed and in order}
+#' * **org17**: responses (1-7) to the question \emph{I find it easy to work in a disorganized environment}
+#' * **org18**: responses (1-7) to the question \emph{I make to do lists and achieve most of the things on it}
+#' * **org19**: responses (1-7) to the question \emph{My workspace is messy and disorganized}
+#' * **org20**: responses (1-7) to the question \emph{I like to be organized}
+#' * **org21**: responses (1-7) to the question \emph{Interruptions to my daily routine annoy me}
+#' * **org22**: responses (1-7) to the question \emph{I feel that I am wasting my time}
+#' * **org23**: responses (1-7) to the question \emph{I forget the plans I have made}
+#' * **org24**: responses (1-7) to the question \emph{I prioritize the things I have to do}
+#' * **org25**: responses (1-7) to the question \emph{I like to work in an organized environment}
+#' * **org26**: responses (1-7) to the question \emph{I feel relaxed when I don't have a routine}
+#' * **org27**: responses (1-7) to the question \emph{I set deadlines for myself and achieve them}
+#' * **org28**: responses (1-7) to the question \emph{I change rather aimlessly from one activity to another during the day}
+#' * **org29**: responses (1-7) to the question \emph{I have trouble organizing the things I have to do}
+#' * **org30**: responses (1-7) to the question \emph{I put tasks off to another day}
+#' * **org31**: responses (1-7) to the question \emph{I feel restricted by schedules and plans}
+#'
+#' @format A tibble with 239 rows and 29 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/williams.csv](https://www.discovr.rocks/csv/williams.csv)
+
+"williams"
+
+
 
 #' Xbox: games console injuries
 #'
@@ -1871,11 +2085,11 @@
 #'
 #' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' Statistics and maths anxiety are common and affect people’s performance on maths and stats assignments; women in particular can lack confidence in mathematics (Field, 2010).
+#' Statistics and maths anxiety are common and affect people's performance on maths and stats assignments; women in particular can lack confidence in mathematics (Field, 2010).
 #' Zhang, Schmader and Hall (2013) did an intriguing study in which students completed a maths test in which some put their own name on the test booklet,
-#' whereas others were given a booklet that already had either a male or female name on. Participants in the latter two conditions were told that they would use this other person’s name for the purpose of the test.
+#' whereas others were given a booklet that already had either a male or female name on. Participants in the latter two conditions were told that they would use this other person's name for the purpose of the test.
 #' Women who completed the test using a different name performed significantly better than those who completed the test using their own name. (There were no such significant effects for men.)
-#' The data are a random subsample of Zhang et al.’s data with the following variables:
+#' The data are a random subsample of Zhang et al.'s data with the following variables:
 #'
 #'   * **id**: participant ID
 #'   * **sex**: participant's biological sex
@@ -1892,3 +2106,37 @@
 
 
 "zhang_sample"
+
+
+#' Zibarras et al. (2008) data
+#'
+#' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Zibarras, Port, and Woods (2008) looked at the relationship between personality and creativity.
+#' They used the Hogan Development Survey (HDS), which measures 11 dysfunctional dispositions of employed adults:
+#' being \emph{volatile}, \emph{mistrustful}, \emph{cautious}, \emph{detached}, \emph{passive_aggressive}, \emph{arrogant},
+#'  \emph{manipulative}, \emph{dramatic}, \emph{eccentric}, \emph{perfectionist}, and \emph{dependent}.
+#'
+#' * **id**: The participant id
+#' * **volatile**: responses to the question items of the HDS relating to the \emph{volatile} disposition.
+#' * **mistrustful**: responses to the question items of the HDS relating to the \emph{mistrustful} disposition.
+#' * **cautious**: responses to the question items of the HDS relating to the \emph{cautious} disposition.
+#' * **detached**: responses to the question items of the HDS relating to the \emph{detached} disposition.
+#' * **passive_aggressive**: responses to the question items of the HDS relating to the \emph{passive_aggressive} disposition.
+#' * **arrogant**: responses to the question items of the HDS relating to the \emph{arrogant} disposition.
+#' * **manipulative**: responses to the question items of the HDS relating to the \emph{manipulative} disposition.
+#' * **dramatic**: responses to the question items of the HDS relating to the \emph{dramatic} disposition.
+#' * **eccentric**: responses to the question items of the HDS relating to the \emph{eccentric} disposition.
+#' * **perfectist**: responses (1-5) to the question \emph{I have said to myself 'just a few more minutes on the Internet.'}
+#' * **dependent**: responses (1-5) to the question \emph{I find myself accessing more information on the Internet that I had planned to.}
+#'
+#'
+#' @format A tibble with 207 rows and 12 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/zibarras_2008.csv](https://www.discovr.rocks/csv/zibarras_2008.csv)
+#' @references
+#'
+#'    * Zibarras, L. D., Port, R. L., & Woods, S. A. (2008). Innovation and the 'dark side' of personality: Dysfunctional traits and their relation to self-reported innovative characteristics. *Journal of Creative Behavior*, 42, 201–215. [https://doi.org/10.1002/j.2162-6057.2008.tb01295.x](https://doi.org/10.1002/j.2162-6057.2008.tb01295.x)
+
+
+"zibarras_2008"

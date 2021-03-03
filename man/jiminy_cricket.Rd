@@ -18,8 +18,8 @@ A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (
 }
 \details{
 Fictitious data inspired by my honeymoon at Disney in Orlando. The one blip in my tolerance of Disney, was their obsession with dreams coming true and wishing upon a star.
-Dreams are good, but a completely blinkered view that they’ll come true without any work on your part is not. I think it highly unlikely that merely ‘wishing upon a star’ will make my dream come true.
-I wonder if the seismic increase in youth internalizing disorders (Twenge, 2000, 2011) is, in part, caused by millions of Disney children reaching the rather depressing realization that ‘wishing upon a star’ didn’t work.
+Dreams are good, but a completely blinkered view that they'll come true without any work on your part is not. I think it highly unlikely that merely 'wishing upon a star' will make my dream come true.
+I wonder if the seismic increase in youth internalizing disorders (Twenge, 2000, 2011) is, in part, caused by millions of Disney children reaching the rather depressing realization that 'wishing upon a star' didn't work.
 Anyway, imagine that I collected some data from 250 people on their level of success using a composite measure involving their salary, quality of life and how closely their life matches their aspirations.
 This gave me a score from 0 (complete failure) to 100 (complete success). I then implemented an intervention: I told people that for the next 5 years they should either wish upon a star for their dreams to come true or work as hard as they could to make their dreams come true.
 I measured their success again 5 years later. People were randomly allocated to these two instructions.

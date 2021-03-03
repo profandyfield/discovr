@@ -17,7 +17,7 @@ self_help
 A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
-‘Pop psychology’ books sometimes spout nonsense that is unsubstantiated by science. I took 20 people in
+'Pop psychology' books sometimes spout nonsense that is unsubstantiated by science. I took 20 people in
 relationships and randomly assigned them to one of two groups. One group read the famous popular psychology
 book \emph{Women are from Bras and men are from Penis}, and the other read \emph{Marie Claire}. The outcome variable was
 their relationship happiness after their assigned reading. The (fictional) data contains the following variables:

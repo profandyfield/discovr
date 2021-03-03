@@ -17,13 +17,13 @@ stalker
 A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
-Some fictional data about therapy for stalking. A few years back I was stalked. You’d think they could have found
+Some fictional data about therapy for stalking. A few years back I was stalked. You'd think they could have found
 someone a bit more interesting to stalk, but apparently times were hard. It could have been a lot worse,
-but it wasn’t particularly pleasant. I imagined a world in which a psychologist tried two different therapies on
+but it wasn't particularly pleasant. I imagined a world in which a psychologist tried two different therapies on
 different groups of stalkers (25 stalkers in each treatment). To the first group he gave cruel-to-be-kind therapy
 (every time the stalkers followed him around, or sent him a letter, the psychologist attacked them with a cattle prod).
 The second therapy was psychodyshamic therapy, in which stalkers were hypnotized and regressed into their childhood
-to discuss their penis (or lack of penis), their father’s penis, their dog’s penis, the seventh penis of a seventh penis,
+to discuss their penis (or lack of penis), their father's penis, their dog's penis, the seventh penis of a seventh penis,
 and any other penis that sprang to mind. The psychologist measured the number of hours stalking in one week both before
 (stalk_pre) and after (stalk_post) treatment.The object contains the following variables:
 \itemize{

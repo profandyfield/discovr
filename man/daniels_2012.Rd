@@ -17,7 +17,7 @@ daniels_2012
 A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
-Women (and increasingly men) are bombared with ‘idealized’ images in the media and there is a growing concern
+Women (and increasingly men) are bombared with 'idealized' images in the media and there is a growing concern
 about how these images affect our perceptions of ourselves. Daniels (2012) showed young women images of successful
 female athletes (e.g., Anna Kournikova) in which they were either playing sport (performance athlete images) or posing
 in bathing suits (sexualized images). Participants completed a short writing exercise after viewing these images.

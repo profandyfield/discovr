@@ -18,7 +18,7 @@ A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (
 }
 \details{
 Mobile phones emit microwaves, and so holding one next to your brain for large parts of the day is a bit like
-sticking your brain in a microwave oven and pushing the ‘cook until well done’ button. If we wanted to test this
+sticking your brain in a microwave oven and pushing the 'cook until well done' button. If we wanted to test this
 experimentally, we could get six groups of people and strap a mobile phone on their heads, then by remote control
 turn the phones on for a certain amount of time each day. After six months, we measure the size of any tumour (in mm^3)
 close to the site of the phone antenna (just behind the ear). The six groups experienced 0, 1, 2, 3, 4 or 5 hours per

@@ -21,8 +21,8 @@ Apparently there are more beautiful women in the world than there are handsome m
 in terms of good-looking parents being more likely to have a baby daughter as their first child than a baby son.
 Perhaps more controversially, he suggests that, from an evolutionarily perspective, beauty is a more valuable trait for women than
 for men (Kanazawa, 2007). In a playful and very informative paper, Andrew Gelman and David Weakliem discuss various
-statistical errors and misunderstandings, some of which have implications for Kanazawa’s claims.
-The ‘playful’ part of the paper is that to illustrate their point they collected data on the 50 most beautiful celebrities
+statistical errors and misunderstandings, some of which have implications for Kanazawa's claims.
+The 'playful' part of the paper is that to illustrate their point they collected data on the 50 most beautiful celebrities
 (as listed by People magazine) of 1995-2000. They counted how many male and female children they had as of 2007.
 If Kanazawa is correct, these beautiful people would have produced more girls than boys.
 These are the data from that study. The data contains the following variables:

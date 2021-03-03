@@ -24,12 +24,12 @@ Lambert et al. (2012) found that pornography is related to infidelity. This obje
 \item \strong{ln_porn}: log transformed values of consumption
 \item \strong{commit}: commitment to the participant's current relationship on a scale from 1 (low) to 5 (high)
 \item \strong{phys_inf}: whether the person had committed a physical act that they or their partner would consider to be unfaithful (0 = no, 1 = one of them would consider it unfaithful, 2 = both of them would consider it unfaithful)
-\item \strong{hook_up}: the number of people they had ‘hooked up’ with in the previous year. (A ‘hook-up’ was defined to participants as ‘when two people get together for a physical encounter and don’t necessarily expect anything further')
+\item \strong{hook_up}: the number of people they had 'hooked up' with in the previous year. (A 'hook-up' was defined to participants as 'when two people get together for a physical encounter and don't necessarily expect anything further')
 }
 }
 \references{
 \itemize{
-\item Lambert, N. M., Negash, S., Stillman, T. F., Olmstead, S. B., & Fincham, F. D. (2012). A love that doesn’t last: Pornography consumption and weakened commitment to one’s romantic partner. \emph{Journal of Social and Clinical Psychology}, 31, 410–438. \href{https://doi.org/10.1521/jscp.2012.31.4.410}{doi.org/10.1521/jscp.2012.31.4.410}
+\item Lambert, N. M., Negash, S., Stillman, T. F., Olmstead, S. B., & Fincham, F. D. (2012). A love that doesn't last: Pornography consumption and weakened commitment to one's romantic partner. \emph{Journal of Social and Clinical Psychology}, 31, 410–438. \href{https://doi.org/10.1521/jscp.2012.31.4.410}{doi.org/10.1521/jscp.2012.31.4.410}
 }
 }
 \keyword{datasets}

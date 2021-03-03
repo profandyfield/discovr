@@ -23,10 +23,10 @@ it had been conducted on rats, it found no link to lowered sperm counts, but the
 development in male rats (probably because genistein acts like oestrogen). As journalists tend to do, a study showing no
 link between soya and sperm counts was used as the scientific basis for an article about soya being the cause of declining
 sperm counts in Western males. Imagine the rat study was enough for us to want to test this idea in humans.
-We recruit 80 males and split them into four groups that vary in the number of soya ‘meals’ (a dinner containing 75g of soya)
+We recruit 80 males and split them into four groups that vary in the number of soya 'meals' (a dinner containing 75g of soya)
 they ate per week over a year: no soya meals (i.e., none in the whole year), one per week (52 over the year),
 four per week (208 over the year), and seven per week (364 over the year). At the end of the year, participants
-produced some sperm that I could count (when I say ‘I’, I mean someone else in a laboratory as far away from me as humanly possible).
+produced some sperm that I could count (when I say 'I', I mean someone else in a laboratory as far away from me as humanly possible).
 The fictitious data contain the following variables:
 \itemize{
 \item \strong{id}: The participant's id

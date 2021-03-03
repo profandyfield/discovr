@@ -18,19 +18,19 @@ A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (
 }
 \details{
 During my psychology degree I spent a lot of time reading about the civil rights movement in the USA. Instead of reading psychology,
-I read about Malcolm X and Martin Luther King Jr. For this reason I find Beckham’s 1929 study of black Americans
+I read about Malcolm X and Martin Luther King Jr. For this reason I find Beckham's 1929 study of black Americans
 a fascinating historical piece of research. Beckham was a black American who founded the psychology laboratory
 at Howard University, Washington, DC and his wife Ruth was the first black woman ever to be awarded a PhD
 (also in psychology) at the University of Minnesota. To put some context on the study, it was published
 36 years before the Jim Crow laws were finally overthrown by the Civil Rights Act of 1964, and in a time when
 black Americans were segregated, openly discriminated against and victims of the most abominable violations of
-civil liberties and human rights (I recommend James Baldwin’s superb The fire next time for an insight into the times).
+civil liberties and human rights (I recommend James Baldwin's superb The fire next time for an insight into the times).
 The language of the study and the data from it are an uncomfortable reminder of the era in which it was conducted.
 
 Beckham sought to measure the psychological state of 3443 black Americans with three questions. He asked them to
 answer yes or no to whether they thought black Americans were happy, whether they personally were happy as a black
 American, and whether black Americans should be happy. Beckham did no formal statistical analysis of his data
-(Fisher’s article containing the popularized version of the chi-square test was published only 7 years earlier
+(Fisher's article containing the popularized version of the chi-square test was published only 7 years earlier
 in a statistics journal that would not have been read by psychologists).
 I love this study, because it demonstrates that you do not need elaborate methods to answer important and far-reaching questions;
 with just three questions, Beckham told the world an enormous amount about very real and important psychological and sociological phenomena.

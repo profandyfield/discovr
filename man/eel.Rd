@@ -18,11 +18,11 @@ A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (
 }
 \details{
 Lo, Wong, Leung, Law, and Yip (2004) describe a case of a 50-year-old man who reported to the emergency department of a hospital with abdominal pain.
-An X-ray of the man’s abdomen revealed the shadow of an eel. The patient claimed that he inserted the eel to ‘relieve constipation’.
-I’m no medic, but this 'remedy' appears counterintuitive. However, it is an empirical question.
+An X-ray of the man's abdomen revealed the shadow of an eel. The patient claimed that he inserted the eel to 'relieve constipation'.
+I'm no medic, but this 'remedy' appears counterintuitive. However, it is an empirical question.
 
 To test the hypothesis that an eel might cure constipation, we could do a randomized controlled trial.
-Our outcome variable would be ‘cured’ vs. ‘not cured’. The main predictor variable would be the intervention condition
+Our outcome variable would be 'cured' vs. 'not cured'. The main predictor variable would be the intervention condition
 (eel treatment arm vs. waiting list/no treatment arm). We might also factor in how many days the patient had been
 constipated before treatment (a proxy of symptom severity). The (fictional) data contains the following variables:
 \itemize{

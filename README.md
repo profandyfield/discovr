@@ -134,6 +134,7 @@ See the book or data descriptions for more details. This is a list of available 
 * **metallica**: Data about thrash metal band, Metallica. For details execute `?metallica`.
 * **murder**: fictitious data about the number of murder each month at three street locations (Ruskin Avenue, Acacia Avenue and Rue Morgue). For details execute `?murder`.
 * **muris_2008**: Data about whether you can train children to interpret ambiguous situations in a particular way. For details execute `?muris_2008`.
+* **nichols_2004**: Data from the development of the Internet Addiction Scale, IAS (Nichols & Nicki, 2004). For details execute `?nichols_2004`.
 * **notebook**: fictitious data about whether watching the film the notebook is emotionally arousing. For details execute `?notebook`.
 * **ong_2011**: Data about social media profile pictures and personality traits. For details execute `?ong_2011`.
 * **ong_tidy**: Data about social media profile pictures and personality traits. For details execute `?ong_tidy`.
@@ -142,6 +143,7 @@ See the book or data descriptions for more details. This is a list of available 
 * **puppies**: Fictitious data related to whether puppy therapy works. For details execute `?puppies`.
 * **puppy_love**: Fictitious data related to whether puppy therapy works when you adjust for a person's love of puppies. For details execute `?puppy_love`.
 * **r_exam**: Fictitious data relating to an R exam at two universities. For details execute `?r_exam`.
+* **raq**: Fictitious data relating to a fictional questionnaire about R anxiety that is not an actual questionnaire. For details execute `?raq`.
 * **roaming_cats**: fictitious data about how far cats roam from their homes For details execute `?roaming_cats`.
 * **santas_log**: Fictitious data related to whether the type and quantity of treat consumed on Christmas night affects whether elves successfully deliver presents. For details execute `?santas_log`.
 * **self_help**: fictitious data about whether self-help books improve relationship satisfaction. For details execute `?self_help`.
@@ -162,11 +164,15 @@ See the book or data descriptions for more details. This is a list of available 
 * **tea_716**: fictitious data based on real data about cognitive functioning and drinking tea. For details execute `?tea_makes_you_brainy_716`.
 * **teaching**: fictitious data about the success of different methods of teaching. For details execute `?teaching`.
 * **teach_method**: more fictitious data about the success of different methods of teaching. For details execute `?teach_method`.
+* **tosser**: Fictitious data relating to a fictional questionnaire about The Teaching of Statistics for Scientific Experiments, which is fictional. For details execute `?tosser`.
+* **tuk_2011**: Data about whether needing to urinate helps decision making. For details execute `?tuk_2011`.
 * **tumour**: fictitious data about mobile phone use and brain tumours. For details execute `?tumour`.
 * **video_games**: fictitious data about the relationship between video game use, callous unemotional traits and aggression. For details execute `?video_games`.
-* **tuk_2011**: Data about whether needing to urinate helps decision making. For details execute `?tuk_2011`.
+* **williams**: Data relating to the development of a questionnaire to measure organizational ability. For details execute `?williams`
 * **xbox**: Fictitious data relating injuries to the type of video console game played and the console it was played on. `?xbox`.
 * **zhang_sample**: Data about whether performing a maths test under a different name assists performance. For details execute `?zhang_2013_subsample`.
+* **zibarras_2008**: Data from Zibarras, Port, and Woods (2008) relating to the relationship between personality and creativity. For details execute `?zibarras_2008`.
+
 
 ## Smart Alex solutions
 

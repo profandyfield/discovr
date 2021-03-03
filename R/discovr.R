@@ -103,6 +103,7 @@
 #' * [metallica]: Data about thrash metal band Metallica.
 #' * [murder]: Fictitious data about the number of murder each month at three street locations (Ruskin Avenue, Acacia Avenue and Rue Morgue).
 #' * [muris_2008]: Data about whether you can train children to interpret ambiguous situations in a particular way.
+#' * [nichols_2004]: Data from the development of the Internet Addiction Scale, IAS (Nichols & Nicki, 2004).
 #' * [notebook]: Fictitious data about whether watching the film the notebook is emotionally arousing.
 #' * [ong_2011]: Data about social media profile pictures and personality traits.
 #' * [ong_tidy]: Data about social media profile pictures and personality traits.
@@ -110,6 +111,7 @@
 #' * [pubs]: Data illustrating the difference between an outlier and an influential case.
 #' * [puppies]: Fictitious data related to whether puppy therapy works.
 #' * [puppy_love]: Fictitious data related to whether puppy therapy works when you adjust for a person's love of puppies.
+#' * [raq]: Fictitious data relating to a fictional questionnaire about R anxiety that is not an actual questionnaire.
 #' * [r_exam]: Fictitious data relating to an R exam at two universities.
 #' * [roaming_cats]: Fictitious data about how far cats roam from their homes.
 #' * [santas_log]: Fictitious data related to whether the type and quantity of treat consumed on Christmas night affects whether elves successfully deliver presents.
@@ -131,11 +133,15 @@
 #' * [tea_716]: Fictitious data based on real data about cognitive functioning and drinking tea.
 #' * [teaching]: Fictitious data about the success of different methods of teaching.
 #' * [teach_method]: More fictitious data about the success of different methods of teaching.
+#' * [tosser]: Fictitious data relating to a fictional questionnaire about The Teaching of Statistics for Scientific Experiments, which is fictional.
+#' * [tuk_2011]: Data about whether needing to urinate helps decision making.
 #' * [tumour]: fictitious data about mobile phone use and brain tumours.
 #' * [video_games]: Fictitious data about the relationship between video game use, callous unemotional traits and aggression.
+#' * [williams]: Data relating to the development of a questionnaire to measure organizational ability.
 #' * [xbox]: Fictitious data relating injuries to the type of video console game played and the console it was played on.
 #' * [tuk_2011]: Data about whether needing to urinate helps decision making.
 #' * [zhang_sample]: Data about whether performing a maths test under a different name assists performance.
+#' * [zibarras_2008]: Data from Zibarras, Port, and Woods (2008) relating to the relationship between personality and creativity.
 #'
 #' @section Smart Alex solutions:
 #'

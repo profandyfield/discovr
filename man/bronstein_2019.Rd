@@ -17,7 +17,7 @@ bronstein_2019
 A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
-The rapid increase in ‘fake news’ and misinformation is a worrying trend in recent years.
+The rapid increase in 'fake news' and misinformation is a worrying trend in recent years.
 Perhaps more worrying is how widely some of this news is taken as fact. Researchers have started to look at what
 characteristics predict susceptibility to fake news. Bronstein et al. (2019) hypothesised that delusion-prone individuals
 may be more likely to believe fake news because of their tendency to engage in less analytic and open-minded thinking.
@@ -27,7 +27,7 @@ The full dataset is available at \url{https://doi.org/10.1016/j.jarmac.2018.09.0
 \itemize{
 \item \strong{id} (ResponseID in the original dataset): participant ID
 \item \strong{fake_newz} (ZBelief_Fake in the original dataset): participants viewed 12 fake news headlines, each with a brief description and photo, and rated their accuracy (1 = Not at all accurate, 4 = Very accurate). This variable is the average rating converted to a z-score.
-\item \strong{delusionz} (ZPDI_Total in the original dataset): Peter's et al Delusion Inventory (PDI), which uses statements such as “Do you ever feel as if there is a conspiracy against you?” to gauge a person’s propensity for delusion-like thinking. Again, scores were converted to z-scores.
+\item \strong{delusionz} (ZPDI_Total in the original dataset): Peter's et al Delusion Inventory (PDI), which uses statements such as “Do you ever feel as if there is a conspiracy against you?” to gauge a person's propensity for delusion-like thinking. Again, scores were converted to z-scores.
 \item \strong{thinkz_open} (ZAOT_Total in the original dataset):  open minded thinking was assessed with the Actively Open-minded Thinking (AOT) scale, on which people endorse statements such as “A person should always consider new possibilities” using a six-point scale (1 = strongly disagree, 6 = strongly agree). The total score was again converted to z.
 \item \strong{thinkz_anal} (ZRF_Total in the original dataset): Analytic thinking was assessed using the Cognitive Reflection Test (CRT), which uses several problems that have intuitive-but-incorrect responses. Participants must override their intuition to get the correct answer. Over 7 items, higher scores (converted to z-scores again) indicate a greater tendency to use an analytic cognitive style.
 }

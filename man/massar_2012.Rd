@@ -30,13 +30,13 @@ Eighty-three women aged from 20 to 50 (age) completed questionnaire measures of 
 \itemize{
 \item \strong{id}: participant ID (not from the original data)
 \item \strong{age}: participant age in years
-\item \strong{gossip}: average response on a tendency to gossip scale. Participants responded to 16 items about their tendency to gossip following the presentation of a scenario. Particpants rated their likelihood to engage in certain behaviours such as ‘I would tell negative things about Karen to other people’ from 1 (strongly disagree) to 5 (strongly agree). This score is the average response across the 16 items.
+\item \strong{gossip}: average response on a tendency to gossip scale. Participants responded to 16 items about their tendency to gossip following the presentation of a scenario. Particpants rated their likelihood to engage in certain behaviours such as 'I would tell negative things about Karen to other people' from 1 (strongly disagree) to 5 (strongly agree). This score is the average response across the 16 items.
 \item \strong{mate_value}: average response to items from the Self-Perceived Mating Success Scale (each item ranged from 1 = not at all, 5 = very much, so a high score is a high mate value)
 }
 }
 \references{
 \itemize{
-\item Massar, K., Buunk, A. P., & Rempt, S. (2012). Age differences in women’s tendency to gossip are mediated by their mate value. \emph{Personality and Individual Differences}, 52, 106–109. \url{https://doi.org/10.1016/j.paid.2011.09.013}
+\item Massar, K., Buunk, A. P., & Rempt, S. (2012). Age differences in women's tendency to gossip are mediated by their mate value. \emph{Personality and Individual Differences}, 52, 106–109. \url{https://doi.org/10.1016/j.paid.2011.09.013}
 }
 }
 \keyword{datasets}

@@ -18,7 +18,7 @@ A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (
 }
 \details{
 A marketing manager tested the benefit of soft drinks for curing hangovers. He took 15 people and got
-them drunk. The next morning as they awoke, dehydrated and feeling as though they’d licked a camel’s
+them drunk. The next morning as they awoke, dehydrated and feeling as though they'd licked a camel's
 sandy feet clean with their tongue, he gave five of them water to drink, five of them Lucozade
 (a very nice glucose-based UK drink) and the remaining five a leading brand of cola. He measured how well they felt
 (on a scale from 0 = I feel like death to 10 = I feel really full of beans and healthy) two hours later.

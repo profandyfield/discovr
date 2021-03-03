@@ -17,7 +17,7 @@ mcnulty_2008
 A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
-McNulty et al. (2008) found a relationship between a person’s attractiveness and how much support they give their partner among newlywed heterosexual couples.
+McNulty et al. (2008) found a relationship between a person's attractiveness and how much support they give their partner among newlywed heterosexual couples.
 These data simulate the results of that study. The object contains the following variables:
 \itemize{
 \item \strong{id}: participant ID

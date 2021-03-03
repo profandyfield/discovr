@@ -19,7 +19,7 @@ A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (
 \details{
 Imagine a scientist designed a study to look at the interplay between looks, personality and
 dating strategies on evaluations of a date. She set up a speed-dating night with 9 tables at which there
-sat a ‘date’. All the dates were stooges selected to vary in their attractiveness (high, average and low),
+sat a 'date'. All the dates were stooges selected to vary in their attractiveness (high, average and low),
 their personality (high charisma, average charisma, writes statistics books), and also the strategy
 they were told to employ during the conversation (normal or playing hard to get).
 The dates were trained before the study to act charismatically to varying degrees, and also how to act
@@ -32,15 +32,15 @@ Therefore, each participant attending a speed-dating night would be exposed to a
 Upon arrival participants were randomly assigned a blue or red sticker.
 For the participants with the red sticker the stooges played hard to get (unobtainable) and for
 those with a blue sticker they acted normally. Over the course a few nights 20 people attended,
-spent 5-minutes with each of the 9 ‘dates’ and then rated how much they’d like to have a proper date with the person
-as a percentage (100\% = ‘I’d pay large sums of money for their phone number’, 0\% = ‘I’d pay a large sum of money for a plane
-ticket to get me as far away from them as possible’). The (fictional) data contains the following variables:
+spent 5-minutes with each of the 9 'dates' and then rated how much they'd like to have a proper date with the person
+as a percentage (100\% = 'I'd pay large sums of money for their phone number', 0\% = 'I'd pay a large sum of money for a plane
+ticket to get me as far away from them as possible'). The (fictional) data contains the following variables:
 \itemize{
 \item \strong{id}: participant ID
 \item \strong{strategy}: Whether the stooge acted normally or played hard to get
 \item \strong{looks}: Whether the stooge was rated as high, average or low on looks
 \item \strong{personality}: Whether the stooge acted with high, average or low charisma
-\item \strong{date}: rating how much the participant would like to have a proper date with the stooge as a percentage (100\% = ‘I’d pay large sums of money for their phone number’, 0\% = ‘I’d pay a large sum of money for a plane ticket to get me as far away from them as possible’)
+\item \strong{date}: rating how much the participant would like to have a proper date with the stooge as a percentage (100\% = 'I'd pay large sums of money for their phone number', 0\% = 'I'd pay a large sum of money for a plane ticket to get me as far away from them as possible')
 }
 }
 \keyword{datasets}

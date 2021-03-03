@@ -17,13 +17,13 @@ coldwell_2006
 A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
-Coldwell, Pike and Dunn (2006) investigated whether household chaos predicted children’s problem behaviour
+Coldwell, Pike and Dunn (2006) investigated whether household chaos predicted children's problem behaviour
 over and above parenting. From 118 families they recorded the age and gender of the youngest child
-(\strong{child_age} and \strong{child_gender}). They measured dimensions of the child’s perceived relationship with
+(\strong{child_age} and \strong{child_gender}). They measured dimensions of the child's perceived relationship with
 their mum: (1) warmth/enjoyment (\strong{child_warmth}), and (2) anger/hostility (\strong{child_anger}). Higher scores
-indicate more warmth/enjoyment and anger/hostility respectively. They measured the mum’s perceived relationship
+indicate more warmth/enjoyment and anger/hostility respectively. They measured the mum's perceived relationship
 with her child, resulting in dimensions of positivity (\strong{mum_pos}) and negativity (\strong{mum_neg}).
-Household chaos (\strong{chaos}) was assessed. The outcome variable was the child’s adjustment (\strong{sdq}): the higher the score,
+Household chaos (\strong{chaos}) was assessed. The outcome variable was the child's adjustment (\strong{sdq}): the higher the score,
 the more problem behaviour the child was reported to be displaying. These data are from this study. The data contain the following variables:
 \itemize{
 \item \strong{family_id}: The family id

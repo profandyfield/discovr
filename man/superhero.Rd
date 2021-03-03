@@ -19,7 +19,7 @@ A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (
 \details{
 Children wearing superhero costumes are more likely to harm themselves because of the unrealistic impression of
 invincibility that these costumes could create. For example, children have reported to hospital with severe injuries
-because of trying ‘to initiate flight without having planned for landing strategies’ (Davies, Surridge, Hole, & Munro-Davies, 2007).
+because of trying 'to initiate flight without having planned for landing strategies' (Davies, Surridge, Hole, & Munro-Davies, 2007).
 I can relate to the imagined power that a costume bestows upon you; indeed, I have been known to dress up as Fisher by donning a
 beard and glasses and trailing a goat around on a lead in the hope that it might make me more knowledgeable about statistics.
 These fictional data contain the severity of injury (on a scale from 0, no injury, to 100, death) for children reporting to the accident

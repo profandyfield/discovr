@@ -21,7 +21,7 @@ Some quail develop fetishes. Really. In studies where a terrycloth object acts a
 become available, some quail start to direct their sexuial behaviour towards the terrycloth object.
 In evolutionary terms, this fetishistic behaviour seems counterproductive because sexual behaviour becomes directed
 towards something that cannot provide reproductive success. However, perhaps this behaviour serves to prepare the
-organism for the ‘real’ mating behaviour.
+organism for the 'real' mating behaviour.
 
 Cetinkaya and Domjan (2006) sexually conditioned male quail.
 All quail experienced the terrycloth stimulus and an opportunity to mate, but for some the terrycloth stimulus

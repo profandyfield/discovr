@@ -17,11 +17,11 @@ zhang_sample
 A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
-Statistics and maths anxiety are common and affect people’s performance on maths and stats assignments; women in particular can lack confidence in mathematics (Field, 2010).
+Statistics and maths anxiety are common and affect people's performance on maths and stats assignments; women in particular can lack confidence in mathematics (Field, 2010).
 Zhang, Schmader and Hall (2013) did an intriguing study in which students completed a maths test in which some put their own name on the test booklet,
-whereas others were given a booklet that already had either a male or female name on. Participants in the latter two conditions were told that they would use this other person’s name for the purpose of the test.
+whereas others were given a booklet that already had either a male or female name on. Participants in the latter two conditions were told that they would use this other person's name for the purpose of the test.
 Women who completed the test using a different name performed significantly better than those who completed the test using their own name. (There were no such significant effects for men.)
-The data are a random subsample of Zhang et al.’s data with the following variables:
+The data are a random subsample of Zhang et al.'s data with the following variables:
 \itemize{
 \item \strong{id}: participant ID
 \item \strong{sex}: participant's biological sex

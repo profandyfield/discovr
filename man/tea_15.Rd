@@ -19,7 +19,7 @@ A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (
 \details{
 One of my favourite activities, especially when trying to do brain-melting things like writing statistics books, is drinking tea. I am English, after all.
 Fortunately, tea improves your cognitive function – well, it does in old Chinese people at any rate (Feng, Gwee, Kua, & Ng, 2010).
-I may not be Chinese and I’m not that old, but I nevertheless enjoy the idea that tea might help me think. Here are some (fictional) data based on Feng et al.’s
+I may not be Chinese and I'm not that old, but I nevertheless enjoy the idea that tea might help me think. Here are some (fictional) data based on Feng et al.'s
 study that measured the number of cups of tea drunk per day and cognitive functioning (out of 80) in 15 people.
 \itemize{
 \item \strong{id}: participant ID

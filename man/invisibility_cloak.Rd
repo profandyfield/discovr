@@ -17,7 +17,7 @@ invisibility_cloak
 A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
-I got very excited by two news stories implying that scientists had made Harry Potter’s cloak of invisibility. Although the newspapers overstated the case,
+I got very excited by two news stories implying that scientists had made Harry Potter's cloak of invisibility. Although the newspapers overstated the case,
 I imagined a future in which we have cloaks of invisibility to test out. Given my slightly mischievous streak, the future me is interested in the effect
 that wearing a cloak of invisibility has on the tendency for mischief. I take 24 participants and place them in an enclosed community.
 The community is riddled with hidden cameras so that we can record mischievous acts. Half of the participants are given cloaks of invisibility;

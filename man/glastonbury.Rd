@@ -20,9 +20,9 @@ A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (
 More fictional data about people stinking at music festivals. The same biologist who was worried about the potential health effects of music festivals and
 collected data at a heavy metal festival (Download Festival), was worried that her findings might not generalize. To find out whether the type of music a person
 likes predicts whether hygiene decreases over the festival the biologist measured hygiene over the three days of the Glastonbury Music Festival, which has an eclectic clientele.
-Her hygiene measure ranged between 0 (you smell like you’ve bathed in sewage) and 4 (you smell like you’ve bathed in freshly baked bread).
-The biologist coded the festival-goer’s musical affiliations into the categories ‘hipster’ (people who mainly like alternative music), ‘metalhead’ (people who like heavy metal), and ‘raver’ (people who like dance/ambient stuff).
-Anyone not falling into these categories was labelled ‘no subculture’. The object contains the following variables:
+Her hygiene measure ranged between 0 (you smell like you've bathed in sewage) and 4 (you smell like you've bathed in freshly baked bread).
+The biologist coded the festival-goer's musical affiliations into the categories 'hipster' (people who mainly like alternative music), 'metalhead' (people who like heavy metal), and 'raver' (people who like dance/ambient stuff).
+Anyone not falling into these categories was labelled 'no subculture'. The object contains the following variables:
 \itemize{
 \item \strong{ticket_no}: the ticket number of the participant as a factor
 \item \strong{subculture}: The musical subculture with which the participant self-identifies as a factor (no subculture, hipster, metalhead, raver)

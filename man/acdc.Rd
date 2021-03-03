@@ -24,9 +24,9 @@ Anyway, Robert Oxoby in a playfull paper decided to put this argument to bed onc
 Using a task from experimental economics called the ultimatum game, individuals are assigned the role of either proposer or responder and paired randomly.
 Proposers are allocated $10 from which they have to make a financial offer to the responder (i.e., $2). The responder can accept or reject this offer. If the offer is rejected neither party gets any money,
 but if the offer is accepted the responder keeps the offered amount (e.g., $2), and the proposer keeps the original amount minus what they offered (e.g., $8). For half of the participants the song
-‘It’s a long way to the top’ sung by Bon Scott was playing in the background, for the remainder ‘Shoot to thrill’ sung by Brian Johnson was playing. Oxoby measured the offers made by proposers,
+'It's a long way to the top' sung by Bon Scott was playing in the background, for the remainder 'Shoot to thrill' sung by Brian Johnson was playing. Oxoby measured the offers made by proposers,
 and the minimum offers that responders accepted (called the minimum acceptable offer). He reasoned that people would accept lower offers and propose higher offers when listening to something they like
-(because of the ‘feel-good factor’ the music creates). Therefore, by comparing the value of offers made and the minimum acceptable offers in the two groups he could see whether people have more of a feel
+(because of the 'feel-good factor' the music creates). Therefore, by comparing the value of offers made and the minimum acceptable offers in the two groups he could see whether people have more of a feel
 good factor when listening to Bon or Brian. There were 18 people per group.
 
 These data are approximated from graphs within Oxoby (2008). The object contains the following variables:

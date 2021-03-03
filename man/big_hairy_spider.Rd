@@ -20,7 +20,7 @@ A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (
 Is arachnophobia (fear of spiders) specific to real spiders or will pictures of spiders evoke similar levels
 of anxiety? Twelve arachnophobes were asked to play with a big hairy tarantula with big fangs and an evil
 look in its eight eyes and at a different point in time were shown only photos of the same spider.
-The participants’ anxiety was measured in each case. The (fictional) data contains the following variables:
+The participants' anxiety was measured in each case. The (fictional) data contains the following variables:
 \itemize{
 \item \strong{id}: the participant's first name
 \item \strong{spider_type}: whether the spider stimulus was a real spider or a photo of a spider

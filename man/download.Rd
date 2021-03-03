@@ -20,7 +20,7 @@ A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (
 Fictional data about people stinking at music festivals. A biologist was worried about the potential health effects of
 music festivals. She went to the Download Music Festival and measured the hygiene of 810 concert-goers over the three days of the festival.
 She tried to measure every person on every day but, because it was difficult to track people down, there were missing data on days 2 and 3.
-Hygiene was measured using a standardized technique that results in a score ranging between 0 (you smell like a corpse that’s been left to rot up a skunk’s arse)
+Hygiene was measured using a standardized technique that results in a score ranging between 0 (you smell like a corpse that's been left to rot up a skunk's arse)
 and 4 (you smell of sweet roses on a fresh spring day). I know from bitter experience that sanitation is not always great at these places and so the biologist
 predicted that personal hygiene would go down dramatically over the three days of the festival. The object contains the following variables:
 \itemize{

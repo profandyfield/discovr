@@ -21,8 +21,8 @@ Fictional data about elephant football. The highlight of the elephant calendar i
 in Nepal. A heated argument burns between the African and Asian elephants. In 2010, the president of the
 Asian Elephant Football Association, an elephant named Boji, claimed that Asian elephants were more talented
 than their African counterparts. The head of the African Elephant Soccer Association, an elephant called Tunc,
-issued a press statement that read ‘I make it a matter of personal pride never to take seriously any remark made
-by something that looks like an enormous scrotum’. I was called in to settle things.
+issued a press statement that read 'I make it a matter of personal pride never to take seriously any remark made
+by something that looks like an enormous scrotum'. I was called in to settle things.
 I collected data from the two types of elephants (Asian or African) over a season and recorded how many goals
 each elephant scored and how many years of experience the elephant had. The data set has four variables:
 \itemize{

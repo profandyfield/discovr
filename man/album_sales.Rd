@@ -27,7 +27,7 @@ The (fictional) data contains the following variables:
 \item \strong{adverts}: advertising budget in thousands of whatever currency is used in your country.
 \item \strong{sales}: the number of album sales (physical, digital, streams)
 \item \strong{airplay}: the number of times songs from the album were played on radio thew eek before release
-\item \strong{image}: a rating of the band's image from scale from 0 (dad dancing at a disco) to 10 (sicker than a dog that’s eaten a bag of onions)
+\item \strong{image}: a rating of the band's image from scale from 0 (dad dancing at a disco) to 10 (sicker than a dog that's eaten a bag of onions)
 }
 }
 \keyword{datasets}

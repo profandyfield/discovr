@@ -17,9 +17,9 @@ gallup_2003
 A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
-It’s something of a wonder how evolution managed to produce such a monstrosity as the human penis.
-One theory is sperm competition: the human penis has an unusually large glans (the ‘bell-end’) compared to other primates,
-and this may have evolved so that the penis can displace seminal fluid from other males by ‘scooping it out’ during intercourse.
+It's something of a wonder how evolution managed to produce such a monstrosity as the human penis.
+One theory is sperm competition: the human penis has an unusually large glans (the 'bell-end') compared to other primates,
+and this may have evolved so that the penis can displace seminal fluid from other males by 'scooping it out' during intercourse.
 Armed with various devices from Hollywood Exotic Novelties, an artificial vagina from California Exotic Novelties, and some water and cornstarch
 Gallup et al. (2003) put this theory to the test. They loaded the artificial vagina with 2.6 ml of fake sperm and inserted one
 of three female sex toys into it before withdrawing it: a control phallus that had no coronal ridge (i.e., no bell-end),

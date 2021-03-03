@@ -17,7 +17,7 @@ biggest_liar
 A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
-Fictional data based on the World’s Biggest Liar competition held annually at the Santon Bridge Inn in Wasdale (in the Lake District, UK).
+Fictional data based on the World's Biggest Liar competition held annually at the Santon Bridge Inn in Wasdale (in the Lake District, UK).
 Each year locals are encouraged to attempt to tell the biggest lie in the world. I wanted to test a theory that more creative people will be able to create taller tales.
 I gathered together 68 past contestants from this competition and noted where they were placed in the competition (first, second, third, etc.);
 I also gave them a creativity questionnaire (maximum score 60). The data set has four variables

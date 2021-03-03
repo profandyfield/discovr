@@ -17,11 +17,11 @@ teach_method
 A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
-To test how different teaching methods affected students’ knowledge I took three statistics modules where
+To test how different teaching methods affected students' knowledge I took three statistics modules where
 I taught the same material. For one module I wandered around with a large cane and beat anyone who asked
 daft questions or got questions wrong (punish). In the second I encouraged students to discuss things that
 they found difficult and gave anyone working hard a nice sweet (reward). In the final course I neither
-punished nor rewarded students’ efforts (indifferent). I measured the students’ exam marks (percentage).
+punished nor rewarded students' efforts (indifferent). I measured the students' exam marks (percentage).
 This fictional data contains the following variables
 \itemize{
 \item \strong{id}: participant's id

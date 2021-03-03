@@ -18,8 +18,8 @@ A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (
 }
 \details{
 A researcher was interested in the effect of profile pictures on social media on unsolicited attention.
-She took 40 people who had profiles on a social networking website; 17 of them had a relationship status of ‘single’
-and the remaining 23 had their status as ‘in a relationship’. We asked these people to set their profile picture to a photo
+She took 40 people who had profiles on a social networking website; 17 of them had a relationship status of 'single'
+and the remaining 23 had their status as 'in a relationship'. We asked these people to set their profile picture to a photo
 of them on their own (alone) and to count how many friend request they got from random strangers over 3 weeks, then to switch
 it to a photo of them very obviously as part of a romantic couple and record their friend requests from random
 strangers over 3 weeks. The (fictional) data contains the following variables:

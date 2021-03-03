@@ -18,8 +18,8 @@ A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (
 }
 \details{
 A company owner was interested in how to make his brand of (computer) tablets more desirable.
-He collected data on how cool people perceived a product’s advertising to be, how cool they thought the product was,
-and how desirable they found the product. Am I showing my age by using the word ‘cool’? The fictitious data contain the following variables:
+He collected data on how cool people perceived a product's advertising to be, how cool they thought the product was,
+and how desirable they found the product. Am I showing my age by using the word 'cool'? The fictitious data contain the following variables:
 \itemize{
 \item \strong{id}: Participant ID
 \item \strong{advert_cool}: Perceived 'coolness' of the advertising campaign from 0 (as cool as Andy Field) to 5 (as cool as something that makes you go 'wow, that's sick', or whatever it is that people under the age of 25 say these days)

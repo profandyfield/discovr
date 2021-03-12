@@ -44,11 +44,7 @@ raq_tib <- discovr::raq
 raq_items_tib <- raq_tib %>% dplyr::select(-id)
 
 raq_cor <- cor(raq_items_tib) %>%  round(., 3)
-raq_fa <- raq_items_tib %>% 
-  psych::fa(
-    nfactors = 4,
-    scores = "tenBerge"
-    )
+raq_fa <- raq_items_tib %>% psych::fa(nfactors = 4, scores = "tenBerge")
 ```
 
 # discovr: Exploratory Factor Analysis (EFA)

@@ -44,6 +44,11 @@ raq_tib <- discovr::raq
 raq_items_tib <- raq_tib %>% dplyr::select(-id)
 
 raq_cor <- cor(raq_items_tib) %>%  round(., 3)
+raq_fa <- raq_items_tib %>% 
+  psych::fa(
+    nfactors = 4,
+    scores = "tenBerge"
+    )
 ```
 
 # discovr: Exploratory Factor Analysis (EFA)
@@ -517,7 +522,7 @@ my_fa_object %>%
   parameters::model_parameters(sort = TRUE, threshold = "max")
 ```
 
-In which [my_fa_object]{.alt} is the factor analysis object containing the factor loadings. By setting [sort = TRUE]{.alt} we sort the items by their factor loadings, and we can set  [threshold]{.alt} to a value above which we show values. By default the threshold is the maximum loading (i.e. all factor loadings are shown), but if we set, for example, [threshold = 0.2]{.alt} then only factor loadingsd above 0.2 will be displayed.
+In which [my_fa_object]{.alt} is the factor analysis object containing the factor loadings. By setting [sort = TRUE]{.alt} we sort the items by their factor loadings, and we can set  [threshold]{.alt} to a value above which we show values. By default the threshold is the maximum loading (i.e. all factor loadings are shown), but if we set, for example, [threshold = 0.2]{.alt} then only factor loadings above 0.2 will be displayed.
 
 #### `r bug()` Exercise
 

@@ -235,7 +235,7 @@ question("Grand mean centring for a given variable is achieved by:",
 
 ### `r user_astronaut()` Using a function to center variables [(3)]{.alt}
 
-If you need to centre more than a couple of variables, you might find it useful to do something a bit trickier using `mutate_at()`, which is used to apply a mutation to multiple variables. In this case the mutation we want to apply is to subtract the mean score from each score.
+If you need to centre more than a couple of variables, you might find it useful to do something a bit trickier using `across()` to apply a mutation to multiple variables. In this case the mutation we want to apply is to subtract the mean score from each score.
 
 #### `r robot()` Code example
 
@@ -265,7 +265,7 @@ vids_tib$caunts
 centre(vids_tib$caunts)
 ```
 
-We can use this function in conjunction with `mutate()` and `across()` to centre all variables that we select.
+Having written the function we can use it in conjunction with `mutate()` and `across()` to centre all variables that we select.
 
 #### `r robot()` Code example
 
@@ -275,15 +275,15 @@ For example, having executed the code to create the function `centre()`, we coul
 ```{r cntr_mute_at, exercise = TRUE, exercise.lines = 6}
 vids_tib <- vids_tib %>% 
   dplyr::mutate(
-    dplyr::across(c(vid_game, caunts), cent = centre)
+    dplyr::across(c(vid_game, caunts), list(cent = centre))
     )
 
 vids_tib
 ```
 
-This code uses `mutate()` to add variables to [vids_tib]{.alt} that contain centred scores. Within `mutate()` we use `across()` to select the variables to be mutated (in this case **vid_game** and **caunts**) and to apply the function `centre()`, which we created to centre scores, to them. To prevent the original variables from being overwritten I have specified [cent = before]{.alt} the function,  which means that the centred variables will be named after the original variables but with the suffix [_cent]{.alt}. The end result, you should hopefully see, is two new variables called **caunts_cent** and **vid_game_cent** that contain the centred scores.
+This code uses `mutate()` to add variables to [vids_tib]{.alt} that contain centred scores. Within `mutate()` we use `across()` to select the variables to be mutated (in this case **vid_game** and **caunts**) and to apply the function `centre()`, which we created to centre scores, to them. To prevent the original variables from being overwritten I have specified [list(cent = centre)]{.alt} within `across()`. This code tells `across()` to apply the function [centre]{.alt}, but to add the suffix [_cent]{.alt} to the variable name. The end result is that the centred variables will be named after the original variables but with [_cent]{.alt} added to the end; in this case, you should hopefully get two new variables called **caunts_cent** and **vid_game_cent** that contain the centred scores.
 
-### `r user_visor()` Secifying interaction terms  [(2)]{.alt}
+### `r user_visor()` Specifying interaction terms  [(2)]{.alt}
 
 I mentioned already that moderation is represented by the interaction between the predictor and moderator in a linear model. Mathematically speaking, we are literally looking at the effect of the two variables multiplied together. The interaction variable in our example would be the scores on the time spent gaming multiplied by the scores for callous-unemotional traits.
 

@@ -655,7 +655,7 @@ As well plotting the mean success score across the various times and groups, it'
 To add the distribution of scores to the plot, simply add the line:
 
 ```{r, eval = FALSE}
-violin_plot() +
+geom_violin() +
 ```
 
 ### r user_visor()` Exploring layers [(2)]{.alt}
@@ -665,7 +665,7 @@ This is a good opportunity to remind you that each line of the command adds a la
 
 #### `r alien()` Alien coding challenge
 
-Add the line `violin_plot() +` directly **below** the line that specifies `stat_summary()`.
+Add the line `geom_violin() +` directly **below** the line that specifies `stat_summary()`.
 
 ```{r wish_violin_1, exercise = TRUE, exercise.lines = 8}
 wish_plot <- ggplot2::ggplot(wish_tib, aes(time, success, colour = strategy))
@@ -691,7 +691,7 @@ wish_plot +
 
 #### `r alien()` Alien coding challenge
 
-Now add the line `violin_plot() +` directly **above** the line that specifies `stat_summary()`
+Now add the line `geom_violin() +` directly **above** the line that specifies `stat_summary()`
 
 ```{r wish_violin_2, exercise = TRUE, exercise.lines = 8}
 wish_plot <- ggplot2::ggplot(wish_tib, aes(time, success, colour = strategy))

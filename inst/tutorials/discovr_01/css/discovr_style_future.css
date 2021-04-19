@@ -28,8 +28,6 @@ Contrast compliancy grid at: http://contrast-grid.eightshapes.com/?background-co
   height: 1em;
 }
 
-
-
 /*-------- Background color & body font --------*/
 body {
   background-color: #e8eae5;
@@ -109,12 +107,16 @@ h4 {
 
 /*------- Rectangle panels --------*/
 .panel, pre {
+    color: #2C5577;
     border-radius: 10;
-    background-color: #f5f5f4;
+    background-color: #e8eae5;
     border: 0;
     font-size: 16px;
 }
 
+.panel_alt {
+    background-color: transparent
+}
 
 /*-------- Code chunk main panel --------*/
 
@@ -150,8 +152,8 @@ h4 {
 /*------- In line code aesthetic --------*/
 code {
     color: white;
-    background-color: #136CB9;
-    background-color: rgba(19, 108, 185, 0.8);
+    background-color: #2C5577;
+    background-color: rgba(44, 85, 119, 0.8);
     font-size: 14px;
 }
 

@@ -636,13 +636,17 @@ Rather than using two commands, we could create **instrument** in a single comma
   
   When a function requires data (i.e., a variable or tibble), but that data is being fed forward through a pipe we denote it with a period (.). The '.' means 'whatever is coming through the pipe'. So, for example, if we piped the data into the `factor()` function we would write:
   
-  `factor(., ...)`
-  
-  instead of:
-  
-  `factor(instrument, ...)`
-  
-  Notice that we replace the explicit reference to the variable **instrument** with a dot.
+```{r, eval = F, class.source = '.panel_alt'}
+factor(., ...)
+```
+
+instead of:
+
+```{r, eval = F, class.source = '.panel_alt'}
+factor(instrument, ...)
+```
+
+Notice that we replace the explicit reference to the variable **instrument** with a dot.
 </div>
 
 ```{r met_inst_pipe, exercise = TRUE, exercise.lines = 4}
@@ -987,7 +991,9 @@ The object [metalli_anon_tib]{.alt}` is the same as [metalli_tib]{.alt} except t
 
 When selecting lots of variables it can be useful to use `x:y` to indicate 'all of the consecutive variables between x and y, including x and y'. For example the variables in [metalli_tib]{.alt} are now: **name**, **birth_date**, **death_date**, **instrument**, **current_member**, **songs_written**, **net_worth**, **albums**, and **worth_per_song**. If we wanted to select the variables **name**, **songs_written**, **net_worth**, **albums** and **worth_per_song** we could use:
 
-`dplyr::select(name, songs_written:worth_per_song)`
+```{r, eval = F, class.source = '.panel_alt'}
+dplyr::select(name, songs_written:worth_per_song)
+```
 
 The [songs_written:worth_per_song]{.alt} is shorthand for selecting **songs_written**, **worth_per_song** and all variables in between them in the tibble.
 </div>
@@ -1060,7 +1066,7 @@ metalli_tib %>%
   
   Sometimes, when you want to select only one variable from a tibble it is quicker to use the `$` symbol. For example, to select the variable **instrument** from the [metalli_tib]{.alt} tibble, we could execute:
 
-```{r, eval = FALSE}
+```{r, eval = F, class.source = '.panel_alt'}
 metalli_tib$instrument
 ```
 

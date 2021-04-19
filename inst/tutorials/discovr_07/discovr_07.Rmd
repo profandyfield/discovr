@@ -311,8 +311,8 @@ The resulting output tells us that exam grade has a correlation with revision of
   `r cat_space()` **Tip: Rounding**
   
   If you want more decimal places in your output use the argument [ci_digits]{.alt} to control the number of decimal places for the confidence intervals and `digits` to control the number of decimal places in the other columns. For example, the code to display the previous output to three decimal places is:
-
-```{r eval = FALSE}
+  
+```{r, eval = F, class.source = '.panel_alt'}
 exam_tib %>% 
   dplyr::select(exam_grade, revise, anxiety) %>% 
   correlation::correlation(digits = 3, ci_digits = 3)

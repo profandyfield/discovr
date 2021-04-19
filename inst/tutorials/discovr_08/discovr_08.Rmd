@@ -1308,7 +1308,7 @@ This code takes the tibble of residuals and pipes it into `filter()` where we se
 <div class="tip">
   `r cat_space()` **Tip:**
   
-  If you’d rather order from the largest standardized residual then use `dplyr::arrange(desc(.std.resid))` instead. 
+  If you'd rather order from the largest standardized residual then use `dplyr::arrange(desc(.std.resid))` instead. 
 </div>
 
 We have 13 cases out of a sample of 200 that have standardized residuals outside of ±1.96.
@@ -1442,7 +1442,7 @@ summary(album_full_rob)
 <div class="tip">
   `r cat_space()` **Tip:**
 
-I tend to use _rob to denote robust models
+I tend to use [_rob]{.alt} to denote robust models
 
 </div>
 

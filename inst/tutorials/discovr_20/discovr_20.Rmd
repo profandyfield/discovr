@@ -676,10 +676,17 @@ We can extend the model using `glm()` but with an updated formula.
 <div class="tip">
   `r cat_space()` **Tip: Specifying interactions**
 
-Remember from **discovr_10** that `*` is used to specify all main effects and interactions whereas `:` is used to specify only an interaction. Therefore we can update the formula for the model that predicts Christmas deliveries using either
+Remember from **discovr_10** that `*` is used to specify all main effects and interactions whereas `:` is used to specify only an interaction. Therefore we can update the formula for the model that predicts Christmas deliveries by either specifying the effects of **treat**, *quantity* and the **treat × quantity** interaction implicitly with
 
-* `delivered ~ treat*quantity` specifies the effects of **treat**, *quantity* and the **treat × quantity** interaction implicitly
-* `delivered ~ treat + quantity + treat:quantity` specifies each effect explicitly
+```{r, eval = F, class.source = '.panel_alt'}
+delivered ~ treat*quantity
+```
+
+or by specifying the three effects explicitly with
+
+```{r, eval = F, class.source = '.panel_alt'}
+delivered ~ treat + quantity + treat:quantity
+```
 
 </div>
 

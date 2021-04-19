@@ -240,7 +240,7 @@ Compare the restructured (tidy) data with the original (messy) version. Note tha
 
 The values in **day** match the original column names exactly ('day_1'), which sucks because in a table or plot you’d probably want to have an upper case 'd' and a space instead of an underscore (‘Day 1’). We can convert the value of **day** using two functions from the `stringr` package using this code:
 
-```{r eval = FALSE}
+```{r, eval = F, class.source = '.panel_alt'}
 download_tidy_tib <- download_tidy_tib %>% 
    dplyr::mutate(
     day = stringr::str_to_sentence(day) %>% stringr::str_replace(., "_", " ")
@@ -249,9 +249,10 @@ download_tidy_tib <- download_tidy_tib %>%
 
 This code recreates [download_tidy_tib]{.alt} from itself after using mutate to recreate the variable **day**. This variable is recreated from itself after passing through two functions. First, it is passed through `str_to_sentence()`, which capitalizes the ‘d’. Next, it is piped into `str_replace()` which searches for an underscore and replaces it with a space. In general, `str_replace()` takes the form:
 
-```{r eval = F}
+```{r, eval = F, class.source = '.panel_alt'}
 str_replace(text_or_variable, "pattern_to_replace", "replacement")
 ```
+
 </div>
 
 #### `r alien()` Alien coding challenge

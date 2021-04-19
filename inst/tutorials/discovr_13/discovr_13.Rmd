@@ -399,7 +399,13 @@ The results show significant main effects and interactions for all variables. Th
 <div class="warning">
   `r cat_space(fill = "warning")` **Strange messages**
 
-  You might be distressed by a message telling you `Contrasts set to contr.sum for the following variables: facetype, alcohol`. This message is nothing to worry about, but if you want to know what it's all about work through the section on fitting the model using `lm()` where all is revealed. 
+  You might be distressed by a message telling you
+
+```{r, eval = F, class.source = '.panel_alt'}
+Contrasts set to contr.sum for the following variables: facetype, alcohol.
+```
+
+This message is nothing to worry about, but if you want to know what it's all about work through the section on fitting the model using `lm()` where all is revealed. 
 </div>
 
 ### `r bmu()` Plots using the `afex` package [(1)]{.alt}
@@ -509,11 +515,15 @@ Having done this we'd fit the model. We want to enter the following predictors: 
 
 We can specify an interaction term within a model formula in `r rproj()` in two ways. Using the current variables of [facetype]{.alt} and [alcohol]{.alt}, the first is `facetype:alcohol`. Using this method we'd specify the model formula as:
 
-`attractiveness ~ facetype + alcohol + facetype:alcohol`
+```{r, eval = F, class.source = '.panel_alt'}
+attractiveness ~ facetype + alcohol + facetype:alcohol
+```
 
 The second method uses a shorthand for adding all main effects and their interactions, which is `facetype*alcohol`. This code will introduce the main effect of [facetype]{.alt}, the main effect of [alcohol]{.alt} and their interaction. Using this method we'd specify the model formula as:
 
-`attractiveness ~ facetype*alcohol`
+```{r, eval = F, class.source = '.panel_alt'}
+attractiveness ~ facetype*alcohol
+```
 
 The two methods for specifying the model formula are interchangeable.
 
@@ -557,7 +567,7 @@ car::Anova(goggles_lm, type = 3) # or car::Anova(goggle_lm, type = 3, white.adju
 <div class="tip">
   `r cat_space()` **Tip: Funny numbers**
 
-Remember that when `r rproj()` writes `7.912739e-04` the `e-04` means 'move the decimal places 4 places to the left', so `7.912739e-04` is `0.0007912739`.
+Remember that when `r rproj()` writes [7.912739e-04]{.alt} the [e-04]{.alt} means 'move the decimal places 4 places to the left', so [7.912739e-04]{.alt} is [0.0007912739]{.alt}.
 
 </div>
 
@@ -800,7 +810,7 @@ As with any linear model created with `lm()`, we can use the `plot()` function t
 
 Remember that `plot()` takes this general form:
 
-```{r eval = FALSE}
+```{r eval = FALSE, class.source = '.panel_alt'}
 plot(my_model, which = numbers_of_the_plots_you_want)
 ```
 

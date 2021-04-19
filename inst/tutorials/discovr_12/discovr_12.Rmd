@@ -704,7 +704,7 @@ View *post hoc* for the model [pupluv_lm]{.alt}.
 
 Remember that the `estimate_contrasts()` function takes the general form:
 
-```{r eval = F}
+```{r eval = F, class.source = '.panel_alt'}
 modelbased::estimate_contrasts(my_model, adjust = "holm", ci = 0.95, fixed = "covariate_name")
 ```
 </div>
@@ -788,7 +788,7 @@ As with any linear model, we can use the `plot()` function to produce diagnostic
 
 Remember that `plot()` takes this general form:
 
-```{r eval = FALSE}
+```{r eval = FALSE, class.source = '.panel_alt'}
 plot(my_model, which = numbers_of_the_plots_you_want)
 ```
 

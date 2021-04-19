@@ -634,7 +634,8 @@ contrasts(puppy_tib$dose) # This line prints the contrast weights so we can chec
   `r rproj()` has several functions for setting built-in contrasts. In each case [n]{.alt} is the number of factor levels/group. For the puppy data $n = 3$.
 
 * `contr.treatment(n, base = x)`: Each category is compared to a user-defined baseline category, [x]{.alt}. For the puppy example, to compare each group to the 30-minute group we'd use
-```{r, eval = F}
+
+```{r, eval = F, class.source = '.panel_alt'}
 contr.treatment(3, base = 3)
 ```
 * `contr.SAS(n)`:	Each category is compared to the last category.
@@ -657,7 +658,7 @@ Having set the contrasts for **dose** we can fit the model using *exactly* the s
 
 Remember that you can round numeric values in tables by piping the table into `mutate()` and applying the `round()` function across all numeric columns. For example, if we want to round the numbers in the object created by `broom::tidy(puppy_lm, conf.int = TRUE)` to three decimal places, we could use:
 
-```{r eval = FALSE}
+```{r eval = FALSE, class.source = '.panel_alt'}
 broom::tidy(puppy_lm, conf.int = TRUE) %>% 
   dplyr::mutate(
     dplyr::across(where(is.numeric), ~round(., 3))
@@ -903,7 +904,7 @@ Remember that we fit the model in the same way but replacing `lm()` with `robust
 
 If you ran the trend analysis earlier on and are working outside of this tutorial, you will need to re-set the contrast for **dose** to match the planned comparisons by executing:
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, class.source = '.panel_alt'}
 contrasts(puppy_tib$dose) <- cbind(puppy_vs_none, short_vs_long)
 ```
 Within the tutorial you don't need to do this (it has been done for you).

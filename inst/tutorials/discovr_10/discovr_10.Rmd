@@ -330,15 +330,15 @@ To fit a model that assesses moderation we first centre the predictor and modera
 Use the code example, and what you have learnt so far, to fit a linear model using `lm()` to predict **aggress** from **caunts_cent**, **vid_game_cent** and their interaction. Store the model as [aggress_lm]{.alt} and use `broom::tidy()` to view the model parameters and their confidence intervals. (You can assume that the centred variables have already been created within [vids_tib]{.alt}.)
 
 
-```{r vid_gmc, echo = F}
+```{r vid-gmc, echo = F}
 vids_tib <- vids_tib %>% 
   dplyr::mutate(
-    dplyr::across(c(vid_game, caunts), cent = centre)
+    dplyr::across(c(vid_game, caunts), list(cent = centre))
     )
 ```
 
 
-```{r vid_mod, exercise = TRUE, exercise.lines = 4, exercise.setup = "vid_gmc"}
+```{r vid_mod, exercise = TRUE, exercise.lines = 4, exercise.setup = "vid-gmc"}
 
 ```
 
@@ -367,7 +367,7 @@ aggress_lm <- lm(aggress ~ caunts_cent*vid_game_cent, data = vids_tib)
 broom::tidy(aggress_lm, conf.int = TRUE)
 ```
 
-Moderation is shown up by a significant interaction effect, and that’s what we’ve got here, *b* = 0.027, 95% CI [0.013, 0.041], *t* = 3.88, *p* < 0.001 indicating that the relationship between the time spent gaming and aggression is moderated by callous traits. (Remember that [1.221295e-04]{.adj} is $1.22 \times 10^{-4}$ or 0.000122.)
+Moderation is shown up by a significant interaction effect, and that's what we've got here, *b* = 0.027, 95% CI [0.013, 0.041], *t* = 3.88, *p* < 0.001 indicating that the relationship between the time spent gaming and aggression is moderated by callous traits. (Remember that [1.221295e-04]{.adj} is $1.22 \times 10^{-4}$ or 0.000122.)
 
 
 ### `r user_astronaut()` Robust moderation models  [(3)]{.alt}
@@ -379,7 +379,7 @@ Use what you have learnt before to fit a robust version of the model by putting 
 ```{r, aggress_lm}
 vids_tib <- vids_tib %>% 
   dplyr::mutate(
-    dplyr::across(c(vid_game, caunts), cent = centre)
+    dplyr::across(c(vid_game, caunts), list(cent = centre))
     )
 aggress_lm <- lm(aggress ~ caunts_cent*vid_game_cent, data = vids_tib)
 ```

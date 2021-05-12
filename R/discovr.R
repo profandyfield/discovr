@@ -79,6 +79,7 @@
 #' * [df_beta]: Fictitious data used to illustrate the DF Beta statistic.
 #' * [eel]: Fictitious data about a randomized control trial to test whether eel therapy is an effective treatment of constipation.
 #' * [elephooty]: Fictitious data about elephants playing football (soccer).
+#' * [escape]: Fictitious data about whether I'm a better songwriter than my school bandmate Malcolm.
 #' * [essay_marks]: Fictitious data about essay marking.
 #' * [exam_anxiety]: Fictitious data about exam performance, anxiety and revision.
 #' * [gallup_2003]: Data that tests a hypothesis about why penises have a bell end.

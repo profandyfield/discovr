@@ -110,9 +110,10 @@ See the book or data descriptions for more details. This is a list of available 
 * **df_beta**: fictitious data used to illustrate the DF Beta statistic. For details execute `?df_beta`.
 * **eel**: Fictitious data about a randomized control trial to test whether eel therapy is an effective treatment of constipation. For details execute `?eel`.
 * **elephooty**: Fictitious data about elephants playing football (soccer). For details execute `?elephooty`.
+* **escape**: Fictitious data about whether I'm a better songwriter than my old bandmate Malcolm `?escape`.
 * **essay_marks**: fictitious data about essay marking. For details execute `?essay_marks`.
 * **exam_anxiety**: fictitious data about exam performance, anxiety and revision. For details execute `?exam_anxiety`.
-* **gallup_2003**: Data that tests a hypothesis aboput why penises have a bell end. For details execute `?gallup_2003`.
+* **gallup_2003**: Data that tests a hypothesis about why penises have a bell end. For details execute `?gallup_2003`.
 * **gelman_2009**: Data used to critically evaluate the explanations (and claim) that there are more beautiful women than men in the world. For details execute `?gelman_2009`.
 * **glastonbury**: More fictitious data about music festivals and being smelly. For details execute `?glastonbury`.
 * **goggles**: fictitious data about whether alcohol affects perception of physical attractiveness. For details execute `?goggles`.

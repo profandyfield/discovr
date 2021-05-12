@@ -80,6 +80,7 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{df_beta}: Fictitious data used to illustrate the DF Beta statistic.
 \item \link{eel}: Fictitious data about a randomized control trial to test whether eel therapy is an effective treatment of constipation.
 \item \link{elephooty}: Fictitious data about elephants playing football (soccer).
+\item \link{escape}: Fictitious data about whether I'm a better songwriter than my school bandmate Malcolm.
 \item \link{essay_marks}: Fictitious data about essay marking.
 \item \link{exam_anxiety}: Fictitious data about exam performance, anxiety and revision.
 \item \link{gallup_2003}: Data that tests a hypothesis about why penises have a bell end.

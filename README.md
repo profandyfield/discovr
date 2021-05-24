@@ -84,6 +84,68 @@ See this video explaining my suggested workflow:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/FhoYCsZttGc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+## Colour palettes
+
+Inspired  by the [rockthemes](https://github.com/johnmackintosh/rockthemes) package and adapting code form that package I have come up with a bunch of colour themes based around the studio albums of my favourite band [Iron Maiden](www.ironmaiden.com). Full disclosure, I'm not a designer, so this largely involved uploading images of their sleeves to [colorpalettefromimage.com](colorpalettefromimage.com) and seeing what happened. If you have a better pallette design send me the hex codes for the colours! If you're wondering why some albums are missing, here's the explanation: X Factor (would basically be 8 shades of gray), Fear of the Dark (shit album), The Book of Souls (would basically be 8 shades of black).
+
+The following palettes exist.
+
+* `amolad_pal()`: Colour palette based on Iron Maiden's [A Matter of Life and Death](https://www.ironmaiden.com/discography/details/a-matter-of-life-and-death) album sleeve. In `ggplot2` use `scale_color_amolad()` and `scale_fill_amolad()`.
+* `bnw_pal()`: Colour palette based on Iron Maiden's [Brave New World](https://www.ironmaiden.com/discography/details/brave-new-world) album sleeve. In `ggplot2` use `scale_color_bnw()` and `scale_fill_bnw()`.
+* `dod_pal()`: Colour palette based on Iron Maiden's [Dance of Death](https://www.ironmaiden.com/discography/details/dance-of-death) album sleeve. In `ggplot2` use `scale_color_dod()` and `scale_fill_dod()`.
+* `frontier_pal()`: Colour palette based on Iron Maiden's [The Final Frontier](https://www.ironmaiden.com/discography/details/the-final-frontier) album sleeve. In `ggplot2` use `scale_color_frontier()` and `scale_fill_frontier()`.
+* `im_pal()`: Colour palette based on Iron Maiden's [eponymous](https://www.ironmaiden.com/discography/details/iron-maiden) album sleeve. In `ggplot2` use `scale_color_im()` and `scale_fill_im()`.
+* `killers_pal()`: Colour palette based on Iron Maiden's [Killers](https://www.ironmaiden.com/discography/details/killers) album sleeve. In `ggplot2` use `scale_color_killers()` and `scale_fill_killers()`.
+* `nob_pal()`: Colour palette based on Iron Maiden's [The Number of the Beast](https://www.ironmaiden.com/discography/details/the-number-of-the-beast-album) album sleeve. In `ggplot2` use `scale_color_nob()` and `scale_fill_nob()`.
+* `pom_pal()`: Colour palette based on Iron Maiden's [Piece of Mind](https://www.ironmaiden.com/discography/details/piece-of-mind) album sleeve. In `ggplot2` use `scale_color_pom()` and `scale_fill_pom()`.
+* `power_pal()`: Colour palette based on Iron Maiden's [Powerslave](https://www.ironmaiden.com/discography/details/powerslave) album sleeve. In `ggplot2` use `scale_color_power()` and `scale_fill_power()`.
+* `prayer_pal()`: Colour palette based on Iron Maiden's [No Prayer for the Dying](https://www.ironmaiden.com/discography/details/no-prayer-for-the-dying) album sleeve. Use `scale_color_prayer()` and `scale_fill_prayer()`.
+* `sit_pal()`: Colour palette based on Iron Maiden's [Somewhere in Time album](https://www.ironmaiden.com/discography/details/somewhere-in-time) sleeve. In `ggplot2` use `scale_color_sit()` and `scale_fill_sit()`.
+* `ssoass_pal()`: Colour palette based on Iron Maiden's [Seventh Son of a Seventh Son](https://www.ironmaiden.com/discography/details/seventh-son-of-a-seventh-son) album sleeve. In `ggplot2` use `scale_color_ssoass()` and `scale_fill_ssoass()`.
+* `virtual_pal()`: Colour palette based on Iron Maiden's [Virtual IX](https://www.ironmaiden.com/discography/details/virtual-xi) album sleeve. In `ggplot2` use `scale_color_virtual()` and `scale_fill_virtual()`.
+
+To view the palette execute
+
+```
+scales::show_col(name_of_palette()(8))
+```
+
+Replacing `name_of_palette()` with the name, for example
+
+```
+scales::show_col(pom_pal()(8))
+```
+
+To apply, for example, the Powerslave palette to the colours of a `ggplot2` plot add `scale_color_power()` as a layer:
+
+```
+library(discovr)
+library(ggplot2)
+
+# Get albums in the classic era from the discovr::eddiefy data.
+# I'm not including fear of the dark because it's not in any way classic.
+# No prayer for the dying was pushing its luck too if I'm honest.
+
+classic_era <- subset(eddiefy, year < 1992)
+ 
+ggplot(classic_era, aes(x = energy, y = valence, color = album_name)) +
+ geom_point(size = 2) +
+ theme_minimal() +
+ scale_color_power()
+```
+
+Similarly to apply the Powerslave palette to the fill of objects in a ggplot add `scale_fill_power()` as a layer:
+
+```
+ggplot(classic_era, aes(x = album_name, y = valence, fill = album_name)) +
+  geom_violin() +
+  theme(axis.text.x = element_text(angle = 45))
+  theme_minimal() +
+  scale_fill_power()
+```
+
+
+
 ## Datasets
 
 See the book or data descriptions for more details. This is a list of available datasets within the package. Raw CSV files are available from the book's website.
@@ -131,6 +193,7 @@ See the book or data descriptions for more details. This is a list of available 
 * **massar_2012**: Data about whether gossiping has an evolutionary function. For details execute `?massar_2012`.
 * **mcnulty_2008**: Simulated data to match the results of a study about whether attractivenes sis linked to the support given within a relationship. For details execute `?mcnulty_2008`.
 * **men_dogs**: fictitious data about whether men exhibit dog-like behaviours (compared to dogs). For details execute `?men_dogs`.
+* **metal**: Fictitious data about whether listening to metal music makes you angry `?metal`.
 * **metal_health**: fictitious data about whether listening to heavy metal negatively affects mental health. For details execute `?metal_health`.
 * **metallica**: Data about thrash metal band, Metallica. For details execute `?metallica`.
 * **murder**: fictitious data about the number of murder each month at three street locations (Ruskin Avenue, Acacia Avenue and Rue Morgue). For details execute `?murder`.

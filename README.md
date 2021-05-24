@@ -212,6 +212,7 @@ See the book or data descriptions for more details. This is a list of available 
 * **santas_log**: Fictitious data related to whether the type and quantity of treat consumed on Christmas night affects whether elves successfully deliver presents. For details execute `?santas_log`.
 * **self_help**: fictitious data about whether self-help books improve relationship satisfaction. For details execute `?self_help`.
 * **self_help_dsur**: fictitious data about whether self-help books improve relationship satisfaction compared to statistics books. For details execute `?self_help_dsur`.
+* **sharman_2015**: Data from Sharman & Dingle (2015) about whether listening to metal music increases anger `?sharman_2015`.
 * **shopping**: fictitious data about shopping For details execute `?shopping_exercise`.
 * **sniffer_dogs**: fictitious data about training sniffer dogs to detect alien space lizards. For details execute `?sniffer_dogs`.
 * **social_anxiety**: fictitious (I think) data about whether social anxiety symptoms are specific to social anxiety. For details execute `?social_anxiety`.

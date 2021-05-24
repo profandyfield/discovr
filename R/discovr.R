@@ -100,6 +100,7 @@
 #' * [massar_2012]: Data about whether gossiping has an evolutionary function.
 #' * [mcnulty_2008]: Simulated data to match the results of a study about whether attractiveness is linked to the support given within a relationship.
 #' * [men_dogs]: Fictitious data about whether men exhibit dog-like behaviours (compared to dogs).
+#' * [metal]: Fictitious data about whether listening to metal music makes you angry.
 #' * [metal_health]: Fictitious data about whether listening to heavy metal negatively affects mental health.
 #' * [metallica]: Data about thrash metal band Metallica.
 #' * [murder]: Fictitious data about the number of murder each month at three street locations (Ruskin Avenue, Acacia Avenue and Rue Morgue).
@@ -118,6 +119,7 @@
 #' * [santas_log]: Fictitious data related to whether the type and quantity of treat consumed on Christmas night affects whether elves successfully deliver presents.
 #' * [self_help]: Fictitious data about whether self-help books improve relationship satisfaction.
 #' * [self_help_dsur]: Fictitious data about whether self-help books improve relationship satisfaction compared to statistics books.
+#' * [sharman_2015]: Data from Sharman & Dingle (2015) about whether listening to metal music increases anger.
 #' * [shopping]: Fictitious data about shopping.
 #' * [sniffer_dogs]: Fictitious data about training sniffer dogs to detect alien space lizards when they try to mask their identity with different scents. See also [alien_scents].
 #' * [social_anxiety]: Fictitious (I think) data about whether social anxiety symptoms are specific to social anxiety.

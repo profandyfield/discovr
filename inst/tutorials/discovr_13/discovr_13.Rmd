@@ -332,7 +332,7 @@ When faced with a factorial design (i.e. only categorical predictors) a more use
 afex::aov_4(outcome ~ predictors + (1|id_variable), data = my_tib)
 ```
 
-In short, we specify the model like we would with `lm()`, and replace [my_tib]{.alt} with the name of our tibble. There is an additional term in the model, [(1|id_variable)]{.alt}, and this simply tells the function something about the structure of the data. Specifically, it tells the function how scores are clustered. In the current design, scores are clustered within individuals so we would replace [id_variable]{.alt} with the variable that uniquely identifies the different participants (this variable is called [id]{.alt}). In subsequent tutorials we'll use this argument to specify different types of designs. 
+In short, we specify the model like we would with `lm()`, and replace [my_tib]{.alt} with the name of our tibble. There is an additional term in the model, [(1|id_variable)]{.alt}, and this tells the function something about the structure of the data. Specifically, it tells the function how scores are clustered. In the current design, scores are clustered within individuals so we would replace [id_variable]{.alt} with the variable that uniquely identifies the different participants (this variable is called [id]{.alt}). In subsequent tutorials we'll use this argument to specify different types of designs. 
 
 #### `r robot()` Code example
 

@@ -29,6 +29,7 @@ library(htmltools)
 library(magrittr)
 
 library(afex)
+library(BayesFactor)
 library(broom)
 library(effectsize)
 library(emmeans)
@@ -416,7 +417,7 @@ A neat feature of `afex` is that you can get plots of the interaction without ne
 afex::afex_plot(afx_object, x_variable, line_shape_variable, panel_variable)
 ```
 
-In which you replace [afx_object]{.alt} with the name of the the model you fitted with `aov_4()`, [x_variable]{.alt} with the predictor you want on the *x*-axis, [line_shape_variable]{.alt} with a predictor that you want to be depicted with using different lines/shapes. If you have a third categorical predictor, replace [panel_variable]{.alt} with a predictor the levels of which you want displayed in different panels (e.g., `facet_wrap()` style). The result is a `ggplot` object so you can use `ggplot2` code to edit the results, for example, you can apply a standard `ggplot2` theme. 
+In which you replace [afx_object]{.alt} with the name of the model you fitted with `aov_4()`, [x_variable]{.alt} with the predictor you want on the *x*-axis, and [line_shape_variable]{.alt} with a predictor that you want to be depicted using different lines/shapes. If you have a third categorical predictor, replace [panel_variable]{.alt} with the name of that predictor and its different categories will be displayed across different panels (e.g., `facet_wrap()` style). The result is a `ggplot` object so you can use `ggplot2` code to edit the results, for example, you can apply a standard `ggplot2` theme. 
 
 #### `r robot()` Code example
 
@@ -730,7 +731,7 @@ emmeans::joint_tests(goggles_afx, "facetype")
 for the model created with `aov_4()` called [goggles_afx]{.alt}, and 
 
 ```{r, eval = F}
-emmeans::joint_tests(goggles_lm, "alcohol")
+emmeans::joint_tests(goggles_lm, "facetype")
 ```
 
 for the model created with `lm()` called [goggles_lm]{.alt}.
@@ -876,7 +877,7 @@ As for previous linear models(e.g., in **discovr_08**, **discovr_09** and **disc
 
 #### `r alien()` Alien coding challenge
 
-Remember that we use `lmRob` in exactly the same way as `lm()`. Use this function to fit a robust version of the [goggles_lm]{.alt}. Call the model [goggles_rob]{.alt} and remember to get the summary statistics using `summary()`.
+Remember that we use `lmRob` in exactly the same way as `lm()`. Use this function to fit a robust version of the [goggles_lm]{.alt} model. Call the model [goggles_rob]{.alt} and remember to get the summary statistics using `summary()`.
 
 ```{r goggles_lmrob, exercise = TRUE, exercise.lines = 2, exercise.setup = "goggles_con_setup"}
 
@@ -958,7 +959,7 @@ goggles_afx %>%
   effectsize::eta_squared(., ci = 0.95)
 ```
 
-These values show that the $\text{facetype} \times \text{alcohol}$ interaction (the effect we care about) explains 29% of the variance in attractiveness not attributable to other predictors, which is sizeable. As we have seen before, it’s typically better to use partial omega squared ($\omega^2_p$), which is an unbiased version of $\eta^2_p$.
+These values show that the $\text{facetype} \times \text{alcohol}$ interaction (the effect we care about) explains 29% of the variance in attractiveness not attributable to other predictors, which is sizeable. As we have seen before, it's typically better to use partial omega squared ($\omega^2_p$), which is an unbiased version of $\eta^2_p$.
 
 #### `r alien()` Alien coding challenge
 
@@ -977,12 +978,124 @@ goggles_afx %>%
   effectsize::omega_squared(., ci = 0.95)
 ```
 
-The effect sizes are slightly smaller than (as we’d expect) using omega-squared. The interaction effect now explains about 25% of variation in attractiveness ratings.
+The effect sizes are slightly smaller than (as we'd expect) using omega-squared. The interaction effect now explains about 25% of variation in attractiveness ratings.
 
 
 ## `r user_astronaut()` Bayes factors [(3)]{.alt}
 
-Coming soon ... and by soon I mean, at some point in the future.
+Like in previous tutorials (**discovr_08**, **discovr_09**, **discovr_11**, **discovr_12**) we can use the `BayesFactor` package [@morey_bayesfactor_2018]. For factorial designs we use the `lmBF()` function.
+
+#### `r robot()` Code example
+
+We saw in **discovr_12** that the `lmBF()` function has this format:
+
+```{r, eval = FALSE}
+my_model <- BayesFactor::lmBF(formula = outcome ~ predictor, data = my_tib, rscaleFixed = "medium", rscaleCont = "medium")
+```
+
+We also saw that `lmBF()` uses default priors for categorical variables ([rscaleFixed]{.alt}) that can be specified as a number or as "medium" (the default), "wide", and "ultrawide". These labels correspond to *r* scale values of 1/2, $^\sqrt{2}/_2$, and 1. We could, therefore, obtain a Bayes factor for the entire model with the following code:
+
+```{r, eval = FALSE}
+goggles_bf <-  BayesFactor::lmBF(formula = attractiveness ~ alcohol*facetype, data = goggles_tib, rscaleFixed = "medium")
+```
+
+However, we are more interested in quantifying the individual effects than the model overall, and in particular the interaction effect. Therefore, we're going to build three models: (1) **alcohol** as the only predictor; (2) a model that adds **facetype** as a predictor; (3) a model that adds the interaction term (**alcohol:facetype**). Having created these models, we'll compare them. So, we'll start by looking at the Bayes factor for **alcohol** as the sole predictor, then get the Bayes factor for what **facetype** adds to the model, then finally get the Bayes factor for what the interaction term adds to the model.
+
+#### `r robot()` Code example
+
+To create these models we'd use
+
+```{r, eval = FALSE}
+alcohol_bf <- BayesFactor::lmBF(formula = attractiveness ~ alcohol, data = goggles_tib)
+
+facetype_bf <-  BayesFactor::lmBF(formula = attractiveness ~ alcohol + facetype, data = goggles_tib)
+
+int_bf <- BayesFactor::lmBF(formula = attractiveness ~ alcohol + facetype + alcohol:facetype, data = goggles_tib)
+```
+
+The first line creates the model with only **alcohol** as a predictor and stores it in the object [alcohol_bf]{.alt}, the second line adds **facetype** as a predictor and stores it in the object [facetype_bf]{.alt} and the third line adds the interaction term to the model and stores it in the object [int_bf]{.alt}. Having created the models we can compare them using this code:
+
+```{r, eval = FALSE}
+alcohol_bf
+facetype_bf/alcohol_bf
+int_bf/facetype_bf
+```
+
+The first line gives us the Bayes factor for the model with only **alcohol** as a predictor, the second shows us the Bayes factor for the model with **facetype** added as a predictor *relative* to the model that has only alcohol as a predictor. In other words, it tells us what **facetype** adds to the model or, put another way, it quantifies the effect of **facetype** adjusting for **alcohol**. The third line shows us the Bayes factor for the model including all main effects and the interaction term *relative* to the model with only the main effects. This tells us what the **alcohol:facetype** interaction adds to the model above and beyond the main effects. Put another way, it's the Bayes factor for the interaction term, which is what we're interested in.
+
+#### `r alien()` Alien coding challenge
+
+Use the sample code to obtain BayesFactors for the model containing **alcohol** only, the model containing **alcohol** and **facetype**, and the model containing **alcohol**, **facetype** and their interaction. Compare each model to the previous one. Use default medium priors.
+
+```{r gogg_bf, exercise = TRUE, exercise.lines = 8}
+
+```
+
+```{r gogg_bf-hint-1}
+## Create the object that contains the Bayes factor for the model containing **alcohol**:
+
+alcohol_bf <- BayesFactor::lmBF(formula = attractiveness ~ alcohol, data = goggles_tib)
+
+```
+
+```{r gogg_bf-hint-2}
+## Create the object that contains the Bayes factor for the model containing **alcohol** and **facetype**
+
+facetype_bf <-  BayesFactor::lmBF(formula = attractiveness ~ alcohol + facetype, data = goggles_tib)
+
+```
+
+```{r gogg_bf-hint-3}
+## Create the object that contains the Bayes factor for the model containing **alcohol**, **facetype** and their interaction:
+
+int_bf <- BayesFactor::lmBF(formula = attractiveness ~ alcohol + facetype + alcohol:facetype, data = goggles_tib)
+```
+
+```{r gogg_bf-hint-4}
+## View the Bayes factor for each model compared to the previous one:
+
+alcohol_bf
+facetype_bf/alcohol_bf
+int_bf/facetype_bf
+```
+
+```{r gogg_bf-hint-5}
+## Full solution:
+alcohol_bf <- BayesFactor::lmBF(formula = attractiveness ~ alcohol, data = goggles_tib)
+
+facetype_bf <-  BayesFactor::lmBF(formula = attractiveness ~ alcohol + facetype, data = goggles_tib)
+
+int_bf <- BayesFactor::lmBF(formula = attractiveness ~ alcohol + facetype + alcohol:facetype, data = goggles_tib)
+
+alcohol_bf
+facetype_bf/alcohol_bf
+int_bf/facetype_bf
+```
+
+```{r, echo = F}
+alcohol_bf <- BayesFactor::lmBF(formula = attractiveness ~ alcohol, data = goggles_tib)
+
+facetype_bf <-  BayesFactor::lmBF(formula = attractiveness ~ alcohol + facetype, data = goggles_tib)
+
+int_bf <- BayesFactor::lmBF(formula = attractiveness ~ alcohol + facetype + alcohol:facetype, data = goggles_tib)
+
+m1 <- alcohol_bf
+m2 <- facetype_bf/alcohol_bf
+m3 <- int_bf/facetype_bf
+
+
+get_bf <- function(bf, digits = 2){
+  BayesFactor::extractBF(bf, onlybf = T) %>% round(., digits)
+}
+```
+
+
+
+Looking at the first Bayes factor, the data are `r get_bf(m1)` times more likely under the alternative hypothesis (attractiveness is predicted from the dose of alcohol) than under the null (the dose of alcohol does not predict attractiveness ratings). Our beliefs that the dose of alcohol affects attractiveness ratings should increase by a factor of about `r get_bf(m1)` – in other words it should move away from the null. This value is fairly weak evidence, but then again we're not interested in this effect because it collapses across the type of face being rated.
+
+Looking at the second Bayes factor, the data are `r get_bf(m2)` times more likely under the model that predicts attractiveness ratings from the type of face and dose of alcohol than under the model that predicts attractiveness from the dose of alcohol alone. In other words, our beliefs that the type of face being rated affects ratings of attractiveness should shift away from the null by a factor of `r get_bf(m2)` (a substantial change and strong evidence).
+
+Looking at the final Bayes factor, the data are `r get_bf(m3)` times more likely under the model that predicts attractiveness ratings from the combined effect of the type of face and the dose of alcohol than under the model that predicts attractiveness from the main effects of dose of alcohol and type of face. In other words, our beliefs that the type of face moderates the effect of alcohol on the ratings of attractiveness should shift away from the null by a factor of `r get_bf(m3)` (a substantial change and strong evidence).
 
 ## `r user_visor()` Transfer task [(2)]{.alt}
 

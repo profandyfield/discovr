@@ -27,7 +27,7 @@ Daniels hypothesized that women who viewed the sexualized images (\emph{n} = 140
 (i.e., this theme would be present in what they wrote) more than those who viewed the performance athlete pictures (\emph{n} = 117,
 despite what the participants Section of the paper implies).  These are the data from that study. The data contains the following variables:
 \itemize{
-\item \strong{picture}: Whether the pictur was of a performance athlete or a sexualized athlete
+\item \strong{picture}: Whether the picture was of a performance athlete or a sexualized athlete
 \item \strong{theme_present}: whether a particular theme was present or absent from the participant's writing exercise
 \item \strong{athletes_body}: frequencies for the theme of the athlete's body
 \item \strong{admiration}: frequencies for the theme of admiration for the athlete

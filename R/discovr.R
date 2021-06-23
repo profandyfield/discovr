@@ -75,6 +75,7 @@
 #' * [coldwell_2006]: Data predicting childhood adjustment from various parenting variables.
 #' * [daniels_2012]: Data about the effects of sexualised sports images on self-image.
 #' * [dark_lord]: Fictitious data about the subliminal messages in songs.
+#' * [davey_2003]: Data about the effects mood and stop rules on checking behaviour.
 #' * [download]: Fictitious data about the download music festival and being smelly.
 #' * [df_beta]: Fictitious data used to illustrate the DF Beta statistic.
 #' * [eel]: Fictitious data about a randomized control trial to test whether eel therapy is an effective treatment of constipation.

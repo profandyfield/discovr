@@ -168,6 +168,7 @@ See the book or data descriptions for more details. This is a list of available 
 * **coldwell_2006**: Data predicting childhood adjustment from various parenting variables. For details execute `?coldwell_2006`.
 * **daniels_2012**: Data about the effects of sexualised sports images on self-image. For details execute `?daniels_2012`.
 * **dark_lord**: fictitious data about the subliminal messages in songs. For details execute `?dark_lord`.
+* **davey_2003**: Data about the effects mood and stop rules on checking behaviour. For details execute `?davey_2003`.
 * **download**: fictitious data about the download music festival and being smelly. For details execute `?download`.
 * **df_beta**: fictitious data used to illustrate the DF Beta statistic. For details execute `?df_beta`.
 * **eel**: Fictitious data about a randomized control trial to test whether eel therapy is an effective treatment of constipation. For details execute `?eel`.

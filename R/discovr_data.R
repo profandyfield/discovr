@@ -425,7 +425,7 @@
 #' (i.e., this theme would be present in what they wrote) more than those who viewed the performance athlete pictures (*n* = 117,
 #' despite what the participants Section of the paper implies).  These are the data from that study. The data contains the following variables:
 #'
-#'   * **picture**: Whether the pictur was of a performance athlete or a sexualized athlete
+#'   * **picture**: Whether the picture was of a performance athlete or a sexualized athlete
 #'   * **theme_present**: whether a particular theme was present or absent from the participant's writing exercise
 #'   * **athletes_body**: frequencies for the theme of the athlete's body
 #'   * **admiration**: frequencies for the theme of admiration for the athlete
@@ -466,6 +466,38 @@
 #' @source [www.discovr.rocks/csv/dark_lord.csv](https://www.discovr.rocks/csv/dark_lord.csv)
 
 "dark_lord"
+
+#' Davey et al. (2003) data
+#'
+#' A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#'   Many of us have experienced that feeling after we have left the house of wondering whether we remembered to lock the door,
+#'   close the window, or remove the bodies from the fridge in case the police turn up. However,
+#'   some people with obsessive compulsive disorder (OCD) check things so excessively that they might, for example,
+#'   take hours to leave the house. One theory is that this checking behaviour is caused by the mood you
+#'   are in (positive or negative) interacting with the rules you use to decide when to stop a task
+#'   (do you continue until you feel like stopping, or until you have done the task as best as you can?).
+#'   Davey et al. (2003) tested this hypothesis by asking participants
+#'   to think of as many things as they could that they should check before going on holiday (**checks**)
+#'   after putting them into a negative, positive or neutral mood (**mood**). Within each mood group,
+#'   half of the participants were instructed to generate as many items as they could, whereas the
+#'   remainder were asked to generate items for as long as they felt like continuing the task (**stop_rule**).
+#'   These are the data from that study. The data contains the following variables:
+#'
+#'   * **id**: Participant id
+#'   * **mood**: whether a particular was randomly allocated to a negative, positive or neutral mood induction condition.
+#'   * **stop_rule**: whether a particular was randomly allocated to a condition in which they were instructed to undertake a task using an 'as many as can' stop rule or a 'feel like continuing' stop rule.
+#'   * **checks**: number of things participants
+#'
+#' @format A tibble with 60 rows and 4 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/davey_2003.csv](https://www.discovr.rocks/csv/davey_2003.csv)
+#' @references
+#'
+#'    * Davey, G. C. L., Startup, H. M., Zara, A., MacDonald, C. B., & Field, A. P. (2003). The perseveration of checking thoughts and mood–as–input hypothesis. *Journal of Behavior Therapy and Experimental Psychiatry*, 34(2), 141–160. [https://doi.org/10.1016/S0005-7916(03)00035-1](https://doi.org/10.1016/S0005-7916(03)00035-1).
+#'
+
+"davey_2003"
 
 #' DF beta data
 #'

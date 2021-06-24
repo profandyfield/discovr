@@ -1312,6 +1312,7 @@
 #' The other half watched a documentary about notebooks as a control. In all cases the company director measured participants' arousal  as an indicator of how much they enjoyed the film.
 #' The data contains the following variables:
 #'
+#'   * **id**: participant
 #'   * **sex**: sex to which the participant mostly self-identifies
 #'   * **film**: whether the person watched The Notebook or a documentary about notebooks
 #'   * **arousal**: the person's average physiological arousal (e.g., emotional response) during the film.

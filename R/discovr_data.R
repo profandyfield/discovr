@@ -1312,7 +1312,7 @@
 #' The other half watched a documentary about notebooks as a control. In all cases the company director measured participants' arousal  as an indicator of how much they enjoyed the film.
 #' The data contains the following variables:
 #'
-#'   * **id**: participant
+#'   * **id**: participant ID
 #'   * **sex**: sex to which the participant mostly self-identifies
 #'   * **film**: whether the person watched The Notebook or a documentary about notebooks
 #'   * **arousal**: the person's average physiological arousal (e.g., emotional response) during the film.
@@ -1948,6 +1948,7 @@
 #' The data show the score (out of 20) for 20 different students, some of whom are biologically male and others biologically female,
 #' and some of whom were taught using positive reinforcement (being nice) and others who were taught using punishment (electric shock)
 #'
+#'   * **id**: participant ID
 #'   * **method**: The type of teaching method used
 #'   * **sex**: Biological sex of the individual
 #'   * **mark**: The score out of 20 on a test

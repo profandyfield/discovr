@@ -8,7 +8,7 @@ output:
     theme: "united"
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
-description: "The general linear model (GLM). Visualizing the data, fitting GLMs with one and two predictors. Viewing model parameters with broom, model parameters, standard errors, confidence intervals, fit statistics, significance."
+description: "The general linear model (GLM). Visualizing the data, fitting GLMs with one and two predictors. Viewing model parameters with broom, model parameters, standard errors, confidence intervals, fit statistics, significance, Bayes factors and Bayesian estimates (using default priors)."
 bibliography: discovr_08.bib
 ---
 
@@ -1679,6 +1679,140 @@ quiz(
 ```
 
 
+## `r user_astronaut()` Bayesian approaches [(3)]{.alt}
+
+There are two things we might do: (1) compare models using Bayes factors; (2) estimate model parameters using Bayesian methods. In both cases, you can fit the models using either default priors, which set distributions that represent very diffuse prior beliefs, or subjective priors, which allow you to specify prior distributions reflecting specific beliefs about the model parameters.
+
+### `r user_astronaut()` Bayes factors [(3)]{.alt}
+
+
+First, let’s compare models using a Bayes factor using the `regressionBF()` function in the `BayesFactor` [@morey_bayesfactor_2018]. Essentially, we want to compare models against each other hierarchically to see which model has the largest Bayes factor, and to evaluate the strength of evidence that this Bayes factor suggests that a particular model predicts the outcome better than the intercept alone (i.e. a model with no predictors). The function takes the general form
+
+```{r eval = F}
+model_bf <- BayesFactor::regressionBF(formula, rscaleCont = "medium", data = tibble)
+```
+
+This code creates an object called [model_bf]{.alt} based on the same type of formula that we put into the `lm()` function to specify the model (so this should be familiar). The argument [rscaleCont]{.alt} sets the scale of the prior distribution for the distribution for the standardized *b*s in the model. This argument can be set as a numeric value or using one of three pre-defined values. By default it is set to the pre-defined value of ["medium"]{.alt}, which corresponds to a value of $\sqrt{2}⁄4$ or about 0.354 (see the book chapter for more information). We’ll use this default for illustrative purposes but you should always consider what value is appropriate for the model you’re fitting.
+
+#### `r robot()` Code example
+
+To get Bayes factors for our model we could execute:
+
+```{r, eval = F}
+album_bf <- BayesFactor::regressionBF(sales ~ adverts + airplay + image, rscaleCont = "medium", data = album_tib)
+```
+
+This code creates an object called [album_bf]{.alt} that contains the Bayes factor model based on predicting sales from adverts, airplay and image as predictors. Note we have specified this model using the same syntax as when we fit it using `lm()`. 
+
+#### `r alien()` Alien coding challenge
+
+Try fitting the model described above.
+
+```{r bf, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r bf-hint-1}
+# Copy the example code
+album_bf <- BayesFactor::regressionBF(sales ~ adverts + airplay + image, rscaleCont = "medium", data = album_tib)
+# remember that you need to add something to view the output ...
+```
+
+```{r bf-solution}
+album_bf <- BayesFactor::regressionBF(sales ~ adverts + airplay + image, rscaleCont = "medium", data = album_tib)
+album_bf
+```
+
+The output shows the Bayes factors for all the potential models that we could get from our three predictor variables (7 in total). Each model is compared to a model that includes only the intercept. All models have huge Bayes factors, which suggest that they all provide strong evidence for the hypothesis that the model predicts the outcome better than the intercept alone. The question then is which model is best? We can answer that by finding the model with the largest Bayes factor, which is model 7, the model that includes all three predictors (note it has a Bayes factor of $7.75 × 10^{42}$).
+
+### `r user_astronaut()` Bayesian parameter estimates [(3)]{.alt}
+
+Knowing that model 7 is best (which concurs with our non-Bayesian model), we can estimate the parameters in this model using Bayesian methods using the `lmBF()` function, which has the same format as `regressionBF()`. The difference between the functions is that `lmBF()` fits only the model we specify in the formula and not all of the subordinate models.
+
+#### `r alien()` Alien coding challenge
+
+Adapt the code from the previous section to fit the same model but using the `lmBF()` function. Save the model as [album_full_bf}{.alt}
+
+```{r lmbf, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r lmbf-hint-1}
+# Copy the example code
+album_full_bf <- BayesFactor::lmBF(sales ~ adverts + airplay + image, rscaleCont = "medium", data = album_tib)
+# remember that you need to add something to view the output ...
+```
+
+```{r lmbf-solution}
+album_full_bf <- BayesFactor::lmBF(sales ~ adverts + airplay + image, rscaleCont = "medium", data = album_tib)
+album_full_bf
+```
+
+The results match those form the final model in the previous output, however, by estimating model 7 in isolation we can extract the *b*-values derived from Bayesian estimation and their credible intervals using the `posterior()` function.
+
+#### `r robot()` Code example
+
+To do this we enter the name of the model we just created ([album_full_bf]{.alt}) into the `posterior()` function in which we also set the number of iterations to 10000 (which is plenty). Samples are taken from the posterior distribution of the [album_full_bf]{.alt} model and stored in an object which I have called [album_full_post]{.alt}. Finally, we place the posterior samples into `summary()` to see a summary of them.
+
+```{r, eval = F}
+album_full_post <- BayesFactor::posterior(album_full_bf, iterations = 10000)
+summary(album_full_post)
+```
+
+#### `r alien()` Alien coding challenge
+
+Use the example code to obtain samples from the posterior distribution for the [album_full_bf]{.alt} model, and display a summary of them.
+
+```{r bflm_setup, echo = FALSE}
+album_full_bf <- BayesFactor::lmBF(sales ~ adverts + airplay + image, rscaleCont = "medium", data = album_tib)
+```
+
+```{r lmbfpost, exercise = TRUE, exercise.lines = 2, exercise.setup = "bflm_setup"}
+
+```
+
+
+```{r lmbfpost-solution}
+album_full_post <- BayesFactor::posterior(album_full_bf, iterations = 10000)
+summary(album_full_post)
+```
+
+Because this process is based in sampling from the posterior, the numbers in your output might be slightly different each time you run the code, but they should be approximately the same as this output:
+
+
+```{r, echo = F}
+album_full_bf <- BayesFactor::lmBF(sales ~ adverts + airplay + image, rscaleCont = "medium", data = album_tib)
+album_bayes_sum <- BayesFactor::posterior(album_full_bf, iterations = 10000) %>% summary(.)
+
+
+make_bayes_sum_tibble <- function(bf_sum, index){
+  bf_sum[index] %>%
+    as.data.frame() %>% 
+    tibble::as_tibble(rownames = "predictor")
+}
+
+get_bayes_est <- function(b_mod, row = "mu", index = 2, digits = 2){
+  b_mod <-  make_bayes_sum_tibble(b_mod, 1) %>% 
+    dplyr::right_join(make_bayes_sum_tibble(b_mod, 2), by = "predictor") %>% 
+    dplyr::mutate(
+      dplyr::across(where(is.numeric), ~round(., digits = digits))
+    ) %>% 
+    dplyr::filter(predictor == row) %>% 
+    dplyr::select(predictor, `statistics.Mean`, `quantiles.2.5.`, `quantiles.97.5.`)
+  
+  b_mod[, index] %>% dplyr::pull()
+}
+
+
+```
+
+```{r, echo = F}
+album_bayes_sum
+```
+
+
+
+The Bayesian estimate of *b* can be found in the column labelled Mean. In my output (but yours might differ) values are `r get_bayes_est(album_bayes_sum, "adverts", index = 2)` for advertising budget, `r get_bayes_est(album_bayes_sum, "airplay", index = 2)` for airplay and `r get_bayes_est(album_bayes_sum, "image", index = 2)` for image, compared to the values of 0.085, 3.37 and 11.09 from the non-Bayesian model. Most useful are the credible intervals for these parameters. If we want the 95% credible interval then we can read the values from the columns labelled 2.5% and 97.5% in the table of quantiles. Unlike confidence intervals, credible intervals contain the population value with a probability of 0.95 (95%). For advertising budget, therefore, there is a 95% probability that the population value of *b* lies between `r get_bayes_est(album_bayes_sum, "adverts", index = 3)` and `r get_bayes_est(album_bayes_sum, "adverts", index = 4)`, for airplay the population value is plausibly between `r get_bayes_est(album_bayes_sum, "airplay", index = 3)` and `r get_bayes_est(album_bayes_sum, "airplay", index = 4)`, and for image it plausibly lies between `r get_bayes_est(album_bayes_sum, "image", index = 3)` and `r get_bayes_est(album_bayes_sum, "image", index = 4)`. These intervals are constructed assuming that an effect exists, so you cannot use them to test the hypothesis that the null is exactly 0, only to establish plausible population values of the *b*s in the model.
 
 
 <div class="infobox">

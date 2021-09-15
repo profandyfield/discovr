@@ -7,7 +7,7 @@ output:
     theme: "united"
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
-description: "Categorical predictors with two categories (comparing two means). Comparing two independent means, comparing two related means, effect sizes."
+description: "Categorical predictors with two categories (comparing two means). Comparing two independent means, comparing two related means, effect sizes, robust comparisons of means (independent and related), Bayes factors and estimation (independent and related means)."
 bibliography: discovr_09.bib
 ---
 <html lang="en">
@@ -21,6 +21,7 @@ knitr::opts_chunk$set(
 
 library(learnr) #necessary to render tutorial correctly
 
+library(BayesFactor)
 library(dplyr)
 library(effectsize)
 library(ggplot2)
@@ -35,6 +36,12 @@ source("./www/discovr_helpers.R")
 
 cloak_tib <- discovr::invisibility_cloak
 cloak_rm_tib <- discovr::invisibility_rm
+cloak_messy_tib <- cloak_rm_tib %>% 
+  tidyr::pivot_wider(
+    id_cols = id,
+    values_from = mischief,
+    names_from = cloak
+    )
 ```
 
 
@@ -269,7 +276,7 @@ In which:
 * [tibble]{.alt}: the name of the tibble containing the data (in this case [cloak_tib]{.alt}) 
 * [paired]{.alt}: by default scores are treated as independent ([paired = FALSE]{.alt}), but if you have a repeated measures design and want to treat scores as dependent change this to [paired = TRUE]{.alt}.
 * [var.equal]{.alt}: by default the function assumes that variances are unequal ([var.equal = FALSE]{.alt}) and applies Welch's correction (a sensible thing to do). Leave this default alone.
-* [conf.level]{.alt}: determines the alpha level for the *p*-value and confidence intervals. By default it is 0.95 (for 95% confidence intervals) and usually you’d exclude this option, but if you want to use a different value, say 99%, you could include [conf.level = 0.99]{.alt}.
+* [conf.level]{.alt}: determines the alpha level for the *p*-value and confidence intervals. By default it is 0.95 (for 95% confidence intervals) and usually you'd exclude this option, but if you want to use a different value, say 99%, you could include [conf.level = 0.99]{.alt}.
 * [na.action]{.alt}: If you have complete data (as we have here) exclude this option, but if you have missing values (i.e., [NA]{.alt}s in the data frame) then it can be useful to include [na.action = na.exclude]{.alt}, which will exclude all cases with missing values
 
 #### `r alien()` Alien coding challenge
@@ -322,9 +329,9 @@ cloak_mod <- t.test(mischief ~ cloak, data = cloak_tib)
 
 ### `r bmu()` Interpreting the model [(1)]{.alt}
 
-The `t.test()` function calculates Welch’s *t*, *t*(`r round(cloak_mod$parameter, 2)`) = `r round(cloak_mod$statistic, 2)`, which does not assume homogeneity of variance but instead adjusts for it. This default behaviour is sensible because, when the assumption is met no adjustment is made, but when it is broken an adjustment is made proportionate to the difference in variances. The resulting (two-tailed) *p*-value is `r round(cloak_mod$p.value, 3)`, which represents the probability of getting a *t* of `r round(cloak_mod$statistic, 2)` or smaller if the null hypothesis were true. Assuming our alpha is 0.05, we’d conclude that there was no significant difference between the means of these two samples because the observed *p* of `r round(cloak_mod$p.value, 3)` is greater than the criterion of 0.05. In terms of the experiment, we can infer that having a cloak of invisibility did not significantly affect the amount of mischief a person got up to.
+The `t.test()` function calculates Welch's *t*, *t*(`r round(cloak_mod$parameter, 2)`) = `r round(cloak_mod$statistic, 2)`, which does not assume homogeneity of variance but instead adjusts for it. This default behaviour is sensible because, when the assumption is met no adjustment is made, but when it is broken an adjustment is made proportionate to the difference in variances. The resulting (two-tailed) *p*-value is `r round(cloak_mod$p.value, 3)`, which represents the probability of getting a *t* of `r round(cloak_mod$statistic, 2)` or smaller if the null hypothesis were true. Assuming our alpha is 0.05, we'd conclude that there was no significant difference between the means of these two samples because the observed *p* of `r round(cloak_mod$p.value, 3)` is greater than the criterion of 0.05. In terms of the experiment, we can infer that having a cloak of invisibility did not significantly affect the amount of mischief a person got up to.
 
-Finally, the confidence interval gives us an estimate of the range of the true difference between means. If we were to assume that this sample were one of the 95% that yields a confidence interval containing the population value, we’d conclude that the population difference falls between `r round(cloak_mod$conf.int[1], 2)` to `r round(cloak_mod$conf.int[2], 2)`, but remember our assumption will be wrong 5% of the time.
+Finally, the confidence interval gives us an estimate of the range of the true difference between means. If we were to assume that this sample were one of the 95% that yields a confidence interval containing the population value, we'd conclude that the population difference falls between `r round(cloak_mod$conf.int[1], 2)` to `r round(cloak_mod$conf.int[2], 2)`, but remember our assumption will be wrong 5% of the time.
 
 ### `r user_visor()` Effect size for independent means [(2)]{.alt}
 
@@ -340,7 +347,7 @@ effectsize::glass_delta(outcome ~ predictor, data = tibble)
 
 * `glass_delta()`. This function uses only the control group standard deviation so should be used when group standard deviations are very different (or you expect your experimental manipulation to affect both the mean and the standard deviation of scores). It will use the first level of the grouping variable as the control (in this case the no cloak group). Therefore, we could execute:
 * `cohens_d()`. This function uses (by default) the pooled standard deviation
-* `hedges_g()`. This function applies a correction to Cohen’s *d* that is less biased for samples less than about 20.
+* `hedges_g()`. This function applies a correction to Cohen's *d* that is less biased for samples less than about 20.
 
 Both `cohens_d()` and `hedges_g()` have an argument to specify whether data are paired (more on that later), but for now we want this argument to be false, which is the default.
 
@@ -380,7 +387,7 @@ question("Which of these statements about Cohen's *d* is **NOT** correct?",
 
 ### `r bmu()` Fitting the model [(1)]{.alt}
 
-Let’s imagine that we had collected the cloak of invisibility data using a repeated-measures design: we might have recorded each participant’s natural level of mischievous acts in a week, then given them an invisibility cloak and counted the number of mischievous acts in the following week.  So, there are 12 participants (not 24) but each participant contributes two mischief scores: one from when they wore a cloak, one from when they didn’t. The data are [cloak_rm_tib]{.alt}.
+Let's imagine that we had collected the cloak of invisibility data using a repeated-measures design: we might have recorded each participant's natural level of mischievous acts in a week, then given them an invisibility cloak and counted the number of mischievous acts in the following week.  So, there are 12 participants (not 24) but each participant contributes two mischief scores: one from when they wore a cloak, one from when they didn't. The data are [cloak_rm_tib]{.alt}.
 
 #### `r alien()` Alien coding challenge
 
@@ -394,7 +401,7 @@ Inspect the tibble.
 cloak_rm_tib
 ```
 
-Note that the mischief scores themselves are identical to the previous example, for example, the first ‘no cloak’ score is a 3 and the first ‘cloak’ score is a 4, the only difference is that both of these scores are now attributable to the same person (Alia). To summarize then, we’re using the same mischief scores as before, but we’re now imagining that they were generated by a repeated measures design rather than an independent design.
+Note that the mischief scores themselves are identical to the previous example, for example, the first 'no cloak' score is a 3 and the first 'cloak' score is a 4, the only difference is that both of these scores are now attributable to the same person (Alia). To summarize then, we're using the same mischief scores as before, but we're now imagining that they were generated by a repeated measures design rather than an independent design.
 
 #### `r alien()` Alien coding challenge
 
@@ -423,9 +430,9 @@ cloak_rm_tib %>%
 
 You should find that the output changes each time you run the code. That's not good. The reason this happens is because this code pipes the data in [cloak_rm_tib]{.alt} into the `t.test()` function but along the way I have sneakily piped it through `dplyr::sample_n(24)`, which randomly orders the rows. Each time the *t*-test is run, the rows of the tibble are ordered differently.
 
-The order of rows affects the results because the `t.test()` function pairs the first score it finds in one condition with the first score it finds in the next condition and so on. In our example, it will pair the first score it finds tagged as ‘no cloak’ with the first score it encounters tagged with ‘cloak’. Each time the rows are re-ordered different scores are being paired. Unfortunately there is no way to tell`r rproj()` how to pair the scores, we instead have to make sure that the rows are ordered correctly.
+The order of rows affects the results because the `t.test()` function pairs the first score it finds in one condition with the first score it finds in the next condition and so on. In our example, it will pair the first score it finds tagged as 'no cloak' with the first score it encounters tagged with 'cloak'. Each time the rows are re-ordered different scores are being paired. Unfortunately there is no way to tell`r rproj()` how to pair the scores, we instead have to make sure that the rows are ordered correctly.
 
-This is easily achieved if you *always* to use an ‘id’ variable so that scores are associated with a particular entity’s id, and you sort the file by the id variable before it goes into the `t.test()` function. With our data, we have a variable called **id** so we’d execute something like:
+This is easily achieved if you *always* to use an 'id' variable so that scores are associated with a particular entity's id, and you sort the file by the id variable before it goes into the `t.test()` function. With our data, we have a variable called **id** so we'd execute something like:
 
 #### `r robot()` Code example
 
@@ -462,7 +469,7 @@ On average, participants given a cloak of invisibility engaged in more acts of m
 
 ### `r user_visor()` Effect sizes for dependent means [(2)]{.alt}
 
-We could compute Cohen’s *d* as we did earlier. However, some argue that you need to factor in the dependency between scores in treatment conditions by factoring in the correlation between the scores. We can do this in`r rproj()` by including [paired = TRUE]{.alt} into the `cohens_d()` function. However, I don't think that this is a good idea because by including information about pairing of scores, the effect size now expresses information not just about the observed difference between means but about the study design used to measure it. Also, one of the core reasons for standardizing effect sizes is so that they can be compared across studies. However, if some effect sizes include information about study design and others don’t then they can’t be meaningfully compared.
+We could compute Cohen's *d* as we did earlier. However, some argue that you need to factor in the dependency between scores in treatment conditions by factoring in the correlation between the scores. We can do this in`r rproj()` by including [paired = TRUE]{.alt} into the `cohens_d()` function. However, I don't think that this is a good idea because by including information about pairing of scores, the effect size now expresses information not just about the observed difference between means but about the study design used to measure it. Also, one of the core reasons for standardizing effect sizes is so that they can be compared across studies. However, if some effect sizes include information about study design and others don't then they can't be meaningfully compared.
 
 #### `r alien()` Alien coding challenge
 
@@ -477,8 +484,9 @@ effectsize::cohens_d(mischief ~ cloak, data = cloak_rm_tib)
 ```
 
 ## `r user_astronaut()` Robust models [(3)]{.alt}
+### `r user_astronaut()` Robust models of independent means [(3)]{.alt}
 
-The `WRS2` package has several functions for comparing independent means.
+The `WRS2` package [@Mair_Wilcox_2019] has several functions for comparing independent means.
 
 #### `r robot()` Code example
 
@@ -512,12 +520,17 @@ cloak_rob
   I tend to use the suffix [_rob]{.alt} to denote a robust model.
 </div>
 
-Based on this robust test there is not a significant difference in mischief scores across the two cloak groups, $T_y\text{(12.26)} = 1.48, p = .165$. We’re also told that on average the no cloak group performed one less mischievous act, $M = -1$ with a 95% confidence interval for the trimmed mean difference ranging from $−2.47$ to 0.47.
+```{r, echo = F}
+cloak_rob <- WRS2::yuen(mischief ~ cloak, data = cloak_tib)
+```
+
+
+Based on this robust test there is not a significant difference in mischief scores across the two cloak groups, $T_y$ = `r  round(cloak_rob$test, 2)`, *p* = `r round(cloak_rob$p.value, 3)`. We're also told that on average the no cloak group performed one less mischievous act, *M* = `r cloak_rob$diff` with a 95% confidence interval for the trimmed mean difference ranging from `r round(cloak_rob$conf.int[1], 2)` to `r round(cloak_rob$conf.int[2], 2)`.
 
 We can also compare trimmed means but include a bootstrap by using `yuenbt()`, which takes the same form as `yuen()` but has two additional arguments:
 
-* [nboot = 599]{.alt}: This specifies the number of bootstrap samples to be used. If you exclude this option then the default is 599, which, if anything, you might want to increase (but it’s probably not necessary to use more than 2000).
-* [side = F]{.alt}: By default the function bootstraps confidence intervals as is, which means that they can be asymmetric. If you want to force the CI to be symmetrical then include [side = T]{.alt} in the function. If you do this you will get a *p*-value, but by default you won’t (although you can infer significance from whether the confidence interval crosses zero)
+* [nboot = 599]{.alt}: This specifies the number of bootstrap samples to be used. If you exclude this option then the default is 599, which, if anything, you might want to increase (but it's probably not necessary to use more than 2000).
+* [side = F]{.alt}: By default the function bootstraps confidence intervals as is, which means that they can be asymmetric. If you want to force the CI to be symmetrical then include [side = T]{.alt} in the function. If you do this you will get a *p*-value, but by default you won't (although you can infer significance from whether the confidence interval crosses zero)
 
 #### `r robot()` Code example
 
@@ -546,17 +559,344 @@ cloak_bt_rob <- WRS2::yuenbt(mischief ~ cloak, data = cloak_tib, nboot = 1000, s
 cloak_bt_rob
 ```
 
-```{r, echo = F}
-cbt_rob <- WRS2::yuenbt(mischief ~ cloak, data = cloak_tib, nboot = 1000, side = TRUE)
-```
-
-Based on this robust test there is not a significant difference (because the confidence interval crosses zero) in mischief scores across the two cloak groups, $Y_t = -1.36, p = 0.19$. We’re also told that on average the no cloak group performed one less mischievous act, $M = -1$ with a 95% confidence interval for the trimmed mean difference ranging from `r round(cbt_rob$conf.int[1], 2)` to `r round(cbt_rob$conf.int[2], 2)`.
-
 <div class="tip">
   `r cat_space()` **Tip: Bootstrapping**
   
-  Because bootstrapping works through sampling the data, confidence intervals from a bootstrap process will differ slightly every time you fit a model. Therefore, your values won't exactly match the values in the text.
+  Because bootstrapping works through sampling the data, confidence intervals and *p*-values from a bootstrap process will differ slightly every time you fit a model. You can see this by rerunning the code in the exercise a few times and observing the output each time.
 
+</div>
+
+Your output should be similar to this:
+
+```{r, echo = F}
+cloak_bt_rob <- WRS2::yuenbt(mischief ~ cloak, data = cloak_tib, nboot = 1000, side = TRUE)
+cloak_bt_rob
+```
+
+Based on this robust test there is not a significant difference (because the confidence interval crosses zero) in mischief scores across the two cloak groups, $T_y$ = `r  round(cloak_bt_rob$test, 2)`, *p* = `r round(cloak_bt_rob$p.value, 3)`. We're also told that on average the no cloak group performed one less mischievous act, *M* = `r cloak_bt_rob$diff` with a 95% confidence interval for the trimmed mean difference ranging from `r round(cloak_bt_rob$conf.int[1], 2)` to `r round(cloak_bt_rob$conf.int[2], 2)`.
+
+
+
+ 
+### `r user_astronaut()` Robust models of dependent means [(3)]{.alt}
+
+To compare dependent means with a robust model we can use the `yuend()` function from the `WRS2` package [@Mair_Wilcox_2019] to get a robust test based on (20% by default) trimmed means. Unfortunately, this function doesn't play nicely with tibbles and tidy data. It takes the general form:
+
+```{r, eval = F}
+WRS2::yuend(scores_condition_1, scores_condition_2,  tr = .2)
+```
+
+In other words, it wants the scores for each condition to be entered as separate variables. For the invisibility data, this means we need the cloak and no cloak scores to be stored as separate variables (i.e. in a messy data format). At present, the data in [cloak_rm_tib]{.alt} are in tidy format, that is, the mischief scores are stored in a single column.
+
+#### `r robot()` Code example
+
+In [discovr_06]{.alt} we used the `pivot_wider()` function to turn tidy data into messy data. Naturally you  won't remember that far back, but we can create a messy version of the repeated measures data using the following code:
+
+```{r, eval = F}
+cloak_messy_tib <- cloak_rm_tib %>% 
+  tidyr::pivot_wider(
+    id_cols = id,
+    values_from = mischief,
+    names_from = cloak
+    )
+```
+
+This code uses the [id]{.alt} variable to pair the scores, uses the variable [cloak]{.alt} to name the new columns, and extracts the scores from the variable [mischief]{.alt} to place in those new columns. The result is a new tibble ([cloak_messy_tib]{.alt}) with the cloak scores stored in a variable called [Cloak]{.alt} (note the capital C) and the no cloak scores stored in a variable called [No cloak]{.alt} (note the capital and space). We can use `$` to access the scores. For example, the cloak scores are accessed using:
+
+```{r, eval = F}
+cloak_messy_tib$Cloak
+```
+
+(Note I have retained the capital C of the variable name.) The no cloak scores are accessed using:
+
+```{r, eval = F}
+cloak_messy_tib$`No cloak`
+```
+
+(Note I’ve had to use backticks because the name contains a space.)
+
+#### `r alien()` Alien coding challenge
+
+Use the code example to create the messy version of the data and store it in [cloak_messy_tib]{.alt}. Also, view the tibble, and then view the mischief scores for the cloak and no cloak conditions.
+
+```{r cloak_messy_tib, exercise = TRUE, exercise.lines = 10}
+
+```
+
+```{r cloak_messy_tib-hint-1}
+# make the data messy:
+cloak_messy_tib <- cloak_rm_tib %>% 
+  tidyr::pivot_wider(
+    id_cols = id,
+    values_from = mischief,
+    names_from = cloak
+    )
+# now add code to view it
+```
+
+```{r cloak_messy_tib-hint-2}
+# make the data messy:
+cloak_messy_tib <- cloak_rm_tib %>% 
+  tidyr::pivot_wider(
+    id_cols = id,
+    values_from = mischief,
+    names_from = cloak
+    )
+# view the data:
+cloak_messy_tib
+# Now view the individual scores in the cloak and no cloak conditions
+```
+
+```{r cloak_messy_tib-solution}
+# make the data messy:
+cloak_messy_tib <- cloak_rm_tib %>% 
+  tidyr::pivot_wider(
+    id_cols = id,
+    values_from = mischief,
+    names_from = cloak
+    )
+# view the data:
+cloak_messy_tib
+# view the individual scores in the cloak and no cloak conditions
+cloak_messy_tib$Cloak
+cloak_messy_tib$`No cloak`
+```
+
+#### `r robot()` Code example
+
+Putting this together with the `yuend()` function (assuming we don’t want to change from a 20% trim) we'd get:
+
+```{r, eval = FALSE}
+WRS2::yuend(cloak_messy_tib$Cloak, cloak_messy_tib$`No cloak`)
+```
+
+#### `r alien()` Alien coding challenge
+
+Use the code example to create (and view) an object called [cloak_rm_rob]{.alt} that contains a robust comparison of the 20% trimmed means of the two cloak conditions.
+
+```{r cloak_rm_rob, exercise = TRUE}
+
+```
+
+```{r cloak_rm_rob-solution}
+cloak_rm_rob <- WRS2::yuend(cloak_messy_tib$Cloak, cloak_messy_tib$`No cloak`)
+cloak_rm_rob
+```
+
+
+```{r, echo = F}
+cloak_rm_rob <- WRS2::yuend(cloak_messy_tib$Cloak, cloak_messy_tib$`No cloak`)
+```
+
+
+The output shows that based on this robust test there is a significant difference in mischief scores across the two cloak of invisibility groups, $T_y$(`r cloak_rm_rob$df`) = `r  round(cloak_rm_rob$test, 2)`, *p* = `r round(cloak_rm_rob$p.value, 3)`. The mean difference is `r cloak_rm_rob$diff` with a 95% confidence interval ranging from `r round(cloak_rm_rob$conf.int[1], 2)` to `r round(cloak_rm_rob$conf.int[2], 2)`. Remember that confidence intervals are constructed such that in 95% of samples the intervals contain the true value of the mean difference. So, assuming that this sample's confidence interval is one of the 95 out of 100 that contain the population value, we can say that the true mean difference lies between  `r round(cloak_rm_rob$conf.int[1], 2)` and `r round(cloak_rm_rob$conf.int[2], 2)`. The importance of this interval is that it does not contain zero (both limits are positive), which tells us that the true value of the mean difference is unlikely to be zero (given the assumption we've made). In other words, there is plausibly an effect in the population reflecting more mischievous acts performed when someone is given an invisibility cloak.
+
+
+## `r user_astronaut()` Bayesian approaches [(3)]{.alt}
+
+There are two things we might do: (1) quantify the difference between means using Bayes factors; (2) estimate the difference between means (i.e. the model parameter for the categorical predictor) using Bayesian methods. Like in [discovr_08]{.alt} we can use the `BayesFactor` [@morey_bayesfactor_2018] package. 
+
+### `r user_astronaut()` Evaluating independent means [(3)]{.alt}
+
+The `ttestBF()` function will estimate a Bayes factor for the model of no difference between means (the null) relative to the model of a difference between means (the alternative). This function is very much like `t.test()` except that the formula for the model has to be explicitly labelled with [formula =]{.alt}.
+
+```{r eval = F}
+model_bf <- BayesFactor::ttestBF(formula = outcome ~ predictor, data = my_tib, paired = FALSE, rscale = "medium")
+```
+
+The function also takes an argument [paired]{.alt} (by default set to FALSE) which must be set to [TRUE]{.alt} if the scores are dependent (e.g. repeated measures designs). There is also an argument [rscale]{.alt} which sets the scale of the prior distribution. You can either set this using a numeric value (e.g., [scale = 1]{.alt}) or using predefined values of ["medium"]{.alt} (the default), ["wide"]{.alt}, and ["ultrawide"]{.alt}, which correspond to *r* scale values of $\sqrt{2}/2$, 1, and $\sqrt{2}$ respectively (see the book chapter for more detail). In an ideal world you'd put some thought into a value for [rscale]{.alt} that reflects your prior beliefs (based on knowledge of the literature) about the plausible values of the effect size (Cohen's *d*) for the difference between means.
+
+In both cases, you can fit the models using either default priors, which set distributions that represent very diffuse prior beliefs, or subjective priors, which allow you to specify prior distributions reflecting specific beliefs about the model parameters.
+
+#### `r robot()` Code example
+
+To get Bayes factors for our model we could execute:
+
+```{r, eval = F}
+cloak_bf <- BayesFactor::ttestBF(formula = mischief ~ cloak, data = cloak_tib, rscale = "medium")
+```
+
+This code creates an object called [cloak_bf]{.alt} that contains the Bayes factor model based on predicting mischief from whether or not someone was given a cloak of invisibility. Note we have specified this model using the same syntax as when we fit it using `lm()`. 
+
+#### `r alien()` Alien coding challenge
+
+Try fitting the model described above.
+
+```{r bf, exercise = TRUE, exercise.lines = 3}
+
+```
+
+```{r bf-hint-1}
+# Copy the example code
+cloak_bf <- BayesFactor::ttestBF(formula = mischief ~ cloak, data = cloak_tib, rscale = "medium")
+# remember that you need to add something to view the output ...
+```
+
+```{r bf-solution}
+cloak_bf <- BayesFactor::ttestBF(formula = mischief ~ cloak, data = cloak_tib, rscale = "medium")
+cloak_bf
+```
+
+```{r, echo = F}
+cloak_bf <- BayesFactor::ttestBF(formula = mischief ~ cloak, data = cloak_tib, rscale = "medium")
+clock_bf_est <- round(extractBF(cloak_bf)$bf, 2)
+```
+
+
+The Bayes factor is `r clock_bf_est`. The BayesFactor package reports the ratio of the alternative to the null hypothesis ($\text{BF}_{10}$), so this value means that the data are `r clock_bf_est` times as probable under the alternative hypothesis as under the null. In other words, we should shift our belief towards the alternative hypothesis by a factor of `r clock_bf_est`. Remembering that a Bayes factor of 1 means that the data are equally probable under the alternative hypothesis as under the null, the value here suggests that we should not change our prior beliefs by any meaningful amount. There is no evidence for the hypothesis that invisibility cloaks lead to mischief. More specifically, by using the default prior we assigned a 50% probability to the effect size (*d*) lying between −0.7071 and +0.7071 and this Bayes factor tells us not to change this belief in any meaningful way.
+
+Like in [discovr_08]{.alt} we can extract the *b*-values derived from Bayesian estimation and their credible intervals using the `posterior()` function.
+
+#### `r robot()` Code example
+
+To do this we enter the name of the model we just created ([cloak_bf]{.alt}) into the `posterior()` function in which we also set the number of iterations to 10000 (which is plenty). Samples are taken from the posterior distribution of the [cloak_bf]{.alt} model and stored in an object which I have called [cloak_post]{.alt}. Finally, we place the posterior samples into `summary()` to see a summary of them.
+
+```{r, eval = F}
+cloak_post <- BayesFactor::posterior(cloak_bf, iterations = 10000)
+summary(cloak_post)
+```
+
+#### `r alien()` Alien coding challenge
+
+Use the example code to obtain samples from the posterior distribution for the [cloak_bf]{.alt} model, and display a summary of them.
+
+```{r bflm_setup, echo = FALSE}
+cloak_bf <- BayesFactor::ttestBF(formula = mischief ~ cloak, data = cloak_tib, rscale = "medium")
+```
+
+```{r lmbfpost, exercise = TRUE, exercise.lines = 3, exercise.setup = "bflm_setup"}
+
+```
+
+
+```{r lmbfpost-solution}
+cloak_post <- BayesFactor::posterior(cloak_bf, iterations = 10000)
+summary(cloak_post)
+```
+
+Because this process is based in sampling from the posterior, the numbers in your output might be slightly different each time you run the code, but they should be approximately the same as this output:
+
+
+```{r, echo = F}
+cloak_bf <- BayesFactor::ttestBF(formula = mischief ~ cloak, data = cloak_tib, rscale = "medium")
+cloak_bayes_sum <- BayesFactor::posterior(cloak_bf, iterations = 10000) %>% summary(.)
+
+
+make_bayes_sum_tibble <- function(bf_sum, index){
+  bf_sum[index] %>%
+    as.data.frame() %>% 
+    tibble::as_tibble(rownames = "predictor")
+}
+
+get_bayes_est <- function(b_mod, row = "mu", index = 2, digits = 2){
+  b_mod <-  make_bayes_sum_tibble(b_mod, 1) %>% 
+    dplyr::right_join(make_bayes_sum_tibble(b_mod, 2), by = "predictor") %>% 
+    dplyr::mutate(
+      dplyr::across(where(is.numeric), ~round(., digits = digits))
+    ) %>% 
+    dplyr::filter(predictor == row) %>% 
+    dplyr::select(predictor, `statistics.Mean`, `quantiles.2.5.`, `quantiles.97.5.`)
+  
+  b_mod[, index] %>% dplyr::pull()
+}
+
+
+```
+
+```{r, echo = F}
+cloak_bayes_sum
+```
+
+
+The values will differ each time you execute the code because they come from a sampling process so your output won't directly match mine. The Bayesian estimate, assuming that the alternative hypothesis is true, of the difference between means (beta) is `r get_bayes_est(cloak_bayes_sum, "beta (No cloak - Cloak)", index = 2)`. We can get a Bayesian credible interval for this difference by looking at the quantiles for beta. Assuming we want a 95% credible interval, we'd read the values from the columns labelled 2.5% and 97.5% in the final part of the output. These values tell us that the Bayesian 95% credible interval ranged from `r get_bayes_est(cloak_bayes_sum, "beta (No cloak - Cloak)", index = 3)` to `r get_bayes_est(cloak_bayes_sum, "beta (No cloak - Cloak)", index = 4)`. In other words, assuming that the effect exists the population value of the effect will be between `r get_bayes_est(cloak_bayes_sum, "beta (No cloak - Cloak)", index = 3)` and `r get_bayes_est(cloak_bayes_sum, "beta (No cloak - Cloak)", index = 4)` with 95% probability. This tells us nothing about the null hypothesis (because we assume the effect exists) but helps us to ascertain the likely population value if we're prepared to accept that the effect exists.
+
+### `r user_astronaut()` Evaluating dependent means [(3)]{.alt}
+
+When we have repeated measures data (i.e., paired scores) we have to enter data slightly different into the `ttestBF` function, rather than using a model formula we enter the variable names containing the scores for each condition, just like we did with the `yuend()` function (see the section on robust methods)
+
+```{r, eval = F}
+BayesFactor::ttestBF(scores_condition_1, scores_condition_2, paired = TRUE, rscale = "medium")
+```
+
+So, we enter the scores for the cloak and no cloak conditions as separate variables. So, as with the `yuend()` function we need the data in messy format (i.e. the cloak and no cloak scores need to be in different columns), which we created earlier in the object [cloak_messy_tib]{.alt}. We must also set [paired = TRUE]{.alt}.
+
+#### `r robot()` Code example
+
+With the caveat that you should think about an appropriate value for the [rscale]{.alt} argument, which scales the prior distribution, we could obtain a Bayes factor using this code:
+
+```{r, eval = F}
+cloak_rm_bf <- BayesFactor::ttestBF(cloak_messy_tib$Cloak, cloak_messy_tib$`No cloak`, paired = TRUE, rscale = "medium")
+```
+
+#### `r alien()` Alien coding challenge
+
+Try fitting the model described above.
+
+```{r bfrm, exercise = TRUE, exercise.lines = 3}
+
+```
+
+```{r bfrm-hint-1}
+# Copy the example code
+cloak_rm_bf <- BayesFactor::ttestBF(cloak_messy_tib$Cloak, cloak_messy_tib$`No cloak`, paired = TRUE, rscale = "medium")
+# remember that you need to add something to view the output ...
+```
+
+```{r bfrm-solution}
+cloak_rm_bf <- BayesFactor::ttestBF(cloak_messy_tib$Cloak, cloak_messy_tib$`No cloak`, paired = TRUE, rscale = "medium")
+cloak_rm_bf
+```
+
+```{r, echo = F}
+cloak_rm_bf <- BayesFactor::ttestBF(cloak_messy_tib$Cloak, cloak_messy_tib$`No cloak`, paired = TRUE, rscale = "medium")
+cloak_rm_bf_est <- round(extractBF(cloak_rm_bf)$bf, 2)
+```
+
+The Bayes factor is `r cloak_rm_bf_est`, which means that the data are `r cloak_rm_bf_est` times as probable under the alternative hypothesis as under the null. In other words, we should shift our belief towards the alternative hypothesis by a factor of about `r round(cloak_rm_bf_est)`. This is strong evidence for the hypothesis that invisibility cloaks lead to more mischief.
+
+We can extract the *b*-values derived from Bayesian estimation and their credible intervals in exactly the same way as we did before.
+
+#### `r alien()` Alien coding challenge
+
+Obtain samples from the posterior distribution for the [cloak_rm_bf]{.alt} model, save them in an object called [cloak_rm_post]{.alt} and display a summary of them.
+
+```{r bfrm_post_setup, echo = FALSE}
+cloak_rm_bf <- BayesFactor::ttestBF(cloak_messy_tib$Cloak, cloak_messy_tib$`No cloak`, paired = TRUE, rscale = "medium")
+```
+
+```{r bfrmpost, exercise = TRUE, exercise.lines = 3, exercise.setup = "bfrm_post_setup"}
+
+```
+
+
+```{r bfrmpost-hint-1}
+### use the posterior function
+xxxxxx <- BayesFactor::posterior(xxxxxx, iterations = 10000)
+```
+
+```{r bfrmpost-hint-2}
+cloak_rm_post <- BayesFactor::posterior(cloak_rm_bf, iterations = 10000)
+# now summarize using summary()
+```
+
+```{r bfrmpost-solution}
+cloak_rm_post <- BayesFactor::posterior(cloak_rm_bf, iterations = 10000)
+summary(cloak_rm_post)
+```
+
+Because this process is based in sampling from the posterior, the numbers in your output might be slightly different each time you run the code, but they should be approximately the same as this output:
+
+
+```{r, echo = F}
+cloak_rm_bayes_sum <- BayesFactor::posterior(cloak_rm_bf, iterations = 10000) %>% summary(.)
+```
+
+```{r, echo = F}
+cloak_rm_bayes_sum
+```
+
+
+The Bayesian estimate of the difference between means is in the column labelled [Mean]{.alt} and the row labelled [mu]{.alt}. The 95% credible interval for this estimate is found from the 2.5% and 97.5% quantiles for mu. These values show that, assuming that the effect exists, the population value of the difference between means is `r get_bayes_est(cloak_rm_bayes_sum, index = 2)` and will fall between `r get_bayes_est(cloak_rm_bayes_sum, index = 3)` and `r get_bayes_est(cloak_rm_bayes_sum, index = 4)` with 95% probability. These values tell us nothing about the null hypothesis (because it assumes the effect exists) but helps us to ascertain the likely population value if we’re prepared to accept that the effect exists. So, we can say with 95% probability that not having a cloak of invisibility will increase mischievous acts by anything as low as `r get_bayes_est(cloak_rm_bayes_sum, index = 3)` up to `r get_bayes_est(cloak_rm_bayes_sum, index = 4)`.
 
 </div>
 

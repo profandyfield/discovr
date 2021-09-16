@@ -1,8 +1,8 @@
-#' discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2021)
+#' discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2022)
 #'
 #' @description
 #'
-#' The `discovr` package contains interactive `learnr` tutorials and datasets that accompany my 2021 textbook [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/).
+#' The `discovr` package contains interactive `learnr` tutorials and datasets that accompany my textbook [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/).
 #'
 #' @section Who is the package aimed at?:
 #'
@@ -35,14 +35,16 @@
 #' * **discovr_05**: Visualizing data. The ggplot2 package, boxplots, plotting means, violin plots, scatterplots, grouping by colour, grouping using facets, adjusting scales, adjusting positions.
 #' * **discovr_06**: The beast of bias. Restructuring data from messy to tidy format (and back). Spotting outliers using histograms and boxplots. Calculating z-scores (standardizing scores). Writing your own function. Using z-scores to detect outliers. Q-Q plots. Calculating skewness, kurtosis and the number of valid cases. Grouping summary statistics by multiple categorical/grouping variables.
 #' * **discovr_07**: Associations. Plotting data with GGally. Pearson's r, Spearman's Rho, Kendall's tau, robust correlations.
-#' * **discovr_08**: The general linear model (GLM). Visualizing the data, fitting GLMs with one and two predictors. Viewing model parameters with broom, model parameters, standard errors, confidence intervals, fit statistics, significance.
-#' * **discovr_09**: Categorical predictors with two categories (comparing two means). Comparing two independent means, comparing two related means, effect sizes.
+#' * **discovr_08**: The general linear model (GLM). Visualizing the data, fitting GLMs with one and two predictors. Viewing model parameters with broom, model parameters, standard errors, confidence intervals, fit statistics, significance, Bayes factors and Bayesian estimates (using default priors).
+#' * **discovr_09**: Categorical predictors with two categories (comparing two means). Comparing two independent means, comparing two related means, effect sizes, robust comparisons of means (independent and related), Bayes factors and estimation (independent and related means).
 #' * **discovr_10**: Moderation and mediation. Centring variables (grand mean centring), specifying interaction terms, moderation analysis, simple slopes analysis, Johnson-Neyman intervals, mediation with one predictor, direct and indirect effects, mediation using lavaan.
 #' * **discovr_11**: Comparing several means. Essentially 'One-way independent ANOVA' but taught using a general linear model framework. Covers setting contrasts (dummy coding, contrast coding, and linear and quadratic trends), the *F*-statistic and Welch's robust *F*, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of means based on trimmed data, *post hoc* tests, Bayes factors.
 #' * **discovr_12**: Comparing means adjusted for other variables. Essentially 'Analysis of Covariance (ANCOVA)' designs but taught using a general linear model framework. Covers setting contrasts, Type III sums of squares, the *F*-statistic, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of adjusted means, *post hoc* tests, Bayes factors.
 #' * **discovr_13**: Factorial designs. Fitting models for two-way factorial designs (independent measures) using both lm() and the afex package. This tutorial builds on previous ones to show how models can be fit with two categorical predictors to look at the interaction between them. We look at fitting the models, setting contrasts for the two categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, partial eta-squared and partial omega-squared, robust models and Bayes factors.
-#' * **discovr_14**: Repeated measures designs. Fitting models for one- and two-way repeated measures designs using the afex package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when these variables ahve been manipulated within the same entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors.
-#' * **discovr_15**: Mixed designs. Fitting models for mixed designs using the afex package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when at least one of these variables has been manipulated within the same entities and at least one other has been manipulated using different entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors.
+#' * **discovr_14**: Multilevel models.
+#' * **discovr_15**: Repeated measures designs. Fitting models for one- and two-way repeated measures designs using the afex package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when these variables ahve been manipulated within the same entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors.
+#' * **discovr_16**: Mixed designs. Fitting models for mixed designs using the afex package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when at least one of these variables has been manipulated within the same entities and at least one other has been manipulated using different entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors.
+#' * **discovr_18**: Exploratory Factor Analysis (EFA). Applying factor analysis using the `psych` package. This tutorial uses a fictitious questionnaire (the <img src="./data-raw/images/r_logo.png" width="18"> Anxiety Scale, RAQ) with 23 items to show how EFA can be used to identify clusters of items that may, or may not, represent constructs associated with anxiety about using <img src="./data-raw/images/r_logo.png" width="18">. We look at inspecting the correlation matrix, obtaining the Bartlett test and KMO statistics, using parallel analysis to determine the number of factors to extract, extracting factors, rotating the solution nd interpretation of the factors. We also learn to obtain Cronbach's alpha on each of the subscales.
 #'
 #' **Workflow**:
 #' The tutorials are self-contained (you practice code in code boxes) so you don't need to use RStudio at the
@@ -146,6 +148,8 @@
 #' * [tuk_2011]: Data about whether needing to urinate helps decision making.
 #' * [zhang_sample]: Data about whether performing a maths test under a different name assists performance.
 #' * [zibarras_2008]: Data from Zibarras, Port, and Woods (2008) relating to the relationship between personality and creativity.
+#' * [zombie_growth]: fictitious data that mimics a randomised control trial over time testing an intervention to transform zombies back to their pre-zombified state.
+#' * [zombie_rehab]: fictitious data that mimics a randomised control trial testing an intervention to transform zombies back to their pre-zombified state in different clinics.
 #'
 #' @section Smart Alex solutions:
 #'
@@ -159,6 +163,28 @@
 #'
 #'Although I recommend working through the interactive solutions, each book Chapter has online code and a downloadable R Markdown file available from [www.discovr.rocks/solutions/leni/](https://www.discovr.rocks/solutions/code/).
 #'
+#' @section Colour palettes:
+#'
+#' ## Colour palettes
+#'
+#' Colour themes based around the studio albums of my favourite band [Iron Maiden](www.ironmaiden.com).
+#'  If you're wondering why some albums are missing, here's the explanation: X Factor (would basically be 8 shades of grey), Fear of the Dark (terrible album), The Book of Souls (would be 8 shades of black).
+#'  The following palettes exist.
+#'
+#' * [amolad_pal]: Colour palette (8 colour) based on Iron Maiden's [A Matter of Life and Death](https://www.ironmaiden.com/discography/details/a-matter-of-life-and-death) album sleeve. In `ggplot2` use [scale_color_amolad] and [scale_fill_amolad].
+#' * [bnw_pal]: Colour palette (8 colour) based on Iron Maiden's [Brave New World](https://www.ironmaiden.com/discography/details/brave-new-world) album sleeve. In `ggplot2` use [scale_color_bnw] and [scale_fill_bnw].
+#' * [dod_pal]: Colour palette (8 colour) based on Iron Maiden's [Dance of Death](https://www.ironmaiden.com/discography/details/dance-of-death) album sleeve. In `ggplot2` use [scale_color_dod] and [scale_fill_dod].
+#' * [frontier_pal]: Colour palette (8 colour) based on Iron Maiden's [The Final Frontier](https://www.ironmaiden.com/discography/details/the-final-frontier) album sleeve. In `ggplot2` use [scale_color_frontier] and [scale_fill_frontier].
+#' * [im_pal]: Colour palette (8 colour) based on Iron Maiden's [eponymous](https://www.ironmaiden.com/discography/details/iron-maiden) album sleeve. In `ggplot2` use [scale_color_im] and [scale_fill_im].
+#' * [killers_pal]: Colour palette (8 colour) based on Iron Maiden's [Killers](https://www.ironmaiden.com/discography/details/killers) album sleeve. In `ggplot2` use [scale_color_killers] and [scale_fill_killers].
+#' * [nob_pal]: Colour palette (8 colour) based on Iron Maiden's [The Number of the Beast](https://www.ironmaiden.com/discography/details/the-number-of-the-beast-album) album sleeve. In `ggplot2` use [scale_color_nob] and [scale_fill_nob].
+#' * [pom_pal]: Colour palette (8 colour) based on Iron Maiden's [Piece of Mind](https://www.ironmaiden.com/discography/details/piece-of-mind) album sleeve. In `ggplot2` use [scale_color_pom] and [scale_fill_pom].
+#' * [power_pal]: Colour palette (8 colour) based on Iron Maiden's [Powerslave](https://www.ironmaiden.com/discography/details/powerslave) album sleeve. In `ggplot2` use [scale_color_power] and [scale_fill_power].
+#' * [prayer_pal]: Colour palette (8 colour) based on Iron Maiden's [No Prayer for the Dying](https://www.ironmaiden.com/discography/details/no-prayer-for-the-dying) album sleeve. Use [scale_color_prayer] and [scale_fill_prayer].
+#' * [senjutsu_pal]: Colour palette (10 colour) based on the inner gatefold image of Iron Maiden's [Senjutsu album](https://www.ironmaiden.com/discography/details/senjutsu) album sleeve. In `ggplot2` use [scale_color_senjutsu] and [scale_fill_senjutsu].
+#' * [sit_pal]: Colour palette (8 colour) based on Iron Maiden's [Somewhere in Time](https://www.ironmaiden.com/discography/details/somewhere-in-time) album sleeve. In `ggplot2` use [scale_color_sit] and [scale_fill_sit].
+#' * [ssoass_pal]: Colour palette (8 colour) based on Iron Maiden's [Seventh Son of a Seventh Son](https://www.ironmaiden.com/discography/details/seventh-son-of-a-seventh-son) album sleeve. In `ggplot2` use [scale_color_ssoass] and [scale_fill_ssoass].
+#' * [virtual_pal]: Colour palette (8 colour) based on Iron Maiden's [Virtual IX](https://www.ironmaiden.com/discography/details/virtual-xi) album sleeve. In `ggplot2` use [scale_color_virtual] and [scale_fill_virtual].
 #'
 #' @section References:
 #'

@@ -14,7 +14,7 @@ A tibble with 52 rows and 4 variables
 zhang_sample
 }
 \description{
-A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Statistics and maths anxiety are common and affect people's performance on maths and stats assignments; women in particular can lack confidence in mathematics (Field, 2010).

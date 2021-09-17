@@ -14,7 +14,7 @@ A tibble with 2506 rows and 2 variables.
 metal_health
 }
 \description{
-A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Lacourse et al. (2001) conducted a study to see whether suicide risk was related to listening to heavy metal music.

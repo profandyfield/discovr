@@ -14,7 +14,7 @@ A tibble with 207 rows and 12 variables.
 zibarras_2008
 }
 \description{
-A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Zibarras, Port, and Woods (2008) looked at the relationship between personality and creativity.

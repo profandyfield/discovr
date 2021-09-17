@@ -14,7 +14,7 @@ A tibble with 78 rows and 2 variables.
 catterplot
 }
 \description{
-A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Fictional data for plotting a catterplot. The object contains the following variables:

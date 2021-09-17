@@ -14,7 +14,7 @@ A tibble with 8 rows and 2 variables.
 pubs
 }
 \description{
-A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Data illustrating the difference between an outlier and an influencial case. The data came to me via David Hitchin, and he in turn got it from Dr Richard Roberts.

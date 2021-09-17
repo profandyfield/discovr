@@ -14,7 +14,7 @@ A tibble with 80 rows and 4 variables.
 invisibility_base
 }
 \description{
-A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 In \link{invisibility_cloak} we compared the number of mischievous acts in people who had invisibility cloaks to

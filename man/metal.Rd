@@ -14,7 +14,7 @@ A tibble with 90 rows and 4 variables.
 metal
 }
 \description{
-A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 People have claimed that listening to heavy metal, because of its aggressive sonic palette and often violent or emotionally negative lyrics,

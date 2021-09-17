@@ -14,7 +14,7 @@ A tibble with 70 rows and 6 variables.
 muris_2008
 }
 \description{
-A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Anxious people tend to interpret ambiguous information in a negative way. For example, being highly anxious myself,

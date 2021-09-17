@@ -14,7 +14,7 @@ A tibble with 20 rows and 3 variables.
 teaching
 }
 \description{
-A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 The data show the score (out of 20) for 20 different students, some of whom are biologically male and others biologically female,

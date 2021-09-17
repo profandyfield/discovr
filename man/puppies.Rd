@@ -14,7 +14,7 @@ A tibble with 15 rows and 3 variables.
 puppies
 }
 \description{
-A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Despite the increase in puppies on my campus (which can only be a good thing) to reduce stress,

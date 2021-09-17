@@ -14,7 +14,7 @@ A tibble with 16 rows and 5 variables.
 beckham_1929
 }
 \description{
-A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 During my psychology degree I spent a lot of time reading about the civil rights movement in the USA. Instead of reading psychology,

@@ -14,7 +14,7 @@ A tibble with 1000 rows and 3 variables.
 self_help_dsur
 }
 \description{
-A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Twaddle and Sons, the publishers of Women are from Bras and men are from Penis, were upset about my claims

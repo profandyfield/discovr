@@ -14,7 +14,7 @@ A tibble with 200 rows and 5 variables.
 album_sales
 }
 \description{
-A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Fictitious data that imagines a world where I have a cool job in the music industry. Except, it's not \emph{that} cool because

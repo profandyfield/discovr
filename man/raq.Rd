@@ -14,7 +14,7 @@ A tibble with 2,571 rows and 24 variables.
 raq
 }
 \description{
-A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Fictitious data relating to a fictional questionnaire about R anxiety. I can't stress enough how fictional this example is. Like, don't email me for the questionnaire

@@ -14,7 +14,7 @@ A tibble with 810 rows and 5 variables.
 glastonbury
 }
 \description{
-A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 More fictional data about people stinking at music festivals. The same biologist who was worried about the potential health effects of music festivals and

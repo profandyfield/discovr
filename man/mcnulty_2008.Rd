@@ -14,7 +14,7 @@ A tibble with 164 rows and 5 variables
 mcnulty_2008
 }
 \description{
-A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 McNulty et al. (2008) found a relationship between a person's attractiveness and how much support they give their partner among newlywed heterosexual couples.

@@ -14,7 +14,7 @@ A tibble with 240 rows and 6 variables
 lambert_2012
 }
 \description{
-A dataset from Field, A. P. (2021). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Lambert et al. (2012) found that pornography is related to infidelity. This object contains the data from that study.

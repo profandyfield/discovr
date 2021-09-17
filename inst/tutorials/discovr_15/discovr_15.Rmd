@@ -1,5 +1,5 @@
 ---
-title: "discovr: Mixed designs (GLM 5)"
+title: "discovr: Repeated measures designs (GLM 4)"
 author: "Andy Field"
 output:
   learnr::tutorial:
@@ -8,7 +8,7 @@ output:
     theme: "united"
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
-description: "Mixed designs. Fitting models for mixed designs using the afex package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when at least one of these variables has been manipulated within the same entities and at least one other has been manipulated using different entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors."
+description: "Repeated measures designs. Fitting models for one- and two-way repeated measures designs using the afex package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when these variables ahve been manipulated within the same entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors."
 bibliography: discovr_15.bib
 ---
 <html lang="en">
@@ -38,15 +38,12 @@ source("./www/discovr_helpers.R")
 
 #Read data files needed for the tutorial
 
-date_tib <- discovr::speed_date
-profile_tib <- discovr::profile_pic
+sniff_tib <- discovr::sniffer_dogs
+scent_tib <- discovr::alien_scents
 
-# create main model
-
-date_afx <- afex::aov_4(date ~ strategy*looks*personality + (looks*personality|id), data = date_tib)
 ```
 
-# discovr: Mixed designs (GLM 5)
+# discovr: Repeated measures designs (GLM 4)
 
 ## Overview
 
@@ -119,65 +116,57 @@ library(tidyverse)
 
 To work *outside of this tutorial* you need to download the following data files:
 
-* [speed_date.csv](https://www.discovr.rocks/csv/speed_date.csv)
-* [profile_pic.csv](https://www.discovr.rocks/csv/profile_pic.csv)
+* [alien_scents.csv](https://www.discovr.rocks/csv/alien_scents.csv)
+* [sniffer_dogs.csv](https://www.discovr.rocks/csv/sniffer_dogs.csv)
 
 Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
 
 ```{r, eval=FALSE}
-date_tib <- here::here("data/speed_date.csv") %>%
+scents_tib <- here::here("data/alien_scents.csv") %>%
   readr::read_csv() %>%
    dplyr::mutate(
-    strategy = forcats::as_factor(strategy) %>% forcats::fct_relevel("Normal", "Hard to get"),
-    looks = forcats::as_factor(looks) %>% forcats::fct_relevel("Low", "Average", "High"),
-    personality = forcats::as_factor(personality) %>% forcats::fct_relevel("Low", "Average", "High"),
+      entity = forcats::as_factor(entity) %>% forcats::fct_relevel("Human", "Shapeshifter", "Alien"),
+      scent_mask = forcats::as_factor(scent_mask) %>% forcats::fct_relevel("None", "Human", "Fox"),
   )
 ```
 
-This code reads in the data and converts the variables **strategy**, **looks** and **personality** to be factors (categorical variable). It also uses `fct_relevel()` to set the order of the levels of each factor.
+This code reads in the data and converts the variables **entity** and **scent_mask** to a factor (categorical variable). It also uses `fct_relevel` to set the order of the levels of the factor **entity** to be human, shapeshifter, and alien. Similarly, the order of the levels of the factor **scent_mask** are set as none, human, and fox.
 
-For the profile picture data use the code below. The variables **rel_status** and **profile_pic** are converted to factors and the reference category for each is set using `fct_relevel()`:
+For the sniffer dogs data use the code below (which, like the code above converts the variable **entity** to a factor):
 
 ```{r, eval=FALSE}
-profile_tib <- here::here("data/profile_pic.csv") %>%
+sniff_tib <- here::here("data/sniffer_dogs.csv") %>%
   readr::read_csv() %>%
-   dplyr::mutate(
-    rel_status = forcats::as_factor(rel_status) %>% forcats::fct_relevel("Single"),
-    profile_pic = forcats::as_factor(profile_pic) %>% forcats::fct_relevel("Alone")
+  dplyr::mutate(
+    entity = forcats::as_factor(entity)
   )
 ```
 
-## `r bmu()` A speed dating example [(2)]{.alt}
+## `r bmu()` Aliens and sniffer dogs [(2)]{.alt}
 
-The main examples in this tutorial are from [@field_discovering_2021]. A big discussion in magazines seems to be the factors that get you a relationship, for example, the relative importance of looks, personality, and dating strategies (whether you should ‘treat them mean to keep them keen’ and all that stuff). Scientists have looked at these issues too. For example, the top three most highly rated attributes of a partner in teenagers are reliability, honesty and kindness [@ha_effects_2010]. Beyond that, in the same study boys tended to rate attractiveness slightly higher than girls, and girls rate a sense of humour more highly than boys (although both are ranked in the top 10 by both sexes). With regard to dating strategies, @dai_when_2014 suggest that if someone is committed to pursuing a relationship with a person who plays hard to get, they will find that person more desirable but less likeable.
-
-Imagine a scientist designed a study to look at the interplay between looks, personality and dating strategies on evaluations of a date. She set up a speed-dating night with nine tables at which there sat a ‘date’. All the dates were stooges selected to vary in their attractiveness (high, average, and low), you might remember from a previous lecture that this could perhaps be gauged with facial symmetry (symmetrical faces tend to be perceived as more attractive). The dates were trained to vary their charisma (high, average, low), and also the strategy they employ during the conversation (normal or playing hard to get). The stooge dates were trained before the study to act charismatically to varying degrees, and also how to act in a way that made them seem unobtainable (hard to get) or not. As such, across the nine dates/stooges there were three attractive dates, one of whom acted charismatically, one who acted normally (average) and another who acted like they write statistics books, and likewise for the three average-looking dates and the three low attractiveness dates.
-
-Therefore, each participant attending the speed-dating night was exposed to all combinations of attractiveness and charisma (these are repeated measures). (There were separate sets of nine male stooges and nine females so that those attending could meet ‘dates’ of whichever sex interested them.) Upon arrival participants were randomly assigned a green or red sticker. For the participants with the red sticker the stooges played hard to get (unobtainable) and for those with a green sticker they acted normally. Over the course of a few nights 20 people attended, spent 5 minutes with each of the nine ‘dates’ and then rated how much they’d like to have a proper date with each one as a percentage (100% = ‘I’d pay a large sum of money for their phone number’, 0% = ‘I’d pay a large sum of money for a plane ticket to get me as far away from them as possible’).
+The main examples in this tutorial are from [@field_discovering_2021]. When the alien invasion comes we’ll need spaniels (or possibly other dogs, but lets hope its mainly spaniels because spaniels are cool) to help us to identify the space lizards. Having got wind of a potential invasion from alien space lizards, some of whom could shapeshift into humanoid form, the top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) met to come up with a plan for detecting the invading space lizards. They decided to test the plausibility of training sniffer dogs to detect aliens. Over many trials 8 of their best dogs (Milton, Woofy, Ramsey, Mr. Snifficus III, Willock, The Venerable Dr. Waggy, Lord Scenticle, and Professor Nose) were recruited for a pilot study. During training, these dogs were rewarded for making vocalisations while sniffing alien space lizards (which they happened to have a few of in Hangar 18). On the test trial, the 8 dogs were allowed to sniff 4 entities for 1-minute each: an alien space lizard, a shapeshifting alien space lizard who had taken on humanoid form and worked undetected as a statistics lecturer, a human, and a human mannequin). The number of vocalisations made during each 1-minute sniffing session was recorded. So, this is a [repeated measures design]{.alt}: each dog has four scores representing the number of vocalisations they made while sniffing each of the four entities. If training has been successful the dogs should vocalise more when sniffing space lizards.
 
 #### `r alien()` Alien coding challenge
 
-View the data in [date_tib]{.alt}.
+View the data in [sniff_tib]{.alt}.
 
-```{r date_tib, exercise = TRUE, exercise.lines = 2}
+```{r sniff_tib, exercise = TRUE, exercise.lines = 2}
 
 ```
 
-```{r date_tib-solution}
-date_tib
+```{r sniff_tib-solution}
+sniff_tib
 ```
 
-Note that there are four variables: the **id**, which is a character variable (note the [<chr>]{.alt} under the name), **strategy** (normal or hard to get), **looks** (high, average, low) and **personality** (high, average or low charisma), which are all factor variables (note the [<fct>]{.alt} under the name) and **date** (the rating of how much the participant would like a date with the stooge), which is numeric and has the data type 'double' (note the [<dbl>]{.alt} under the name).
+Note that there are three variables: the **dog_name**, which is a character variable (note the [<chr>]{.alt} under the name), **entity** (alien, shapeshifter, human, mannequin), which is a factor (note the [<fct>]{.alt} under the name) and **vocalisations** (the number of vocalisations made during 1 minute of sniffing), which is numeric and has the data type 'double' (note the [<dbl>]{.alt} under the name). The data are in tidy format, which means that each row represents an instance of the outcome variable and the columns code information about each instance, for example, which dog the instance is related to and what they sniffed. Consequently each dog occupies 4 rows of the tibble (because each dog contributes four instances of the outcome variable, **vocalisations**).
 
-The data are in tidy format, which means that each row represents an instance of the outcome variable and the columns code information about each instance, for example, which participant the instance is related to and the characteristics of each of the 9 'dates' they met. Consequently each participant occupies 9 rows of the tibble (because each participant contributes 9 instances of the outcome variable, **date**).
-
-The variables **strategy**, **looks** and **personality** are factors (categorical variable), so having read the data file and converted these variables to factors it's a good idea to check the order of the levels for each one.
+The variable **entity** is a factor (categorical variable), so having read the data file and converted this variable to a factor it's a good idea to check the order of the levels of this variables.
 
 #### `r alien()` Alien coding challenge
 
-Using what you've learnt in previous tutorials check the order of the levels of the variables **strategy**, **looks** and **personality**.
+Using what you've learnt in previous tutorials check the order of the levels of the variables **entity**.
 
-```{r chk_levels, exercise = TRUE, exercise.lines = 4}
+```{r chk_levels, exercise = TRUE, exercise.lines = 3}
 
 ```
 
@@ -195,131 +184,651 @@ name_of_tibble$name_of_variable
 ```{r chk_levels-hint-3}
 # solution:
 
-levels(date_tib$strategy)
-levels(date_tib$looks)
-levels(date_tib$personality)
+levels(sniff_tib$entity)
 ```
 
-You'll find that the factor levels are in a sensible order:
-
-* For **strategy**, the baseline category is 'normal', which makes sense.
-* For **looks** and **personality**, the factor levels are ordered low, average, high. This makes sense because low is the baseline and the levels go in ascending order.
-
-These orders are because I set the data up within this tutorial. Working outside of the tutorial you might need to manually set the order of levels for each factor using `forcats::fct_relevel()` as described in [Data]{.alt} part of this tutorial.
-
+You should find that the levels are ordered as alien, human, mannequin, and shapeshifter.
 
 ### `r bmu()` Exploring the data [(1)]{.alt}
 
-We can create means, confidence intervals and plots in the usual way using `ggplot2` and `dplyr` but for this tutorial we will use the methods built into the `afex` package.
+#### `r alien()` Alien coding challenge
 
-## `r user_visor()` Contrasts [(2)]{.alt}
+Use what you already know to compute the mean and a 95% confidence interval of vocalisations split by the entity that the dog was sniffing.
 
-Before we fit the model we need to think about what contrasts would be sensible. The variable, **looks**, has three conditions: high, average and low attractiveness. It makes sense to compare the high and low conditions to the average because the average person represents the norm (although it wouldn’t be wrong to, for example, compare high and average attractiveness to low attractiveness).
+```{r sniff_sum, exercise = TRUE, exercise.lines = 7}
 
-Similarly, **personality** has a category, average charisma, that represents the norm. So, we could use this as the reference/control against which to compare our two extremes (when the date displays high and low charisma).
-
-To implement contrasts we can use the `emmeans::contrast()` function, which we have used before to set our own bespoke contrasts. This function also has some built in methods, that will make our life easier. You might remember from [discovr_14]{.alt} that the function takes this general form:
-
-```{r, eval = F}
-emmeans::contrast(my_emm_object, my_contrasts, adjust = "holm")
 ```
 
-In which we replaced [my_emm_object]{.alt} with an object that contains the estimated marginal means for the effect of interest, and we replaced [my_contrasts]{.alt} with the name of the object containing our bespoke contrasts. To use the built in contrasts, we use the [method]{.alt} argument instead of [my_contrasts]{.alt}:
-
-```{r, eval = F}
-emmeans::contrast(my_emm_object, method = "eff", adjust = "holm")
+```{r sniff_sum-hint-1}
+# Start by piping the tibble into the group_by function to group output by scent_mask and entity:
+sniff_tib %>% 
+  dplyr::group_by(scent_mask, entity)
+# Now pipe the results into the summarize() function
 ```
 
-Be default the method is set to [eff]{.alt}. Here are some of the different settings we can use:
-
-* [eff]{.alt}: each level/category of a variable is compared to the average of all levels/categories.
-* [pairwise]{.alt}: each level/category is compared to all other levels/categories in turn.
-* [poly]{.alt}: polynomial contrasts (i.e. tests for an ordered trend in category means).
-* [trt.vs.ctrl]{.alt}: compares each level/category to a declared reference category (by default the first category). Use [ref = x]{.alt} to make [x]{.alt} the reference category. For example. [ref = 2]{.alt} will compare each level/category to the second level.
-* [consec]{.alt}: compares each level/category (except the first) to the previous category. 
-
-Given that we want to set contrasts for both **looks** and **personality** that compare each category to *average*, and we know from the previous exercise that 'average' is the second factor level for both variables, we could set contrasts for both variables using [trt.vs.ctrl]{.alt} and [ref = 2]{.alt}. Remember this as we work through the tutorial.
-
-## `r user_visor()` Fitting a model to a mixed design [(2)]{.alt}
-
-We can fit a model that predict the rating of the date from **strategy**, **looks** and **personality** using the `afex` package, which we met in **discovr_13** and **discovr_14**. 
-
-We can use the `aov_4()` function in much the same way as in **discovr_14**. Remember that the `aov_4()` function has the following format:
-
-```{r, eval = F}
-afex::aov_4(outcome ~ predictors + (rm_predictors|id_variable), data = my_tib)
+```{r sniff_sum-hint-2}
+# Pipe the results into the summarize() function
+sniff_tib %>% 
+  dplyr::group_by(entity) %>% 
+  dplyr::summarize()
+# Within summarize(), use the mean() function to create a variable that is the mean attractiveness score
 ```
 
-<div class="tip">
-  `r cat_space()` **Tip:**
+```{r sniff_sum-hint-3}
+# Use the mean() function to create a variable that is the mean attractiveness score:
+sniff_tib %>% 
+  dplyr::group_by(entity) %>% 
+  dplyr::summarize(
+    mean = mean(vocalisations, na.rm = TRUE)
+  )
+# Add two more rows that use mean_cl_normal to calculate the lower and upper boundary of the 95% confidence interval
+```
 
-Remember that we can specify all main effects and their interactions using `*`. For example, `strategy*looks*personality` will introduce the main effect of **strategy**, the main effect of **looks**, the main effect of **personality**, all of the two-way interaction terms ($\text{strategy} \times \text{looks}$, $\text{strategy} \times \text{personality}$, and $\text{looks} \times \text{personality}$), and the three-way interaction ($\text{strategy} \times \text{looks} \times \text{personality}$).
+```{r sniff_sum-hint-4}
+# Solution
+sniff_tib %>% 
+  dplyr::group_by(entity) %>% 
+  dplyr::summarize(
+    mean = mean(vocalisations, na.rm = TRUE),
+    `95% CI lower` = mean_cl_normal(vocalisations)$ymin,
+    `95% CI upper` = mean_cl_normal(vocalisations)$ymax
+  )
+```
 
-</div>
+It looks like the dogs made the most vocalisations when sniffing the alien and shapeshifting alien, which is what we would expect if training was successful.
 
+#### `r alien()` Alien coding challenge
 
-In the current design, we can specify the predictors and their interaction using [strategy\*looks\*personality]{.alt}, therefore, we replace [predictors]{.alt} in the code above with [strategy\*looks\*personality]{.alt}. We also need to specify which predictors are repeated measures by specifying which variables are nested within the participant. Remembering that the variable that uniquely identifies the participants is [id]{.alt}, we'd replace [(rm_predictors|id_variable)]{.alt} with [(looks\*personality|id)]{.alt} to indicate that the variables **looks**, **personality** and their interaction are (repeated measures) nested within the variable **id**.
+Use what you already know to plot the mean and a 95% confidence interval of vocalisation scores split by the entity (*x*-axis). Try plotting the raw data under the error bars in a different colour.
+
+```{r sniff_gg, exercise = TRUE, exercise.lines = 7}
+
+```
+
+```{r sniff_gg-hint-1}
+# Start by setting up the plot (replace the xs):
+ggplot2::ggplot(xxxxx, aes(x = xxxxx, y = xxxxx)) 
+
+```
+
+```{r sniff_gg-hint-2}
+# Now use geom_point() to add the raw data. I've used position_jitter to add a random horizontal adjustment so that the dots don't line up vertically. Feel free to change the colour by replacing #2C5577 with a different HEX code. 
+ggplot2::ggplot(sniff_tib, aes(x = entity, y = vocalisations)) +
+  geom_point(colour = "#2C5577", alpha = 0.7, position = position_jitter(width = 0.1)) +
+```
+
+```{r sniff_gg-hint-3}
+# Now use stat_summary() to add the data (replace the xs)
+ggplot2::ggplot(sniff_tib, aes(x = entity, y = vocalisations)) +
+  geom_point(colour = "#2C5577", alpha = 0.7, position = position_jitter(width = 0.1)) +
+  stat_summary(fun.data = "xxxxx", geom = "xxxxxx")
+```
+
+```{r sniff_gg-hint-4}
+# Use coord_cartesian() and scale_y_continuous to set the limits and breaks for the y-axis to be whole numbers between 0 and 10 (replace the xs):
+ggplot2::ggplot(sniff_tib, aes(x = entity, y = vocalisations)) +
+  geom_point(colour = "#2C5577", alpha = 0.7, position = position_jitter(width = 0.1)) +
+  stat_summary(fun.data = "mean_cl_normal", geom = "pointrange") +
+  coord_cartesian(xxxxxx) +
+  scale_y_continuous(xxxxx)
+```
+
+```{r sniff_gg-hint-5}
+# use labs() to add axis labels to the x, y and colour legend (replace xxxs):
+ggplot2::ggplot(sniff_tib, aes(x = entity, y = vocalisations)) +
+  geom_point(colour = "#2C5577", alpha = 0.7, position = position_jitter(width = 0.1)) +
+  stat_summary(fun.data = "mean_cl_normal", geom = "pointrange") +
+  coord_cartesian(ylim = c(0,10)) +
+  scale_y_continuous(breaks = 0:10) +
+  labs(x = "xxxxxxx", y = "xxxxxxx")
+```
+
+```{r sniff_gg-hint-6}
+# add a theme (replace the xs):
+ggplot2::ggplot(sniff_tib, aes(x = entity, y = vocalisations)) +
+  geom_point(colour = "#2C5577", alpha = 0.7, position = position_jitter(width = 0.1)) +
+  stat_summary(fun.data = "mean_cl_normal", geom = "pointrange") +
+  coord_cartesian(ylim = c(0,10)) +
+  scale_y_continuous(breaks = 0:10) +
+  labs(x = "Entity sniffed", y = "Number of vocalisations") +
+  xxxxxx()
+```
+
+```{r sniff_gg-solution}
+# Solution
+ggplot2::ggplot(sniff_tib, aes(x = entity, y = vocalisations)) +
+  geom_point(colour = "#2C5577", alpha = 0.7, position = position_jitter(width = 0.1)) +
+  stat_summary(fun.data = "mean_cl_normal", geom = "pointrange") +
+  coord_cartesian(ylim = c(0,10)) +
+  scale_y_continuous(breaks = 0:10) +
+  labs(x = "Entity sniffed", y = "Number of vocalisations") +
+  theme_minimal()
+```
+
+The plot reiterates what we know from the means: dogs made the most vocalisations when sniffing the alien and shapeshifting alien, which is what we would expect if training was successful.
+
+### `r user_visor()` The model [(2)]{.alt}
+
+The model we're fitting is described by the following equation (which is simplified in that I have represented the predictor variable **entity** as a single variable rather than the three dummy variables that represent it in the actual fitted model):
+
+$$
+\begin{aligned}
+\hat{\text{vocalisations}}_{ij} & = \hat{b}_{0j} + \hat{b}_{1j}\text{entity}_{ij}+ e_{ij}\\
+\hat{b}_{0j} & = \hat{b}_0 + \hat{u}_{0j} \\
+\hat{b}_{1j} & = \hat{b}_1 + \hat{u}_{1j}
+\end{aligned}
+$$
+
+The main difference to models we have seen before is that the intercept ($\hat{b}_{0j}$) is made up of the overall intercept ($\hat{b}_0$) and an estimate of the variance of intercepts for each individual ($\hat{u}_{0j}$). Put another way, we model the fact that individual dogs will vary in the overall number of vocalisations they make. We can also model the fact that individual dogs will differ in their ability to discriminate the four entities, and these individual differences can be modelled by entertaining the possibility that the effect of entity is made up of the overall effect ($\hat{b}_{1j}$) and an estimate of how much the effect varies from dog to dog, or the variance in the effect across dogs ($\hat{u}_{1j}$).
+
+## `r bmu()` Fitting a repeated measures model [(1)]{.alt}
+
+We can fit a simple overall model of type of entity predicting the number of dog vocalisations using the `afex` package, which we met in **discovr_13**. In the previous tutorial we saw that we can fit a model using this code:
+
+```{r, eval = F}
+afex::aov_4(outcome ~ predictor + (1|id_variable), data = my_tib)
+```
+
+In which we replace [my_tib]{.alt} with the name of our tibble. When we have a repeated measures design we make one important change to this code. Instead of using [1|id_variable]{.alt}, we need to tell the function that any repeated measures predictor variables (lets call them **rm_predictors**) are nested within individual participants. Therefore, this term changes to (in general) [(rm_predictors|id_variable)]{.alt}:
+
+```{r, eval = F}
+afex::aov_4(outcome ~ predictor + (rm_predictors|id_variable), data = my_tib)
+```
+
+In the current design, there is only one repeated measures predictor variable, which is [entity]{.alt} and the variable that uniquely identifies the different dogs is [dog_name]{.alt}, therefore, we'd replace [(rm_predictors|id_variable)]{.alt} with [(entity|dog_name)]{.alt} to indicate that the variable **entity** is nested within the variable **dog_name**. Other than this change the function is used in the same way that we have used it before.
 
 #### `r robot()` Code example
 
-Remembering that the outcome variable is **date**, and the tibble containing the data is called [date_tib]{.alt}, we can put it all together to fit the model with this code:
+Remembering that the outcome variable is **vocalisations**, and the tibble containing the data is called [sniff_tib]{.alt}, we can put it all together to fit the model with this code:
 
 ```{r, eval = F}
-date_afx <- afex::aov_4(date ~ strategy*looks*personality + (looks*personality|id), data = date_tib)
-date_afx
+sniff_afx <- afex::aov_4(vocalisations ~ entity + (entity|dog_name), data = sniff_tib)
+sniff_afx
 ```
 
 #### `r alien()` Alien coding challenge
 
 Use the `aov_4()` function to fit the model.
 
-```{r date_aov_4, exercise = TRUE, exercise.lines = 2}
+```{r sniff_aov_4, exercise = TRUE, exercise.lines = 2}
 
 ```
 
-```{r date_aov_4-hint-1}
+```{r sniff_aov_4-hint-1}
 # fit the model (replace the xs):
-date_afx <- afex::aov_4(xxxxxx ~ xxxx*xxxxx*xxxxx + (xxxxx*xxxxx|xxxxx), data = xxxxx)
+sniff_afx <- afex::aov_4(xxxxx ~ xxxxx*xxxxx + (xxxx|xxxxx), data = xxxxx)
 ```
 
-```{r date_aov_4-solution}
+```{r sniff_aov_4-solution}
 # fit the model:
-date_afx <- afex::aov_4(date ~ strategy*looks*personality + (looks*personality|id), data = date_tib)
-date_afx #this shows us the model
+sniff_afx <- afex::aov_4(vocalisations ~ entity + (entity|dog_name), data = sniff_tib)
+sniff_afx #this shows us the model
 ```
 
-Working down from the top of the table, we find a non-significant effect of **strategy** but significant effects (the [p.value]{.alt} is less than 0.05) of **looks**, the **strategy × looks** interaction, **personality**, the **strategy × personality** interaction, the **looks × personality** interaction and the **strategy × looks × personality** interaction. Everything, basically. You wouldn’t normally be interested in main effects when there are significant interactions. In fact, the only effect we're really interested in is the significant **strategy × looks × personality** interaction, but  for completeness of your understanding we’ll interpret each effect in turn, starting with the main effect of **strategy**.
+```{r qn_sphericity_ex1, echo = F}
+quiz(caption = "One-way repeated measures quiz (level 2)",
+  question("Which of the following statements about the assumption of sphericity is false?",
+         answer("It is the assumption that the variances for levels of a repeated-measures variable are equal.", correct = T, message = "This is false, therefore it is the correct answer. Sphericity refers to the equality of variances of the *differences* between treatment levels."),
+         answer("It is automatically met when a variable has only two levels.", message = "This statement is true, therefore it is the incorrect answer. When we have only two levels of the within-subjects variable, there is only one pair of differences and therefore only one 'variance of differences', so there is no other 'variance of differences' to compare it to"),
+         answer("If it is not met then it is remedied by adjusting the degrees of freedom by the degree to which the data are not spherical", message = "This statement is true, therefore it is the incorrect answer."),
+         correct = "Correct - well done!",
+         allow_retry = T,
+         random_answer_order = T
+),
+question("How would you interpret the effect of **entity** in the output?",
+         answer("The number of vocalisations was significantly different across the entities sniffed because the Greenhouse-Geisser adjusted *p*-value associated with the *F*-statistic is 0.063, which is greater than than the criterion value of 0.05.", message = "This answer is incorrect, notwithstanding how pointless the 0.05 cutoff is, technically this effect is not significant."),
+         answer("The number of vocalisations was *not* significantly different across the entities sniffed because the Greenhouse-Geisser adjusted *p*-value associated with the *F*-statistic is 0.063, which is greater than than the criterion value of 0.05.", correct = T, message = "This answer is correct, although note that this illustrates the artibtrary nature of having a cut off value to determine significance."),
+         correct = "",
+         allow_retry = T,
+         random_answer_order = T
+)
+)
+```
 
-### `r user_visor()` The main effect of **strategy** [(2)]{.alt}
+### `r user_visor()` Effect size for the overall effect [(2)]{.alt}
 
-```{r qu_strategy, echo = F}
-quiz(caption = "The main effect of strategy (level 2)",
-     question("How would you interpret the effect of **strategy**?",
-              answer("There was a non-significant effect of strategy because the *p*-value is 0.949, which is greater than 0.05. This effect tells us that if we ignore all other variables, ratings were equivalent regardless of whether the date adopted a hard to get persona or not.", correct = T),
-              answer("There was a significant effect of strategy because the *p*-value is 0.949, which is greater than 0.05. This effect tells us that if we ignore all other variables, ratings were depended on whether the date adopted a hard to get persona or not.", message = "A *p* value *less* than 0.05 is typically interpretted as a significant effect."),
+We've discussed many times that having a single arbitrary cut-off for significance is problematic. In this case, the effect of **entity** was just about non-significant (*p* = 0.063), but the sample size is tiny (8 dogs), so the *F*-statistic will have been hugely underpowered to detect an effect. The effect size is a useful additional piece of information, so let's get it. In previous tutorials we used partial omega-squared $\omega^2_p$, which we can't get directly from `aov_4()`. However, it does, by default, calculate generalized partial eta-squared ($\eta^2_{G}$), and puts it in the column labelled [ges]{.alt}. 
+
+Generalized partial eta-squared differs from eta-squared in ways that you probably don't care about. (tl;dr: $\eta^2_{G}$ is more consistent than $\eta^2_{p}$ across study designs.) We can interpret it in much the same way, for our data, **entity** explains about 32.7% of the variance in vocalisations, which is a very substantial effect despite what the *p*-value might have you believe. 
+
+### `r bmu()` Estimated marginal means [(1)]{.alt}
+
+The results of the overall *F*-statistic showed no significant effect of the variable **entity**,  , suggesting that the number of dog vocalisations were not significantly different across the four entities that they sniffed. Had we found a significant test, we might have wanted to know which entities differed. As we have seen before we can do this using contrasts or *post hoc* tests. To do these we first need to obtain and store the estimated marginal means using the `emmeans()` function from the `emmeans` package, which we used in [discovr_13]{.alt}. Place the name of your `afex` model into the function and include the name of the predictor. Unlike in the previous tutorial we need to include [model = "multivariate"]{.alt} in the function, which means that contrasts are computed using test statistics that do not assume sphericity.
+
+#### `r robot()` Code example
+
+To get the estimated marginal means for the model that predicts dog vocalisations from the entity sniffed, and to save it in an object called [sniff_emm]{.alt} we'd execute:
+
+```{r, eval = F}
+sniff_emm <- emmeans::emmeans(sniff_afx, ~entity, model = "multivariate")
+```
+
+#### `r alien()` Alien coding challenge
+
+Obtain the estimated marginal means for the effect of **entity** and store them as [sniff_emm]{.alt}
+
+```{r fit_afx}
+sniff_afx <- afex::aov_4(vocalisations ~ entity + (entity|dog_name), data = sniff_tib)
+sniff_emm <- emmeans::emmeans(sniff_afx, ~entity, model = "multivariate")
+```
+
+```{r afx_emm, exercise = TRUE, exercise.lines = 4, exercise.setup = "fit_afx"}
+
+```
+
+```{r afx_emm-hint-1}
+# replace the Xs
+sniff_emm <- emmeans::emmeans(xxxxxx, ~xxxxxx, model = "xxxxxx")
+```
+
+```{r afx_emm-solution}
+sniff_emm <- emmeans::emmeans(sniff_afx, ~entity, model = "multivariate")
+sniff_emm # shows us the means
+```
+
+The estimated marginal means show us what we already know, that sniffer dogs made the most vocalisations when sniffing the alien or the alien in humanoid form (shapeshifter), and made fewer vocalisations when sniffing the human or mannequin. We can use the object containing these means, [sniff_emm]{.alt}, to compute contrasts.
+
+### `r user_visor()` Planned contrasts [(2)]{.alt}
+
+If the dog training had been successful then we'd expect sniffer dogs to make more vocalisations when sniffing alien entities than non alien-entities. Therefore, our first contrast would be to compare vocalisations to alien entities (aliens and shapeshifting aliens) against those for humans and mannequin:
+
+* Contrast 1: {alien, shapeshifter} vs. {human, mannequin}
+
+We have two 'chunks' in contrast 1 that would then need to be decomposed:
+
+* Contrast 2: {alien} vs. {shapeshifter}
+* Contrast 3: {human} vs. {mannequin}
+
+If we follow the rules that we learnt about contrast coding we'd:
+
+* Have $k-1$ contrasts, and with 4 groups that means 3 contrasts. We have already defined these contrasts.
+* For each contrast, assign one chunk positive weights and the other negative.
+* For each contrast, assign an initial weight equal to the number of groups in the opposite chunk
+* For each contrast, assign a final weight by dividing the initial weight by the number of groups with non-zero weights
+
+Following these rules we'd end up with the contrasts in Table 1. (It might help you to figure out from where the values come to note that 2/4 = 1/2.)
+
+```{r con_tbl, echo = FALSE, results = 'asis'}
+con_tbl <- tibble(
+  `Group` = c("Alien", "Human", "Mannequin", "Shapeshifter"),
+  `Contrast 1 (aliens vs. non-aliens)` = c("1/2", "-1/2", "-1/2", "1/2"),
+  `Contrast 2 (alien vs. shapeshifter)` = c("1/2", 0, 0, "-1/2"),
+  `Contrast 3 (human vs. mannequin)` = c(0, "1/2", "-1/2", 0),
+  )
+
+knitr::kable(con_tbl, caption = "Table 1: Contrast coding for the entity variable")
+```
+
+To set these contrasts, we first need to check what order the factor levels are in.
+
+#### `r alien()` Alien coding challenge
+
+Check the order of the levels of the variable **entity**.
+
+```{r ent_chk_levels, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r ent_chk_levels-hint-1}
+# use the levels() function,
+levels()
+```
+
+```{r ent_chk_levels-hint-2}
+# Remember that you can access a variable in a tibble using the general form:
+my_tibble$variable_name
+```
+
+```{r ent_chk_levels-solution}
+# Remember that you can access a variable in a tibble using the general form:
+levels(sniff_tib$entity)
+```
+
+You should find that the levels are in the order: 
+
+```{r, echo = F}
+levels(sniff_tib$entity)
+```
+
+Remembering this order, to set the contrasts we create a list using `list()`. We give this list a name (for example, [sniff_cons]{.alt}) and within the list we specify each contrast in turn. On the left-hand side of the equals sign we give the contrast a name. For example, I have called the first contrast **aliens_vs_non**. You can call them what you like but the names can't contain spaces. On the right-hand side we specify the contrast weights in Table 1. For example, for contrast 1 we specify [c(-1/2, 1/2, 1/2, -1/2)]{.alt}, which, remembering the order of the levels of **entity**,  means that the alien and shapeshifter conditions are assigned weights of $\frac{1}{2}$ whereas the human and mannequin conditions are assigned weights of $-\frac{1}{2}$.
+
+```{r, eval = F}
+sniff_cons <- list(
+  aliens_vs_non = c(1/2, -1/2, -1/2, 1/2),
+  alien_vs_shape = c(1/2, 0, 0, -1/2),
+  human_vs_manquin = c(0, 1/2, -1/2, 0)
+  )
+```
+
+Having specified these contrasts, we can use the `emmeans::contrast()` function to apply the contrasts. It takes the general form:
+
+```{r, eval = F}
+emmeans::contrast(my_emm_object, my_contrasts, adjust = "holm")
+```
+
+In which we replace [my_emm_object]{.alt} with the name of the object in which we stored the estimated marginal means (in this case [sniff_emm]{.alt}), and we replace [my_contrasts]{.alt} with the name of the object containing the contrasts (in this case [sniff_cons]{.alt}). The argument [adjust = "holm"]{.alt} applies a correction for multiple contrasts (which we don't need to use for this example because we have set orthogonal contrasts).
+
+#### `r robot()` Code example
+
+We can get these contrast using the following code:
+
+```{r, eval = F}
+sniff_cons <- list(
+  aliens_vs_non = c(1/2, -1/2, -1/2, 1/2),
+  alien_vs_shape = c(1/2, 0, 0, -1/2),
+  human_vs_manquin = c(0, 1/2, -1/2, 0)
+  )
+
+emmeans::contrast(sniff_emm, sniff_cons)
+```
+
+#### `r alien()` Alien coding challenge
+
+Try fitting the model as described above.
+
+```{r sniff_con, exercise = TRUE, exercise.lines = 6, exercise.setup = "fit_afx"}
+
+```
+
+```{r sniff_con-solution}
+sniff_cons <- list(
+  aliens_vs_non = c(1/2, -1/2, -1/2, 1/2),
+  alien_vs_shape = c(1/2, 0, 0, -1/2),
+  human_vs_manquin = c(0, 1/2, -1/2, 0)
+  )
+
+emmeans::contrast(sniff_emm, sniff_cons)
+```
+
+It seems as though vocalisations were significantly higher when sniffing aliens compared to non-aliens (*p* = 0.0036), but vocalisations were not significantly different when sniffing different types of aliens (*p* = 0.2267) or when sniffing a human compared to a mannequin (*p* = 0.9201).
+
+### `r user_visor()` *Post hoc* tests [(2)]{.alt}
+
+An alternative to contrasts is to compare all means to each other with *post hoc* tests. This procedure tends to be used when you have no specific *a priori* hypotheses (although why you'd be doing research without prior hypotheses is anyone's guess).
+
+#### `r robot()` Code example
+
+Having already created our estimated marginal means object [sniff_emm]{.alt}, we can obtain *post hoc* tests by placing it into the `pairs()` function and specifying the adjustment to use to correct for the fact we're doing multiple tests. We can, for example, get a Bonferroni correction using [adjust = "bon"]{.alt}:
+
+```{r, eval = F}
+pairs(sniff_emm, adjust = "bon")
+```
+
+A popular alternative to Bonferroni is the Holm method [adjust = "holm"]{.alt}, which is slightly less conservative.
+
+#### `r alien()` Alien coding challenge
+
+Get *post hoc* comparisons between the mean vocalisations across all combinations of entities. Use a Holm adjustment for multiple comparisons.
+
+```{r sniff_ph, exercise = TRUE, exercise.lines = 3, exercise.setup = "fit_afx"}
+
+```
+
+```{r sniff_ph-hint-1}
+# Replace the xs
+pairs(xxxxx, adjust = "xxxxx")
+```
+
+```{r sniff_ph-solution}
+pairs(sniff_emm, adjust = "holm")
+```
+
+```{r qn_ph_ex1, echo = F}
+quiz(caption = "Post hoc test quiz (level 2)",
+  question("Assuming an a priori alpha of 0.05, complete the following statement by ticking all responses that are correct. \"There were significantly more dog vocalisations when sniffing ...\"",
+         answer("... an alien compared to a human.", correct = T, message = "The *p*-value of 0.01 is less than 0.05 and the mean is higher for aliens than humans so this statement is correct."),
+         answer("... an alien compared to a mannequin.", correct = T, message = "The *p*-value of 0.0056 is less than 0.05 and the mean is higher for aliens than mannequins so this statement is correct."),
+         answer("... an alien compared to a shapeshifter.", message = "This statement is incorrect: the *p*-value of 0.91 is larger than 0.05 implying a non-significant difference between mean vocalisations."),
+         answer("... a human compared to a shapeshifter.", message = "This statement is incorrect: the *p*-value of 0.91 is larger than 0.05 implying a non-significant difference between mean vocalisations."),
+         answer("... a mannequin compared to a shapeshifter.", message = "This statement is incorrect: the *p*-value of 0.91 is larger than 0.05 implying a non-significant difference between mean vocalisations."),
+         answer("... a human compared to a mannequin.", message = "This statement is incorrect: the *p*-value of 0.92 is larger than 0.05 implying a non-significant difference between mean vocalisations."),
+         correct = "Correct - well done!",
+         allow_retry = T,
+         random_answer_order = T
+)
+)
+```
+
+### `r user_visor()` Robust models [(2)]{.alt} 
+
+It seems then that (notwithstanding the non-significant overall effect), sniffer dogs could discriminate between aliens and humans and aliens and mannequins, but not between other entities. Ordinarily at this point we'd look at diagnostic plots to test the model assumptions. However, these plots are not available for designs using repeated measures (well, not if you use `aov_4()` to fit the model). A pragmatic solution is to routinely run a robust model and compare the results.
+
+The `WRS2` package [@Mair_Wilcox_2019] has two functions that compare several means from repeated measures designs using a robust method. Specifically, it uses a 20% trimmed mean (the means are calculated after trimming the top and bottom 20% of scores). The function `rmanova()` calculates the test for dependent trimmed means:
+
+```{r, eval = F}
+rmanova(y = outcome, groups = rm_predictor, blocks = id_var, tr = 0.2)
+```
+
+and the function `rmmcp()` computes the associated *post hoc* tests:
+
+```{r, eval = F}
+rmmcp(y = outcome, groups = rm_predictor, blocks = id_var, tr = 0.2)
+```
+
+These functions have similar arguments:
+
+* [y]{.alt}: replace [outcome]{.alt} with the variable containing the outcome variable (in this case **vocalisations**).
+* [groups]{.alt}: replace [rm_predictor]{.alt} with the variable defining the different levels of the repeated measures variable (in this case **entity**).
+* [blocks]{.alt}: replace [id_var]{.alt} with the variable within which scores are nested (in this case **dog_name**).
+* [tr = 0.2]{.alt}: determines the level of trim. The default is a 20% trim, which has been shown to perform well. You can change this value to 0.1 (10% trim) or any value up to 0.5, but we'll stick with the default of 20% which means we can omit this argument.
+
+#### `r robot()` Code example
+
+Annoyingly, these functions do not allow us to specify the tibble within which variables are stored. Instead, we have to place `tibble_name$` in front of each variable. For example, instead of entering `vocalisations` we must enter `sniff_tib$vocalisations` so that the function knows where to find the variable. For the current example, we'd execute:
+
+```{r echo = TRUE, eval = FALSE}
+WRS2::rmanova(
+  y = sniff_tib$vocalisations,
+  groups = sniff_tib$entity,
+  blocks = sniff_tib$dog_name
+  )
+WRS2::rmmcp(
+  y = sniff_tib$vocalisations,
+  groups = sniff_tib$entity,
+  blocks = sniff_tib$dog_name
+  )
+```
+
+#### `r alien()` Alien coding challenge
+
+Test the differences between the 20% means.
+
+```{r sniff_wrs, exercise = TRUE}
+
+```
+
+```{r sniff_wrs-solution}
+WRS2::rmanova(y = sniff_tib$vocalisations, groups = sniff_tib$entity, blocks = sniff_tib$dog_name)
+WRS2::rmmcp(y = sniff_tib$vocalisations, groups = sniff_tib$entity, blocks = sniff_tib$dog_name)
+```
+
+The robust test concurs with the non-robust one in that overall the group means were not significantly different, $F_t(2.31, 11.55) = 2.75, p = 0.10$. For the *post hoc* tests we're looking at whether the *p*-value is less than the value in the column **p.crit**. If it is then the test is significant and the **sig** column will read [TRUE]{.alt}. However, if the *p*-value is greater than the value in the column **p.crit** (as it is for all of the tests here), then the test is not significant and the **sig** column will read [FALSE]{.alt}. Unlike the non-robust tests these *post hoc* tests suggest no significant differences between any means. Again though, bare in mind that the sample size is tiny (*N* = 8).
+
+## `r user_visor()` Factorial repeated measures designs [(2)]{.alt}
+
+The aliens, excited by humans' apparent inability to train sniffer dogs to detect them, decided to move their invasion plan forward. Aliens are far too wedded to *p*-values in small samples. They decided that they could make themselves even harder to detect by fooling the sniffer dogs by masking their alien smell. After extensive research they agreed that the two most effective masking scents would be human pheromones (which they hoped would make them smell human-like) and fox-pheromones (because they are a powerful, distracting smell for dogs). The aliens started smearing themselves with humans and foxes and prepared to invade.
+
+Meanwhile, the top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) had got wind of their plan and set about testing how effective it would be. They trained 50 sniffer dogs. During training, these dogs were rewarded for making vocalisations while sniffing alien space lizards. On the test trials, the 50 dogs were allowed to sniff 9 different entities for 1-minute each: 3 alien space lizards, 3 shapeshifting alien space lizard who had taken on humanoid form, and 3 humans. Within each type of entity, 1 had no masking scent, 1 was smothered in human pheromones and 1 wore fox pheromones. The number of vocalisations made during each 1-minute sniffing session was recorded.
+
+#### `r alien()` Alien coding challenge
+
+View the data in [scent_tib]{.alt}.
+
+```{r scent_tib, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r scent_tib-solution}
+scent_tib
+```
+
+Note that there are four variables: the participant's **dog_id**, which is a character variable (note the [<chr>]{.alt} under the name), the **entity** that the dog sniffed (alien, shapeshifter or human) and the **scent_mask** used to cover the entity's natural smell (none, human scent, fox scent), both of which are factors (note the [<fct>]{.alt} under the names). Finally, **vocalisations** is a numeric variable and has the data type 'double' (note the [<dbl>]{.alt} under the name).
+
+The variables **entity** and **scent_mask** are factors (categorical variable), so having read the data file and converted these variables to factors it's a good idea to check that the levels of these variables are in the order that we want. Ideally we want to order them so that the control category is first. For **entity** the control category is human (the other two categories are both types of alien) and for **scent_mask** the control category is 'none' (i.e. no scent was worn).
+
+#### `r alien()` Alien coding challenge
+
+Check the order of the levels of the variables **entity** and **scent_mask**.
+
+```{r chk_levels2, exercise = TRUE, exercise.lines = 3}
+
+```
+
+```{r chk_levels2-hint-1}
+# use this function:
+levels()
+```
+
+```{r chk_levels2-hint-2}
+# Remember that to access a variable you use:
+
+name_of_tibble$name_of_variable
+```
+
+```{r chk_levels2-hint-3}
+# solution:
+
+levels(scent_tib$entity)
+levels(scent_tib$scent_mask)
+```
+
+Because I have set up the data within this tutorial you should see that the levels are listed in the order that we want them when you execute the code. The information at the beginning of the tutorial about the data files gives you code to order the factor levels in the same way.
+
+### `r user_astronaut()` The model [(3)]{.alt}
+
+The model we're fitting is described by the following equation (which is simplified in that I have represented the predictor variables **entity** and **scent_mask** as single variables. (In fact, because both variables contain three categories they would be entered into the model as two dummy variables.). The most complex form of the model looks like this:
+
+$$
+\begin{aligned}
+\hat{\text{vocalisations}}_{ij} & = \hat{b}_{0j} + \hat{b}_{1j}\text{entity}_{ij} + \hat{b}_{2j}\text{scent}_{ij} + \hat{b}_{3j}(\text{entity}_{ij}\times\text{scent}_{ij}) + e_{ij}\\
+\hat{b}_{0j} & = \hat{b}_0 + \hat{u}_{0j} \\
+\hat{b}_{1j} & = \hat{b}_1 + \hat{u}_{1j} \\
+\hat{b}_{2j} & = \hat{b}_2 + \hat{u}_{2j} \\
+\hat{b}_{3j} & = \hat{b}_3 + \hat{u}_{3j} \\
+\end{aligned}
+$$
+
+In this model we are modelling the possibility that all parameters ($b$) in the model vary across individuals. This introduces a lot of complexity into the model. The simplest version of the repeated measures model instead treats the effects of predictor variables as fixed, but acknowledges that dogs, overall, will vary in their vocalisations. In this model only the intercept parameter $\hat{b}_{0j}$ modelled such that it varies across participants (dogs):
+
+$$
+\begin{aligned}
+\hat{\text{vocalisations}}_{ij} & = \hat{b}_{0j} + \hat{b}_{1}\text{entity}_{ij} + \hat{b}_{2}\text{scent}_{ij} + \hat{b}_{3}(\text{entity}_{ij}\times\text{scent}_{ij}) + e_{ij}\\
+\hat{b}_{0j} & = \hat{b}_0 + \hat{u}_{0j} \\
+\end{aligned}
+$$
+
+### `r user_visor()` Fitting the model for factorial repeated measures designs [(2)]{.alt}
+
+We can use the `aov_4()` function in much the same way as in the previous example. The main differences is that we need to specify the predictors in the model as **entity**, **scent_mask** and their interaction as repeated measures predictors.
+
+<div class="tip">
+  `r cat_space()` **Tip:**
+
+Remember that we can specify all main effects and their interactions using `*`. For example, `entity*scent_mask` will introduce the main effect of **entity**, the main effect of **scent_mask** and their interaction.
+
+</div>
+
+We saw earlier that the `aov_4()` function has the following format:
+
+```{r, eval = F}
+afex::aov_4(outcome ~ predictors + (rm_predictors|id_variable), data = my_tib)
+```
+
+In the current design, we can specify the two repeated measures predictors and their interaction using [entity\*scent_mask]{.alt}, therefore, we replace both [predictors]{.alt} and [rm_predictors]{.alt} in the code above with [entity\*scent_mask]{.alt}. For example, remembering that the variable that uniquely identifies the different dogs is [dog_id]{.alt}, we'd replace [(rm_predictors|id_variable)]{.alt} with [(entity\*scent_mask|dog_id)]{.alt} to indicate that the variables **entity**, **scent_mask** and their interaction are nested within the variable **dog_id**.
+
+#### `r robot()` Code example
+
+Remembering that the outcome variable is **vocalisations**, and the tibble containing the data is called [scent_tib]{.alt}, we can put it all together to fit the model with this code:
+
+```{r, eval = F}
+scent_afx <- afex::aov_4(vocalisations ~ entity*scent_mask + (entity*scent_mask|dog_id), data = scent_tib)
+scent_afx
+```
+
+#### `r alien()` Alien coding challenge
+
+Use the `aov_4()` function to fit the model.
+
+```{r scent_aov_4, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r scent_aov_4-hint-1}
+# fit the model (replace the xs):
+scent_afx <- afex::aov_4(xxxxxx ~ xxxx*xxxxx + (xxxxx*xxxxx|xxxxx), data = xxxxx)
+```
+
+```{r scent_aov_4-solution}
+# fit the model:
+scent_afx <- afex::aov_4(vocalisations ~ entity*scent_mask + (entity*scent_mask|dog_id), data = scent_tib)
+scent_afx #this shows us the model
+```
+
+The main output shows us the three effects. Let's look at what the mean in turn.
+
+### `r user_visor()` The main effect of **entity** [(2)]{.alt}
+
+```{r quiz_entity_ex2, echo = F}
+quiz(
+  question("How would you interpret the effect of **entity**?",
+    answer("There was a significant effect of entity because the Greenhouse-Geisser adjusted *p* is 0.000, which is less than 0.05.", correct = T),
+    answer("There was a non-significant effect of entity because the Greenhouse-Geisser adjusted *p* is 0.000, which is less than 0.05", message = "A *p* value less than 0.05 is typically interpretted as a *significant* effect."),
+    correct = "Correct - well done!",
+    incorrect = "Sorry, this answer is incorrect.",
+    random_answer_order = TRUE,
+    allow_retry = T
+  ),
+  question("Which of these statements correctly describes the effect of entity?",
+    answer("If you ignore the type of scent worn, vocalisations were significantly affected by the type of entity sniffed.", correct = T),
+    answer("If you ignore the type of scent worn, vocalisations were not significantly affected by the type of entity sniffed.", message = "This describes a non-significant effect - see the answer to the previous question  for why this is a problem!"),
+    answer("The extent to which the type of entity being sniffed affected vocalisations depended on the type of scent worn.", message = "This possibility would be evaluated using the interaction term, not the main effect of drink."),
+    answer("The extent to which the type of type of scent worn affected vocalisations depended on the type of entity being sniffed.", message = "This possibility would be evaluated using the interaction term, not the main effect of drink."),
     correct = "Correct - well done!",
     incorrect = "Sorry, this answer is incorrect.",
     random_answer_order = TRUE,
     allow_retry = T
   )
-  )
+)
+```
+
+Other things being equal, the main effect of **entity** isn't interesting because it is superseded by the interaction term. However, it seems to indicate that, when you ignore the scent worn, vocalisations were different for different entities, *F*(1.98, 96.88) = 315.95, *p* < .001. The generalized eta-squared suggests a fairly large effect ($\eta^2_G = 0.52$). You can use the code below to get the estimated marginal means for this effect (remember that we need to include [model = "multivariate"]{.alt} because we used a repeated measures design). You'll see that the vocalisations were highest for the two aliens compared to when a human was sniffed.
+
+#### `r alien()` Alien coding challenge
+
+```{r afx_fct, echo = F}
+scent_afx <- afex::aov_4(vocalisations ~ entity*scent_mask + (entity*scent_mask|dog_id), data = scent_tib)
+scent_emm <- emmeans::emmeans(scent_afx, c("entity", "scent_mask"), model = "multivariate")
 ```
 
 
-### `r user_visor()` The main effect of **looks** [(2)]{.alt}
+```{r entity_emm, exercise = TRUE, exercise.lines = 2, exercise.setup = "afx_fct"}
+emmeans::emmeans(scent_afx, ~entity, model = "multivariate")
+```
 
-The main output from the `afex` model is reproduced below:
+### `r user_visor()` The main effect of **scent_mask** [(2)]{.alt}
+
+The main output from the model is reproduced below (to save you scrolling).
 
 ```{r, echo = F}
-date_afx
+afex::aov_4(vocalisations ~ entity*scent_mask + (entity*scent_mask|dog_id), data = scent_tib)
 ```
 
 
-```{r qu_looks, echo = F}
-quiz(caption = "The main effect of looks (level 2)",
-     question("How would you interpret the effect of **looks** in the output above?",
-    answer("There was a significant main effect of looks, *F*(1.92, 34.62) = 423.73, *p* < 0.001, which means that if we ignore all other variables, ratings of attractive, average and unattractive dates differed.", correct = T),
-    answer("There was a non-significant main effect of looks, *F*(1.92, 34.62) = 423.73, *p* < 0.001, which means that if we ignore all other variables, ratings of attractive, average and unattractive dates were equivalent.", message = "A *p* value *less* than 0.05 is typically interpretted as a *significant* effect."),
+```{r quiz_scent_ex2, echo = F}
+quiz(caption = "The main effect of **scent_mask** (level (2))",
+  question("How would you interpret the effect of **scent_mask** in the main output?",
+    answer("There was a significant effect of **scent_mask** because the Greenhouse-Geisser adjusted *p* is 0.000, which is less than 0.05.", correct = T),
+    answer("There was a non-significant effect of **scent_mask** because the Greenhouse-Geisser adjusted *p* is 0.000, which is less than 0.05", message = "A *p* value less than 0.05 is typically interpretted as a *significant* effect."),
+    correct = "Correct - well done!",
+    incorrect = "Sorry, this answer is incorrect.",
+    random_answer_order = TRUE,
+    allow_retry = T
+  ),
+  question("Which of these statements correctly describes the effect of **scent_mask** in the main output?",
+    answer("If you ignore the type of entity sniffed vocalisations were significantly affected by the type of scent worn.", correct = T),
+    answer("If you ignore the type of entity sniffed vocalisations were not significantly affected by the type of scent worn.", message = "This describes a non-significant effect - see the answer to the previous question  for why this is a problem!"),
+    answer("The extent to which the type of scent worn affected vocalisations depended on the type of entity sniffed.", message = "This possibility would be evaluated using the interaction term, not the main effect of scent_mask"),
+    answer("The extent to which the type of entity sniffed affected vocalisations depended on the type of scent worn.", message = "This possibility would be evaluated using the interaction term, not the main effect of scent worn."),
     correct = "Correct - well done!",
     incorrect = "Sorry, this answer is incorrect.",
     random_answer_order = TRUE,
@@ -328,528 +837,303 @@ quiz(caption = "The main effect of looks (level 2)",
 )
 ```
 
-To pick the effect apart we can first get the estimated marginal means using `emmeans()`, which we used in both which we used in [discovr_13]{.alt} and which we used in [discovr_14]{.alt}. 
-
-#### `r robot()` Code example
-
-Remember that the `emmeans()` function takes this general form when we have repeated measures:
-
-```{r, eval = F}
-my_new_emm <- emmeans::emmeans(my_afx_model, ~predictor(s), model = "multivariate")
-```
-
-In which [my_new_emm]{.alt} is whatever we choose to call the saved means, [my_afx_model]{.alt} is the name of the `afex` model we have created, in our case [date_afx]{.alt}, and [predictor(s)]{.alt} is a list of the predictors for which we want means.
+Other things being equal, the main effect of **scent_mask** isn't interesting because it is superseded by the interaction term. However, it seems to indicate that, when you ignore the entity sniffed, vocalisations were different for different when different scents were worn, *F*(1.95, 95.75) = 12.91, *p* < .001. You can use the code below to get the estimated marginal means for this effect. You'll see that the vocalisations were lowest when a human scent was used. However, The generalized eta-squared suggests a trivial effect ($\eta^2_G = 0.02$).
 
 #### `r alien()` Alien coding challenge
 
-Obtain the estimated marginal means for the effect of **looks** and store them as [looks_emm]{.alt}
-
-```{r looks_emm, exercise = TRUE, exercise.lines = 4}
-
+```{r scent_emm, exercise = TRUE, exercise.lines = 2, exercise.setup = "afx_fct"}
+emmeans::emmeans(scent_afx, ~scent_mask, model = "multivariate")
 ```
 
-```{r looks_emm-hint-1}
-# replace the Xs
-looks_emm <- emmeans::emmeans(xxxxxx, ~xxxxxx, model = "xxxxxx")
-```
+### `r user_visor()` The interaction effect [(2)]{.alt}
 
-```{r looks_emm-solution}
-looks_emm <- emmeans::emmeans(date_afx, ~looks, model = "multivariate")
-looks_emm # shows us the means
-```
-
-From this table you can see that as attractiveness of the date increases from low to high, the desirability to have a date with them increases too. Contrasts will help us to understand exactly what’s going on.
-
-#### `r robot()` Code example
-
-We mentioned earlier that a reasonable contrast would be to use the average attractiveness as a reference category and compare the low and high attractiveness dates to this 'norm'. We also saw that we could achieve this using `emmeans::contrast()` and defining the method as [trt.vs.ctrl]{.alt} and the reference category as the second category (average), [ref = 1]{.alt}. 
-Remember that we feed into the function the estimated marginal means that we just calculated [looks_emm]{.alt}. Putting this all together, we'd execute:
-
-```{r, eval = F}
-emmeans::contrast(looks_emm, method = "trt.vs.ctrl", ref = 2, adjust = "holm")
-```
-
-#### `r alien()` Alien coding challenge
-
-Obtain the contrasts just described using the code box.
-
-```{r, looks_con_setup}
-looks_emm <- emmeans::emmeans(date_afx, ~looks, model = "multivariate")
-```
-
-
-```{r looks_con, exercise = TRUE, exercise.lines = 4, exercise.setup = "looks_con_setup"}
-
-```
-
-```{r looks_con-solution}
-emmeans::contrast(looks_emm, method = "trt.vs.ctrl", ref = 2, adjust = "holm")
-```
-
-
-These contrasts tell us (in combination with the means themselves that) highly attractive dates were rated significantly higher than average dates, *t*(18) = $-12.65$, *p* < 0.001, and averagely attractive dates were rated significantly higher than those low on attractiveness, *t*(18) = 15.07, *p* < 0.001.
-
-### `r user_visor()` The main effect of **personality** [(2)]{.alt}
-
-The main output from the `afex` model is reproduced below:
+The effect we really care about is the interaction term. The main output from the model is reproduced below (to save you scrolling).
 
 ```{r, echo = F}
-date_afx
+afex::aov_4(vocalisations ~ entity*scent_mask + (entity*scent_mask|dog_id), data = scent_tib)
 ```
 
-```{r qu_charis, echo = F}
-quiz(caption = "The main effect of personality (level 2)",
-     question("How would you interpret the effect of **personality** in the output above?",
-    answer("There was a significant main effect of charisma, *F*(1.87, 33.62) = 328.25, *p* < 0.001, which tells us that if we ignore all other variables, ratings for highly charismatic, a bit charismatic and dull dates differed.", correct = T),
-    answer("There was a non-significant main effect of charisma, *F*(1.87, 33.62) = 328.25, *p* < 0.001, which tells us that if we ignore all other variables, ratings for highly charismatic, a bit charismatic and dull dates were equivalent.", message = "A *p* value *less* than 0.05 is typically interpretted as a *significant* effect."),
+```{r quiz_int_ex2, echo = F}
+quiz(caption = "The interaction quiz (level(2))",
+  question("Using the main output, interpret the significant effect of **entity * scent_mask** (select ALL that apply).",
+    answer("The extent to which the type of scent worn affected vocalisations depended on the type of entity sniffed.", correct = T),
+    answer("The extent to which the type of entity sniffed affected vocalisations depended on the type of scent worn.", correct = T),
+    answer("The entity sniffed significantly predicted the type of scent worn."),
+    answer("The difference between the mean vocalisations across the three types of scents was similar when sniffing aliens, shapeshifters and humans."),
+    answer("Vocalisations were similar regardless of the type of entity sniffed and the type of scent worn."),
     correct = "Correct - well done!",
-    incorrect = "Sorry, this answer is incorrect.",
+    incorrect = "Incorrect. Hint: The fact that the interaction effect was significant suggests that the effect of the type of entity sniffed depended on what drink was being advertised and vice versa.",
     random_answer_order = TRUE,
     allow_retry = T
   )
 )
 ```
 
-Again, we could pick the effect apart with the estimated marginal means and contrasts. Remember from earlier, that we want to set the same contrasts: that is compare the average category of **personality** against the low and high categories. Therefore, the code will be the same as we just used for the variable **looks** except that:
+The interaction effect suggests that the effect of **entity** on vocalisations was significantly moderated by what scent the entity was wearing, *F*(3.66, 179.27) = 60.26, *p* < .001. Let's break down this effect.
 
-* We should give our estimated marginal means object a different name.
-* We replace the variable [looks]{.alt} with [personality]{.alt} in the code
+### `r bmu()` Plots using the `afex` package [(1)]{.alt}
 
-#### `r alien()` Alien coding challenge
-
-Obtain the estimated marginal means for the effect of **looks** and store them as [pers_emm]{.alt}. Adapt the code from the previous section and use the hints if you get stuck.
-
-```{r pers_emm, exercise = TRUE, exercise.lines = 5}
-
-```
-
-```{r pers_emm-hint-1}
-# replace the Xs
-pers_emm <- emmeans::emmeans(xxxxxx, ~xxxxxx, model = "xxxxxx")
-```
-
-```{r pers_emm-hint-2}
-pers_emm <- emmeans::emmeans(date_afx, ~personality, model = "multivariate")
-pers_emm # shows us the means
-# now get the contrasts:
-emmeans::contrast(xxxxxxx, method = "xxxxxxx", ref = 2, adjust = "holm")
-```
-
-```{r pers_emm-solution}
-pers_emm <- emmeans::emmeans(date_afx, ~personality, model = "multivariate")
-pers_emm # shows us the means
-# now get the contrasts
-emmeans::contrast(pers_emm, method = "trt.vs.ctrl", ref = 2, adjust = "holm")
-```
-
-The contrasts and means tell us that dates acting with high charisma were rated significantly higher than dates with average charisma, *t*(18) = $-15.10$, *p* < 0.001, and dates with average charisma were rated significantly higher than those acting with low charisma, *t*(18) = 10.49, *p* < 0.001.
-
-### `r user_visor()` The interaction between **strategy** and **looks** [(2)]{.alt}
-
-The main output from the `afex` model is reproduced below:
-
-```{r, echo = F}
-date_afx
-```
-
-
-The output above tells us that dating strategy significantly interacted with the attractiveness of the date, *F*(1.92, 34.62) = 80.43, *p* < 0.001: the profile of ratings across dates of different attractiveness was different depending on whether or not they played hard to get.
-
-To pick the effect apart we can again inspect the estimated marginal means using `emmeans()`. We use the same approach as before, but remember that in this code: 
+We saw in [discovr_13]{.alt} that you can get plots of the interaction by feeding an `afex` object into the `afex_plot()` function. Remember, this function takes the general form:
 
 ```{r, eval = F}
-my_new_emm <- emmeans::emmeans(my_afx_model, ~predictor(s), model = "multivariate")
+afex::afex_plot(afx_object, x_variable, line_shape_variable, panel_variable)
 ```
 
-We now replace [~predictor(s)]{.alt} with the predictors involved in the interaction of interest by listing them within`c()`. For example, for the **strategy\*looks** interaction we'd specify [c("strategy", "looks")]{.alt} (note we drop the [~]{.alt} at the beginning).
+In which you replace [afx_object]{.alt} with the name of the the model you fitted with `aov_4()`, [x_variable]{.alt} with the predictor you want on the *x*-axis, [line_shape_variable]{.alt} with a predictor that you want to be depicted with using different lines/shapes. If you have a third categorical predictor, replace [panel_variable]{.alt} with a predictor the levels of which you want displayed in different panels (e.g., `facet_wrap()` style). The result is a `ggplot` object so you can use `ggplot2` code to edit the results, for example, you can apply a standard `ggplot2` theme. 
 
-#### `r alien()` Alien coding challenge
-
-Obtain the estimated marginal means for the **strategy\*looks** interaction and store them as [strat_looks_emm]{.alt}
-
-```{r strat_looks_emm, exercise = TRUE, exercise.lines = 4}
-
-```
-
-```{r strat_looks_emm-hint-1}
-# replace the Xs
-strat_looks_emm <- emmeans::emmeans(xxxxxx, c(xxxxxx), model = "xxxxxx")
-```
-
-```{r strat_looks_emm-solution}
-strat_looks_emm <- emmeans::emmeans(date_afx, c("strategy", "looks"), model = "multivariate")
-strat_looks_emm # shows us the means
-```
-
-
-```{r, qu_looks_strat, echo = F}
-quiz(caption = "The interaction of strategy and looks (level 2)",
-     question("Using the means, which of these statements about the **strategy × looks** interaction are true? (Select ALL that apply)",
-    answer("Playing hard to get led to higher ratings (than acting normally) for attractive dates, made no difference for average looking dates and led to lower ratings in unattractive dates", correct = T),
-    answer("The level of attractiveness had less impact when dates acted normally than when they played hard to get", correct = T),
-    answer("The level of attractiveness had more impact when dates acted normally than when they played hard to get."),
-    answer("The effect of playing hard to get (compared to acting normally) was similar regardless of how attractive the date was."),
-    answer("The effect of playing hard to get (compared to acting normally) was similar for attractive and unattractive dates but different for average looking dates."),
-    correct = "Correct - well done! The means show that for average-looking dates it doesn’t make a difference whether they played hard to get. For attractive dates, ratings were higher when the date played hard to get than when they didn’t and for unattractive dates the opposite was true – ratings were lower when dates played hard to get. In short, playing hard to get only has an effect at the extremes of attractiveness.",
-    incorrect = "You have at least one incorrect answer. The means show that for average-looking dates it doesn’t make a difference whether they played hard to get. For attractive dates, ratings were higher when the date played hard to get than when they didn’t and for unattractive dates the opposite was true – ratings were lower when dates played hard to get. In short, playing hard to get only has an effect at the extremes of attractiveness.",
-    random_answer_order = TRUE,
-    allow_retry = T
-  )
-)
-```
-
-We can get contrasts for this interaction term. To use the `emmeans::contrast()` function on an interaction term we have to use the [interaction]{.alt} argument to specify the contrast for each variable in the interaction. In general, then:
+When using a repeated measures design (as we are here) we need to add [error = "within"]{.adj} to the function to get error bars that are corrected for the study design. So, in general, for repeated measures designs, the code would be:
 
 ```{r, eval = F}
-emmeans::contrast(
-  my_emm_object,
-  interaction = c(variable_a = "contrast", variable_b = "contrast" ...),
-  rel = x,
-  adjust = "holm"
-  )
+afex::afex_plot(afx_object, x_variable, line_shape_variable, panel_variable, error = "within")
 ```
 
-In which we replaced [my_emm_object]{.alt} with an object that contains the estimated marginal means for the effect of interest, [interaction = c(variable_a = "contrast", variable_b = "contrast" ...)]{.alt} lists each variable and the contrast you want to apply to it and [rel = x]{.alt} is used to set the reference category for the contrasts (if relevant).
-
-In previous contrasts we have used [trt.vs.ctrl]{.alt} as the contrast for the variables **looks** and **personality**, so we should continue to do so. We may as well use [trt.vs.ctrl]{.alt} for **strategy** too, because it has only two categories, so [trt.vs.ctrl]{.alt} will compare these categories. Therefore, we can use [interaction = c(strategy = "trt.vs.ctrl", looks = "trt.vs.ctrl")]{.alt} to specify the contrast for the
-**strategy\*looks** interaction. We must also remember to feed the estimated marginal means into the function, which we craeted above and stored as [strat_looks_emm]{.alt}.
-
-#### `r robot()` Code example
-
-Putting this together, the code for the **strategy\*looks** contrasts will be:
-
-```{r, eval = F}
-emmeans::contrast(
-  strat_looks_emm,
-  interaction = c(strategy = "trt.vs.ctrl", looks = "trt.vs.ctrl"),
-  ref = 2,
-  adjust = "holm"
-  )
-```
-
+If you forget this argument, you'll get a message alerting you to this fact.
 
 #### `r alien()` Alien coding challenge
 
-Obtain the contrasts just described using the code box.
+Plot the [entity*scent_mask]{.alt} interaction with **scent_mask** on the *x*-axis. Add axis labels and apply `theme_minimal()`.
 
-```{r, strat_looks_con_setup}
-strat_looks_emm <- emmeans::emmeans(date_afx, c("strategy", "looks"), model = "multivariate")
-```
-
-
-```{r strat_looks_con, exercise = TRUE, exercise.lines = 7, exercise.setup = "strat_looks_con_setup"}
+```{r afx_plot, exercise = TRUE, exercise.lines = 5, exercise.setup = "afx_fct"}
 
 ```
 
-```{r strat_looks_con-hint-1}
-emmeans::contrast(
-  xxxxxxx,
-  interaction = c(xxxxxx = "xxxxxx", xxxx = "xxxxxxx"),
-  ref = x,
-  adjust = "holm"
-  )
+```{r afx_plot-hint-1}
+# Plot the means (replace the xs):
+afex::afex_plot(xxxxx, "xxxxx", "xxxxx")
 ```
 
-```{r strat_looks_con-solution}
-emmeans::contrast(
-  strat_looks_emm,
-  interaction = c(strategy = "trt.vs.ctrl", looks = "trt.vs.ctrl"),
-  ref = 2,
-  adjust = "holm"
-  )
+```{r afx_plot-hint-2}
+afex::afex_plot(scent_afx, "scent_mask", "entity", error = "within")
+# now add axis labels to override the defaults in the usual way
 ```
 
-* The first contrast for the interaction term shows the effect of attractive dates compared to average dates, comparing playing hard to get to normal. This contrast is highly significant, *t*(18) = 5.50, *p* < 0.001, suggesting that the increased interest in attractive dates compared to average-looking dates found when dates played hard to get is significantly more than when they acted normally.
-* The second contrast, which compares playing hard to get to normal in low attractive dates compared to average-looking dates is also highly significant, *t*(18) = $-6.58$, *p* < 0.001. This contrast tells us that the decreased interest in unattractive dates compared to average-looking dates found when dates played hard to get is significantly more than when they acted normally.
-
-### `r user_visor()` The interaction between **strategy** and **personality** [(2)]{.alt}
-
-The main output from the `afex` model is reproduced below:
-
-```{r, echo = F}
-date_afx
+```{r afx_plot-hint-3}
+# plot the means and add axis labels:
+afex::afex_plot(scent_afx, "scent_mask", "entity", error = "within") +
+  labs(x = "Scent used", y = "Number of vocalisations")
+# now add theme_minima() in the usual way
 ```
 
-The output reproduced above reminds us that the dating strategy significantly interacted with how charismatic the date was, *F*(1.87, 33.62) = 62.45, *p* < 0.001. This effect means that the profile of ratings across dates of different levels of charisma was influenced by the dating strategy employed.
-
-We can adapt the code from the previous section to get the estimated marginal means and contrasts for this interaction. The main changes will be:
-
-* We should call the object storing the estimated marginal means something different to the previous section.
-* We need to replace [looks]{.alt} with [personality]{.alt} in the code. 
-
-
-#### `r alien()` Alien coding challenge
-
-Create an object called [strat_pers_emm]{.alt} containing the estimated marginal means for the **strategy\*personality** interaction. Also obtain the contrasts as in the previous section.
-
-```{r strat_pers_con, exercise = TRUE, exercise.lines = 5}
-
-```
-
-```{r strat_pers_con-hint-1}
-# get the estimated marginal means:
-strat_pers_emm <- emmeans::emmeans(xxxx, c("xxxxx", "xxxx"), model = "xxxxxx")
-```
-
-```{r strat_pers_con-hint-2}
-# get the estimated marginal means:
-strat_pers_emm <- emmeans::emmeans(date_afx, c("strategy", "personality"), model = "multivariate")
-# display the means
-xxxxx
-```
-
-```{r strat_pers_con-hint-3}
-# get the estimated marginal means:
-strat_pers_emm <- emmeans::emmeans(date_afx, c("strategy", "personality"), model = "multivariate")
-# display the means
-strat_pers_emm
-
-# get contrasts
-emmeans::contrast(xxxxxxx, interaction = c(xxxxxx = "xxxxxx", xxxx = "xxxxxxx"), ref = x, adjust = "holm" )
-```
-
-```{r strat_pers_con-solution}
-strat_pers_emm <- emmeans::emmeans(date_afx, c("strategy", "personality"), model = "multivariate")
-strat_pers_emm # display the means
-emmeans::contrast(strat_pers_emm, interaction = c(strategy = "trt.vs.ctrl", personality = "trt.vs.ctrl"), ref = 2, adjust = "holm")
-```
-
-
-```{r qu_char_strat, echo = F}
-quiz(caption = "The strategy × personality interaction (level 2)",
-     question("Using the means, which of these statements about the **strategy × personality** interaction are true? (Select ALL that apply)",
-    answer("Playing hard to get led to lower ratings (than acting normally) for charismatic dates, made no difference for dates with average charisma and led to higher ratings in dates who behaved like dullards", correct = T),
-    answer("The level of charisma had more impact when dates acted normally than when they played hard to get", correct = T),
-    answer("The level of charisma had less impact when dates acted normally than when they played hard to get."),
-    answer("The effect of playing hard to get (compared to acting normally) was similar regardless of how charismatic the date was."),
-    answer("The effect of playing hard to get (compared to acting normally) was similar for dates who acted highly charismatic and those who acted like dullards but different for dates who acted with average charisma."),
-    correct = "Correct - well done! The means show that for dates with normal amounts of charisma the dating strategy they adopted had little impact. However, highly charismatic dates were rated higher when they acted normally compared to when they played hard to get.",
-    incorrect = "You have at least one incorrect answer. The means show that for dates with normal amounts of charisma the dating strategy they adopted had little impact. However, highly charismatic dates were rated higher when they acted normally compared to when they played hard to get. Conversely, dull dates were rated higher when they played hard to get compared to when they acted normally. Although interest in dating decreases as charisma decreases, this decreases is less pronounced when the dates play hard to get.",
-    random_answer_order = TRUE,
-    allow_retry = T
-  )
-)
-```
-
-The contrasts show that:
-
-* The increased interest in highly charismatic dates compared to averagely charismatic dates found when dates acted normally is significantly more than when the dates played hard to get, *t*(18) = 5.22, *p* < 0.001.
-*  The decreased interest in low charisma dates compared to averagely charismatic dates is significantly less when dates play hard to get than when they act normally, *t*(18) = $-5.80$, *p* < 0.001.
-
-
-### `r user_visor()` The interaction between **looks** and **personality** [(2)]{.alt}
-
-The main output from the `afex` model is reproduced below:
-
-```{r, echo = F}
-date_afx
-```
-
-
-The reproduced output reminds us that there was a significant looks × personality interaction, *F*(3.20, 57.55) = 36.63, *p* < 0.001. This effect tells us that the profile of ratings across dates of different levels of charisma was different for attractive, average and unattractive dates. 
-
-We can (again) adapt the code from the previous two sections to get the estimated marginal means and contrasts for this interaction. The main changes will be:
-
-* We should call the object storing the estimated marginal means something different to the previous section.
-* We need to specify [looks]{.alt} and [personality]{.alt} as the variables in the interaction. 
-
-#### `r alien()` Alien coding challenge
-
-Create an object called [looks_pers_emm]{.alt} containing the estimated marginal means for the **looks\*personality** interaction. Also obtain the contrasts as in the previous section.
-
-```{r looks_pers_con, exercise = TRUE, exercise.lines = 5}
-
-```
-
-```{r looks_pers_con-hint-1}
-# get the estimated marginal means:
-looks_pers_emm <- emmeans::emmeans(xxxxxx, c("xxxxx", "xxxxx"), model = "xxxxxx")
-```
-
-```{r looks_pers_con-hint-2}
-# get the estimated marginal means:
-looks_pers_emm <- emmeans::emmeans(date_afx, c("looks", "personality"), model = "multivariate")
-# display the means
-xxxxx
-```
-
-```{r looks_pers_con-hint-3}
-# get the estimated marginal means:
-looks_pers_emm <- emmeans::emmeans(date_afx, c("looks", "personality"), model = "multivariate")
-# display the means
-looks_pers_emm
-
-# get contrasts
-emmeans::contrast(xxxxxxx, interaction = c(xxxxxx = "xxxxxx", xxxx = "xxxxxxx"), ref = x, adjust = "holm" )
-```
-
-```{r looks_pers_con-solution}
-looks_pers_emm <- emmeans::emmeans(date_afx, c("looks", "personality"), model = "multivariate")
-looks_pers_emm # display the means
-emmeans::contrast(looks_pers_emm, interaction = c(looks = "trt.vs.ctrl", personality = "trt.vs.ctrl"), ref = 2, adjust = "holm")
-```
-
-To answer the following questions you might it useful to plot the means (because there are a lot of them). Do this with the code below:
-
-```{r looks_pers_plot, exercise = TRUE, exercise.lines = 6}
-afex::afex_plot(date_afx,
-                x = "looks",
-                trace = "personality",
-                mapping = "colour"
-                ) +
+```{r afx_plot-solution}
+# solution:
+afex::afex_plot(scent_afx, "scent_mask", "entity", error = "within") +
+  labs(x = "Scent used", y = "Number of vocalisations") +
   theme_minimal()
 ```
 
+The plot seems to suggest that when no scent is used, both types of aliens elicit more vocalisations when the dogs sniff them than when they sniff humans. This is also true when a human scent is used. However, when fox scent is used the number of vocalisations 
+when sniffing a human matches the number (more or less) when sniffing both types of aliens.
 
+### `r bmu()` Estimated marginal means [(1)]{.alt}
 
-```{r qu_looks_char, echo = F}
-quiz(caption = "The looks × personality interaction (level 2)",
-     question("Using the means, which of these statements about the **looks × personality** interaction are true? (Select ALL that apply)",
-    answer("For attractive dates, having high or average charisma resulted in similar (high) ratings, but being a dullard led to lower ratings", correct = T),
-    answer("For average-looking dates ratings increased as charisma went from low to high", correct = T),
-    answer("For unattractive dates being a dullard or having average charisma results in similar (low) ratings, but being highly charismatic led to higher ratings", correct = T),
-    answer("The effect of charisma was similar for attractive and unattractive dates, but different for average-looking dates."),
-    answer("Attractive dates were rated higher regardless of charisma."),
-    answer("The effect of charisma is present when comparing attractive and average-looking dates but not when comparing unattractive and average-looking dates."),
-    answer("For dates acting with high charisma, attractiveness had no impact on ratings"),
-    answer("For dates acting with low charisma, attractiveness had no impact on ratings"),
-    correct = "Correct - well done! The graph shows the mean ratings of dates of different levels of attractiveness when the date also had high levels of charisma (blue line), average charisma (green line) and low charisma (red line). Look first at the difference between attractive and average-looking dates. The interest in highly charismatic dates doesn’t change (the blue line is more or less flat between these two points), but for dates with average charisma or low charisma interest levels decline (the red and green lines slope down). If you have lots of charisma you can get away with being average-looking and people will still want to date you. Now look at the difference between average-looking and unattractive dates. A different pattern is observed: for dates with low charisma there is little difference between unattractive and average-looking people (the red line is flat) but for those with average or high charisma, there is a decline in interest if they are low attractive (the green and blue lines slope down).",
-    incorrect = "You have at least one incorrect answer. The graph shows the mean ratings of dates of different levels of attractiveness when the date also had high levels of charisma (blue line), average charisma (green line) and low charisma (red line). Look first at the difference between attractive and average-looking dates. The interest in highly charismatic dates doesn’t change (the blue line is more or less flat between these two points), but for dates with average charisma or low charisma interest levels decline (the red and green lines slope down). If you have lots of charisma you can get away with being average-looking and people will still want to date you. Now look at the difference between average-looking and unattractive dates. A different pattern is observed: for dates with low charisma there is little difference between unattractive and average-looking people (the red line is flat) but for those with average or high charisma, there is a decline in interest if they are low attractive (the green and blue lines slope down).",
-    random_answer_order = TRUE,
-    allow_retry = T
-  )
-)
-```
-
-
-The contrasts help to pick apart this interaction.
-
-* The first contrast asks ‘is the difference between high charisma and average charisma the same for attractive and average-looking dates?’ The best way to understand this contrast is to focus on the relevant bit of the interaction graph. Interest (as indicated by high ratings) in attractive dates was the same regardless of whether they had high or average charisma; however, for average-looking dates, there was more interest when that person had high charisma rather than average charisma. The contrast is highly significant, *t*(18) = 9.41, *p* < 0.001, and tells us that as attractiveness is reduced there is a significantly greater decline in interest when charisma is average compared to when it is high.
-* The second contrast asks the question ‘is the difference between low charisma and average charisma the same for attractive people and average-looking people? We can again focus on the relevant part of the interaction graph. Interest in attractive dates was higher when they had average charisma (green) than when they had low charisma (red); the same is also true for average-looking dates. The two lines are fairly parallel, which is reflected in the non-significant contrast, *t*(18) = 2.02, *p* = 0.058. It seems that as the attractiveness of dates is reduced there is a decline in interest both when charisma is average and when it is low.
-* The third contrast asks ‘is the difference between high charisma and average charisma the same for low attractive dates and average-looking dates?’ Interest in dating decreases from average-looking dates to unattractive ones in dates with both high and average charisma dates; however, this fall is significantly greater in the low-charisma dates (the red line is slightly steeper than the blue), *t*(18) = 2.50, *p* = 0.045. As dates’ attractiveness is reduced there is a significantly greater decline in interest when dates have average charisma compared to when they have a lot.
-* The final contrast addresses the question ‘is the difference between low charisma and average charisma the same for unattractive people and average-looking people? For average-looking dates, ratings were higher when they had average charisma than when they had low charisma, but for unattractive dates the ratings were roughly the same regardless of the level of charisma. This contrast is highly significant, *t*(18) = $-4.68$, *p* < 0.001.
-
-### `r user_visor()` The interaction between **strategy**,  **looks** and **personality** [(2)]{.alt}
-
-The three-way interaction will blow your mind! The main output from the `afex` model is reproduced below:
-
-```{r, echo = F}
-date_afx
-```
-
-The significant strategy × looks × personality interaction, *F*(3.20, 57.55) = 24.12, *p* < 0.001, tells us whether the looks × personality interaction described above is the same (statistically) when dates played hard to get compared to when they didn’t.
-
-To pick the effect apart we can, take a very deep breath and, inspect the estimated marginal means using `emmeans()`. We use the same approach as before, but adapt the code from the previous section to include the third predictor:
-
-```{r, eval = F}
-three_way_emm <- emmeans::emmeans(date_afx, c("strategy", "looks", "personality"), model = "multivariate")
-three_way_emm # shows us the means
-```
-
-#### `r alien()` Alien coding challenge
-
-Obtain the estimated marginal means for the **strategy\*looks\*personality** interaction and store them as [three_way_emm]{.alt}
-
-```{r three_way_emm, exercise = TRUE, exercise.lines = 4}
-
-```
-
-```{r three_way_emm-hint-1}
-# replace the Xs
-three_way_emm <- emmeans::emmeans(xxxxxx, c(xxxxxx, xxxxx, xxxxx), model = "xxxxxx")
-```
-
-```{r three_way_emm-solution}
-three_way_emm <- emmeans::emmeans(date_afx, c("strategy", "looks", "personality"), model = "multivariate")
-three_way_emm # shows us the means
-```
-
-We now have 18 means to wrap our heads around, which is a lot, so lets plot them, using `afex_plot()`. The code below plots **looks** on the *x*-axis, *personality* as different coloured lines and **strategy** is split across two panels.
-
-```{r three_way_plot, exercise = TRUE, exercise.lines = 6}
-afex::afex_plot(date_afx,
-                x = "looks",
-                trace = "personality",
-                panel = "strategy",
-                mapping = "colour"
-                ) +
-  theme_minimal()
-```
-
-
-```{r qu_looks_char_strat, echo = F}
-quiz(caption = "The three-way interaction (level 2)",
-     question("Look at the interaction graph and compare the graph for the dates why acted normally to the one for the dates who played hard to get. The following statements highligh the *differences* between these two graphs, which of them are true? (Select ALL that apply)",
-    answer("For attractive dates, charisma had no effect on ratings when dates played hard to get, but when they acted normally dullards were rated much lower", correct = T),
-    answer("For average-looking dates, ratings increased as charisma went from low to high regardless of the dating strategy employed", correct = T),
-    answer("For unattractive dates charisma had a very small effect on ratings when dates played hard to get, but when they acted normally highly charismatic dates were rated much higher", correct = T),
-    answer("There are no differences in the patterns of means between the graphs depicting dates who acted normally and those that played hard to get."),
-    answer("The patterns of means between the graphs depicting dates who acted normally and those that played hard to get differ only for attractive dates."),
-    answer("For dates acting with high charisma, attractiveness had a similar impact for dates who acted normally and those that played hard to get"),
-    answer("For dates acting with average charisma, attractiveness had a greater impact for dates who acted normally than for those that played hard to get"),
-    correct = "Correct - well done! The graph for dates who played hard to get shows that when dates are attractive, a high interest was expressed regardless of charisma levels (the blue, green and red lines meet). At the opposite end of the attractiveness scale, when a date is unattractive, regardless of charisma, very little interest is expressed (ratings are all low). If the date plays hard to get, the only time charisma makes a difference is if the date is average-looking, in which case high charisma (blue) boosts interest, having low charisma (red) reduces interest, and having ‘average’ charisma leaves things somewhere in between. The take-home message is that playing hard to get only works if you’re averagely attractive: if you’re highly charismatic it will boost your appeal but it’s a disastrous strategy if you’re dull. The picture when the date doesn’t play hard to get (acts normally) is different. If someone has high levels of charisma then what they look like won’t affect interest in them (the blue line is relatively flat). At the other extreme, if the date has low charisma, then they will have very little interest expressed in them regardless of how attractive they are (the red line is relatively flat). The only time attractiveness makes a difference is when someone has an average amount of charisma (the green line), in which case being attractive boosts interest, and being unattractive reduces it. If you don’t play hard to get and you are averagely attractive then you can influence others’ interest you with your charisma.",
-    incorrect = "You have at least one incorrect answer. The graph for dates who played hard to get shows that when dates are attractive, a high interest was expressed regardless of charisma levels (the blue, green and red lines meet). At the opposite end of the attractiveness scale, when a date is unattractive, regardless of charisma, very little interest is expressed (ratings are all low). If the date plays hard to get, the only time charisma makes a difference is if the date is average-looking, in which case high charisma (blue) boosts interest, being a dullard (red) reduces interest, and having ‘some’ charisma leaves things somewhere in between. The take-home message is that playing hard to get only works if you’re averagely attractive: if you’re highly charismatic it will boost your appeal but it’s a disastrous strategy if you’re dull. The picture when the date doesn’t play hard to get (acts normally) is different. If someone has high levels of charisma then what they look like won’t affect interest in them (the blue line is relatively flat). At the other extreme, if the date has low charisma, then they will have very little interest expressed in them regardless of how attractive they are (the red line is relatively flat). The only time attractiveness makes a difference is when someone has an average amount of charisma (the green line), in which case being attractive boosts interest, and being unattractive reduces it. If you don’t play hard to get and you are averagely attractive then you can influence others’ interest you with your charisma.",
-    random_answer_order = TRUE,
-    allow_retry = T
-  )
-)
-```
-
-We can again get contrasts for this interaction term. For the two-way interactions we used code of this form (I'm using the example of the **looks\*personality** interaction):
-
-```{r, eval = F}
-emmeans::contrast(looks_pers_emm, interaction = c(looks = "trt.vs.ctrl", personality = "trt.vs.ctrl"), ref = 2, adjust = "holm")
-```
-
-For the three-way interaction we need to add **strategy** to the list of variables and assign it a contrast type. Like we did in previous interactions, we may as well use [trt.vs.ctrl]{.alt} as a contrast for **strategy** has only two categories, so [trt.vs.ctrl]{.alt} will compare these categories. We also need to replace [looks_pers_emm]{.alt} with the estimated means object for the three-way interaction that we just created [three_way_emm]{.alt}.
+To get the means in the plot we've just made use the `emmeans()`. Place the name of your `afex` model into the function and include a vector of the variable names of predictors. Remember that because we have a repeated measures design we need to include [model = "multivariate"]{.alt}. We're going to save this object as [scent_emm]{.alt} so we can use it later.
 
 #### `r robot()` Code example
 
-The resulting code will be:
+To get the estimated marginal means for the [entity*scent_mask]{.alt} interaction, and save them in an object called [scent_emm]{.alt}, we would execute:
 
 ```{r, eval = F}
-emmeans::contrast(
-  three_way_emm,
-  interaction = c(strategy = "trt.vs.ctrl", looks = "trt.vs.ctrl", personality = "trt.vs.ctrl"),
-  ref = 2,
-  adjust = "holm"
-  )
+scent_emm <- emmeans::emmeans(scent_afx, c("entity", "scent_mask"), model = "multivariate")
 ```
+
 #### `r alien()` Alien coding challenge
 
-Obtain the contrasts just described using the code box.
+Obtain the estimated marginal means for the [scent_mask*entity]{.alt} interaction.
 
-```{r, three_way_setup}
-three_way_emm <- emmeans::emmeans(date_afx, c("strategy", "looks", "personality"), model = "multivariate")
-```
-
-
-```{r three_way_con, exercise = TRUE, exercise.lines = 7, exercise.setup = "three_way_setup"}
+```{r afx_emm2, exercise = TRUE, exercise.lines = 2, exercise.setup = "afx_fct"}
 
 ```
 
-```{r three_way_con-hint-1}
-emmeans::contrast(
-  xxxxxxx,
-  interaction = c(xxxxxx = "xxxxxx", xxxx = "xxxxxxx", xxxx = "xxxxxxx"),
-  ref = x,
-  adjust = "holm"
+```{r afx_emm2-solution}
+scent_emm <- emmeans::emmeans(scent_afx, c("entity", "scent_mask"), model = "multivariate")
+scent_emm # we need this command to view the means
+```
+
+### `r user_visor()` Simple effects analysis [(2)]{.alt}
+
+We saw in [discovr_13]{.alt} that an effective way to break down interactions is [simple effects analysis]{.alt}, which looks at the effect of one predictor at individual levels of another. For example, we could do a simple effects analysis looking at the effect of type of scent used at each level of entity. This would mean testing whether the mean number of vocalisations differed across the three scents when sniffing a human, then making the same comparison after sniffing a shapeshifter, and then finally for sniffing an alien. By doing so we ask: what is the effect of [scent_mask]{.alt} within each entity group?
+
+An alternative is to quantify the effect of [entity]{.alt} (the pattern of means across the human, shapeshifter and alien) separately for each of the three scents.
+
+As in in [discovr_13]{.alt} we can do this analysis using the `joint_tests()` function from `emmeans`. You place your model ([scent_afx]{.alt} into the function and specify the predictor for which you want an analysis at each level.
+
+#### `r robot()` Code example
+
+For example, if we want to look at the effect of [scent_mask]{.alt} in each level of entity, we'd execute:
+
+```{r, eval = F}
+emmeans::joint_tests(scent_afx, "entity")
+```
+
+If we wanted to look at the effect of [entity]{.alt} separately for attractive and unattractive stimuli, we'd execute:
+
+```{r, eval = F}
+emmeans::joint_tests(scent_afx, "scent_mask")
+```
+
+#### `r alien()` Alien coding challenge
+
+Do a simple effects analysis to look at the effect of [entity]{.alt} separately for the different types of scent.
+
+```{r scent_afx_se, exercise = TRUE, exercise.lines = 3, exercise.setup = "afx_fct"}
+
+```
+
+```{r scent_afx_se-hint-1}
+# replace the xs
+emmeans::joint_tests(xxxxxx, "xxxxxx")
+```
+
+```{r scent_afx_se-solution}
+emmeans::joint_tests(scent_afx, "scent_mask") 
+```
+
+<div class="tip">
+  `r cat_space()` **Tip: Reminder about scientific notation**
+
+Remember that in `r rproj()` when you see [e-x]{.alt} it means $\times 10^{-x}$ and when you see [e+x]{.alt} it means $\times 10^{x}$. For example, [e-07]{.alt} is $\times 10^{-7}$ and [e+22]{.alt} is $\times 10^{22}$. Therefore, the *p*-value of `1.281788e-06` is $1.281788 \times 10^{-6}= 0.000001281788$
+</div>
+
+
+```{r quiz_face_se, echo = F}
+quiz(caption = "Interpreting simple effects 1 (level 2)",
+  question("Using the output above, after applying which of the following scents were there significant differences in the mean number of vocalisations made by sniffer dogs when sniffing different entities? (tick ALL that apply)",
+    answer("No scent.", correct = T),
+    answer("Human scent.", correct = T),
+    answer("Fox scent.", correct = T),
+    answer("50 cent.", message = "Sunny days wouldn't be special if it wasn't for rain
+Joy wouldn't feel so good if it wasn't for pain (Many Men (Wish Death))"),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
   )
+)
 ```
 
-```{r three_way_con-solution}
-emmeans::contrast(
-  three_way_emm,
-  interaction = c(strategy = "trt.vs.ctrl", looks = "trt.vs.ctrl", personality = "trt.vs.ctrl"),
-  ref = 2,
-  adjust = "holm"
+#### `r alien()` Alien coding challenge
+
+Let's try the simple effects analysis the other way around: obtain the simple effect of [scent_mask]{.alt} separately for each dose of [entity]{.alt}.
+
+```{r scent_se2, exercise = TRUE, exercise.lines = 3, exercise.setup = "afx_fct"}
+
+```
+
+```{r scent_se2-hint-1}
+# replace the xs
+emmeans::joint_tests(xxxxxx, "xxxxxx")
+```
+
+```{r scent_se2-solution}
+emmeans::joint_tests(scent_afx, "entity")
+```
+
+```{r quiz_face_se2, echo = F}
+quiz(caption = "Interpreting simple effects 2 (level 2)",
+  question("Using the output above, when sniffing which of the following entities did the scent worn lead to significant differences in the mean number of vocalisations made by sniffer dogs? (tick ALL that apply)",
+    answer("Human.", correct = T),
+    answer("Shapeshifter.", correct = T),
+    answer("Alien.", correct = T),
+    answer("Mannequin.", message = "They didn't use a mannequin in this study."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
   )
+)
 ```
 
-* The first contrast the effect of high attractive dates relative to average-looking ones, when they display high charisma compared average charisma, when dates played hard to get relative to when they didn’t, *t*(18) = $-1.16$, *p* = 0.526. It seems that interest in dating (as indicated by high ratings) attractive dates was the same regardless of whether they had high or average charisma (the green and blue dots are in a similar place). However, for average-looking dates, there was more interest when that person had high charisma rather than average charisma (the green dot is lower than the blue dot). The non-significance of this contrast indicates that this pattern of results is very similar when dates played hard to get and when they didn’t.
-* The second contrast explores effect of high attractive dates relative to average-looking ones, when displaying low charisma compared to average charisma, when dates played hard to get relative to when they didn’t. The contrast is significant, *t*(18) = $-7.79$, *p* < 0.001, which reflects the fact that the pattern of means is different when dates played hard to get compared to when they didn’t. First, if we look at average-looking dates, more interest was expressed when the date has average charisma than when they have low charisma, and this is true whether or not dates played hard to get (the distance between the green and red lines is about the same in the two dating strategy groups). So, the difference created by playing hard to get doesn’t appear to be here. Now look at attractive dates. When dates played hard to get the interest in the date is high regardless of their charisma (the lines meet). However, when dates acted normally interest in dating an attractive person is much lower if they are a dullard (the red dot is much lower than the green). Another way to look at it is that for dates with average charisma, the reduction in interest as attractiveness goes down is about the same regardless of whether they played hard to get (the green lines have the same slope). However, for dates displaying low charisma, the decrease in interest if these dates are average-looking rather than attractive is much more dramatic if they play hard to get (the red line is steeper in the hard to get group).
-* The third contrast was also significant, *t*(18) = 3.42, *p* = 0.009. This contrast compares low attractive dates to average-looking ones, when displaying high charisma relative to average charisma, when dates played hard to get relative to when they didn’t. First, let’s look at when dates played hard to get. As attractiveness goes down, so does interest when the date has high charisma and when they have average charisma (the slopes of the blue and green lines are similar). So, regardless of charisma, there is a similar reduction in interest as attractiveness declines. Now let’s look at when the dates acted normally. The picture is quite different: when charisma is high, there is no decline in interest as attractiveness falls (the blue line is flat); however, when charisma is average, interest is lower in an unattractive date than in an average-looking date (the green line slopes down). Another way to look at it is that for dates with average charisma, the reduction in interest as attractiveness goes down is about the same regardless of whether dates play hard to get (the green lines have similar slopes). However, for dates who have high charisma, the decrease in interest if these dates are unattractive rather than average-looking is much more dramatic when dates played hard to get than when they didn’t (the blue line is steeper for dates that played hard to get).
-* The final contrast was not significant, *t*(18) = $-0.96$, *p* = 0.526. This contrast looks at the effect of Strategy when comparing low attractive dates to average-looking dates, when displaying low charisma relative average charisma. Interest in unattractive dates was the same regardless of whether they had average charisma or low (the green and red dots are in the same place). Interest in average-looking dates was greatest when they had average charisma rather than when they had low charisma (the green dot is higher than the red). This pattern of results is very similar when dates played hard to get and when they didn’t.
+### `r user_visor()` Post hoc tests across an interaction [(2)]{.alt}
+
+In this case, the simple effects analysis doesn't help us break down the interaction because all effects are significant all all levels of the other effect! We can also break down an interaction by doing pairwise comparisons of all means remembering to correct for the number of tests we've done. We can do this in the same way as before by placing the estimated marginal means (which we saved earlier as [scent_emm]{.alt}) into the `pairs()` function and specifying an adjustment for the number of tests.
+
+#### `r alien()` Alien coding challenge
+
+Obtain *post hoc* tests for the interaction term using a Holm adjustment for the number of tests.
+
+```{r scent_ph, exercise = TRUE, exercise.lines = 3, exercise.setup = "afx_fct"}
+
+```
+
+```{r scent_ph-hint-1}
+# replace the xs
+pairs(xxxxxx, adjust = "xxxxxx")
+```
+
+```{r scent_ph-solution}
+pairs(scent_emm, adjust = "holm")
+```
+
+The result is a bewildering 36 comparisons! Good luck making sense of those. Part of the problem is that every combination of means is tested. It's hard to see the wood for the trees. Let's make things more manageable by comparing only the mean vocalisations across entities, but doing this separately for each scent. To see what I mean, let's revisit the interaction plot (reproduced below). I'm suggesting comparing the values represented by the circle, triangle and square within each coloured area separately. This analysis answers three questions: (1) when no scent is worn, do the mean vocalisations differ when sniffing a human, shapeshifter and alien? (2) When human scent is worn, do the mean vocalisations differ when sniffing a human, shapeshifter and alien? and, (3)  When fox scent is worn, do the mean vocalisations differ when sniffing a human, shapeshifter and alien?
+
+```{r, echo = F}
+scent_afx <- afex::aov_4(vocalisations ~ entity*scent_mask + (entity*scent_mask|dog_id), data = scent_tib)
+
+afex::afex_plot(scent_afx, "scent_mask", "entity", error = "within") +
+  scale_color_manual(values = c(ong, blu, red)) +
+  labs(x = "Scent used", y = "Number of vocalisations") +
+  annotate("rect", xmin = 0.5, xmax = 1.5, ymin = 0, ymax = 15, fill = ong, alpha = 0.2) +
+  annotate("rect", xmin = 1.5, xmax = 2.5, ymin = 0, ymax = 15, fill = blu, alpha = 0.2) +
+  annotate("rect", xmin = 2.5, xmax = 3.5, ymin = 0, ymax = 15, fill = red, alpha = 0.2) +
+  theme_minimal()
+```
+
+To achieve these comparisons, we need to set up the estimated marginal means a little differently. Instead of specifying the variables in `emmeans()` as [c("entity", "scent_mask")]{.alt} we specify them as [~entity|scent_mask]{.alt}, which you can read as 'the effect of **entity** within **scent_mask**'. We'll give this object a different name, [int_emm]{.alt} to distinguish it from the previous estimated marginal means object.
+
+```{r, eval = F}
+int_emm <- emmeans::emmeans(scent_afx, ~entity|scent_mask, method = "multivariate")
+```
+
+Having created this new estimated marginal means object, which nests the means for entity within the scent groups, we can feed it into `pairs()` in the same way as normal.
+
+```{r afx_int, echo = F}
+scent_afx <- afex::aov_4(vocalisations ~ entity*scent_mask + (entity*scent_mask|dog_id), data = scent_tib)
+int_emm <- emmeans::emmeans(scent_afx, ~entity|scent_mask, method = "multivariate")
+```
+
+#### `r alien()` Alien coding challenge
+
+Create new estimated marginal means for the effect of **entity** within each level of **scent_mask**. Then obtain *post hoc* tests.
+
+```{r int_ph, exercise = TRUE, exercise.lines = 5, exercise.setup = "afx_int"}
+
+```
+
+```{r int_ph-hint-1}
+# Create the EMMS replace the xs
+int_emm <- emmeans::emmeans(xxxxx, ~xxxxx|xxxxxx, method = "multivariate")
+
+int_emm <- emmeans::emmeans(scent_afx, ~entity|scent_mask, method = "multivariate")
+pairs(xxxxxx, adjust = "xxxxxx")
+```
+
+```{r int_ph-hint-2}
+# Create the EMMS replace the xs
+int_emm <- emmeans::emmeans(scent_afx, ~entity|scent_mask, method = "multivariate")
+int_emm # use this code if you want to inspect the means
+# Now create the post hoc tests
+pairs(xxxxxx, adjust = "xxxxxx")
+```
+
+```{r int_ph-hint-3}
+# Create the post hoc tests (replace the xxxxs)
+pairs(xxxxxx, adjust = "xxxxxx")
+```
+
+```{r int_ph-hint-4}
+# Create the post hoc tests
+pairs(int_emm, adjust = "holm")
+```
+
+```{r int_ph-solution}
+#Put it all together:
+int_emm <- emmeans::emmeans(scent_afx, ~entity|scent_mask, method = "multivariate")
+pairs(int_emm, adjust = "holm")
+```
+
+These tests make the interpretation of the interaction much more straightforward. When no scent is worn, mean vocalisations differ between all entities. From the means/plot, aliens elicit significantly more vocalisations than both shapeshifters and humans, and shapeshifters elicit significantly more vocalisations than humans. This pattern of findings is the same when a human scent is worn. The interaction, therefore, reflects a change in this pattern when fox scent is worn. When fox scent is worn, there are still significantly more vocalisations when sniffing aliens and shapeshifters compared to humans, but the difference between shapeshifters and aliens is now not significant. To sum up, the scents don't distract the sniffer dogs from detecting aliens compared to humans, but it does confuse them when distinguishing aliens in their natural lizard form (alien) compared to when in humanoid form (shapeshifter). 
+
+### `r user_visor()` Robust models [(2)]{.alt} 
+
+As with the one-way repeated measures design, we can't get diagnostic plots for factorial designs that use repeated measures when using `afex`. There's also no easy way to fit a robust model (at least not if you're looking for a *p*-value).
 
 
 <div class="infobox">
@@ -857,8 +1141,7 @@ emmeans::contrast(
   
   **A message from Mae Jemstone:**
   
-  No-one reads these do they? I'll write this properly when it's not 1am (again ...) ... I need sleep sooooo badly.
-
+  Repeated measures experimental designs are a very efficient way to test hypotheses. Back in my trainee days, we were about to do battle with the Crimson Riders, a band of space outlaws who spread statistical misinformation. If you think that a confidence interval relates to your confidence in a value then your brain has probably been infiltrated by the Crimson Riders' propaganda. The thing about this band of reprobates is that they're very hard to track down. To work out how to defeat them we needed to test their reaction to different doses of a truth serum we had developed, but we could only capture a dozen or so of them. Enter the repeated measures design and victory. Although, their foul work survived that particular battle. Thanks to your hard work, you can now analyse repeated measures designs. Happy days cadets - well done!
 </div>
 
 

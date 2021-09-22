@@ -707,7 +707,7 @@
 
 "exam_anxiety"
 
-#' Gelman & Weakliem (2009) data
+#' Gallup et al. (2003) data
 #'
 #' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
@@ -758,7 +758,7 @@
 #' @source [www.discovr.rocks/csv/gelman_2009.csv](https://www.discovr.rocks/csv/gelman_2009.csv)
 #' @references
 #'
-#' * Gelman, A., & Weakliem, D. (2009). Of beauty, sex and power: Too little attention has been paid to the statistical challenges in estimating small effects. *American Scientist*, 97, 310–316. [https://www.jstor.org/stable/27859361](https://www.jstor.org/stable/27859361)
+#' * Gelman, A., & Weakliem, D. (2009). Of beauty, sex and power: Too little attention has been paid to the statistical challenges in estimating small effects. *American Scientist*, 97, 310–316.
 
 "gelman_2009"
 

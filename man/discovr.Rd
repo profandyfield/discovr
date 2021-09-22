@@ -204,7 +204,7 @@ The following palettes exist.
 \section{References}{
 
 \itemize{
-\item Field, A. P. (2021). \emph{Discovering statistics using R and RStudio} (2nd ed.). London: Sage.
+\item Field, A. P. (2022). \emph{Discovering statistics using R and RStudio} (2nd ed.). London: Sage.
 }
 }
 

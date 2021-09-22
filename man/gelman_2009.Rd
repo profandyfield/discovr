@@ -34,7 +34,7 @@ These are the data from that study. The data contains the following variables:
 }
 \references{
 \itemize{
-\item Gelman, A., & Weakliem, D. (2009). Of beauty, sex and power: Too little attention has been paid to the statistical challenges in estimating small effects. \emph{American Scientist}, 97, 310–316. \url{https://www.jstor.org/stable/27859361}
+\item Gelman, A., & Weakliem, D. (2009). Of beauty, sex and power: Too little attention has been paid to the statistical challenges in estimating small effects. \emph{American Scientist}, 97, 310–316.
 }
 }
 \keyword{datasets}

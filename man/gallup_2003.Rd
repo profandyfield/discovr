@@ -3,7 +3,7 @@
 \docType{data}
 \name{gallup_2003}
 \alias{gallup_2003}
-\title{Gelman & Weakliem (2009) data}
+\title{Gallup et al. (2003) data}
 \format{
 A tibble with 15 rows and 3 variables.
 }

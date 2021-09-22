@@ -398,7 +398,7 @@
 #'   * **child_age**: Age of the youngest child
 #'   * **child_gender**: Gender of the youngest child
 #'   * **child_warmth**: Perceived warmth of the child to the mother.
-#'   * **child_anger**: Perceived agnger of the child towards to the mother.
+#'   * **child_anger**: Perceived anger of the child towards to the mother.
 #'   * **mum_pos**: the mother's perceived positivity towards her child.
 #'   * **mum_neg**: the mother's perceived negativity towards her child.
 #'   * **chaos**: household chaos.
@@ -409,6 +409,30 @@
 #' @source [www.discovr.rocks/csv/coldwell_2006.csv](https://www.discovr.rocks/csv/coldwell_2006.csv)
 
 "coldwell_2006"
+
+#' Cosmetic surgery data
+#'
+#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Fictitious example based on quality of life predicted from undergoing cosmetic surgery. Cosmetic surgery is on the increase. For example,
+#' in the USA, there was a 1600% increase in cosmetic surgical and non-surgical treatments between 1992 and 2002.
+#' There are two main reasons to have cosmetic surgery: (1) to help a physical problem; and (2) to change your external appearance when there is no underlying physical pathology.
+#' This example uses fictitious data looks at the effects of cosmetic surgery on quality of life. The variables in the data are:
+#'
+#'   * **id**: The participant id
+#'   * **post_qol**: The outcome variable. It measures quality of life after cosmetic surgery on a percentage scale (0% = the worst possible quality of life, 100% = the best possible quality of life)
+#'   * **base_qol**: Quality of life pre-surgery on the same percentage scale.
+#'   * **surgery**: Categorical variable specifying whether the person has undergone cosmetic surgery or is on the waiting list, which acts as our control group.
+#'   * **clinic**: Categorical variable that indicates which of 10 clinics the person attended to have their surgery.
+#'   * **age**: The particiopant's age in years.
+#'   * **bdi**: Levels of depression using the Beck Depression Inventory (BDI).
+#'   * **reason**: Categorical variable that indicates whether the person had or is waiting to have surgery purely to change their appearance or because of a physical reason.
+#'
+#' @docType data
+#' @format A tibble with 276 rows and 8 variables.
+#' @source [www.discovr.rocks/csv/cosmetic.csv](https://www.discovr.rocks/csv/cosmetic.csv)
+
+"cosmetic"
 
 
 #' Daniels (2012) data

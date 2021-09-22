@@ -17,7 +17,7 @@ animal_bride
 A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
-Fictitious data inspired by two news stories that I enjoyed. The first was about a Sudanese man who was forced to marry a goat (\url{http://ow.ly/9DyyP})
+Fictitious data inspired by two news stories that I enjoyed. The first was about a Sudanese man who was forced to marry a goat
 after being caught having sex with it. I'm not sure he treated the goat to a nice dinner in a posh restaurant before taking advantage of her, but either way you have to feel sorry for the goat.
 I'd barely had time to recover from that story when another appeared about an Indian man forced to marry a dog to atone for stoning two dogs and stringing them up in a tree 15 years earlier.
 Why anyone would think it's a good idea to enter a dog into matrimony with a man with a history of violent behaviour towards dogs is beyond me.

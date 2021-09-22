@@ -22,7 +22,7 @@ For details of variables see \link{bronstein_2019}.
 }
 \references{
 \itemize{
-\item Bronstein, M. V., Pennycook, G., Bear, A., Rand, D. G., & Cannon, T. D. (2019). Belief in fake news is associated with delusionality, dogmatism, religious fundamentalism, and reduced analytic thinking. \emph{Journal of Applied Research in Memory and Cognition}, 8(1), 108–117. \url{https://doi.org/10.1016/j.jarmac.2018.09.005}
+\item Bronstein, M. V., Pennycook, G., Bear, A., Rand, D. G., & Cannon, T. D. (2019). Belief in fake news is associated with delusionality, dogmatism, religious fundamentalism, and reduced analytic thinking. \emph{Journal of Applied Research in Memory and Cognition}, 8(1), 108–117. \doi{10.1016/j.jarmac.2018.09.005}
 }
 }
 \keyword{datasets}

@@ -8,7 +8,7 @@
 A tibble with 52 rows and 4 variables
 }
 \source{
-\href{https://www.discovr.rocks/csv/zhang_sample.csv}{www.discovr.rocks/csv/zhang_sample.csv}
+\href{https://www.discovr.rocks/csv/zhang_2013_subsample.csv}{www.discovr.rocks/csv/zhang_2013_subsample.csv}
 }
 \usage{
 zhang_sample
@@ -32,7 +32,7 @@ The data are a random subsample of Zhang et al.'s data with the following variab
 \references{
 \itemize{
 \item Field, A. P. (2010). Teaching Statistics. In D. Upton & A. Trapp (Eds.), \emph{Teaching Psychology in Higher Education} (pp. 134-163). Chichester, UK: Wiley-Blackwell.
-\item Zhang, S., Schmader, T., & Hall, W. M. (2013). L'eggo My Ego: Reducing the Gender Gap in Math by Unlinking the Self from Performance. \emph{Self and Identity}, \emph{12}, 400-412. \url{https://doi.org/10.1080/15298868.2012.687012}
+\item Zhang, S., Schmader, T., & Hall, W. M. (2013). L'eggo My Ego: Reducing the Gender Gap in Math by Unlinking the Self from Performance. \emph{Self and Identity}, \emph{12}, 400-412. \doi{10.1080/15298868.2012.687012}
 }
 }
 \keyword{datasets}

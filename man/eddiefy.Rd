@@ -17,7 +17,7 @@ eddiefy
 A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
-A dataset containing the song features data from the \href{https://developer.spotify.com/documentation/web-api/}{Spotify API} for the studio albums (190-2015) of the greatest band ever, \href{www.ironmaiden.com}{Iron Maiden}.
+A dataset containing the song features data from the \href{https://developer.spotify.com/documentation/web-api/}{Spotify API} for the studio albums (190-2015) of the greatest band ever, \href{https://www.ironmaiden.com}{Iron Maiden}.
 Data were obtained using the \href{https://www.rcharlie.com/spotifyr/}{spotifyr} package.
 \itemize{
 \item \strong{artist_name}: Pointless variable that reminds us that the data relate to Iron Maiden

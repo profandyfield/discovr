@@ -38,7 +38,7 @@ being \emph{volatile}, \emph{mistrustful}, \emph{cautious}, \emph{detached}, \em
 }
 \references{
 \itemize{
-\item Zibarras, L. D., Port, R. L., & Woods, S. A. (2008). Innovation and the 'dark side' of personality: Dysfunctional traits and their relation to self-reported innovative characteristics. \emph{Journal of Creative Behavior}, 42, 201–215. \url{https://doi.org/10.1002/j.2162-6057.2008.tb01295.x}
+\item Zibarras, L. D., Port, R. L., & Woods, S. A. (2008). Innovation and the 'dark side' of personality: Dysfunctional traits and their relation to self-reported innovative characteristics. \emph{Journal of Creative Behavior}, 42, 201–215. \doi{10.1002/j.2162-6057.2008.tb01295.x}
 }
 }
 \keyword{datasets}

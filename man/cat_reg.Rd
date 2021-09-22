@@ -8,7 +8,7 @@
 A tibble with 200 rows and 7 variables.
 }
 \source{
-\href{https://www.discovr.rocks/csv/cat_reg.csv}{www.discovr.rocks/csv/cat_reg.csv}
+\href{https://www.discovr.rocks/csv/cat_regression.csv}{www.discovr.rocks/csv/cat_regression.csv}
 }
 \usage{
 cat_reg

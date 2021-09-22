@@ -29,7 +29,7 @@ These data simulate the results of that study. The object contains the following
 }
 \references{
 \itemize{
-\item McNulty, J. K., Neff, L. A., & Karney, B. R. (2008). Beyond initial attraction: Physical attractiveness in newlywed marriage. \emph{Journal of Family Psychology}, 22, 135–143. \url{https://doi.org/10.1037/0893-3200.22.1.135}
+\item McNulty, J. K., Neff, L. A., & Karney, B. R. (2008). Beyond initial attraction: Physical attractiveness in newlywed marriage. \emph{Journal of Family Psychology}, 22, 135–143. \doi{10.1037/0893-3200.22.1.135}
 }
 }
 \keyword{datasets}

@@ -38,7 +38,7 @@ These are the data from that study. The data contains the following variables:
 }
 \references{
 \itemize{
-\item Davey, G. C. L., Startup, H. M., Zara, A., MacDonald, C. B., & Field, A. P. (2003). The perseveration of checking thoughts and mood–as–input hypothesis. \emph{Journal of Behavior Therapy and Experimental Psychiatry}, 34(2), 141–160. \url{https://doi.org/10.1016/S0005-7916(03)00035-1}.
+\item Davey, G. C. L., Startup, H. M., Zara, A., MacDonald, C. B., & Field, A. P. (2003). The perseveration of checking thoughts and mood–as–input hypothesis. \emph{Journal of Behavior Therapy and Experimental Psychiatry}, 34(2), 141–160. \doi{10.1016/S0005-7916(03)00035-1}
 }
 }
 \keyword{datasets}

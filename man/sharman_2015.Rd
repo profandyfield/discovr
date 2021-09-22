@@ -31,7 +31,7 @@ They collected subjective measures too, but this data file contains only the hea
 }
 \references{
 \itemize{
-\item Sharman, L., & Dingle, G. A. (2015). Extreme metal music and anger processing. Frontiers in Human Neuroscience, 9. \url{https://doi.org/10.3389/fnhum.2015.00272}
+\item Sharman, L., & Dingle, G. A. (2015). Extreme metal music and anger processing. Frontiers in Human Neuroscience, 9. \doi{10.3389/fnhum.2015.00272}
 }
 }
 \keyword{datasets}

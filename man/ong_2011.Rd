@@ -37,7 +37,7 @@ These data are in messy/wide format. The data contains the following variables:
 }
 \references{
 \itemize{
-\item Ong, E. Y. L., Ang, R. P., Ho, J. C. M., Lim, J. C. Y., Goh, D. H., Lee, C. S., & Chua, A. Y. K. (2011). Narcissism, extraversion and adolescents' self-presentation on Facebook. \emph{Personality and Individual Differences}, 50, 180–185. \url{https://doi.org/10.1016/j.paid.2010.09.022}
+\item Ong, E. Y. L., Ang, R. P., Ho, J. C. M., Lim, J. C. Y., Goh, D. H., Lee, C. S., & Chua, A. Y. K. (2011). Narcissism, extraversion and adolescents' self-presentation on Facebook. \emph{Personality and Individual Differences}, 50, 180–185. \doi{10.1016/j.paid.2010.09.022}
 }
 }
 \keyword{datasets}

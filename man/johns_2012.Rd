@@ -32,7 +32,7 @@ pictures from 0 (unattractive) to 100 (attractive). These are the data from that
 }
 \references{
 \itemize{
-\item Johns, S. E., Hargrave, L. A., & Newton-Fisher, N. E. (2012). Red is not a proxy signal for female genitalia in humans. \emph{PLoS One}, 7, e34669. \href{https://doi.org/10.1371/journal.pone.0034669}{doi.org/10.1371/journal.pone.0034669}.
+\item Johns, S. E., Hargrave, L. A., & Newton-Fisher, N. E. (2012). Red is not a proxy signal for female genitalia in humans. \emph{PLoS One}, 7, e34669. \doi{10.1371/journal.pone.0034669}
 }
 }
 \keyword{datasets}

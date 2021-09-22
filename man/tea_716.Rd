@@ -8,7 +8,7 @@
 A tibble with 716 rows and 3 variables:
 }
 \source{
-\href{https://www.discovr.rocks/csv/tea_716.csv}{www.discovr.rocks/csv/tea_716.csv}
+\href{https://www.discovr.rocks/csv/tea_makes_you_brainy_716.csv}{www.discovr.rocks/csv/tea_makes_you_brainy_716.csv}
 }
 \usage{
 tea_716

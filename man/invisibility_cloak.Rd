@@ -8,7 +8,7 @@
 A tibble with 24 rows and 3 variables.
 }
 \source{
-\href{https://www.discovr.rocks/csv/invisibility_cloak.csv}{www.discovr.rocks/csv/invisibility_cloak.csv}
+\href{https://www.discovr.rocks/csv/invisibility.csv}{www.discovr.rocks/csv/invisibility.csv}
 }
 \usage{
 invisibility_cloak

@@ -38,7 +38,7 @@ despite what the participants Section of the paper implies).  These are the data
 }
 \references{
 \itemize{
-\item Daniels, E. (2012). Sexy versus strong: What girls and women think of female athletes. \emph{Journal of Applied Developmental Psychology}, 33, 79–90. \href{https://doi.org/10.1016/j.appdev.2011.12.002}{doi.org/10.1016/j.appdev.2011.12.002}.
+\item Daniels, E. (2012). Sexy versus strong: What girls and women think of female athletes. \emph{Journal of Applied Developmental Psychology}, 33, 79–90. \doi{10.1016/j.appdev.2011.12.002}
 }
 }
 \keyword{datasets}

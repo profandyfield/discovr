@@ -44,7 +44,7 @@ These are the data from that study. The data contains the following variables:
 }
 \references{
 \itemize{
-\item Chamorro-Premuzic, T., Furnham, A., Christopher, A. N., Garwood, J., & Neil Martin, G. (2008). Birds of a feather: Students' preferences for lecturers' personalities as predicted by their own personality and learning approaches. \emph{Personality and Individual Differences}, 44(4), 965–976. \url{https://doi.org/10.1016/j.paid.2007.10.032}.
+\item Chamorro-Premuzic, T., Furnham, A., Christopher, A. N., Garwood, J., & Neil Martin, G. (2008). Birds of a feather: Students' preferences for lecturers' personalities as predicted by their own personality and learning approaches. \emph{Personality and Individual Differences}, 44(4), 965–976. \doi{10.1016/j.paid.2007.10.032}
 }
 }
 \keyword{datasets}

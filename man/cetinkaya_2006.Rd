@@ -46,7 +46,7 @@ These are the data from that study. The data contains the following variables:
 }
 \references{
 \itemize{
-\item Cetinkaya, H., & Domjan, M. (2006). Sexual fetishism in a quail (\emph{Coturnix japonica}) model system: Test of reproductive success. \emph{Journal of Comparative Psychology}, \emph{120}, 427–432. \href{https://doi.org/10.1037/0735-7036.120.4.427}{doi.org/10.1037/0735-7036.120.4.427}
+\item Cetinkaya, H., & Domjan, M. (2006). Sexual fetishism in a quail (\emph{Coturnix japonica}) model system: Test of reproductive success. \emph{Journal of Comparative Psychology}, \emph{120}, 427–432. \doi{10.1037/0735-7036.120.4.427}
 }
 }
 \keyword{datasets}

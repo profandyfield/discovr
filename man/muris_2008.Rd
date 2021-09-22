@@ -43,7 +43,7 @@ biases through feedback (e.g., from parents).The data contains the following var
 }
 \references{
 \itemize{
-\item Muris, P., Huijding, J., Mayer, B., & Hameetman, M. (2008). A space odyssey: Experimental manipulation of threat perception and anxiety-related interpretation bias in children. \emph{Child Psychiatry and Human Development}, 39, 469–480. \url{https://doi.org/10.1007/s10578-008-0103-z}
+\item Muris, P., Huijding, J., Mayer, B., & Hameetman, M. (2008). A space odyssey: Experimental manipulation of threat perception and anxiety-related interpretation bias in children. \emph{Child Psychiatry and Human Development}, 39, 469–480. \doi{10.1007/s10578-008-0103-z}
 }
 }
 \keyword{datasets}

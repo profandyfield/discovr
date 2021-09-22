@@ -45,7 +45,7 @@ These are the data from that study. The data contains the following variables:
 }
 \references{
 \itemize{
-\item Beckham, A. S. (1929). Is the Negro happy? A psychological analysis. \emph{Journal of Abnormal and Social Psychology}, 24, 186–190. \href{https://doi.org/10.1037/h0072938}{doi.org/10.1037/h0072938}.
+\item Beckham, A. S. (1929). Is the Negro happy? A psychological analysis. \emph{Journal of Abnormal and Social Psychology}, 24, 186–190. \doi{10.1037/h0072938}
 }
 }
 \keyword{datasets}

@@ -42,7 +42,7 @@ The data contains three variables:
 }
 \references{
 \itemize{
-\item Field, A. P., & Cartwright-Hatton, S. (2008). Shared and unique cognitive factors in social anxiety. \emph{International Journal of Cognitive Therapy}, \emph{1}, 206–222. \href{https://doi.org/10.1521/ijct.2008.1.3.206}{doi.org/10.1521/ijct.2008.1.3.206}.
+\item Field, A. P., & Cartwright-Hatton, S. (2008). Shared and unique cognitive factors in social anxiety. \emph{International Journal of Cognitive Therapy}, \emph{1}, 206–222. \doi{10.1521/ijct.2008.1.3.206}
 }
 }
 \keyword{datasets}

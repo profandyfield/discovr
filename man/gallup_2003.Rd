@@ -35,7 +35,7 @@ device then Gallup et al. predicted: (1) that having a bell-end would displace m
 }
 \references{
 \itemize{
-\item Gallup, G. G. J., Burch, R. L., Zappieri, M. L., Parvez, R., Stockwell, M., & Davis, J. A. (2003). The human penis as a semen displacement device. \emph{Evolution and Human Behavior}, \emph{24}, 277–289. \href{https://doi.org/10.1016/S1090-5138(03)00016-3}{doi.org/10.1016/S1090-5138(03)00016-3}
+\item Gallup, G. G. J., Burch, R. L., Zappieri, M. L., Parvez, R., Stockwell, M., & Davis, J. A. (2003). The human penis as a semen displacement device. \emph{Evolution and Human Behavior}, \emph{24}, 277–289. \doi{10.1016/S1090-5138(03)00016-3}
 }
 }
 \keyword{datasets}

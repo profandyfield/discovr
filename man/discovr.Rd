@@ -22,11 +22,13 @@ I recommend working through \href{http://milton-the-cat.rocks/learnr/r/r_getting
 
 \strong{Running a tutorial}:
 
-To run each tutorial execute\preformatted{learnr::run_tutorial("name_of_tutorial", package = "discovr")
-}
+To run each tutorial execute
 
-Replacing \code{name_of_tutorial} with the name in bold below. For example, to load the tutorial \code{discovr_02} execute:\preformatted{learnr::run_tutorial("discovr_02", package = "discovr")
-}
+\code{learnr::run_tutorial("name_of_tutorial", package = "discovr")}
+
+Replacing \code{name_of_tutorial} with the name in bold below. For example, to load the tutorial \code{discovr_02} execute:
+
+\code{learnr::run_tutorial("discovr_02", package = "discovr")}
 \itemize{
 \item \strong{discovr_01}: Key concepts in R (functions and objects, packages and functions, style, data types, tidyverse, tibbles)
 \item \strong{discovr_02}: Summarizing data (frequency distributions, grouped frequency distributions, relative frequencies, histograms, mean, median, variance, standard deviation, interquartile range)
@@ -47,6 +49,7 @@ Replacing \code{name_of_tutorial} with the name in bold below. For example, to l
 }
 
 \strong{Workflow}:
+
 The tutorials are self-contained (you practice code in code boxes) so you don't need to use RStudio at the
 same time. However, to get the most from them I would recommend that you create an RStudio project and within that open (and save) a new
 R Markdown file each time to work through a tutorial. Within that Markdown file, replicate parts of the code from the tutorial (in code chunks)
@@ -176,7 +179,7 @@ Although I recommend working through the interactive solutions, each book Chapte
 
 \subsection{Colour palettes}{
 
-Colour themes based around the studio albums of my favourite band \href{www.ironmaiden.com}{Iron Maiden}.
+Colour themes based around the studio albums of my favourite band \href{https://www.ironmaiden.com}{Iron Maiden}.
 If you're wondering why some albums are missing, here's the explanation: X Factor (would basically be 8 shades of grey), Fear of the Dark (terrible album), The Book of Souls (would be 8 shades of black).
 The following palettes exist.
 \itemize{

@@ -229,14 +229,14 @@ Inspired by the
 [rockthemes](https://github.com/johnmackintosh/rockthemes) package and
 adapting code form that package I have come up with a bunch of colour
 themes based around the studio albums of my favourite band [Iron
-Maiden](www.ironmaiden.com). Full disclosure, I’m not a designer, so
-this largely involved uploading images of their sleeves to
-[colorpalettefromimage.com](colorpalettefromimage.com) and seeing what
-happened. If you have a better pallette design send me the hex codes for
-the colours! If you’re wondering why some albums are missing, here’s the
-explanation: X Factor (would basically be 8 shades of gray), Fear of the
-Dark (shit album), The Book of Souls (would basically be 8 shades of
-black).
+Maiden](https://www.ironmaiden.com). Full disclosure, I’m not a
+designer, so this largely involved uploading images of their sleeves to
+[colorpalettefromimage.com](https://colorpalettefromimage.com) and
+seeing what happened. If you have a better palette design send me the
+hex codes for the colours! If you’re wondering why some albums are
+missing, here’s the explanation: X Factor (would basically be 8 shades
+of gray), Fear of the Dark (shit album), The Book of Souls (would
+basically be 8 shades of black).
 
 The following palettes exist.
 

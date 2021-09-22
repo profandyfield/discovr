@@ -29,7 +29,7 @@ Lambert et al. (2012) found that pornography is related to infidelity. This obje
 }
 \references{
 \itemize{
-\item Lambert, N. M., Negash, S., Stillman, T. F., Olmstead, S. B., & Fincham, F. D. (2012). A love that doesn't last: Pornography consumption and weakened commitment to one's romantic partner. \emph{Journal of Social and Clinical Psychology}, 31, 410–438. \href{https://doi.org/10.1521/jscp.2012.31.4.410}{doi.org/10.1521/jscp.2012.31.4.410}
+\item Lambert, N. M., Negash, S., Stillman, T. F., Olmstead, S. B., & Fincham, F. D. (2012). A love that doesn't last: Pornography consumption and weakened commitment to one's romantic partner. \emph{Journal of Social and Clinical Psychology}, 31, 410–438. \doi{10.1521/jscp.2012.31.4.410}
 }
 }
 \keyword{datasets}

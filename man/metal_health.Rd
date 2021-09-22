@@ -30,7 +30,7 @@ These data are from a fictitious replication. There are two variables representi
 }
 \references{
 \itemize{
-\item Lacourse, E., Claes, M., & Villeneuve, M. (2001). Heavy metal music and adolescent suicidal risk. \emph{Journal of Youth and Adolescence}, \emph{30}, 321–332. \href{https://doi.org/10.1023/A:1010492128537}{doi.org/10.1023/A:1010492128537}.
+\item Lacourse, E., Claes, M., & Villeneuve, M. (2001). Heavy metal music and adolescent suicidal risk. \emph{Journal of Youth and Adolescence}, \emph{30}, 321–332. \doi{10.1023/A:1010492128537}
 }
 }
 \keyword{datasets}

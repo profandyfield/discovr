@@ -32,7 +32,7 @@ They counted how many trials participants choose the LL reward as an indicator o
 }
 \references{
 \itemize{
-\item Tuk, M. A., Trampe, D., & Warlop, L. (2011). Inhibitory spillover: increased urination urgency facilitates impulse control in unrelated domains. \emph{Psychological Science}, 22, 627–633. \href{https://doi.org/10.1177/0956797611404901}{doi.org/10.1177/0956797611404901}
+\item Tuk, M. A., Trampe, D., & Warlop, L. (2011). Inhibitory spillover: increased urination urgency facilitates impulse control in unrelated domains. \emph{Psychological Science}, 22, 627–633. \doi{10.1177/0956797611404901}
 }
 }
 \keyword{datasets}

@@ -26,7 +26,7 @@
 #' @source [www.discovr.rocks/csv/acdc.csv](https://www.discovr.rocks/csv/acdc.csv)
 #' @references
 #'
-#'    * Oxoby, R. J. (2008). On the efficiency of AC/DC: Bon Scott versus Brian Johnson. *Economic Enquiry*, *47*, 598-602. [https://doi.org/10.1111/j.1465-7295.2008.00138.x](https://doi.org/10.1111/j.1465-7295.2008.00138.x)
+#'    * Oxoby, R. J. (2008). On the efficiency of AC/DC: Bon Scott versus Brian Johnson. *Economic Enquiry*, *47*, 598-602. \doi{10.1111/j.1465-7295.2008.00138.x}
 #'
 
 "acdc"
@@ -85,7 +85,7 @@
 #'
 #' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' Fictitious data inspired by two news stories that I enjoyed. The first was about a Sudanese man who was forced to marry a goat ([http://ow.ly/9DyyP](http://ow.ly/9DyyP))
+#' Fictitious data inspired by two news stories that I enjoyed. The first was about a Sudanese man who was forced to marry a goat
 #' after being caught having sex with it. I'm not sure he treated the goat to a nice dinner in a posh restaurant before taking advantage of her, but either way you have to feel sorry for the goat.
 #' I'd barely had time to recover from that story when another appeared about an Indian man forced to marry a dog to atone for stoning two dogs and stringing them up in a tree 15 years earlier.
 #' Why anyone would think it's a good idea to enter a dog into matrimony with a man with a history of violent behaviour towards dogs is beyond me.
@@ -140,7 +140,7 @@
 #' @source [www.discovr.rocks/csv/beckham_1929.csv](https://www.discovr.rocks/csv/beckham_1929.csv)
 #' @references
 #'
-#'    * Beckham, A. S. (1929). Is the Negro happy? A psychological analysis. *Journal of Abnormal and Social Psychology*, 24, 186–190. [doi.org/10.1037/h0072938](https://doi.org/10.1037/h0072938).
+#'    * Beckham, A. S. (1929). Is the Negro happy? A psychological analysis. *Journal of Abnormal and Social Psychology*, 24, 186–190. \doi{10.1037/h0072938}
 
 
 "beckham_1929"
@@ -194,7 +194,7 @@
 #'  may be more likely to believe fake news because of their tendency to engage in less analytic and open-minded thinking.
 #'  They conducted two online studies that got merged into a single analysis to test this hypothesis. This object is a subset of variables from
 #'  their data (I have changed the variable names to match the constructs measured rather than the scales used to measure them).
-#'  The full dataset is available at [https://doi.org/10.1016/j.jarmac.2018.09.005](https://doi.org/10.1016/j.jarmac.2018.09.005).
+#'  The full dataset is available at \doi{10.1016/j.jarmac.2018.09.005}.
 #'
 #'   * **id** (ResponseID in the original dataset): participant ID
 #'   * **fake_newz** (ZBelief_Fake in the original dataset): participants viewed 12 fake news headlines, each with a brief description and photo, and rated their accuracy (1 = Not at all accurate, 4 = Very accurate). This variable is the average rating converted to a z-score.
@@ -207,7 +207,7 @@
 #' @source [www.discovr.rocks/csv/bronstein_2019.csv](https://www.discovr.rocks/csv/bronstein_2019.csv)
 #' @references
 #'
-#'    * Bronstein, M. V., Pennycook, G., Bear, A., Rand, D. G., & Cannon, T. D. (2019). Belief in fake news is associated with delusionality, dogmatism, religious fundamentalism, and reduced analytic thinking. *Journal of Applied Research in Memory and Cognition*, 8(1), 108–117. [https://doi.org/10.1016/j.jarmac.2018.09.005](https://doi.org/10.1016/j.jarmac.2018.09.005)
+#'    * Bronstein, M. V., Pennycook, G., Bear, A., Rand, D. G., & Cannon, T. D. (2019). Belief in fake news is associated with delusionality, dogmatism, religious fundamentalism, and reduced analytic thinking. *Journal of Applied Research in Memory and Cognition*, 8(1), 108–117. \doi{10.1016/j.jarmac.2018.09.005}
 
 "bronstein_2019"
 
@@ -224,7 +224,7 @@
 #' @source [www.discovr.rocks/csv/bronstein_miss_2019.csv](https://www.discovr.rocks/csv/bronstein_miss_2019.csv)
 #' @references
 #'
-#'    * Bronstein, M. V., Pennycook, G., Bear, A., Rand, D. G., & Cannon, T. D. (2019). Belief in fake news is associated with delusionality, dogmatism, religious fundamentalism, and reduced analytic thinking. *Journal of Applied Research in Memory and Cognition*, 8(1), 108–117. [https://doi.org/10.1016/j.jarmac.2018.09.005](https://doi.org/10.1016/j.jarmac.2018.09.005)
+#'    * Bronstein, M. V., Pennycook, G., Bear, A., Rand, D. G., & Cannon, T. D. (2019). Belief in fake news is associated with delusionality, dogmatism, religious fundamentalism, and reduced analytic thinking. *Journal of Applied Research in Memory and Cognition*, 8(1), 108–117. \doi{10.1016/j.jarmac.2018.09.005}
 
 "bronstein_miss_2019"
 
@@ -259,7 +259,7 @@
 #'
 #' @docType data
 #' @format A tibble with 200 rows and 7 variables.
-#' @source [www.discovr.rocks/csv/cat_reg.csv](https://www.discovr.rocks/csv/cat_reg.csv)
+#' @source [www.discovr.rocks/csv/cat_regression.csv](https://www.discovr.rocks/csv/cat_regression.csv)
 
 "cat_reg"
 
@@ -316,7 +316,7 @@
 #' @source [www.discovr.rocks/csv/cetinkaya_2006.csv](https://www.discovr.rocks/csv/cetinkaya_2006.csv)
 #' @references
 #'
-#'    * Cetinkaya, H., & Domjan, M. (2006). Sexual fetishism in a quail (*Coturnix japonica*) model system: Test of reproductive success. *Journal of Comparative Psychology*, *120*, 427–432. [doi.org/10.1037/0735-7036.120.4.427](https://doi.org/10.1037/0735-7036.120.4.427)
+#'    * Cetinkaya, H., & Domjan, M. (2006). Sexual fetishism in a quail (*Coturnix japonica*) model system: Test of reproductive success. *Journal of Comparative Psychology*, *120*, 427–432. \doi{10.1037/0735-7036.120.4.427}
 
 "cetinkaya_2006"
 
@@ -353,7 +353,7 @@
 #' @source [www.discovr.rocks/csv/chamorro_premuzic.csv](https://www.discovr.rocks/csv/chamorro_premuzic.csv)
 #' @references
 #'
-#'    * Chamorro-Premuzic, T., Furnham, A., Christopher, A. N., Garwood, J., & Neil Martin, G. (2008). Birds of a feather: Students' preferences for lecturers' personalities as predicted by their own personality and learning approaches. *Personality and Individual Differences*, 44(4), 965–976. [https://doi.org/10.1016/j.paid.2007.10.032](https://doi.org/10.1016/j.paid.2007.10.032).
+#'    * Chamorro-Premuzic, T., Furnham, A., Christopher, A. N., Garwood, J., & Neil Martin, G. (2008). Birds of a feather: Students' preferences for lecturers' personalities as predicted by their own personality and learning approaches. *Personality and Individual Differences*, 44(4), 965–976. \doi{10.1016/j.paid.2007.10.032}
 
 "chamorro_premuzic"
 
@@ -462,7 +462,7 @@
 #' @source [www.discovr.rocks/csv/daniels_2012.csv](https://www.discovr.rocks/csv/daniels_2012.csv)
 #' @references
 #'
-#'    * Daniels, E. (2012). Sexy versus strong: What girls and women think of female athletes. *Journal of Applied Developmental Psychology*, 33, 79–90. [doi.org/10.1016/j.appdev.2011.12.002](https://doi.org/10.1016/j.appdev.2011.12.002).
+#'    * Daniels, E. (2012). Sexy versus strong: What girls and women think of female athletes. *Journal of Applied Developmental Psychology*, 33, 79–90. \doi{10.1016/j.appdev.2011.12.002}
 #'
 
 "daniels_2012"
@@ -518,7 +518,7 @@
 #' @source [www.discovr.rocks/csv/davey_2003.csv](https://www.discovr.rocks/csv/davey_2003.csv)
 #' @references
 #'
-#'    * Davey, G. C. L., Startup, H. M., Zara, A., MacDonald, C. B., & Field, A. P. (2003). The perseveration of checking thoughts and mood–as–input hypothesis. *Journal of Behavior Therapy and Experimental Psychiatry*, 34(2), 141–160. [https://doi.org/10.1016/S0005-7916(03)00035-1](https://doi.org/10.1016/S0005-7916(03)00035-1).
+#'    * Davey, G. C. L., Startup, H. M., Zara, A., MacDonald, C. B., & Field, A. P. (2003). The perseveration of checking thoughts and mood–as–input hypothesis. *Journal of Behavior Therapy and Experimental Psychiatry*, 34(2), 141–160. \doi{10.1016/S0005-7916(03)00035-1}
 #'
 
 "davey_2003"
@@ -558,7 +558,7 @@
 #'
 #' @docType data
 #' @format A tibble with 810 rows and 5 variables.
-#' @source [www.discovr.rocks/csv/download.csv](https://www.discovr.rocks/csv/download.csv)
+#' @source [www.discovr.rocks/csv/download_festival.csv](https://www.discovr.rocks/csv/download_festival.csv)
 
 "download"
 
@@ -566,7 +566,7 @@
 #'
 #' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' A dataset containing the song features data from the [Spotify API](https://developer.spotify.com/documentation/web-api/) for the studio albums (190-2015) of the greatest band ever, [Iron Maiden](www.ironmaiden.com).
+#' A dataset containing the song features data from the [Spotify API](https://developer.spotify.com/documentation/web-api/) for the studio albums (190-2015) of the greatest band ever, [Iron Maiden](https://www.ironmaiden.com).
 #' Data were obtained using the [spotifyr](https://www.rcharlie.com/spotifyr/) package.
 #'
 #' * **artist_name**: Pointless variable that reminds us that the data relate to Iron Maiden
@@ -619,7 +619,7 @@
 #'
 #' @references
 #'
-#' * Lo, S. F., Wong, S. H., Leung, L. S., Law, I. C., & Yip, A. W. C. (2004). Traumatic rectal perforation by an eel. Surgery, 135, 110–111. [https://doi.org/10.1016/S0039-6060(03)00076-X](https://doi.org/10.1016/S0039-6060(03)00076-X).
+#' * Lo, S. F., Wong, S. H., Leung, L. S., Law, I. C., & Yip, A. W. C. (2004). Traumatic rectal perforation by an eel. Surgery, 135, 110–111. \doi{10.1016/S0039-6060(03)00076-X}
 
 "eel"
 
@@ -731,7 +731,7 @@
 #' @source [www.discovr.rocks/csv/gallup_2003.csv](https://www.discovr.rocks/csv/gallup_2003.csv)
 #' @references
 #'
-#' * Gallup, G. G. J., Burch, R. L., Zappieri, M. L., Parvez, R., Stockwell, M., & Davis, J. A. (2003). The human penis as a semen displacement device. *Evolution and Human Behavior*, *24*, 277–289. [doi.org/10.1016/S1090-5138(03)00016-3](https://doi.org/10.1016/S1090-5138(03)00016-3)
+#' * Gallup, G. G. J., Burch, R. L., Zappieri, M. L., Parvez, R., Stockwell, M., & Davis, J. A. (2003). The human penis as a semen displacement device. *Evolution and Human Behavior*, *24*, 277–289. \doi{10.1016/S1090-5138(03)00016-3}
 
 "gallup_2003"
 
@@ -955,7 +955,7 @@
 #'
 #' @docType data
 #' @format A tibble with 24 rows and 3 variables.
-#' @source [www.discovr.rocks/csv/invisibility_cloak.csv](https://www.discovr.rocks/csv/invisibility_cloak.csv)
+#' @source [www.discovr.rocks/csv/invisibility.csv](https://www.discovr.rocks/csv/invisibility.csv)
 
 "invisibility_cloak"
 
@@ -1045,7 +1045,7 @@
 #' @source [www.discovr.rocks/csv/johns_2012.csv](https://www.discovr.rocks/csv/johns_2012.csv)
 #' @references
 #'
-#'    * Johns, S. E., Hargrave, L. A., & Newton-Fisher, N. E. (2012). Red is not a proxy signal for female genitalia in humans. *PLoS One*, 7, e34669. [doi.org/10.1371/journal.pone.0034669]( https://doi.org/10.1371/journal.pone.0034669).
+#'    * Johns, S. E., Hargrave, L. A., & Newton-Fisher, N. E. (2012). Red is not a proxy signal for female genitalia in humans. *PLoS One*, 7, e34669. \doi{10.1371/journal.pone.0034669}
 
 "johns_2012"
 
@@ -1067,7 +1067,7 @@
 #' @source [www.discovr.rocks/csv/lambert_2012.csv](https://www.discovr.rocks/csv/lambert_2012.csv)
 #' @references
 #'
-#'    * Lambert, N. M., Negash, S., Stillman, T. F., Olmstead, S. B., & Fincham, F. D. (2012). A love that doesn't last: Pornography consumption and weakened commitment to one's romantic partner. *Journal of Social and Clinical Psychology*, 31, 410–438. [doi.org/10.1521/jscp.2012.31.4.410](https://doi.org/10.1521/jscp.2012.31.4.410)
+#'    * Lambert, N. M., Negash, S., Stillman, T. F., Olmstead, S. B., & Fincham, F. D. (2012). A love that doesn't last: Pornography consumption and weakened commitment to one's romantic partner. *Journal of Social and Clinical Psychology*, 31, 410–438. \doi{10.1521/jscp.2012.31.4.410}
 
 "lambert_2012"
 
@@ -1096,7 +1096,7 @@
 #' @source [www.discovr.rocks/csv/massar_2012.csv](https://www.discovr.rocks/csv/massar_2012.csv)
 #' @references
 #'
-#'    * Massar, K., Buunk, A. P., & Rempt, S. (2012). Age differences in women's tendency to gossip are mediated by their mate value. *Personality and Individual Differences*, 52, 106–109. [https://doi.org/10.1016/j.paid.2011.09.013](https://doi.org/10.1016/j.paid.2011.09.013)
+#'    * Massar, K., Buunk, A. P., & Rempt, S. (2012). Age differences in women's tendency to gossip are mediated by their mate value. *Personality and Individual Differences*, 52, 106–109. \doi{10.1016/j.paid.2011.09.013}
 
 "massar_2012"
 
@@ -1119,7 +1119,7 @@
 #' @source [www.discovr.rocks/csv/mcnulty_2008.csv](https://www.discovr.rocks/csv/mcnulty_2008.csv)
 #' @references
 #'
-#'    * McNulty, J. K., Neff, L. A., & Karney, B. R. (2008). Beyond initial attraction: Physical attractiveness in newlywed marriage. *Journal of Family Psychology*, 22, 135–143. [https://doi.org/10.1037/0893-3200.22.1.135](https://doi.org/10.1037/0893-3200.22.1.135)
+#'    * McNulty, J. K., Neff, L. A., & Karney, B. R. (2008). Beyond initial attraction: Physical attractiveness in newlywed marriage. *Journal of Family Psychology*, 22, 135–143. \doi{10.1037/0893-3200.22.1.135}
 
 "mcnulty_2008"
 
@@ -1185,7 +1185,7 @@
 #' @source [www.discovr.rocks/csv/metal_health.csv](https://www.discovr.rocks/csv/metal_health.csv)
 #' @references
 #'
-#'    * Lacourse, E., Claes, M., & Villeneuve, M. (2001). Heavy metal music and adolescent suicidal risk. *Journal of Youth and Adolescence*, *30*, 321–332. [doi.org/10.1023/A:1010492128537](https://doi.org/10.1023/A:1010492128537).
+#'    * Lacourse, E., Claes, M., & Villeneuve, M. (2001). Heavy metal music and adolescent suicidal risk. *Journal of Youth and Adolescence*, *30*, 321–332. \doi{10.1023/A:1010492128537}
 
 "metal_health"
 
@@ -1262,7 +1262,7 @@
 #' @source [www.discovr.rocks/csv/muris_2008.csv](https://www.discovr.rocks/csv/muris_2008.csv)
 #' @references
 #'
-#' * Muris, P., Huijding, J., Mayer, B., & Hameetman, M. (2008). A space odyssey: Experimental manipulation of threat perception and anxiety-related interpretation bias in children. *Child Psychiatry and Human Development*, 39, 469–480. [https://doi.org/10.1007/s10578-008-0103-z](https://doi.org/10.1007/s10578-008-0103-z)
+#' * Muris, P., Huijding, J., Mayer, B., & Hameetman, M. (2008). A space odyssey: Experimental manipulation of threat perception and anxiety-related interpretation bias in children. *Child Psychiatry and Human Development*, 39, 469–480. \doi{10.1007/s10578-008-0103-z}
 
 "muris_2008"
 
@@ -1322,7 +1322,7 @@
 #' @source [www.discovr.rocks/csv/nichols_2004.csv](https://www.discovr.rocks/csv/nichols_2004.csv)
 #' @references
 #'
-#' * Nichols, L. A., & Nicki, R. (2004). Development of a psychometrically sound internet addiction scale: A preliminary step. *Psychology of Addictive Behaviors*, 18, 381–384. [https://doi.org/10.1037/0893-164X.18.4.381](https://doi.org/10.1037/0893-164X.18.4.381)
+#' * Nichols, L. A., & Nicki, R. (2004). Development of a psychometrically sound internet addiction scale: A preliminary step. *Psychology of Addictive Behaviors*, 18, 381–384. \doi{10.1037/0893-164X.18.4.381}
 
 "nichols_2004"
 
@@ -1374,7 +1374,7 @@
 #' @source [www.discovr.rocks/csv/ong_2011.csv](https://www.discovr.rocks/csv/ong_2011.csv)
 #' @references
 #'
-#' * Ong, E. Y. L., Ang, R. P., Ho, J. C. M., Lim, J. C. Y., Goh, D. H., Lee, C. S., & Chua, A. Y. K. (2011). Narcissism, extraversion and adolescents' self-presentation on Facebook. *Personality and Individual Differences*, 50, 180–185. [https://doi.org/10.1016/j.paid.2010.09.022](https://doi.org/10.1016/j.paid.2010.09.022)
+#' * Ong, E. Y. L., Ang, R. P., Ho, J. C. M., Lim, J. C. Y., Goh, D. H., Lee, C. S., & Chua, A. Y. K. (2011). Narcissism, extraversion and adolescents' self-presentation on Facebook. *Personality and Individual Differences*, 50, 180–185. \doi{10.1016/j.paid.2010.09.022}
 
 
 "ong_2011"
@@ -1399,10 +1399,10 @@
 #'
 #' @format A tibble with 1100 rows and 9 variables.
 #' @docType data
-#' @source [www.discovr.rocks/csv/ong_tidy.csv](https://www.discovr.rocks/csv/ong_tidy.csv)
+#' @source [www.discovr.rocks/csv/ong_2011_tidy.csv](https://www.discovr.rocks/csv/ong_2011_tidy.csv)
 #' @references
 #'
-#'    * Ong, E. Y. L., Ang, R. P., Ho, J. C. M., Lim, J. C. Y., Goh, D. H., Lee, C. S., & Chua, A. Y. K. (2011). Narcissism, extraversion and adolescents' self-presentation on Facebook. *Personality and Individual Differences*, 50, 180–185. [https://doi.org/10.1016/j.paid.2010.09.022](https://doi.org/10.1016/j.paid.2010.09.022)
+#'    * Ong, E. Y. L., Ang, R. P., Ho, J. C. M., Lim, J. C. Y., Goh, D. H., Lee, C. S., & Chua, A. Y. K. (2011). Narcissism, extraversion and adolescents' self-presentation on Facebook. *Personality and Individual Differences*, 50, 180–185. \doi{10.1016/j.paid.2010.09.022}
 
 "ong_tidy"
 
@@ -1693,7 +1693,7 @@
 #' @source [www.discovr.rocks/csv/sharman_2015.csv](https://www.discovr.rocks/csv/sharman_2015.csv)
 #' @references
 #'
-#' * Sharman, L., & Dingle, G. A. (2015). Extreme metal music and anger processing. Frontiers in Human Neuroscience, 9. [https://doi.org/10.3389/fnhum.2015.00272](https://doi.org/10.3389/fnhum.2015.00272)
+#' * Sharman, L., & Dingle, G. A. (2015). Extreme metal music and anger processing. Frontiers in Human Neuroscience, 9. \doi{10.3389/fnhum.2015.00272}
 
 "sharman_2015"
 
@@ -1701,7 +1701,7 @@
 #'
 #' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' According to some highly unscientific research done by a UK department store chain and reported in Marie Claire magazine ([http://ow.ly/9Dxvy](http://ow.ly/9Dxvy)), shopping is good for you.
+#' According to some highly unscientific research done by a UK department store chain and reported in Marie Claire magazine, shopping is good for you.
 #' They found that the average woman spends 150 minutes and walks 2.6 miles when she shops, burning off around 385 calories. In contrast, men spend only about 50 minutes shopping, covering 1.5 miles.
 #' This was based on strapping a pedometer on a mere 10 participants. Although I don't have the actual data, some simulated data based on these means are in this file.
 #'
@@ -1711,7 +1711,7 @@
 #'
 #' @format A tibble with 10 rows and 3 variables.
 #' @docType data
-#' @source [www.discovr.rocks/csv/shopping.csv](https://www.discovr.rocks/csv/shopping.csv)
+#' @source [www.discovr.rocks/csv/shopping_exercise.csv](https://www.discovr.rocks/csv/shopping_exercise.csv)
 
 "shopping"
 
@@ -1734,7 +1734,7 @@
 #'
 #' @format A tibble with 32 rows and 3 variables.
 #' @docType data
-#' @source [www.discovr.rocks/csv/sniffer_dog.csv](https://www.discovr.rocks/csv/sniffer_dog.csv)
+#' @source [www.discovr.rocks/csv/sniffer_dogs.csv](https://www.discovr.rocks/csv/sniffer_dogs.csv)
 
 "sniffer_dogs"
 
@@ -1768,7 +1768,7 @@
 #' @source [www.discovr.rocks/csv/social_anxiety.csv](https://www.discovr.rocks/csv/social_anxiety.csv)
 #' @references
 #'
-#'    * Field, A. P., & Cartwright-Hatton, S. (2008). Shared and unique cognitive factors in social anxiety. *International Journal of Cognitive Therapy*, *1*, 206–222. [doi.org/10.1521/ijct.2008.1.3.206](https://doi.org/10.1521/ijct.2008.1.3.206).
+#'    * Field, A. P., & Cartwright-Hatton, S. (2008). Shared and unique cognitive factors in social anxiety. *International Journal of Cognitive Therapy*, *1*, 206–222. \doi{10.1521/ijct.2008.1.3.206}
 
 "social_anxiety"
 
@@ -2018,7 +2018,7 @@
 #'   * **cog_fun**: cognitive functioning (out of 80)
 #'
 #' @format A tibble with 15 rows and 3 variables:
-#' @source [www.discovr.rocks/csv/tea_15.csv](https://www.discovr.rocks/csv/tea_15.csv)
+#' @source [www.discovr.rocks/csv/tea_makes_you_brainy_15.csv](https://www.discovr.rocks/csv/tea_makes_you_brainy_15.csv)
 #' @references
 #'
 #'    * Feng, L., Gwee, X., Kua, E. H., & Ng, T. P. (2010). Cognitive function and tea consumption in community dwelling older Chinese in Singapore. *Journal of Nutrition Health & Aging*, *14*, 433-438.
@@ -2039,7 +2039,7 @@
 #'   * **cog_fun**: cognitive functioning (out of 80)
 #'
 #' @format A tibble with 716 rows and 3 variables:
-#' @source [www.discovr.rocks/csv/tea_716.csv](https://www.discovr.rocks/csv/tea_716.csv)
+#' @source [www.discovr.rocks/csv/tea_makes_you_brainy_716.csv](https://www.discovr.rocks/csv/tea_makes_you_brainy_716.csv)
 #' @references
 #'
 #'    * Feng, L., Gwee, X., Kua, E. H., & Ng, T. P. (2010). Cognitive function and tea consumption in community dwelling older Chinese in Singapore. *Journal of Nutrition Health & Aging*, *14*, 433-438.
@@ -2121,7 +2121,7 @@
 #' @source [www.discovr.rocks/csv/tuk_2011.csv](https://www.discovr.rocks/csv/tuk_2011.csv)
 #' @references
 #'
-#'    * Tuk, M. A., Trampe, D., & Warlop, L. (2011). Inhibitory spillover: increased urination urgency facilitates impulse control in unrelated domains. *Psychological Science*, 22, 627–633. [doi.org/10.1177/0956797611404901](https://doi.org/10.1177/0956797611404901)
+#'    * Tuk, M. A., Trampe, D., & Warlop, L. (2011). Inhibitory spillover: increased urination urgency facilitates impulse control in unrelated domains. *Psychological Science*, 22, 627–633. \doi{10.1177/0956797611404901}
 
 "tuk_2011"
 
@@ -2256,11 +2256,11 @@
 #'
 #' @format A tibble with 52 rows and 4 variables
 #' @docType data
-#' @source [www.discovr.rocks/csv/zhang_sample.csv](https://www.discovr.rocks/csv/zhang_sample.csv)
+#' @source [www.discovr.rocks/csv/zhang_2013_subsample.csv](https://www.discovr.rocks/csv/zhang_2013_subsample.csv)
 #' @references
 #'
 #'    * Field, A. P. (2010). Teaching Statistics. In D. Upton & A. Trapp (Eds.), *Teaching Psychology in Higher Education* (pp. 134-163). Chichester, UK: Wiley-Blackwell.
-#'    * Zhang, S., Schmader, T., & Hall, W. M. (2013). L'eggo My Ego: Reducing the Gender Gap in Math by Unlinking the Self from Performance. *Self and Identity*, *12*, 400-412. [https://doi.org/10.1080/15298868.2012.687012](https://doi.org/10.1080/15298868.2012.687012)
+#'    * Zhang, S., Schmader, T., & Hall, W. M. (2013). L'eggo My Ego: Reducing the Gender Gap in Math by Unlinking the Self from Performance. *Self and Identity*, *12*, 400-412. \doi{10.1080/15298868.2012.687012}
 
 
 "zhang_sample"
@@ -2294,7 +2294,7 @@
 #' @source [www.discovr.rocks/csv/zibarras_2008.csv](https://www.discovr.rocks/csv/zibarras_2008.csv)
 #' @references
 #'
-#'    * Zibarras, L. D., Port, R. L., & Woods, S. A. (2008). Innovation and the 'dark side' of personality: Dysfunctional traits and their relation to self-reported innovative characteristics. *Journal of Creative Behavior*, 42, 201–215. [https://doi.org/10.1002/j.2162-6057.2008.tb01295.x](https://doi.org/10.1002/j.2162-6057.2008.tb01295.x)
+#'    * Zibarras, L. D., Port, R. L., & Woods, S. A. (2008). Innovation and the 'dark side' of personality: Dysfunctional traits and their relation to self-reported innovative characteristics. *Journal of Creative Behavior*, 42, 201–215. \doi{10.1002/j.2162-6057.2008.tb01295.x}
 
 
 "zibarras_2008"

@@ -23,7 +23,7 @@ characteristics predict susceptibility to fake news. Bronstein et al. (2019) hyp
 may be more likely to believe fake news because of their tendency to engage in less analytic and open-minded thinking.
 They conducted two online studies that got merged into a single analysis to test this hypothesis. This object is a subset of variables from
 their data (I have changed the variable names to match the constructs measured rather than the scales used to measure them).
-The full dataset is available at \url{https://doi.org/10.1016/j.jarmac.2018.09.005}.
+The full dataset is available at \doi{10.1016/j.jarmac.2018.09.005}.
 \itemize{
 \item \strong{id} (ResponseID in the original dataset): participant ID
 \item \strong{fake_newz} (ZBelief_Fake in the original dataset): participants viewed 12 fake news headlines, each with a brief description and photo, and rated their accuracy (1 = Not at all accurate, 4 = Very accurate). This variable is the average rating converted to a z-score.
@@ -34,7 +34,7 @@ The full dataset is available at \url{https://doi.org/10.1016/j.jarmac.2018.09.0
 }
 \references{
 \itemize{
-\item Bronstein, M. V., Pennycook, G., Bear, A., Rand, D. G., & Cannon, T. D. (2019). Belief in fake news is associated with delusionality, dogmatism, religious fundamentalism, and reduced analytic thinking. \emph{Journal of Applied Research in Memory and Cognition}, 8(1), 108–117. \url{https://doi.org/10.1016/j.jarmac.2018.09.005}
+\item Bronstein, M. V., Pennycook, G., Bear, A., Rand, D. G., & Cannon, T. D. (2019). Belief in fake news is associated with delusionality, dogmatism, religious fundamentalism, and reduced analytic thinking. \emph{Journal of Applied Research in Memory and Cognition}, 8(1), 108–117. \doi{10.1016/j.jarmac.2018.09.005}
 }
 }
 \keyword{datasets}

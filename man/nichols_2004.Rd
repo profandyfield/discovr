@@ -66,7 +66,7 @@ and dropped three others because of relatively low correlations with other items
 }
 \references{
 \itemize{
-\item Nichols, L. A., & Nicki, R. (2004). Development of a psychometrically sound internet addiction scale: A preliminary step. \emph{Psychology of Addictive Behaviors}, 18, 381–384. \url{https://doi.org/10.1037/0893-164X.18.4.381}
+\item Nichols, L. A., & Nicki, R. (2004). Development of a psychometrically sound internet addiction scale: A preliminary step. \emph{Psychology of Addictive Behaviors}, 18, 381–384. \doi{10.1037/0893-164X.18.4.381}
 }
 }
 \keyword{datasets}

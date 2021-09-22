@@ -36,7 +36,7 @@ Eighty-three women aged from 20 to 50 (age) completed questionnaire measures of 
 }
 \references{
 \itemize{
-\item Massar, K., Buunk, A. P., & Rempt, S. (2012). Age differences in women's tendency to gossip are mediated by their mate value. \emph{Personality and Individual Differences}, 52, 106–109. \url{https://doi.org/10.1016/j.paid.2011.09.013}
+\item Massar, K., Buunk, A. P., & Rempt, S. (2012). Age differences in women's tendency to gossip are mediated by their mate value. \emph{Personality and Individual Differences}, 52, 106–109. \doi{10.1016/j.paid.2011.09.013}
 }
 }
 \keyword{datasets}

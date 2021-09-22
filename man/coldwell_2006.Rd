@@ -30,7 +30,7 @@ the more problem behaviour the child was reported to be displaying. These data a
 \item \strong{child_age}: Age of the youngest child
 \item \strong{child_gender}: Gender of the youngest child
 \item \strong{child_warmth}: Perceived warmth of the child to the mother.
-\item \strong{child_anger}: Perceived agnger of the child towards to the mother.
+\item \strong{child_anger}: Perceived anger of the child towards to the mother.
 \item \strong{mum_pos}: the mother's perceived positivity towards her child.
 \item \strong{mum_neg}: the mother's perceived negativity towards her child.
 \item \strong{chaos}: household chaos.

@@ -59,7 +59,7 @@ xbox_tib <- discovr::xbox %>%
 <div class="infobox">
   <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
   
-  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2021] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
+  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2022] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
   
 </div>
 
@@ -156,7 +156,7 @@ xbox_tib <- here::here("data/xbox.csv") %>%
 
 ## `r bmu()` Beer goggles [(2)]{.alt}
 
-The main example in this tutorial is from [@field_discovering_2021], who uses an example of an experimental design with two independent variables (a two-way independent design). The study tested the prediction that subjective perceptions of physical attractiveness become inaccurate after drinking alcohol (the well-known beer-goggles effect). The example is based on research that looked at whether the beer-goggles effect was influenced by the attractiveness of the faces being rated [@chen_moderating_2014]. The logic is that alcohol consumption has been shown to reduce accuracy in symmetry judgements, and symmetric faces have been shown to be rated as more attractive. If the beer-goggles effect is driven by alcohol impairing symmetry judgements then you’d expect a stronger effect for unattractive (asymmetric) faces (because alcohol will affect the perception of asymmetry) than attractive (symmetric) ones. The data we’ll analyse are fictional, but the results mimic the findings of this research paper.
+The main example in this tutorial is from [@field_discovering_2022], who uses an example of an experimental design with two independent variables (a two-way independent design). The study tested the prediction that subjective perceptions of physical attractiveness become inaccurate after drinking alcohol (the well-known beer-goggles effect). The example is based on research that looked at whether the beer-goggles effect was influenced by the attractiveness of the faces being rated [@chen_moderating_2014]. The logic is that alcohol consumption has been shown to reduce accuracy in symmetry judgements, and symmetric faces have been shown to be rated as more attractive. If the beer-goggles effect is driven by alcohol impairing symmetry judgements then you’d expect a stronger effect for unattractive (asymmetric) faces (because alcohol will affect the perception of asymmetry) than attractive (symmetric) ones. The data we’ll analyse are fictional, but the results mimic the findings of this research paper.
 
 An anthropologist was interested in the effects of facial attractiveness on the beer-goggles effect. She selected 48 participants who were randomly subdivided into three groups of 16: (1) a placebo group drank 500 ml of alcohol-free beer; (2) a low-dose group drank 500 ml of average strength beer (4% ABV); and (3) a high-dose group drank 500 ml of strong beer (7% ABV). Within each group, half (n = 8) rated the attractiveness of 50 photos of unattractive faces on a scale from 0 (pass me a paper bag) to 10 (pass me their phone number) and the remaining half rated 50 photos of attractive faces. The outcome for each participant was their median rating across the 50 photos (These photographs were from a larger pool of 500 that had been pre-rated by a different sample. The 50 photos with the highest and lowest ratings were used.). The data are in [goggles_tib]{.alt}, which contains the variables **facetype** (unattractive vs attractive), **alcohol** (placebo, low dose, high dose) and **attractiveness** (the median rating of each participant out of 10).
 
@@ -1101,7 +1101,7 @@ Looking at the final Bayes factor, the data are `r get_bf(m3)` times more likely
 
 ### Blow up your video
 
-Let's 's look at a second example from [@field_discovering_2021], which is about injuries from video games:
+Let's 's look at a second example from [@field_discovering_2022], which is about injuries from video games:
 
 ![](https://youtu.be/bE5knddsKpk)
 
@@ -1389,7 +1389,7 @@ quiz(caption = "Robust model quiz (level 3)",
 
 ### Statistics
 
-* The tutorials typically follow examples described in detail in @field_discovering_2021. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
+* The tutorials typically follow examples described in detail in @field_discovering_2022. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
 * If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
 * There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/).
 * There are free statistical resources on my websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [milton-the-cat.rocks](http://milton-the-cat.rocks).

@@ -658,7 +658,7 @@ The interaction effect is the one that tests our hypothesis, but what does it me
 To break this interaction effect down it would be useful to know what the effect of time was separately for the gene therapy and wait list groups. In other words, get an estimate for the rate of change of resemblance scores in the gene therapy and intervention groups. We can do this using the `emtrends` function from the `emmeans` package [@lenth_emmeans_2020], which takes the general form
 
 ```{r, eval = F}
-emmeans::emtrends(my_model, spec = "categorical_predictor", var = "continuous_predictor") %>% 
+emmeans::emtrends(my_model, specs = "categorical_predictor", var = "continuous_predictor") %>% 
   tibble::as_tibble()
 ```
 
@@ -669,7 +669,7 @@ in which you replace [my_model]{.alt} with the name of your model from `lme()`, 
 For our model ([rehab_mod]{.alt}) we could get the effect of time in each intervention condition and store it in an object called ([rehab_growth_simple]{.alt}) by executing
 
 ```{r, eval = F}
-rehab_growth_simple <- emmeans::emtrends(rehab_mod, spec = "intervention", var = "time_num") %>% 
+rehab_growth_simple <- emmeans::emtrends(rehab_mod, specs = "intervention", var = "time_num") %>% 
   tibble::as_tibble()
 ```
 
@@ -684,19 +684,19 @@ Use the code box to obtain and view the effect of time in the two intervention g
 ```
 
 ```{r rehab_mod_se-hint-1}
-rehab_growth_simple <- emmeans::emtrends(rehab_mod, spec = "intervention", var = "time_num") %>% 
+rehab_growth_simple <- emmeans::emtrends(rehab_mod, specs = "intervention", var = "time_num") %>% 
   tibble::as_tibble()
 # Remember that to view the output we need to execute the name of the object that we just created
 ```
 
 ```{r rehab_mod_se-solution}
-rehab_growth_simple <- emmeans::emtrends(rehab_mod, spec = "intervention", var = "time_num") %>%
+rehab_growth_simple <- emmeans::emtrends(rehab_mod, specs = "intervention", var = "time_num") %>%
   tibble::as_tibble()
 rehab_growth_simple
 ```
 
 ```{r, echo = F}
-rehab_growth_simple <- emmeans::emtrends(rehab_mod, spec = "intervention", var = "time_num") %>% 
+rehab_growth_simple <- emmeans::emtrends(rehab_mod, specs = "intervention", var = "time_num") %>% 
   tibble::as_tibble()
 
 time_wl <- rehab_growth_simple$time_num.trend[1]

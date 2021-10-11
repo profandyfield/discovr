@@ -338,7 +338,7 @@ We can pipe this command to make it clearer:
 my_data <- here::here("data/metallica.csv") %>% readr::read_csv(.)
 ```
 
-Instead of embedding the `here::here()` function within `readr::read_csv()`, we put it first and feed or ‘pipe’ its output into `readr::read_csv(.)` using `%>%`.The code is easier to read, it makes clear that we’re using  `here::here()` to generate a path to the file that we want to open, and that we’re feeding that file path into `readr::read_csv(.)`. Note that the `readr::read_csv(.)` function has a period ([.]]{.alt}) within it. This period represents whatever is coming through the pipe from the left. Often, you don't need the period but sometimes you do so it's worth being aware of it.
+Instead of embedding the `here::here()` function within `readr::read_csv()`, we put it first and feed or ‘pipe’ its output into `readr::read_csv(.)` using `%>%`.The code is easier to read, it makes clear that we’re using  `here::here()` to generate a path to the file that we want to open, and that we’re feeding that file path into `readr::read_csv(.)`. Note that the `readr::read_csv(.)` function has a period ([.]{.alt}) within it. This period represents whatever is coming through the pipe from the left. Often, you don't need the period but sometimes you do so it's worth being aware of it.
 
 ```{r pipe_quiz, echo=FALSE}
   question("What's going on in the command `here::here(\"data/metallica.csv\") %>% readr::read_csv(.)`?",
@@ -392,7 +392,7 @@ metallica <- c("Lars","James","Jason", "Kirk")
 
 #### `r alien()` Alien coding challenge
 
-Adapt the above code to enter the names in Table 1 and store these in an object called [name]]{.alt} by executing:
+Adapt the above code to enter the names in Table 1 and store these in an object called [name]{.alt} by executing:
 
 
 ```{r met_name, exercise = TRUE, exercise.lines = 4}
@@ -1126,7 +1126,7 @@ metalli_tib %>%
 
 This command returns the data for Lars, James and Kirk, who are the only members to have contributed to the writing of more than 50 songs.
 
-We can also combine conditions to select rows of a tibble. First, we can ask for rows that match both of two conditions by using the `&` operator. For example, if we want the members of Metallica who play drums *and* have written more than 50 songs, we could combine the condition [songs_written > 50]{.alt} with the condition of [instrument == "Drums"]]{.alt}. By using `&` we require both conditions to be true. The value of **songs_written** must be greater than 50 AND the value of instrument must be equal to ‘Drums’.
+We can also combine conditions to select rows of a tibble. First, we can ask for rows that match both of two conditions by using the `&` operator. For example, if we want the members of Metallica who play drums *and* have written more than 50 songs, we could combine the condition [songs_written > 50]{.alt} with the condition of [instrument == "Drums"]{.alt}. By using `&` we require both conditions to be true. The value of **songs_written** must be greater than 50 AND the value of instrument must be equal to ‘Drums’.
 
 #### `r robot()` Code example
 

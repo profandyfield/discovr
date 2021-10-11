@@ -195,11 +195,11 @@ tidyr::pivot_longer(
 )
 ```
 
-In which [tibble]{.alt} is the name of the messy tibble that you want to make tidy and [column_names]]{.alt} is a list of columns that you want to restructure into rows. The columns to be converted into rows have a name and values within each column associated with each case/entity. During restructuring, these properties will be split into two columns/variables, one containing the value for a particular case and one containing the name of the original column from which that value came. We use [names_to]{.alt} to specify a name for the new variable that contains the names of the original columns, and [value_to]{.alt} to specify a name for the new variable that will contain the values.
+In which [tibble]{.alt} is the name of the messy tibble that you want to make tidy and [column_names]{.alt} is a list of columns that you want to restructure into rows. The columns to be converted into rows have a name and values within each column associated with each case/entity. During restructuring, these properties will be split into two columns/variables, one containing the value for a particular case and one containing the name of the original column from which that value came. We use [names_to]{.alt} to specify a name for the new variable that contains the names of the original columns, and [value_to]{.alt} to specify a name for the new variable that will contain the values.
 
 #### `r robot()` Code example
 
-Within the download data we have three columns/variables (**day_1**, **day_2** and **day_3**) that we want to restructure into rows. We can specify these variables using [day_1:day_3]{.alt} or [c(day_1, day_2, day_3)]]{.alt}. The scores in each of these columns represent hygiene scores, so we might use **hygiene** as the name for the variable created to contain the values after restructuring. Similarly, the columns we’re transforming all represent different days at the festival so we might use **day** as the name the variable created to contain these column names. The resulting code would be:
+Within the download data we have three columns/variables (**day_1**, **day_2** and **day_3**) that we want to restructure into rows. We can specify these variables using [day_1:day_3]{.alt} or [c(day_1, day_2, day_3)]{.alt}. The scores in each of these columns represent hygiene scores, so we might use **hygiene** as the name for the variable created to contain the values after restructuring. Similarly, the columns we’re transforming all represent different days at the festival so we might use **day** as the name the variable created to contain these column names. The resulting code would be:
 
 ```{r piv_long, exercise = TRUE}
 download_tidy_tib <- download_tib %>% 
@@ -210,7 +210,7 @@ download_tidy_tib <- download_tib %>%
 )
 ```
 
-In this code we create a new object called [download_tidy_tib]{.alt} by piping the messy data ([download_tib]]{.alt}) into `pivot_longer()`. In the function, we specify the columns to restructure into rows as all columns between day_1 and day_3, we ask that the names of these columns be place in a variable called **day** and that the values in these columns be placed in a variable called **hygiene**.
+In this code we create a new object called [download_tidy_tib]{.alt} by piping the messy data ([download_tib]{.alt}) into `pivot_longer()`. In the function, we specify the columns to restructure into rows as all columns between day_1 and day_3, we ask that the names of these columns be place in a variable called **day** and that the values in these columns be placed in a variable called **hygiene**.
 
 #### `r alien()` Alien coding challenge
 

@@ -11,6 +11,7 @@ runtime: shiny_prerendered
 description: "Mixed designs. Fitting models for mixed designs using the afex package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when at least one of these variables has been manipulated within the same entities and at least one other has been manipulated using different entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors."
 bibliography: discovr_16.bib
 ---
+
 <html lang="en">
 
 ```{r setup, include=FALSE}
@@ -51,10 +52,9 @@ date_afx <- afex::aov_4(date ~ strategy*looks*personality + (looks*personality|i
 ## Overview
 
 <div class="infobox">
-  <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
-  
-  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2022] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
-  
+<img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." class="img_left" style="width:100px;height:116px;"/>
+
+**Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2022] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
 </div>
 
 ### `r cat_space(fill = "h3", height = 2)` Welcome to the `discovr` space pirate academy
@@ -63,31 +63,37 @@ Hi, welcome to **discovr** space pirate academy. Well done on embarking on this 
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
-* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
-* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+-   `r bmu(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
+-   `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
+-   `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
-* `r alien(height = 2)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
-* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
-* `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
+-   `r alien(height = 2)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though.
+-   `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
+-   `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end).
 
 Also, use hints and solutions to guide you through the exercises (Figure 1).
 
 <figure>
-<img src="./images/discovr_hints.png" alt="Each codebox has a hints or solution button that activates a popup window containing code and text to guide you through each exercise." style="width:100%">
-<figcaption>Figure 1: In a code exercise click the hints button to guide you through the exercise.</figcaption>
-</figure> 
- 
+
+<img src="./images/discovr_hints.png" alt="Each codebox has a hints or solution button that activates a popup window containing code and text to guide you through each exercise." style="width:100%"/>
+
+<figcaption>
+
+Figure 1: In a code exercise click the hints button to guide you through the exercise.
+
+</figcaption>
+
+</figure>
 
 By for now and good luck - you'll be amazing!
 
 ### Workflow
 
-* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
+-   Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
 
-* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an `r rproj()` markdown file within an `r rstudio()` project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
+-   The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an `r rproj()` markdown file within an `r rstudio()` project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data.
 
 ![](https://youtu.be/FhoYCsZttGc)
 
@@ -95,19 +101,19 @@ By for now and good luck - you'll be amazing!
 
 This tutorial uses the following packages:
 
-* `afex` [@singmann_afex_2020]
-* `here` [@here]
-* `tidyverse` [@tidyverse]
-* `WRS2` [@Mair_Wilcox_2019]
+-   `afex` [@singmann_afex_2020]
+-   `here` [@here]
+-   `tidyverse` [@tidyverse]
+-   `WRS2` [@Mair_Wilcox_2019]
 
-I try to follow the [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) in always declaring the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will write `dplyr::mutate()`. 
+I try to follow the [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) in always declaring the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will write `dplyr::mutate()`.
 
-It is good practice to be explicit about packages to avoid clashes where functions from different packages have the same name. It also means that you don't need to load packages at the start of your markdown document. 
+It is good practice to be explicit about packages to avoid clashes where functions from different packages have the same name. It also means that you don't need to load packages at the start of your markdown document.
 
 There are two main exceptions to this rule.
 
-1. There are functions within some `tidyverse` packages that would be used within other functions. Including the package name makes the code difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
-2. To use the pipe operator (`%>%`) you need to have `magrittr` loaded.
+1.  There are functions within some `tidyverse` packages that would be used within other functions. Including the package name makes the code difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+2.  To use the pipe operator (`%>%`) you need to have `magrittr` loaded.
 
 We can load all of the packages that are exceptions in one step by loading `tidyverse` at the beginning of our `r rproj()` Markdown document:
 
@@ -119,8 +125,8 @@ library(tidyverse)
 
 To work *outside of this tutorial* you need to download the following data files:
 
-* [speed_date.csv](https://www.discovr.rocks/csv/speed_date.csv)
-* [profile_pic.csv](https://www.discovr.rocks/csv/profile_pic.csv)
+-   [speed_date.csv](https://www.discovr.rocks/csv/speed_date.csv)
+-   [profile_pic.csv](https://www.discovr.rocks/csv/profile_pic.csv)
 
 Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
 
@@ -149,11 +155,11 @@ profile_tib <- here::here("data/profile_pic.csv") %>%
 
 ## `r bmu()` A speed dating example [(2)]{.alt}
 
-The main examples in this tutorial are from [@field_discovering_2022]. A big discussion in magazines seems to be the factors that get you a relationship, for example, the relative importance of looks, personality, and dating strategies (whether you should ‘treat them mean to keep them keen’ and all that stuff). Scientists have looked at these issues too. For example, the top three most highly rated attributes of a partner in teenagers are reliability, honesty and kindness [@ha_effects_2010]. Beyond that, in the same study boys tended to rate attractiveness slightly higher than girls, and girls rate a sense of humour more highly than boys (although both are ranked in the top 10 by both sexes). With regard to dating strategies, @dai_when_2014 suggest that if someone is committed to pursuing a relationship with a person who plays hard to get, they will find that person more desirable but less likeable.
+The main examples in this tutorial are from [@field_discovering_2022]. A big discussion in magazines seems to be the factors that get you a relationship, for example, the relative importance of looks, personality, and dating strategies (whether you should 'treat them mean to keep them keen' and all that stuff). Scientists have looked at these issues too. For example, the top three most highly rated attributes of a partner in teenagers are reliability, honesty and kindness [@ha_effects_2010]. Beyond that, in the same study boys tended to rate attractiveness slightly higher than girls, and girls rate a sense of humour more highly than boys (although both are ranked in the top 10 by both sexes). With regard to dating strategies, @dai_when_2014 suggest that if someone is committed to pursuing a relationship with a person who plays hard to get, they will find that person more desirable but less likeable.
 
-Imagine a scientist designed a study to look at the interplay between looks, personality and dating strategies on evaluations of a date. She set up a speed-dating night with nine tables at which there sat a ‘date’. All the dates were stooges selected to vary in their attractiveness (high, average, and low), you might remember from a previous lecture that this could perhaps be gauged with facial symmetry (symmetrical faces tend to be perceived as more attractive). The dates were trained to vary their charisma (high, average, low), and also the strategy they employ during the conversation (normal or playing hard to get). The stooge dates were trained before the study to act charismatically to varying degrees, and also how to act in a way that made them seem unobtainable (hard to get) or not. As such, across the nine dates/stooges there were three attractive dates, one of whom acted charismatically, one who acted normally (average) and another who acted like they write statistics books, and likewise for the three average-looking dates and the three low attractiveness dates.
+Imagine a scientist designed a study to look at the interplay between looks, personality and dating strategies on evaluations of a date. She set up a speed-dating night with nine tables at which there sat a 'date'. All the dates were stooges selected to vary in their attractiveness (high, average, and low), you might remember from a previous lecture that this could perhaps be gauged with facial symmetry (symmetrical faces tend to be perceived as more attractive). The dates were trained to vary their charisma (high, average, low), and also the strategy they employ during the conversation (normal or playing hard to get). The stooge dates were trained before the study to act charismatically to varying degrees, and also how to act in a way that made them seem unobtainable (hard to get) or not. As such, across the nine dates/stooges there were three attractive dates, one of whom acted charismatically, one who acted normally (average) and another who acted like they write statistics books, and likewise for the three average-looking dates and the three low attractiveness dates.
 
-Therefore, each participant attending the speed-dating night was exposed to all combinations of attractiveness and charisma (these are repeated measures). (There were separate sets of nine male stooges and nine females so that those attending could meet ‘dates’ of whichever sex interested them.) Upon arrival participants were randomly assigned a green or red sticker. For the participants with the red sticker the stooges played hard to get (unobtainable) and for those with a green sticker they acted normally. Over the course of a few nights 20 people attended, spent 5 minutes with each of the nine ‘dates’ and then rated how much they’d like to have a proper date with each one as a percentage (100% = ‘I’d pay a large sum of money for their phone number’, 0% = ‘I’d pay a large sum of money for a plane ticket to get me as far away from them as possible’).
+Therefore, each participant attending the speed-dating night was exposed to all combinations of attractiveness and charisma (these are repeated measures). (There were separate sets of nine male stooges and nine females so that those attending could meet 'dates' of whichever sex interested them.) Upon arrival participants were randomly assigned a green or red sticker. For the participants with the red sticker the stooges played hard to get (unobtainable) and for those with a green sticker they acted normally. Over the course of a few nights 20 people attended, spent 5 minutes with each of the nine 'dates' and then rated how much they'd like to have a proper date with each one as a percentage (100% = 'I'd pay a large sum of money for their phone number', 0% = 'I'd pay a large sum of money for a plane ticket to get me as far away from them as possible').
 
 #### `r alien()` Alien coding challenge
 
@@ -167,7 +173,7 @@ View the data in [date_tib]{.alt}.
 date_tib
 ```
 
-Note that there are four variables: the **id**, which is a character variable (note the [<chr>]{.alt} under the name), **strategy** (normal or hard to get), **looks** (high, average, low) and **personality** (high, average or low charisma), which are all factor variables (note the [<fct>]{.alt} under the name) and **date** (the rating of how much the participant would like a date with the stooge), which is numeric and has the data type 'double' (note the [<dbl>]{.alt} under the name).
+Note that there are four variables: the **id**, which is a character variable (note the <chr> under the name), **strategy** (normal or hard to get), **looks** (high, average, low) and **personality** (high, average or low charisma), which are all factor variables (note the <fct> under the name) and **date** (the rating of how much the participant would like a date with the stooge), which is numeric and has the data type 'double' (note the <dbl> under the name).
 
 The data are in tidy format, which means that each row represents an instance of the outcome variable and the columns code information about each instance, for example, which participant the instance is related to and the characteristics of each of the 9 'dates' they met. Consequently each participant occupies 9 rows of the tibble (because each participant contributes 9 instances of the outcome variable, **date**).
 
@@ -202,11 +208,10 @@ levels(date_tib$personality)
 
 You'll find that the factor levels are in a sensible order:
 
-* For **strategy**, the baseline category is 'normal', which makes sense.
-* For **looks** and **personality**, the factor levels are ordered low, average, high. This makes sense because low is the baseline and the levels go in ascending order.
+-   For **strategy**, the baseline category is 'normal', which makes sense.
+-   For **looks** and **personality**, the factor levels are ordered low, average, high. This makes sense because low is the baseline and the levels go in ascending order.
 
 These orders are because I set the data up within this tutorial. Working outside of the tutorial you might need to manually set the order of levels for each factor using `forcats::fct_relevel()` as described in [Data]{.alt} part of this tutorial.
-
 
 ### `r bmu()` Exploring the data [(1)]{.alt}
 
@@ -214,7 +219,7 @@ We can create means, confidence intervals and plots in the usual way using `ggpl
 
 ## `r user_visor()` Contrasts [(2)]{.alt}
 
-Before we fit the model we need to think about what contrasts would be sensible. The variable, **looks**, has three conditions: high, average and low attractiveness. It makes sense to compare the high and low conditions to the average because the average person represents the norm (although it wouldn’t be wrong to, for example, compare high and average attractiveness to low attractiveness).
+Before we fit the model we need to think about what contrasts would be sensible. The variable, **looks**, has three conditions: high, average and low attractiveness. It makes sense to compare the high and low conditions to the average because the average person represents the norm (although it wouldn't be wrong to, for example, compare high and average attractiveness to low attractiveness).
 
 Similarly, **personality** has a category, average charisma, that represents the norm. So, we could use this as the reference/control against which to compare our two extremes (when the date displays high and low charisma).
 
@@ -232,17 +237,17 @@ emmeans::contrast(my_emm_object, method = "eff", adjust = "holm")
 
 Be default the method is set to [eff]{.alt}. Here are some of the different settings we can use:
 
-* [eff]{.alt}: each level/category of a variable is compared to the average of all levels/categories.
-* [pairwise]{.alt}: each level/category is compared to all other levels/categories in turn.
-* [poly]{.alt}: polynomial contrasts (i.e. tests for an ordered trend in category means).
-* [trt.vs.ctrl]{.alt}: compares each level/category to a declared reference category (by default the first category). Use [ref = x]{.alt} to make [x]{.alt} the reference category. For example. [ref = 2]{.alt} will compare each level/category to the second level.
-* [consec]{.alt}: compares each level/category (except the first) to the previous category. 
+-   [eff]{.alt}: each level/category of a variable is compared to the average of all levels/categories.
+-   [pairwise]{.alt}: each level/category is compared to all other levels/categories in turn.
+-   [poly]{.alt}: polynomial contrasts (i.e. tests for an ordered trend in category means).
+-   [trt.vs.ctrl]{.alt}: compares each level/category to a declared reference category (by default the first category). Use [ref = x]{.alt} to make [x]{.alt} the reference category. For example. [ref = 2]{.alt} will compare each level/category to the second level.
+-   [consec]{.alt}: compares each level/category (except the first) to the previous category.
 
 Given that we want to set contrasts for both **looks** and **personality** that compare each category to *average*, and we know from the previous exercise that 'average' is the second factor level for both variables, we could set contrasts for both variables using [trt.vs.ctrl]{.alt} and [ref = 2]{.alt}. Remember this as we work through the tutorial.
 
 ## `r user_visor()` Fitting a model to a mixed design [(2)]{.alt}
 
-We can fit a model that predict the rating of the date from **strategy**, **looks** and **personality** using the `afex` package, which we met in **discovr_13** and **discovr_14**. 
+We can fit a model that predict the rating of the date from **strategy**, **looks** and **personality** using the `afex` package, which we met in **discovr_13** and **discovr_14**.
 
 We can use the `aov_4()` function in much the same way as in **discovr_14**. Remember that the `aov_4()` function has the following format:
 
@@ -251,14 +256,12 @@ afex::aov_4(outcome ~ predictors + (rm_predictors|id_variable), data = my_tib)
 ```
 
 <div class="tip">
-  `r cat_space()` **Tip:**
+`r cat_space()` **Tip:**
 
 Remember that we can specify all main effects and their interactions using `*`. For example, `strategy*looks*personality` will introduce the main effect of **strategy**, the main effect of **looks**, the main effect of **personality**, all of the two-way interaction terms ($\text{strategy} \times \text{looks}$, $\text{strategy} \times \text{personality}$, and $\text{looks} \times \text{personality}$), and the three-way interaction ($\text{strategy} \times \text{looks} \times \text{personality}$).
-
 </div>
 
-
-In the current design, we can specify the predictors and their interaction using [strategy\*looks\*personality]{.alt}, therefore, we replace [predictors]{.alt} in the code above with [strategy\*looks\*personality]{.alt}. We also need to specify which predictors are repeated measures by specifying which variables are nested within the participant. Remembering that the variable that uniquely identifies the participants is [id]{.alt}, we'd replace [(rm_predictors|id_variable)]{.alt} with [(looks\*personality|id)]{.alt} to indicate that the variables **looks**, **personality** and their interaction are (repeated measures) nested within the variable **id**.
+In the current design, we can specify the predictors and their interaction using [strategy\*looks\*personality]{.alt}, therefore, we replace [predictors]{.alt} in the code above with [strategy\*looks\*personality]{.alt}. We also need to specify which predictors are repeated measures by specifying which variables are nested within the participant. Remembering that the variable that uniquely identifies the participants is [id]{.alt}, we'd replace [(rm_predictors\|id_variable)]{.alt} with [(looks\*personality\|id)]{.alt} to indicate that the variables **looks**, **personality** and their interaction are (repeated measures) nested within the variable **id**.
 
 #### `r robot()` Code example
 
@@ -288,7 +291,7 @@ date_afx <- afex::aov_4(date ~ strategy*looks*personality + (looks*personality|i
 date_afx #this shows us the model
 ```
 
-Working down from the top of the table, we find a non-significant effect of **strategy** but significant effects (the [p.value]{.alt} is less than 0.05) of **looks**, the **strategy × looks** interaction, **personality**, the **strategy × personality** interaction, the **looks × personality** interaction and the **strategy × looks × personality** interaction. Everything, basically. You wouldn’t normally be interested in main effects when there are significant interactions. In fact, the only effect we're really interested in is the significant **strategy × looks × personality** interaction, but  for completeness of your understanding we’ll interpret each effect in turn, starting with the main effect of **strategy**.
+Working down from the top of the table, we find a non-significant effect of **strategy** but significant effects (the [p.value]{.alt} is less than 0.05) of **looks**, the **strategy × looks** interaction, **personality**, the **strategy × personality** interaction, the **looks × personality** interaction and the **strategy × looks × personality** interaction. Everything, basically. You wouldn't normally be interested in main effects when there are significant interactions. In fact, the only effect we're really interested in is the significant **strategy × looks × personality** interaction, but for completeness of your understanding we'll interpret each effect in turn, starting with the main effect of **strategy**.
 
 ### `r user_visor()` The main effect of **strategy** [(2)]{.alt}
 
@@ -305,7 +308,6 @@ quiz(caption = "The main effect of strategy (level 2)",
   )
 ```
 
-
 ### `r user_visor()` The main effect of **looks** [(2)]{.alt}
 
 The main output from the `afex` model is reproduced below:
@@ -313,7 +315,6 @@ The main output from the `afex` model is reproduced below:
 ```{r, echo = F}
 date_afx
 ```
-
 
 ```{r qu_looks, echo = F}
 quiz(caption = "The main effect of looks (level 2)",
@@ -328,7 +329,7 @@ quiz(caption = "The main effect of looks (level 2)",
 )
 ```
 
-To pick the effect apart we can first get the estimated marginal means using `emmeans()`, which we used in both which we used in [discovr_13]{.alt} and which we used in [discovr_14]{.alt}. 
+To pick the effect apart we can first get the estimated marginal means using `emmeans()`, which we used in both which we used in [discovr_13]{.alt} and which we used in [discovr_14]{.alt}.
 
 #### `r robot()` Code example
 
@@ -358,12 +359,11 @@ looks_emm <- emmeans::emmeans(date_afx, ~looks, model = "multivariate")
 looks_emm # shows us the means
 ```
 
-From this table you can see that as attractiveness of the date increases from low to high, the desirability to have a date with them increases too. Contrasts will help us to understand exactly what’s going on.
+From this table you can see that as attractiveness of the date increases from low to high, the desirability to have a date with them increases too. Contrasts will help us to understand exactly what's going on.
 
 #### `r robot()` Code example
 
-We mentioned earlier that a reasonable contrast would be to use the average attractiveness as a reference category and compare the low and high attractiveness dates to this 'norm'. We also saw that we could achieve this using `emmeans::contrast()` and defining the method as [trt.vs.ctrl]{.alt} and the reference category as the second category (average), [ref = 1]{.alt}. 
-Remember that we feed into the function the estimated marginal means that we just calculated [looks_emm]{.alt}. Putting this all together, we'd execute:
+We mentioned earlier that a reasonable contrast would be to use the average attractiveness as a reference category and compare the low and high attractiveness dates to this 'norm'. We also saw that we could achieve this using `emmeans::contrast()` and defining the method as [trt.vs.ctrl]{.alt} and the reference category as the second category (average), [ref = 1]{.alt}. Remember that we feed into the function the estimated marginal means that we just calculated [looks_emm]{.alt}. Putting this all together, we'd execute:
 
 ```{r, eval = F}
 emmeans::contrast(looks_emm, method = "trt.vs.ctrl", ref = 2, adjust = "holm")
@@ -377,7 +377,6 @@ Obtain the contrasts just described using the code box.
 looks_emm <- emmeans::emmeans(date_afx, ~looks, model = "multivariate")
 ```
 
-
 ```{r looks_con, exercise = TRUE, exercise.lines = 4, exercise.setup = "looks_con_setup"}
 
 ```
@@ -386,8 +385,7 @@ looks_emm <- emmeans::emmeans(date_afx, ~looks, model = "multivariate")
 emmeans::contrast(looks_emm, method = "trt.vs.ctrl", ref = 2, adjust = "holm")
 ```
 
-
-These contrasts tell us (in combination with the means themselves that) highly attractive dates were rated significantly higher than average dates, *t*(18) = $-12.65$, *p* < 0.001, and averagely attractive dates were rated significantly higher than those low on attractiveness, *t*(18) = 15.07, *p* < 0.001.
+These contrasts tell us (in combination with the means themselves that) highly attractive dates were rated significantly higher than average dates, *t*(18) = $-12.65$, *p* \< 0.001, and averagely attractive dates were rated significantly higher than those low on attractiveness, *t*(18) = 15.07, *p* \< 0.001.
 
 ### `r user_visor()` The main effect of **personality** [(2)]{.alt}
 
@@ -412,8 +410,8 @@ quiz(caption = "The main effect of personality (level 2)",
 
 Again, we could pick the effect apart with the estimated marginal means and contrasts. Remember from earlier, that we want to set the same contrasts: that is compare the average category of **personality** against the low and high categories. Therefore, the code will be the same as we just used for the variable **looks** except that:
 
-* We should give our estimated marginal means object a different name.
-* We replace the variable [looks]{.alt} with [personality]{.alt} in the code
+-   We should give our estimated marginal means object a different name.
+-   We replace the variable [looks]{.alt} with [personality]{.alt} in the code
 
 #### `r alien()` Alien coding challenge
 
@@ -442,7 +440,7 @@ pers_emm # shows us the means
 emmeans::contrast(pers_emm, method = "trt.vs.ctrl", ref = 2, adjust = "holm")
 ```
 
-The contrasts and means tell us that dates acting with high charisma were rated significantly higher than dates with average charisma, *t*(18) = $-15.10$, *p* < 0.001, and dates with average charisma were rated significantly higher than those acting with low charisma, *t*(18) = 10.49, *p* < 0.001.
+The contrasts and means tell us that dates acting with high charisma were rated significantly higher than dates with average charisma, *t*(18) = $-15.10$, *p* \< 0.001, and dates with average charisma were rated significantly higher than those acting with low charisma, *t*(18) = 10.49, *p* \< 0.001.
 
 ### `r user_visor()` The interaction between **strategy** and **looks** [(2)]{.alt}
 
@@ -452,16 +450,15 @@ The main output from the `afex` model is reproduced below:
 date_afx
 ```
 
+The output above tells us that dating strategy significantly interacted with the attractiveness of the date, *F*(1.92, 34.62) = 80.43, *p* \< 0.001: the profile of ratings across dates of different attractiveness was different depending on whether or not they played hard to get.
 
-The output above tells us that dating strategy significantly interacted with the attractiveness of the date, *F*(1.92, 34.62) = 80.43, *p* < 0.001: the profile of ratings across dates of different attractiveness was different depending on whether or not they played hard to get.
-
-To pick the effect apart we can again inspect the estimated marginal means using `emmeans()`. We use the same approach as before, but remember that in this code: 
+To pick the effect apart we can again inspect the estimated marginal means using `emmeans()`. We use the same approach as before, but remember that in this code:
 
 ```{r, eval = F}
 my_new_emm <- emmeans::emmeans(my_afx_model, ~predictor(s), model = "multivariate")
 ```
 
-We now replace [~predictor(s)]{.alt} with the predictors involved in the interaction of interest by listing them within`c()`. For example, for the **strategy\*looks** interaction we'd specify [c("strategy", "looks")]{.alt} (note we drop the [~]{.alt} at the beginning).
+We now replace [\~predictor(s)]{.alt} with the predictors involved in the interaction of interest by listing them within`c()`. For example, for the **strategy\*looks** interaction we'd specify [c("strategy", "looks")]{.alt} (note we drop the [\~]{.alt} at the beginning).
 
 #### `r alien()` Alien coding challenge
 
@@ -480,7 +477,6 @@ strat_looks_emm <- emmeans::emmeans(xxxxxx, c(xxxxxx), model = "xxxxxx")
 strat_looks_emm <- emmeans::emmeans(date_afx, c("strategy", "looks"), model = "multivariate")
 strat_looks_emm # shows us the means
 ```
-
 
 ```{r, qu_looks_strat, echo = F}
 quiz(caption = "The interaction of strategy and looks (level 2)",
@@ -504,15 +500,14 @@ We can get contrasts for this interaction term. To use the `emmeans::contrast()`
 emmeans::contrast(
   my_emm_object,
   interaction = c(variable_a = "contrast", variable_b = "contrast" ...),
-  rel = x,
+  ref = x,
   adjust = "holm"
   )
 ```
 
-In which we replaced [my_emm_object]{.alt} with an object that contains the estimated marginal means for the effect of interest, [interaction = c(variable_a = "contrast", variable_b = "contrast" ...)]{.alt} lists each variable and the contrast you want to apply to it and [rel = x]{.alt} is used to set the reference category for the contrasts (if relevant).
+In which we replaced [my_emm_object]{.alt} with an object that contains the estimated marginal means for the effect of interest, [interaction = c(variable_a = "contrast", variable_b = "contrast" ...)]{.alt} lists each variable and the contrast you want to apply to it and [ref = x]{.alt} is used to set the reference category for the contrasts (if relevant).
 
-In previous contrasts we have used [trt.vs.ctrl]{.alt} as the contrast for the variables **looks** and **personality**, so we should continue to do so. We may as well use [trt.vs.ctrl]{.alt} for **strategy** too, because it has only two categories, so [trt.vs.ctrl]{.alt} will compare these categories. Therefore, we can use [interaction = c(strategy = "trt.vs.ctrl", looks = "trt.vs.ctrl")]{.alt} to specify the contrast for the
-**strategy\*looks** interaction. We must also remember to feed the estimated marginal means into the function, which we craeted above and stored as [strat_looks_emm]{.alt}.
+In previous contrasts we have used [trt.vs.ctrl]{.alt} as the contrast for the variables **looks** and **personality**, so we should continue to do so. We may as well use [trt.vs.ctrl]{.alt} for **strategy** too, because it has only two categories, so [trt.vs.ctrl]{.alt} will compare these categories. Therefore, we can use [interaction = c(strategy = "trt.vs.ctrl", looks = "trt.vs.ctrl")]{.alt} to specify the contrast for the **strategy\*looks** interaction. We must also remember to feed the estimated marginal means into the function, which we craeted above and stored as [strat_looks_emm]{.alt}.
 
 #### `r robot()` Code example
 
@@ -527,7 +522,6 @@ emmeans::contrast(
   )
 ```
 
-
 #### `r alien()` Alien coding challenge
 
 Obtain the contrasts just described using the code box.
@@ -535,7 +529,6 @@ Obtain the contrasts just described using the code box.
 ```{r, strat_looks_con_setup}
 strat_looks_emm <- emmeans::emmeans(date_afx, c("strategy", "looks"), model = "multivariate")
 ```
-
 
 ```{r strat_looks_con, exercise = TRUE, exercise.lines = 7, exercise.setup = "strat_looks_con_setup"}
 
@@ -559,8 +552,8 @@ emmeans::contrast(
   )
 ```
 
-* The first contrast for the interaction term shows the effect of attractive dates compared to average dates, comparing playing hard to get to normal. This contrast is highly significant, *t*(18) = 5.50, *p* < 0.001, suggesting that the increased interest in attractive dates compared to average-looking dates found when dates played hard to get is significantly more than when they acted normally.
-* The second contrast, which compares playing hard to get to normal in low attractive dates compared to average-looking dates is also highly significant, *t*(18) = $-6.58$, *p* < 0.001. This contrast tells us that the decreased interest in unattractive dates compared to average-looking dates found when dates played hard to get is significantly more than when they acted normally.
+-   The first contrast for the interaction term shows the effect of unattractive dates compared to average dates, comparing playing hard to get to normal. This contrast is highly significant, *t*(18) = 5.50, *p* \< 0.001, suggesting that the increased interest in average-looking dates compared to unattractive dates is significantly greater when dates played hard to get than when they acted normally.
+-   The second contrast, which compares playing hard to get to normal in high attractive dates compared to average-looking dates is also highly significant, *t*(18) = $-6.58$, *p* \< 0.001. This contrast tells us that the decreased interest in average-looking dates compared to attractive dates is significantly more when dates played hard to get than when they acted normally.
 
 ### `r user_visor()` The interaction between **strategy** and **personality** [(2)]{.alt}
 
@@ -570,13 +563,12 @@ The main output from the `afex` model is reproduced below:
 date_afx
 ```
 
-The output reproduced above reminds us that the dating strategy significantly interacted with how charismatic the date was, *F*(1.87, 33.62) = 62.45, *p* < 0.001. This effect means that the profile of ratings across dates of different levels of charisma was influenced by the dating strategy employed.
+The output reproduced above reminds us that the dating strategy significantly interacted with how charismatic the date was, *F*(1.87, 33.62) = 62.45, *p* \< 0.001. This effect means that the profile of ratings across dates of different levels of charisma was influenced by the dating strategy employed.
 
 We can adapt the code from the previous section to get the estimated marginal means and contrasts for this interaction. The main changes will be:
 
-* We should call the object storing the estimated marginal means something different to the previous section.
-* We need to replace [looks]{.alt} with [personality]{.alt} in the code. 
-
+-   We should call the object storing the estimated marginal means something different to the previous section.
+-   We need to replace [looks]{.alt} with [personality]{.alt} in the code.
 
 #### `r alien()` Alien coding challenge
 
@@ -614,7 +606,6 @@ strat_pers_emm # display the means
 emmeans::contrast(strat_pers_emm, interaction = c(strategy = "trt.vs.ctrl", personality = "trt.vs.ctrl"), ref = 2, adjust = "holm")
 ```
 
-
 ```{r qu_char_strat, echo = F}
 quiz(caption = "The strategy × personality interaction (level 2)",
      question("Using the means, which of these statements about the **strategy × personality** interaction are true? (Select ALL that apply)",
@@ -633,8 +624,8 @@ quiz(caption = "The strategy × personality interaction (level 2)",
 
 The contrasts show that:
 
-* The increased interest in highly charismatic dates compared to averagely charismatic dates found when dates acted normally is significantly more than when the dates played hard to get, *t*(18) = 5.22, *p* < 0.001.
-*  The decreased interest in low charisma dates compared to averagely charismatic dates is significantly less when dates play hard to get than when they act normally, *t*(18) = $-5.80$, *p* < 0.001.
+-   The decreased interest in low charisma dates compared to averagely charismatic dates is significantly less when dates play hard to get than when they act normally, *t*(18) = $-5.80$, *p* \< 0.001.
+-   The increased interest in highly charismatic dates compared to averagely charismatic dates found when dates acted normally is significantly more than when the dates played hard to get, *t*(18) = 5.22, *p* \< 0.001.
 
 
 ### `r user_visor()` The interaction between **looks** and **personality** [(2)]{.alt}
@@ -645,13 +636,12 @@ The main output from the `afex` model is reproduced below:
 date_afx
 ```
 
-
-The reproduced output reminds us that there was a significant looks × personality interaction, *F*(3.20, 57.55) = 36.63, *p* < 0.001. This effect tells us that the profile of ratings across dates of different levels of charisma was different for attractive, average and unattractive dates. 
+The reproduced output reminds us that there was a significant looks × personality interaction, *F*(3.20, 57.55) = 36.63, *p* \< 0.001. This effect tells us that the profile of ratings across dates of different levels of charisma was different for attractive, average and unattractive dates.
 
 We can (again) adapt the code from the previous two sections to get the estimated marginal means and contrasts for this interaction. The main changes will be:
 
-* We should call the object storing the estimated marginal means something different to the previous section.
-* We need to specify [looks]{.alt} and [personality]{.alt} as the variables in the interaction. 
+-   We should call the object storing the estimated marginal means something different to the previous section.
+-   We need to specify [looks]{.alt} and [personality]{.alt} as the variables in the interaction.
 
 #### `r alien()` Alien coding challenge
 
@@ -700,8 +690,6 @@ afex::afex_plot(date_afx,
   theme_minimal()
 ```
 
-
-
 ```{r qu_looks_char, echo = F}
 quiz(caption = "The looks × personality interaction (level 2)",
      question("Using the means, which of these statements about the **looks × personality** interaction are true? (Select ALL that apply)",
@@ -721,15 +709,14 @@ quiz(caption = "The looks × personality interaction (level 2)",
 )
 ```
 
-
 The contrasts help to pick apart this interaction.
 
-* The first contrast asks ‘is the difference between high charisma and average charisma the same for attractive and average-looking dates?’ The best way to understand this contrast is to focus on the relevant bit of the interaction graph. Interest (as indicated by high ratings) in attractive dates was the same regardless of whether they had high or average charisma; however, for average-looking dates, there was more interest when that person had high charisma rather than average charisma. The contrast is highly significant, *t*(18) = 9.41, *p* < 0.001, and tells us that as attractiveness is reduced there is a significantly greater decline in interest when charisma is average compared to when it is high.
-* The second contrast asks the question ‘is the difference between low charisma and average charisma the same for attractive people and average-looking people? We can again focus on the relevant part of the interaction graph. Interest in attractive dates was higher when they had average charisma (green) than when they had low charisma (red); the same is also true for average-looking dates. The two lines are fairly parallel, which is reflected in the non-significant contrast, *t*(18) = 2.02, *p* = 0.058. It seems that as the attractiveness of dates is reduced there is a decline in interest both when charisma is average and when it is low.
-* The third contrast asks ‘is the difference between high charisma and average charisma the same for low attractive dates and average-looking dates?’ Interest in dating decreases from average-looking dates to unattractive ones in dates with both high and average charisma dates; however, this fall is significantly greater in the low-charisma dates (the red line is slightly steeper than the blue), *t*(18) = 2.50, *p* = 0.045. As dates’ attractiveness is reduced there is a significantly greater decline in interest when dates have average charisma compared to when they have a lot.
-* The final contrast addresses the question ‘is the difference between low charisma and average charisma the same for unattractive people and average-looking people? For average-looking dates, ratings were higher when they had average charisma than when they had low charisma, but for unattractive dates the ratings were roughly the same regardless of the level of charisma. This contrast is highly significant, *t*(18) = $-4.68$, *p* < 0.001.
+-   The first contrast addresses the question 'is the difference between low charisma and average charisma the same for unattractive people and average-looking people? For average-looking dates, ratings were higher when they had average charisma than when they had low charisma, but for unattractive dates the ratings were roughly the same regardless of the level of charisma. This contrast is highly significant, *t*(18) = 9.41, *p* \< 0.001.
+-   The second contrast asks the question 'is the difference between low charisma and average charisma the same for attractive people and average-looking people? We can again focus on the relevant part of the interaction graph. Interest in attractive dates was higher when they had average charisma (green) than when they had low charisma (red); the same is also true for average-looking dates. The two lines are fairly parallel, which is reflected in the non-significant contrast, *t*(18) = 2.02, *p* = 0.058. It seems that as the attractiveness of dates is reduced there is a decline in interest both when charisma is average and when it is low.
+-   The third contrast asks 'is the difference between high charisma and average charisma the same for low attractive dates and average-looking dates?' Interest in dating decreases from average-looking dates to unattractive ones in dates with both high and average charisma dates; however, this fall is significantly greater in the low-charisma dates (the red line is slightly steeper than the blue), *t*(18) = 2.50, *p* = 0.045. As dates' attractiveness is reduced there is a significantly greater decline in interest when dates have average charisma compared to when they have a lot.
+-   The final contrast asks 'is the difference between high charisma and average charisma the same for attractive and average-looking dates?' The best way to understand this contrast is to focus on the relevant bit of the interaction graph. Interest (as indicated by high ratings) in attractive dates was the same regardless of whether they had high or average charisma; however, for average-looking dates, there was more interest when that person had high charisma rather than average charisma. This contrast is highly significant, *t*(18) = $-4.68$, *p* \< 0.001, and tells us that as attractiveness is reduced there is a significantly greater decline in interest when charisma is average compared to when it is high.
 
-### `r user_visor()` The interaction between **strategy**,  **looks** and **personality** [(2)]{.alt}
+### `r user_visor()` The interaction between **strategy**, **looks** and **personality** [(2)]{.alt}
 
 The three-way interaction will blow your mind! The main output from the `afex` model is reproduced below:
 
@@ -737,7 +724,7 @@ The three-way interaction will blow your mind! The main output from the `afex` m
 date_afx
 ```
 
-The significant strategy × looks × personality interaction, *F*(3.20, 57.55) = 24.12, *p* < 0.001, tells us whether the looks × personality interaction described above is the same (statistically) when dates played hard to get compared to when they didn’t.
+The significant strategy × looks × personality interaction, *F*(3.20, 57.55) = 24.12, *p* \< 0.001, tells us whether the looks × personality interaction described above is the same (statistically) when dates played hard to get compared to when they didn't.
 
 To pick the effect apart we can, take a very deep breath and, inspect the estimated marginal means using `emmeans()`. We use the same approach as before, but adapt the code from the previous section to include the third predictor:
 
@@ -775,7 +762,6 @@ afex::afex_plot(date_afx,
                 ) +
   theme_minimal()
 ```
-
 
 ```{r qu_looks_char_strat, echo = F}
 quiz(caption = "The three-way interaction (level 2)",
@@ -815,6 +801,7 @@ emmeans::contrast(
   adjust = "holm"
   )
 ```
+
 #### `r alien()` Alien coding challenge
 
 Obtain the contrasts just described using the code box.
@@ -822,7 +809,6 @@ Obtain the contrasts just described using the code box.
 ```{r, three_way_setup}
 three_way_emm <- emmeans::emmeans(date_afx, c("strategy", "looks", "personality"), model = "multivariate")
 ```
-
 
 ```{r three_way_con, exercise = TRUE, exercise.lines = 7, exercise.setup = "three_way_setup"}
 
@@ -846,42 +832,41 @@ emmeans::contrast(
   )
 ```
 
-* The first contrast the effect of high attractive dates relative to average-looking ones, when they display high charisma compared average charisma, when dates played hard to get relative to when they didn’t, *t*(18) = $-1.16$, *p* = 0.526. It seems that interest in dating (as indicated by high ratings) attractive dates was the same regardless of whether they had high or average charisma (the green and blue dots are in a similar place). However, for average-looking dates, there was more interest when that person had high charisma rather than average charisma (the green dot is lower than the blue dot). The non-significance of this contrast indicates that this pattern of results is very similar when dates played hard to get and when they didn’t.
-* The second contrast explores effect of high attractive dates relative to average-looking ones, when displaying low charisma compared to average charisma, when dates played hard to get relative to when they didn’t. The contrast is significant, *t*(18) = $-7.79$, *p* < 0.001, which reflects the fact that the pattern of means is different when dates played hard to get compared to when they didn’t. First, if we look at average-looking dates, more interest was expressed when the date has average charisma than when they have low charisma, and this is true whether or not dates played hard to get (the distance between the green and red lines is about the same in the two dating strategy groups). So, the difference created by playing hard to get doesn’t appear to be here. Now look at attractive dates. When dates played hard to get the interest in the date is high regardless of their charisma (the lines meet). However, when dates acted normally interest in dating an attractive person is much lower if they are a dullard (the red dot is much lower than the green). Another way to look at it is that for dates with average charisma, the reduction in interest as attractiveness goes down is about the same regardless of whether they played hard to get (the green lines have the same slope). However, for dates displaying low charisma, the decrease in interest if these dates are average-looking rather than attractive is much more dramatic if they play hard to get (the red line is steeper in the hard to get group).
-* The third contrast was also significant, *t*(18) = 3.42, *p* = 0.009. This contrast compares low attractive dates to average-looking ones, when displaying high charisma relative to average charisma, when dates played hard to get relative to when they didn’t. First, let’s look at when dates played hard to get. As attractiveness goes down, so does interest when the date has high charisma and when they have average charisma (the slopes of the blue and green lines are similar). So, regardless of charisma, there is a similar reduction in interest as attractiveness declines. Now let’s look at when the dates acted normally. The picture is quite different: when charisma is high, there is no decline in interest as attractiveness falls (the blue line is flat); however, when charisma is average, interest is lower in an unattractive date than in an average-looking date (the green line slopes down). Another way to look at it is that for dates with average charisma, the reduction in interest as attractiveness goes down is about the same regardless of whether dates play hard to get (the green lines have similar slopes). However, for dates who have high charisma, the decrease in interest if these dates are unattractive rather than average-looking is much more dramatic when dates played hard to get than when they didn’t (the blue line is steeper for dates that played hard to get).
-* The final contrast was not significant, *t*(18) = $-0.96$, *p* = 0.526. This contrast looks at the effect of Strategy when comparing low attractive dates to average-looking dates, when displaying low charisma relative average charisma. Interest in unattractive dates was the same regardless of whether they had average charisma or low (the green and red dots are in the same place). Interest in average-looking dates was greatest when they had average charisma rather than when they had low charisma (the green dot is higher than the red). This pattern of results is very similar when dates played hard to get and when they didn’t.
+
+-   The first contrast was not significant, *t*(18) = $-1.16$, *p* = 0.526. This contrast looks at the effect of Strategy when comparing low attractive dates to average-looking dates, when displaying low charisma relative average charisma. Interest in unattractive dates was the same regardless of whether they had average charisma or low (the green and red dots are in the same place). Interest in average-looking dates was greatest when they had average charisma rather than when they had low charisma (the green dot is higher than the red). This pattern of results is very similar when dates played hard to get and when they didn't.
+-   The second contrast explores effect of high attractive dates relative to average-looking ones, when displaying low charisma compared to average charisma, when dates played hard to get relative to when they didn't. The contrast is significant, *t*(18) = $-7.79$, *p* \< 0.001, which reflects the fact that the pattern of means is different when dates played hard to get compared to when they didn't. First, if we look at average-looking dates, more interest was expressed when the date has average charisma than when they have low charisma, and this is true whether or not dates played hard to get (the distance between the green and red lines is about the same in the two dating strategy groups). So, the difference created by playing hard to get doesn't appear to be here. Now look at attractive dates. When dates played hard to get the interest in the date is high regardless of their charisma (the lines meet). However, when dates acted normally interest in dating an attractive person is much lower if they are a dullard (the red dot is much lower than the green). Another way to look at it is that for dates with average charisma, the reduction in interest as attractiveness goes down is about the same regardless of whether they played hard to get (the green lines have the same slope). However, for dates displaying low charisma, the decrease in interest if these dates are average-looking rather than attractive is much more dramatic if they play hard to get (the red line is steeper in the hard to get group).
+-   The third contrast was also significant, *t*(18) = 3.42, *p* = 0.009. This contrast compares low attractive dates to average-looking ones, when displaying high charisma relative to average charisma, when dates played hard to get relative to when they didn't. First, let's look at when dates played hard to get. As attractiveness goes down, so does interest when the date has high charisma and when they have average charisma (the slopes of the blue and green lines are similar). So, regardless of charisma, there is a similar reduction in interest as attractiveness declines. Now let's look at when the dates acted normally. The picture is quite different: when charisma is high, there is no decline in interest as attractiveness falls (the blue line is flat); however, when charisma is average, interest is lower in an unattractive date than in an average-looking date (the green line slopes down). Another way to look at it is that for dates with average charisma, the reduction in interest as attractiveness goes down is about the same regardless of whether dates play hard to get (the green lines have similar slopes). However, for dates who have high charisma, the decrease in interest if these dates are unattractive rather than average-looking is much more dramatic when dates played hard to get than when they didn't (the blue line is steeper for dates that played hard to get).
+-   The final contrast shows the effect of high attractive dates relative to average-looking ones, when they display high charisma compared average charisma, when dates played hard to get relative to when they didn't, *t*(18) = $-0.96$, *p* = 0.526. This contrast seems to show that interest in dating (as indicated by high ratings) attractive dates was the same regardless of whether they had high or average charisma (the green and blue dots are in a similar place). However, for average-looking dates, there was more interest when that person had high charisma rather than average charisma (the green dot is lower than the blue dot). The non-significance of this contrast indicates that this pattern of results is very similar when dates played hard to get and when they didn't.
 
 
 <div class="infobox">
-  <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
-  
-  **A message from Mae Jemstone:**
-  
-  No-one reads these do they? I'll write this properly when it's not 1am (again ...) ... I need sleep sooooo badly.
+<img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." class="img_left" style="width:100px;height:116px;"/>
 
+**A message from Mae Jemstone:**
+
+No-one reads these do they? I'll write this properly when it's not 1am (again ...).
+I need sleep sooooo badly.
 </div>
 
 
-## Resources {data-progressive=FALSE}
+## Resources {data-progressive="FALSE"}
 
 ### Statistics
 
-* The tutorials typically follow examples described in detail in @field_discovering_2022. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
-* If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
-* There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/).
-* There are free statistical resources on my websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [milton-the-cat.rocks](http://milton-the-cat.rocks).
+-   The tutorials typically follow examples described in detail in @field_discovering_2022. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
+-   If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
+-   There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/).
+-   There are free statistical resources on my websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [milton-the-cat.rocks](http://milton-the-cat.rocks).
 
 ### `r rproj("h3")`
 
-* [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
-* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and `r rstudio()`.
-* [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
-* [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
+-   [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
+-   [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and `r rstudio()`.
+-   [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
+-   [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
 
 ### Acknowledgement
 
 I'm extremely grateful to [Allison Horst](https://www.allisonhorst.com/) for her very informative blog post on [styling learnr tutorials with CSS](https://education.rstudio.com/blog/2020/05/learnr-for-remote/) and also for sending me a CSS template file and allowing me to adapt it. Without Allison, these tutorials would look a lot worse (but she can't be blamed for my colour scheme).
 
 ## References
-
-

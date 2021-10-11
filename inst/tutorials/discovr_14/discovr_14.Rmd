@@ -525,7 +525,7 @@ $$
 
 (Note I've used $\gamma$ in the equation instead of $b$ because you'll see this symbol sometimes and I want you to get used to the fact that the choice of symbols is somewhat arbitrary.)
 
-We can fit this model using the `lme()` function from the `nlme` package [@pinheiro_nlme:_2021]. The format of this function is the same as `lm()` and `gls()` except that we also need to specify the random part of the model using the option [random = x|y]{.alt}, in which *x* specifies the random parts of the model and *y* is the contextual variable or variables across which we want to model variance. In the current example, we want to model intercepts that vary across clinics; therefore, we could add the instruction [random = ~1|clinic_id]{.alt}. Remember that we use [1]{.alt} to denote the intercept, and that [clinic_id]]{.alt} is the variable that contains information about the clinic that a given zombie attended.
+We can fit this model using the `lme()` function from the `nlme` package [@pinheiro_nlme:_2021]. The format of this function is the same as `lm()` and `gls()` except that we also need to specify the random part of the model using the option [random = x|y]{.alt}, in which *x* specifies the random parts of the model and *y* is the contextual variable or variables across which we want to model variance. In the current example, we want to model intercepts that vary across clinics; therefore, we could add the instruction [random = ~1|clinic_id]{.alt}. Remember that we use [1]{.alt} to denote the intercept, and that [clinic_id]{.alt} is the variable that contains information about the clinic that a given zombie attended.
 
 
 #### `r robot()` Code example
@@ -618,7 +618,7 @@ base_ri_aov <- anova(rehab_base, rehab_ri)
 
 First, we can compare the fit of the model using indices such as AIC and BIC. In the output from the `anova()` function you’ll see that the BIC when only the intercept was included is `r round(base_ri_aov$BIC[1], 2)` but decreases to `r round(base_ri_aov$BIC[2], 2)` when intercepts are allowed to vary. Smaller values of BIC indicate a better fit of the data, so this gives us an indication that by allowing intercepts to vary the model fit has improved (BIC has decreased). The AIC (which also decreases) can be interpreted in a similar way.
 
-The [L.Ratio]]{.alt} which is the log-likelihood ratio (the change in the −2LL between the models), it has a *p*-value, which is highly significant suggesting that it is important that we model the variability in intercepts (because doing so significantly improves the fit of our model). The change in the −2LL has a chi-square distribution, so we can report this statistic as $\chi^2$(`r base_ri_aov$df[2]-base_ri_aov$df[1]`) = `r round(base_ri_aov$L.Ratio[2], 2)`, *p* < 0.001. We can conclude then that overall levels of resemblance (the intercept) vary significantly across the clinics. Multilevel madness ensues.
+The [L.Ratio]{.alt} which is the log-likelihood ratio (the change in the −2LL between the models), it has a *p*-value, which is highly significant suggesting that it is important that we model the variability in intercepts (because doing so significantly improves the fit of our model). The change in the −2LL has a chi-square distribution, so we can report this statistic as $\chi^2$(`r base_ri_aov$df[2]-base_ri_aov$df[1]`) = `r round(base_ri_aov$L.Ratio[2], 2)`, *p* < 0.001. We can conclude then that overall levels of resemblance (the intercept) vary significantly across the clinics. Multilevel madness ensues.
 
 ###  `r user_astronaut()` Adding a fixed effect [(3)]{.alt}
 
@@ -1005,7 +1005,7 @@ broom.mixed::tidy(rehab_maz, conf.int = T, effects = "ran_pars")
 
 The output shows that the standard deviation of the intercepts was `r round(rehab_maz_re$estimate[1], 2)`, 95% CI [`r round(rehab_maz_re$conf.low[1], 2)`, `r round(rehab_maz_re$conf.high[1], 2)`]. This is the standard deviation of the values of the intercepts across the 10 clinics. In other words, it quantifies how variable the individual clinic intercepts are around the overall intercept (around the overall estimate of `r round(rehab_maz_fe$estimate[1], 2)`).
 
-The standard deviation of the effect of intervention across clinics was `r round(rehab_maz_re$estimate[3], 2)`, 95% CI [`r round(rehab_maz_re$conf.low[3], 2)`, `r round(rehab_maz_re$conf.high[3], 2)`]. This is the standard deviation of the parameter estimates reflecting the intervention effect across the 10 clinics. In other words, it quantifies how variable the individual intervention effects within clinics are around the overall intervention effect (`r round(rehab_maz_fe$estimate[3], 2)`).
+The standard deviation of the effect of intervention across clinics was `r round(rehab_maz_re$estimate[3], 2)`, 95% CI [`r round(rehab_maz_re$conf.low[3], 2)`, `r round(rehab_maz_re$conf.high[3], 2)`]. This is the standard deviation of the parameter estimates reflecting the intervention effect across the 10 clinics. In other words, it quantifies how variable the individual intervention effects within clinics are around the overall intervention effect (`r round(rehab_maz_fe$estimate[2], 2)`).
 
 Finally, the correlation between slopes and intercepts across the 10 clinics was `r round(rehab_maz_re$estimate[2], 2)`, 95% CI [`r round(rehab_maz_re$conf.low[2], 2)`, `r round(rehab_maz_re$conf.high[2], 2)`]
 

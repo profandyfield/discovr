@@ -45,11 +45,30 @@ growth_evil_tib <- rehab_growth_tib %>%
     time = forcats::fct_relevel(time, "1 month", after = Inf)
   )
 
-rehab_ri <- nlme::lme(resemblance ~ time_num, random = ~ 1|id, data = rehab_growth_tib, method = "ML")
-rehab_rs <- update(rehab_ri, random = ~ time_num|id)
-rehab_mod <- update(rehab_rs, .~. + intervention + time_num:intervention)
-rehab_quad <- update(rehab_mod, .~ poly(time_num, 2)*intervention)
-rehab_quad_rs <- update(rehab_quad, random = ~poly(time_num, 2)|id)
+rehab_ri <- nlme::lme(resemblance ~ time_num,
+                      random = ~ 1|id,
+                      data = rehab_growth_tib,
+                      method = "ML")
+
+rehab_rs <- nlme::lme(resemblance ~ time_num,
+                      random = ~ time_num|id,
+                      data = rehab_growth_tib,
+                      method = "ML")
+
+rehab_mod <- nlme::lme(resemblance ~ time_num*intervention,
+                      random = ~ time_num|id,
+                      data = rehab_growth_tib,
+                      method = "ML")
+
+rehab_quad <- nlme::lme(resemblance ~ poly(time_num, 2)*intervention,
+                      random = ~ time_num|id,
+                      data = rehab_growth_tib,
+                      method = "ML")
+  
+rehab_quad_rs <- nlme::lme(resemblance ~ poly(time_num, 2)*intervention,
+                      random = ~ poly(time_num, 2)|id,
+                      data = rehab_growth_tib,
+                      method = "ML")
 ```
 
 # discovr: Growth models

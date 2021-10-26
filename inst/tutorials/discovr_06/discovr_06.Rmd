@@ -690,7 +690,7 @@ download_tib <- download_tib %>%
 download_tib
 ```
 
-In situations like this, where we want to convert multiple variables, it can be quicker to use `dplyr::across()` within `mutate()` to apply our function `make_z()` to multiple variables simultaneously. Put simply the function applies a mutation across certain columns (hence, the name).
+In situations like this, where we want to convert multiple variables, it can be quicker to use `dplyr::across()` within `mutate()` to apply our function `make_z()` to multiple variables simultaneously. The function `across()` applies a mutation across certain columns (hence, the name).
 
 #### `r robot()` Code example
 
@@ -714,14 +714,14 @@ For example, to apply the `make_z()` function to variables **day_1**, **day_2** 
 ```{r make_z_2, exercise = TRUE, exercise.lines = 5, exercise.setup = "dl_tib"}
 download_tib <- download_tib %>% 
   dplyr::mutate(
-    dplyr::across(day_1:day_3, list(make_z))
+    dplyr::across(day_1:day_3, list(make_z), .names = "{.col}_z")
   )
 
 
 download_tib
 ```
 
-This code pipes the data ([download_tib]{.alt}) into the `mutate()` function, inside which it goes into the `across()` function, where two things happen. First, we select the variables to mutate across. We specify the variables as [day_1:day_3]{.alt}, which means all the variables in the tibble starting with **day_1** and finishing with **day_3**. Next, we apply a mutation to the selected variables. Second, we tell across() what function we want to apply to these variables. In this case, we want to apply the function that we wrote called `make_z()`. Basically, variables **day_1**, **day_2** and **day_3** get passed through the `make_z()` function simultaneously. The resulting variables will be named after the originals but with a ‘z’ appended (**day_1_z**, **day_2_z** and **day_3_z**) because I put a ‘z’ before the equals sign and enclosed the whole shebang in `list()`. The new variables will be stored as the final three columns in the tibble.
+This code pipes the data ([download_tib]{.alt}) into the `mutate()` function, inside which it goes into the `across()` function, where two things happen. First, we select the variables to mutate across. We specify the variables as [day_1:day_3]{.alt}, which means all the variables in the tibble starting with **day_1** and finishing with **day_3**. Second, we tell `across()` what function we want to apply to these variables. In this case, we want to apply the function that we wrote called `make_z()`. Basically, variables **day_1**, **day_2** and **day_3** get passed through the `make_z()` function simultaneously. By including [.names = "\{.col\}_z"]{.alt} within `across()`, the resulting variables will be named after the original columns ([\{.col\}]{.alt} refers to the original column names) but with a ‘z’ appended (so, ["\{.col\}_z"]{.alt} means *take the original column name and add "_z"*). The new variables (**day_1_z**, **day_2_z** and **day_3_z**) will be stored as the final three columns in the tibble.
 
 ### `r user_visor()` Using standardized scores to detect outliers [(2)]{.alt}
 
@@ -773,7 +773,7 @@ There are times when we want to know whether scores (or residuals are normally d
 
 Frequency distributions are not only good for spotting outliers, they are the natural choice for looking at the shape of the distribution as we saw from plotting the day 1 scores earlier. Two alternatives are a probability-probability plot or P-P plot and a quantile-quantile plot, or Q-Q plot. A P-P plot plots the cumulative probability of a variable against the cumulative probability of a particular distribution (in this case a normal distribution). The data are ranked and sorted, then for each rank the corresponding *z*-score is calculated to create an ‘expected value’ that the score should have in a normal distribution. Next, the score itself is converted to a *z*-score. The actual *z*-score is plotted against the expected *z*-score. The Q-Q plot does something similar except that it plots the quantiles of the data against the quantiles of the desired distribution instead of every individual score.
 
-The interpretation of these plots is basically the same. If scores follow the desired distribution then the observed *z*-score or quantile will be the same as the *z*-score or quantile that you’d expect from that distribution and the points on the plot will form a straight diagonal line. When scores are normally distributed the dots on the Q-Q plot follow the diagonal line that represents perfect normality and they all fall within the confidence band around that line. If scores are positively skewed then the points of the Q-Q plot sag downwards in the middle, and for positive skew the opposite is true: points curve upwards in the middle. Note that some of the points fall outside of the confidence band around the diagonal line. When there are too many scores in the tails (a heavy-tailed distribution) the points form an S with points curving down below the diagonal line at the left of the x-axis and rising above it at the right. The points also form an S when there are too few scores in the tails (a light-tailed distribution) but they curve an S upwards from the diagonal at the left of the x-axis and curve downwards from the diagonal at the right. Again, points at the extremes go beyond the confidence band around the diagonal line. If you have a lot of scores Q-Q plots can be easier to interpret than P-P plots because they display fewer values.
+The interpretation of these plots is basically the same. If scores follow the desired distribution then the observed *z*-score or quantile will be the same as the *z*-score or quantile that you’d expect from that distribution and the points on the plot will form a straight diagonal line. When scores are normally distributed the dots on the Q-Q plot follow the diagonal line that represents perfect normality and they all fall within the confidence band around that line. If scores are positively skewed then the points of the Q-Q plot sag downwards in the middle, and for negative skew the opposite is true: points curve upwards in the middle. Note that some of the points fall outside of the confidence band around the diagonal line. When there are too many scores in the tails (a heavy-tailed distribution) the points form an S with points curving down below the diagonal line at the left of the *x*-axis and rising above it at the right. The points also form an S when there are too few scores in the tails (a light-tailed distribution) but they curve an S upwards from the diagonal at the left of the *x*-axis and curve downwards from the diagonal at the right. Again, points at the extremes go beyond the confidence band around the diagonal line. If you have a lot of scores Q-Q plots can be easier to interpret than P-P plots because they display fewer values.
 
 #### `r robot()` Code example
 

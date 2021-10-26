@@ -175,14 +175,14 @@ Combining this function with `dplyr::mutate()` (which we encountered in the **di
 #### `r robot()` Code example
 
 ```{r cut_width, exercise=TRUE, exercise.lines=5}
-gp_freq_tbl <- ice_tib %>% 
+gp_freq_dist <- ice_tib %>% 
   dplyr::mutate(
     days_group = ggplot2::cut_width(upload_day, 4)
     )
-gp_freq_tbl
+gp_freq_dist
 ```
 
-This creates a new object called [gp_freq_tbl]{.alt} that contains each value within [ice_tib]{.alt} but with an extra column/variable called **days_group** that indicates into which 'bin' the value of **upload_day** falls.
+This creates a new object called [gp_freq_dist]{.alt} that contains each value within [ice_tib]{.alt} but with an extra column/variable called **days_group** that indicates into which 'bin' the value of **upload_day** falls.
 
 <div class="tip">
   `r cat_space()` **Tip: Set notation**
@@ -194,7 +194,7 @@ Having done this we can again use `summarize()` and `n()` to count the scores li
 
 #### `r alien()` Alien coding challenge
 
-Create a grouped frequency table called [gp_freq_tbl]{.alt} by starting with the code in the code example and then using the code we used to create [freq_tbl]{.alt} to create a pipe that summarizes the grouped scores.
+Create a grouped frequency table called [gp_freq_dist]{.alt} by starting with the code in the code example and then using the code we used to create [freq_tbl]{.alt} to create a pipe that summarizes the grouped scores.
 
 
 ```{r gp_freq_dist, exercise=TRUE, exercise.lines=10}
@@ -204,7 +204,7 @@ Create a grouped frequency table called [gp_freq_tbl]{.alt} by starting with the
 
 ```{r gp_freq_dist-hint-1}
 # Start with the text from the code example, which creates the bins:
-gp_freq_tbl <- ice_tib %>% 
+gp_freq_dist <- ice_tib %>% 
   dplyr::mutate(
     days_group = ggplot2::cut_width(upload_day, 4)
     )
@@ -226,7 +226,7 @@ freq_tbl <- ice_tib %>%
 # We take the code that bins the data, then
 # pipe the resulting tibble into 
 # group_by and summarize.
-gp_freq_tbl <- ice_tib %>% 
+gp_freq_dist <- ice_tib %>% 
   dplyr::mutate(
     days_group = ggplot2::cut_width(upload_day, 4)
     ) %>% 
@@ -244,7 +244,7 @@ gp_freq_tbl <- ice_tib %>%
 # We want to group by days_group not upload day.. 
 # Change upload_day in the group_by() function
 # to be days_group 
-gp_freq_tbl <- ice_tib %>% 
+gp_freq_dist <- ice_tib %>% 
   dplyr::mutate(
     days_group = ggplot2::cut_width(upload_day, 4)
     ) %>% 
@@ -254,14 +254,14 @@ gp_freq_tbl <- ice_tib %>%
   )
   
 # Job done. We want to see the resulting table so we add:
-gp_freq_tbl
+gp_freq_dist
 ```
 
 We can see, for example that 534000 videos were uploaded after 38 days and up to and including 42 days. 
 
 ### `r bmu()` Relative frequencies [(1)]{.alt}
 
-We now have an object [gp_freq_tbl]{.alt} that contains the number of days grouped into bins of 4 days (**days_group**) and the number of videos uploaded during each of the time periods represented by those bins (**frequency**).
+We now have an object [gp_freq_dist]{.alt} that contains the number of days grouped into bins of 4 days (**days_group**) and the number of videos uploaded during each of the time periods represented by those bins (**frequency**).
 
 #### `r robot()` Code example
 

@@ -316,7 +316,24 @@ quiz(
 )
 ```
 
-It also reports an *F*-statistic (labelled **statistic**) and its *p*-value (labelled (**p.value**). Output 8.9 shows the results of this comparison. Note that the value of *F* is 99.58 and the value in column labelled **p.value** is [2.94198e-19]{.alt}. I explain this notation a bit later, for now trust me that it means 2.94 with the decimal place moved 19 places to the left, or a very small value indeed. The degrees of freedom for this *F* are 2 (as shown in the variable **df**) and 198 (as shown in the variable **res.d**). Therefore, we can say that adding the predictor of **advertising** significantly improved the fit of the model to the data compared to having no predictors in the model, *F*(2, 198) = 99.58, *p* < .001. In other words, adding advertising as a predictor significantly improved the model fit.
+```{r}
+
+get_value <- function(tibble, col, row, val, digits = 3){
+  tibble %>% 
+    dplyr::filter({{col}} == row) %>% 
+    dplyr::select({{val}}) %>% 
+    pull() %>% 
+    round(., digits)
+}
+
+album_lm <- lm(sales ~ adverts, data = album_tib, na.action = na.exclude)
+album_fit <- broom::glance(album_lm)
+album_par <- broom::tidy(album_lm)
+
+# get_value(album_par, term, "adverts", estimate)
+```
+
+It also reports an *F*-statistic (labelled **statistic**) and its *p*-value (labelled (**p.value**). The output shows the results of this comparison. Note that the value of *F* is `r round(album_fit$statistic, 2)` and the value in column labelled **p.value** is [2.94198e-19]{.alt}. I explain this notation a bit later, for now trust me that it means 2.94 with the decimal place moved 19 places to the left, or a very small value indeed. The degrees of freedom for this *F* are `r round(album_fit$df, 0)` (as shown in the variable **df**) and `r round(album_fit$df.residual, 0)` (as shown in the variable **df.residual**). Therefore, we can say that adding the predictor of **advertising** significantly improved the fit of the model to the data compared to having no predictors in the model, *F*(`r round(album_fit$df, 0)`, `r round(album_fit$df.residual, 0)`) = `r round(album_fit$statistic, 2)`, *p* < .001. In other words, adding advertising as a predictor significantly improved the model fit.
 
 ### `r bmu()` Model parameters [(1)]{.alt}
 
@@ -1011,10 +1028,12 @@ The `plot()` function can produce the six plots described below. By default, `pl
 2. A Q-Q plot of the standardized residuals. Use this plot to look for normality of residuals.
 3. The predicted values from the model (*x*-axis) against the square root of the standardized residuals (*y*-axis). This is a variant of plot 1 and is used to look for linearity and homoscedasticity.
 4. The case number (*x*-axis) against the Cook’s distance (*y*-axis). This plot can help to identify influential cases (cases with large values for Cook’s distance).
-5. The leverage value for each case (*x*-axis) against the standardized residual (*y*-axis). This plot is used to identify influential cases and outliers.
+5. The leverage value for each case (*x*-axis) against the standardized residual (*y*-axis). This plot is used to identify influential cases and outliers. Leverage values indicate the influence of an individual case on the model and are related to Cook's distance.
 6. The leverage value for each case (*x*-axis) against the corresponding Cook’s distance (*y*-axis). This plot is used to identify influential cases and outliers.
 
 We'll look at each of these plots in due course.
+
+
 
 #### `r robot()` Code example
 
@@ -1038,7 +1057,7 @@ plot(album_full_lm, which = c(1, 2))
 
 ### `r user_visor()` Residual plots [(2)]{.alt}
 
-We use residual plots (plots 1 and 3) to look for linearity and homoscedasticity. The Figure below (taken from [@field_discovering_2022]) shows that we're looking for a random scatter of dots. Curvature in the plot indicates a lack of linearity, and a funnel shape (residuals that 'fan out') indicates heteroscedasticity. Curvature *and* a funnel shape indicates both non-linearity and heteroscedasticity. We can also use Q-Q plots to look for normality in residuals.
+We use residual plots (plots 1 and 3) to look for linearity and homoscedasticity. The Figure below (taken from @field_discovering_2022) shows that we're looking for a random scatter of dots. Curvature in the plot indicates a lack of linearity, and a funnel shape (residuals that 'fan out') indicates heteroscedasticity. Curvature *and* a funnel shape indicates both non-linearity and heteroscedasticity. We can also use Q-Q plots to look for normality in residuals.
 
 <figure>
 <img src="./images/dsr2_fig_06_29_pred_resid.png" alt="Description in main text" style="width:100%">
@@ -1196,12 +1215,12 @@ ggplot2::autoplot(album_full_lm,
 
 ### `r user_visor()` Influential cases and outliers: plots [(2)]{.alt}
 
-As a bare minimum we should use Cook's distance to identify influential cases and standardized residuals to check for outliers. [@field_discovering_2022] describes a much wider battery of values that you can use to check for these things so if you're starting to get the stats bug (?!) then check that out.
+As a bare minimum we should use Cook's distance to identify influential cases and standardized residuals to check for outliers. @field_discovering_2022 describes a much wider battery of values that you can use to check for these things so if you're starting to get the stats bug (?!) then check that out.
 
 <div class="tip">
   `r cat_space()` **Tip: Outliers and influence**
   
-*   In an average sample, 95% of standardized residuals should lie between  2, 99% of standardized residuals should lie between  2.5, and any case for which the absolute value of the standardized residual is 3 or more, is likely to be an outlier.
+*   In an average sample, 95% of standardized residuals should lie between $\pm 1.96$, 99% of standardized residuals should lie between $\pm 2.58$, and any case for which the absolute value of the standardized residual is 3 or more, is likely to be an outlier.
 * Cook's distance measures the influence of a single case on the model as a whole. Absolute values greater than 1 may be cause for concern.
 </div>
 
@@ -1240,7 +1259,7 @@ ggplot2::autoplot(album_full_lm,
   theme_minimal()
 ```
 
-The first plot shows the value of Cook’s distance for each case and labels cases with the largest values (cases 1, 164 and 169). Looking at the y-axis it’s easy to see that the largest values are in the region of 0.06, which is well below the threshold of 1. The second plot shows leverage values plotted against standardized residuals. We want the trend line (the solid red line) to be flat and lie along the zero, which is what we see in this plot. If the red line deviates substantially from the horizontal then it can indicate that one of the assumptions of the model has been violated. This plot also usually has red dashed lines indicating values of Cook’s distance of 0.5 and 1. Notice that our plot has no dashed red lines, which is because all values of Cook’s distance are well below these thresholds. The final plot shows leverage, Cook’s distance and the standardized residual for each case on the same plot. It can be used to identify cases that have high leverage, high Cook’s distance, large residual or some combination of the three. For example, case 164 has a standardized residual between 2.5 and 3, the largest Cook’s distance (although still only in the region of 0.06) and higher than average leverage (remember the average leverage for this model is 0.2, and the value for case 164 looks to be around 0.4).
+The first plot shows the value of Cook’s distance for each case and labels cases with the largest values (cases 1, 164 and 169). Looking at the y-axis it’s easy to see that the largest values are in the region of 0.06, which is well below the threshold of 1. The second plot shows leverage values plotted against standardized residuals. We want the trend line (the solid red line) to be flat and lie along the zero, which is what we see in this plot. If the red line deviates substantially from the horizontal then it can indicate that one of the assumptions of the model has been violated. This plot also usually has red dashed lines indicating values of Cook’s distance of 0.5 and 1. Notice that our plot has no dashed red lines, which is because all values of Cook’s distance are well below these thresholds. The final plot shows leverage, Cook’s distance and the standardized residual for each case on the same plot. It can be used to identify cases that have high leverage, high Cook’s distance, large residual or some combination of the three. For example, across the plots case 164 has a standardized residual between -2.5 and -3 and the largest Cook’s distance (although still only in the region of 0.07).
 
 ### `r user_visor()` Influential cases and outliers: numbers [(2)]{.alt}
 

@@ -574,7 +574,7 @@ puppy_vs_none <- c(-2/3, 1/3, 1/3)
 
 The object  [puppy_vs_none]{.alt} indicates that the first group has a weight of $-2/3$, and the second and third groups a weight of $1/3$. The order of the numbers is important because it corresponds to the order of the factor levels for the predictor variable. In the puppy data, remember that the order of levels of **dose** is no puppies, 15-minutes and 30-minutes.  As such, [puppy_vs_none]{.alt} contains the weights for no puppies, 15-minutes and 30-minutes, in that order.
 
-We can do the same for the second contrast. We know from Table 2 that the weights for contrast 2 are: 0 (no puppies), −1/2 (15-minute group) and 1/2 (30-minute group). Remembering that the first weight we enter will be for the no puppies group, we enter the value 0 as the first weight, then $-1/2$ for the 15-minute group and finally $1/3$ for the 30-minute group. Let’s call this object [short_vs_long]{.alt} to remind us that it compares the means of the shorter puppy therapy session against the mean of the longer one:
+We can do the same for the second contrast. We know from Table 2 that the weights for contrast 2 are: 0 (no puppies), −1/2 (15-minute group) and 1/2 (30-minute group). Remembering that the first weight we enter will be for the no puppies group, we enter the value 0 as the first weight, then $-1/2$ for the 15-minute group and finally $1/2$ for the 30-minute group. Let’s call this object [short_vs_long]{.alt} to remind us that it compares the means of the shorter puppy therapy session against the mean of the longer one:
 ```{r, eval = F}
 short_vs_long <- c(0, -1/2, 1/2)
 ```

@@ -94,6 +94,7 @@ By for now and good luck - you'll be amazing!
 This tutorial uses the following packages:
 
 * `broom` [@robinsonBroomConvertStatistical2019]
+* `car` [@fox_r_2019]
 * `effectsize` [@makowski_compute_2020]
 * `here` [@here]
 * `modelbased` [@makowski_modelbased_2020]
@@ -430,7 +431,7 @@ We've just discovered that to use Type III sums of squares we **must** set ortho
 con_tbl <- tibble(
   `Group` = c("No puppies (control)", "15 minutes", "30 minutes"),
   `Dummy 1 (No puppies vs. puppies)` = c("-2/3", "1/3", "1/3"),
-  `Dummy 2 (15 mins vs 30 mins)` = c("0", "1/2", "-1/2")
+  `Dummy 2 (15 mins vs 30 mins)` = c("0", "-1/2", "1/2")
   )
 
 knitr::kable(con_tbl, caption = "Table 2: Contrast coding for the puppy example")
@@ -697,7 +698,7 @@ We can obtain *post hoc* tests in the same way that we did in **discovr_11** whe
 
 #### `r alien()` Alien coding challenge
 
-View *post hoc* for the model [pupluv_lm]{.alt}.
+View *post hoc* for the model [pupluv_lm]{.alt} using a Bonferroni adjustment.
 
 <div class="tip">
   `r cat_space()` **Tip: `estimate_contrasts()`**
@@ -721,13 +722,24 @@ modelbased::estimate_contrasts(xxxxxx, fixed = "xxxxxx")
 
 ```{r pupluv_ph-hint-2}
 # Solution (basic):
-modelbased::estimate_contrasts(pupluv_lm, fixed = "puppy_love")
+modelbased::estimate_contrasts(pupluv_lm, fixed = "puppy_love", adjust = "bonferroni")
 ```
 
-The results show the Holm corrected (the default) *post hoc* comparisons. There is a significant difference between the adjusted mean happiness in the no puppies group and the 30-minute group (*p* = 0.031) groups, but not between the no puppies and 15-minute group (*p* = 0.091) or between the 30- and 15-minute groups (*p* = 0.593). Note that the value of *Difference* is the difference between the adjusted means. The column labelled *puppy_love* reminds us that all differences are evaluated at average levels of puppy love, in other words, when puppy love equals 2.73.
+```{r, echo = F}
+puppy_vs_none <- c(-2/3, 1/3, 1/3)
+short_vs_long <- c(0, -1/2, 1/2)
+contrasts(pupluv_tib$dose) <- cbind(puppy_vs_none, short_vs_long)
 
-We also have standardized versions of the differences (**Std_Difference**, you might need to click the little arrow on the top right of the table to see this column) between adjusted means in the dose groups. We can use these values as effect size measures. For example, means in the no puppy group were 0.91 of a standard deviation lower than in the 15-minute group and 1.14 standard deviations lower than the 30-minute group. These are fairly large effects.
+pupluv_lm <- lm(happiness ~ puppy_love + dose, data = pupluv_tib)
 
+pupluv_ph <- modelbased::estimate_contrasts(pupluv_lm, fixed = "puppy_love", adjust = "bonferroni")
+```
+
+
+The results show the Holm corrected (the default) *post hoc* comparisons. There is a significant difference between the adjusted mean happiness in the no puppies group and the 30-minute group (*p* = 
+`r round(pupluv_ph$p[3], 3)`) groups, but not between the no puppies and 15-minute group (*p* = 
+`r round(pupluv_ph$p[2], 3)`) or between the 30- and 15-minute groups (*p* = 
+`r round(pupluv_ph$p[1], 3)`). Note that the value of *Difference* is the difference between the adjusted means. The column labelled *puppy_love* reminds us that all differences are evaluated at average levels of puppy love, in other words, when puppy love equals 2.73.
 
 ## `r bmu()` Homogeneity of regression slopes [(1)]{.alt}
 

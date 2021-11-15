@@ -367,9 +367,11 @@ effectsize::cohens_d(mischief ~ cloak, data = cloak_tib)
 ```{r, echo = F, results = 'hide'}
 d_cloak <- effectsize::cohens_d(mischief ~ cloak, data = cloak_tib)
 g_cloak <- effectsize::glass_delta(mischief ~ cloak, data = cloak_tib)
+
+d_cloak$Cohens_d
 ```
 
-Using the pooled estimate, there is `r round(d_cloak, 2)`0.65 of a standard deviation difference between the two groups in terms of their mischief making, which is a fairly substantial effect. 
+Using the pooled estimate, there is `r abs(round(d_cloak$Cohens_d, 2))` of a standard deviation difference between the two groups in terms of their mischief making, which is a fairly substantial effect. 
 
 ```{r d_quiz, echo = F}
 question("Which of these statements about Cohen's *d* is **NOT** correct?",

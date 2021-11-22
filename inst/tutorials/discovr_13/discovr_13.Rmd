@@ -619,7 +619,7 @@ For the [alcohol]{.alt} variable, we might set contrasts similar to the ones in 
 con_tbl <- tibble(
   `Group` = c("Placebo", "Low dose", "High dose"),
   `Dummy 1 (Placebo vs. alcohol)` = c("-2/3", "1/3", "1/3"),
-  `Dummy 2 (Low vs. High)` = c("0", "1/2", "-1/2")
+  `Dummy 2 (Low vs. High)` = c("0", "-1/2", "1/2")
   )
 
 knitr::kable(con_tbl, caption = "Table 1: Contrast coding for the alcohol variable")
@@ -691,12 +691,23 @@ goggles_afx <- afex::aov_4(attractiveness ~ facetype*alcohol + (1|id), data = go
 broom::tidy(goggles_lm)
 ```
 
+
+```{r, echo = F}
+alcohol_vs_none <- c(-2/3, 1/3, 1/3)
+low_vs_high <- c(0, -1/2, 1/2)
+contrasts(goggles_tib$alcohol) <- cbind(alcohol_vs_none, low_vs_high)
+contrasts(goggles_tib$facetype) <- c(-1/2, 1/2)
+goggles_par <- lm(attractiveness ~ facetype*alcohol, data = goggles_tib) %>% broom::tidy()
+```
+
+
+
 There are two key effects here:
 
-* [facetype1:alcohol1]{.alt}. This effect compares the effect of contrast 1 for alcohol in the unattractive and attractive stimuli. Imagine we calculate the difference in attractiveness ratings when participants had alcohol (low and high combined) compared to the placebo group, then compared this difference when rating attractive face stimuli compared to when rating unattractive ones. This effect is significant suggesting that the effect of alcohol (compared to placebo) on ratings is significantly different for attractive and unattractive faces.
-* [facetype1:alcohol2]{.alt}. This effect compares the effect of contrast 2 for alcohol in the unattractive and attractive stimuli. Imagine we calculate the difference in attractiveness ratings when participants had a low dose of alcohol compared to a high dose, then compared this difference when rating attractive face stimuli compared to when rating unattractive ones. This effect is not significant suggesting that the effect of alcohol (low compared to high dose) on ratings is not significantly different for attractive and unattractive faces.
+* [facetype1:alcoholalcohol_vs_none]{.alt}. This effect compares the effect of contrast 1 for alcohol in the unattractive and attractive stimuli. Imagine we calculate the difference in attractiveness ratings when participants had alcohol (low and high combined) compared to the placebo group, then compared this difference when rating attractive face stimuli compared to when rating unattractive ones. This effect is significant, *p* = `r round(goggles_par$p.value[5], 3)` suggesting that the effect of alcohol (compared to placebo) on ratings is significantly different for attractive and unattractive faces.
+* [facetype1:alcohollow_vs_high]{.alt}. This effect compares the effect of contrast 2 for alcohol in the unattractive and attractive stimuli. Imagine we calculate the difference in attractiveness ratings when participants had a low dose of alcohol compared to a high dose, then compared this difference when rating attractive face stimuli compared to when rating unattractive ones. This effect is significant, *p* = `r round(goggles_par$p.value[6], 3)`, suggesting that the effect of alcohol (low compared to high dose) on ratings is significantly different for attractive and unattractive faces. From earlier plots, it looks as though the effect of alcohol is significantly stronger for unattractive faces than for attractive ones.
 
-To sum up, the significant interaction is being driven by an effect of alcohol consumption (compared to placebo) on ratings in unattractive face stimuli, but not attractive face stimuli.
+To sum up, the significant interaction is being driven by  alcohol consumption (any dose compared to placebo, and high dose compared to low) affecting ratings of unattractive face stimuli significantly more than it affects ratings of attractive face stimuli.
 
 ## `r user_visor()` Simple effects analysis [(2)]{.alt}
 

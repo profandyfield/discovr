@@ -219,13 +219,13 @@ These category orders are as they are because I set the data up within this tuto
 We'll start by looking solely at the effect of the type of **treat**. The model is described by the following equation:
 
 $$
-P(\hat{\text{delivery}}) = \frac{1}{1+ e^{-(\hat{b}_0 + \hat{b}_1\text{treat}_i+e_i)}}  
+P(\text{delivery}) = \frac{1}{1+ e^{-(\hat{b}_0 + \hat{b}_1\text{treat}_i+e_i)}}  
 $$
 
 In other words, we predict the probability of presents being delivered from the type of treat consumed. We can re-arrange this equation to express it differently. It's exactly the same equation, but re-arranged:
 
 $$
-\ln\bigg(\frac{P(\hat{\text{delivery}})}{1- P(\hat{\text{delivery}})}\bigg) = \hat{b}_0 + \hat{b}_1\text{treat}_{i} + e_i
+\ln\bigg(\frac{P(\text{delivery})}{1- P(\text{delivery})}\bigg) = \hat{b}_0 + \hat{b}_1\text{treat}_{i} + e_i
 $$
 
 In this version we predict the *log odds* of delivery from the standard equation for a linear model.
@@ -593,12 +593,12 @@ It seems like the type of treat affects the odds of delivery. However, the elves
 The model is described by the following equation:
 
 $$
-P(\hat{\text{delivery}}) = \frac{1}{1+ e^{-(\hat{b}_0 + \hat{b}_1\text{treat} + \hat{b}_2\text{quantity}_i + \hat{b}_3\text{treat} \times \text{quantity}_i + e_i)}}  
+P(\text{delivery}) = \frac{1}{1+ e^{-(\hat{b}_0 + \hat{b}_1\text{treat} + \hat{b}_2\text{quantity}_i + \hat{b}_3\text{treat} \times \text{quantity}_i + e_i)}}  
 $$
 In other words, we predict the probability of presents being delivered from the type of treat consumed, the quantity consumed, and the interaction of those two variables. We can re-arrange this equation to express it differently. It's exactly the same equation, but re-arranged:
 
 $$
-\ln\bigg(\frac{P(\hat{\text{delivery}})}{1- P(\hat{\text{delivery}})}\bigg) = \hat{b}_0 + \hat{b}_1\text{treat} + \hat{b}_2\text{quantity}_i + \hat{b}_3\text{treat} \times \text{quantity}_i + e_i
+\ln\bigg(\frac{P(\text{delivery})}{1- P(\text{delivery})}\bigg) = \hat{b}_0 + \hat{b}_1\text{treat} + \hat{b}_2\text{quantity}_i + \hat{b}_3\text{treat} \times \text{quantity}_i + e_i
 $$
 
 In this version we predict the *log odds* of delivery from the standard equation for a linear model.

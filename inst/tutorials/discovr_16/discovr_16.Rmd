@@ -440,7 +440,16 @@ pers_emm # shows us the means
 emmeans::contrast(pers_emm, method = "trt.vs.ctrl", ref = 2, adjust = "holm")
 ```
 
-The contrasts and means tell us that dates acting with high charisma were rated significantly higher than dates with average charisma, *t*(18) = $-15.10$, *p* \< 0.001, and dates with average charisma were rated significantly higher than those acting with low charisma, *t*(18) = 10.49, *p* \< 0.001.
+```{r, echo = F}
+pers_con <- emmeans::emmeans(date_afx, ~personality, model = "multivariate") %>%
+  emmeans::contrast(., method = "trt.vs.ctrl", ref = 2, adjust = "holm") %>% 
+  tibble::as_tibble()
+
+pers_con$t.ratio
+```
+
+
+The contrasts and means tell us that dates with low charisma were rated significantly lower than those acting with average charisma, *t*(`r pers_con$df[1]`) = `r round(pers_con$t.ratio[1], 2)`, *p* \< 0.001, and dates acting with high charisma were rated significantly higher than dates with average charisma, *t*(`r pers_con$df[2]`) = `r round(pers_con$t.ratio[2], 2)`, *p* \< 0.001.
 
 ### `r user_visor()` The interaction between **strategy** and **looks** [(2)]{.alt}
 

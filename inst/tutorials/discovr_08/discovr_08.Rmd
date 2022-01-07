@@ -829,7 +829,7 @@ Each of 134 people was administered all questionnaires. Fit a hierarchical linea
 
 #### `r alien()` Alien coding challenge
 
-Use the code box to fit these models and answer the questions below.
+Use the code box to fit these models and compare using `anova()`.
 
 ```{r soc_anx, exercise = TRUE, exercise.lines = 8}
 
@@ -881,24 +881,6 @@ anova(soc_anx_lm, soc_anx_obq_lm) %>%
   broom::tidy()
 ```
 
-```{r soc_anx-hint-6}
-# You'll get an error message from the last step!
-# The error occurs because the variable obq has 2 missing values, which means that the model soc_anx_lm is based on the full number of cases (134), but when we include obq in the second model, the missing cases with missing obq scores get excluded meaning that soc_anx_obq_lm is based on only 132 cases. We, therefore, can't compare the models using anova() because they're based on different numbers of observations! The error message is telling you this - 'models were not all fitted to the same size of dataset' means that soc_anx_lm and soc_anx_obq_lm are based on different numbers of observations and so can't be compared. 
-# Now view parameters for the final model
-# Use tidy() to view parameters for the final model
-
-broom::tidy(soc_anx_obq_lm, conf.int = TRUE)
-
-# Now get the standardized parameters
-```
-
-```{r soc_anx-hint-7}
-# If you want standardized parameter estimates use model_parameters()
-
-parameters::model_parameters(soc_anx_obq_lm, standardize = "refit", digits = 3)
-```
-
-
 ```{r soc_anx-solution}
 # Put it all together:
 
@@ -908,21 +890,109 @@ soc_anx_obq_lm <- lm(spai ~ tosca + obq, data = soc_anx_tib, na.action = na.excl
 broom::glance(soc_anx_lm)
 broom::glance(soc_anx_obq_lm)
 
-anova(album_lm, album_full_lm) %>% 
+anova(soc_anx_lm, soc_anx_obq_lm) %>% 
   broom::tidy()
+```
+
+
+When you run the code in the hints you should end up with the following error message:
+
+```
+models were not all fitted to the same size of dataset
+```
+
+This error is being thrown by the `anova()` function. The message implies that [soc_anx_lm]{.alt} and [soc_anx_obq_lm]{.alt} (the models we asked `anova()` to compare) have been fitted to datasets that are not the same size. This might seem odd: for both models we used the data in [soc_anx_tib]{.alt} so surely they were fitted to the same sized data?
+
+We can see what's going on by executing the code in the box below. The code takes [soc_anx_tib]{.alt} and, for each variable within, counts the number of cases that have a valid score and the number that are missing. You don't need to understand this code, just trust me that it does what I say it does. 
+
+```{r soc_anx_n_missing, exercise = TRUE, exercise.lines = 5}
+soc_anx_tib %>%
+  dplyr::summarise(
+    across(.fns = list(valid = ~sum(!is.na(.x)), missing = ~sum(is.na(.x))), .names = "{.col}_{.fn}")
+    )
+```
+
+In the resulting output, the columns labelled with [_valid]{.alt} contain a count of the number of cases that have a value for each variable, and the corresponding column labelled with [_missing]{.alt} contains a count of number of cases that had a missing value. Notice that both **spai** and **tosca** have 134 cases with valid values and 0 with missing values, whereas for **obq** only 132 cases had values because 2 had missing values. These two missing values are the cause of the error message: the model [soc_anx_lm]{.alt} is fitted using the full number of cases because it includes **spai** and **tosca**, which both have 134 cases. However, when we add **obq** to the model and fit [soc_anx_obq_lm]{.alt}, the two cases with missing values for **obq** are dropped completely and this model is fitted on the remaining 132 cases. Hence, the two models are based on different numbers of cases and can't be compared.
+
+The ideal solution to this is to use a technique known as multiple imputation to estimate the missing values based on the remaining data. Multiple imputation is quite an involved topic. There's a brief introduction within the textbook that accompanies these tutorials. For now, the quick fix is to use listwise deletion, which is generally considered very bad practice indeed. If you're desperate to compare the two models, this would involve fitting the first model but using `na.omit()` to exclude the cases that are missing on **obq**:
+
+```{r, eval = F}
+soc_anx_lm <- soc_anx_tib %>%
+  dplyr::select(-iii) %>% 
+  na.omit() %>% 
+  lm(spai ~ tosca, data = .)
+
+anova(soc_anx_lm, soc_anx_obq_lm) %>% 
+  broom::tidy()
+```
+
+Note that we take the data, deselect the variable **iii** (because it is not involved in either of the models and we don't want to omit the 5 cases that have missing values on this variable), then use `na.omit()` to remove any cases that have missing values on the remaining variables (this will remove the two cases that have missing values for **obq**). We pipe the modified data into `lm()`, fit the model as before, and now we can compare it to [soc_anx_obq_lm]{.alt} using `anova()`.
+
+Try this out below
+
+```{r soc_anx_missing_setup}
+soc_anx_obq_lm <- lm(spai ~ tosca + obq, data = soc_anx_tib, na.action = na.exclude)
+```
+
+```{r soc_anx_missing, exercise = TRUE, exercise.lines = 8, exercise.setup = "soc_anx_missing_setup"}
+
+```
+
+```{r soc_anx_missing-solution}
+soc_anx_lm <- soc_anx_tib %>%
+  dplyr::select(-iii) %>% 
+  na.omit() %>% 
+  lm(spai ~ tosca, data = .)
+
+anova(soc_anx_lm, soc_anx_obq_lm) %>% 
+  broom::tidy()
+```
+
+Adding **obq** to the model significantly improves the fit.
+
+If you don't want to compare the two models you can ignore the previous discussion and instead inspect only the final model, but remember that this model has still used listwise deletion. Did I mention that listwise deletion is bad?
+
+Use the code box to view the fit statistics and parameters of the final model ([soc_anx_obq_lm]{.alt}) and answer the questions below.
+
+```{r soc_anx_pars, exercise = TRUE, exercise.lines = 8, exercise.setup = "soc_anx_missing_setup"}
+
+```
+
+
+```{r soc_anx_pars-hint-1}
+# Use glance() to view the model fit
+broom::glance(soc_anx_obq_lm)
+
+# use tidy() to view parameters for the final model
 
 broom::tidy(soc_anx_obq_lm, conf.int = TRUE)
+
+# Now get the standardized parameters
+```
+
+```{r soc_anx_pars-hint-2}
+# If you want standardized parameter estimates use model_parameters()
 
 parameters::model_parameters(soc_anx_obq_lm, standardize = "refit", digits = 3)
 ```
 
+```{r soc_anx_pars-solution}
+# Put it all together
+broom::glance(soc_anx_obq_lm)
+broom::tidy(soc_anx_obq_lm, conf.int = TRUE)
+parameters::model_parameters(soc_anx_obq_lm, standardize = "refit", digits = 3)
+
+
+```
+
+
 ```{r quiz_soc_anx, echo = FALSE}
 quiz(
-  question("How much variance in social anxiety does OCD account for?",
-    answer("4.6%", correct = T),
-    answer("14.8%", message = "This is how much variance in social anxiety is accounted for by both OCD and shame"),
-    answer("10.2%", message = "This is how much variance in social anxiety is accounted for by shame, not OCD"),
-    answer("None of these values", message = "Get the R-square for the model with both tosca and obq as predictors and subtract from it the R-square for the model that has only tosca as a predictor"),
+  question("How much variance in social anxiety do OCD and shame account for?",
+    answer("14.8%", correct = T),
+    answer("0.15%", message = "This is the proportion of variance, not the percentage"),
+    answer("11.22%", message = "This is the test statistic, use the R-square for the model with both tosca and obq as predictors"),
+    answer("None of these values", message = "Use the R-square for the model with both tosca and obq as predictors"),
     correct = "Correct - well done!",
     random_answer_order = TRUE,
     allow_retry = T

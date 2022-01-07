@@ -319,7 +319,7 @@ $$
 \end{aligned}
 $$
 
-The main difference to models we have seen before is that the intercept ($\hat{b}_{0j}$) is made up of the overall intercept ($\hat{b}_0$) and an estimate of the variance of intercepts for each individual ($\hat{u}_{0j}$). Put another way, we model the fact that individual dogs will vary in the overall number of vocalisations they make. We can also model the fact that individual dogs will differ in their ability to discriminate the four entities, and these individual differences can be modelled by entertaining the possibility that the effect of entity is made up of the overall effect ($\hat{b}_{1j}$) and an estimate of how much the effect varies from dog to dog, or the variance in the effect across dogs ($\hat{u}_{1j}$).
+The main difference to models we have seen before is that the intercept ($\hat{b}_{0j}$) is made up of the overall intercept ($\hat{b}_0$) and an estimate of the variance of intercepts for each individual ($\hat{u}_{0j}$). Put another way, we model the fact that individual dogs will vary in the overall number of vocalisations they make. We can also model the fact that individual dogs will differ in their ability to discriminate the four entities, and these individual differences can be modelled by entertaining the possibility that the effect of entity is made up of the overall effect ($\hat{b}_{1}$) and an estimate of how much the effect varies from dog to dog, or the variance in the effect across dogs ($\hat{u}_{1j}$).
 
 ## `r bmu()` Fitting a repeated measures model [(1)]{.alt}
 

@@ -234,7 +234,7 @@ goggles_tib %>%
 goggles_tib %>% 
   dplyr::group_by(facetype, alcohol) %>% 
   dplyr::summarize(
-    mean = mean(happiness, na.rm = TRUE)
+    mean = mean(attractiveness, na.rm = TRUE)
   )
 # Add two more rows that use mean_cl_normal to calculate the lower and upper boundary of the 95% confidence interval
 ```
@@ -904,7 +904,7 @@ The bottom of the output shows significance tests of bias. These tests suggest t
 
 #### `r alien()` Alien coding challenge
 
-Remember from previous tutorials that to get a summary of an existing model like [goggles_lm]{.alt} that uses heteroscedasticity-consistent standard errors (i.e. robust significance tests and confidence intervals), we put the model into `model_parameters()` and set [robust = TRUE, vcov.type = "HC4", digits = 3]{.alt}. Try this in the code box:
+Remember from previous tutorials that to get a summary of an existing model like [goggles_lm]{.alt} that uses heteroscedasticity-consistent standard errors (i.e. robust significance tests and confidence intervals), we put the model into `model_parameters()` and set [robust = TRUE, vcov.type = \"HC4\", digits = 3]{.alt}. Try this in the code box:
 
 ```{r goggles_hc4, exercise = TRUE, exercise.lines = 2, exercise.setup = "goggles_con_setup"}
 
@@ -1128,7 +1128,7 @@ There is a detailed solution to this task at [https://www.discovr.rocks/solution
 
 ```{r quiz_con_xbox, echo = FALSE}
 quiz(caption= "Setting contrasts (level 3)",
-question("What contrast codes would you set for the variables **game** and **console** [Select ALL valid answers]",
+question("What contrast codes would you set for the variables **game** and **console**",
     answer("**game**: static (-1/2), active (1/2); **console**: Switch (-1/2), Xbox One (1/2)", correct = T, message = "It would also be valid to reverse the signs and use **game**: static (1/2), active (-1/2); **console**: Switch (1/2), Xbox One (-1/2)."),
     answer("**game**: static (0), active (1); **console**: Switch (0), Xbox One (1)", message = "You have used dummy coding, these contrasts are not orthogonal."),
     answer("**game**: static (1), active (-1); **console**: Switch (1), Xbox One (-1)", message = "These contrasts are orthogonal and valid, but bs won't represent the exact differences between means (but will be proportional to them)."),
@@ -1262,7 +1262,7 @@ emmeans::emmeans(xbox_afx, c("game", "console"))
 
 #### `r alien()` Alien coding challenge
 
-Use the code box to get the simple effect of the type of game for each type of console console.
+Use the code box to get the simple effect of the type of game for each type of console.
 
 ```{r xbox_se, exercise = TRUE, exercise.lines = 6, exercise.setup = "xbox_models"}
 

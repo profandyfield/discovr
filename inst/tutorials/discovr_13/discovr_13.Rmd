@@ -1128,10 +1128,11 @@ There is a detailed solution to this task at [https://www.discovr.rocks/solution
 
 ```{r quiz_con_xbox, echo = FALSE}
 quiz(caption= "Setting contrasts (level 3)",
-question("What contrast codes would you set for the variables **game** and **console**",
+type = "learnr_checkbox",
+question("What contrast codes for the variables **game** and **console** are orthogonal and valid [Select ALL valid answers]",
     answer("**game**: static (-1/2), active (1/2); **console**: Switch (-1/2), Xbox One (1/2)", correct = T, message = "It would also be valid to reverse the signs and use **game**: static (1/2), active (-1/2); **console**: Switch (1/2), Xbox One (-1/2)."),
     answer("**game**: static (0), active (1); **console**: Switch (0), Xbox One (1)", message = "You have used dummy coding, these contrasts are not orthogonal."),
-    answer("**game**: static (1), active (-1); **console**: Switch (1), Xbox One (-1)", message = "These contrasts are orthogonal and valid, but bs won't represent the exact differences between means (but will be proportional to them)."),
+    answer("**game**: static (1), active (-1); **console**: Switch (1), Xbox One (-1)", correct = T, message = "These contrasts are orthogonal and valid, but I wouldn't use them because the bs won't represent the exact differences between means (but will be proportional to them)."),
     answer("**game**: static (1), active (2); **console**: Switch (-2), Xbox One (1)", message = "These contrasts are not orthogonal."),
     correct = "Correct - well done!",
     incorrect = "Good try.",

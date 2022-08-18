@@ -420,16 +420,15 @@
 #' This example uses fictitious data looks at the effects of cosmetic surgery on quality of life. The variables in the data are:
 #'
 #'   * **id**: The participant id
-#'   * **post_qol**: The outcome variable. It measures quality of life after cosmetic surgery on a percentage scale (0% = the worst possible quality of life, 100% = the best possible quality of life)
-#'   * **base_qol**: Quality of life pre-surgery on the same percentage scale.
-#'   * **surgery**: Categorical variable specifying whether the person has undergone cosmetic surgery or is on the waiting list, which acts as our control group.
-#'   * **clinic**: Categorical variable that indicates which of 10 clinics the person attended to have their surgery.
-#'   * **age**: The particiopant's age in years.
-#'   * **bdi**: Levels of depression using the Beck Depression Inventory (BDI).
+#'   * **clinic**: Categorical variable that indicates which of 21 clinics the person attended to have their surgery.
 #'   * **reason**: Categorical variable that indicates whether the person had or is waiting to have surgery purely to change their appearance or because of a physical reason.
+#'   * **base_qol**: Quality of life pre-surgery on a percentage scale (0% = the worst possible quality of life, 100% = the best possible quality of life).
+#'   * **post_qol**: Quality of life after cosmetic surgery on a percentage scale (0% = the worst possible quality of life, 100% = the best possible quality of life).
+#'   * **days**: The number of days since surgery.
+#'   * **bdi**: Levels of depression using the Beck Depression Inventory (BDI).
 #'
 #' @docType data
-#' @format A tibble with 276 rows and 8 variables.
+#' @format A tibble with 1376 rows and 7 variables.
 #' @source [www.discovr.rocks/csv/cosmetic.csv](https://www.discovr.rocks/csv/cosmetic.csv)
 
 "cosmetic"
@@ -900,6 +899,30 @@
 
 "hiccups"
 
+#' Hill et al. (2007) data
+#'
+#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Hill et al.  (2007) examined whether providing children with a leaflet based on the \emph{theory of planned behaviour} increased their
+#' exercise. There were four different interventions (intervention): a control group, a leaflet, a leaflet and quiz, and a leaflet and a plan.
+#'  A total of 503 children from 22 different classrooms were sampled (classroom). The 22 classrooms were randomly assigned to the four different conditions.
+#'  Children were asked \emph{On average over the last three weeks, I have exercised energetically for at least 30 minutes ___ times per week} after the intervention (post_exercise).
+#'  The data from the study has three variables:
+#'
+#' * **intervention**: The intervention assigned to the classroom (control group, leaflet, leaflet and quiz, leaflet and plan).
+#' * **classroom**: the classroom to which a child belonged
+#' * **pre_exercise**: The exercise score pre-intervention (it's unclear to me from the paper how this was derived from the question asked!)
+#' * **post_exercise**: The exercise score post-intervention (see above)
+#'
+#' @format A tibble with 503 rows and 4 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/hill_2007.csv](https://www.discovr.rocks/csv/hill_2007.csv)
+#' @references
+#'
+#' * Hill, C., Abraham, C., & Wright, D. B. (2007). Can theory-based messages in combination with cognitive prompts promote exercise in classroom settings? \emph{Social Science & Medicine}, 65, 1049–1058. \doi{10.1016/j.socscimed.2007.04.024}
+
+"hill_2007"
+
 #' Honesty lab data
 #'
 #' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
@@ -1212,6 +1235,31 @@
 #' @source [www.discovr.rocks/csv/metallica.csv](https://www.discovr.rocks/csv/metallica.csv)
 
 "metallica"
+
+#' Miller et al. (2007) data
+#'
+#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Miller and colleagues (2007) tested the \emph{hidden-estrus} theory, which suggests that unlike other female mammals,
+#' humans do not experience an \emph{estrus} phase during which they are more sexually receptive, proceptive, selective and attractive.
+#' If this theory is wrong then human men should find women most attractive during the fertile phase of their menstrual cycle compared
+#' to the pre-fertile (menstrual) and post-fertile (luteal) phase. Miller used the tips obtained by dancers at a lap dancing club as a proxy
+#' for their sexual attractiveness and also recorded the phase of the dancer's menstrual cycle during a given shift, and whether they were using hormonal contraceptives.
+#' Dancers provided data from between 9 to 29 of their shifts.
+#'
+#' * **id**: Dancer's ID.
+#' * **contraceptive**: whether the dancer was currently using oral hormonal contraceptives.
+#' * **cyclephase**: the phase of the dancer's menstrual cycle at the time of a particular shift.
+#' * **tips**: The tips (in US dollars) received during a particular shift
+#'
+#' @format A tibble with 296 rows and 4 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/miller_2007.csv](https://www.discovr.rocks/csv/miller_2007.csv)
+#' @references
+#'
+#' * Miller, G., Tybur, J. M., & Jordan, B. D. (2007). Ovulatory cycle effects on tip earnings by lap dancers: Economic evidence for human estrus? \emph{Evolution and Human Behavior}, 28, 375–381. \doi{10.1016/j.evolhumbehav.2007.06.002}
+
+"miller_2007"
 
 #' Murder in the streets data
 #'
@@ -2145,6 +2193,44 @@
 #' @source [www.discovr.rocks/csv/tumour.csv](https://www.discovr.rocks/csv/tumour.csv)
 
 "tumour"
+
+
+#' Van Bourg et al. (2020) data
+#'
+#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Pet dogs often engage in behaviours helpful to their owners (mine likes to cuddle me when I’ve had a bad day, and in fact when I’ve had a good day, and now I think of it, pretty much any day regardless of how good or bad its been).
+#' It’s unclear whether these behaviours are truly prosocial. Can a dog engage in prosocial behaviours that haven’t been explicitly trained?
+#' Bourg et al (2020) addressed this question by trapping some dog’s owners in boxes! In the study 60 dogs were tested in three conditions all of which involved being in a room with large restrainer box
+#' (a large acrylic box with holes in the side that could be closed by resting a foam board door across its opening). Each dog had three experiences in the room and each time the experimenters were interested in whether the dog would open the restrainer box within 120 seconds.
+#' The order of the 3 experiences was counterbalanced so different dogs completed the experiences in different orders.
+#'
+#' * The **food** condition: food was dropped into the restrainer. This condition was to test whether the dog was capable of moving the foam board door to open the box (to get the food).
+#' * The distress condition: the dogs' owner was placed in the restrainer and was instructed to call for help in a distressed tone.
+#' * The reading condition: the dogs' owner was placed in the restrainer and was instructed to read from a magzine at the same pace and in the same tone as in the distress condition.
+#'
+#' This data contains a subset of variables from the study, but the full dataset is available in the supplementary materials of the paper \doi{https://doi.org/10.1371/journal.pone.0231742.s001}.
+#' The data contains the following variables
+#'
+#' * **name**: The dog's name
+#' * **dog_id**: A unique identifier for each dog
+#' * **condition**: Which condition the dog was participating in at the time (distress, food, reading).
+#' * **test_number**: A number form 1 to 3 indicating the order in which the particular condition was administered. For example, 2 would indicate that the data relate to the second of the three tests that the dog experienced.
+#' * **latency**: The time taken to open the box in seconds. If the dog did not open the box a maximum of 120s was recorded.
+#' * **opened_door**: Dis the dog open the restrainer box (1 = yes, 0 = no).
+#'
+#'
+#' @format A tibble with 201 rows and 6 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/van_bourg_2020.csv](https://www.discovr.rocks/csv/van_bourg_2020.csv)
+#' @references
+#'
+#'    * Van Bourg, J., Patterson, J. E., & Wynne, C. D. L. (2020). Pet dogs (Canis lupus familiaris) release their trapped and distressed owners: Individual variation and evidence of emotional contagion. *PLOS ONE*, 15(4), e0231742. \doi{10.1371/journal.pone.0231742}
+
+
+"van_bourg_2020"
+
+
 
 #' Video game and aggression data
 #'

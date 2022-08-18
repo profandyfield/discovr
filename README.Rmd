@@ -107,6 +107,8 @@ See this video explaining my suggested workflow:
 
 Inspired  by the [rockthemes](https://github.com/johnmackintosh/rockthemes) package and adapting code form that package I have come up with a bunch of colour themes based around the studio albums of my favourite band [Iron Maiden](https://www.ironmaiden.com). Full disclosure, I'm not a designer, so this largely involved uploading images of their sleeves to [colorpalettefromimage.com](https://colorpalettefromimage.com) and seeing what happened. If you have a better palette design send me the hex codes for the colours! If you're wondering why some albums are missing, here's the explanation: X Factor (would basically be 8 shades of gray), Fear of the Dark (shit album), The Book of Souls (would basically be 8 shades of black).
 
+There is also a colourblind-friendly colour pallette from
+
 The following palettes exist.
 
 * `amolad_pal()`: Colour palette (8 colour) based on Iron Maiden's [A Matter of Life and Death](https://www.ironmaiden.com/discography/details/a-matter-of-life-and-death) album sleeve. In `ggplot2` use `scale_color_amolad()` and `scale_fill_amolad()`.
@@ -116,6 +118,7 @@ The following palettes exist.
 * `im_pal()`: Colour palette (8 colour) based on Iron Maiden's [eponymous](https://www.ironmaiden.com/discography/details/iron-maiden) album sleeve. In `ggplot2` use `scale_color_im()` and `scale_fill_im()`.
 * `killers_pal()`: Colour palette (8 colour) based on Iron Maiden's [Killers](https://www.ironmaiden.com/discography/details/killers) album sleeve. In `ggplot2` use `scale_color_killers()` and `scale_fill_killers()`.
 * `nob_pal()`: Colour palette (8 colour) based on Iron Maiden's [The Number of the Beast](https://www.ironmaiden.com/discography/details/the-number-of-the-beast-album) album sleeve. In `ggplot2` use `scale_color_nob()` and `scale_fill_nob()`.
+* `okabe_ito_pal`: Colourblind-friendly palette (8 colour) from [Okabe and Ito](https://jfly.uni-koeln.de/color/). In `ggplot2` use `scale_color_oi()` and `scale_fill_oi()`.
 * `pom_pal()`: Colour palette (8 colour) based on Iron Maiden's [Piece of Mind](https://www.ironmaiden.com/discography/details/piece-of-mind) album sleeve. In `ggplot2` use `scale_color_pom()` and `scale_fill_pom()`.
 * `power_pal()`: Colour palette (8 colour) based on Iron Maiden's [Powerslave](https://www.ironmaiden.com/discography/details/powerslave) album sleeve. In `ggplot2` use `scale_color_power()` and `scale_fill_power()`.
 * `prayer_pal()`: Colour palette (8 colour) based on Iron Maiden's [No Prayer for the Dying](https://www.ironmaiden.com/discography/details/no-prayer-for-the-dying) album sleeve. Use `scale_color_prayer()` and `scale_fill_prayer()`.
@@ -185,6 +188,7 @@ See the book or data descriptions for more details. This is a list of available 
 * **chamorro_premuzic**: Data about what students want (personality wise) from their lecturers. For details execute `?chamorro_premuzic`.
 * **child_aggression**: fictitious data (based on real research) about predicting aggression in children. For details execute `?child_aggression`.
 * **coldwell_2006**: Data predicting childhood adjustment from various parenting variables. For details execute `?coldwell_2006`.
+* **cosmetic**: Fictitious multilevel data predicting quality of life from cosmetic surgery. For details execute `?cosmetic`.
 * **daniels_2012**: Data about the effects of sexualised sports images on self-image. For details execute `?daniels_2012`.
 * **dark_lord**: fictitious data about the subliminal messages in songs. For details execute `?dark_lord`.
 * **davey_2003**: Data about the effects mood and stop rules on checking behaviour. For details execute `?davey_2003`.
@@ -202,6 +206,7 @@ See the book or data descriptions for more details. This is a list of available 
 * **grades**: fictitious data about statistics grades. For details execute `?grades`.
 * **hangover**: fictitious data about the efficacy of different drinks as cures for a hangover. For details execute `?hangover`
 * **hiccups**: fictitious data on digital rectal stimulation and hiccups. For details execute `?hiccups`.
+* **hill_2007**: Data from Hill et al. (2007) testing the effect of different forms of psychoeducation on exercise behaviour. For details execute `?hill_2007`.
 * **honesty_lab**: fictitious data about perceptions of honesty. For details execute `?honesty_lab`.
 * **ice_bucket**: Data about the ice bucket challenge. For details execute `?ice_bucket`.
 * **invisibility_base**: Fictitious data about how much mischief people would get up to if they had an invisibility cloak using a pre-post study design.`?invisibility_base`
@@ -216,6 +221,7 @@ See the book or data descriptions for more details. This is a list of available 
 * **metal**: Fictitious data about whether listening to metal music makes you angry `?metal`.
 * **metal_health**: fictitious data about whether listening to heavy metal negatively affects mental health. For details execute `?metal_health`.
 * **metallica**: Data about thrash metal band, Metallica. For details execute `?metallica`.
+* **miller_2007**: Data from Miller et al. (2007) testing the hidden-estrus theory. For details execute `?miller_2007`.
 * **murder**: fictitious data about the number of murder each month at three street locations (Ruskin Avenue, Acacia Avenue and Rue Morgue). For details execute `?murder`.
 * **muris_2008**: Data about whether you can train children to interpret ambiguous situations in a particular way. For details execute `?muris_2008`.
 * **nichols_2004**: Data from the development of the Internet Addiction Scale, IAS (Nichols & Nicki, 2004). For details execute `?nichols_2004`.
@@ -252,6 +258,7 @@ See the book or data descriptions for more details. This is a list of available 
 * **tosser**: Fictitious data relating to a fictional questionnaire about The Teaching of Statistics for Scientific Experiments, which is fictional. For details execute `?tosser`.
 * **tuk_2011**: Data about whether needing to urinate helps decision making. For details execute `?tuk_2011`.
 * **tumour**: fictitious data about mobile phone use and brain tumours. For details execute `?tumour`.
+* **van_bourg_2020**: Data from van Bourg et al (2020) relating to whether dogs would release their distressed owners from a box. For details execute `?van_bourg_2020`.
 * **video_games**: fictitious data about the relationship between video game use, callous unemotional traits and aggression. For details execute `?video_games`.
 * **williams**: Data relating to the development of a questionnaire to measure organizational ability. For details execute `?williams`
 * **xbox**: Fictitious data relating injuries to the type of video console game played and the console it was played on. For details execute `?xbox`.

@@ -77,58 +77,58 @@ starting the interactive tutorials.
 
 ### List of tutorials
 
--   **discovr\_01**: Key concepts in
+-   **discovr_01**: Key concepts in
     <img src="./data-raw/images/r_logo.png" width="18"> (functions and
     objects, packages and functions, style, data types, tidyverse,
     tibbles)
--   **discovr\_02**: Summarizing data (frequency distributions, grouped
+-   **discovr_02**: Summarizing data (frequency distributions, grouped
     frequency distributions, relative frequencies, histograms, mean,
     median, variance, standard deviation, interquartile range)
--   **discovr\_03**: Confidence intervals: interactive app demonstrating
+-   **discovr_03**: Confidence intervals: interactive app demonstrating
     what a confidence interval is, computing normal and bootstrap
     confidence intervals using
     <img src="./data-raw/images/r_logo.png" width="18">, adding
     confidence intervals to data summaries.
--   **discovr\_05**: Visualizing data. The ggplot2 package, boxplots,
+-   **discovr_05**: Visualizing data. The ggplot2 package, boxplots,
     plotting means, violin plots, scatterplots, grouping by colour,
-    grouping using facets, adjusting scales, adjusting positions."
--   **discovr\_06**: The beast of bias. Restructuring data from messy to
+    grouping using facets, adjusting scales, adjusting positions.”
+-   **discovr_06**: The beast of bias. Restructuring data from messy to
     tidy format (and back). Spotting outliers using histograms and
     boxplots. Calculating *z*-scores (standardizing scores). Writing
     your own function. Using z-scores to detect outliers. Q-Q plots.
     Calculating skewness, kurtosis and the number of valid cases.
     Grouping summary statistics by multiple categorical/grouping
     variables.
--   **discovr\_07**: Associations. Plotting data with GGally. Pearson’s
+-   **discovr_07**: Associations. Plotting data with GGally. Pearson’s
     *r*, Spearman’s Rho, Kendall’s tau, robust correlations.
--   **discovr\_08**: The general linear model (GLM). Visualizing the
+-   **discovr_08**: The general linear model (GLM). Visualizing the
     data, fitting GLMs with one and two predictors. Viewing model
     parameters with broom, model parameters, standard errors, confidence
     intervals, fit statistics, significance, Bayes factors and Bayesian
     estimates (using default priors).
--   **discovr\_09**: Categorical predictors with two categories
+-   **discovr_09**: Categorical predictors with two categories
     (comparing two means). Comparing two independent means, comparing
     two related means, effect sizes, robust comparisons of means
     (independent and related), Bayes factors and estimation (independent
     and related means).
--   **discovr\_10**: Moderation and mediation. Centring variables (grand
+-   **discovr_10**: Moderation and mediation. Centring variables (grand
     mean centring), specifying interaction terms, moderation analysis,
     simple slopes analysis, Johnson-Neyman intervals, mediation with one
     predictor, direct and indirect effects, mediation using `lavaan`.
--   **discovr\_11**: Comparing several means. Essentially ‘One-way
+-   **discovr_11**: Comparing several means. Essentially ‘One-way
     independent ANOVA’ but taught using a general linear model
     framework. Covers setting contrasts (dummy coding, contrast coding,
     and linear and quadratic trends), the *F*-statistic and Welch’s
     robust *F*, robust parameter estimation,
     heteroscedasticity-consistent tests of parameters, robust tests of
     means based on trimmed data, *post hoc* tests, Bayes factors.
--   **discovr\_12**: Comparing means adjusted for other variables.
+-   **discovr_12**: Comparing means adjusted for other variables.
     Essentially ‘Analysis of Covariance (ANCOVA)’ designs but taught
     using a general linear model framework. Covers setting contrasts,
     Type III sums of squares, the *F*-statistic, robust parameter
     estimation, heteroscedasticity-consistent tests of parameters,
     robust tests of adjusted means, *post hoc* tests, Bayes factors.
--   **discovr\_13**: Factorial designs. Fitting models for two-way
+-   **discovr_13**: Factorial designs. Fitting models for two-way
     factorial designs (independent measures) using both `lm()` and the
     `afex` package. This tutorial builds on previous ones to show how
     models can be fit with two categorical predictors to look at the
@@ -137,8 +137,8 @@ starting the interactive tutorials.
     marginal means, interaction plots, simple effects analysis,
     diagnostic plots, partial eta-squared and partial omega-squared,
     robust models and Bayes factors.
--   **discovr\_14**: Multilevel models.
--   **discovr\_15**: Repeated measures designs. Fitting models for one-
+-   **discovr_14**: Multilevel models.
+-   **discovr_15**: Repeated measures designs. Fitting models for one-
     and two-way repeated measures designs using the `afex` package. This
     tutorial builds on previous ones to show how models can be fit with
     one or two categorical predictors when these variables have been
@@ -146,7 +146,7 @@ starting the interactive tutorials.
     setting contrasts for the categorical predictors, obtaining
     estimated marginal means, interaction plots, simple effects
     analysis, diagnostic plots, robust models and Bayes factors.
--   **discovr\_16**: Mixed designs. Fitting models for mixed designs
+-   **discovr_16**: Mixed designs. Fitting models for mixed designs
     using the `afex` package. This tutorial builds on previous ones to
     show how models can be fit with one or two categorical predictors
     when at least one of these variables has been manipulated within the
@@ -155,7 +155,7 @@ starting the interactive tutorials.
     for the categorical predictors, obtaining estimated marginal means,
     interaction plots, simple effects analysis, diagnostic plots, robust
     models and Bayes factors.
--   **discovr\_18**: Exploratory Factor Analysis (EFA). Applying factor
+-   **discovr_18**: Exploratory Factor Analysis (EFA). Applying factor
     analysis using the `psych` package. This tutorial uses a fictitious
     questionnaire (the
     <img src="./data-raw/images/r_logo.png" width="18"> Anxiety Scale,
@@ -238,6 +238,8 @@ missing, here’s the explanation: X Factor (would basically be 8 shades
 of gray), Fear of the Dark (shit album), The Book of Souls (would
 basically be 8 shades of black).
 
+There is also a colourblind-friendly colour pallette from
+
 The following palettes exist.
 
 -   `amolad_pal()`: Colour palette (8 colour) based on Iron Maiden’s [A
@@ -273,6 +275,9 @@ The following palettes exist.
     Beast](https://www.ironmaiden.com/discography/details/the-number-of-the-beast-album)
     album sleeve. In `ggplot2` use `scale_color_nob()` and
     `scale_fill_nob()`.
+-   `okabe_ito_pal`: Colourblind-friendly palette (8 colour) from [Okabe
+    and Ito](https://jfly.uni-koeln.de/color/). In `ggplot2` use
+    `scale_color_oi()` and `scale_fill_oi()`.
 -   `pom_pal()`: Colour palette (8 colour) based on Iron Maiden’s [Piece
     of
     Mind](https://www.ironmaiden.com/discography/details/piece-of-mind)
@@ -336,6 +341,7 @@ classic_era <- subset(discovr::eddiefy, year < 1992)
 #> The following objects are masked from 'package:base':
 #> 
 #>     date, intersect, setdiff, union
+ 
 ggplot(classic_era, aes(x = energy, y = valence, color = album_name)) +
   geom_point(size = 2) +
   discovr::scale_color_power() +
@@ -365,53 +371,55 @@ the book’s website.
 
 -   **acdc**: Data about whether Bon Scott or Brian Johnson is the best
     singer of AC/DC. For details execute `?acdc`.
--   **album\_sales**: fictitious data about predicting album sales from
+-   **album_sales**: fictitious data about predicting album sales from
     advertising, airplay and the band’s image. For details execute
     `?album_sales`.
--   **alien\_scents**: fictitious data about training sniffer dogs to
+-   **alien_scents**: fictitious data about training sniffer dogs to
     detect alien space lizards when they try to mask their identity with
     different scents. For details execute `?alien_scents`.
--   **animal\_bride**: fictitious data about life satisfaction when
+-   **animal_bride**: fictitious data about life satisfaction when
     married to a dog or a goat. For details execute `?animal_bride`.
--   **beckham\_1929**: Data from a study by Beckham (1929). For details
+-   **beckham_1929**: Data from a study by Beckham (1929). For details
     execute `?beckham_1929`.
--   **big\_hairy\_spider**: fictitious data about whether anxiety is
+-   **big_hairy_spider**: fictitious data about whether anxiety is
     greater after exposure to real spiders or pictures of spiders. For
     details execute `?big_hairy_spider`.
--   **biggest\_liar**: fictitious data about creativity and telling
-    lies. For details execute `?biggest_liar`.
--   **bronstein\_2019**: Data about whether delusion proneness predicts
+-   **biggest_liar**: fictitious data about creativity and telling lies.
+    For details execute `?biggest_liar`.
+-   **bronstein_2019**: Data about whether delusion proneness predicts
     belief in fake news because of less analytic thinking. For details
     execute `?bronstein_2019`.
--   **bronstein\_miss\_2019**: The data in \[bronstein\_2019\] but with
+-   **bronstein_miss_2019**: The data in \[bronstein_2019\] but with
     missing values inserted using MCAR amputation. For details execute
     `?bronstein_miss_2019`.
 -   **catterplot**: fictitious data for plotting a catterplot. For
     details execute `?catterplot`.
--   **cat\_dance**: fictitious data about training cats to dance. For
+-   **cat_dance**: fictitious data about training cats to dance. For
     details execute `?cat_dance`.
--   **cat\_reg**: fictitious data about training cats to dance. For
+-   **cat_reg**: fictitious data about training cats to dance. For
     details execute `?cat_reg`.
--   **cetinkaya\_2006**: data from a study by Cetinkaya and
-    Domjan (2006) about quails with sexual fetishes. Seriously. For
-    details execute `?cetinkaya_2006`.
--   **chamorro\_premuzic**: Data about what students want (personality
+-   **cetinkaya_2006**: data from a study by Cetinkaya and Domjan (2006)
+    about quails with sexual fetishes. Seriously. For details execute
+    `?cetinkaya_2006`.
+-   **chamorro_premuzic**: Data about what students want (personality
     wise) from their lecturers. For details execute
     `?chamorro_premuzic`.
--   **child\_aggression**: fictitious data (based on real research)
-    about predicting aggression in children. For details execute
+-   **child_aggression**: fictitious data (based on real research) about
+    predicting aggression in children. For details execute
     `?child_aggression`.
--   **coldwell\_2006**: Data predicting childhood adjustment from
-    various parenting variables. For details execute `?coldwell_2006`.
--   **daniels\_2012**: Data about the effects of sexualised sports
-    images on self-image. For details execute `?daniels_2012`.
--   **dark\_lord**: fictitious data about the subliminal messages in
+-   **coldwell_2006**: Data predicting childhood adjustment from various
+    parenting variables. For details execute `?coldwell_2006`.
+-   **cosmetic**: Fictitious multilevel data predicting quality of life
+    from cosmetic surgery. For details execute `?cosmetic`.
+-   **daniels_2012**: Data about the effects of sexualised sports images
+    on self-image. For details execute `?daniels_2012`.
+-   **dark_lord**: fictitious data about the subliminal messages in
     songs. For details execute `?dark_lord`.
--   **davey\_2003**: Data about the effects mood and stop rules on
+-   **davey_2003**: Data about the effects mood and stop rules on
     checking behaviour. For details execute `?davey_2003`.
 -   **download**: fictitious data about the download music festival and
     being smelly. For details execute `?download`.
--   **df\_beta**: fictitious data used to illustrate the DF Beta
+-   **df_beta**: fictitious data used to illustrate the DF Beta
     statistic. For details execute `?df_beta`.
 -   **eel**: Fictitious data about a randomized control trial to test
     whether eel therapy is an effective treatment of constipation. For
@@ -420,13 +428,13 @@ the book’s website.
     (soccer). For details execute `?elephooty`.
 -   **escape**: Fictitious data about whether I’m a better songwriter
     than my old bandmate Malcolm `?escape`.
--   **essay\_marks**: fictitious data about essay marking. For details
+-   **essay_marks**: fictitious data about essay marking. For details
     execute `?essay_marks`.
--   **exam\_anxiety**: fictitious data about exam performance, anxiety
+-   **exam_anxiety**: fictitious data about exam performance, anxiety
     and revision. For details execute `?exam_anxiety`.
--   **gallup\_2003**: Data that tests a hypothesis about why penises
-    have a bell end. For details execute `?gallup_2003`.
--   **gelman\_2009**: Data used to critically evaluate the explanations
+-   **gallup_2003**: Data that tests a hypothesis about why penises have
+    a bell end. For details execute `?gallup_2003`.
+-   **gelman_2009**: Data used to critically evaluate the explanations
     (and claim) that there are more beautiful women than men in the
     world. For details execute `?gelman_2009`.
 -   **glastonbury**: More fictitious data about music festivals and
@@ -440,56 +448,61 @@ the book’s website.
     as cures for a hangover. For details execute `?hangover`
 -   **hiccups**: fictitious data on digital rectal stimulation and
     hiccups. For details execute `?hiccups`.
--   **honesty\_lab**: fictitious data about perceptions of honesty. For
+-   **hill_2007**: Data from Hill et al. (2007) testing the effect of
+    different forms of psychoeducation on exercise behaviour. For
+    details execute `?hill_2007`.
+-   **honesty_lab**: fictitious data about perceptions of honesty. For
     details execute `?honesty_lab`.
--   **ice\_bucket**: Data about the ice bucket challenge. For details
+-   **ice_bucket**: Data about the ice bucket challenge. For details
     execute `?ice_bucket`.
--   **invisibility\_base**: Fictitious data about how much mischief
+-   **invisibility_base**: Fictitious data about how much mischief
     people would get up to if they had an invisibility cloak using a
     pre-post study design.`?invisibility_base`
--   **invisibility\_cloak**: fictitious data about how much mischief
+-   **invisibility_cloak**: fictitious data about how much mischief
     people would get up to if they had an invisibility cloak using an
     independent design. For details execute `?invisibility_cloak`.
--   **invisibility\_rm**: fictitious data about how much mischief people
+-   **invisibility_rm**: fictitious data about how much mischief people
     would get up to if they had an invisibility cloak but using a
     repeated measures design. For details execute `?invisibility_rm`.
--   **jiminy\_cricket**: fictitious data about whether wishing on a star
+-   **jiminy_cricket**: fictitious data about whether wishing on a star
     makes you successful. For details execute `?jiminy_cricket`.
--   **johns\_2012**: Data about whether the colour red is a mating
-    signal to men. For details execute `?johns_2012`.
--   **lambert\_2012**: Data about whether pornography use is related to
+-   **johns_2012**: Data about whether the colour red is a mating signal
+    to men. For details execute `?johns_2012`.
+-   **lambert_2012**: Data about whether pornography use is related to
     relationhsip commitment and infidelity. For details execute
     `?lambert_2012`.
--   **massar\_2012**: Data about whether gossiping has an evolutionary
+-   **massar_2012**: Data about whether gossiping has an evolutionary
     function. For details execute `?massar_2012`.
--   **mcnulty\_2008**: Simulated data to match the results of a study
+-   **mcnulty_2008**: Simulated data to match the results of a study
     about whether attractivenes sis linked to the support given within a
     relationship. For details execute `?mcnulty_2008`.
--   **men\_dogs**: fictitious data about whether men exhibit dog-like
+-   **men_dogs**: fictitious data about whether men exhibit dog-like
     behaviours (compared to dogs). For details execute `?men_dogs`.
 -   **metal**: Fictitious data about whether listening to metal music
     makes you angry `?metal`.
--   **metal\_health**: fictitious data about whether listening to heavy
+-   **metal_health**: fictitious data about whether listening to heavy
     metal negatively affects mental health. For details execute
     `?metal_health`.
 -   **metallica**: Data about thrash metal band, Metallica. For details
     execute `?metallica`.
+-   **miller_2007**: Data from Miller et al. (2007) testing the
+    hidden-estrus theory. For details execute `?miller_2007`.
 -   **murder**: fictitious data about the number of murder each month at
     three street locations (Ruskin Avenue, Acacia Avenue and Rue
     Morgue). For details execute `?murder`.
--   **muris\_2008**: Data about whether you can train children to
+-   **muris_2008**: Data about whether you can train children to
     interpret ambiguous situations in a particular way. For details
     execute `?muris_2008`.
--   **nichols\_2004**: Data from the development of the Internet
+-   **nichols_2004**: Data from the development of the Internet
     Addiction Scale, IAS (Nichols & Nicki, 2004). For details execute
     `?nichols_2004`.
 -   **notebook**: fictitious data about whether watching the film the
     notebook is emotionally arousing. For details execute `?notebook`.
--   **ong\_2011**: Data about social media profile pictures and
+-   **ong_2011**: Data about social media profile pictures and
     personality traits. For details execute `?ong_2011`.
--   **ong\_tidy**: Data about social media profile pictures and
+-   **ong_tidy**: Data about social media profile pictures and
     personality traits. For details execute `?ong_tidy`.
--   **profile\_pic**: Fictitious data related to whether the number of
+-   **profile_pic**: Fictitious data related to whether the number of
     friend requests from random people on social media is affected by
     whether your profile picture depicts you as single or part of a
     romantic couple. For details execute `?profile_pic`.
@@ -497,38 +510,38 @@ the book’s website.
     influencial case. For details execute `?pubs`.
 -   **puppies**: Fictitious data related to whether puppy therapy works.
     For details execute `?puppies`.
--   **puppy\_love**: Fictitious data related to whether puppy therapy
+-   **puppy_love**: Fictitious data related to whether puppy therapy
     works when you adjust for a person’s love of puppies. For details
     execute `?puppy_love`.
--   **r\_exam**: Fictitious data relating to an R exam at two
+-   **r_exam**: Fictitious data relating to an R exam at two
     universities. For details execute `?r_exam`.
 -   **raq**: Fictitious data relating to a fictional questionnaire about
     R anxiety that is not an actual questionnaire. For details execute
     `?raq`.
--   **roaming\_cats**: fictitious data about how far cats roam from
-    their homes For details execute `?roaming_cats`.
--   **santas\_log**: Fictitious data related to whether the type and
+-   **roaming_cats**: fictitious data about how far cats roam from their
+    homes For details execute `?roaming_cats`.
+-   **santas_log**: Fictitious data related to whether the type and
     quantity of treat consumed on Christmas night affects whether elves
     successfully deliver presents. For details execute `?santas_log`.
--   **self\_help**: fictitious data about whether self-help books
-    improve relationship satisfaction. For details execute `?self_help`.
--   **self\_help\_dsur**: fictitious data about whether self-help books
+-   **self_help**: fictitious data about whether self-help books improve
+    relationship satisfaction. For details execute `?self_help`.
+-   **self_help_dsur**: fictitious data about whether self-help books
     improve relationship satisfaction compared to statistics books. For
     details execute `?self_help_dsur`.
--   **sharman\_2015**: Data from Sharman & Dingle (2015) about whether
+-   **sharman_2015**: Data from Sharman & Dingle (2015) about whether
     listening to metal music increases anger `?sharman_2015`.
 -   **shopping**: fictitious data about shopping For details execute
     `?shopping_exercise`.
--   **sniffer\_dogs**: fictitious data about training sniffer dogs to
+-   **sniffer_dogs**: fictitious data about training sniffer dogs to
     detect alien space lizards. For details execute `?sniffer_dogs`.
--   **social\_anxiety**: fictitious (I think) data about whether social
+-   **social_anxiety**: fictitious (I think) data about whether social
     anxiety symptoms are specific to social anxiety. For details execute
     `?social_anxiety`.
--   **social\_media**: fictitious data about the effects of social media
+-   **social_media**: fictitious data about the effects of social media
     on grammar. For details execute `?social_media`.
 -   **soya**: fictitious data about the effects of eating soya on sperm
     count. For details execute `?soya`.
--   **speed\_date**: Fictitious data related to the extent to which
+-   **speed_date**: Fictitious data related to the extent to which
     interest in dating someone is affected by their looks, personality
     or the dating strategy they adopt. For details execute
     `?speed_date`.
@@ -545,24 +558,27 @@ the book’s website.
     playing video console games can be mitigated by a warm up.`?switch`
 -   **tablets**: fictitious data about predicting the desirability of
     computing tablets. For details execute `?tablets`.
--   **tea\_15**: fictitious data based on real data about cognitive
+-   **tea_15**: fictitious data based on real data about cognitive
     functioning and drinking tea. For details execute
     `?tea_makes_you_brainy_15`.
--   **tea\_716**: fictitious data based on real data about cognitive
+-   **tea_716**: fictitious data based on real data about cognitive
     functioning and drinking tea. For details execute
     `?tea_makes_you_brainy_716`.
 -   **teaching**: fictitious data about the success of different methods
     of teaching. For details execute `?teaching`.
--   **teach\_method**: more fictitious data about the success of
+-   **teach_method**: more fictitious data about the success of
     different methods of teaching. For details execute `?teach_method`.
 -   **tosser**: Fictitious data relating to a fictional questionnaire
     about The Teaching of Statistics for Scientific Experiments, which
     is fictional. For details execute `?tosser`.
--   **tuk\_2011**: Data about whether needing to urinate helps decision
+-   **tuk_2011**: Data about whether needing to urinate helps decision
     making. For details execute `?tuk_2011`.
 -   **tumour**: fictitious data about mobile phone use and brain
     tumours. For details execute `?tumour`.
--   **video\_games**: fictitious data about the relationship between
+-   **van_bourg_2020**: Data from van Bourg et al (2020) relating to
+    whether dogs would release their distressed owners from a box. For
+    details execute `?van_bourg_2020`.
+-   **video_games**: fictitious data about the relationship between
     video game use, callous unemotional traits and aggression. For
     details execute `?video_games`.
 -   **williams**: Data relating to the development of a questionnaire to
@@ -570,16 +586,16 @@ the book’s website.
 -   **xbox**: Fictitious data relating injuries to the type of video
     console game played and the console it was played on. For details
     execute `?xbox`.
--   **zhang\_sample**: Data about whether performing a maths test under
-    a different name assists performance. For details execute
+-   **zhang_sample**: Data about whether performing a maths test under a
+    different name assists performance. For details execute
     `?zhang_2013_subsample`.
--   **zibarras\_2008**: Data from Zibarras, Port, and Woods (2008)
+-   **zibarras_2008**: Data from Zibarras, Port, and Woods (2008)
     relating to the relationship between personality and creativity. For
     details execute `?zibarras_2008`.
--   **zombie\_growth**: fictitious data that mimics a randomised control
+-   **zombie_growth**: fictitious data that mimics a randomised control
     trial over time testing an intervention to transform zombies back to
     their pre-zombified state. For details execute `?zombie_growth`.
--   **zombie\_rehab**: fictitious data that mimics a randomised control
+-   **zombie_rehab**: fictitious data that mimics a randomised control
     trial testing an intervention to transform zombies back to their
     pre-zombified state in different clinics. For details execute
     `?zombie_rehab`.

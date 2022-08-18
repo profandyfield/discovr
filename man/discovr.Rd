@@ -33,19 +33,20 @@ Replacing \code{name_of_tutorial} with the name in bold below. For example, to l
 \item \strong{discovr_01}: Key concepts in R (functions and objects, packages and functions, style, data types, tidyverse, tibbles)
 \item \strong{discovr_02}: Summarizing data (frequency distributions, grouped frequency distributions, relative frequencies, histograms, mean, median, variance, standard deviation, interquartile range)
 \item \strong{discovr_03}: Confidence intervals: interactive app demonstrating what a confidence interval is, computing normal and bootstrap confidence intervals using R, adding confidence intervals to data summaries
-\item \strong{discovr_05}: Visualizing data. The ggplot2 package, boxplots, plotting means, violin plots, scatterplots, grouping by colour, grouping using facets, adjusting scales, adjusting positions.
-\item \strong{discovr_06}: The beast of bias. Restructuring data from messy to tidy format (and back). Spotting outliers using histograms and boxplots. Calculating z-scores (standardizing scores). Writing your own function. Using z-scores to detect outliers. Q-Q plots. Calculating skewness, kurtosis and the number of valid cases. Grouping summary statistics by multiple categorical/grouping variables.
-\item \strong{discovr_07}: Associations. Plotting data with GGally. Pearson's r, Spearman's Rho, Kendall's tau, robust correlations.
-\item \strong{discovr_08}: The general linear model (GLM). Visualizing the data, fitting GLMs with one and two predictors. Viewing model parameters with broom, model parameters, standard errors, confidence intervals, fit statistics, significance, Bayes factors and Bayesian estimates (using default priors).
+\item \strong{discovr_05}: Visualizing data. The \code{ggplot2} package, boxplots, plotting means, violin plots, scatterplots, grouping by colour, grouping using facets, adjusting scales, adjusting positions.
+\item \strong{discovr_06}: The beast of bias. Restructuring data from messy to tidy format (and back). Spotting outliers using histograms and boxplots. Calculating \emph{z}-scores (standardizing scores). Writing your own function. Using \emph{z}-scores to detect outliers. Q-Q plots. Calculating skewness, kurtosis and the number of valid cases. Grouping summary statistics by multiple categorical/grouping variables.
+\item \strong{discovr_07}: Associations. Plotting data with \code{GGally}. Pearson's \emph{r}, Spearman's Rho, Kendall's tau, robust correlations.
+\item \strong{discovr_08}: The general linear model (GLM). Visualizing the data, fitting GLMs with one and two predictors. Viewing model parameters with \code{broom}, model parameters, standard errors, confidence intervals, fit statistics, significance, Bayes factors and Bayesian estimates (using default priors).
 \item \strong{discovr_09}: Categorical predictors with two categories (comparing two means). Comparing two independent means, comparing two related means, effect sizes, robust comparisons of means (independent and related), Bayes factors and estimation (independent and related means).
 \item \strong{discovr_10}: Moderation and mediation. Centring variables (grand mean centring), specifying interaction terms, moderation analysis, simple slopes analysis, Johnson-Neyman intervals, mediation with one predictor, direct and indirect effects, mediation using lavaan.
 \item \strong{discovr_11}: Comparing several means. Essentially 'One-way independent ANOVA' but taught using a general linear model framework. Covers setting contrasts (dummy coding, contrast coding, and linear and quadratic trends), the \emph{F}-statistic and Welch's robust \emph{F}, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of means based on trimmed data, \emph{post hoc} tests, Bayes factors.
 \item \strong{discovr_12}: Comparing means adjusted for other variables. Essentially 'Analysis of Covariance (ANCOVA)' designs but taught using a general linear model framework. Covers setting contrasts, Type III sums of squares, the \emph{F}-statistic, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of adjusted means, \emph{post hoc} tests, Bayes factors.
-\item \strong{discovr_13}: Factorial designs. Fitting models for two-way factorial designs (independent measures) using both lm() and the afex package. This tutorial builds on previous ones to show how models can be fit with two categorical predictors to look at the interaction between them. We look at fitting the models, setting contrasts for the two categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, partial eta-squared and partial omega-squared, robust models and Bayes factors.
-\item \strong{discovr_14}: Multilevel models.
-\item \strong{discovr_15}: Repeated measures designs. Fitting models for one- and two-way repeated measures designs using the afex package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when these variables ahve been manipulated within the same entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors.
-\item \strong{discovr_16}: Mixed designs. Fitting models for mixed designs using the afex package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when at least one of these variables has been manipulated within the same entities and at least one other has been manipulated using different entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors.
-\item \strong{discovr_18}: Exploratory Factor Analysis (EFA). Applying factor analysis using the \code{psych} package. This tutorial uses a fictitious questionnaire (the <img src="./data-raw/images/r_logo.png" width="18"> Anxiety Scale, RAQ) with 23 items to show how EFA can be used to identify clusters of items that may, or may not, represent constructs associated with anxiety about using <img src="./data-raw/images/r_logo.png" width="18">. We look at inspecting the correlation matrix, obtaining the Bartlett test and KMO statistics, using parallel analysis to determine the number of factors to extract, extracting factors, rotating the solution nd interpretation of the factors. We also learn to obtain Cronbach's alpha on each of the subscales.
+\item \strong{discovr_13}: Factorial designs. Fitting models for two-way factorial designs (independent measures) using both \code{lm()} and the \code{afex} package. This tutorial builds on previous ones to show how models can be fit with two categorical predictors to look at the interaction between them. We look at fitting the models, setting contrasts for the two categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, partial eta-squared and partial omega-squared, robust models and Bayes factors.
+\item \strong{discovr_14}: Multilevel models. This tutorial looks at fitting multilevel models using the \code{lme4} package. It begins with an optional section on checking and coding categorical variables before moving on to show you how to fit and interpret a multilevel model.
+\item \strong{discovr_14_lme}: Multilevel models. This tutorial looks at fitting multilevel models using the \code{nlme} package. It begins with an optional section on checking and coding categorical variables before moving on to show you how to fit and interpret a multilevel model.
+\item \strong{discovr_15}: Repeated measures designs. Fitting models for one- and two-way repeated measures designs using the \code{afex} package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when these variables have been manipulated within the same entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors.
+\item \strong{discovr_16}: Mixed designs. Fitting models for mixed designs using the \code{afex} package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when at least one of these variables has been manipulated within the same entities and at least one other has been manipulated using different entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors.
+\item \strong{discovr_18}: Exploratory Factor Analysis (EFA). Applying factor analysis using the \code{psych} package.
 }
 
 \strong{Workflow}:
@@ -79,6 +80,7 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{chamorro_premuzic}: Data about what students want (personality wise) from their lecturers.
 \item \link{child_aggression}: Fictitious data (based on real research) about predicting aggression in children.
 \item \link{coldwell_2006}: Data predicting childhood adjustment from various parenting variables.
+\item \link{cosmetic}: Fictitious multilevel data predicting quality of life from cosmetic surgery.
 \item \link{daniels_2012}: Data about the effects of sexualised sports images on self-image.
 \item \link{dark_lord}: Fictitious data about the subliminal messages in songs.
 \item \link{davey_2003}: Data about the effects mood and stop rules on checking behaviour.
@@ -100,6 +102,7 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{invisibility_rm}: Fictitious data about how much mischief people would get up to if they had an invisibility cloak but using a repeated measures design.
 \item \link{hangover}: fictitious data about the efficacy of different drinks as cures for a hangover.
 \item \link{hiccups}: Fictitious data on digital rectal stimulation and hiccups.
+\item \link{hill_2007}: Data from Hill et al. (2007) testing the effect of different forms of psychoeducation on exercise behaviour.
 \item \link{honesty_lab}: Fictitious data about perceptions of honesty.
 \item \link{jiminy_cricket}: Fictitious data about whether wishing on a star makes you successful.
 \item \link{johns_2012}: Data about whether the colour red is a mating signal to men.
@@ -110,6 +113,7 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{metal}: Fictitious data about whether listening to metal music makes you angry.
 \item \link{metal_health}: Fictitious data about whether listening to heavy metal negatively affects mental health.
 \item \link{metallica}: Data about thrash metal band Metallica.
+\item \link{miller_2007}: Data from Miller et al. (2007) testing the hidden-estrus theory.
 \item \link{murder}: Fictitious data about the number of murder each month at three street locations (Ruskin Avenue, Acacia Avenue and Rue Morgue).
 \item \link{muris_2008}: Data about whether you can train children to interpret ambiguous situations in a particular way.
 \item \link{nichols_2004}: Data from the development of the Internet Addiction Scale, IAS (Nichols & Nicki, 2004).
@@ -146,6 +150,7 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{tosser}: Fictitious data relating to a fictional questionnaire about The Teaching of Statistics for Scientific Experiments, which is fictional.
 \item \link{tuk_2011}: Data about whether needing to urinate helps decision making.
 \item \link{tumour}: fictitious data about mobile phone use and brain tumours.
+\item \link{van_bourg_2020}: Data from van Bourg et al (2020) relating to whether dogs would release their distressed owners from a box.
 \item \link{video_games}: Fictitious data about the relationship between video game use, callous unemotional traits and aggression.
 \item \link{williams}: Data relating to the development of a questionnaire to measure organizational ability.
 \item \link{xbox}: Fictitious data relating injuries to the type of video console game played and the console it was played on.
@@ -179,7 +184,7 @@ Although I recommend working through the interactive solutions, each book Chapte
 
 \subsection{Colour palettes}{
 
-Colour themes based around the studio albums of my favourite band \href{https://www.ironmaiden.com}{Iron Maiden}.
+A colour blind-friendly pallette based on \href{https://jfly.uni-koeln.de/color/}{Okabe and Ito}. Also colour themes based around the studio albums of my favourite band \href{https://www.ironmaiden.com}{Iron Maiden}.
 If you're wondering why some albums are missing, here's the explanation: X Factor (would basically be 8 shades of grey), Fear of the Dark (terrible album), The Book of Souls (would be 8 shades of black).
 The following palettes exist.
 \itemize{
@@ -190,6 +195,7 @@ The following palettes exist.
 \item \link{im_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/discography/details/iron-maiden}{eponymous} album sleeve. In \code{ggplot2} use \link{scale_color_im} and \link{scale_fill_im}.
 \item \link{killers_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/discography/details/killers}{Killers} album sleeve. In \code{ggplot2} use \link{scale_color_killers} and \link{scale_fill_killers}.
 \item \link{nob_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/discography/details/the-number-of-the-beast-album}{The Number of the Beast} album sleeve. In \code{ggplot2} use \link{scale_color_nob} and \link{scale_fill_nob}.
+\item \link{okabe_ito_pal}: Colourblind-friendly palette (8 colour) from \href{https://jfly.uni-koeln.de/color/}{Okabe and Ito}. In \code{ggplot2} use \link{scale_color_oi} and \link{scale_fill_oi}.
 \item \link{pom_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/discography/details/piece-of-mind}{Piece of Mind} album sleeve. In \code{ggplot2} use \link{scale_color_pom} and \link{scale_fill_pom}.
 \item \link{power_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/discography/details/powerslave}{Powerslave} album sleeve. In \code{ggplot2} use \link{scale_color_power} and \link{scale_fill_power}.
 \item \link{prayer_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/discography/details/no-prayer-for-the-dying}{No Prayer for the Dying} album sleeve. Use \link{scale_color_prayer} and \link{scale_fill_prayer}.

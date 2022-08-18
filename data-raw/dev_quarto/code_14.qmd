@@ -1,0 +1,317 @@
+---
+title: "Chapter 14"
+author: "Andy Field"
+date: '`r format(Sys.Date(), "%d %B %Y")`'
+format:
+  html:
+    max-width: 3000px
+    toc: true
+execute:
+  warning: false
+  message: false
+editor: visual
+---
+
+```{r}
+library(broom)
+library(broom.mixed)
+library(magrittr)
+library(dplyr)
+library(ggplot2)
+library(lme4)
+library(lmerTest)
+
+```
+
+::: callout-important
+## Usage
+
+This file contains code relevant to chapter 14 of [Discovering Statistics Using R and RStudio](www.discovr.rocks) by [Andy Field](https://www.discoveringstatistics.com/about). These files contain abridged sections from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/).[^1]
+:::
+
+[^1]: Basically you can use this material for teaching and non-profit activities but do not meddle with it or claim it as your own work.
+
+## Load packages
+
+Remember to load these packages:
+
+```{r}
+#| eval: false
+
+library(broom)
+library(broom.mixed)
+library(magrittr)
+library(dplyr)
+library(ggplot2)
+library(lme4)
+library(lmerTest)
+
+```
+
+## Load the data
+
+Load the data from the `discover` package:
+
+```{r}
+cosmetic_tib <- discovr::cosmetic
+```
+
+```{r}
+#| eval: false
+ 
+cosmetic_tib <- here::here("data-raw/csv_files/cosmetic.csv") |>
+
+readr::read_csv() |>
+  dplyr::mutate(
+    clinic = forcats::as_factor(clinic),
+    reason = forcats::as_factor(reason)
+    )
+```
+
+If you want to read the file from the CSV and you have set up your project folder as I suggest in Chapter 1, then the code you would use is:
+
+```{r}
+#| eval: false
+ 
+cosmetic_tib <- here::here("data/cosmetic.csv") |>
+  readr::read_csv() |>
+  dplyr::mutate(
+    clinic = forcats::as_factor(clinic),
+    reason = forcats::as_factor(reason)
+    )
+```
+
+This code reads the file in and converts the variables **clinic** and **reason** to factors. It's a good idea to check that the levels of **clinic** are sequential from clinic 1 to clinic 21, and that **reason** has levels ordered change appearance and physical reason. Check the factor levels by executing:
+
+```{r}
+
+levels(cosmetic_tib$clinic)
+levels(cosmetic_tib$reason)
+```
+
+If they're not in the correct order then:
+
+```{r}
+#| eval: false
+ 
+cosmetic_tib <- cosmetic_tib |>
+  dplyr::mutate(
+    clinic = forcats::fct_relevel(clinic, paste("Clinic", seq(1, 20, 1))),
+    reason = forcats::fct_relevel(reason, "Change appearance")
+    )
+```
+
+## Plot the data
+
+Create the plot
+
+```{r}
+
+ggplot2::ggplot(cosmetic_tib, aes(days, post_qol, colour = clinic)) +
+  geom_point(alpha = 0.5, size = 1) +
+  geom_smooth(method = "lm", se = FALSE, size = 0.5) +
+  coord_cartesian(xlim = c(0, 400), ylim = c(0, 100)) +
+  scale_y_continuous(breaks = seq(0, 100, 10)) +
+  labs(x = "Days post surgery", y = "Quality of life after surgery (%)", colour = "Clinic") +
+  guides(colour=guide_legend(ncol=2)) +
+  theme_minimal()
+```
+
+```{r}
+
+ggplot2::ggplot(cosmetic_tib, aes(days, post_qol)) +
+  geom_point(position = position_jitter(width = 0.1, height = NULL), alpha = 0.5, size = 1) +
+  geom_smooth(method = "lm", se = FALSE, size = 0.5) +
+  coord_cartesian(xlim = c(0, 400), ylim = c(0, 100)) +
+  scale_y_continuous(breaks = seq(0, 100, 10)) +
+  labs(x = "Days post surgery", y = "Quality of life after surgery (%)", colour = "Clinic") +
+  facet_wrap(~ clinic, ncol = 4) +
+  theme_minimal()
+```
+
+## Summary statistics
+
+```{r}
+
+qol_sum <- cosmetic_tib |>
+  dplyr::group_by(clinic) |>
+  datawizard::describe_distribution(select = c("base_qol", "post_qol"), ci = 0.95)
+
+qol_sum |>
+  dplyr::mutate(
+    Clinic = stringr::str_remove(.group, "clinic=")
+    ) |>
+  dplyr::select(Clinic, Variable:n) |>
+  knitr::kable(caption = "Summary statistics for the surgery data",
+               digits = 2)
+```
+
+## Fixed effect fits
+
+### Fit the model to the pooled data
+
+```{r}
+
+pooled_lm <- lm(post_qol ~ days*reason + base_qol, data = cosmetic_tib)
+
+broom::tidy(pooled_lm, conf.int = TRUE) |>
+  knitr::kable(caption = "Parameter estimates for the pooled data model",
+               digits = 3)
+```
+
+### Fit the model across contexts
+
+```{r}
+
+clinic_lms <- cosmetic_tib |>
+  dplyr::arrange(clinic) |>
+  dplyr::group_by(clinic) |>
+  tidyr::nest() |>
+  dplyr::mutate(
+    model = purrr::map(.x = data,
+                       .f = \(clinic_tib) lm(post_qol ~ days*reason + base_qol, data = clinic_tib)),
+    coefs = purrr::map(model, tidy, conf.int = TRUE)
+    )
+
+models <- clinic_lms |>
+  dplyr::select(-c(data, model)) |>
+  tidyr::unnest(coefs)
+```
+
+```{r}
+
+models |>
+  ggplot(aes(estimate)) +
+  geom_density() +
+  facet_wrap(~term , scales = "free") +
+  theme_minimal()
+```
+
+## Random effect models
+
+### Try to fit the model
+
+```{r}
+
+cosmetic_mod <- lmerTest::lmer(post_qol ~ days*reason + base_qol + (days|clinic), data = cosmetic_tib)
+
+allFit(cosmetic_mod)
+```
+
+### Rescale days
+
+```{r}
+
+cosmetic_tib <- cosmetic_tib |>
+  dplyr::mutate(
+    months = days*12/365
+    )
+```
+
+### Standardizing variables
+
+We don't use this model, but if you wanted to fit the model to standardized variables then use this code.
+
+```{r}
+#| eval: false
+
+
+cosmetic_tib <- cosmetic_tib |>
+  dplyr::mutate(across(.cols = where(is.double),
+                       .fns = \(column) (column-mean(column, na.rm = T))/sd(column, na.rm = T),
+                       .names = "z_{.col}")
+                )
+
+cosmetic_modz <- lmerTest::lmer(z_post_qol ~ z_days*reason + z_base_qol + (z_days|clinic), data = cosmetic_tib)
+
+broom.mixed::tidy(cosmetic_modz)
+```
+
+### Fit the model using months
+
+```{r}
+
+cosmetic_mod <- lmerTest::lmer(post_qol ~ months*reason + base_qol + (months|clinic), data = cosmetic_tib, REML = T)
+
+allFit(cosmetic_mod)
+```
+
+### Change the optimizer
+
+```{r}
+
+cosmetic_bob <- lmerTest::lmer(
+  post_qol ~ months*reason + base_qol + (months|clinic),
+  data = cosmetic_tib,
+  control = lmerControl(optimizer="bobyqa")
+  )
+```
+
+### Use maximum likelihood estimation
+
+```{r}
+
+cosmetic_ml <- lmerTest::lmer(
+  post_qol ~ months*reason + base_qol + (months|clinic),
+  data = cosmetic_tib,
+  REML = F
+  )
+```
+
+### Interpreting the model
+
+```{r}
+anova(cosmetic_bob) |> 
+  knitr::kable(caption = "Fixed effects for the final model",
+               digits = c(rep(2, 5), 3))
+```
+
+```{r}
+options(knitr.kable.NA = '')
+broom.mixed::tidy(cosmetic_bob, conf.int = T) |> 
+  knitr::kable(caption = "Parameter estimates for the final model",
+               digits = c(rep(2, 7), 3, 2, 2))
+```
+
+```{r}
+cosmetic_slopes <- modelbased::estimate_slopes(cosmetic_bob,
+                                               trend = "months",
+                                               at = "reason",
+                                               ci = 0.95) 
+
+cosmetic_slopes |> 
+  knitr::kable(caption = "Change over time for different reasons for surgery",
+        digits = 3)
+```
+
+Some alternative ways to get the same simple slopes
+
+```{r}
+
+#| eval: false
+
+
+cosmetic_slopes <- interactions::sim_slopes(
+  cosmetic_bob,
+  pred = months,
+  modx = reason,
+  confint = TRUE
+  ) 
+
+cosmetic_slopes <-  emmeans::emtrends(cosmetic_bob, var = "months", spec = "reason")
+```
+
+Plot the simple slopes
+
+```{r}
+
+interactions::interact_plot(
+  model = cosmetic_bob,
+  pred = months,
+  modx = reason,
+  interval = TRUE,
+  x.label = "Months since surgery",
+  y.label = "Quality of life post-surgery (0-100)",
+  legend.main = "Reason for surgery"
+  ) 
+```

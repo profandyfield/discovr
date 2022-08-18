@@ -41,7 +41,7 @@
 #' * **discovr_14_lme**: Multilevel models. This tutorial looks at fitting multilevel models using the \code{nlme} package. It begins with an optional section on checking and coding categorical variables before moving on to show you how to fit and interpret a multilevel model.
 #' * **discovr_15**: Repeated measures designs. Fitting models for one- and two-way repeated measures designs using the \code{afex} package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when these variables have been manipulated within the same entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors.
 #' * **discovr_16**: Mixed designs. Fitting models for mixed designs using the \code{afex} package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when at least one of these variables has been manipulated within the same entities and at least one other has been manipulated using different entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors.
-#' * **discovr_18**: Exploratory Factor Analysis (EFA). Applying factor analysis using the \code{psych} package. This tutorial uses a fictitious questionnaire (the <img src="./data-raw/images/r_logo.png" width="18"> Anxiety Scale, RAQ) with 23 items to show how EFA can be used to identify clusters of items that may, or may not, represent constructs associated with anxiety about using <img src="./data-raw/images/r_logo.png" width="18">. We look at inspecting the correlation matrix, obtaining the Bartlett test and KMO statistics, using parallel analysis to determine the number of factors to extract, extracting factors, rotating the solution nd interpretation of the factors. We also learn to obtain Cronbach's alpha on each of the subscales.
+#' * **discovr_18**: Exploratory Factor Analysis (EFA). Applying factor analysis using the \code{psych} package.
 #'
 #' **Workflow**:
 #'
@@ -73,6 +73,7 @@
 #' * [chamorro_premuzic]: Data about what students want (personality wise) from their lecturers.
 #' * [child_aggression]: Fictitious data (based on real research) about predicting aggression in children.
 #' * [coldwell_2006]: Data predicting childhood adjustment from various parenting variables.
+#' * [cosmetic]: Fictitious multilevel data predicting quality of life from cosmetic surgery.
 #' * [daniels_2012]: Data about the effects of sexualised sports images on self-image.
 #' * [dark_lord]: Fictitious data about the subliminal messages in songs.
 #' * [davey_2003]: Data about the effects mood and stop rules on checking behaviour.
@@ -94,6 +95,7 @@
 #' * [invisibility_rm]: Fictitious data about how much mischief people would get up to if they had an invisibility cloak but using a repeated measures design.
 #' * [hangover]: fictitious data about the efficacy of different drinks as cures for a hangover.
 #' * [hiccups]: Fictitious data on digital rectal stimulation and hiccups.
+#' * [hill_2007]: Data from Hill et al. (2007) testing the effect of different forms of psychoeducation on exercise behaviour.
 #' * [honesty_lab]: Fictitious data about perceptions of honesty.
 #' * [jiminy_cricket]: Fictitious data about whether wishing on a star makes you successful.
 #' * [johns_2012]: Data about whether the colour red is a mating signal to men.
@@ -104,6 +106,7 @@
 #' * [metal]: Fictitious data about whether listening to metal music makes you angry.
 #' * [metal_health]: Fictitious data about whether listening to heavy metal negatively affects mental health.
 #' * [metallica]: Data about thrash metal band Metallica.
+#' * [miller_2007]: Data from Miller et al. (2007) testing the hidden-estrus theory.
 #' * [murder]: Fictitious data about the number of murder each month at three street locations (Ruskin Avenue, Acacia Avenue and Rue Morgue).
 #' * [muris_2008]: Data about whether you can train children to interpret ambiguous situations in a particular way.
 #' * [nichols_2004]: Data from the development of the Internet Addiction Scale, IAS (Nichols & Nicki, 2004).
@@ -140,6 +143,7 @@
 #' * [tosser]: Fictitious data relating to a fictional questionnaire about The Teaching of Statistics for Scientific Experiments, which is fictional.
 #' * [tuk_2011]: Data about whether needing to urinate helps decision making.
 #' * [tumour]: fictitious data about mobile phone use and brain tumours.
+#' * [van_bourg_2020]: Data from van Bourg et al (2020) relating to whether dogs would release their distressed owners from a box.
 #' * [video_games]: Fictitious data about the relationship between video game use, callous unemotional traits and aggression.
 #' * [williams]: Data relating to the development of a questionnaire to measure organizational ability.
 #' * [xbox]: Fictitious data relating injuries to the type of video console game played and the console it was played on.
@@ -165,7 +169,7 @@
 #'
 #' ## Colour palettes
 #'
-#' Colour themes based around the studio albums of my favourite band [Iron Maiden](https://www.ironmaiden.com).
+#' A colour blind-friendly pallette based on [Okabe and Ito](https://jfly.uni-koeln.de/color/). Also colour themes based around the studio albums of my favourite band [Iron Maiden](https://www.ironmaiden.com).
 #'  If you're wondering why some albums are missing, here's the explanation: X Factor (would basically be 8 shades of grey), Fear of the Dark (terrible album), The Book of Souls (would be 8 shades of black).
 #'  The following palettes exist.
 #'
@@ -176,6 +180,7 @@
 #' * [im_pal]: Colour palette (8 colour) based on Iron Maiden's [eponymous](https://www.ironmaiden.com/discography/details/iron-maiden) album sleeve. In \code{ggplot2} use [scale_color_im] and [scale_fill_im].
 #' * [killers_pal]: Colour palette (8 colour) based on Iron Maiden's [Killers](https://www.ironmaiden.com/discography/details/killers) album sleeve. In \code{ggplot2} use [scale_color_killers] and [scale_fill_killers].
 #' * [nob_pal]: Colour palette (8 colour) based on Iron Maiden's [The Number of the Beast](https://www.ironmaiden.com/discography/details/the-number-of-the-beast-album) album sleeve. In \code{ggplot2} use [scale_color_nob] and [scale_fill_nob].
+#' * [okabe_ito_pal]: Colourblind-friendly palette (8 colour) from [Okabe and Ito](https://jfly.uni-koeln.de/color/). In \code{ggplot2} use [scale_color_oi] and [scale_fill_oi].
 #' * [pom_pal]: Colour palette (8 colour) based on Iron Maiden's [Piece of Mind](https://www.ironmaiden.com/discography/details/piece-of-mind) album sleeve. In \code{ggplot2} use [scale_color_pom] and [scale_fill_pom].
 #' * [power_pal]: Colour palette (8 colour) based on Iron Maiden's [Powerslave](https://www.ironmaiden.com/discography/details/powerslave) album sleeve. In \code{ggplot2} use [scale_color_power] and [scale_fill_power].
 #' * [prayer_pal]: Colour palette (8 colour) based on Iron Maiden's [No Prayer for the Dying](https://www.ironmaiden.com/discography/details/no-prayer-for-the-dying) album sleeve. Use [scale_color_prayer] and [scale_fill_prayer].

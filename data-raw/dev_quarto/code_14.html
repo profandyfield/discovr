@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Andy Field">
+<meta name="dcterms.date" content="2022-08-09">
+
+<title>Chapter 14</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="code_14_files/libs/clipboard/clipboard.min.js"></script>
+<script src="code_14_files/libs/quarto-html/quarto.js"></script>
+<script src="code_14_files/libs/quarto-html/popper.min.js"></script>
+<script src="code_14_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="code_14_files/libs/quarto-html/anchor.min.js"></script>
+<link href="code_14_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="code_14_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="code_14_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="code_14_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="code_14_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#load-packages" id="toc-load-packages" class="nav-link active" data-scroll-target="#load-packages">Load packages</a></li>
+  <li><a href="#load-the-data" id="toc-load-the-data" class="nav-link" data-scroll-target="#load-the-data">Load the data</a></li>
+  <li><a href="#plot-the-data" id="toc-plot-the-data" class="nav-link" data-scroll-target="#plot-the-data">Plot the data</a></li>
+  <li><a href="#summary-statistics" id="toc-summary-statistics" class="nav-link" data-scroll-target="#summary-statistics">Summary statistics</a></li>
+  <li><a href="#fixed-effect-fits" id="toc-fixed-effect-fits" class="nav-link" data-scroll-target="#fixed-effect-fits">Fixed effect fits</a>
+  <ul class="collapse">
+  <li><a href="#fit-the-model-to-the-pooled-data" id="toc-fit-the-model-to-the-pooled-data" class="nav-link" data-scroll-target="#fit-the-model-to-the-pooled-data">Fit the model to the pooled data</a></li>
+  <li><a href="#fit-the-model-across-contexts" id="toc-fit-the-model-across-contexts" class="nav-link" data-scroll-target="#fit-the-model-across-contexts">Fit the model across contexts</a></li>
+  </ul></li>
+  <li><a href="#random-effect-models" id="toc-random-effect-models" class="nav-link" data-scroll-target="#random-effect-models">Random effect models</a>
+  <ul class="collapse">
+  <li><a href="#try-to-fit-the-model" id="toc-try-to-fit-the-model" class="nav-link" data-scroll-target="#try-to-fit-the-model">Try to fit the model</a></li>
+  <li><a href="#rescale-days" id="toc-rescale-days" class="nav-link" data-scroll-target="#rescale-days">Rescale days</a></li>
+  <li><a href="#standardizing-variables" id="toc-standardizing-variables" class="nav-link" data-scroll-target="#standardizing-variables">Standardizing variables</a></li>
+  <li><a href="#fit-the-model-using-months" id="toc-fit-the-model-using-months" class="nav-link" data-scroll-target="#fit-the-model-using-months">Fit the model using months</a></li>
+  <li><a href="#change-the-optimizer" id="toc-change-the-optimizer" class="nav-link" data-scroll-target="#change-the-optimizer">Change the optimizer</a></li>
+  <li><a href="#use-maximum-likelihood-estimation" id="toc-use-maximum-likelihood-estimation" class="nav-link" data-scroll-target="#use-maximum-likelihood-estimation">Use maximum likelihood estimation</a></li>
+  <li><a href="#interpreting-the-model" id="toc-interpreting-the-model" class="nav-link" data-scroll-target="#interpreting-the-model">Interpreting the model</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Chapter 14</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Andy Field </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 9, 2022</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom.mixed)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmerTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout-important callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Usage
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This file contains code relevant to chapter 14 of <a href="www.discovr.rocks">Discovering Statistics Using R and RStudio</a> by <a href="https://www.discoveringstatistics.com/about">Andy Field</a>. These files contain abridged sections from the book so there are some copyright considerations but I offer them under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+</div>
+</div>
+<section id="load-packages" class="level2">
+<h2 class="anchored" data-anchor-id="load-packages">Load packages</h2>
+<p>Remember to load these packages:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom.mixed)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmerTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="load-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="load-the-data">Load the data</h2>
+<p>Load the data from the <code>discover</code> package:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>cosmetic_tib <span class="ot">&lt;-</span> discovr<span class="sc">::</span>cosmetic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>cosmetic_tib <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data-raw/csv_files/cosmetic.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">read_csv</span>() <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">clinic =</span> forcats<span class="sc">::</span><span class="fu">as_factor</span>(clinic),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">reason =</span> forcats<span class="sc">::</span><span class="fu">as_factor</span>(reason)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If you want to read the file from the CSV and you have set up your project folder as I suggest in Chapter 1, then the code you would use is:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>cosmetic_tib <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/cosmetic.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">read_csv</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">clinic =</span> forcats<span class="sc">::</span><span class="fu">as_factor</span>(clinic),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">reason =</span> forcats<span class="sc">::</span><span class="fu">as_factor</span>(reason)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This code reads the file in and converts the variables <strong>clinic</strong> and <strong>reason</strong> to factors. It’s a good idea to check that the levels of <strong>clinic</strong> are sequential from clinic 1 to clinic 21, and that <strong>reason</strong> has levels ordered change appearance and physical reason. Check the factor levels by executing:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(cosmetic_tib<span class="sc">$</span>clinic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Clinic 1"  "Clinic 2"  "Clinic 3"  "Clinic 4"  "Clinic 5"  "Clinic 6" 
+ [7] "Clinic 7"  "Clinic 8"  "Clinic 9"  "Clinic 10" "Clinic 11" "Clinic 12"
+[13] "Clinic 13" "Clinic 14" "Clinic 15" "Clinic 16" "Clinic 17" "Clinic 18"
+[19] "Clinic 19" "Clinic 20"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(cosmetic_tib<span class="sc">$</span>reason)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Change appearance" "Physical reason"  </code></pre>
+</div>
+</div>
+<p>If they’re not in the correct order then:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cosmetic_tib <span class="ot">&lt;-</span> cosmetic_tib <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">clinic =</span> forcats<span class="sc">::</span><span class="fu">fct_relevel</span>(clinic, <span class="fu">paste</span>(<span class="st">"Clinic"</span>, <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">20</span>, <span class="dv">1</span>))),</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">reason =</span> forcats<span class="sc">::</span><span class="fu">fct_relevel</span>(reason, <span class="st">"Change appearance"</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="plot-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="plot-the-data">Plot the data</h2>
+<p>Create the plot</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(cosmetic_tib, <span class="fu">aes</span>(days, post_qol, <span class="at">colour =</span> clinic)) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">400</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>)) <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">10</span>)) <span class="sc">+</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Days post surgery"</span>, <span class="at">y =</span> <span class="st">"Quality of life after surgery (%)"</span>, <span class="at">colour =</span> <span class="st">"Clinic"</span>) <span class="sc">+</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">colour=</span><span class="fu">guide_legend</span>(<span class="at">ncol=</span><span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="code_14_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(cosmetic_tib, <span class="fu">aes</span>(days, post_qol)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.1</span>, <span class="at">height =</span> <span class="cn">NULL</span>), <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">400</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>)) <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">10</span>)) <span class="sc">+</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Days post surgery"</span>, <span class="at">y =</span> <span class="st">"Quality of life after surgery (%)"</span>, <span class="at">colour =</span> <span class="st">"Clinic"</span>) <span class="sc">+</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> clinic, <span class="at">ncol =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="code_14_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="summary-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="summary-statistics">Summary statistics</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>qol_sum <span class="ot">&lt;-</span> cosmetic_tib <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(clinic) <span class="sc">|&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  datawizard<span class="sc">::</span><span class="fu">describe_distribution</span>(<span class="at">select =</span> <span class="fu">c</span>(<span class="st">"base_qol"</span>, <span class="st">"post_qol"</span>), <span class="at">ci =</span> <span class="fl">0.95</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>qol_sum <span class="sc">|&gt;</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Clinic =</span> stringr<span class="sc">::</span><span class="fu">str_remove</span>(.group, <span class="st">"clinic="</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Clinic, Variable<span class="sc">:</span>n) <span class="sc">|&gt;</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Summary statistics for the surgery data"</span>,</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Summary statistics for the surgery data</caption>
+<colgroup>
+<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Clinic</th>
+<th style="text-align: left;">Variable</th>
+<th style="text-align: right;">Mean</th>
+<th style="text-align: right;">SD</th>
+<th style="text-align: right;">IQR</th>
+<th style="text-align: right;">CI_low</th>
+<th style="text-align: right;">CI_high</th>
+<th style="text-align: right;">Min</th>
+<th style="text-align: right;">Max</th>
+<th style="text-align: right;">Skewness</th>
+<th style="text-align: right;">Kurtosis</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Clinic 1</td>
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">45.66</td>
+<td style="text-align: right;">8.15</td>
+<td style="text-align: right;">13.50</td>
+<td style="text-align: right;">42.80</td>
+<td style="text-align: right;">47.86</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">0.26</td>
+<td style="text-align: right;">-0.95</td>
+<td style="text-align: right;">32</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clinic 1</td>
+<td style="text-align: left;">post_qol</td>
+<td style="text-align: right;">25.66</td>
+<td style="text-align: right;">11.04</td>
+<td style="text-align: right;">15.75</td>
+<td style="text-align: right;">22.27</td>
+<td style="text-align: right;">29.51</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">0.41</td>
+<td style="text-align: right;">-0.35</td>
+<td style="text-align: right;">32</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clinic 2</td>
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">43.78</td>
+<td style="text-align: right;">8.84</td>
+<td style="text-align: right;">12.00</td>
+<td style="text-align: right;">41.41</td>
+<td style="text-align: right;">45.69</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">69</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">67</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clinic 2</td>
+<td style="text-align: left;">post_qol</td>
+<td style="text-align: right;">54.85</td>
+<td style="text-align: right;">13.27</td>
+<td style="text-align: right;">20.00</td>
+<td style="text-align: right;">51.65</td>
+<td style="text-align: right;">57.29</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: right;">-0.05</td>
+<td style="text-align: right;">-0.88</td>
+<td style="text-align: right;">67</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clinic 3</td>
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">44.64</td>
+<td style="text-align: right;">9.53</td>
+<td style="text-align: right;">10.50</td>
+<td style="text-align: right;">42.63</td>
+<td style="text-align: right;">47.21</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">58</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clinic 3</td>
+<td style="text-align: left;">post_qol</td>
+<td style="text-align: right;">66.47</td>
+<td style="text-align: right;">11.00</td>
+<td style="text-align: right;">14.50</td>
+<td style="text-align: right;">63.14</td>
+<td style="text-align: right;">68.86</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">89</td>
+<td style="text-align: right;">-0.41</td>
+<td style="text-align: right;">1.14</td>
+<td style="text-align: right;">58</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clinic 4</td>
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">47.07</td>
+<td style="text-align: right;">10.50</td>
+<td style="text-align: right;">13.50</td>
+<td style="text-align: right;">44.81</td>
+<td style="text-align: right;">49.31</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: right;">-0.28</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">70</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clinic 4</td>
+<td style="text-align: left;">post_qol</td>
+<td style="text-align: right;">54.70</td>
+<td style="text-align: right;">10.63</td>
+<td style="text-align: right;">12.25</td>
+<td style="text-align: right;">51.83</td>
+<td style="text-align: right;">57.28</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">79</td>
+<td style="text-align: right;">0.37</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">70</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clinic 5</td>
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">44.39</td>
+<td style="text-align: right;">8.88</td>
+<td style="text-align: right;">14.75</td>
+<td style="text-align: right;">42.95</td>
+<td style="text-align: right;">46.09</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">-0.09</td>
+<td style="text-align: right;">-0.87</td>
+<td style="text-align: right;">124</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clinic 5</td>
+<td style="text-align: left;">post_qol</td>
+<td style="text-align: right;">47.05</td>
+<td style="text-align: right;">12.26</td>
+<td style="text-align: right;">16.00</td>
+<td style="text-align: right;">44.89</td>
+<td style="text-align: right;">48.87</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">76</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">124</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clinic 6</td>
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">44.87</td>
+<td style="text-align: right;">9.74</td>
+<td style="text-align: right;">12.00</td>
+<td style="text-align: right;">43.12</td>
+<td style="text-align: right;">46.64</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">69</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: right;">0.21</td>
+<td style="text-align: right;">95</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clinic 6</td>
+<td style="text-align: left;">post_qol</td>
+<td style="text-align: right;">64.26</td>
+<td style="text-align: right;">14.14</td>
+<td style="text-align: right;">21.00</td>
+<td style="text-align: right;">61.61</td>
+<td style="text-align: right;">67.14</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">-0.43</td>
+<td style="text-align: right;">95</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clinic 7</td>
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">46.80</td>
+<td style="text-align: right;">10.22</td>
+<td style="text-align: right;">16.25</td>
+<td style="text-align: right;">44.18</td>
+<td style="text-align: right;">49.35</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">71</td>
+<td style="text-align: right;">-0.05</td>
+<td style="text-align: right;">-0.64</td>
+<td style="text-align: right;">44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clinic 7</td>
+<td style="text-align: left;">post_qol</td>
+<td style="text-align: right;">59.68</td>
+<td style="text-align: right;">9.45</td>
+<td style="text-align: right;">11.50</td>
+<td style="text-align: right;">56.96</td>
+<td style="text-align: right;">63.13</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">83</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">0.58</td>
+<td style="text-align: right;">44</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clinic 8</td>
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">45.44</td>
+<td style="text-align: right;">10.45</td>
+<td style="text-align: right;">14.00</td>
+<td style="text-align: right;">43.49</td>
+<td style="text-align: right;">47.11</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">78</td>
+<td style="text-align: right;">0.47</td>
+<td style="text-align: right;">0.34</td>
+<td style="text-align: right;">129</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clinic 8</td>
+<td style="text-align: left;">post_qol</td>
+<td style="text-align: right;">35.61</td>
+<td style="text-align: right;">11.91</td>
+<td style="text-align: right;">16.00</td>
+<td style="text-align: right;">33.68</td>
+<td style="text-align: right;">37.55</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">-0.27</td>
+<td style="text-align: right;">129</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clinic 9</td>
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">45.54</td>
+<td style="text-align: right;">9.55</td>
+<td style="text-align: right;">11.00</td>
+<td style="text-align: right;">44.07</td>
+<td style="text-align: right;">47.39</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">117</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clinic 9</td>
+<td style="text-align: left;">post_qol</td>
+<td style="text-align: right;">39.32</td>
+<td style="text-align: right;">12.67</td>
+<td style="text-align: right;">16.50</td>
+<td style="text-align: right;">37.04</td>
+<td style="text-align: right;">41.12</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">117</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clinic 10</td>
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">42.35</td>
+<td style="text-align: right;">10.80</td>
+<td style="text-align: right;">14.00</td>
+<td style="text-align: right;">40.56</td>
+<td style="text-align: right;">44.13</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">-0.23</td>
+<td style="text-align: right;">0.34</td>
+<td style="text-align: right;">110</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clinic 10</td>
+<td style="text-align: left;">post_qol</td>
+<td style="text-align: right;">36.94</td>
+<td style="text-align: right;">12.60</td>
+<td style="text-align: right;">15.50</td>
+<td style="text-align: right;">35.26</td>
+<td style="text-align: right;">39.23</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">-0.20</td>
+<td style="text-align: right;">-0.05</td>
+<td style="text-align: right;">110</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clinic 11</td>
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">45.18</td>
+<td style="text-align: right;">9.96</td>
+<td style="text-align: right;">14.50</td>
+<td style="text-align: right;">42.93</td>
+<td style="text-align: right;">46.73</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: right;">-0.15</td>
+<td style="text-align: right;">0.31</td>
+<td style="text-align: right;">89</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clinic 11</td>
+<td style="text-align: left;">post_qol</td>
+<td style="text-align: right;">50.01</td>
+<td style="text-align: right;">16.63</td>
+<td style="text-align: right;">26.00</td>
+<td style="text-align: right;">46.49</td>
+<td style="text-align: right;">52.71</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">86</td>
+<td style="text-align: right;">0.21</td>
+<td style="text-align: right;">-0.58</td>
+<td style="text-align: right;">89</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clinic 12</td>
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">44.52</td>
+<td style="text-align: right;">10.17</td>
+<td style="text-align: right;">15.00</td>
+<td style="text-align: right;">42.38</td>
+<td style="text-align: right;">46.99</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: right;">-0.10</td>
+<td style="text-align: right;">-0.37</td>
+<td style="text-align: right;">65</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clinic 12</td>
+<td style="text-align: left;">post_qol</td>
+<td style="text-align: right;">60.00</td>
+<td style="text-align: right;">12.40</td>
+<td style="text-align: right;">19.00</td>
+<td style="text-align: right;">57.21</td>
+<td style="text-align: right;">63.39</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">-0.57</td>
+<td style="text-align: right;">65</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clinic 13</td>
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">44.19</td>
+<td style="text-align: right;">10.55</td>
+<td style="text-align: right;">15.25</td>
+<td style="text-align: right;">41.40</td>
+<td style="text-align: right;">47.68</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">-0.11</td>
+<td style="text-align: right;">-0.42</td>
+<td style="text-align: right;">36</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clinic 13</td>
+<td style="text-align: left;">post_qol</td>
+<td style="text-align: right;">45.31</td>
+<td style="text-align: right;">13.05</td>
+<td style="text-align: right;">19.25</td>
+<td style="text-align: right;">41.28</td>
+<td style="text-align: right;">50.66</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">74</td>
+<td style="text-align: right;">-0.08</td>
+<td style="text-align: right;">-0.24</td>
+<td style="text-align: right;">36</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clinic 14</td>
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">44.54</td>
+<td style="text-align: right;">9.96</td>
+<td style="text-align: right;">14.00</td>
+<td style="text-align: right;">42.92</td>
+<td style="text-align: right;">46.25</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: right;">-0.05</td>
+<td style="text-align: right;">-0.21</td>
+<td style="text-align: right;">118</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clinic 14</td>
+<td style="text-align: left;">post_qol</td>
+<td style="text-align: right;">45.92</td>
+<td style="text-align: right;">10.03</td>
+<td style="text-align: right;">15.25</td>
+<td style="text-align: right;">44.18</td>
+<td style="text-align: right;">47.37</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: right;">-0.16</td>
+<td style="text-align: right;">-0.49</td>
+<td style="text-align: right;">118</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clinic 15</td>
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">45.41</td>
+<td style="text-align: right;">10.25</td>
+<td style="text-align: right;">13.00</td>
+<td style="text-align: right;">43.72</td>
+<td style="text-align: right;">47.37</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">-0.13</td>
+<td style="text-align: right;">109</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clinic 15</td>
+<td style="text-align: left;">post_qol</td>
+<td style="text-align: right;">31.17</td>
+<td style="text-align: right;">11.18</td>
+<td style="text-align: right;">15.00</td>
+<td style="text-align: right;">29.28</td>
+<td style="text-align: right;">33.32</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: right;">-0.38</td>
+<td style="text-align: right;">109</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clinic 16</td>
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">45.29</td>
+<td style="text-align: right;">10.39</td>
+<td style="text-align: right;">17.00</td>
+<td style="text-align: right;">41.14</td>
+<td style="text-align: right;">48.96</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">-0.76</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clinic 16</td>
+<td style="text-align: left;">post_qol</td>
+<td style="text-align: right;">69.90</td>
+<td style="text-align: right;">13.98</td>
+<td style="text-align: right;">19.00</td>
+<td style="text-align: right;">65.45</td>
+<td style="text-align: right;">75.16</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">96</td>
+<td style="text-align: right;">-0.08</td>
+<td style="text-align: right;">-0.71</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clinic 17</td>
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">44.32</td>
+<td style="text-align: right;">7.85</td>
+<td style="text-align: right;">9.00</td>
+<td style="text-align: right;">42.44</td>
+<td style="text-align: right;">46.49</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">71</td>
+<td style="text-align: right;">1.03</td>
+<td style="text-align: right;">1.83</td>
+<td style="text-align: right;">59</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clinic 17</td>
+<td style="text-align: left;">post_qol</td>
+<td style="text-align: right;">44.12</td>
+<td style="text-align: right;">8.54</td>
+<td style="text-align: right;">10.00</td>
+<td style="text-align: right;">42.12</td>
+<td style="text-align: right;">45.86</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.52</td>
+<td style="text-align: right;">59</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clinic 18</td>
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">44.37</td>
+<td style="text-align: right;">9.24</td>
+<td style="text-align: right;">12.00</td>
+<td style="text-align: right;">42.38</td>
+<td style="text-align: right;">46.27</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: right;">-0.18</td>
+<td style="text-align: right;">0.82</td>
+<td style="text-align: right;">71</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clinic 18</td>
+<td style="text-align: left;">post_qol</td>
+<td style="text-align: right;">63.46</td>
+<td style="text-align: right;">13.59</td>
+<td style="text-align: right;">20.00</td>
+<td style="text-align: right;">60.48</td>
+<td style="text-align: right;">66.41</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.55</td>
+<td style="text-align: right;">0.26</td>
+<td style="text-align: right;">71</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clinic 19</td>
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">43.90</td>
+<td style="text-align: right;">10.32</td>
+<td style="text-align: right;">15.00</td>
+<td style="text-align: right;">41.92</td>
+<td style="text-align: right;">45.65</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">-0.22</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">72</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clinic 19</td>
+<td style="text-align: left;">post_qol</td>
+<td style="text-align: right;">44.58</td>
+<td style="text-align: right;">9.91</td>
+<td style="text-align: right;">13.00</td>
+<td style="text-align: right;">42.54</td>
+<td style="text-align: right;">46.66</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">-0.53</td>
+<td style="text-align: right;">72</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clinic 20</td>
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">45.08</td>
+<td style="text-align: right;">10.09</td>
+<td style="text-align: right;">14.50</td>
+<td style="text-align: right;">42.35</td>
+<td style="text-align: right;">47.27</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">-0.46</td>
+<td style="text-align: right;">80</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clinic 20</td>
+<td style="text-align: left;">post_qol</td>
+<td style="text-align: right;">51.15</td>
+<td style="text-align: right;">10.69</td>
+<td style="text-align: right;">16.00</td>
+<td style="text-align: right;">49.02</td>
+<td style="text-align: right;">54.01</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">74</td>
+<td style="text-align: right;">0.33</td>
+<td style="text-align: right;">-0.77</td>
+<td style="text-align: right;">80</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="fixed-effect-fits" class="level2">
+<h2 class="anchored" data-anchor-id="fixed-effect-fits">Fixed effect fits</h2>
+<section id="fit-the-model-to-the-pooled-data" class="level3">
+<h3 class="anchored" data-anchor-id="fit-the-model-to-the-pooled-data">Fit the model to the pooled data</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>pooled_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(post_qol <span class="sc">~</span> days<span class="sc">*</span>reason <span class="sc">+</span> base_qol, <span class="at">data =</span> cosmetic_tib)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>broom<span class="sc">::</span><span class="fu">tidy</span>(pooled_lm, <span class="at">conf.int =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Parameter estimates for the pooled data model"</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Parameter estimates for the pooled data model</caption>
+<colgroup>
+<col style="width: 32%">
+<col style="width: 10%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">term</th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">std.error</th>
+<th style="text-align: right;">statistic</th>
+<th style="text-align: right;">p.value</th>
+<th style="text-align: right;">conf.low</th>
+<th style="text-align: right;">conf.high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">24.755</td>
+<td style="text-align: right;">2.058</td>
+<td style="text-align: right;">12.030</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">20.719</td>
+<td style="text-align: right;">28.791</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">days</td>
+<td style="text-align: right;">0.009</td>
+<td style="text-align: right;">0.004</td>
+<td style="text-align: right;">2.068</td>
+<td style="text-align: right;">0.039</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.017</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">reasonPhysical reason</td>
+<td style="text-align: right;">-2.479</td>
+<td style="text-align: right;">1.616</td>
+<td style="text-align: right;">-1.534</td>
+<td style="text-align: right;">0.125</td>
+<td style="text-align: right;">-5.649</td>
+<td style="text-align: right;">0.691</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">0.459</td>
+<td style="text-align: right;">0.040</td>
+<td style="text-align: right;">11.519</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.380</td>
+<td style="text-align: right;">0.537</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">days:reasonPhysical reason</td>
+<td style="text-align: right;">0.023</td>
+<td style="text-align: right;">0.007</td>
+<td style="text-align: right;">3.205</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;">0.009</td>
+<td style="text-align: right;">0.037</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="fit-the-model-across-contexts" class="level3">
+<h3 class="anchored" data-anchor-id="fit-the-model-across-contexts">Fit the model across contexts</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>clinic_lms <span class="ot">&lt;-</span> cosmetic_tib <span class="sc">|&gt;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(clinic) <span class="sc">|&gt;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(clinic) <span class="sc">|&gt;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">nest</span>() <span class="sc">|&gt;</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">model =</span> purrr<span class="sc">::</span><span class="fu">map</span>(<span class="at">.x =</span> data,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">.f =</span> \(clinic_tib) <span class="fu">lm</span>(post_qol <span class="sc">~</span> days<span class="sc">*</span>reason <span class="sc">+</span> base_qol, <span class="at">data =</span> clinic_tib)),</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">coefs =</span> purrr<span class="sc">::</span><span class="fu">map</span>(model, tidy, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>models <span class="ot">&lt;-</span> clinic_lms <span class="sc">|&gt;</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(data, model)) <span class="sc">|&gt;</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">unnest</span>(coefs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>models <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(estimate)) <span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>() <span class="sc">+</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>term , <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="code_14_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="random-effect-models" class="level2">
+<h2 class="anchored" data-anchor-id="random-effect-models">Random effect models</h2>
+<section id="try-to-fit-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="try-to-fit-the-model">Try to fit the model</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>cosmetic_mod <span class="ot">&lt;-</span> lmerTest<span class="sc">::</span><span class="fu">lmer</span>(post_qol <span class="sc">~</span> days<span class="sc">*</span>reason <span class="sc">+</span> base_qol <span class="sc">+</span> (days<span class="sc">|</span>clinic), <span class="at">data =</span> cosmetic_tib)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">allFit</span>(cosmetic_mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>bobyqa : [OK]
+Nelder_Mead : [OK]
+nlminbwrap : [OK]
+nmkbw : [OK]
+optimx.L-BFGS-B : [OK]
+nloptwrap.NLOPT_LN_NELDERMEAD : [OK]
+nloptwrap.NLOPT_LN_BOBYQA : [OK]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>original model:
+post_qol ~ days * reason + base_qol + (days | clinic) 
+data:  cosmetic_tib 
+optimizers (7): bobyqa, Nelder_Mead, nlminbwrap, nmkbw, optimx.L-BFGS-B,nloptwrap.NLOPT_LN_N...
+differences in negative log-likelihoods:
+max= 0.304 ; std dev= 0.12 </code></pre>
+</div>
+</div>
+</section>
+<section id="rescale-days" class="level3">
+<h3 class="anchored" data-anchor-id="rescale-days">Rescale days</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>cosmetic_tib <span class="ot">&lt;-</span> cosmetic_tib <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">months =</span> days<span class="sc">*</span><span class="dv">12</span><span class="sc">/</span><span class="dv">365</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="standardizing-variables" class="level3">
+<h3 class="anchored" data-anchor-id="standardizing-variables">Standardizing variables</h3>
+<p>We don’t use this model, but if you wanted to fit the model to standardized variables then use this code.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>cosmetic_tib <span class="ot">&lt;-</span> cosmetic_tib <span class="sc">|&gt;</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="fu">across</span>(<span class="at">.cols =</span> <span class="fu">where</span>(is.double),</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">.fns =</span> \(column) (column<span class="sc">-</span><span class="fu">mean</span>(column, <span class="at">na.rm =</span> T))<span class="sc">/</span><span class="fu">sd</span>(column, <span class="at">na.rm =</span> T),</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">.names =</span> <span class="st">"z_{.col}"</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>cosmetic_modz <span class="ot">&lt;-</span> lmerTest<span class="sc">::</span><span class="fu">lmer</span>(z_post_qol <span class="sc">~</span> z_days<span class="sc">*</span>reason <span class="sc">+</span> z_base_qol <span class="sc">+</span> (z_days<span class="sc">|</span>clinic), <span class="at">data =</span> cosmetic_tib)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>broom.mixed<span class="sc">::</span><span class="fu">tidy</span>(cosmetic_modz)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="fit-the-model-using-months" class="level3">
+<h3 class="anchored" data-anchor-id="fit-the-model-using-months">Fit the model using months</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>cosmetic_mod <span class="ot">&lt;-</span> lmerTest<span class="sc">::</span><span class="fu">lmer</span>(post_qol <span class="sc">~</span> months<span class="sc">*</span>reason <span class="sc">+</span> base_qol <span class="sc">+</span> (months<span class="sc">|</span>clinic), <span class="at">data =</span> cosmetic_tib, <span class="at">REML =</span> T)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">allFit</span>(cosmetic_mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>bobyqa : [OK]
+Nelder_Mead : [OK]
+nlminbwrap : [OK]
+nmkbw : [OK]
+optimx.L-BFGS-B : [OK]
+nloptwrap.NLOPT_LN_NELDERMEAD : [OK]
+nloptwrap.NLOPT_LN_BOBYQA : [OK]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>original model:
+post_qol ~ months * reason + base_qol + (months | clinic) 
+data:  cosmetic_tib 
+optimizers (7): bobyqa, Nelder_Mead, nlminbwrap, nmkbw, optimx.L-BFGS-B,nloptwrap.NLOPT_LN_N...
+differences in negative log-likelihoods:
+max= 5.3e-07 ; std dev= 1.98e-07 </code></pre>
+</div>
+</div>
+</section>
+<section id="change-the-optimizer" class="level3">
+<h3 class="anchored" data-anchor-id="change-the-optimizer">Change the optimizer</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>cosmetic_bob <span class="ot">&lt;-</span> lmerTest<span class="sc">::</span><span class="fu">lmer</span>(</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  post_qol <span class="sc">~</span> months<span class="sc">*</span>reason <span class="sc">+</span> base_qol <span class="sc">+</span> (months<span class="sc">|</span>clinic),</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> cosmetic_tib,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">lmerControl</span>(<span class="at">optimizer=</span><span class="st">"bobyqa"</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="use-maximum-likelihood-estimation" class="level3">
+<h3 class="anchored" data-anchor-id="use-maximum-likelihood-estimation">Use maximum likelihood estimation</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>cosmetic_ml <span class="ot">&lt;-</span> lmerTest<span class="sc">::</span><span class="fu">lmer</span>(</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  post_qol <span class="sc">~</span> months<span class="sc">*</span>reason <span class="sc">+</span> base_qol <span class="sc">+</span> (months<span class="sc">|</span>clinic),</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> cosmetic_tib,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">REML =</span> F</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="interpreting-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="interpreting-the-model">Interpreting the model</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(cosmetic_bob) <span class="sc">|&gt;</span> </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Fixed effects for the final model"</span>,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">digits =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">5</span>), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Fixed effects for the final model</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Sum Sq</th>
+<th style="text-align: right;">Mean Sq</th>
+<th style="text-align: right;">NumDF</th>
+<th style="text-align: right;">DenDF</th>
+<th style="text-align: right;">F value</th>
+<th style="text-align: right;">Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">months</td>
+<td style="text-align: right;">275.41</td>
+<td style="text-align: right;">275.41</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">19.03</td>
+<td style="text-align: right;">3.21</td>
+<td style="text-align: right;">0.089</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">reason</td>
+<td style="text-align: right;">288.06</td>
+<td style="text-align: right;">288.06</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1535.47</td>
+<td style="text-align: right;">3.36</td>
+<td style="text-align: right;">0.067</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">32785.53</td>
+<td style="text-align: right;">32785.53</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1534.92</td>
+<td style="text-align: right;">382.66</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">months:reason</td>
+<td style="text-align: right;">1014.54</td>
+<td style="text-align: right;">1014.54</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1535.12</td>
+<td style="text-align: right;">11.84</td>
+<td style="text-align: right;">0.001</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">knitr.kable.NA =</span> <span class="st">''</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>broom.mixed<span class="sc">::</span><span class="fu">tidy</span>(cosmetic_bob, <span class="at">conf.int =</span> T) <span class="sc">|&gt;</span> </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Parameter estimates for the final model"</span>,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">digits =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">7</span>), <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Parameter estimates for the final model</caption>
+<colgroup>
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 26%">
+<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">effect</th>
+<th style="text-align: left;">group</th>
+<th style="text-align: left;">term</th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">std.error</th>
+<th style="text-align: right;">statistic</th>
+<th style="text-align: right;">df</th>
+<th style="text-align: right;">p.value</th>
+<th style="text-align: right;">conf.low</th>
+<th style="text-align: right;">conf.high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">fixed</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">25.07</td>
+<td style="text-align: right;">4.02</td>
+<td style="text-align: right;">6.24</td>
+<td style="text-align: right;">22.48</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">16.75</td>
+<td style="text-align: right;">33.39</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fixed</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">months</td>
+<td style="text-align: right;">0.48</td>
+<td style="text-align: right;">0.40</td>
+<td style="text-align: right;">1.22</td>
+<td style="text-align: right;">19.62</td>
+<td style="text-align: right;">0.239</td>
+<td style="text-align: right;">-0.35</td>
+<td style="text-align: right;">1.31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fixed</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">reasonPhysical reason</td>
+<td style="text-align: right;">-1.79</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">-1.83</td>
+<td style="text-align: right;">1535.47</td>
+<td style="text-align: right;">0.067</td>
+<td style="text-align: right;">-3.71</td>
+<td style="text-align: right;">0.12</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fixed</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">base_qol</td>
+<td style="text-align: right;">0.47</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">19.56</td>
+<td style="text-align: right;">1534.92</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.42</td>
+<td style="text-align: right;">0.52</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fixed</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">months:reasonPhysical reason</td>
+<td style="text-align: right;">0.45</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">3.44</td>
+<td style="text-align: right;">1535.12</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.70</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ran_pars</td>
+<td style="text-align: left;">clinic</td>
+<td style="text-align: left;">sd__(Intercept)</td>
+<td style="text-align: right;">17.05</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ran_pars</td>
+<td style="text-align: left;">clinic</td>
+<td style="text-align: left;">cor__(Intercept).months</td>
+<td style="text-align: right;">-0.70</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ran_pars</td>
+<td style="text-align: left;">clinic</td>
+<td style="text-align: left;">sd__months</td>
+<td style="text-align: right;">1.73</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ran_pars</td>
+<td style="text-align: left;">Residual</td>
+<td style="text-align: left;">sd__Observation</td>
+<td style="text-align: right;">9.26</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>cosmetic_slopes <span class="ot">&lt;-</span> modelbased<span class="sc">::</span><span class="fu">estimate_slopes</span>(cosmetic_bob,</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">trend =</span> <span class="st">"months"</span>,</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">at =</span> <span class="st">"reason"</span>,</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">ci =</span> <span class="fl">0.95</span>) </span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>cosmetic_slopes <span class="sc">|&gt;</span> </span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Change over time for different reasons for surgery"</span>,</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Change over time for different reasons for surgery</caption>
+<colgroup>
+<col style="width: 23%">
+<col style="width: 15%">
+<col style="width: 7%">
+<col style="width: 6%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 7%">
+<col style="width: 11%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">reason</th>
+<th style="text-align: right;">Coefficient</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">CI</th>
+<th style="text-align: right;">CI_low</th>
+<th style="text-align: right;">CI_high</th>
+<th style="text-align: right;">t</th>
+<th style="text-align: right;">df_error</th>
+<th style="text-align: right;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Change appearance</td>
+<td style="text-align: right;">0.482</td>
+<td style="text-align: right;">0.397</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">-0.346</td>
+<td style="text-align: right;">1.311</td>
+<td style="text-align: right;">1.215</td>
+<td style="text-align: right;">19.623</td>
+<td style="text-align: right;">0.239</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Physical reason</td>
+<td style="text-align: right;">0.929</td>
+<td style="text-align: right;">0.401</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">0.094</td>
+<td style="text-align: right;">1.765</td>
+<td style="text-align: right;">2.316</td>
+<td style="text-align: right;">20.558</td>
+<td style="text-align: right;">0.031</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Some alternative ways to get the same simple slopes</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>cosmetic_slopes <span class="ot">&lt;-</span> interactions<span class="sc">::</span><span class="fu">sim_slopes</span>(</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  cosmetic_bob,</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">pred =</span> months,</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">modx =</span> reason,</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">confint =</span> <span class="cn">TRUE</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>cosmetic_slopes <span class="ot">&lt;-</span>  emmeans<span class="sc">::</span><span class="fu">emtrends</span>(cosmetic_bob, <span class="at">var =</span> <span class="st">"months"</span>, <span class="at">spec =</span> <span class="st">"reason"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Plot the simple slopes</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>interactions<span class="sc">::</span><span class="fu">interact_plot</span>(</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  cosmetic_bob,</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">pred =</span> months,</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">modx =</span> reason,</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">interval =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">x.label =</span> <span class="st">"Months since surgery"</span>,</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">y.label =</span> <span class="st">"Quality of life post-surgery (0-100)"</span>,</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend.main =</span> <span class="st">"Reason for surgery"</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="code_14_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1" role="doc-endnote"><p>Basically you can use this material for teaching and non-profit activities but do not meddle with it or claim it as your own work.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

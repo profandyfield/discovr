@@ -5,7 +5,7 @@
 \alias{cosmetic}
 \title{Cosmetic surgery data}
 \format{
-A tibble with 276 rows and 8 variables.
+A tibble with 1376 rows and 7 variables.
 }
 \source{
 \href{https://www.discovr.rocks/csv/cosmetic.csv}{www.discovr.rocks/csv/cosmetic.csv}
@@ -23,13 +23,12 @@ There are two main reasons to have cosmetic surgery: (1) to help a physical prob
 This example uses fictitious data looks at the effects of cosmetic surgery on quality of life. The variables in the data are:
 \itemize{
 \item \strong{id}: The participant id
-\item \strong{post_qol}: The outcome variable. It measures quality of life after cosmetic surgery on a percentage scale (0\% = the worst possible quality of life, 100\% = the best possible quality of life)
-\item \strong{base_qol}: Quality of life pre-surgery on the same percentage scale.
-\item \strong{surgery}: Categorical variable specifying whether the person has undergone cosmetic surgery or is on the waiting list, which acts as our control group.
-\item \strong{clinic}: Categorical variable that indicates which of 10 clinics the person attended to have their surgery.
-\item \strong{age}: The particiopant's age in years.
-\item \strong{bdi}: Levels of depression using the Beck Depression Inventory (BDI).
+\item \strong{clinic}: Categorical variable that indicates which of 21 clinics the person attended to have their surgery.
 \item \strong{reason}: Categorical variable that indicates whether the person had or is waiting to have surgery purely to change their appearance or because of a physical reason.
+\item \strong{base_qol}: Quality of life pre-surgery on a percentage scale (0\% = the worst possible quality of life, 100\% = the best possible quality of life).
+\item \strong{post_qol}: Quality of life after cosmetic surgery on a percentage scale (0\% = the worst possible quality of life, 100\% = the best possible quality of life).
+\item \strong{days}: The number of days since surgery.
+\item \strong{bdi}: Levels of depression using the Beck Depression Inventory (BDI).
 }
 }
 \keyword{datasets}

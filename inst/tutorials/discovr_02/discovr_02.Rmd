@@ -8,7 +8,7 @@ output:
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
 description: "Summarizing data: frequency distributions, grouped frequency distributions, relative frequencies, histograms, mean, median, variance, standard deviation, interquartile range, tables of summary statistics."
-bibliography: discovr_02.bib
+bibliography: [discovr_02.bib, packages.bib]
 ---
 <html lang="en">
 
@@ -24,7 +24,7 @@ library(learnr) #necessary to render tutorial correctly
 library(dplyr)
 library(ggplot2)
 library(htmltools)
-library(magrittr)
+library(knitr)
 
 
 source("./www/discovr_helpers.R")
@@ -35,6 +35,12 @@ ice_tib <- discovr::ice_bucket
 
 ```
 
+```{r, eval = F, echo = F}
+# Create bib file for R packages
+here::here("inst/tutorials/discovr_02/packages.bib") |> 
+  knitr::write_bib(c('tidyverse', 'dplyr', 'readr', 'forcats', 'tibble', 'datawizard', 'knitr'), file = _)
+```
+
 
 # discovr: Summarizing data
 
@@ -43,7 +49,7 @@ ice_tib <- discovr::ice_bucket
 <div class="infobox">
   <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
   
-  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2022] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
+  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2023] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
   
 </div>
 
@@ -85,19 +91,24 @@ By for now and good luck - you'll be amazing!
 
 This tutorial uses the following packages:
 
+* `datawizard` [@R-datawizard]
 * `here` [@here]
-* `tidyverse` [@tidyverse]
+* `knitr` [@R-knitr]
 
-I try to follow the [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) in always declaring the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will write `dplyr::mutate()`. 
+It also uses these `tidyverse` packages [@R-tidyverse; @tidyverse2019]: `readr` [@R-readr], `dplyr` [@R-dplyr], `forcats` [@R-forcats],  `ggplot2` [@wickhamGgplot2ElegantGraphics2016] and `tibble` [@R-tibble].
 
-It is good practice to be explicit about packages to avoid clashes where functions from different packages have the same name. It also means that you don't need to load packages at the start of your markdown document. 
 
-There are two main exceptions to this rule.
+### Coding style
 
-1. There are functions within some `tidyverse` packages that would be used within other functions. Including the package name makes the code difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
-2. To use the pipe operator (`%>%`) you need to have `magrittr` loaded.
+There are (broadly) two styles of coding:
 
-We can load all of the packages that are exceptions in one step by loading `tidyverse` at the beginning of our `r rproj()` Markdown document:
+1. **Verbose**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt verbose style, you don't need to load packages at the start of your `r rproj()` Markdown document (although see below for some exceptions).
+
+2. **Concise**: Using this style you load all of the packages at the start of your `r rproj()` Markdown document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
+
+Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend a verbose style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load `tidyverse` because the `dplyr` and `ggplot2` packages contain functions that are often used within other functions and in these cases the verbose style is difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+
+You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the `tidyverse` package (and any others if you're using a concise style) at the beginning of your `r rproj()` Markdown document:
 
 ```{r eval = FALSE}
 library(tidyverse)
@@ -112,7 +123,7 @@ To work *outside of this tutorial* you need to download the following data file:
 Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
 
 ```{r, eval=FALSE}
-ice_tib <- here::here("data/ice_bucket.csv") %>% readr::read_csv()
+ice_tib <- here::here("data/ice_bucket.csv") |> readr::read_csv()
 ```
 
 
@@ -140,8 +151,8 @@ To count the frequencies of scores we need to do two things:
 We can create a frequency table called [freq_tbl]{.alt} as follows:
 
 ```{r freq_dist, exercise=TRUE, exercise.lines=6}
-freq_tbl <- ice_tib %>%
-  dplyr::group_by(upload_day) %>% 
+freq_tbl <- ice_tib |>
+  dplyr::group_by(upload_day) |> 
   dplyr::summarise(
     frequency = n()
   )
@@ -175,7 +186,7 @@ Combining this function with `dplyr::mutate()` (which we encountered in the **di
 #### `r robot()` Code example
 
 ```{r cut_width, exercise=TRUE, exercise.lines=5}
-gp_freq_dist <- ice_tib %>% 
+gp_freq_dist <- ice_tib |> 
   dplyr::mutate(
     days_group = ggplot2::cut_width(upload_day, 4)
     )
@@ -204,7 +215,7 @@ Create a grouped frequency table called [gp_freq_dist]{.alt} by starting with th
 
 ```{r gp_freq_dist-hint-1}
 # Start with the text from the code example, which creates the bins:
-gp_freq_dist <- ice_tib %>% 
+gp_freq_dist <- ice_tib |> 
   dplyr::mutate(
     days_group = ggplot2::cut_width(upload_day, 4)
     )
@@ -214,8 +225,8 @@ gp_freq_dist <- ice_tib %>%
 # Previously we used this code to count scores
 # Think about how to connect this code to the previous
 # code. Focus on the right hand side.
-freq_tbl <- ice_tib %>%
-  dplyr::group_by(upload_day) %>% 
+freq_tbl <- ice_tib |>
+  dplyr::group_by(upload_day) |> 
   dplyr::summarise(
     frequency = n()
   )
@@ -226,11 +237,11 @@ freq_tbl <- ice_tib %>%
 # We take the code that bins the data, then
 # pipe the resulting tibble into 
 # group_by and summarize.
-gp_freq_dist <- ice_tib %>% 
+gp_freq_dist <- ice_tib |> 
   dplyr::mutate(
     days_group = ggplot2::cut_width(upload_day, 4)
-    ) %>% 
-  dplyr::group_by(upload_day) %>% 
+    ) |> 
+  dplyr::group_by(upload_day) |> 
   dplyr::summarise(
     frequency = n()
   )
@@ -244,11 +255,11 @@ gp_freq_dist <- ice_tib %>%
 # We want to group by days_group not upload day.. 
 # Change upload_day in the group_by() function
 # to be days_group 
-gp_freq_dist <- ice_tib %>% 
+gp_freq_dist <- ice_tib |> 
   dplyr::mutate(
     days_group = ggplot2::cut_width(upload_day, 4)
-    ) %>% 
-  dplyr::group_by(days_group) %>% 
+    ) |> 
+  dplyr::group_by(days_group) |> 
   dplyr::summarise(
     frequency = n()
   )
@@ -268,7 +279,7 @@ We now have an object [gp_freq_dist]{.alt} that contains the number of days grou
 If we want to calculate the relative frequency (i.e., the proportion of videos uploaded during each of the time periods represented by the bins) we can use `dplyr::mutate()` to add a variable that divides the frequency by the total number of videos uploaded. We can find this total using `sum()`.
 
 ```{r, eval = FALSE}
-... %>% 
+... |> 
   dplyr::mutate(
     relative_freq = frequency/sum(frequency)
   )
@@ -281,11 +292,11 @@ Within the `mutate()` function we create a new column called **relative_freq** u
 Using the code example, pipe the [gp_freq_dist]{.alt} object into `mutate()`, calculate the relative frequency and store it as a variable called **relative_freq**. 
 
 ```{r rel_freq-setup}
-gp_freq_dist <- ice_tib %>% 
+gp_freq_dist <- ice_tib |> 
   dplyr::mutate(
     days_group = ggplot2::cut_width(upload_day, 4)
-    ) %>% 
-  dplyr::group_by(days_group) %>% 
+    ) |> 
+  dplyr::group_by(days_group) |> 
   dplyr::summarise(
     frequency = n()
   )
@@ -301,7 +312,7 @@ gp_freq_dist <- ice_tib %>%
 # We want to add a variable to an existing tibble (gp_freq_dist)
 # so a good place to start is:
 
-gp_freq_dist <- gp_freq_dist %>% ...
+gp_freq_dist <- gp_freq_dist |> ...
 
 # Think about what will be on the other wise of the pipe
 ```
@@ -309,7 +320,7 @@ gp_freq_dist <- gp_freq_dist %>% ...
 ```{r rel_freq-hint-2}
 # We pipe the data into the mutate() from the code example
 
-gp_freq_dist <- gp_freq_dist %>% 
+gp_freq_dist <- gp_freq_dist |> 
   dplyr::mutate(
     relative_freq = frequency/sum(frequency)
   )
@@ -318,7 +329,7 @@ gp_freq_dist <- gp_freq_dist %>%
 ```{r rel_freq-hint-3}
 # To see the results we need to execute the name of rthe table:
 
-gp_freq_dist <- gp_freq_dist %>% 
+gp_freq_dist <- gp_freq_dist |> 
   dplyr::mutate(
     relative_freq = frequency/sum(frequency)
   )
@@ -340,14 +351,14 @@ In the tasks above we created the table of relative frequencies step by step:
 Usually it's more efficient to carry out these steps in one piece of code. For example, if we combine all of the previous operations we get:
 
 ```{r rel_freq_eff, exercise=TRUE, exercise.lines=13}
-gp_freq_dist <- ice_tib %>% 
+gp_freq_dist <- ice_tib |> 
   dplyr::mutate(
     days_group = ggplot2::cut_width(upload_day, 4)
-    ) %>% 
-  dplyr::group_by(days_group) %>% 
+    ) |> 
+  dplyr::group_by(days_group) |> 
   dplyr::summarise(
     frequency = n()
-  ) %>% 
+  ) |> 
   dplyr::mutate(
     relative_freq = frequency/sum(frequency),
     percent = relative_freq*100
@@ -357,14 +368,14 @@ gp_freq_dist
 ```
 
 ```{r rel_freq_eff-solution}
-gp_freq_dist <- ice_tib %>% 
+gp_freq_dist <- ice_tib |> 
   dplyr::mutate(
     days_group = ggplot2::cut_width(upload_day, 4)
-    ) %>% 
-  dplyr::group_by(days_group) %>% 
+    ) |> 
+  dplyr::group_by(days_group) |> 
   dplyr::summarise(
     frequency = n()
-  ) %>% 
+  ) |> 
   dplyr::mutate(
     relative_freq = frequency/sum(frequency),
     percent = relative_freq*100
@@ -750,50 +761,6 @@ IQR(ice_tib$upload_day, type = 8)
 ```
 
 
-### `r user_visor()` Rounding values [(1)]{.alt}
-
-We can use the `round()` function to round values. It 
-
-```{r, eval=FALSE}
-round(value, number_of_decimal_places = 0)
-```
-
-In which we input a [value]{.alt}, and specify the number of decimal places we want (the default is 0, which returns a whole number). For example, to round the value 3.211420 to a whole number we would execute:
-
-```{r, eval=FALSE}
-round(3.211420)
-```
-
-But to round it to two decimal places we would include the number two after a comma:
-
-```{r, eval=FALSE}
-round(3.211420, 2)
-```
-
-We could also use a pipe to feed a mean, median or variance into the round function. For example, to round the value of the variance of **upload_day** to 3 decimal places we could execute:
-
-#### `r robot()` Code example
-
-```{r var_ice_rnd, exercise = TRUE}
-var(ice_tib$upload_day) %>%
-  round(3)
-```
-
-#### `r alien()` Alien coding challenge
-
-Round the standard deviation and mean of **upload_day** to 2 decimal places.
-
-```{r ice_rnd, exercise = TRUE}
-
-```
-
-```{r ice_rnd-solution}
-# SD
-sd(ice_tib$upload_day) %>% round(2)
-# Mean
-mean(ice_tib$upload_day) %>% round(2)
-```
-
 ## `r user_visor()` Creating a summary table [(2)]{.alt}
 
 So far we have looked at computing individual statistics for a set of scores, but what if we want to combine these values into a table? We can do this using the `summarise()` function described earlier in the tutorial.
@@ -803,16 +770,15 @@ So far we have looked at computing individual statistics for a set of scores, bu
 The code looks like this in general:
 
 ```{r eval = FALSE}
-ice_tib %>%
+ice_tib |>
   dplyr::summarise(
     median =  median(upload_day),
     mean =  mean(upload_day),
     ...
-    ) %>%
-    round(., 2)
+    )
 ```
 
-The code feeds the data stored in [ice_tib]{.alt} into the `summarise()` function. In this function new variables are created. The first variable we name `median` and it stores the output of `median(upload_day)`. In other words, we create a variable that we chose to call `median` (left hand side of the command) that stores the value of the median of the variable **upload_day** (right-hand side of the command). Similarly, we store the mean upload day in a variable called **mean** and so on. We can add as many new variables as we wish, but for the last variable we create we need to omit the comma at the end of the line (like we do when using `mutate()`). Finally, we pipe all of these values into the `round()` function, which rounds them to two decimal places.
+The code feeds the data stored in [ice_tib]{.alt} into the `summarise()` function. In this function new variables are created. The first variable we name `median` and it stores the output of `median(upload_day)`. In other words, we create a variable that we chose to call `median` (left hand side of the command) that stores the value of the median of the variable **upload_day** (right-hand side of the command). Similarly, we store the mean upload day in a variable called **mean** and so on. We can add as many new variables as we wish, but for the last variable we create we need to omit the comma at the end of the line (like we do when using `mutate()`).
 
 <div class="warning">
   `r bug()` **De-bug: commas at the end of commands** 
@@ -830,49 +796,45 @@ Create a summary table containing the mean, median, IQR, variance and SD of the 
 
 ```{r ice_sum-hint-1}
 #start with the code example:
-ice_tib %>%
+ice_tib |>
   dplyr::summarise(
     median =  median(upload_day),
     mean =  mean(upload_day),
     ...
-    ) %>%
-    round(., 2)
+    ) 
 ```
 
 ```{r ice_sum-hint-2}
 # Now add the command to get the IQR into the summarize() function
-ice_tib %>%
+ice_tib |>
   dplyr::summarise(
     median =  median(upload_day),
     mean =  mean(upload_day),
     IQR = IQR(upload_day)
-    ) %>%
-    round(., 2)
+    )
 ```
 
 ```{r ice_sum-hint-3}
 # Now add the command to get the variance into the summarize() function
-ice_tib %>%
+ice_tib |>
   dplyr::summarise(
     median =  median(upload_day),
     mean =  mean(upload_day),
     IQR = IQR(upload_day),
     variance = var(upload_day)
-    ) %>%
-    round(., 2)
+    )
 ```
 
 ```{r ice_sum-hint-4}
 # Now add the command to get the standard deviation into the summarize() function
-ice_tib %>%
+ice_tib |>
   dplyr::summarise(
     median =  median(upload_day),
     mean =  mean(upload_day),
     IQR = IQR(upload_day),
     variance = var(upload_day),
     std_dev = sd(upload_day)
-    ) %>%
-    round(., 2)
+    )
 
 # Check that you have commas at the end of every line except the last within summarise.
 ```
@@ -882,16 +844,202 @@ ice_tib %>%
 If we want to store this table of summary statistics we can do so by assigning it to a new object. Let's say we want to assign it to an object called [upload_summary]{.alt} then we'd add `upload_summary <-` to the beginning of the command
 
 ```{r eval = FALSE}
-upload_summary <- ice_tib %>%
+upload_summary <- ice_tib |>
   dplyr::summarise(
     median =  median(upload_day),
     mean =  mean(upload_day),
     IQR = IQR(upload_day),
     variance = var(upload_day),
     std_dev = sd(upload_day)
-    ) %>%
-    round(., 2) 
+    ) 
 ```
+
+
+## `r user_visor()` Rounding values [(1)]{.alt}
+
+We can use the `round()` function to round values, and we can use the `kable()` function from `knitr` to round an entire table of values.
+
+### `r user_visor()` The `round()` function [(1)]{.alt}
+
+The `round()` function takes this form 
+
+```{r, eval=FALSE}
+round(x, digits = 0)
+```
+
+In which [x]{.alt} is the thing we want to round, and [digits]{.alt} is the number of decimal places we want (the default is 0, which returns a whole number). For example, to round the value 3.211420 to a whole number we would execute:
+
+```{r, eval=FALSE}
+round(3.211420)
+```
+
+But to round it to two decimal places we would include the number two after a comma:
+
+```{r, eval=FALSE}
+round(3.211420, 2)
+```
+
+We could also use a pipe to feed a mean, median or variance into the round function. For example, to round the value of the variance of **upload_day** to 3 decimal places we could execute:
+
+#### `r robot()` Code example
+
+```{r var_ice_rnd, exercise = TRUE}
+var(ice_tib$upload_day) |>
+  round(3)
+```
+
+#### `r alien()` Alien coding challenge
+
+Round the standard deviation and mean of **upload_day** to 2 decimal places.
+
+```{r ice_rnd, exercise = TRUE}
+
+```
+
+```{r ice_rnd-solution}
+# SD
+sd(ice_tib$upload_day) |> round(2)
+# Mean
+mean(ice_tib$upload_day) |> round(2)
+```
+
+
+#### `r alien()` Alien coding challenge
+
+If we have a table that only contains numbers, then we can also apply `round()` to the entire table. For example, in the previous section we created an object called [upload_summary]{.alt} using the following code in the code box.
+
+```{r upload_sum, exercise = TRUE, exercise.lines=12}
+upload_summary <- ice_tib |>
+  dplyr::summarise(
+    median =  median(upload_day),
+    mean =  mean(upload_day),
+    IQR = IQR(upload_day),
+    variance = var(upload_day),
+    std_dev = sd(upload_day)
+    )
+upload_summary
+```
+
+```{r upload_sum-solution}
+upload_summary <- ice_tib |>
+  dplyr::summarise(
+    median =  median(upload_day),
+    mean =  mean(upload_day),
+    IQR = IQR(upload_day),
+    variance = var(upload_day),
+    std_dev = sd(upload_day)
+    )
+
+upload_summary |> round(2)
+```
+
+Execute the code in the code box to view the table. Then edit the last line to pipe the table into `round()` using
+
+```{r, eval = F}
+upload_summary |> round(2)
+```
+
+Execute this new code and you should find the values are now rounded to 2 decimal places.
+
+
+### `r user_visor()` The `kable()` function [(1)]{.alt}
+
+The code in the previous section works only because every column in the table contains numbers. If one of the columns contained text, or something other than a number, `r rproj()` will throw an error because `round()` doesn't know what to do with it. A more straightforward option for tables is to pipe them into the `kable()` function from `knitr()`. It has these main arguments
+
+```{r, eval = F}
+knitr::kable(x = my_table,
+  digits = number_of_decimal_places,
+  row.names = a_list_of_row_names,
+  col.names = a_list_of_column_names,
+  align,
+  caption = "Write a caption"
+)
+```
+
+The function takes your table as the main input, but has options to set the maximum number of decimal places using [digits]{.alt}, you can add row and column names (in the case of column names you can provide a list to override the variable names in the tibble), you can set the alignment of each column, and include a caption. For now, let's add a caption and set the maximum number of decimal places to 2 using
+
+```{r, eval = F}
+upload_summary |> 
+  knitr::kable(digits = 2,
+        caption = "Summary statistics for the ice bucket challenge."
+        )
+```
+
+#### `r alien()` Alien coding challenge
+
+Let's again use the code to create an object called [upload_summary]{.alt} but this time pipe it through `kable()`.
+
+```{r upload_skable, exercise = TRUE, exercise.lines=15}
+upload_summary <- ice_tib |>
+  dplyr::summarise(
+    median =  median(upload_day),
+    mean =  mean(upload_day),
+    IQR = IQR(upload_day),
+    variance = var(upload_day),
+    std_dev = sd(upload_day)
+    )
+
+upload_summary |> 
+  knitr::kable(digits = 2,
+        caption = "Summary statistics for the ice bucket challenge."
+        ) 
+```
+
+Execute this new code and you should again find the values are rounded to 2 decimal places. However, `kable()` has the advantage that it will intelligently round the columns, so it won't try to round columns with text in, and we have options to align and caption the table. So, other things being equal, use `kable()` to round values in tables.
+
+<div class="tip">
+  `r cat_space()` **Tip: kable in code chunks**
+
+If you execute an individual code chunk that uses `kable()` within your document the table will appear below the code chunk as normal but looks horrible. `kable()` weaves its magic when the entire document is rendered. If you want to view the table as a work in progress, highlight the code excluding the `|> kable()` part and press control + enter (command + enter on MacOS) to view the table.
+</div>
+
+
+## `r user_visor()` Quick descriptives with `datawizard` [(2)]{.alt}
+
+Creating a bespoke table of summary statistics is useful and helps us to practice our `tidyverse` skills. However, if we want a quick set of descriptive statistics we can use the `describe_distribution()` function from the `datawizard` package. It has the following arguments:
+
+```{r, eval = F}
+datawizard::describe_distribution(x = my_data,
+  select = NULL,
+  exclude = NULL,
+  centrality = "mean",
+  dispersion = TRUE,
+  iqr = TRUE,
+  range = TRUE,
+  quartiles = FALSE,
+  include_factors = FALSE,
+  ci = NULL)
+```
+
+You replace [my_data]{.alt} with the name of a tibble that you want to summarize, you can use [select]{.alt} to select specific variables within the tibble, or [exclude]{.alt} to exclude them (as you would if you used the `select()` function from `dplyr`). By default mean is displayed [centrality = "mean"]{.alt} but this can be set to "median", "MAP" (the maximum a posteriori probability, which we don't cover) or "all" to get all of them. The remaining arguments can be set to TRUE or FALSE to indicate which summary statistics to include, by default you get measures of dispersion (standard deviation for the mean and mean absolute deviation for the median), the interquartile range [iqr]{.alt}, and the range, but not the upper ($q_{0.75}$) and lower ($q_{0.25}$) quartiles or confidence intervals (which we'll learn about in due course).
+
+#### `r alien()` Alien coding challenge
+
+Using the default options, get some descriptive statistics for the ice bucket challenge data.
+
+```{r ice_wiz, exercise = TRUE, exercise.lines=3}
+
+```
+
+```{r ice_wiz-hint-1}
+#replace the xxx
+datawizard::describe_distribution(xxx)
+```
+
+```{r ice_wiz-hint-2}
+#replace the xxx
+datawizard::describe_distribution(ice_tib)
+# now use kable() to round the valeues to 2dp
+```
+
+```{r ice_wiz-solution}
+datawizard::describe_distribution(ice_tib) |> 
+  knitr::kable(digits = 2)
+```
+
+
+<br />
+
 
 <div class="infobox">
   <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
@@ -906,7 +1054,7 @@ upload_summary <- ice_tib %>%
 
 ### Statistics
 
-* The tutorials typically follow examples described in detail in @field_discovering_2022. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
+* The tutorials typically follow examples described in detail in @field_discovering_2023. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
 * If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
 * There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/).
 * There are free statistical resources on my websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [milton-the-cat.rocks](http://milton-the-cat.rocks).

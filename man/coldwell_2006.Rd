@@ -14,7 +14,7 @@ A tibble with 118 rows and 9 variables.
 coldwell_2006
 }
 \description{
-A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Coldwell, Pike and Dunn (2006) investigated whether household chaos predicted children's problem behaviour

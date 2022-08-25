@@ -14,7 +14,7 @@ A tibble with 503 rows and 4 variables.
 hill_2007
 }
 \description{
-A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Hill et al.  (2007) examined whether providing children with a leaflet based on the \emph{theory of planned behaviour} increased their

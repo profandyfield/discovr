@@ -14,7 +14,7 @@ A tibble with 231 rows and 4 variables.
 supermodel
 }
 \description{
-A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 A fashion student was interested in factors that predicted the salaries of male and female catwalk models.

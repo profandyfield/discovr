@@ -14,7 +14,7 @@ A tibble with 15 rows and 4 variables.
 hangover
 }
 \description{
-A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 A marketing manager tested the benefit of soft drinks for curing hangovers. He took 15 people and got

@@ -14,7 +14,7 @@ A tibble with 296 rows and 4 variables.
 miller_2007
 }
 \description{
-A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Miller and colleagues (2007) tested the \emph{hidden-estrus} theory, which suggests that unlike other female mammals,

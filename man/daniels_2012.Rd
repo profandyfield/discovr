@@ -14,7 +14,7 @@ A tibble with 4 rows and 7 variables.
 daniels_2012
 }
 \description{
-A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Women (and increasingly men) are bombared with 'idealized' images in the media and there is a growing concern

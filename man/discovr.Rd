@@ -3,7 +3,7 @@
 \docType{package}
 \name{discovr}
 \alias{discovr}
-\title{discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2022)}
+\title{discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2023)}
 \description{
 The \code{discovr} package contains interactive \code{learnr} tutorials and datasets that accompany my textbook \href{https://www.discovr.rocks/}{Discovering Statistics Using R and RStudio}.
 }
@@ -210,7 +210,7 @@ The following palettes exist.
 \section{References}{
 
 \itemize{
-\item Field, A. P. (2022). \emph{Discovering statistics using R and RStudio} (2nd ed.). London: Sage.
+\item Field, A. P. (2023). \emph{Discovering statistics using R and RStudio} (2nd ed.). London: Sage.
 }
 }
 

@@ -14,7 +14,7 @@ A tibble with 24 rows and 3 variables.
 big_hairy_spider
 }
 \description{
-A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Is arachnophobia (fear of spiders) specific to real spiders or will pictures of spiders evoke similar levels

@@ -14,7 +14,7 @@ A tibble with 50 rows and 4 variables.
 stalker
 }
 \description{
-A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Some fictional data about therapy for stalking. A few years back I was stalked. You'd think they could have found

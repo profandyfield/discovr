@@ -14,7 +14,7 @@ A tibble with 442 rows and 4 variables
 video_games
 }
 \description{
-A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Video games are among the favourite online activities for young people. These games have been linked to increased aggression in youths.

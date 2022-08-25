@@ -14,7 +14,7 @@ A tibble with 40 rows and 4 variables.
 xbox
 }
 \description{
-A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Fictional data about injuries while playing video games on a console. A researcher was interested in

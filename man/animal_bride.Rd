@@ -14,7 +14,7 @@ A tibble with 20 rows and 3 variables.
 animal_bride
 }
 \description{
-A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Fictitious data inspired by two news stories that I enjoyed. The first was about a Sudanese man who was forced to marry a goat

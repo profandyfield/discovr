@@ -14,7 +14,7 @@ A tibble with 60 rows and 4 variables.
 davey_2003
 }
 \description{
-A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Many of us have experienced that feeling after we have left the house of wondering whether we remembered to lock the door,

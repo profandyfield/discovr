@@ -14,7 +14,7 @@ A tibble with 275 rows and 12 variables.
 ong_2011
 }
 \description{
-A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 A study by Ong et al., (2011) examining the relationship between a person's narcissism and other people's ratings of their profile picture on Facebook.

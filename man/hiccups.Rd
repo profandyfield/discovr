@@ -14,7 +14,7 @@ A tibble with 60 rows and 3 variables.
 hiccups
 }
 \description{
-A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 People have many methods for stopping hiccups (a surprise, holding your breath), and medical science has

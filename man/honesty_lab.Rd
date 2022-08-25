@@ -14,7 +14,7 @@ A tibble with 100 rows and 3 variables.
 honesty_lab
 }
 \description{
-A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Fictional data about the honesty lab. Imagine we were interested in how people evaluated dishonest acts.

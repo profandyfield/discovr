@@ -14,7 +14,7 @@ A tibble with 200 rows and 7 variables.
 cat_reg
 }
 \description{
-A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Fictional data illustrating how the chi-square test is a linear model. It's about line dancing cats. The object contains the following variables:

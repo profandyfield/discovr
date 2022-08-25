@@ -14,7 +14,7 @@ A tibble with 120 rows and 5 variables.
 switch
 }
 \description{
-A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Fictional data about injuries while playing video games on a console. There are reports of increases in injuries related to

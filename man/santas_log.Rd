@@ -14,7 +14,7 @@ A tibble with 400 rows and 4 variables.
 santas_log
 }
 \description{
-A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Let's begin with a Christmas tale. A year ago Santa was resting in his workshop studying his nice

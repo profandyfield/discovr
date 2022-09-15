@@ -8,7 +8,8 @@ output:
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
 description: "Key concepts in R (functions and objects, packages and functions, style, data types, tidyverse, tibbles)."
-bibliography: discovr_01.bib
+bibliography: [discovr_01.bib, packages.bib]
+
 ---
 <html lang="en">
 
@@ -19,17 +20,25 @@ knitr::opts_chunk$set(
 	warning = FALSE
 )
 
-library(learnr) #necessary to render tutorial correctly
-
+#necessary to render tutorial correctly
+library(learnr) 
+library(htmltools)
+#tidyverse
+library(dplyr)
 library(forcats)
 library(ggplot2)
-library(htmltools)
+library(tibble)
+#non tidyverse
 library(kableExtra)
 library(lubridate)
-library(tibble)
-
 
 source("./www/discovr_helpers.R")
+```
+
+```{r, eval = F, echo = F}
+# Create bib file for R packages
+here::here("inst/tutorials/discovr_01/packages.bib") |>
+  knitr::write_bib(c('tidyverse', 'dplyr', 'forcats', 'tibble', 'lubridate'), file = _)
 ```
 
 # discovr: Key Concepts in `r rproj()`
@@ -43,21 +52,21 @@ source("./www/discovr_helpers.R")
   
 </div>
 
-### `r cat_space(fill = "h3", height = 2)` Welcome to the `discovr` space pirate academy
+### `r cat_space(fill = blu)` Welcome to the `discovr` space pirate academy
 
 Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
-* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
-* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
+* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
+* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
-* `r alien(height = 2)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
-* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
-* `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
+* `r alien(height = 1.5)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
+* `r robot(height = 1.5)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
+* `r bug(height = 1.5)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
 
 Also, use hints and solutions to guide you through the exercises (Figure 1).
 
@@ -73,9 +82,26 @@ By for now and good luck - you'll be amazing!
 
 * Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
 
-* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an `r rproj()` markdown file within an `r rstudio()` project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
+* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an Quarto file within an `r rstudio()` project and practice everything you do in the tutorial in the Quarto file, make notes on things that confused you or that you want to remember, and save it. Within this Quarto document you will need to load the relevant packages and data. 
 
 ![](https://youtu.be/FhoYCsZttGc)
+
+### Packages
+
+This tutorial uses the following packages:
+
+* `lubridate` [@lubridate2011; @R-lubridate]
+
+
+It also uses these `tidyverse` packages [@R-tidyverse; @tidyverse2019]: `dplyr` [@R-dplyr], `forcats` [@R-forcats] and `tibble` [@R-tibble].
+
+If working outside of the tutorial, load the `lubridate` and `tidyverse` packages at the beginning of your Quarto document:
+
+```{r eval = FALSE}
+library(lubridate)
+library(tidyverse)
+```
+
 
 ## `r bmu()` Communicating with `r rproj()` [(1)]{.alt}
 
@@ -224,19 +250,19 @@ learnr::quiz(caption = "A fun ... ction quiz",
   
   When you use a function you can name each argument you set, which I generally recommend because you are being explicit about the value of each argument. For example, when computing the mean of the variable **songs_written** with a 5% trim and excluding missing values we could execute:
   
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = '.panel_alt'}
 mean(x = songs_written, trim = 5, na.rm = TRUE)
 ```
 
 When naming arguments we can specify them in any order, so this code is equivalent to the above
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = '.panel_alt'}
 mean(na.rm = TRUE, trim = 5, x = songs_written)
 ```
 
 However, you can exclude the argument names if you specify them in the correct order. This code will also compute the mean of the variable **songs_written** with a 5% trim and excluding missing values:
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source = '.panel_alt'}
 mean(songs_written, 5, TRUE)
 ```
 
@@ -254,7 +280,7 @@ There are (broadly) two styles of coding: verbose and concise
 
 ### `r bmu()`	Verbose coding style [(1)]{.alt}
 
-Using verbose style you declare the package (a.k.a. [namespace]{.alt}) when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt verbose style, you **don't** need to load packages at the start of your `r rproj()` Markdown document using `library())`. Here's an example of verbose style
+Using verbose style you declare the package (a.k.a. [namespace]{.alt}) when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt verbose style, you **don't** need to load packages at the start of your Quarto document using `library())`. Here's an example of verbose style
 
 ```{r, eval = F}
 my_data <- my_data |> 
@@ -274,7 +300,7 @@ Even with verbose style it makes sense to load `dplyr` and `ggplot2` at the star
 
 ### `r bmu()`	Concise coding style [(1)]{.alt}
 
-Using concise  style you load all of the packages at the start of your `r rproj()` Markdown document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently. See this tutorial on [loading packages](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-installing-and-loading-packages)). Here's the code from the previous section but in concise style
+Using concise  style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently. See this tutorial on [loading packages](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-installing-and-loading-packages)). Here's the code from the previous section but in concise style
 
 ```{r, eval = F}
 library(dplyr)
@@ -377,7 +403,7 @@ library(tidyverse)
 
 Neither approach is correct: some people like the convenience of loading the entire ecosystem whereas others prefer to load only the tidyverse packages they want to use.
 
-##	`r bmu() ` The pipe operator (`|>`) [(1)]{.alt}
+##	`r bmu() ` The pipe operator `|>` [(1)]{.alt}
 
 The tidyverse approach to coding `r rproj()` makes use of something called the pipe operator (`|>`) to link functions together. This operator, known as the [native pipe]{.alt}, is built into `r rproj()`.
 
@@ -441,7 +467,7 @@ my_sentence <- "Andy's discovr tutorials are great."
 gsub("great", "terrible", my_sentence)
 ```
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Use the code box to execute the code above.
 
@@ -474,7 +500,7 @@ my_sentence |>
 
 So instead of setting [x = my_sentence]{.alt} within `gsub()`, we pipe the data into it instead.
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Use the code box to execute the code above.
 
@@ -517,7 +543,7 @@ my_sentence |>
   
 works because even though we haven't named the arguments, we have explicitly told the pipe to assign its contents to the argument named [x]{.alt} by including [x = _]{.alt}.
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Use the code box to get the `gsub()` function to work with a pipe.
 
@@ -969,7 +995,7 @@ To create a tibble we use the `tibble::tibble()` function, and input into it the
 my_tib <- tibble::tibble(variable_1, variable_2, variable_3, ... variable_n)
 ```
 
-This command creates an object called [my_tib]{.alt} (I tend to use [_tib]{.alt} to denote a tibble) that contains all of the variables listed in `tibble()`. They will be arranged in columns. You view a tibbles by executing its name. The contents of the tibble will be printed within the `r rproj()` markdown document below the code chunk. By default the first 10 rows will be displayed and as many columns as the width of the pane allows. The display is interactive so you can navigate across columns or down beyond the first 10 rows.
+This command creates an object called [my_tib]{.alt} (I tend to use [_tib]{.alt} to denote a tibble) that contains all of the variables listed in `tibble()`. They will be arranged in columns. You view a tibbles by executing its name. The contents of the tibble will be printed within the Quarto document below the code chunk. By default the first 10 rows will be displayed and as many columns as the width of the pane allows. The display is interactive so you can navigate across columns or down beyond the first 10 rows.
 
 #### `r alien()` Alien coding challenge
 
@@ -1032,7 +1058,7 @@ tibble_name |>
     )
 ```
 
-<div class="warning">
+<div class="bug">
   `r bug()` **De-bug: common mistakes when using mutate()** 
   
   1. In `mutate()`, variables are created using an equal sign (`=`), not the assignment operator (`<-`). Remember to use an equals sign within mutate.
@@ -1171,7 +1197,7 @@ metalli_anon_tib
 The object [metalli_anon_tib]{.alt}` is the same as [metalli_tib]{.alt} except that it doesn't contain the variable **name**.
 
 <div class="tip">
-  `r cat_space()` **Tip: Using `x:y` to specify 'all the consecutive variables between x and y'**
+  `r cat_space()` **Tip**
 
 When selecting lots of variables it can be useful to use `x:y` to indicate 'all of the consecutive variables between x and y, including x and y'. For example the variables in [metalli_tib]{.alt} are now: **name**, **birth_date**, **death_date**, **instrument**, **current_member**, **songs_written**, **net_worth**, **albums**, and **worth_per_song**. If we wanted to select the variables **name**, **songs_written**, **net_worth**, **albums** and **worth_per_song** we could use:
 
@@ -1431,7 +1457,7 @@ We now begin to see the beauty of the pipe: it enables us to put together a sequ
 ### `r rproj("h3")`
 
 * [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
-* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and `r rstudio()`.
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj()` and `r rstudio()`.
 * [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
 * [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
 

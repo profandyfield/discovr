@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2021)
+# discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2023)
 
 <!-- badges: start -->
 
@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 > **NOTE**: This package is incomplete but under active development. Check back here for updates/new tutorials.
 
-The `discovr` package contains resources for my 2022 textbook [Discovering Statistics Using <img src="./data-raw/images/r_logo.png" width="18"> and <img src="./data-raw/images/rstudio_logo.png" width="48">](https://www.discovr.rocks/). There are tutorials written using [learnr](https://rstudio.github.io/learnr/). Once a tutorial is running it's a bit like reading a book but with places where you can practice the <img src="./data-raw/images/r_logo.png" width="18"> code that you have just been taught. The `discovr` package is free and offered to support tutors and students using my textbook who want to learn <img src="./data-raw/images/r_logo.png" width="18">.
+The `discovr` package contains resources for my 2023 textbook [Discovering Statistics Using <img src="./data-raw/images/r_logo.png" width="18"> and <img src="./data-raw/images/rstudio_logo.png" width="48">](https://www.discovr.rocks/). There are tutorials written using [learnr](https://rstudio.github.io/learnr/). Once a tutorial is running it's a bit like reading a book but with places where you can practice the <img src="./data-raw/images/r_logo.png" width="18"> code that you have just been taught. The `discovr` package is free and offered to support tutors and students using my textbook who want to learn <img src="./data-raw/images/r_logo.png" width="18">.
 
 ## Installing `discovr`
 
@@ -67,6 +67,9 @@ I recommend working through [this tutorial](http://milton-the-cat.rocks/learnr/r
 * **discovr_15**: Repeated measures designs. Fitting models for one- and two-way repeated measures designs using the `afex` package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when these variables have been manipulated within the same entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors.
 * **discovr_16**: Mixed designs. Fitting models for mixed designs using the `afex` package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when at least one of these variables has been manipulated within the same entities and at least one other has been manipulated using different entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors.
 * **discovr_18**: Exploratory Factor Analysis (EFA). Applying factor analysis using the `psych` package. This tutorial uses a fictitious questionnaire (the <img src="./data-raw/images/r_logo.png" width="18"> Anxiety Scale, RAQ) with 23 items to show how EFA can be used to identify clusters of items that may, or may not, represent constructs associated with anxiety about using <img src="./data-raw/images/r_logo.png" width="18">. We look at inspecting the correlation matrix, obtaining the Bartlett test and KMO statistics, using parallel analysis to determine the number of factors to extract, extracting factors, rotating the solution nd interpretation of the factors. We also learn to obtain Cronbach's alpha on each of the subscales.
+* **discovr_19**: Categorical variables. Entering categorical data, contingency tables, associations between categorical variables, the chi-square test, standardized residuals, Fisher's exact test.
+* **discovr_20**: Categorical outcomes (logistic regression). This tutorial builds on previous ones to show how the general linear model model extends to situations where you want to predict a binary outcome (logistic regression). We look at fitting the models and interpretting the odds ratio.
+
 
 ### Running a tutorial
 

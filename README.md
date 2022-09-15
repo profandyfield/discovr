@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2021)
+# discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2023)
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -15,7 +15,7 @@
 > **NOTE**: This package is incomplete but under active development.
 > Check back here for updates/new tutorials.
 
-The `discovr` package contains resources for my 2022 textbook
+The `discovr` package contains resources for my 2023 textbook
 [Discovering Statistics Using
 <img src="./data-raw/images/r_logo.png" width="18"> and
 <img src="./data-raw/images/rstudio_logo.png" width="48">](https://www.discovr.rocks/).
@@ -168,6 +168,14 @@ starting the interactive tutorials.
     factors to extract, extracting factors, rotating the solution nd
     interpretation of the factors. We also learn to obtain Cronbach’s
     alpha on each of the subscales.
+-   **discovr_19**: Categorical variables. Entering categorical data,
+    contingency tables, associations between categorical variables, the
+    chi-square test, standardized residuals, Fisher’s exact test.
+-   **discovr_20**: Categorical outcomes (logistic regression). This
+    tutorial builds on previous ones to show how the general linear
+    model model extends to situations where you want to predict a binary
+    outcome (logistic regression). We look at fitting the models and
+    interpretting the odds ratio.
 
 ### Running a tutorial
 

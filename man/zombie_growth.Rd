@@ -32,7 +32,7 @@ how much they resembled their pre-zombie state (as a percentage).
 }
 \references{
 \itemize{
-\item Field, A. P. (2016). \emph{An adventure in statistics: the reality enigma}. London: Sage. \url{https://uk.sagepub.com/en-gb/eur/an-adventure-in-statistics/book237529}
+\item Field, A. P. (2016). \emph{An adventure in statistics: the reality enigma}. London: Sage. \url{https://www.statisticsadventure.com}
 }
 }
 \keyword{datasets}

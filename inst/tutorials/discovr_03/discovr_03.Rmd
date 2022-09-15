@@ -8,7 +8,7 @@ output:
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
 description: "Confidence intervals: interactive app demonstrating what a confidence interval is, computing normal and bootstrap confidence intervals using R, adding confidence intervals to data summaries."
-bibliography: discovr_03.bib
+bibliography: [discovr_03.bib, packages.bib]
 ---
 <html lang="en">
 
@@ -19,26 +19,36 @@ knitr::opts_chunk$set(
 	warning = FALSE
 )
 
-library(learnr) #necessary to render tutorial correctly
-
+#necessary to render tutorial correctly
+library(learnr) 
+library(htmltools)
+#tidyverse
 library(dplyr)
 library(ggplot2)
-library(Hmisc)
-library(htmltools)
 library(magrittr)
 library(purrr)
 library(tibble)
+#non tidyverse
+library(Hmisc)
+library(datawizard)
+library(knitr)
 
 
 source("./www/discovr_helpers.R")
 
 #Read data files needed for the tutorial
 
-fb_tib <- tibble::tibble(
-    friends = c(57, 40, 103, 234, 93, 53, 116, 98, 108, 121, 22)
+insta_tib <- tibble::tibble(
+    followers = c(57, 40, 103, 234, 93, 53, 116, 98, 108, 121, 22)
    )
 ```
 
+
+```{r, eval = F, echo = F}
+# Create bib file for R packages
+here::here("inst/tutorials/discovr_03/packages.bib") |>
+  knitr::write_bib(c('here', 'tidyverse', 'dplyr', 'readr', 'tibble', 'datawizard', 'knitr'), file = _)
+```
 
 # discovr: Confidence intervals
 
@@ -47,25 +57,25 @@ fb_tib <- tibble::tibble(
 <div class="infobox">
   <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
   
-  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2022] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
+  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2023] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
   
 </div>
 
-### `r cat_space(fill = "h3", height = 2)` Welcome to the `discovr` space pirate academy
+### `r cat_space(fill = blu)` Welcome to the `discovr` space pirate academy
 
 Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
-* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
-* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
+* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
+* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
-* `r alien(height = 2)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
-* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
-* `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
+* `r alien(height = 1.5)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
+* `r robot(height = 1.5)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
+* `r bug(height = 1.5)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
 
 Also, use hints and solutions to guide you through the exercises (Figure 1).
 
@@ -81,27 +91,31 @@ By for now and good luck - you'll be amazing!
 
 * Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
 
-* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an `r rproj()` markdown file within an `r rstudio()` project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
+* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an Quarto document within an `r rstudio()` project and practice everything you do in the tutorial in the Quarto document, make notes on things that confused you or that you want to remember, and save it. Within this Quarto document you will need to load the relevant packages and data. 
 
 ![](https://youtu.be/FhoYCsZttGc)
 
 ### Packages
 
-This tutorial uses the following packages:
+This tutorial uses the following package:
 
-* `here` [@here]
-* `tidyverse` [@tidyverse]
+* `datawizard` [@R-datawizard]
+* `here` [@R-here]
+* `knitr` [@R-knitr]
 
-I try to follow the [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) in always declaring the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will write `dplyr::mutate()`. 
+It also uses these `tidyverse` packages [@R-tidyverse; @tidyverse2019]: `readr` [@R-readr], `dplyr` [@R-dplyr], `ggplot2` [@wickhamGgplot2ElegantGraphics2016] and `tibble` [@R-tibble].
 
-It is good practice to be explicit about packages to avoid clashes where functions from different packages have the same name. It also means that you don't need to load packages at the start of your markdown document. 
+### Coding style
 
-There are two main exceptions to this rule.
+There are (broadly) two styles of coding:
 
-1. There are functions within some `tidyverse` packages that would be used within other functions. Including the package name makes the code difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
-2. To use the pipe operator (`%>%`) you need to have `magrittr` loaded.
+1. **Verbose**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt verbose style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
 
-We can load all of the packages that are exceptions in one step by loading `tidyverse` at the beginning of our `r rproj()` Markdown document:
+2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
+
+Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend a verbose style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load `tidyverse` because the `dplyr` and `ggplot2` packages contain functions that are often used within other functions and in these cases the verbose style is difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+
+You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the `tidyverse` package (and any others if you're using a concise style) at the beginning of your Quarto document:
 
 ```{r eval = FALSE}
 library(tidyverse)
@@ -109,13 +123,13 @@ library(tidyverse)
 
 ## `r bmu()` What is a confidence interval? [(1)]{.alt}
 
-As a brief recap, we usually use a sample value as an estimate of a parameter (e.g., the mean) in the population. The estimate of a parameter (e.g., the mean) will differ across samples, and we can use the standard error to get some idea of the extent to which these estimates differ across samples. We can also use this information to calculate boundaries within which we believe the population value will fall. Such boundaries are called [confidence intervals]{.alt}. Although what I’m about to describe applies to any parameter, we’ll stick with the mean to keep things consistent with what you have already learnt.
+As a brief recap, we usually use a sample value as an estimate of a parameter (e.g., the mean) in the population. The estimate of a parameter (e.g., the mean) will differ across samples, and we can use the standard error to get some idea of the extent to which these estimates differ across samples. We can also use this information to calculate boundaries within which we believe the population value will fall. Such boundaries are called [confidence intervals]{.alt}. Although what I'm about to describe applies to any parameter, we'll stick with the mean to keep things consistent with what you have already learnt.
 
-In the book we look at an example of how many followers someone has on their social media account. I think I used Facebook, but that's because I haven't yet realised that Facebook is populated only by people over the age of 40. I'm told that Instagram is the place to be, but no-one wants to see my wrinkly old scrotum of a face so I never use it. I pretty much don't use Facebook either. Did I mention I like statistics? Draw your own conclusions.
+In the book we look at an example of how many followers someone has on their social media account. I think I used Instagram, but that's because I haven't yet realised that Instagram is populated only by people over the age of 40. I'm told that Instagram is the place to be, but no-one wants to see my wrinkly old scrotum of a face so I never use it. I pretty much don't use Instagram either. Did I mention I like statistics? Draw your own conclusions.
 
-Anyway, we looked at the number of followers people have on [*insert name of currently popular social media gizmo*]. We're interested in the average number of followers. There is a true mean (the mean in the population of all users). Let's imagine it's 120 (because most people are *not* statisticians). We take a sample of users and we find the mean number of followers is 100 Because we don’t know what the true value of the mean is (the population value), we don’t know how good (or bad) our sample value of 100 followers is as an estimate of it. So rather than fixating on a single value from the sample (the point estimate), we could use an interval estimate instead: we use our sample value as the midpoint, but set a lower and upper limit as well. So, we might say, we think the true value of the mean number of followers is somewhere between 70 and 130 followers (note that 100, our point estimate, falls exactly between these values). Of course, in this case the true value (100 followers) does falls within these limits. However, what if we’d set smaller limits – what if we’d said we think the true value falls between 90 and 110 followers (again, note that 100, our point estimate, is in the middle)? In this case the interval does not contain the population value of the mean.
+Anyway, we looked at the number of followers people have on [*insert name of currently popular social media gizmo*]. We're interested in the average number of followers. There is a true mean (the mean in the population of all users). Let's imagine it's 120 (because most people are *not* statisticians). We take a sample of users and we find the mean number of followers is 100 Because we don't know what the true value of the mean is (the population value), we don't know how good (or bad) our sample value of 100 followers is as an estimate of it. So rather than fixating on a single value from the sample (the point estimate), we could use an interval estimate instead: we use our sample value as the midpoint, but set a lower and upper limit as well. So, we might say, we think the true value of the mean number of followers is somewhere between 70 and 130 followers (note that 100, our point estimate, falls exactly between these values). Of course, in this case the true value (100 followers) does falls within these limits. However, what if we'd set smaller limits – what if we'd said we think the true value falls between 90 and 110 followers (again, note that 100, our point estimate, is in the middle)? In this case the interval does not contain the population value of the mean.
  
-Let’s imagine that you were particularly fixated with Japanese quail sperm, and you took 100 different samples of social media users. In each sample, you calculate the mean and constructed an interval around it as I’ve just described. The crucial thing is to construct the intervals in such a way that they tell us something useful. For example, perhaps we might want to know how often, in the long run, an interval contains the true value of the parameter we’re trying to estimate (in this case, the population mean). This is what a confidence interval does. Typically, we look at 95% confidence intervals, and sometimes 99% confidence intervals, but they all have a similar interpretation: they are limits constructed such that for a certain percentage of samples (be that 95% or 99%) the true value of the population parameter falls within the limits (on average). So, when you see a 95% confidence interval for a mean, think of it like this: if we’d collected 100 samples, and for each sample calculated the mean and a confidence interval for it then for approximately 95 of these samples, the confidence interval contains the value of the mean in the population, and in approximately 5 of the samples the confidence interval does not contain the population mean. The trouble is, you do not know whether the confidence interval from a particular sample is one of the 95% that contain the true value or one of the 5% that do not.
+Let's imagine that you were particularly fixated with Japanese quail sperm, and you took 100 different samples of social media users. In each sample, you calculate the mean and constructed an interval around it as I've just described. The crucial thing is to construct the intervals in such a way that they tell us something useful. For example, perhaps we might want to know how often, in the long run, an interval contains the true value of the parameter we're trying to estimate (in this case, the population mean). This is what a confidence interval does. Typically, we look at 95% confidence intervals, and sometimes 99% confidence intervals, but they all have a similar interpretation: they are limits constructed such that for a certain percentage of samples (be that 95% or 99%) the true value of the population parameter falls within the limits (on average). So, when you see a 95% confidence interval for a mean, think of it like this: if we'd collected 100 samples, and for each sample calculated the mean and a confidence interval for it then for approximately 95 of these samples, the confidence interval contains the value of the mean in the population, and in approximately 5 of the samples the confidence interval does not contain the population mean. The trouble is, you do not know whether the confidence interval from a particular sample is one of the 95% that contain the true value or one of the 5% that do not.
 
 The parameter estimate (in this case the mean) is always in the centre of the confidence interval. We know that 95% of confidence intervals contain the population value, so we might assume that this confidence interval contains the true mean (but remember this is an assumption and 5% of the time we will be incorrect). Under this assumption, if the interval is small, the sample mean must be very close to the true mean and if the confidence interval is very wide then the sample mean could be very different from the true mean, indicating that the sample estimate is a poor representation of the population. We'll now use an interactive activity to explore this explanation of a confidence interval.
 
@@ -343,11 +357,11 @@ quiz(caption = "Confidence interval quiz",
 )
 ``` 
 
-## `r bmu()` Confidence intervals in R [(1)]{.alt}
+## `r bmu()` Confidence intervals with the tidyverse [(1)]{.alt}
 
 ### `r bmu()` A basic confidence interval [(1)]{.alt}
 
-Let’s compute a confidence interval using `r rproj()`. In the book we have the number of followers for 11 Facebook users:
+Let's compute a confidence interval using `r rproj()`. In the book we have the number of followers for 11 instagram users:
 
 ```{r, eval = F}
 57, 40, 103, 234, 93, 53, 116, 98, 108, 121, 22
@@ -356,39 +370,39 @@ Let’s compute a confidence interval using `r rproj()`. In the book we have the
 
 #### `r alien()` Alien coding challenge
 
-Use what you have learnt in previous tutorials to enter these scores into a variable called **friends** stored within a tibble called [fb_tib]{.alt}.
+Use what you have learnt in previous tutorials to enter these scores into a variable called **followers** stored within a tibble called [insta_tib]{.alt}.
 
-```{r fb_dat, exercise = TRUE, exercise.lines = 4}
+```{r insta_dat, exercise = TRUE, exercise.lines = 4}
 
 ```
 
-```{r fb_dat-hint-1}
+```{r insta_dat-hint-1}
 # There are numerous ways to do this task, this is the most efficient (probably)
-# You want to name the object fb_tib so start with ...
-fb_tib <- ...
+# You want to name the object insta_tib so start with ...
+insta_tib <- ...
 ```
 
-```{r fb_dat-hint-2}
+```{r insta_dat-hint-2}
 # You are creating a tibble so ...
-fb_tib <- tibble::tibble(...)
-# Within this function create the variable friends
+insta_tib <- tibble::tibble(...)
+# Within this function create the variable followers
 ```
 
-```{r fb_dat-hint-3}
-# Create the variable friends
-fb_tib <- tibble::tibble(
-  friends = ...
+```{r insta_dat-hint-3}
+# Create the variable followers
+insta_tib <- tibble::tibble(
+  followers = ...
 )
 ```
 
-```{r fb_dat-hint-4}
-# Solution:
-fb_tib <- tibble::tibble(
-  friends = c(57, 40, 103, 234, 93, 53, 116, 98, 108, 121, 22)
+```{r insta_dat-solution}
+insta_tib <- tibble::tibble(
+  followers = c(57, 40, 103, 234, 93, 53, 116, 98, 108, 121, 22)
 )
+insta_tib #this line shows the tibble
 ```
 
-As is often the case with `r rproj()`, you have a few options for obtaining confidence intervals. We’ll predominantly use two functions called `mean_cl_normal()` and `mean_cl_boot()` from the `ggplot2` package (which is installed with `tidyverse`). The function `mean_cl_normal()` produces a standard confidence interval, whereas `mean_cl_boot()` produces something called a bootstrap confidence interval (see [discovr_06]{.alt}).
+As is often the case with `r rproj()`, you have a few options for obtaining confidence intervals. We'll predominantly use two functions called `mean_cl_normal()` and `mean_cl_boot()` from the `ggplot2` package (which is installed with `tidyverse`). The function `mean_cl_normal()` produces a standard confidence interval, whereas `mean_cl_boot()` produces something called a bootstrap confidence interval (see [discovr_06]{.alt}).
 
 #### `r robot()` Code example
 
@@ -399,18 +413,36 @@ ggplot2::mean_cl_normal(object, conf.int = 0.95, na.rm = TRUE)
 ggplot2::mean_cl_boot(object, conf.int = 0.95, na.rm = TRUE)
 ```
 
-in which [object]{.alt} is a model being passed into the function, [conf.int]{.alt} sets the probability level for the interval (95% by default), and (as in other functions) [na.rm]{.alt} determines whether to remove missing values before computing the interval (by default, they are removed, which is helpful because that’s usually what you’d want to do).
+in which [object]{.alt} is a model being passed into the function, [conf.int]{.alt} sets the probability level for the interval (95% by default), and (as in other functions) [na.rm]{.alt} determines whether to remove missing values before computing the interval (by default, they are removed, which is helpful because that's usually what you'd want to do).
+
+<div class="tip">
+  `r cat_space()` **Tip: confidence intervals as proportions**
+
+The argument to compute a confidence interval is expressed generally as [conf.int = proportion]{.alt} in which we replace [proportion]{.alt} with a value that represents the percentage associated with the interval. To convert the percentage associated with a confidence interval to a proportion we divide by 100
+
+$$
+\text{proportion} = \frac{\text{percentage}}{100}
+$$
+
+For a 95% confidence interval the proportion is
+
+$$
+\text{proportion} = \frac{95}{100} = 0.95
+$$
+
+Therefore, if you want a 95% confidence interval include [conf.int = 0.95]{.alt} within `mean_cl_normal()` or `mean_cl_boot()`, for a 90% confidence interval include [conf.int = 0.9]{.alt}, for a 99% confidence interval include [conf.int = 0.99]{.alt} and so on.
+</div>
 
 #### `r alien()` Alien coding challenge
 
-In this example, we want the 95% confidence interval for the variable **friends** within the tibble [fb_tib]{.alt}, so we could use the example code and replace [object]{.alt} with [fb_tib$friends]{.alt}. Try this out:
+In this example, we want the 95% confidence interval for the variable **followers** within the tibble [insta_tib]{.alt}, so we could use the example code and replace [object]{.alt} with [insta_tib$followers]{.alt}. Try this out:
 
-```{r fb_ci, exercise = TRUE, exercise.lines = 2}
+```{r insta_ci, exercise = TRUE, exercise.lines = 2}
 
 ```
 
-```{r fb_ci-solution}
-ggplot2::mean_cl_normal(fb_tib$friends)
+```{r insta_ci-solution}
+ggplot2::mean_cl_normal(insta_tib$followers)
 # Note: we don't need to include conf.int = 0.95 and na.rm = TRUE
 # because the defaults of a 95% CI and removing missing values are what
 # we want
@@ -420,102 +452,109 @@ This function produces a tibble containing three variables: the mean (with the v
 
 #### `r alien()` Alien coding challenge
 
-Adapt the code from the previous challenge to get the 90% CI of the variable **friends**.
+Adapt the code from the previous challenge to get the 90% CI of the variable **followers**.
   
-```{r fb_ci_90, exercise = TRUE, exercise.lines = 2}
+```{r insta_ci_90, exercise = TRUE, exercise.lines = 2}
 
 ```
 
-```{r fb_ci_90-solution}
-ggplot2::mean_cl_normal(fb_tib$friends, conf.int = 0.9)
+```{r insta_ci_90-solution}
+ggplot2::mean_cl_normal(insta_tib$followers, conf.int = 0.9)
 ``` 
  
 
 ### `r bmu()` Adding confidence intervals to summary tables [(1)]{.alt}
 
-In [discovr_02]{.alt} we explored code to compile a table of summary statistics for a variable. To recap, we produced a summary table for these Facebook scores by executing:
+In [discovr_02]{.alt} we explored code to compile a table of summary statistics for a variable. To recap, we could produce a summary table for these Instagram scores by executing:
 
 ```{r, eval = FALSE}
-fb_tib %>%
+insta_sum <- insta_tib |>
   dplyr::summarize(
-    median =  median(friends),
-    mean =  mean(friends),
-    `trimmed mean 10%` =  mean(friends, trim = 0.1),
-    range = max(friends) - min(friends),
-    `lower quartile` = quantile(friends, probs = 0.25),
-    `upper quartile` = quantile(friends, probs = 0.75),
-    IQR = IQR(friends),
-    var = var(friends),
-    sd = sd(friends)
-    ) %>%
-    round(., 2)
+    median =  median(followers),
+    mean =  mean(followers),
+    `trimmed mean 10%` =  mean(followers, trim = 0.1),
+    range = max(followers) - min(followers),
+    `lower quartile` = quantile(followers, probs = 0.25),
+    `upper quartile` = quantile(followers, probs = 0.75),
+    IQR = IQR(followers),
+    var = var(followers),
+    sd = sd(followers)
+    )
 ```
 
 If we want to add the 95% confidence interval to this summary table we can do so by extracting values from the output of `mean_cl_normal()`. The output of the function is a tibble within which each value is stored as a variable (called **y** for the estimate of the mean and **ymin** and  **ymax** for the lower and upper boundary of the CI). We can, therefore, use the `$` symbol to access each variable. 
 
 #### `r robot()` Code example
 
-For example, to obtain the lower boundary of the 95% confidence interval we’d execute:
+For example, to obtain the lower boundary of the 95% confidence interval we'd execute:
 
 ```{r, eval = FALSE}
-ggplot2::mean_cl_normal(fb_tib$friends)$ymin
+ggplot2::mean_cl_normal(insta_tib$followers)$ymin
 ```
 
 Therefore, we can add the upper and lower bound of the 95% confidence interval to the summary by extracting the relevant values from the `mean_cl_normal()` function. We could also obtain the mean this way instead of using `mean()`. For example, to create a table including the mean and its 95% confidence interval we could execute:
 
 ```{r, eval = FALSE}
-fb_tib %>%
+insta_sum <- insta_tib |>
   dplyr::summarize(
-    Mean =  ggplot2::mean_cl_normal(friends)$y,
-    `95% CI Lower` = ggplot2::mean_cl_normal(friends)$ymin,
-    `95% CI Upper` = ggplot2::mean_cl_normal(friends)$ymax
-    ) %>% 
-  round(., 2)
+    Mean =  ggplot2::mean_cl_normal(followers)$y,
+    `95% CI Lower` = ggplot2::mean_cl_normal(followers)$ymin,
+    `95% CI Upper` = ggplot2::mean_cl_normal(followers)$ymax
+    )
 ```
 
 You might wonder what the point of this is when the function itself spits out a summary table, but it is because it allows you to include other information in the table. For example, we could include all of the other summary statistics that we previously computed.
 
 #### `r alien()` Alien coding challenge
 
-Adapt the code below (which produces various summary statistics for the number of friends people have on social media) to include the mean, and lower and upper boundary of the 95% confidence interval.
+Adapt the code below (which produces various summary statistics for the number of followers people have on social media) to include the mean, and lower and upper boundary of the 95% confidence interval.
 
-```{r fb_summary, exercise = TRUE, exercise.lines = 14}
-fb_tib %>%
+```{r insta_summary, exercise = TRUE, exercise.lines = 20}
+insta_sum <- insta_tib |>
   dplyr::summarize(
-    median =  median(friends),
-    range = max(friends) - min(friends),
-    `lower quartile` = quantile(friends, probs = 0.25),
-    `upper quartile` = quantile(friends, probs = 0.75),
-    IQR = IQR(friends),
-    var = var(friends),
-    sd = sd(friends)
-    ) %>%
-    round(., 2)
+    median =  median(followers),
+    range = max(followers) - min(followers),
+    `lower quartile` = quantile(followers, probs = 0.25),
+    `upper quartile` = quantile(followers, probs = 0.75),
+    IQR = IQR(followers),
+    var = var(followers),
+    sd = sd(followers)
+    )
+
+insta_sum |> 
+  knitr::kable(caption = "Summary statistics for the Instagram data",
+               align = 'c', #this argument centre aligns the columns
+               digits = 2)
 ```
 
-```{r fb_summary-solution}
-fb_tib %>%
+```{r insta_summary-solution}
+
+insta_sum <- insta_tib |>
   dplyr::summarize(
-    Mean =  ggplot2::mean_cl_normal(friends)$y,
-    `95% CI Lower` = ggplot2::mean_cl_normal(friends)$ymin,
-    `95% CI Upper` = ggplot2::mean_cl_normal(friends)$ymax,
-    median =  median(friends),
-    range = max(friends) - min(friends),
-    `lower quartile` = quantile(friends, probs = 0.25),
-    `upper quartile` = quantile(friends, probs = 0.75),
-    IQR = IQR(friends),
-    var = var(friends),
-    sd = sd(friends)
-    ) %>%
-    round(., 2)
+    Mean =  ggplot2::mean_cl_normal(followers)$y,
+    `95% CI Lower` = ggplot2::mean_cl_normal(followers)$ymin,
+    `95% CI Upper` = ggplot2::mean_cl_normal(followers)$ymax,
+    median =  median(followers),
+    range = max(followers) - min(followers),
+    `lower quartile` = quantile(followers, probs = 0.25),
+    `upper quartile` = quantile(followers, probs = 0.75),
+    IQR = IQR(followers),
+    var = var(followers),
+    sd = sd(followers)
+    )
+
+insta_sum |> 
+  knitr::kable(caption = "Summary statistics for the Instagram data",
+               align = 'c', #this argument centre aligns the columns
+               digits = 2)
 ```
 
 ```{r quiz_ci_ex1, echo = FALSE}
-question("The 95% confidence interval for friends ranges from 56.85 to 133.15. What does this tell us?",
-    answer("If this confidence interval is one of the 95% that contains the population value then the mean number of friends in the population lies between 56.85 and 133.15.", correct = TRUE),
-    answer("There is a 95% chance that the mean number of friends in the population lies between 56.85 and 133.15.", message = "You cannot make probability statements from a confidence interval. We don't know whether this particular CI is one of the 95% that contains the population value of the mean number of friends."),
+question("The 95% confidence interval for followers ranges from 56.85 to 133.15. What does this tell us?",
+    answer("If this confidence interval is one of the 95% that contains the population value then the mean number of followers in the population lies between 56.85 and 133.15.", correct = TRUE),
+    answer("There is a 95% chance that the mean number of followers in the population lies between 56.85 and 133.15.", message = "You cannot make probability statements from a confidence interval. We don't know whether this particular CI is one of the 95% that contains the population value of the mean number of followers."),
     answer("The probability of this confidence interval containing the population value is 0.95.", message = "The probability of this confidence interval containing the population value is either 0 (it doesn't) or 1 (it does) but it's impossible to know which."),
-    answer("I can be 95% confident that the mean number of friends in the population lies between 56.85 and 133.15.", message = "Confidence intervals do not quantify your subjective confidence."),
+    answer("I can be 95% confident that the mean number of followers in the population lies between 56.85 and 133.15.", message = "Confidence intervals do not quantify your subjective confidence."),
     correct = "Correct - well done!",
     random_answer_order = TRUE,
     allow_retry = T
@@ -528,11 +567,11 @@ To get a robust confidence interval (based on a bootstrap), we simply replace `m
 
 #### `r robot()` Code example
 
-For example, to get the robust confidence interval for the mean number of friends we could execute:
+For example, to get the robust confidence interval for the mean number of followers we could execute:
 
 
-```{r fb_ci_boot, exercise = TRUE, exercise.lines = 2}
-ggplot2::mean_cl_boot(fb_tib$friends)
+```{r insta_ci_boot, exercise = TRUE, exercise.lines = 2}
+ggplot2::mean_cl_boot(insta_tib$followers)
 ```
 
 <div class="tip">
@@ -544,39 +583,100 @@ ggplot2::mean_cl_boot(fb_tib$friends)
 
 #### `r alien()` Alien coding challenge
 
-Adapt the code below (which produces various summary statistics for the number of friends people have on social media) to include the mean, and lower and upper boundary of the 95% [bootstrap]{.alt} confidence interval.
+Adapt the code below (which produces various summary statistics for the number of followers people have on social media) to include the mean, and lower and upper boundary of the 95% [bootstrap]{.alt} confidence interval.
 
-```{r fb_summary_boot, exercise = TRUE, exercise.lines = 14}
-fb_tib %>%
+```{r insta_summary_boot, exercise = TRUE, exercise.lines = 20}
+insta_sum <- insta_tib |>
   dplyr::summarize(
-    median =  median(friends),
-    range = max(friends) - min(friends),
-    `lower quartile` = quantile(friends, probs = 0.25),
-    `upper quartile` = quantile(friends, probs = 0.75),
-    IQR = IQR(friends),
-    var = var(friends),
-    sd = sd(friends)
-    ) %>%
-    round(., 2)
+    median =  median(followers),
+    range = max(followers) - min(followers),
+    `lower quartile` = quantile(followers, probs = 0.25),
+    `upper quartile` = quantile(followers, probs = 0.75),
+    IQR = IQR(followers),
+    var = var(followers),
+    sd = sd(followers)
+    )
+
+insta_sum |> 
+  knitr::kable(caption = "Summary statistics for the Instagram data",
+               align = 'c', #this argument centre aligns the columns
+               digits = 2)
 ```
 
-```{r fb_summary_boot-solution}
-fb_tib %>%
+```{r insta_summary_boot-solution}
+insta_sum <- insta_tib |>
   dplyr::summarize(
-    Mean =  ggplot2::mean_cl_boot(friends)$y,
-    `95% CI Lower` = ggplot2::mean_cl_boot(friends)$ymin,
-    `95% CI Upper` = ggplot2::mean_cl_boot(friends)$ymax,
-    median =  median(friends),
-    range = max(friends) - min(friends),
-    `lower quartile` = quantile(friends, probs = 0.25),
-    `upper quartile` = quantile(friends, probs = 0.75),
-    IQR = IQR(friends),
-    var = var(friends),
-    sd = sd(friends)
-    ) %>%
-    round(., 2)
+    Mean =  ggplot2::mean_cl_boot(followers)$y,
+    `95% CI Lower` = ggplot2::mean_cl_boot(followers)$ymin,
+    `95% CI Upper` = ggplot2::mean_cl_boot(followers)$ymax,
+    median =  median(followers),
+    range = max(followers) - min(followers),
+    `lower quartile` = quantile(followers, probs = 0.25),
+    `upper quartile` = quantile(followers, probs = 0.75),
+    IQR = IQR(followers),
+    var = var(followers),
+    sd = sd(followers)
+    )
+
+insta_sum |> 
+  knitr::kable(caption = "Summary statistics for the Instagram data",
+               align = 'c', #this argument centre aligns the columns
+               digits = 2)
 ```
 
+
+## `r user_visor()` Confidence intervals using `datawizard` [(2)]{.alt}
+
+In the previous tutorial we saw that creating a bespoke table of summary statistics is useful and helps us to practice our `tidyverse` skills. However, a quicker method is to use the `describe_distribution()` function from the `datawizard` package. Remember, it has the following arguments:
+
+```{r, eval = F}
+datawizard::describe_distribution(x = my_data,
+  select = NULL,
+  exclude = NULL,
+  centrality = "mean",
+  dispersion = TRUE,
+  iqr = TRUE,
+  range = TRUE,
+  quartiles = FALSE,
+  include_factors = FALSE,
+  ci = NULL,
+  iterations = 100)
+```
+
+These arguments were explained in `discovr_02`, but in that tutorial we ignored the argument to compute confidence intervals. Now we'll use it. To include a confidence interval we include the argument [ci = proportion]{.alt} in which we replace proportion with a value that represents the percentage of the interval, just like we did with `mean_cl_normal()` earlier on. To recap, for a 95% confidence interval the proportion is 0.95 so you'd include [ci = 0.95]{.alt} within `describe_distribution()`. This function always uses a bootstrap method with a default of 100 bootstrap samples ([iterations = 100]{.alt}). This is possibly a little low (but keeps computations fast), so consider increasing it to 500 or even 1000.
+
+#### `r alien()` Alien coding challenge
+
+Using the default options, get some descriptive statistics including a 95% confidence interval for the number of Instagram followers.
+
+```{r insta_wiz, exercise = TRUE, exercise.lines=3}
+
+```
+
+```{r insta_wiz-hint-1}
+#replace the xxx
+datawizard::describe_distribution(xxx)
+```
+
+```{r insta_wiz-hint-2}
+#replace the xxx
+datawizard::describe_distribution(insta_tib)
+# now add the argument to set a 95% confidence interval and the number of samples/iterations
+```
+
+```{r insta_wiz-hint-3}
+#replace the xxx
+datawizard::describe_distribution(insta_tib, ci = 0.95, iterations = 500)
+# now use kable() to round the values to 2dp
+```
+
+```{r insta_wiz-solution}
+datawizard::describe_distribution(insta_tib, ci = 0.95, iterations = 500) |> 
+  knitr::kable(digits = 2, align = 'c')
+```
+
+
+<br />
 
 <div class="infobox">
   <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
@@ -591,15 +691,15 @@ fb_tib %>%
 
 ### Statistics
 
-* The tutorials typically follow examples described in detail in @field_discovering_2022. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
+* The tutorials typically follow examples described in detail in @field_discovering_2023. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
 * If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
 * There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/).
 * There are free statistical resources on my websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [milton-the-cat.rocks](http://milton-the-cat.rocks).
 
-### `r rproj("h3")`
+### `r rproj()`
 
 * [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
-* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and `r rstudio()`.
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj()` and `r rstudio()`.
 * [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
 * [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
 

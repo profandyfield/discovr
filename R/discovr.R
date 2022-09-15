@@ -1,4 +1,4 @@
-#' discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2022)
+#' discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2023)
 #'
 #' @description
 #'
@@ -191,7 +191,7 @@
 #'
 #' @section References:
 #'
-#' * Field, A. P. (2022). *Discovering statistics using R and RStudio* (2nd ed.). London: Sage.
+#' * Field, A. P. (2023). *Discovering statistics using R and RStudio* (2nd ed.). London: Sage.
 #'
 #' @import learnr
 #' @docType package

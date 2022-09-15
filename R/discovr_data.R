@@ -1,7 +1,7 @@
 
 #' Oxoby (2008) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' AC/DC are one one of the best-selling hard rock bands in history, with around 100 million certified sales, and an estimated 200 million actual sales.
 #' In 1980 their original singer Bon Scott died of alcohol poisoning and choking on his own vomit. He was replaced by Brian Johnson who has been their singer ever since.
@@ -33,7 +33,7 @@
 
 #' Album sales data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictitious data that imagines a world where I have a cool job in the music industry. Except, it's not *that* cool because
 #' my job is to predict album sales (broadly defined in some way that accounts for physical sales, streams and digital sales). In my
@@ -55,7 +55,7 @@
 
 #' Alien scents
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' The aliens, excited by humans' apparent inability to train sniffer dogs to detect them (see [sniffer_dogs]), decided to move their invasion plan forward.
 #' Aliens are far too wedded to *p*-values in small samples. They decided that they could make themselves even
@@ -83,7 +83,7 @@
 
 #' Animal bride data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictitious data inspired by two news stories that I enjoyed. The first was about a Sudanese man who was forced to marry a goat
 #' after being caught having sex with it. I'm not sure he treated the goat to a nice dinner in a posh restaurant before taking advantage of her, but either way you have to feel sorry for the goat.
@@ -107,7 +107,7 @@
 
 #' Beckham (1929) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' During my psychology degree I spent a lot of time reading about the civil rights movement in the USA. Instead of reading psychology,
 #' I read about Malcolm X and Martin Luther King Jr. For this reason I find Beckham's 1929 study of black Americans
@@ -147,7 +147,7 @@
 
 #' The biggest liar data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictional data based on the World's Biggest Liar competition held annually at the Santon Bridge Inn in Wasdale (in the Lake District, UK).
 #' Each year locals are encouraged to attempt to tell the biggest lie in the world. I wanted to test a theory that more creative people will be able to create taller tales.
@@ -167,7 +167,7 @@
 
 #' Big hairy spider data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Is arachnophobia (fear of spiders) specific to real spiders or will pictures of spiders evoke similar levels
 #' of anxiety? Twelve arachnophobes were asked to play with a big hairy tarantula with big fangs and an evil
@@ -186,7 +186,7 @@
 
 #' Bronstein et al. (2019) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #'  The rapid increase in 'fake news' and misinformation is a worrying trend in recent years.
 #'  Perhaps more worrying is how widely some of this news is taken as fact. Researchers have started to look at what
@@ -213,7 +213,7 @@
 
 #' Bronstein et al. (2019) data with missing values inserted
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' A version of the Bronstein et al. (2019) fake news data ([bronstein_2019]) but with missing values inserted using MCAR amputation (with the help of the `mice` package and `ampute()` function).
 #' For details of variables see [bronstein_2019].
@@ -230,7 +230,7 @@
 
 #' Catterplot data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictional data for plotting a catterplot. The object contains the following variables:
 #'
@@ -245,7 +245,7 @@
 
 #' Cat regression data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictional data illustrating how the chi-square test is a linear model. It's about line dancing cats. The object contains the following variables:
 #'
@@ -265,7 +265,7 @@
 
 #' Dancing cats data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictional data about dancing cats. A researcher was interested in whether animals could be trained to dance.
 #' He took 200 cats and tried to train them to line-dance by giving them either food or affection as a reward for dance-like behaviour.
@@ -283,7 +283,7 @@
 
 #' Cetinkaya and Domjan (2006) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Some quail develop fetishes. Really. In studies where a terrycloth object acts as a sign that a mate will shortly
 #' become available, some quail start to direct their sexuial behaviour towards the terrycloth object.
@@ -322,7 +322,7 @@
 
 #' Chamorro-Premuzic, et al. (2008) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' There is some evidence that students tend to pick courses of lecturers they perceive to be enthusastic and good communicators.
 #' In a fascinating study, Tomas Chamorro-Premuzic and his colleagues (Chamorro-Premuzic, Furnham, Christopher, Garwood, & Martin, 2008)
@@ -359,7 +359,7 @@
 
 #' Child aggression data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' A study was carried out to explore the relationship between aggression and several potential predicting
 #' factors in 666 children who had an older sibling. Variables measured were **parenting_style** (high score = bad parenting practices),
@@ -383,7 +383,7 @@
 
 #' Coldwell, Pike and Dunn (2006) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Coldwell, Pike and Dunn (2006) investigated whether household chaos predicted children's problem behaviour
 #' over and above parenting. From 118 families they recorded the age and gender of the youngest child
@@ -412,7 +412,7 @@
 
 #' Cosmetic surgery data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictitious example based on quality of life predicted from undergoing cosmetic surgery. Cosmetic surgery is on the increase. For example,
 #' in the USA, there was a 1600% increase in cosmetic surgical and non-surgical treatments between 1992 and 2002.
@@ -436,7 +436,7 @@
 
 #' Daniels (2012) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Women (and increasingly men) are bombared with 'idealized' images in the media and there is a growing concern
 #' about how these images affect our perceptions of ourselves. Daniels (2012) showed young women images of successful
@@ -468,7 +468,7 @@
 
 #' Subliminal messages data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Both Ozzy Osbourne and Judas Priest have been accused of putting backward masked messages on their albums
 #' that subliminally influence poor unsuspecting teenagers into doing things like blowing their heads off with
@@ -492,7 +492,7 @@
 
 #' Davey et al. (2003) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #'   Many of us have experienced that feeling after we have left the house of wondering whether we remembered to lock the door,
 #'   close the window, or remove the bodies from the fridge in case the police turn up. However,
@@ -524,7 +524,7 @@
 
 #' DF beta data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictitious data to illustrate the DF Beta statistic. The tibble contains the following variables:
 #'
@@ -540,7 +540,7 @@
 
 #' Download festival data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictional data about people stinking at music festivals. A biologist was worried about the potential health effects of
 #' music festivals. She went to the Download Music Festival and measured the hygiene of 810 concert-goers over the three days of the festival.
@@ -563,7 +563,7 @@
 
 #' Iron Maiden Spotify song features data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' A dataset containing the song features data from the [Spotify API](https://developer.spotify.com/documentation/web-api/) for the studio albums (190-2015) of the greatest band ever, [Iron Maiden](https://www.ironmaiden.com).
 #' Data were obtained using the [spotifyr](https://www.rcharlie.com/spotifyr/) package.
@@ -596,7 +596,7 @@
 
 #' Eel data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Lo, Wong, Leung, Law, and Yip (2004) describe a case of a 50-year-old man who reported to the emergency department of a hospital with abdominal pain.
 #' An X-ray of the man's abdomen revealed the shadow of an eel. The patient claimed that he inserted the eel to 'relieve constipation'.
@@ -624,7 +624,7 @@
 
 #' Elephant football data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictional data about elephant football. The highlight of the elephant calendar is the annual elephant soccer event
 #' in Nepal. A heated argument burns between the African and Asian elephants. In 2010, the president of the
@@ -649,7 +649,7 @@
 
 #' *Escape from inside* data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' In my teens I was in a band called Andromeda. I sang, we had a guitarist called Malcolm. We learnt several Queen and Iron Maiden songs and we were truly awful. Suffice it to say, you'd be hard pushed to recognize which Iron Maiden and Queen songs we were trying to play. It's common for bands to tire of cover versions and to get lofty ambitions to write their own tunes. I wrote one called ‘Escape From Inside’ about the film The Fly that contained the rhyming couplet of 'I am a fly, I want to die' – the great lyricists of the time quaked in their boots at the young new talent on the scene. The only thing we did that resembled the activities of a 'proper' band was to split up due to 'musical differences': Malcolm wanted to write 15-part symphonies about a boy's journey to worship electricity pylons, whereas I wanted to write songs about flies and dying (preferably both). When we could not agree on a musical direction the split became inevitable. Had I had the power of statistics in my hands back then, rather than split up we could have tested empirically the best musical direction for the band. This study imagines such a world. A study was conducted to see whether I wrote better songs than my old bandmate Malcolm, and whether this depended on the type of song (a symphony or song about flies). The outcome variable was the number of screams elicited by audience members during the songs.
 #'
@@ -666,7 +666,7 @@
 
 #' Essay mark data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictional data about essay marks. A student was interested in whether there was a positive relationship between the time spent doing an essay and the mark received.
 #' He got 45 of his friends and timed how long they spent writing an essay (hours) and the percentage they got in the essay (essay).
@@ -687,7 +687,7 @@
 
 #' Exam anxiety data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' A psychologist was interested in the effects of exam stress on exam performance. She devised and validated a questionnaire to assess
 #' state anxiety relating to exams (called the Exam Anxiety Questionnaire, or EAQ). This scale produced a measure of anxiety scored out of 100.
@@ -708,7 +708,7 @@
 
 #' Gallup et al. (2003) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' It's something of a wonder how evolution managed to produce such a monstrosity as the human penis.
 #' One theory is sperm competition: the human penis has an unusually large glans (the 'bell-end') compared to other primates,
@@ -736,7 +736,7 @@
 
 #' Gelman & Weakliem (2009) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Apparently there are more beautiful women in the world than there are handsome men. Satoshi Kanazawa explains this finding
 #' in terms of good-looking parents being more likely to have a baby daughter as their first child than a baby son.
@@ -763,7 +763,7 @@
 
 #' Glastonbury festival data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' More fictional data about people stinking at music festivals. The same biologist who was worried about the potential health effects of music festivals and
 #' collected data at a heavy metal festival (Download Festival), was worried that her findings might not generalize. To find out whether the type of music a person
@@ -787,7 +787,7 @@
 
 #' Beer goggles effect data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictional data about the beer goggles effect. An anthropologist was interested in the effects of facial
 #' attractiveness on the beer-goggles effect. She randomly selected 48 participants. Participants were randomly
@@ -811,7 +811,7 @@
 
 #' Grades data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictional data about stats grades. As a statistics lecturer I am interested in the factors that determine whether a
 #' student will do well on a statistics course. Imagine I took 25 students and looked at their grades for my statistics
@@ -831,7 +831,7 @@
 
 #' Social media and grammar data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Imagine we conducted an experiment in which a group of 25 people were encouraged to message their friends and
 #' post on social media using their mobiles over a six-month period. A second group of 25 people were banned from
@@ -854,7 +854,7 @@
 
 #' Hangover cure data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' A marketing manager tested the benefit of soft drinks for curing hangovers. He took 15 people and got
 #' them drunk. The next morning as they awoke, dehydrated and feeling as though they'd licked a camel's
@@ -878,7 +878,7 @@
 
 #' Hiccups data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' People have many methods for stopping hiccups (a surprise, holding your breath), and medical science has
 #' put its collective mind to the task too. The official treatment methods include tongue-pulling manoeuvres,
@@ -901,7 +901,7 @@
 
 #' Hill et al. (2007) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Hill et al.  (2007) examined whether providing children with a leaflet based on the \emph{theory of planned behaviour} increased their
 #' exercise. There were four different interventions (intervention): a control group, a leaflet, a leaflet and quiz, and a leaflet and a plan.
@@ -925,7 +925,7 @@
 
 #' Honesty lab data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictional data about the honesty lab. Imagine we were interested in how people evaluated dishonest acts.
 #' Participants evaluate the dishonesty of acts based on watching videos of people confessing to those acts.
@@ -946,7 +946,7 @@
 
 #' Ice bucket challenge data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' AGoogle data relating to the ice bucket challenge from 2014. Golfer Chris Kennedy tipped a bucket of iced water on his head to raise awareness of the disease amyotrophic lateral sclerosis (ALS, also known as Lou Gehrig's disease).
 #' The idea is that you are challenged and have 24 hours to post a video of you having a bucket of iced water poured over your head in this video you also challenge at least three other people.
@@ -963,7 +963,7 @@
 
 #' Cloak of invisibility data (independent design)
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' I got very excited by two news stories implying that scientists had made Harry Potter's cloak of invisibility. Although the newspapers overstated the case,
 #' I imagined a future in which we have cloaks of invisibility to test out. Given my slightly mischievous streak, the future me is interested in the effect
@@ -984,7 +984,7 @@
 
 #' Cloak of invisibility data (pre-post design)
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' In [invisibility_cloak] we compared the number of mischievous acts in people who had invisibility cloaks to
 #' those without. Imagine we replicated that study, but changed the design so that we recorded the number of
@@ -1004,7 +1004,7 @@
 
 #' Cloak of invisibility data (repeated measures design)
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' I got very excited by two news stories implying that scientists had made Harry Potter's cloak of invisibility. Although the newspapers overstated the case,
 #' I imagined a future in which we have cloaks of invisibility to test out. Given my slightly mischievous streak, the future me is interested in the effect
@@ -1026,7 +1026,7 @@
 
 #' Jiminy Cricket data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictitious data inspired by my honeymoon at Disney in Orlando. The one blip in my tolerance of Disney, was their obsession with dreams coming true and wishing upon a star.
 #' Dreams are good, but a completely blinkered view that they'll come true without any work on your part is not. I think it highly unlikely that merely 'wishing upon a star' will make my dream come true.
@@ -1049,7 +1049,7 @@
 
 #' Johns et al. (2012) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' It is believed that males have a biological predispoition towards the colour red because it is sexually salient.
 #' The theory suggests that women use the colour red as a proxy signal for genital colour to indicate ovulation and sexual proceptivity.
@@ -1074,7 +1074,7 @@
 
 #' Lambert et al. (2012) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #'  Lambert et al. (2012) found that pornography is related to infidelity. This object contains the data from that study.
 #'
@@ -1096,7 +1096,7 @@
 
 #' Massar et al. (2012) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Everyone likes a good gossip from time to time, but apparently it has an evolutionary function.
 #' One school of thought is that gossip is used as a way to derogate sexual competitors – especially
@@ -1126,7 +1126,7 @@
 
 #' McNulty et al. (2008) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' McNulty et al. (2008) found a relationship between a person's attractiveness and how much support they give their partner among newlywed heterosexual couples.
 #' These data simulate the results of that study. The object contains the following variables:
@@ -1148,7 +1148,7 @@
 
 #' Are men like dogs data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' A psychologist was interested in the cross-species differences between men and dogs. She observed a group
 #' of dogs and a group of men in a naturalistic setting (20 of each). She classified several behaviours as being
@@ -1168,7 +1168,7 @@
 
 #' Metal music and anger
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' People have claimed that listening to heavy metal, because of its aggressive sonic palette and often violent or emotionally negative lyrics,
 #' leads to angry and aggressive behaviour. As a very non-violent metal fan this accusation bugs me
@@ -1191,7 +1191,7 @@
 
 #' Metal health
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Lacourse et al. (2001) conducted a study to see whether suicide risk was related to listening to heavy metal music.
 #' They devised a scale to measure preference for bands falling into the category of heavy metal.
@@ -1215,7 +1215,7 @@
 
 #' Metallica data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' The data show various pieces of information about past and present members of the band Metallica that may or may not be accurate at the time of writing (2019).
 #' The data contains the following variables:
@@ -1238,7 +1238,7 @@
 
 #' Miller et al. (2007) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Miller and colleagues (2007) tested the \emph{hidden-estrus} theory, which suggests that unlike other female mammals,
 #' humans do not experience an \emph{estrus} phase during which they are more sexually receptive, proceptive, selective and attractive.
@@ -1263,7 +1263,7 @@
 
 #' Murder in the streets data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictitious data about murder. A sociologist wanted to compare murder rates (murder) each month in a year at
 #' three high-profile locations in London (street). The data contains the following variables:
@@ -1280,7 +1280,7 @@
 
 #' Muris et al. (2008) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Anxious people tend to interpret ambiguous information in a negative way. For example, being highly anxious myself,
 #' if I overheard a student saying "Andy Field's lectures are really different" I would assume that *different*
@@ -1316,7 +1316,7 @@
 
 #' Internet addiction scale (IAS) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' The increasing populatrity (and usefulness) of the Internet has led to the serious problem of internet addiction.
 #' To research this construct it's helpful to be able to measure it, so Laura Nichols and Richard Nicki developed the
@@ -1377,7 +1377,7 @@
 
 #' The notebook data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictitious data about the film The Notebook. Imagine that a film company director was interested in whether there was really such a thing as a 'chick flick'
 #' (a film that has the stereotype of appealing to women more than to men). He took 20 people who mostly self identify as men and 20 who mostly self identify as women and showed half of each sample a film that was supposed to be a 'chick flick' (The Notebook).
@@ -1398,7 +1398,7 @@
 
 #' Ong et al. (2011) data: wide/messy format
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' A study by Ong et al., (2011) examining the relationship between a person's narcissism and other people's ratings of their profile picture on Facebook.
 #' The pictures were rated on each of four dimensions: coolness, glamour, fashionableness, and attractiveness. In addition, each person was measures on introversion/extroversion and narcissism.
@@ -1429,7 +1429,7 @@
 
 #' Ong et al. (2011) data: tidy format
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' A study by Ong et al., (2011) examining the relationship between a person's narcissism and other people's ratings of their profile picture on Facebook.
 #' The pictures were rated on each of four dimensions: coolness, glamour, fashionableness, and attractiveness. In addition, each person was measures on introversion/extroversion and narcissism.
@@ -1456,7 +1456,7 @@
 
 #' Profile picture data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #'  A researcher was interested in the effect of profile pictures on social media on unsolicited attention.
 #'  She took 40 people who had profiles on a social networking website; 17 of them had a relationship status of 'single'
@@ -1478,7 +1478,7 @@
 
 #' Puppy therapy data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Despite the increase in puppies on my campus (which can only be a good thing) to reduce stress,
 #' the evidence base is pretty mixed. Imagine we wanted to contribute to this literature by running a
@@ -1504,7 +1504,7 @@
 
 #' More puppy therapy data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' The researchers who conducted the puppy therapy study in [puppies] suddenly realized that a
 #' participant's love of dogs would affect whether puppy therapy would affect happiness. Therefore,
@@ -1524,7 +1524,7 @@
 
 #' Pub data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Data illustrating the difference between an outlier and an influencial case. The data came to me via David Hitchin, and he in turn got it from Dr Richard Roberts.
 #' I have no idea whether it's real or fictitious. The tibble contains the following variables:
@@ -1540,7 +1540,7 @@
 
 #' R Anxiety Questionnaire (RAQ)
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictitious data relating to a fictional questionnaire about R anxiety. I can't stress enough how fictional this example is. Like, don't email me for the questionnaire
 #' the whole thing is figment of my mind (and some data simulation). I thought this would be obvious from the
@@ -1591,7 +1591,7 @@
 
 #' R exam data data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictitious data relating to an R exam at two universities. The tibble contains the following variables:
 #'
@@ -1610,7 +1610,7 @@
 
 #' Roaming cats data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictional data about roaming cats. I was interested in the relationship between the sex of a cat and how much time it spent away from home.
 #' I had heard that male cats disappeared for substantial amounts of time on long-distance roams around the neighbourhood (something about hormones driving them to find mates) whereas female cats tended to be more homebound.
@@ -1628,7 +1628,7 @@
 
 #' Self-help book data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Let's begin with a Christmas tale. A year ago Santa was resting in his workshop studying his nice
 #' and naughty lists. He noticed a name on the naughty list in bold, upper case letters.
@@ -1683,7 +1683,7 @@
 
 #' Self-help book data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' 'Pop psychology' books sometimes spout nonsense that is unsubstantiated by science. I took 20 people in
 #' relationships and randomly assigned them to one of two groups. One group read the famous popular psychology
@@ -1702,7 +1702,7 @@
 
 #' Self-help book vs statistics book data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Twaddle and Sons, the publishers of Women are from Bras and men are from Penis, were upset about my claims
 #' that their book was as useful as a paper umbrella. They ran their own experiment (N = 500) in which relationship
@@ -1722,7 +1722,7 @@
 
 #' Sharman & Dingle (2015) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' There's a perception that listening to extreme music causes anger and associated behavioural problems.
 #' As an avid Metal fan and fairly non-angry type of person this sterotype bothers me. Luckily science has come to the rescue.
@@ -1747,7 +1747,7 @@
 
 #' Shopping and exercise data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' According to some highly unscientific research done by a UK department store chain and reported in Marie Claire magazine, shopping is good for you.
 #' They found that the average woman spends 150 minutes and walks 2.6 miles when she shops, burning off around 385 calories. In contrast, men spend only about 50 minutes shopping, covering 1.5 miles.
@@ -1765,7 +1765,7 @@
 
 #' Sniffer dogs
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' When the alien invasion comes we'll need spaniels (or possibly other dogs, but lets hope its mainly spaniels because spaniels are cool)
 #' to help us to identify the space lizards. The top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) was put together
@@ -1788,7 +1788,7 @@
 
 #' Social anxiety data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Anxiety disorders take on different shapes and forms, and each disorder is believed to be distinct and have unique causes.
 #' We can summarize the disorders and some popular theories as follows:
@@ -1822,7 +1822,7 @@
 
 #' Soya and sperm counts data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' I read a story in a newspaper (yes, back when they existed) claiming that the chemical genistein, which is
 #' naturally occurring in soya, was linked to lowered sperm counts in Western males. When you read the actual study,
@@ -1848,7 +1848,7 @@
 
 #' Speed dating data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #'  Imagine a scientist designed a study to look at the interplay between looks, personality and
 #'  dating strategies on evaluations of a date. She set up a speed-dating night with 9 tables at which there
@@ -1883,7 +1883,7 @@
 
 #' Stalking therapy
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Some fictional data about therapy for stalking. A few years back I was stalked. You'd think they could have found
 #' someone a bit more interesting to stalk, but apparently times were hard. It could have been a lot worse,
@@ -1908,7 +1908,7 @@
 
 #' Students and lecturers data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Some fictional data about students and lecturers.
 #' The object contains the following variables:
@@ -1929,7 +1929,7 @@
 
 #' Superhero data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Children wearing superhero costumes are more likely to harm themselves because of the unrealistic impression of
 #' invincibility that these costumes could create. For example, children have reported to hospital with severe injuries
@@ -1952,7 +1952,7 @@
 
 #' Supermodel data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' A fashion student was interested in factors that predicted the salaries of male and female catwalk models.
 #' She collected data from 231 models (supermodel.csv). For each model she asked them their salary per day (salary),
@@ -1972,7 +1972,7 @@
 
 #' Switch: games console injuries
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictional data about injuries while playing video games on a console. There are reports of increases in injuries related to
 #' playing games consoles. These injuries were attributed mainly to muscle and tendon strains. A researcher hypothesized
@@ -1996,7 +1996,7 @@
 
 #' Tablet sales data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' A company owner was interested in how to make his brand of (computer) tablets more desirable.
 #' He collected data on how cool people perceived a product's advertising to be, how cool they thought the product was,
@@ -2015,7 +2015,7 @@
 
 #' Method of teaching data (2 groups)
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' The data show the score (out of 20) for 20 different students, some of whom are biologically male and others biologically female,
 #' and some of whom were taught using positive reinforcement (being nice) and others who were taught using punishment (electric shock)
@@ -2033,7 +2033,7 @@
 
 #' Method of teaching data (3 groups)
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' To test how different teaching methods affected students' knowledge I took three statistics modules where
 #' I taught the same material. For one module I wandered around with a large cane and beat anyone who asked
@@ -2054,7 +2054,7 @@
 
 #' Tea data (small sample)
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' One of my favourite activities, especially when trying to do brain-melting things like writing statistics books, is drinking tea. I am English, after all.
 #' Fortunately, tea improves your cognitive function – well, it does in old Chinese people at any rate (Feng, Gwee, Kua, & Ng, 2010).
@@ -2075,7 +2075,7 @@
 
 #' Tea data (large sample)
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' One of my favourite activities, especially when trying to do brain-melting things like writing statistics books, is drinking tea. I am English, after all.
 #' Fortunately, tea improves your cognitive function – well, it does in old Chinese people at any rate (Feng, Gwee, Kua, & Ng, 2010).
@@ -2096,7 +2096,7 @@
 
 #' The Teaching of Statistics for Scientific Experiments—Revised (TOSSE-R) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictitious data relating to a fictional questionnaire about The Teaching of Statistics for Scientific Experiments. Again, I stress that this example is fictional.
 #' I thought the name of the questionnaire would give it away, I mean, no-one is calling a questionnaire TOSSER are they? Don't email me for the questionnaire, it's all made up, you definitley
@@ -2150,7 +2150,7 @@
 
 #' Tuk et al. (2011) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Visceral factors that require us to engage in self control (such as a filling bladder) can affect our inhibtory
 #' abilities in unrelated domains. In a fascinating study by Tuk, Trampe, and Warlop (2011) participants were given
@@ -2175,7 +2175,7 @@
 
 #' Mobile phone use and brain tumour data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Mobile phones emit microwaves, and so holding one next to your brain for large parts of the day is a bit like
 #' sticking your brain in a microwave oven and pushing the 'cook until well done' button. If we wanted to test this
@@ -2197,7 +2197,7 @@
 
 #' Van Bourg et al. (2020) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Pet dogs often engage in behaviours helpful to their owners (mine likes to cuddle me when I’ve had a bad day, and in fact when I’ve had a good day, and now I think of it, pretty much any day regardless of how good or bad its been).
 #' It’s unclear whether these behaviours are truly prosocial. Can a dog engage in prosocial behaviours that haven’t been explicitly trained?
@@ -2234,7 +2234,7 @@
 
 #' Video game and aggression data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Video games are among the favourite online activities for young people. These games have been linked to increased aggression in youths.
 #' Another predictor of aggression and conduct problems is callous-unemotional traits such as lack of guilt, lack of empathy, callous use of others for personal gain.
@@ -2255,7 +2255,7 @@
 
 #' Williams' questionnaire of organizational ability data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Dr Sian Williams (University of Brighton) devised a questionnaire to measure organizational ability.
 #' She predicted five factors to do with organizational ability: (1) preference for organization; (2)
@@ -2305,7 +2305,7 @@
 
 #' Xbox: games console injuries
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Fictional data about injuries while playing video games on a console. A researcher was interested in
 #' what factors contributed to injuries resulting from game console use. She tested 40 participants who
@@ -2327,7 +2327,7 @@
 
 #' Zhang et al. (2013) (subsample)
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Statistics and maths anxiety are common and affect people's performance on maths and stats assignments; women in particular can lack confidence in mathematics (Field, 2010).
 #' Zhang, Schmader and Hall (2013) did an intriguing study in which students completed a maths test in which some put their own name on the test booklet,
@@ -2354,7 +2354,7 @@
 
 #' Zibarras et al. (2008) data
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' Zibarras, Port, and Woods (2008) looked at the relationship between personality and creativity.
 #' They used the Hogan Development Survey (HDS), which measures 11 dysfunctional dispositions of employed adults:
@@ -2388,7 +2388,7 @@
 
 #' Zombie growth model
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' In the story within Field (2016) a lot of people get turned into zombies. At the end of the book
 #' it is revealed that one of the central characters, Alice, uses a gene therapy that she invented to restore the zombies back to a human state.
@@ -2407,13 +2407,13 @@
 #' @source [www.discovr.rocks/csv/zombie_growth.csv](https://www.discovr.rocks/csv/zombie_growth.csv)
 #' @references
 #'
-#'    * Field, A. P. (2016). *An adventure in statistics: the reality enigma*. London: Sage. [https://uk.sagepub.com/en-gb/eur/an-adventure-in-statistics/book237529](https://uk.sagepub.com/en-gb/eur/an-adventure-in-statistics/book237529)
+#'    * Field, A. P. (2016). *An adventure in statistics: the reality enigma*. London: Sage. [https://www.statisticsadventure.com](https://www.statisticsadventure.com)
 
 "zombie_growth"
 
 #' Zombie rehab
 #'
-#' A dataset from Field, A. P. (2022). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' In the story within Field (2016) a lot of people get turned into zombies. At the end of the book
 #' it is revealed that one of the central characters, Alice, uses a gene therapy that she invented to restore the zombies back to a human state.
@@ -2433,6 +2433,6 @@
 #' @source [www.discovr.rocks/csv/zombie_rehab.csv](https://www.discovr.rocks/csv/zombie_rehab.csv)
 #' @references
 #'
-#'    * Field, A. P. (2016). *An adventure in statistics: the reality enigma*. London: Sage. [https://uk.sagepub.com/en-gb/eur/an-adventure-in-statistics/book237529](https://uk.sagepub.com/en-gb/eur/an-adventure-in-statistics/book237529)
+#'    * Field, A. P. (2016). *An adventure in statistics: the reality enigma*. London: Sage. [https://www.statisticsadventure.com](https://www.statisticsadventure.com)
 
 "zombie_rehab"

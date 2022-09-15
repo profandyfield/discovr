@@ -9,7 +9,7 @@ output:
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
 description: "The general linear model (GLM). Visualizing the data, fitting GLMs with one and two predictors. Viewing model parameters with broom, model parameters, standard errors, confidence intervals, fit statistics, significance, Bayes factors and Bayesian estimates (using default priors)."
-bibliography: discovr_08.bib
+bibliography: [discovr_08.bib, packages.bib]
 ---
 
 <html lang="en">
@@ -21,20 +21,22 @@ knitr::opts_chunk$set(
 	warning = FALSE
 )
 
-library(learnr) #necessary to render tutorial correctly
-
-library(broom)
+#necessary to render tutorial correctly
+library(learnr) 
+library(htmltools)
+#tidyverse
 library(dplyr)
+library(ggplot2)
+library(tibble)
+#non tidyverse
+library(BayesFactor)
+library(broom)
 library(GGally)
 library(ggfortify)
-library(ggplot2)
-library(htmltools)
-library(magrittr)
+library(knitr)
 library(parameters)
 library(robust)
 library(sandwich)
-library(tibble)
-
 
 source("./www/discovr_helpers.R")
 
@@ -46,6 +48,13 @@ soc_anx_tib <- discovr::social_anxiety
 metal_tib <- discovr::metal_health
 ```
 
+```{r, eval = F, echo = F}
+# Create bib file for R packages
+here::here("inst/tutorials/discovr_08/packages.bib") |>
+  knitr::write_bib(c('here', 'tidyverse', 'dplyr', 'readr', 'forcats', 'tibble', 'knitr', 'ggfortify', 'broom', 'GGally', 'parameters', 'robust', 'sandwich', 'BayesFactor'), file = _)
+```
+
+
 # discovr: the General Linear Model (GLM)
 
 ## Overview
@@ -53,25 +62,25 @@ metal_tib <- discovr::metal_health
 <div class="infobox">
   <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
   
-  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2022] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
+  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2023] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
   
 </div>
 
-### `r cat_space(fill = "h3", height = 2)` Welcome to the `discovr` space pirate academy
+### `r cat_space(fill = blu)` Welcome to the `discovr` space pirate academy
 
 Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
-* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
-* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
+* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
+* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
-* `r alien(height = 2)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
-* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
-* `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
+* `r alien(height = 1.5)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
+* `r robot(height = 1.5)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
+* `r bug(height = 1.5)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
 
 Also, use hints and solutions to guide you through the exercises (Figure 1).
 
@@ -87,7 +96,7 @@ By for now and good luck - you'll be amazing!
 
 * Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
 
-* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an `r rproj()` markdown file within an `r rstudio()` project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
+* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an Quarto document within an `r rstudio()` project and practice everything you do in the tutorial in the Quarto document, make notes on things that confused you or that you want to remember, and save it. Within this Quarto document you will need to load the relevant packages and data. 
 
 ![](https://youtu.be/FhoYCsZttGc)
 
@@ -95,27 +104,34 @@ By for now and good luck - you'll be amazing!
 
 This tutorial uses the following packages:
 
-* `broom` [@robinsonBroomConvertStatistical2019]
-* `GGally` [@Schloerke_Crowley_Cook_Briatte_Marbach_Thoen_Elberg_Larmarange_2018]
-* `ggfortify` [@tang_ggfortify_2016]
-* `here` [@here]
-* `parameters` [@makowski_parameters_2019]
-* `tidyverse` [@tidyverse]
+* `BayesFactor` [@R-BayesFactor]
+* `broom` [@R-broom]
+* `GGally` [@R-GGally]
+* `ggfortify` [@ggfortify2016; @R-ggfortify]
+* `here` [@R-here]
+* `knitr` [@R-knitr]
+* `parameters` [@parameters2020; @R-parameters]
+* `robust` [@R-robust] is automatically loaded by `r rproj()` 
+* `sandwich` [@R-sandwich; @sandwich2006] is automatically loaded by `parameters`
 
-I try to follow the [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) in always declaring the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will write `dplyr::mutate()`. 
+It also uses these `tidyverse` packages [@R-tidyverse; @tidyverse2019]: `dplyr` [@R-dplyr], `forcats` [@R-forcats], `ggplot2` [@wickhamGgplot2ElegantGraphics2016], `readr` [@R-readr] and `tibble` [@R-tibble].
 
-It is good practice to be explicit about packages to avoid clashes where functions from different packages have the same name. It also means that you don't need to load packages at the start of your markdown document. 
+### Coding style
 
-There are two main exceptions to this rule.
+There are (broadly) two styles of coding:
 
-1. There are functions within some `tidyverse` packages that would be used within other functions. Including the package name makes the code difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
-2. To use the pipe operator (`%>%`) you need to have `magrittr` loaded.
+1. **Verbose**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt verbose style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
 
-We can load all of the packages that are exceptions in one step by loading `tidyverse` at the beginning of our `r rproj()` Markdown document:
+2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
+
+Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend a verbose style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load `tidyverse` because the `dplyr` and `ggplot2` packages contain functions that are often used within other functions and in these cases the verbose style is difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+
+You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the `tidyverse` package (and any others if you're using a concise style) at the beginning of your Quarto document:
 
 ```{r eval = FALSE}
 library(tidyverse)
 ```
+
 
 ### Data
 
@@ -125,17 +141,17 @@ To work *outside of this tutorial* you need to download the following data files
 * [metal_health.csv](https://www.discovr.rocks/csv/metal_health.csv)
 * [social_anxiety.csv](https://www.discovr.rocks/csv/social_anxiety.csv)
 
-Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
+Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your Quarto document:
 
 ```{r, eval=FALSE}
-album_tib <- here::here("data/album_sales.csv") %>% readr::read_csv()
-soc_anx_tib <- here::here("data/social_anxiety.csv") %>% readr::read_csv()
-metal_tib <- here::here("data/metal_health.csv")  %>% readr::read_csv()
+album_tib <- here::here("data/album_sales.csv") |> readr::read_csv()
+soc_anx_tib <- here::here("data/social_anxiety.csv") |> readr::read_csv()
+metal_tib <- here::here("data/metal_health.csv")  |> readr::read_csv()
 ```
 
 ## `r bmu()` The linear model process [(1)]{.alt} 
 
-Figure 2 shows the general process of fitting linear model. First, we should produce scatterplots to get some idea of whether the assumption of linearity is met, and to look for outliers or obvious unusual cases. Having done this initial screen for problems we fit a model and save the various diagnostic statistics that we discuss later. If we want to generalize our model beyond the sample, or we are interested in interpreting significance tests and confidence intervals then we examine these residuals to check for homoscedasticity, normality, independence and linearity. If we find problems then we take corrective action, which involves fitting a different model. If the problem is lack of linearity then we fit a non-linear model, for lack of independent errors we’d use a multilevel model, and in all other situations we fit a robust version of the model using either bootstrapping (small samples) or robust standard errors. This process might seem complex, but it’s not as bad as it seems.
+Figure 2 shows the general process of fitting linear model. First, we should produce scatterplots to get some idea of whether the assumption of linearity is met, and to look for outliers or obvious unusual cases. Having done this initial screen for problems we fit a model and save the various diagnostic statistics that we discuss later. If we want to generalize our model beyond the sample, or we are interested in interpreting significance tests and confidence intervals then we examine these residuals to check for homoscedasticity, normality, independence and linearity. If we find problems then we take corrective action, which involves fitting a different model. If the problem is lack of linearity then we fit a non-linear model, for lack of independent errors we'd use a multilevel model, and in all other situations we fit a robust version of the model using either bootstrapping (small samples) or robust standard errors. This process might seem complex, but its not as bad as it seems.
 
 <figure>
 <img src="./images/dsr2_fig_08_12_glm_process.png" alt="Description in main text" style="width:100%">
@@ -144,14 +160,14 @@ Figure 2 shows the general process of fitting linear model. First, we should pro
 
 ## `r bmu()` The example [(1)]{.alt}
 
-This tutorial follows the example from [@field_discovering_2022] that looks at predicting physical, downloaded and streamed album sales (outcome variable) from various predictor variables. The data file has 200 rows, each one representing a different album. There are also several columns, one of which contains the sales (in thousands) of each album in the week after release (**sales**) and one containing the amount (in thousands of pounds/dollars/euro/whatever currency you use) spent promoting the album before release (**adverts**). The other columns represent how many times songs from the album were played on a prominent national radio station in the week before release (**airplay**), and the 'look' of the band out of 10 (**image**). The data are in a tibble called [album_tib]{.alt}.
+This tutorial follows the example from [@field_discovering_2023] that looks at predicting physical, downloaded and streamed album sales (outcome variable) from various predictor variables. The data file has 200 rows, each one representing a different album. There are also several columns, one of which contains the sales (in thousands) of each album in the week after release (**sales**) and one containing the amount (in thousands of pounds/dollars/euro/whatever currency you use) spent promoting the album before release (**adverts**). The other columns represent how many times songs from the album were played on a prominent national radio station in the week before release (**airplay**), and the 'look' of the band out of 10 (**image**). The data are in a tibble called [album_tib]{.alt}.
 
 #### `r alien()` Alien coding challenge
 
 Use the code box to look at the data.
 
 <div class="tip">
-  `r cat_space()` **Hint:**
+  `r cat_space()` **Hint**
   
   Remember to view an object in `r rproj()` execute its name.
 </div>
@@ -168,7 +184,7 @@ Note how the data are laid out: each variable is in a column and each row repres
 
 ## `r bmu()` Visualizing the data [(1)]{.alt}
 
-We can visualise the data easily using the `GGally` package. When you want to plot continuous variables, the `ggscatmat()` function from this package produces a matrix of scatterplots (below the diagonal), distributions (along the diagonal) and the correlation coefficient (above the diagonal). It takes the general form:
+We can visualise the data easily using the `GGally` package, which we met in `discovr_07`. When you want to plot continuous variables, the `ggscatmat()` function from this package produces a matrix of scatterplots (below the diagonal), distributions (along the diagonal) and the correlation coefficient (above the diagonal). It takes the general form:
 
 ```{r, eval = FALSE}
 GGally::ggscatmat(my_tibble, columns = c("variable 1", " variable 2", " variable 3" …))
@@ -185,14 +201,14 @@ GGally::ggscatmat(album_tib, columns = c("sales", "adverts", "airplay", "image")
 ```
 
 <div class="tip">
-  `r cat_space()` **Tip:**
+  `r cat_space()` **Tip**
   
-  It’s a good idea to list the outcome variable *last* because it means that this variable is always plotted on the *y*-axis (which is appropriate for an outcome) and the plots of each predictor against the outcome variable will be along the bottom row of the grid.
+  Its a good idea to list the outcome variable *last* because it means that this variable is always plotted on the *y*-axis (which is appropriate for an outcome) and the plots of each predictor against the outcome variable will be along the bottom row of the grid.
 </div>
 
 #### `r alien()` Alien coding challenge
 
-It’s as simple as that! Like other plots we have done, we can apply a theme (I like `theme_minimal()`) in the usual way. Using the code example above add a `ggplot2` theme and put into place the advice in the cat-det's tip. :
+Its as simple as that! Like other plots we have done, we can apply a theme (I like `theme_minimal()`) in the usual way. Using the code example above add a `ggplot2` theme and put into place the advice in the cat-det's tip. :
 
 ```{r album_plot, exercise = TRUE, exercise.lines = 2}
 
@@ -218,7 +234,7 @@ GGally::ggscatmat(album_tib, columns = c("adverts", "airplay", "image", "sales")
 
 Although the data are messy, the three predictors have reasonably linear relationships with the album sales and there are no obvious outliers (except maybe in the bottom left of the scatterplot with band image). Across the diagonal, we see the distributions of scores. Advertising is very skewed and airplay and sales look quite heavy-tailed.
 
-We can use the correlations in the plot to get a sense of the relationships between predictors and the outcome. If we look only at the predictors (ignore album sales) then the highest correlation is between the ratings of the band’s image and the amount of airplay which is significant at the 0.01 level (*r* = 0.18). Focussing on the outcome variable, of all of the predictors, adverts and airplay correlate best with the outcome (*r*s = 0.58 and 0.6 respectively).
+We can use the correlations in the plot to get a sense of the relationships between predictors and the outcome. If we look only at the predictors (ignore album sales) then the highest correlation is between the ratings of the bands image and the amount of airplay which is significant at the 0.01 level (*r* = 0.18). Focussing on the outcome variable, of all of the predictors, adverts and airplay correlate best with the outcome (*r*s = 0.58 and 0.6 respectively).
 
 ## `r bmu()` One predictor [(1)]{.alt}
 ### `r bmu()` Fitting the model [(1)]{.alt}
@@ -227,10 +243,11 @@ To begin with we will predict sales from advertising alone. The model we're fitt
 
 $$
 \begin{aligned}
-Y_i & = b_0 + b_1X_i+ \epsilon_i\\
-\text{Sales}_i & = b_0 + b_1\text{Advertising}_i+ \epsilon_i
+Y_i & = b_0 + b_1X_i+ \varepsilon_i\\
+\text{Sales}_i & = b_0 + b_1\text{Advertising}_i+ \varepsilon_i
 \end{aligned}
 $$
+
 
 It should be clear from the earlier plot (look at the scatterplot in the bottom left corner) and correlation that a positive relationship exists: the more money spent advertising an album, the more it is likely to sell. Of course there are some albums that sell well regardless of advertising (top left of scatterplot), but there are none that sell badly when advertising levels are high (bottom right of scatterplot).
 
@@ -240,9 +257,9 @@ To fit a linear model in `r rproj()` we use the `lm()` function. This function t
 my_model <- lm(outcome ~ predictor(s), data = tibble, na.action = an action)
 ```
 
-In which [my_model]{.alt} is whatever name you choose to give to the model, [outcome]{.alt} is the name of the outcome variable (in our example **sales**), and [predictor]{.alt} is the name of the predictor variable (in our example **adverts**) or, as we shall see, is a list of variables separated by ‘+’ symbols. We can also specify a way to handle missing values and [tibble]{.alt} is the name of the tibble containing the data (in our example [album_tib]{.alt}).
+In which [my_model]{.alt} is whatever name you choose to give to the model, [outcome]{.alt} is the name of the outcome variable (in our example **sales**), and [predictor]{.alt} is the name of the predictor variable (in our example **adverts**) or, as we shall see, is a list of variables separated by + symbols. We can also specify a way to handle missing values and [tibble]{.alt} is the name of the tibble containing the data (in our example [album_tib]{.alt}).
 
-The observant among you might notice that within the function we write a formula that specifies the model that we want to estimate. This formula maps directly to the equation for the model. In this example [adverts ~ sales]{.alt} maps onto $\text{Sales}_i = b_0 + b_1\text{Advertising}_i+ \epsilon_i$ except that we ignore the error term ($\epsilon_i$) and parameter estimates ($b$s) and we replace the equals sign with a tilde ([~]{.alt}), which you can think of meaning ‘predicted from’.
+The observant among you might notice that within the function we write a formula that specifies the model that we want to estimate. This formula maps directly to the equation for the model. In this example [adverts ~ sales]{.alt} maps onto $\text{Sales}_i = b_0 + b_1\text{Advertising}_i+ \varepsilon_i$ except that we ignore the error term ($\varepsilon_i$) and parameter estimates ($b$s) and we replace the equals sign with a tilde ([~]{.alt}), which you can think of meaning predicted from.
 
 #### `r robot()` Code example for `lm()`
 
@@ -255,9 +272,9 @@ album_lm <- lm(sales ~ adverts, data = album_tib, na.action = na.exclude)
 You might think that you've made a mistake because nothing much happens. In fact, we have created an object called [album_lm]{.alt} that has the model stored, and we can extract information from it. The reason nothing has happened is because we haven't asked `r rproj()` to show us anything. Let's look at how to do that.
 
 <div class="tip">
-  `r cat_space()` **Tip:**
+  `r cat_space()` **Tip: Naming models**
   
-  I tend to name linear models with the suffix [_lm]{.alt} but you don’t have to share my obsession with using suffixes that tell me what the object contains.
+  I tend to name linear models with the suffix [_lm]{.alt} but you don't have to share my obsession with using suffixes that tell me what the object contains.
   
 </div>
 
@@ -273,8 +290,8 @@ This code example shows how to get the summary information for the model that we
 ```{r album_lm_setup, echo = FALSE}
 album_lm <- lm(sales ~ adverts, data = album_tib, na.action = na.exclude)
 album_full_lm <- lm(sales ~ adverts + airplay + image, data = album_tib, na.action = na.exclude)
-album_full_rsd <- album_full_lm %>% 
-  broom::augment() %>% 
+album_full_rsd <- album_full_lm |> 
+  broom::augment() |> 
   tibble::rowid_to_column(var = "case_no") 
 ```
 
@@ -289,6 +306,27 @@ Yuk! That output looks pretty horrible, doesn't it? If you like tidier output, t
 
 For both functions you simply place the model name into the function, like we did for `summary()`. Let's look at these functions now.
 
+<div class="tip">
+  `r cat_space()` **Tip: rounding the output**
+
+The `tidy()` and `glance()` functions return a table. As with other table objects, we can use the `kable()` function to round values. For example, to round values to a maximum of 3 decimal places use
+
+```{r, eval = F, class.source = '.panel_alt'}
+broom::glance(album_lm) |> 
+  knitr::kable(digits = 3)
+```
+
+As we saw in `discovr_07` we can round different columns to different numbers of decimal places by using
+
+```{r, eval = F, class.source = '.panel_alt'}
+broom::glance(album_lm) |> 
+  knitr::kable(digits = c(dp_for_column_1, dp_for_column_2, dp_for_column_3 ... dp_for_last_column))
+```
+
+Replacing [dp_for_column_1]{.alt} with a number indicating the number of decimal places for column 1 and so on for the other columns.
+
+</div>
+
 
 ###	`r bmu()` Overall fit of the model` [(1)]{.alt}
 
@@ -296,7 +334,7 @@ To get overall model fit statistics we place out model ([album_lm]{.alt}) into `
 
 #### `r robot()` Code example for `glance()`
 
-```{r album_lm_glance, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
+```{r album_lm_glance, exercise = TRUE, exercise.lines = 4, exercise.setup = "album_lm_setup"}
 broom::glance(album_lm)
 ```
 
@@ -316,24 +354,30 @@ quiz(
 )
 ```
 
-```{r}
-
-get_value <- function(tibble, col, row, val, digits = 3){
-  tibble %>% 
-    dplyr::filter({{col}} == row) %>% 
-    dplyr::select({{val}}) %>% 
-    pull() %>% 
-    round(., digits)
-}
-
+```{r, echo = F}
 album_lm <- lm(sales ~ adverts, data = album_tib, na.action = na.exclude)
 album_fit <- broom::glance(album_lm)
-album_par <- broom::tidy(album_lm)
+album_par <- broom::tidy(album_lm, conf.int = T)
+
+album2_lm <- lm(sales ~ adverts + airplay + image, data = album_tib, na.action = na.exclude)
+album2_fit <- broom::glance(album2_lm)
+album2_par <- broom::tidy(album2_lm, conf.int = T)
+
+rs_change = round(album2_fit$r.squared, 3)-round(album_fit$r.squared, 3)
+
+shrink = round(album2_fit$r.squared, 3)-round(album2_fit$adj.r.squared, 3)
+
+album_aov <- anova(album_lm, album2_lm) |> 
+  broom::tidy()
+
+album_z <- parameters::model_parameters(album2_lm, standardize = "refit")
 
 # get_value(album_par, term, "adverts", estimate)
 ```
 
-It also reports an *F*-statistic (labelled **statistic**) and its *p*-value (labelled (**p.value**). The output shows the results of this comparison. Note that the value of *F* is `r round(album_fit$statistic, 2)` and the value in column labelled **p.value** is [2.94198e-19]{.alt}. I explain this notation a bit later, for now trust me that it means 2.94 with the decimal place moved 19 places to the left, or a very small value indeed. The degrees of freedom for this *F* are `r round(album_fit$df, 0)` (as shown in the variable **df**) and `r round(album_fit$df.residual, 0)` (as shown in the variable **df.residual**). Therefore, we can say that adding the predictor of **advertising** significantly improved the fit of the model to the data compared to having no predictors in the model, *F*(`r round(album_fit$df, 0)`, `r round(album_fit$df.residual, 0)`) = `r round(album_fit$statistic, 2)`, *p* < .001. In other words, adding advertising as a predictor significantly improved the model fit.
+It also reports an *F*-statistic (labelled **statistic**) and its *p*-value (labelled (**p.value**). The output shows the results of this comparison. Note that the value of *F* is `r round(album_fit$statistic, 2)` and the value in column labelled **p.value** is [2.94198e-19]{.alt}. I explain this notation a bit later, for now trust me that it means 2.94 with the decimal place moved 19 places to the left, or a very small value indeed. Don't believe me? Rerun the code above but round the values by adding  `|> knitr::kable(digits = 3)` to the code. You'll see that the value in **p.value** becomes 0 (i.e., when rounded to a maximum of 3 decimal places [2.94198e-19]{.alt} is zero).
+
+The degrees of freedom for the *F* are `r round(album_fit$df, 0)` (as shown in the variable **df**) and `r round(album_fit$df.residual, 0)` (as shown in the variable **df.residual**). Therefore, we can say that adding the predictor of **advertising** significantly improved the fit of the model to the data compared to having no predictors in the model, *F*(`r round(album_fit$df, 0)`, `r round(album_fit$df.residual, 0)`) = `r round(album_fit$statistic, 2)`, *p* < .001. In other words, adding advertising as a predictor significantly improved the model fit.
 
 ### `r bmu()` Model parameters [(1)]{.alt}
 
@@ -343,34 +387,41 @@ To see the model parameters we can use `broom::tidy()`, which takes the general 
 broom::tidy(model_name, conf.int = FALSE, conf.level = 0.95)
 ```
 
-Basically, we put the model name into the function, then there are two main optional arguments. By default, the output does not include confidence intervals, so if you want them (hint: you do!) you’d override the default of [conf.int = FALSE]{.alt} by changing it to [conf.int = TRUE]{.alt}. By default you’ll get 95% confidence intervals, which you can override by setting [conf.level]{.alt} to a different value from the default of 0.95 (e.g., [conf.level = 0.99]{.alt} will give you 99% confidence intervals). You usually would leave the confidence level at 95%.
+Basically, we put the model name into the function, then there are two main optional arguments. By default, the output does not include confidence intervals, so if you want them (hint: you do!) you'd override the default of [conf.int = FALSE]{.alt} by changing it to [conf.int = TRUE]{.alt}. By default you'll get 95% confidence intervals, which you can override by setting [conf.level]{.alt} to a different value from the default of 0.95 (e.g., [conf.level = 0.99]{.alt} will give you 99% confidence intervals). You usually would leave the confidence level at 95%.
 
 #### `r robot()` Code example for `tidy()`
 
-To get the model parameters with 95% confidence intervals we could execute:
+To get the model parameters with 95% confidence intervals, rounding to a maximum of 3 decimal places, we could execute:
 
-```{r album_lm_tidy, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
+```{r album_lm_tidy, exercise = TRUE, exercise.lines = 4, exercise.setup = "album_lm_setup"}
 broom::tidy(album_lm, conf.int = TRUE)
 ```
 
-The output provides estimates of the model parameters (the *b*-values) and the significance of these values. The *Y* intercept ($b_0$) is 134.14. This value can be interpreted as meaning that when no money is spent on advertising (when *X* = 0), the model predicts that 134,140 albums will be sold (remember that our unit of measurement is thousands of albums). The value of $b_1$ is 0.096. This value represents the change in the outcome associated with a unit change in the predictor. In other words, if our predictor variable is increased by one unit (if the advertising budget is increased by 1), then our model predicts that 0.096 extra albums will be sold. Our units of measurement were thousands of pounds and thousands of albums sold, so we can say that for an increase in advertising of £1000 the model predicts 96 (0.096 × 1000 = 96) extra album sales. This investment is pretty useless for the record company: it invests £1000 and gets only 96 extra sales! Fortunately, as we already know, advertising accounts for only one-third of the variance in album sales.
+The output provides estimates of the model parameters (the $\hat{b}$-values) and the significance of these values. The *Y* intercept ($\hat{b}_0$) is `r round(album_par$estimate[1], 2)`. This value can be interpreted as meaning that when no money is spent on advertising (when *X* = 0), the model predicts that 134,140 albums will be sold (remember that our unit of measurement is thousands of albums). The value of $\hat{b}_1$ is `r round(album_par$estimate[2], 3)`. This value represents the change in the outcome associated with a unit change in the predictor. In other words, if our predictor variable is increased by one unit (if the advertising budget is increased by 1), then our model predicts that `r round(album_par$estimate[2], 3)` extra albums will be sold. Our units of measurement were thousands of pounds and thousands of albums sold, so we can say that for an increase in advertising of £1000 the model predicts `r round(album_par$estimate[2], 3)` × 1000 = `r round(album_par$estimate[2], 3)*1000`) extra album sales. This investment is pretty useless for the record company: it invests £1000 and gets only `r round(album_par$estimate[2], 3)*1000` extra sales! Fortunately, as we already know, advertising accounts for only one-third of the variance in album sales.
 
-If a predictor is having a significant impact on our ability to predict the outcome then its *b* should be different from 0 (and large relative to its standard error). The *t*-test (labelled **statistic**) and associated *p*-value tell us whether the *b*-value is significantly different from 0. The column **p.value** contains the exact probability that a value of *t* at least as big as the one in the table would occur if the value of *b* in the population were zero. If this probability is less than 0.05, then people interpret that as the predictor being a ‘significant’ predictor of the outcome. For both *t*s, the probabilities are given in scientific notation. For example for the effect of adverts the *p* is 2.91e-19.
+If a predictor is having a significant impact on our ability to predict the outcome then its $\hat{b}$ should be different from 0 (and large relative to its standard error). The *t*-test (labelled **statistic**) and associated *p*-value tell us whether the $\hat{b}$-value is significantly different from 0. The column **p.value** contains the exact probability that a value of *t* at least as big as the one in the table would occur if the value of *b* in the population were zero. If this probability is less than 0.05, then people interpret that as the predictor being a significant predictor of the outcome. For both *t*s, the probabilities are given in scientific notation. For example for the effect of adverts the *p* is `2.91e-19`.
 
 <div class="tip">
   `r cat_space()` **Tip: scientific notation**
   
-   Scientific notation can seem confusing, but e-x is shorthand for $\times 10^{-x}$ and e+x is shorthand for $\times 10^{x}$. Here's two specific examples:
+   Scientific notation can seem confusing, but [e-x]{.alt} is shorthand for $\times 10^{-x}$ and [e+x]{.alt} is shorthand for $\times 10^{x}$. Here's two specific examples:
 
-* 2.91e-19 means $2.91 \times 10^{-19}$, which in plain English means 'move the decimal place 19 places to the left. In other words, this number is 0.000000000000000000291. A very small number.
-* 2.91e+19 means $2.91 \times 10^{19}$ or 'move the decimal place 19 places to the right. In other words, this number is 29100000000000000000. A very large number.
+* 2.91e-19 means $2.91 \times 10^{-19}$, which in plain English means *move the decimal place 19 places to the left*. In other words, this number is 0.000000000000000000291. A very small number.
+* 2.91e+19 means $2.91 \times 10^{19}$ or *move the decimal place 19 places to the right*. In other words, this number is 29100000000000000000. A very large number.
+
 </div>
 
 With respect the values in the column **p.value**, it means that both values are zero to 3 decimal places (0.000), and so the probability of the *t* values (or larger) occurring if the values of *b* in the population were zero is less than 0.001. In other words, the *b*s are significantly different from 0. In the case of the *b* for advertising budget this result means that the advertising budget makes a significant contribution (*p* < 0.001) to predicting album sales.
 
-If our sample is one of the 95% producing confidence intervals that contain the population value then the confidence interval tells us that the population value of b for advertising budget is likely to fall between 0.077 and 0.115 and because this interval doesn’t include zero we might conclude that there is a genuine positive relationship between advertising budget and album sales in the population.
+<div class="tip">
+  `r cat_space()` **Tip: rounding *p*-values**
+  
+The scientific notation can be confusing. If you round the output to 3 decimal places by using `knitr::kable(digits = 3)` (see the earlier tip) then if the resulting *p*-value is 0 then you can report it as [*p* < .001]{.alt} and otherwise report the exact value.
 
-### `r user_visor()` Exploring the standard error of *b* [(2)]{.alt}
+</div>
+
+
+### `r user_visor()` Exploring the standard error of $\hat{b}$ [(2)]{.alt}
 
 This video shows a demonstration that may help you to get a better understanding of what the standard error and sampling distribution of a model parameter *b*-value represents.
 
@@ -390,27 +441,28 @@ quiz(
 )
 ```
 
-### `r user_visor()` Confidence intervals for *b* [(2)]{.alt}
+### `r user_visor()` Confidence intervals for $\hat{b}$ [(2)]{.alt}
 
 ```{r echo = FALSE}
 album_lm <- lm(sales ~ adverts, data = album_tib, na.action = na.exclude)
-broom::tidy(album_lm, conf.int = TRUE)
+broom::tidy(album_lm, conf.int = TRUE) |> 
+  knitr::kable(digits = 3)
 ```
 
-A bit of revision. Imagine that we collected 100 samples of data measuring the same variables as our current model. For each sample we estimate the same model that we have in this chapter, including confidence intervals for the unstandardized beta values. These boundaries are constructed such that in 95% of samples they contain the population value of *b*. Therefore, 95 of our 100 samples will yield confidence intervals for b that contain the population value. The trouble is that we don’t know if our sample is one of the 95% with confidence intervals containing the population values or one of the 5% that misses.
+A bit of revision. Imagine that we collected 100 samples of data measuring the same variables as our current model. For each sample we estimate the same model that we have in this chapter, including confidence intervals for the unstandardized beta values. These boundaries are constructed such that in 95% of samples they contain the population value of *b*. Therefore, 95 of our 100 samples will yield confidence intervals for b that contain the population value. The trouble is that we don't know if our sample is one of the 95% with confidence intervals containing the population values or one of the 5% that misses.
 
-The typical pragmatic solution to this problem is to assume that your sample is one of the 95% that hits the population value. If you assume this, then you can reasonably interpret the confidence interval as providing information about the population value of *b*. A narrow confidence interval suggests that all samples would yield estimates of *b* that are fairly close to the population value, whereas wide intervals suggest a lot of uncertainty about what the population value of *b* might be. If the interval contains zero then it suggests that the population value of *b* might be zero – in other words, no relationship between that predictor and the outcome—and could be positive but might be negative. All of these statements are reasonable if you’re prepared to believe that your sample is one of the 95% for which the intervals contain the population value. Your belief will be wrong 5% of the time, though.
+The typical pragmatic solution to this problem is to assume that your sample is one of the 95% that hits the population value. If you assume this, then you can reasonably interpret the confidence interval as providing information about the population value of *b*. A narrow confidence interval suggests that all samples would yield estimates of *b* that are fairly close to the population value, whereas wide intervals suggest a lot of uncertainty about what the population value of *b* might be. If the interval contains zero then it suggests that the population value of *b* might be zero – in other words, no relationship between that predictor and the outcome—and could be positive but might be negative. All of these statements are reasonable if you're prepared to believe that your sample is one of the 95% for which the intervals contain the population value. Your belief will be wrong 5% of the time, though.
 
-Looking at the 95% confidence interval for advertising (reproduced above), if our sample is one of the 95% producing confidence intervals that contain the population value then the confidence interval tells us that the population value of *b* for advertising budget is likely to fall between 0.077 and 0.115 and because this interval doesn’t include zero we might conclude that there is a genuine positive relationship between advertising budget and album sales in the population.
+Looking at the 95% confidence interval for advertising (reproduced above), if our sample is one of the 95% producing confidence intervals that contain the population value then the confidence interval tells us that the population value of b for advertising budget is likely to fall between `r round(album_par$conf.low[2], 3)` and `r round(album_par$conf.high[2], 3)` and because this interval doesn't include zero we might conclude that there is a genuine positive relationship between advertising budget and album sales in the population.
 
 ### `r bmu()` Using the model	[(1)]{.alt}
 
-Let's use the model to make some predictions. First, replace the *b*-values with the values from the output:
+Let's use the model to make some predictions. First, replace the *b*-values with their estimates ($\hat{b}$) from the output:
 
 $$
 \begin{aligned}
-\text{Sales}_i & = b_0 + b_1\text{Advertising}_i+ \epsilon_i \\
-\text{Sales}_i & = 134.14 + (0.096\times\text{Advertising}_i)+ \epsilon_i \\
+\text{Sales}_i & = \hat{b}_0 + \hat{b}_1\text{Advertising}_i \\
+\text{Sales}_i & = 134.14 + (0.096\times\text{Advertising}_i) \\
 \end{aligned}
 $$
 
@@ -418,8 +470,8 @@ It is now possible to make a prediction about album sales, by replacing the adve
 
 $$
 \begin{aligned}
-\text{Sales}_i & = 134.14 + (0.096\times \text{Advertising}_i)+ \epsilon_i \\
-\text{Sales}_i & = 134.14 + (0.096\times \text{100})+ \epsilon_i \\
+\text{Sales}_i & = 134.14 + (0.096\times \text{Advertising}_i) \\
+\text{Sales}_i & = 134.14 + (0.096\times \text{100}) \\
 &= 143.74
 \end{aligned}
 $$
@@ -430,22 +482,22 @@ Let's extend the model to include airplay and the band's image as additional pre
 
 $$
 \begin{aligned}
-Y_i & = b_0 + b_1X_{1i}+ b_2X_{2i} + \ldots + b_nX_{ni} + \epsilon_i\\
-\text{Sales}_i & = b_0 + b_1\text{Advertising}_i+ b_2\text{Airplay}_i + b_3\text{Image}_i + \epsilon_i
+Y_i & = b_0 + b_1X_{1i}+ b_2X_{2i} + \ldots + b_nX_{ni} + \varepsilon_i\\
+\text{Sales}_i & = b_0 + b_1\text{Advertising}_i+ b_2\text{Airplay}_i + b_3\text{Image}_i + \varepsilon_i
 \end{aligned}
 $$
 
 ### `r bmu()` Building the model [(1)]{.alt}
 
-We already have fitted a model predicting sales from advertising that is stored in [album_lm]{.alt}. We’re now going to create a second model that builds upon this model by adding airplay and image as predictors. In other words, we’re building the model in the equation above.
+We already have fitted a model predicting sales from advertising that is stored in [album_lm]{.alt}. Were now going to create a second model that builds upon this model by adding airplay and image as predictors. In other words, were building the model in the equation above.
 
-To create this second model, we need to specify additional predictor variables in the same way that we add predictors to the equation itself: we use ‘+’ to add them into the model. So we change the formula within `lm()` from [sales ~ adverts]{.alt} to [sales ~ adverts + airplay + image]{.alt}. Note that the formula we use within `lm()` maps directly to the equation for the model but excludes the *b*s and the error term.
+To create this second model, we need to specify additional predictor variables in the same way that we add predictors to the equation itself: we use + to add them into the model. So we change the formula within `lm()` from [sales ~ adverts]{.alt} to [sales ~ adverts + airplay + image]{.alt}. Note that the formula we use within `lm()` maps directly to the equation for the model but excludes the *b*s and the error term.
 
 #### `r alien()` Alien coding challenge
 
 See if you can adapt the previous code (reproduced in the code box) to save the model as [album_full_lm]{.alt} and to include the additional predictors
 
-```{r full_album, exercise = TRUE, exercise.lines = 2}
+```{r full_album, exercise = TRUE, exercise.lines = 4}
 album_lm <- lm(sales ~ adverts, data = album_tib, na.action = na.exclude)
 ```
 
@@ -467,7 +519,7 @@ sales ~ adverts + ...
 album_full_lm <- lm(sales ~ adverts + airplay + image, data = album_tib, na.action = na.exclude)
 ```
 
-This code creates a model in which **sales** is predicted from **advertising**, **airplay** and the band’s **image** and stores it in an object called [album_full_lm]{.alt}. Again nothing seems to have happened, but actually the model has been created and stored. Next we need to extract information from it.
+This code creates a model in which **sales** is predicted from **advertising**, **airplay** and the bands **image** and stores it in an object called [album_full_lm]{.alt}. Again nothing seems to have happened, but actually the model has been created and stored. Next we need to extract information from it.
 
 ### `r bmu()` Fit statistics [(1)]{.alt}
 
@@ -475,19 +527,20 @@ As with our earlier model, we can obtain the (nicely formatted) fit statistics b
 
 #### `r alien()` Alien coding challenge
 
-Adapt the previous code for `glance()` to view the full model (i.e. [album_full_lm]{.alt})
+Adapt the previous code for `glance()` to view the full model (i.e. [album_full_lm]{.alt}) with values rounded to 3 decimal places.
 
 ```{r album_full_lm_glance, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
 
 ```
 
 ```{r album_full_lm_glance-solution}
-broom::glance(album_full_lm)
+broom::glance(album_full_lm) |> 
+  knitr::kable(digits = 3)
 ```
 
-As before, the variable **r.square** tells us the value of $R^2$. Remember that for the first model its value was 0.335, which we interpreted as advertising budget accounting for 33.5% of the variation in album sales. When the two new predictors are included, this value increases to 0.665 or 66.5% of the variance in album sales. If advertising accounts for 33.5%, then the change in $R^2$ is $R^2_\text{change} = 0.665 - 0.335 = 0.33$. In other words, image and airplay account for an additional 33% of the variance in sales.
+As before, the variable **r.square** tells us the value of $R^2$. Remember that for the first model its value was `r round(album_fit$r.squared, 3)`, which we interpreted as advertising budget accounting for `r 100*round(album_fit$r.squared, 3)`% of the variation in album sales. When the two new predictors are included, this value increases to `r round(album2_fit$r.squared, 3)` or `r 100*round(album2_fit$r.squared, 3)`% of the variance in album sales. If advertising accounts for `r 100*round(album_fit$r.squared, 3)`%, then the change in $R^2$ is $R^2_\text{change}$ = `r round(album2_fit$r.squared, 3)` $-$ `r round(album_fit$r.squared, 3)` = `r rs_change`. In other words, image and airplay account for an additional `r 100*rs_change`% of the variance in sales.
 
-The adjusted $R^2$ (adj.r.squared) gives us some idea of how well our model generalizes and ideally we’d like its value to be the same as, or very close to, the value of $R^2$. In this example the difference for the final model is small (it is $0.665 - 0.660 = 0.005$ or about 0.5%). This shrinkage means that if the model were derived from the population rather than a sample we’d conclude that it accounted for approximately 0.5% less variance in the outcome.
+The adjusted $R^2$ (**adj.r.squared**) gives us some idea of how well our model generalizes and ideally we'd like its value to be the same as, or very close to, the value of $R^2$. In this example the difference for the final model is small (it is `r round(album2_fit$r.squared, 3)` $-$ `r round(album2_fit$adj.r.squared, 3)` = `r round(album2_fit$r.squared, 3)-round(album2_fit$adj.r.squared, 3)` or about `r 100*shrink`%). This shrinkage means that if the model were derived from the population rather than a sample we'd conclude that it accounted for approximately `r 100*shrink`% less variance in the outcome.
 
 ```{r quiz_anova_ex1, echo = FALSE}
 quiz(
@@ -502,7 +555,7 @@ quiz(
 )
 ```
 
-The variable **statistic** contains the *F*-statistic. The *F*-statistic represents the ratio of the improvement in prediction that results from fitting the model, relative to the inaccuracy that still exists in the model. The variable **p.value** contains the *p*-value associated with *F*, which in this case is $2.88 \times 10^{-46}$, in other words a lot smaller than 0.001. The degrees of freedom for the *F*-statistic are (in terms of these variables) **df**−1 and **df.residual**, so we could report *F*(3, 196) = 129.50, *p* < .001. We can interpret this result as meaning that the model significantly improves our ability to predict the outcome variable compared to not fitting the model.
+The variable **statistic** contains the *F*-statistic. The *F*-statistic represents the ratio of the improvement in prediction that results from fitting the model, relative to the inaccuracy that still exists in the model. The variable **p.value** contains the *p*-value associated with *F*, which in this case is $2.88 \times 10^{-46}$, in other words a lot smaller than 0.001. The degrees of freedom for the *F*-statistic are (in terms of these variables) **df** and **df.residual**, so we could report `r report_glancef(album2_fit)`. We can interpret this result as meaning that the model significantly improves our ability to predict the outcome variable compared to not fitting the model.
 
 ### `r user_visor()` Comparing models [(2)]{.alt}
 
@@ -536,47 +589,48 @@ anova(album_lm, album_full_lm)
 ```{r model_compare-hint-2}
 # Now add the pipe operator ...
 
-anova(album_lm, album_full_lm) %>%
+anova(album_lm, album_full_lm) |>
 ```
 
 ```{r model_compare-hint-3}
 # Solution: Now add the tidy() function ...
 
-anova(album_lm, album_full_lm) %>% 
+anova(album_lm, album_full_lm) |> 
   broom::tidy()
 ```
 
 <div class="tip">
-  `r cat_space()` **Tip:**
+  `r cat_space()` **Tip**
   
-  We can only compare hierarchical models, in other words, that is to say that the second model must contain everything that was in the first model plus something new, and the third model must contain everything in the second model plus something new, and so on
+  We can only compare hierarchical models; that is to say that the second model must contain everything that was in the first model plus something new, and the third model must contain everything in the second model plus something new, and so on.
 </div>
 
 
-The value of *F* is 96.45 (**statistic**) and the corresponding *p* (**p.value**) is [6.88e-30]{.alt} (i.e., $6.88 \times 10^{-30}$). The degrees of freedom for this *F* are the difference in the degrees of freedom between the two models (in this case 2 as shown in the variable **df**) and the degrees of freedom for the newer model (in this case 196 as shown in the variable **res.df**). Therefore, we can say that adding the predictors of image and airplay ([album_full_lm]{.alt}) significantly improved the fit of the model to the data compared to having only advertising as a predictor ([album_lm]{.alt}), *F*(2, 196) = 96.45, *p* < .001. In other words, adding airplay and image as predictors significantly improved the model fit.
+The value of *F* is `r round(album_aov$statistic[2], 2)` (**statistic**) and the corresponding *p* (**p.value**) is [`r album_aov$p.value[2]`]{.alt} (i.e., `r round(10^{30}*album_aov$p.value[2], 2)` $\times 10^{-30}$). The degrees of freedom for this *F* are the difference in the degrees of freedom between the two models (in this case `r album_aov$df[2]` as shown in the variable **df**) and the degrees of freedom for the newer model (in this case `r album_aov$df.residual[2]` as shown in the variable **df.residual**). Therefore, we can say that adding the predictors of image and airplay ([album_full_lm]{.alt}) significantly improved the fit of the model to the data compared to having only advertising as a predictor ([album_lm]{.alt}), `r report_aov_compare(album_aov, row = 2)`. In other words, adding airplay and image as predictors significantly improved the model fit.
 
-### `r bmu()` Model parameters (*b*) [(1)]{.alt}
+### `r bmu()` Model parameter estimates ($\hat{b}$) [(1)]{.alt}
 
 As with our earlier model, we can obtain the parameter estimates and their confidence intervals as text by executing `summary(album_full_lm)` but it's better to use `broom::tidy()` to get a nicely formatted table:
 
 #### `r alien()` Alien coding challenge
 
-Use `tidy()` instead of `summary()` to extract the model parameters for [album_full_lm]{.alt}. Don't forget the confidence intervals.
+Use `tidy()` instead of `summary()` to extract the model parameters for [album_full_lm]{.alt}. Don't forget the confidence intervals and to round values.
   
-```{r album_lm_full_tidy, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
+```{r album_lm_full_tidy, exercise = TRUE, exercise.lines = 3, exercise.setup = "album_lm_setup"}
 
 ```
 
 ```{r album_lm_full_tidy-solution}
-broom::tidy(album_full_lm, conf.int = TRUE)
+broom::tidy(album_full_lm, conf.int = TRUE) |> 
+  knitr::kable(digits = 3)
 ```
   
-The output gives us estimates for the *b*-values (column labelled **estimate**) and statistics that indicate the individual contribution of each predictor to the model. The *b*-values can be used to interpret the relationship between album sales and each predictor. All three predictors have positive *b*-values indicating positive relationships. So, as advertising budget increases, album sales increase; as plays on the radio increase, so do album sales; and finally more attractive bands will sell more albums. The *b*-values tell us more than this, though. They tell us to what degree each predictor affects the outcome if the effects of all other predictors are held constant.
+The output gives us estimates for the *b*-values (column labelled **estimate**) and statistics that indicate the individual contribution of each predictor to the model. The $\hat{b}$-values can be used to interpret the relationship between album sales and each predictor. All three predictors have positive $\hat{b}$-values indicating positive relationships. So, as advertising budget increases, album sales increase; as plays on the radio increase, so do album sales; and finally more attractive bands will sell more albums. The $\hat{b}$-values tell us more than this, though. They tell us to what degree each predictor affects the outcome if the effects of all other predictors are held constant.
 
 ```{r quiz_b_raw, echo = FALSE}
 quiz(
-  question("How would we interpret the *b* (11.086) for band image?",
-    answer("If a band can increase their image rating by 1 unit they can expect additional album sales of 11,086 units", correct = T, message = "Although the *b* is 11.086 the units were *thousands* of albums, which is why this answer is correct."),
+  question("How would we interpret the $\\hat{b}$ (11.086) for band image?",
+    answer("If a band can increase their image rating by 1 unit they can expect additional album sales of 11,086 units", correct = T, message = "Although the $\\hat{b}$ is 11.086 the units were *thousands* of albums, which is why this answer is correct."),
     answer("If a band can increase their image rating by 1 unit they can expect additional album sales of 11.086 units", message = "This is nearly correct but remember that sales were measured in *thousands* of units"),
     answer("A band rated one standard deviation higher on the image scale can expect additional album sales of 11.086 standard deviations", message = "This describes the *standardized* B, not the *unstandardized"),
     answer("Band image explains 11.086% of the variance in album sales", message = sprintf("This would be what $R^2$ tells us")),
@@ -590,35 +644,36 @@ quiz(
 
 We've looked at the band's image, but for the other two predictors:
 
-* Advertising budget: *b* = 0.085 indicates that as advertising budget increases by one unit, album sales increase by 0.085 units. Both variables were measured in thousands; therefore, for every £1000 more spent on advertising, an extra 0.085 thousand albums (85 albums) are sold. This interpretation is true only if the effects of band image and airplay are held constant.
-* Airplay: *b* = 3.367 indicates that as the number of plays on radio in the week before release increases by one, album sales increase by 3.367 units. Every additional play of a song on radio (in the week before release) is associated with an extra 3.367 thousand albums (3367 albums) being sold. This interpretation is true only if the effects of the band’s image and advertising budget are held constant.
+* Advertising budget: $\hat{b}$ = `r round(album2_par$estimate[2], 3)` indicates that as advertising budget increases by one unit, album sales increase by `r round(album2_par$estimate[2], 3)` units. Both variables were measured in thousands; therefore, for every £1000 more spent on advertising, an extra `r round(album2_par$estimate[2], 3)` thousand albums (`r 1000*round(album2_par$estimate[2], 3)` albums) are sold. This interpretation is true only if the effects of band image and airplay are held constant.
+* Airplay: $\hat{b}$ = `r round(album2_par$estimate[3], 3)` indicates that as the number of plays on radio in the week before release increases by one, album sales increase by `r round(album2_par$estimate[3], 3)` units. Every additional play of a song on radio (in the week before release) is associated with an extra `r round(album2_par$estimate[3], 3)` thousand albums (`r 1000*round(album2_par$estimate[3], 3)` albums) being sold. This interpretation is true only if the effects of the bands image and advertising budget are held constant.
 
-### `r user_visor()` Standardized *b*s [(2)]{.alt}
+### `r user_visor()` Standardized $\hat{b}$s [(2)]{.alt}
 
-The `lm()` function does not produce standardized betas but you can get them using the `model_parameters()` function from the **parameters** package, which takes the general form:
+The `lm()` function does not produce standardized betas but you can get them using the `model_parameters()` function from the `parameters` package, which takes the general form:
 
 ```{r eval = FALSE}
-parameters::model_parameters(my_model, standardize = NULL, digits = 2)
+parameters::model_parameters(my_model, standardize = NULL)
 ```
 
-To get standardized *b*s we need to change the *standardize* argument from its default value of *NULL* to *"refit"*. The argument *digits* determines how many decimal places are printed. The default is 2, but we'll change it to 3 because I like to live life on the edge.
+To get standardized $\hat{b}$s we need to change the [standardize]{.alt} argument from its default value of [NULL]{.alt} to ["refit"]{.alt}.
 
 #### `r robot()` Code example for `model_parameters()`
 
-To get standardized *b*s for our model we'd use this code:
+Use the code box to get standardized $\hat{b}$s for our model (and round to 3 decimal places):
 
-```{r album_lm_b, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
-parameters::model_parameters(album_full_lm, standardize = "refit", digits = 3)
+```{r album_lm_b, exercise = TRUE, exercise.lines = 3, exercise.setup = "album_lm_setup"}
+
 ```
 
 ```{r album_lm_b-solution}
-parameters::model_parameters(album_full_lm, standardize = "refit", digits = 3)
+parameters::model_parameters(album_full_lm, standardize = "refit") |> 
+  knitr::kable(digits = 3)
 ```
 
 <div class="tip">
   `r cat_space()` **Tip:**
   
-It is possible to print the standardized betas within the main output itself, but I don’t advise it because it can create conflicts with other things in `r rproj()`.
+It is possible to print the standardized betas within the main output itself, but I don't advise it because it can create conflicts with other things in `r rproj()`.
   
 </div>
 
@@ -639,14 +694,15 @@ quiz(
 
 Let's summarize the values for the remaining predictors:
 
-* Advertising budget: Standardized $\beta$ = 0.511 indicates that as advertising budget increases by one standard deviation (£485,655), album sales increase by 0.511 standard deviations. The standard deviation for album sales is 80,699, so this constitutes a change of 41,240 sales (0.511 × 80,699). Therefore, for every £485,655 more spent on advertising, an extra 41,240 albums are sold. This interpretation is true only if the effects of the band’s image and airplay are held constant.
-* Image: Standardized $\beta$ = 0.192 indicates that a band rated one standard deviation (1.40 units) higher on the image scale can expect additional album sales of 0.192 standard deviations units. This is a change of 15,490 sales (0.192 × 80,699). A band with an image rating 1.40 higher than another band can expect 15,490 additional sales. This interpretation is true only if the effects of airplay and advertising are held constant.
+* Advertising budget: Standardized $\hat{\beta}$ = `r round(album_z$Coefficient[2], 3)` indicates that as advertising budget increases by one standard deviation (£485,655), album sales increase by `r round(album_z$Coefficient[2], 3)` standard deviations. The standard deviation for album sales is 80,699, so this constitutes a change of 41,240 sales (`r round(album_z$Coefficient[2], 3)` × 80,699). Therefore, for every £485,655 more spent on advertising, an extra 41,240 albums are sold. This interpretation is true only if the effects of the bands image and airplay are held constant.
+* Image: Standardized $\hat{\beta}$ = `r round(album_z$Coefficient[4], 3)` indicates that a band rated one standard deviation (1.40 units) higher on the image scale can expect additional album sales of `r round(album_z$Coefficient[4], 3)` standard deviations units. This is a change of 15,490 sales (`r round(album_z$Coefficient[4], 3)` × 80,699). A band with an image rating 1.40 higher than another band can expect 15,490 additional sales. This interpretation is true only if the effects of airplay and advertising are held constant.
 
 ### `r user_visor()` Confidence intervals [(2)]{.alt}
 
 ```{r echo = FALSE}
 album_full_lm <- lm(sales ~ adverts + airplay + image, data = album_tib, na.action = na.exclude)
-broom::tidy(album_full_lm, conf.int = TRUE)
+broom::tidy(album_full_lm, conf.int = TRUE) |> 
+  knitr::kable(digits = 3)
 ```
 
 
@@ -667,19 +723,20 @@ quiz(
 
 The quiz told you about the confidence interval for airplay, for the remaining predictors the confidence intervals tell us that **assuming that each confidence interval is one of the 95% that contains the population parameter**:
 
-* The true size of the relationship between advertising budget and album sales lies somewhere between 0.071 and 0.099.
-* The true size of the relationship between band image and album sales lies somewhere between 6.28 and 15.89.
+* The true size of the relationship between advertising budget and album sales lies somewhere between `r round(album2_par$conf.low[2], 3)` and `r round(album2_par$conf.high[2], 3)`.
+* The true size of the relationship between band image and album sales lies somewhere between `r round(album2_par$conf.low[4], 3)` and `r round(album2_par$conf.high[4], 3)`.
 
-The two best predictors (advertising and airplay) have very tight confidence intervals indicating that the estimates for the current model are likely to be representative of the true population values. The interval for the band’s image is wider (but still does not cross zero) indicating that the parameter for this variable is less representative, but nevertheless significant.
+The two best predictors (advertising and airplay) have very tight confidence intervals indicating that the estimates for the current model are likely to be representative of the true population values. The interval for the bands image is wider (but still does not cross zero) indicating that the parameter for this variable is less representative, but nevertheless significant.
 
 ### `r bmu()` Significance tests [(1)]{.alt}
 
 ```{r echo = FALSE}
 album_full_lm <- lm(sales ~ adverts + airplay + image, data = album_tib, na.action = na.exclude)
-broom::tidy(album_full_lm, conf.int = TRUE)
+broom::tidy(album_full_lm, conf.int = TRUE) |> 
+  knitr::kable(digits = 3)
 ```
 
-The output also contains the confidence intervals for each model parameter (*b*). The values in **statistic** are the values of *t* associated with each *b* and **p.value** is the associated significance of the *t*-statistic. For every predictor the *b* is significantly different from 0 (*p* < .001), meaning that all predictors significantly predict album sales.
+The output also contains the confidence intervals for each model parameter estimate ($\hat{b}$). The values in **statistic** are the values of *t* associated with each $\hat{b}$ and **p.value** is the associated significance of the *t*-statistic. For every predictor the $\hat{b}$ is significantly different from 0 (*p* < .001), meaning that all predictors significantly predict album sales.
 
 ```{r quiz_b_ex2, echo = FALSE}
 quiz(
@@ -695,20 +752,29 @@ quiz(
 
 ```
 
-<div class="tip">
-  `r cat_space()` **Tip: *p*-values**
+<div class="infobox">
+  `r info()` ***p*-values**
   
   Many students and researchers think of *p*-values in terms of the 'probability of a chance result' or 'the probability of a hypothesis being true' but they are neither of these things. They are the long-run probability that you would get a test-statistic (in this case *t*) at least as large as the one you have if the null hypothesis were true. In other words, if there really were no relationship between advertising budget and album sales (the null hypothesis) then the population value of *b* would be zero. Imagine we sampled from this null population and computed *t*, and then repeated this process 1000 times. We'd have 1000 values of *t* from a population in which there was no effect. We could plot these values as a histogram. This would tell us how often certain values of *t* occur. From it we could work out the probability of getting a particular value of *t*. If we then took another sample, and computed *t* (because we're kind of obsessed with this sort of thing) we would be able to compare this value of *t* to the distribution of all the previous 1000 samples. Is the *t* in our current sample large of small compared to the others? Let's say it was larger than 999 of the previous values. That would be quite an unlikely value of *t* whereas if it was larger than 500 of them this would not surprise us. This is what a *p*-value is: it is the long run probability of getting test statistic at least as large as the one you have if the null hypothesis were true. If the value is less than 0.05, people typically take this as supporting the idea that the null hypothesis isn't true.
 </div>
 
 
-The *p*-values in the table all tell us the long-run probability that we would get a a value of *t* at least as large as the ones we have if the the true relationship between each predictor and album sales was 0 (i.e., *b* = 0). In all cases the probabilities are less than 0.001, which researchers would generally take to mean that the observed *b*s are significantly different from zero. Given the *b*s quantify the relationship between each predictor and album sales, this conclusion implies that each predictor significantly predicts album sales.
+The *p*-values in the table all tell us the long-run probability that we would get a a value of *t* at least as large as the ones we have if the the true relationship between each predictor and album sales was 0 (i.e., *b* = 0). In all cases the probabilities are less than 0.001, which researchers would generally take to mean that the observed $\hat{b}$s are significantly different from zero. Given the $\hat{b}$s quantify the relationship between each predictor and album sales, this conclusion implies that each predictor significantly predicts album sales.
+
+<div class="reportbox">
+  `r pencil()` **Report it!**
+
+The model that included the band's image and airplay was a significantly better fit than the model that included advertising budget alone, `r report_aov_compare(album_aov)`. The final model explained  `r 100*round(album2_fit$r.squared, 3)`% of the variance in album sales. Advertising budget significantly predicted album sales $\hat{b}$ = `r report_pars(album2_par, row = 2, df_r = album2_fit$df.residual)`, as did airplay $\hat{b}$ = `r report_pars(album2_par, row = 3, df_r = album2_fit$df.residual)` and image, $\hat{b}$ = `r report_pars(album2_par, row = 4, df_r = album2_fit$df.residual)`.
+
+</div>
+
+
 
 ## `r bmu()` Unguided Examples [(1)]{.alt}
 ### `r bmu()` Metal and mental health [(1)]{.alt}
 
 <div class="warning">
-  `r cat_space(fill = "warning")` **Advisory**
+  `r warning()` **Advisory**
   
   This optional example is based on real research on suicide risk and can be skipped if these themes are likely to cause you distress.
 </div>
@@ -754,6 +820,7 @@ metal_lm <- lm(suicide ~ hm, data = my_tibble, na.action = na.exclude)
 
 broom::glance(metal_lm)
 broom::tidy(metal_lm, conf.int = TRUE)
+# use `kable()` to round values
 ```
 
 ```{r metal_health-solution}
@@ -761,8 +828,10 @@ broom::tidy(metal_lm, conf.int = TRUE)
 
 metal_lm <- lm(suicide ~ hm, data = metal_tib, na.action = na.exclude)
 
-broom::glance(metal_lm)
-broom::tidy(metal_lm, conf.int = TRUE)
+broom::glance(metal_lm) |> 
+  knitr::kable(digits = 3)
+broom::tidy(metal_lm, conf.int = TRUE) |> 
+  knitr::kable(digits = 3)
 ```
 
 
@@ -779,9 +848,9 @@ quiz(
     allow_retry = T
   ),
   question("What is the nature of the relationship between listening to heavy metal and suicide risk?",
-    answer("As love of heavy metal increases, suicide risk decreases", correct = T, message = "Yes, because the *b* value is negative"),
-    answer("As love of heavy metal increases, suicide risk also increases", message = "Look at the sign of the *b*-value"),
-    answer("As love of heavy metal increases, suicide risk doesn't change", message = "This interpretation is unlikley given the value of *b* and the associated *p*-value."),
+    answer("As love of heavy metal increases, suicide risk decreases", correct = T, message = "Yes, because the $\\hat{b}$ value is negative"),
+    answer("As love of heavy metal increases, suicide risk also increases", message = "Look at the sign of the $\\hat{b}$-value"),
+    answer("As love of heavy metal increases, suicide risk doesn't change", message = "This interpretation is unlikley given the value of $\\hat{b}$ and the associated *p*-value."),
     correct = "Correct - well done!",
     random_answer_order = TRUE,
     allow_retry = T
@@ -790,7 +859,7 @@ quiz(
     answer("-0.612 units", correct = T),
     answer("-0.353 units", message = "This is how many standard deviations suicide risk changes by as love of heavy metal increases by 1 standard deviation"),
     answer("0.353 units", message = "This is the strength of relationship between the predicted values form the model and the observed values."),
-    answer("0.612 units", message = "Nearly, but look at the sign of *b*."),
+    answer("0.612 units", message = "Nearly, but look at the sign of $\\hat{b}$."),
     correct = "Correct - well done!",
     random_answer_order = TRUE,
     allow_retry = T
@@ -803,13 +872,13 @@ quiz(
 ### `r user_visor()` Predicting social anxiety [(2)]{.alt}
 
 <div class="warning">
-  `r cat_space(fill = "warning")` **Advisory**
+  `r warning()` **Advisory**
   
   This optional example discusses anxiety disorders and can be skipped if these themes are likely to cause you distress.
 </div>
 
 
-In this example we’ll look at data collected from several questionnaires relating to clinical psychology, and we will use these measures to predict social anxiety. Anxiety disorders take on different shapes and forms, and each disorder is believed to be distinct and have unique causes. We can summarize the disorders and some popular theories as follows:
+In this example well look at data collected from several questionnaires relating to clinical psychology, and we will use these measures to predict social anxiety. Anxiety disorders take on different shapes and forms, and each disorder is believed to be distinct and have unique causes. We can summarize the disorders and some popular theories as follows:
 
 * Social Anxiety: Social anxiety disorder is a marked and persistent fear of 1 or more social or performance situations in which the person is exposed to unfamiliar people or possible scrutiny by others. This anxiety leads to avoidance of these situations. People with social phobia are believed to feel elevated feelings of shame.
 * Obsessive Compulsive Disorder (OCD): OCD is characterized by the everyday intrusion into conscious thinking of intense, repetitive, personally abhorrent, absurd and alien thoughts (Obsessions), leading to the endless repetition of specific acts or to the rehearsal of bizarre and irrational mental and behavioural rituals (compulsions).  
@@ -825,7 +894,7 @@ This might lead us to think that, rather than being different disorders, they ar
 Each of 134 people was administered all questionnaires. Fit a hierarchical linear model with two blocks:
 
 1. Block 1: the first block (call it [soc_anx_lm]{.alt}) will contain any predictors that we expect to predict social anxiety. In this example we have only one variable that we expect, theoretically, to predict social anxiety and that is shame (measured by the TOSCA).
-2. Block 2: the second block (call it [soc_anx_obq_lm]{.alt}) adds OBQ, the predictor variable that we don’t necessarily expect to predict social anxiety.
+2. Block 2: the second block (call it [soc_anx_obq_lm]{.alt}) adds OBQ, the predictor variable that we don't necessarily expect to predict social anxiety.
 
 #### `r alien()` Alien coding challenge
 
@@ -869,16 +938,19 @@ soc_anx_obq_lm <- lm(spai ~ tosca + obq, data = soc_anx_tib, na.action = na.excl
 
 ```{r soc_anx-hint-4}
 # To view the model fit, remember to put them through glance()
-broom::glance(soc_anx_lm)
-broom::glance(soc_anx_obq_lm)
+broom::glance(soc_anx_lm) |> 
+  knitr::kable(digits = 3)
+broom::glance(soc_anx_obq_lm) |> 
+  knitr::kable(digits = 3)
 
 # Now view parameters for the final model
 ```
 
 ```{r soc_anx-hint-5}
 # To compare the models use anova() in combination with tidy()
-anova(soc_anx_lm, soc_anx_obq_lm) %>% 
-  broom::tidy()
+anova(soc_anx_lm, soc_anx_obq_lm) |> 
+  broom::tidy() |> 
+  knitr::kable(digits = 3)
 ```
 
 ```{r soc_anx-solution}
@@ -887,11 +959,14 @@ anova(soc_anx_lm, soc_anx_obq_lm) %>%
 soc_anx_lm <- lm(spai ~ tosca, data = soc_anx_tib, na.action = na.exclude)
 soc_anx_obq_lm <- lm(spai ~ tosca + obq, data = soc_anx_tib, na.action = na.exclude)
 
-broom::glance(soc_anx_lm)
-broom::glance(soc_anx_obq_lm)
+broom::glance(soc_anx_lm) |> 
+  knitr::kable(digits = 3)
+broom::glance(soc_anx_obq_lm) |> 
+  knitr::kable(digits = 3)
 
-anova(soc_anx_lm, soc_anx_obq_lm) %>% 
-  broom::tidy()
+anova(soc_anx_lm, soc_anx_obq_lm) |> 
+  broom::tidy() |> 
+  knitr::kable(digits = 3)
 ```
 
 
@@ -906,7 +981,7 @@ This error is being thrown by the `anova()` function. The message implies that [
 We can see what's going on by executing the code in the box below. The code takes [soc_anx_tib]{.alt} and, for each variable within, counts the number of cases that have a valid score and the number that are missing. You don't need to understand this code, just trust me that it does what I say it does. 
 
 ```{r soc_anx_n_missing, exercise = TRUE, exercise.lines = 5}
-soc_anx_tib %>%
+soc_anx_tib |>
   dplyr::summarise(
     across(.fns = list(valid = ~sum(!is.na(.x)), missing = ~sum(is.na(.x))), .names = "{.col}_{.fn}")
     )
@@ -917,16 +992,17 @@ In the resulting output, the columns labelled with [_valid]{.alt} contain a coun
 The ideal solution to this is to use a technique known as multiple imputation to estimate the missing values based on the remaining data. Multiple imputation is quite an involved topic. There's a brief introduction within the textbook that accompanies these tutorials. For now, the quick fix is to use listwise deletion, which is generally considered very bad practice indeed. If you're desperate to compare the two models, this would involve fitting the first model but using `na.omit()` to exclude the cases that are missing on **obq**:
 
 ```{r, eval = F}
-soc_anx_lm <- soc_anx_tib %>%
-  dplyr::select(-iii) %>% 
-  na.omit() %>% 
-  lm(spai ~ tosca, data = .)
+soc_anx_lm <- soc_anx_tib |>
+  dplyr::select(-iii) |> 
+  na.omit() |> 
+  lm(spai ~ tosca, data = _)
 
-anova(soc_anx_lm, soc_anx_obq_lm) %>% 
-  broom::tidy()
+anova(soc_anx_lm, soc_anx_obq_lm) |> 
+  broom::tidy() |> 
+  knitr::kable(digits = 3)
 ```
 
-Note that we take the data, deselect the variable **iii** (because it is not involved in either of the models and we don't want to omit the 5 cases that have missing values on this variable), then use `na.omit()` to remove any cases that have missing values on the remaining variables (this will remove the two cases that have missing values for **obq**). We pipe the modified data into `lm()`, fit the model as before, and now we can compare it to [soc_anx_obq_lm]{.alt} using `anova()`.
+Note that we take the data, deselect the variable **iii** (because it is not involved in either of the models and we don't want to omit the 5 cases that have missing values on this variable), then use `na.omit()` to remove any cases that have missing values on the remaining variables (this will remove the two cases that have missing values for **obq**). We pipe the modified data into `lm()` by assigning what comes through the pipe explicitly to the data argument with [data = _]{.alt}, fit the model as before, and compare it to [soc_anx_obq_lm]{.alt} using `anova()`.
 
 Try this out below
 
@@ -939,13 +1015,14 @@ soc_anx_obq_lm <- lm(spai ~ tosca + obq, data = soc_anx_tib, na.action = na.excl
 ```
 
 ```{r soc_anx_missing-solution}
-soc_anx_lm <- soc_anx_tib %>%
-  dplyr::select(-iii) %>% 
-  na.omit() %>% 
-  lm(spai ~ tosca, data = .)
+soc_anx_lm <- soc_anx_tib |>
+  dplyr::select(-iii) |> 
+  na.omit() |> 
+  lm(spai ~ tosca, data = _)
 
-anova(soc_anx_lm, soc_anx_obq_lm) %>% 
-  broom::tidy()
+anova(soc_anx_lm, soc_anx_obq_lm) |> 
+  broom::tidy() |> 
+  knitr::kable(digits = 3)
 ```
 
 Adding **obq** to the model significantly improves the fit.
@@ -961,11 +1038,13 @@ Use the code box to view the fit statistics and parameters of the final model ([
 
 ```{r soc_anx_pars-hint-1}
 # Use glance() to view the model fit
-broom::glance(soc_anx_obq_lm)
+broom::glance(soc_anx_obq_lm) |> 
+  knitr::kable(digits = 3)
 
 # use tidy() to view parameters for the final model
 
-broom::tidy(soc_anx_obq_lm, conf.int = TRUE)
+broom::tidy(soc_anx_obq_lm, conf.int = TRUE) |> 
+  knitr::kable(digits = 3)
 
 # Now get the standardized parameters
 ```
@@ -973,14 +1052,18 @@ broom::tidy(soc_anx_obq_lm, conf.int = TRUE)
 ```{r soc_anx_pars-hint-2}
 # If you want standardized parameter estimates use model_parameters()
 
-parameters::model_parameters(soc_anx_obq_lm, standardize = "refit", digits = 3)
+parameters::model_parameters(soc_anx_obq_lm, standardize = "refit") |> 
+  knitr::kable(digits = 3)
 ```
 
 ```{r soc_anx_pars-solution}
 # Put it all together
-broom::glance(soc_anx_obq_lm)
-broom::tidy(soc_anx_obq_lm, conf.int = TRUE)
-parameters::model_parameters(soc_anx_obq_lm, standardize = "refit", digits = 3)
+broom::glance(soc_anx_obq_lm) |> 
+  knitr::kable(digits = 3)
+broom::tidy(soc_anx_obq_lm, conf.int = TRUE) |> 
+  knitr::kable(digits = 3)
+parameters::model_parameters(soc_anx_obq_lm, standardize = "refit") |> 
+  knitr::kable(digits = 3)
 
 
 ```
@@ -1097,9 +1180,9 @@ The `plot()` function can produce the six plots described below. By default, `pl
 1. The predicted values from the model (*x*-axis) against the residuals (*y*-axis). Use this plot to look for linearity and homoscedasticity.
 2. A Q-Q plot of the standardized residuals. Use this plot to look for normality of residuals.
 3. The predicted values from the model (*x*-axis) against the square root of the standardized residuals (*y*-axis). This is a variant of plot 1 and is used to look for linearity and homoscedasticity.
-4. The case number (*x*-axis) against the Cook’s distance (*y*-axis). This plot can help to identify influential cases (cases with large values for Cook’s distance).
+4. The case number (*x*-axis) against the Cooks distance (*y*-axis). This plot can help to identify influential cases (cases with large values for Cooks distance).
 5. The leverage value for each case (*x*-axis) against the standardized residual (*y*-axis). This plot is used to identify influential cases and outliers. Leverage values indicate the influence of an individual case on the model and are related to Cook's distance.
-6. The leverage value for each case (*x*-axis) against the corresponding Cook’s distance (*y*-axis). This plot is used to identify influential cases and outliers.
+6. The leverage value for each case (*x*-axis) against the corresponding Cooks distance (*y*-axis). This plot is used to identify influential cases and outliers.
 
 We'll look at each of these plots in due course.
 
@@ -1107,7 +1190,7 @@ We'll look at each of these plots in due course.
 
 #### `r robot()` Code example
 
-If we want to produce specific plots, we can use the *which* argument in conjunction with the number of the plot we want, or for several plots we can list them within `c()`. For example, to get plot 1 we would execute:
+If we want to produce specific plots, we can use the [which]{.alt} argument in conjunction with the number of the plot we want, or for several plots we can list them within `c()`. For example, to get plot 1 we would execute:
 
 ```{r ce_zpred_resid, exercise = TRUE, exercise.lines = 1, exercise.setup = "album_lm_setup"}
 plot(album_full_lm, which = 1)
@@ -1120,14 +1203,14 @@ plot(album_full_lm, which = c(1, 2))
 ```
 
 <div class="tip">
-  `r cat_space()` **Tip:**
+  `r cat_space()` **Tip**
   
   If we want all 6 plots we specify this using [which = 1:6]{.alt}.
 </div>
 
 ### `r user_visor()` Residual plots [(2)]{.alt}
 
-We use residual plots (plots 1 and 3) to look for linearity and homoscedasticity. The Figure below (taken from @field_discovering_2022) shows that we're looking for a random scatter of dots. Curvature in the plot indicates a lack of linearity, and a funnel shape (residuals that 'fan out') indicates heteroscedasticity. Curvature *and* a funnel shape indicates both non-linearity and heteroscedasticity. We can also use Q-Q plots to look for normality in residuals.
+We use residual plots (plots 1 and 3) to look for linearity and homoscedasticity. The Figure below (taken from @field_discovering_2023) shows that we're looking for a random scatter of dots. Curvature in the plot indicates a lack of linearity, and a funnel shape (residuals that 'fan out') indicates heteroscedasticity. Curvature *and* a funnel shape indicates both non-linearity and heteroscedasticity. We can also use Q-Q plots to look for normality in residuals.
 
 <figure>
 <img src="./images/dsr2_fig_06_29_pred_resid.png" alt="Description in main text" style="width:100%">
@@ -1219,14 +1302,14 @@ quiz(
 With the `ggfortify` package loaded, you can use `ggplot2::autoplot()` to produce nicely formatted plots that are `ggplot2` objects, which means that you can add other `ggplot2` elements to them, such as themes.
 
 <div class="tip">
-  `r cat_space()` **Tip:**
+  `r cat_space()` **Tip: Using `ggfortify`**
   
-  Remember that to load a package you need to use `library()` in a code chunk at the start of your document. In this case, you'd need to include `library(ggfortify)` for the following code to work.
+For the `autoplot()` function to work the `ggfortify` package must be loaded. (This is a situation where we can't use verbose code because `ggfortify` adds functionality to `ggplot2` rather than to itself.) Basically, outside of this tutorial you'd need to include `library(ggfortify)` at the start of your document for the code in this section to work.
 </div>
 
 #### `r robot()` Code example
 
-For example, to produce a nicely formatted plot of the predicted values against the residuals you could use this code.
+To produce a nicely formatted plot of the predicted values against the residuals you could use this code.
 
 ```{r ce_resid_pred_fortify, exercise = TRUE, exercise.lines = 1, exercise.setup = "album_lm_setup"}
 ggplot2::autoplot(album_full_lm, which = 1)
@@ -1235,7 +1318,7 @@ ggplot2::autoplot(album_full_lm, which = 1)
 
 #### `r robot()` Code example
 
-Add a `ggplot2` element to this plot in the usual way with the `+` symbol. For example, to apply my ever-favourite `theme_minimal()` we could use:
+You can add a `ggplot2` element to this plot in the usual way with the `+` symbol. For example, to apply my ever-favourite `theme_minimal()` we could use:
 
 ```{r ce_resid_pred_fortify2, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
 ggplot2::autoplot(album_full_lm, which = 1) + 
@@ -1245,7 +1328,7 @@ ggplot2::autoplot(album_full_lm, which = 1) +
 `ggfortify` also adds some useful arguments to `autoplot()` that map onto aesthetics that we have met in earlier tutorials. As with any `ggplot2` plot we can change colours using [hex codes](https://www.color-hex.com/). Here's some properties that we can change within `autoplot()`:
 
 * [colour]{.alt}. Sets the colour of the points on the plot.
-* [smooth]{.alt}.colour*. Set the colour of the trend line on the plots.
+* [smooth.colour]{.alt}. Set the colour of the trend line on the plots.
 * [size]{.alt}. Sets the size of the dots on the plot.
 * [alpha]{.alt}. Sets the transparency of the points on the plot (0 = invisible, 1 = solid)
 
@@ -1285,10 +1368,10 @@ ggplot2::autoplot(album_full_lm,
 
 ### `r user_visor()` Influential cases and outliers: plots [(2)]{.alt}
 
-As a bare minimum we should use Cook's distance to identify influential cases and standardized residuals to check for outliers. @field_discovering_2022 describes a much wider battery of values that you can use to check for these things so if you're starting to get the stats bug (?!) then check that out.
+As a bare minimum we should use Cook's distance to identify influential cases and standardized residuals to check for outliers. @field_discovering_2023 describes a much wider battery of values that you can use to check for these things so if you're starting to get the stats bug (?!) then check that out.
 
-<div class="tip">
-  `r cat_space()` **Tip: Outliers and influence**
+<div class="infobox">
+  `r info()` **Outliers and influence**
   
 *   In an average sample, 95% of standardized residuals should lie between $\pm 1.96$, 99% of standardized residuals should lie between $\pm 2.58$, and any case for which the absolute value of the standardized residual is 3 or more, is likely to be an outlier.
 * Cook's distance measures the influence of a single case on the model as a whole. Absolute values greater than 1 may be cause for concern.
@@ -1329,7 +1412,7 @@ ggplot2::autoplot(album_full_lm,
   theme_minimal()
 ```
 
-The first plot shows the value of Cook’s distance for each case and labels cases with the largest values (cases 1, 164 and 169). Looking at the y-axis it’s easy to see that the largest values are in the region of 0.06, which is well below the threshold of 1. The second plot shows leverage values plotted against standardized residuals. We want the trend line (the solid red line) to be flat and lie along the zero, which is what we see in this plot. If the red line deviates substantially from the horizontal then it can indicate that one of the assumptions of the model has been violated. This plot also usually has red dashed lines indicating values of Cook’s distance of 0.5 and 1. Notice that our plot has no dashed red lines, which is because all values of Cook’s distance are well below these thresholds. The final plot shows leverage, Cook’s distance and the standardized residual for each case on the same plot. It can be used to identify cases that have high leverage, high Cook’s distance, large residual or some combination of the three. For example, across the plots case 164 has a standardized residual between -2.5 and -3 and the largest Cook’s distance (although still only in the region of 0.07).
+The first plot shows the value of Cooks distance for each case and labels cases with the largest values (cases 1, 164 and 169). Looking at the y-axis its easy to see that the largest values are in the region of 0.06, which is well below the threshold of 1. The second plot shows leverage values plotted against standardized residuals. We want the trend line (the solid red line) to be flat and lie along the zero, which is what we see in this plot. If the red line deviates substantially from the horizontal then it can indicate that one of the assumptions of the model has been violated. This plot also usually has red dashed lines indicating values of Cooks distance of 0.5 and 1. Notice that our plot has no dashed red lines, which is because all values of Cooks distance are well below these thresholds. The final plot shows leverage, Cooks distance and the standardized residual for each case on the same plot. It can be used to identify cases that have high leverage, high Cooks distance, large residual or some combination of the three. For example, across the plots case 164 has a standardized residual between -2.5 and -3 and the largest Cooks distance (although still only in the region of 0.07).
 
 ### `r user_visor()` Influential cases and outliers: numbers [(2)]{.alt}
 
@@ -1337,26 +1420,27 @@ For a more precise look, we can obtain values for Cooks distance and standardize
 
 #### `r robot()` Code example
 
-To save the a set of diagnostic statistics (including Cook's value and standardized residuals) we create a new tibble called [album_full_rsd]{.alt} (I tend to use the suffix _rsd, short for residuals) by piping our model ([album_full_lm]{.alt}) into `broom::augment()` to get the residuals and then into `tibble::rowid_to_column()` to create a variable that contains the row number. The *var = "case_no"* tells the function to name the variable containing the row numbers **case_no** (choose a different name if you like). The result is a tibble called [album_full_rsd]{.alt} that contains the case number, the original data to which the model was fitted, and various diagnostic statistics.
+To save the a set of diagnostic statistics (including Cook's value and standardized residuals) we create a new tibble called [album_full_rsd]{.alt} (I tend to use the suffix [_rsd]{.alt}, short for residuals) by piping our model ([album_full_lm]{.alt}) into `broom::augment()` to get the residuals and then into `tibble::rowid_to_column()` to create a variable that contains the row number. The *var = "case_no"* tells the function to name the variable containing the row numbers **case_no** (choose a different name if you like). The result is a tibble called [album_full_rsd]{.alt} that contains the case number, the original data to which the model was fitted, and various diagnostic statistics.
 
-```{r album_rsd, exercise = TRUE, exercise.lines = 3, exercise.setup = "album_lm_setup"}
-album_full_rsd <- album_full_lm %>% 
-  broom::augment() %>% 
+```{r album_rsd, exercise = TRUE, exercise.lines = 4, exercise.setup = "album_lm_setup"}
+album_full_rsd <- album_full_lm |> 
+  broom::augment() |> 
   tibble::rowid_to_column(var = "case_no") 
 ```
 
-<div class="warning">
+<div class="bug">
   `r bug()` **De-bug: residuals when you have missing values** 
 
   If you have missing values in the data and used [na.action = na.exclude]{.alt} when fitting the model, you must also tell `augment()` where to find the original data so that it can map the residuals to the original cases. In this example, had we had missing values we would have used:
-```{r eval = F}
+
+```{r eval = F, class.source = '.panel_alt'}
 album_full_rsd <- broom::augment(album_full_lm, data = album_tib)
 ```
 
 Or in a pipe:
-```{r eval = F}
-album_full_rsd <- album_full_lm %>% 
-  broom::augment(., data = album_tib)
+```{r eval = F, class.source = '.panel_alt'}
+album_full_rsd <- album_full_lm |> 
+  broom::augment(data = album_tib)
 ```
 
 If you get an error when trying to get a tibble of residuals using `augment()`, then think about whether you have missing values and remember this tip!
@@ -1386,18 +1470,18 @@ Let's look at standardized residuals first. Remember:
 To see what percentage of standardized residuals fall outside of these limits we can simply filter the tibble containing the residuals such that we see only cases with a standardized residual that is less than $-1.96$ or greater than $1.96$. To simplify this task we can use the `abs()` function within the filter to return the absolute value (ignores the plus or minus sign) of the residual. Doing so means that we can simply filter by values above 1.96 (or whatever threshold we want to use). This won't change the value of the residual itself because it's being applied within the filter. Here's some code (the last two lines are optional), which is explained below.
 
 ```{r album_zresid_inspect, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
-album_full_rsd %>% 
-  dplyr::filter(abs(.std.resid) >= 1.96) %>%
-  dplyr::select(case_no, .std.resid, .resid) %>% 
+album_full_rsd |> 
+  dplyr::filter(abs(.std.resid) >= 1.96) |>
+  dplyr::select(case_no, .std.resid, .resid) |> 
   dplyr::arrange(.std.resid)
 ```
 
-This code takes the tibble of residuals and pipes it into `filter()` where we set the criteria that the absolute value of the variable **.std.resid** must be greater or equal to 1.96 (that’s what `abs(.std.resid) >= 1.96` does). To make the output more focussed we can (but don't have to) pipe the filtered tibble into `select()` and select only the case number, the standardized residual and the raw residual. Finally (and optionally) we pipe the tibble into `arrange()` to sort it by the size of **.std.resid**, so that the resulting table will list cases from the smallest standardized residual to the largest.
+This code takes the tibble of residuals and pipes it into `filter()` where we set the criteria that the absolute value of the variable **.std.resid** must be greater or equal to 1.96 (thats what `abs(.std.resid) >= 1.96` does). To make the output more focussed we can (but don't have to) pipe the filtered tibble into `select()` and select only the case number, the standardized residual and the raw residual. Finally (and optionally) we pipe the tibble into `arrange()` to sort it by the size of **.std.resid**, so that the resulting table will list cases from the smallest standardized residual to the largest.
 
 <div class="tip">
-  `r cat_space()` **Tip:**
+  `r cat_space()` **Tip: Changing the order**
   
-  If you'd rather order from the largest standardized residual then use `dplyr::arrange(desc(.std.resid))` instead. 
+  If you'd rather order the output from the largest standardized residual to the smallest then use `dplyr::arrange(desc(.std.resid))` instead. 
 </div>
 
 We have 13 cases out of a sample of 200 that have standardized residuals outside of ±1.96.
@@ -1417,17 +1501,17 @@ Use the code exercise above to check how many standardized residuals fall outsid
 
 ```{r album_zresid_inspect_2-hint-2}
 # so for the first threshold we'd use:
-album_full_rsd %>% 
-  dplyr::filter(abs(.std.resid) >= 2.5) %>%
-  dplyr::select(case_no, .std.resid, .resid) %>% 
+album_full_rsd |> 
+  dplyr::filter(abs(.std.resid) >= 2.5) |>
+  dplyr::select(case_no, .std.resid, .resid) |> 
   dplyr::arrange(.std.resid)
 ```
 
 ```{r album_zresid_inspect_2-hint-3}
 # For the second threshold we'd use:
-album_full_rsd %>% 
-  dplyr::filter(abs(.std.resid) >= 3) %>%
-  dplyr::select(case_no, .std.resid, .resid) %>% 
+album_full_rsd |> 
+  dplyr::filter(abs(.std.resid) >= 3) |>
+  dplyr::select(case_no, .std.resid, .resid) |> 
   dplyr::arrange(.std.resid)
 ```
 
@@ -1470,8 +1554,8 @@ We can do something similar to look at Cook's distance. We could either filter t
 
 
 ```{r album_cook_inspect, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
-album_full_rsd %>% 
-  dplyr::arrange(desc(.cooksd)) %>%
+album_full_rsd |> 
+  dplyr::arrange(desc(.cooksd)) |>
   dplyr::select(case_no, .cooksd)
 ```
 
@@ -1490,11 +1574,11 @@ quiz(
 
 ## `r user_visor()` Robust linear models [(2)]{.alt}
 
-Our model appears, in most senses, to be both accurate for the sample and generalizable to the population. Sometimes this won’t be the case. There are two things we might want to do: (1) test whether the parameter estimates have been biased, and (2) check whether confidence intervals and significance tests have been biased.
+Our model appears, in most senses, to be both accurate for the sample and generalizable to the population. Sometimes this won't be the case. There are two things we might want to do: (1) test whether the parameter estimates have been biased, and (2) check whether confidence intervals and significance tests have been biased.
 
 ### `r user_astronaut()` Robust parameter estimates [(3)]{.alt}
 
-To check the parameter estimates we can fit a robust model using the `robust::lmRob()` function. This function is used in the same way as `lm()`, so to get a robust version of our final model we can simply replace `lm()` with `lmRob()` in our earlier code. Unfortunately, we can’t use any `broom` functions with `lmRob()`, so we get text output using `summary()`.
+To check the parameter estimates we can fit a robust model using the `robust::lmRob()` function. This function is used in the same way as `lm()`, so to get a robust version of our final model we can simply replace `lm()` with `lmRob()` in our earlier code. Unfortunately, we cant use any `broom` functions with `lmRob()`, so we get text output using `summary()`.
 
 #### `r alien()` Alien coding challenge
 
@@ -1529,13 +1613,13 @@ summary(album_full_rob)
 ```
 
 <div class="tip">
-  `r cat_space()` **Tip:**
+  `r cat_space()` **Tip: Andy's obsessive naming conventions**
 
 I tend to use [_rob]{.alt} to denote robust models
 
 </div>
 
-The bottom of the output shows significance tests of bias. With the usual caveats about significance tests needing to be interpreted within the context of the sample size, these tests suggest that bias in the original model is not problematic (because the *p*-value for these tests are not significant). Mainly we want to compare the robust parameter estimates to the original ones. For adverts the original *b* was 0.085 and the robust estimate is the same, for airplay the original *b* was 3.37 and the robust one is 3.42 and for image the original *b* was 11.09 and the robust estimate is 11.77. In short, the robust estimates are virtually identical to the originals suggesting the original model is unbiased. 
+The bottom of the output shows significance tests of bias. With the usual caveats about significance tests needing to be interpreted within the context of the sample size, these tests suggest that bias in the original model is not problematic (because the *p*-value for these tests are not significant). Mainly we want to compare the robust parameter estimates to the original ones. For adverts the original $\hat{b}$ was 0.085 and the robust estimate is the same, for airplay the original $\hat{b}$ was 3.37 and the robust one is 3.42 and for image the original $\hat{b}$ was 11.09 and the robust estimate is 11.77. In short, the robust estimates are virtually identical to the originals suggesting the original model is unbiased. 
 
 ### `r user_visor()` Robust confidence intervals and significance tests [(2)]{.alt}
 
@@ -1543,38 +1627,42 @@ To test whether confidence intervals and significance tests are biased we can es
 
 #### `r robot()` Code example
 
-We can obtain models based on robust standard errors by setting *robust = TRUE* and using the argument *vcov.type* to set which method to use. If we omit the argument it defaults to "HC3" (which is fine), but we can change it to "HC4" (which some consider better). This code makes our model robust by implementing HC4 standard errors.
+We can obtain models based on robust standard errors by setting [vcov = TRUE]{.alt} and using the argument [vcov.type]{.alt} to set which method to use. If we omit the argument it defaults to ["HC3"]{.alt} (which is fine), but we can change it to ["HC4"]{.alt} (which some consider better). This code makes our model robust by implementing HC4 standard errors.
 
-```{r hc4, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
-parameters::model_parameters(album_full_lm, robust = TRUE, vcov.type = "HC4", digits = 3)
+```{r hc4, exercise = TRUE, exercise.lines = 3, exercise.setup = "album_lm_setup"}
+parameters::model_parameters(album_full_lm, vcov = TRUE, vcov.type = "HC4") |> 
+  knitr::kable(digits = 3)
 ```
 
 #### `r alien()` Alien coding challenge
 
 Refit the model using "HC3" standard errors.
 
-```{r hc3, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
+```{r hc3, exercise = TRUE, exercise.lines = 3, exercise.setup = "album_lm_setup"}
 
 ```
 
 ```{r hc3-hint-1}
 # We can change HC3 to HC4
-parameters::model_parameters(album_full_lm, robust = TRUE, vcov.type = "HC3", digits = 3)
+parameters::model_parameters(album_full_lm, vcov = TRUE, vcov.type = "HC3") |> 
+  knitr::kable(digits = 3)
 ```
 
 ```{r hc3-hint-2}
 # or omit the vcov.type argument altogether (because it defaults to HC3)
-parameters::model_parameters(album_full_lm, robust = TRUE, digits = 3)
+parameters::model_parameters(album_full_lm, vcov = TRUE) |> 
+  knitr::kable(digits = 3)
 ```
 
-The output shows the resulting *b*-values, their robust standard errors, confidence intervals and *p*-values. Compare these with the non-robust versions from earlier. The values are not much different (mainly because our original model didn’t seem to violate its assumptions); for example, the standard error for the *b* for image has changed from 2.44 to 2.25, the associated *t*-statistic has changed from 4.55 to 4.93, and the confidence interval has changed from [6.28, 15.89] to [6.65, 15.52]. These changes are not dramatic, our interpretation of the model won’t have changed. Nevertheless, this is a useful sensitivity analysis in that if a robust model yields basically the same values as the non-robust model then we know that the non-robust model has not been unduly biased. If the robust estimates are hugely different from the original estimates then use and report the robust versions. Fitting a robust model is a win-win.
+The output shows the resulting $\hat{b}$-values, their robust standard errors, confidence intervals and *p*-values. Compare these with the non-robust versions from earlier. The values are not much different (mainly because our original model didn't seem to violate its assumptions); for example, the standard error for the $\hat{b}$ for image has changed from 2.44 to 2.25, the associated *t*-statistic has changed from 4.55 to 4.93, and the confidence interval has changed from [6.28, 15.89] to [6.65, 15.52]. These changes are not dramatic, our interpretation of the model won't have changed. Nevertheless, this is a useful sensitivity analysis in that if a robust model yields basically the same values as the non-robust model then we know that the non-robust model has not been unduly biased. If the robust estimates are hugely different from the original estimates then use and report the robust versions. Fitting a robust model is a win-win.
 
 #### `r robot()` Code example
 
 In small samples we might prefer to bootstrap the confidence intervals. We can do this by setting the bootstrap argument within `model_parameters()` to TRUE.  By default, 1000 bootstrap samples are used, which is fine for most purposes. Therefore, we can bootstrap the model album_full_lm by executing:
 
-```{r album_boot, exercise = TRUE, exercise.lines = 1, exercise.setup = "album_lm_setup"}
-parameters::model_parameters(album_full_lm, bootstrap = TRUE, digits = 3)
+```{r album_boot, exercise = TRUE, exercise.lines = 3, exercise.setup = "album_lm_setup"}
+parameters::model_parameters(album_full_lm, bootstrap = TRUE) |> 
+  knitr::kable(digits = 3)
 ```
 
 These bootstrap confidence intervals and significance values do not rely on assumptions of normality or homoscedasticity, so they give us an accurate estimate of the population value of *b* for each predictor (assuming our sample is one of the 95% with confidence intervals that contain the population value). Again, nothing has changed much from the original model (because the original model didn't violate any assumptions or have influential cases or outliers.)
@@ -1635,7 +1723,7 @@ In the previous unguided example, we fit a linear model that predicted social an
 Use what you have learned in this last section get diagnostic information about [soc_anx_obq_lm]{.alt} and answer the subsequent questions. You do not need to recreate [soc_anx_obq_lm]{.alt}.
 
 <div class="tip">
-  `r cat_space()` **Hint: missing values**
+  `r cat_space()` **Hint**
   
 These data have missing values so you will need to include a reference to the raw data within `augment()`. Refer back to the De-bug box that explains how to do this.
 </div>
@@ -1645,7 +1733,7 @@ soc_anx_obq_lm <- lm(spai ~ tosca + obq, data = soc_anx_tib, na.action = na.excl
 ```
 
 
-```{r soc_anx_bias, exercise = TRUE, exercise.lines = 8, exercise.setup = "soc_anx_model"}
+```{r soc_anx_bias, exercise = TRUE, exercise.lines = 25, exercise.setup = "soc_anx_model"}
 
 ```
 
@@ -1663,17 +1751,17 @@ plot(soc_anx_obq_lm, which = 1:6)
 
 ```{r soc_anx_bias-hint-3}
 # create a tibble of residuals:
-soc_anx_rsd <- soc_anx_obq_lm %>% 
-  broom::augment(., data = soc_anx_tib) %>% 
+soc_anx_rsd <- soc_anx_obq_lm |> 
+  broom::augment(data = soc_anx_tib) |> 
   tibble::rowid_to_column(var = "case_no") 
 # Filter the tibble by standardized residuals above an absolute value of 1.96
 ```
 
 ```{r soc_anx_bias-hint-4}
 # Filter the residuals
-soc_anx_rsd %>% 
-  dplyr::filter(abs(.std.resid) >= 1.96) %>%
-  dplyr::select(case_no, .std.resid, .resid) %>% 
+soc_anx_rsd |> 
+  dplyr::filter(abs(.std.resid) >= 1.96) |>
+  dplyr::select(case_no, .std.resid, .resid) |> 
   dplyr::arrange(.std.resid)
 
 # Do the same for thresholds of 2.5 and 3
@@ -1681,26 +1769,54 @@ soc_anx_rsd %>%
 
 ```{r soc_anx_bias-hint-5}
 # Do the same for a thresholds of 2.5
-soc_anx_rsd %>% 
-  dplyr::filter(abs(.std.resid) >= 2.5) %>%
-  dplyr::select(case_no, .std.resid, .resid) %>% 
+soc_anx_rsd |> 
+  dplyr::filter(abs(.std.resid) >= 2.5) |>
+  dplyr::select(case_no, .std.resid, .resid) |> 
   dplyr::arrange(.std.resid)
 # Do the same for a threshold of 3
 ```
 
 ```{r soc_anx_bias-hint-6}
 # Do the same for a threshold of 3
-soc_anx_rsd %>% 
-  dplyr::filter(abs(.std.resid) >= 3) %>%
-  dplyr::select(case_no, .std.resid, .resid) %>% 
+soc_anx_rsd |> 
+  dplyr::filter(abs(.std.resid) >= 3) |>
+  dplyr::select(case_no, .std.resid, .resid) |> 
   dplyr::arrange(.std.resid)
 # Filter the residuals by Cook's distance greater than 1
 ```
 
 ```{r soc_anx_bias-hint-7}
 # Filter the residuals by Cook's distance greater than 1
-soc_anx_rsd %>% 
-  dplyr::arrange(desc(.cooksd)) %>%
+soc_anx_rsd |> 
+  dplyr::arrange(desc(.cooksd)) |>
+  dplyr::select(case_no, .cooksd)
+```
+
+```{r soc_anx_bias-solution}
+# put it all together ...
+plot(soc_anx_obq_lm, which = 1:6)
+
+soc_anx_rsd <- soc_anx_obq_lm |> 
+  broom::augment(data = soc_anx_tib) |> 
+  tibble::rowid_to_column(var = "case_no") 
+
+soc_anx_rsd |> 
+  dplyr::filter(abs(.std.resid) >= 1.96) |>
+  dplyr::select(case_no, .std.resid, .resid) |> 
+  dplyr::arrange(.std.resid)
+
+soc_anx_rsd |> 
+  dplyr::filter(abs(.std.resid) >= 2.5) |>
+  dplyr::select(case_no, .std.resid, .resid) |> 
+  dplyr::arrange(.std.resid)
+
+soc_anx_rsd |> 
+  dplyr::filter(abs(.std.resid) >= 3) |>
+  dplyr::select(case_no, .std.resid, .resid) |> 
+  dplyr::arrange(.std.resid)
+
+soc_anx_rsd |> 
+  dplyr::arrange(desc(.cooksd)) |>
   dplyr::select(case_no, .cooksd)
 ```
 
@@ -1775,13 +1891,13 @@ There are two things we might do: (1) compare models using Bayes factors; (2) es
 ### `r user_astronaut()` Bayes factors [(3)]{.alt}
 
 
-First, let’s compare models using a Bayes factor using the `regressionBF()` function in the `BayesFactor` [@morey_bayesfactor_2018]. Essentially, we want to compare models against each other hierarchically to see which model has the largest Bayes factor, and to evaluate the strength of evidence that this Bayes factor suggests that a particular model predicts the outcome better than the intercept alone (i.e. a model with no predictors). The function takes the general form
+First, lets compare models using a Bayes factor using the `regressionBF()` function in the `BayesFactor` [@R-BayesFactor]. Essentially, we want to compare models against each other hierarchically to see which model has the largest Bayes factor, and to evaluate the strength of evidence that this Bayes factor suggests that a particular model predicts the outcome better than the intercept alone (i.e. a model with no predictors). The function takes the general form
 
 ```{r eval = F}
 model_bf <- BayesFactor::regressionBF(formula, rscaleCont = "medium", data = tibble)
 ```
 
-This code creates an object called [model_bf]{.alt} based on the same type of formula that we put into the `lm()` function to specify the model (so this should be familiar). The argument [rscaleCont]{.alt} sets the scale of the prior distribution for the distribution for the standardized *b*s in the model. This argument can be set as a numeric value or using one of three pre-defined values. By default it is set to the pre-defined value of ["medium"]{.alt}, which corresponds to a value of $\sqrt{2}⁄4$ or about 0.354 (see the book chapter for more information). We’ll use this default for illustrative purposes but you should always consider what value is appropriate for the model you’re fitting.
+This code creates an object called [model_bf]{.alt} based on the same type of formula that we put into the `lm()` function to specify the model (so this should be familiar). The argument [rscaleCont]{.alt} sets the scale of the prior distribution for the distribution for the standardized $\hat{b}$s in the model. This argument can be set as a numeric value or using one of three pre-defined values. By default it is set to the pre-defined value of ["medium"]{.alt}, which corresponds to a value of $\sqrt{2}⁄4$ or about 0.354 (see the book chapter for more information). Well use this default for illustrative purposes but you should always consider what value is appropriate for the model you're fitting.
 
 #### `r robot()` Code example
 
@@ -1837,7 +1953,7 @@ album_full_bf <- BayesFactor::lmBF(sales ~ adverts + airplay + image, rscaleCont
 album_full_bf
 ```
 
-The results match those form the final model in the previous output, however, by estimating model 7 in isolation we can extract the *b*-values derived from Bayesian estimation and their credible intervals using the `posterior()` function.
+The results match those form the final model in the previous output, however, by estimating model 7 in isolation we can extract the $\hat{b}$-values derived from Bayesian estimation and their credible intervals using the `posterior()` function.
 
 #### `r robot()` Code example
 
@@ -1871,25 +1987,25 @@ Because this process is based in sampling from the posterior, the numbers in you
 
 ```{r, echo = F}
 album_full_bf <- BayesFactor::lmBF(sales ~ adverts + airplay + image, rscaleCont = "medium", data = album_tib)
-album_bayes_sum <- BayesFactor::posterior(album_full_bf, iterations = 10000) %>% summary(.)
+album_bayes_sum <- BayesFactor::posterior(album_full_bf, iterations = 10000) |> summary()
 
 
 make_bayes_sum_tibble <- function(bf_sum, index){
-  bf_sum[index] %>%
-    as.data.frame() %>% 
+  bf_sum[index] |>
+    as.data.frame() |> 
     tibble::as_tibble(rownames = "predictor")
 }
 
 get_bayes_est <- function(b_mod, row = "mu", index = 2, digits = 2){
-  b_mod <-  make_bayes_sum_tibble(b_mod, 1) %>% 
-    dplyr::right_join(make_bayes_sum_tibble(b_mod, 2), by = "predictor") %>% 
+  b_mod <-  make_bayes_sum_tibble(b_mod, 1) |> 
+    dplyr::right_join(make_bayes_sum_tibble(b_mod, 2), by = "predictor") |> 
     dplyr::mutate(
       dplyr::across(where(is.numeric), ~round(., digits = digits))
-    ) %>% 
-    dplyr::filter(predictor == row) %>% 
+    ) |> 
+    dplyr::filter(predictor == row) |> 
     dplyr::select(predictor, `statistics.Mean`, `quantiles.2.5.`, `quantiles.97.5.`)
   
-  b_mod[, index] %>% dplyr::pull()
+  b_mod[, index] |> dplyr::pull()
 }
 
 
@@ -1901,7 +2017,7 @@ album_bayes_sum
 
 
 
-The Bayesian estimate of *b* can be found in the column labelled Mean. In my output (but yours might differ) values are `r get_bayes_est(album_bayes_sum, "adverts", index = 2)` for advertising budget, `r get_bayes_est(album_bayes_sum, "airplay", index = 2)` for airplay and `r get_bayes_est(album_bayes_sum, "image", index = 2)` for image, compared to the values of 0.085, 3.37 and 11.09 from the non-Bayesian model. Most useful are the credible intervals for these parameters. If we want the 95% credible interval then we can read the values from the columns labelled 2.5% and 97.5% in the table of quantiles. Unlike confidence intervals, credible intervals contain the population value with a probability of 0.95 (95%). For advertising budget, therefore, there is a 95% probability that the population value of *b* lies between `r get_bayes_est(album_bayes_sum, "adverts", index = 3)` and `r get_bayes_est(album_bayes_sum, "adverts", index = 4)`, for airplay the population value is plausibly between `r get_bayes_est(album_bayes_sum, "airplay", index = 3)` and `r get_bayes_est(album_bayes_sum, "airplay", index = 4)`, and for image it plausibly lies between `r get_bayes_est(album_bayes_sum, "image", index = 3)` and `r get_bayes_est(album_bayes_sum, "image", index = 4)`. These intervals are constructed assuming that an effect exists, so you cannot use them to test the hypothesis that the null is exactly 0, only to establish plausible population values of the *b*s in the model.
+The Bayesian estimate of $\hat{b}$ can be found in the column labelled Mean. In my output (but yours might differ) values are `r get_bayes_est(album_bayes_sum, "adverts", index = 2)` for advertising budget, `r get_bayes_est(album_bayes_sum, "airplay", index = 2)` for airplay and `r get_bayes_est(album_bayes_sum, "image", index = 2)` for image, compared to the values of 0.085, 3.37 and 11.09 from the non-Bayesian model. Most useful are the credible intervals for these parameters. If we want the 95% credible interval then we can read the values from the columns labelled 2.5% and 97.5% in the table of quantiles. Unlike confidence intervals, credible intervals contain the population value with a probability of 0.95 (95%). For advertising budget, therefore, there is a 95% probability that the population value of $\hat{b}$ lies between `r get_bayes_est(album_bayes_sum, "adverts", index = 3)` and `r get_bayes_est(album_bayes_sum, "adverts", index = 4)`, for airplay the population value is plausibly between `r get_bayes_est(album_bayes_sum, "airplay", index = 3)` and `r get_bayes_est(album_bayes_sum, "airplay", index = 4)`, and for image it plausibly lies between `r get_bayes_est(album_bayes_sum, "image", index = 3)` and `r get_bayes_est(album_bayes_sum, "image", index = 4)`. These intervals are constructed assuming that an effect exists, so you cannot use them to test the hypothesis that the null is exactly 0, only to establish plausible population values of the *b*s in the model.
 
 
 <div class="infobox">
@@ -1918,15 +2034,15 @@ The Bayesian estimate of *b* can be found in the column labelled Mean. In my out
 
 ### Statistics
 
-* The tutorials typically follow examples described in detail in @field_discovering_2022. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
+* The tutorials typically follow examples described in detail in @field_discovering_2023. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
 * If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
 * There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/).
 * There are free statistical resources on my websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [milton-the-cat.rocks](http://milton-the-cat.rocks).
 
-### `r rproj("h3")`
+### `r rproj()`
 
 * [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
-* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and `r rstudio()`.
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj()` and `r rstudio()`.
 * [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
 * [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
 

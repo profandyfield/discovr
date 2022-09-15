@@ -22,14 +22,6 @@
   url = {https://CRAN.R-project.org/package=forcats},
 }
 
-@Manual{R-gt,
-  title = {gt: Easily Create Presentation-Ready Display Tables},
-  author = {Richard Iannone and Joe Cheng and Barret Schloerke},
-  year = {2022},
-  note = {R package version 0.6.0},
-  url = {https://CRAN.R-project.org/package=gt},
-}
-
 @Manual{R-here,
   title = {here: A Simpler Way to Find Your Files},
   author = {Kirill Müller},
@@ -54,6 +46,22 @@
   url = {https://yihui.org/knitr/},
 }
 
+@Manual{R-lavaan,
+  title = {lavaan: Latent Variable Analysis},
+  author = {Yves Rosseel and Terrence D. Jorgensen and Nicholas Rockwood},
+  year = {2022},
+  note = {R package version 0.6-12},
+  url = {https://lavaan.ugent.be},
+}
+
+@Manual{R-parameters,
+  title = {parameters: Processing of Model Parameters},
+  author = {Daniel Lüdecke and Dominique Makowski and Mattan S. Ben-Shachar and Indrajeet Patil and Søren Højsgaard and Brenton M. Wiernik},
+  year = {2022},
+  note = {R package version 0.18.2},
+  url = {https://easystats.github.io/parameters/},
+}
+
 @Manual{R-readr,
   title = {readr: Read Rectangular Text Data},
   author = {Hadley Wickham and Jim Hester and Jennifer Bryan},
@@ -62,12 +70,12 @@
   url = {https://CRAN.R-project.org/package=readr},
 }
 
-@Manual{R-robustbase,
-  title = {robustbase: Basic Robust Statistics},
-  author = {Valentin Todorov and Andreas Ruckstuhl and Matias Salibian-Barrera and Tobias Verbeke and Manuel Koller and Martin Maechler},
+@Manual{R-sandwich,
+  title = {sandwich: Robust Covariance Matrix Estimators},
+  author = {Achim Zeileis and Thomas Lumley},
   year = {2022},
-  note = {R package version 0.95-0},
-  url = {https://robustbase.R-forge.R-project.org/},
+  note = {R package version 3.0-2},
+  url = {https://sandwich.R-Forge.R-project.org/},
 }
 
 @Manual{R-tibble,
@@ -76,14 +84,6 @@
   year = {2022},
   note = {R package version 3.1.8},
   url = {https://CRAN.R-project.org/package=tibble},
-}
-
-@Manual{R-tidyr,
-  title = {tidyr: Tidy Messy Data},
-  author = {Hadley Wickham and Maximilian Girlich},
-  year = {2022},
-  note = {R package version 1.2.0},
-  url = {https://CRAN.R-project.org/package=tidyr},
 }
 
 @Manual{R-tidyverse,
@@ -116,15 +116,59 @@
   url = {http://www.crcpress.com/product/isbn/9781466561595},
 }
 
-@Article{robustbase2009,
-  title = {An Object-Oriented Framework for Robust Multivariate Analysis},
-  author = {Valentin Todorov and Peter Filzmoser},
+@Article{lavaan2012,
+  title = {{lavaan}: An {R} Package for Structural Equation Modeling},
+  author = {Yves Rosseel},
   journal = {Journal of Statistical Software},
-  year = {2009},
-  volume = {32},
-  number = {3},
-  pages = {1--47},
-  url = {https://www.jstatsoft.org/article/view/v032i03/},
+  year = {2012},
+  volume = {48},
+  number = {2},
+  pages = {1--36},
+  doi = {10.18637/jss.v048.i02},
+}
+
+@Article{parameters2020,
+  title = {Extracting, Computing and Exploring the Parameters of Statistical Models using {R}.},
+  volume = {5},
+  doi = {10.21105/joss.02445},
+  number = {53},
+  journal = {Journal of Open Source Software},
+  author = {Daniel Lüdecke and Mattan S. Ben-Shachar and Indrajeet Patil and Dominique Makowski},
+  year = {2020},
+  pages = {2445},
+}
+
+@Article{sandwich2020,
+  title = {Various Versatile Variances: An Object-Oriented Implementation of Clustered Covariances in {R}},
+  author = {Achim Zeileis and Susanne K\"oll and Nathaniel Graham},
+  journal = {Journal of Statistical Software},
+  year = {2020},
+  volume = {95},
+  number = {1},
+  pages = {1--36},
+  doi = {10.18637/jss.v095.i01},
+}
+
+@Article{sandwich2004,
+  title = {Econometric Computing with {HC} and {HAC} Covariance Matrix Estimators},
+  author = {Achim Zeileis},
+  journal = {Journal of Statistical Software},
+  year = {2004},
+  volume = {11},
+  number = {10},
+  pages = {1--17},
+  doi = {10.18637/jss.v011.i10},
+}
+
+@Article{sandwich2006,
+  title = {Object-Oriented Computation of Sandwich Estimators},
+  author = {Achim Zeileis},
+  journal = {Journal of Statistical Software},
+  year = {2006},
+  volume = {16},
+  number = {9},
+  pages = {1--16},
+  doi = {10.18637/jss.v016.i09},
 }
 
 @Article{tidyverse2019,

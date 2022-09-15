@@ -9,7 +9,7 @@ output:
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
 description: "Comparing means adjusted for other variables. Essentially 'Analysis of Covariance (ANCOVA)' designs but taught using a general linear model framework. Covers setting contrasts, Type III sums of squares, the *F*-statistic, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of adjusted means, *post hoc* tests, Bayes factors."
-bibliography: discovr_12.bib
+bibliography: [discovr_12.bib, packages.bib]
 ---
 <html lang="en">
 
@@ -20,17 +20,21 @@ knitr::opts_chunk$set(
 	warning = FALSE
 )
 
-library(learnr) #necessary to render tutorial correctly
-
+#necessary to render tutorial correctly
+library(learnr) 
+library(htmltools)
+#tidyverse
 library(dplyr)
 library(ggplot2)
-library(Hmisc)
-library(htmltools)
-library(magrittr)
-
+library(tibble)
+#non tidyverse
+library(BayesFactor)
 library(broom)
+library(car)
 library(effectsize)
 library(ggfortify)
+library(Hmisc)
+library(knitr)
 library(modelbased)
 library(parameters)
 library(sandwich)
@@ -44,6 +48,12 @@ pupluv_tib <- discovr::puppy_love
 cure_tib <- discovr::hangover
 ```
 
+```{r, eval = F, echo = F}
+# Create bib file for R packages
+here::here("inst/tutorials/discovr_12/packages.bib") |>
+  knitr::write_bib(c('here', 'tidyverse', 'dplyr', 'readr', 'forcats', 'tibble', 'knitr', 'broom', 'effectsize', "ggfortify", 'Hmisc', 'modelbased', 'parameters', 'sandwich', 'BayesFactor', 'car', 'emmeans'), file = _)
+```
+
 # discovr: Comparing adjusted means (GLM 2)
 
 ## Overview
@@ -51,25 +61,25 @@ cure_tib <- discovr::hangover
 <div class="infobox">
   <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
   
-  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2022] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
+  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2023] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
   
 </div>
 
-### `r cat_space(fill = "h3", height = 2)` Welcome to the `discovr` space pirate academy
+### `r cat_space(fill = blu)` Welcome to the `discovr` space pirate academy
 
 Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
-* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
-* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
+* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
+* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
-* `r alien(height = 2)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
-* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
-* `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
+* `r alien(height = 1.5)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
+* `r robot(height = 1.5)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
+* `r bug(height = 1.5)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
 
 Also, use hints and solutions to guide you through the exercises (Figure 1).
 
@@ -85,7 +95,7 @@ By for now and good luck - you'll be amazing!
 
 * Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
 
-* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an `r rproj()` markdown file within an `r rstudio()` project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
+* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an Quarto document within an `r rstudio()` project and practice everything you do in the tutorial in the Quarto document, make notes on things that confused you or that you want to remember, and save it. Within this Quarto document you will need to load the relevant packages and data. 
 
 ![](https://youtu.be/FhoYCsZttGc)
 
@@ -93,25 +103,32 @@ By for now and good luck - you'll be amazing!
 
 This tutorial uses the following packages:
 
-* `broom` [@robinsonBroomConvertStatistical2019]
-* `car` [@fox_r_2019]
-* `effectsize` [@makowski_compute_2020]
-* `here` [@here]
-* `modelbased` [@makowski_modelbased_2020]
-* `parameters` [@makowski_parameters_2019]
-* `sandwich` [@zeileis_econometric_2004]
-* `tidyverse` [@tidyverse]
+* `BayesFactor` [@R-BayesFactor]
+* `broom` [@R-broom]
+* `car` [@R-car]
+* `effectsize` [@effectsize2020; @R-effectsize]
+* `emmeans` [@R-emmeans] is used by `modelbased`
+* `here` [@R-here]
+* `ggfortify` [@R-ggfortify; @tang_ggfortify_2016]
+* `Hmisc` [@R-Hmisc] is loaded by `ggplot2`
+* `knitr` [@R-knitr]
+* `modelbased` [@R-modelbased]
+* `parameters` [@parameters2020; @R-parameters]
+* `sandwich` [@R-sandwich; @sandwich2006] is automatically loaded by `parameters`
 
-I try to follow the [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) in always declaring the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will write `dplyr::mutate()`. 
+It also uses these `tidyverse` packages [@R-tidyverse; @tidyverse2019]: `dplyr` [@R-dplyr], `forcats` [@R-forcats], `ggplot2` [@wickhamGgplot2ElegantGraphics2016], and `readr` [@R-readr], `.
 
-It is good practice to be explicit about packages to avoid clashes where functions from different packages have the same name. It also means that you don't need to load packages at the start of your markdown document. 
+### Coding style
 
-There are two main exceptions to this rule.
+There are (broadly) two styles of coding:
 
-1. There are functions within some `tidyverse` packages that would be used within other functions. Including the package name makes the code difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
-2. To use the pipe operator (`%>%`) you need to have `magrittr` loaded.
+1. **Verbose**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt verbose style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
 
-We can load all of the packages that are exceptions in one step by loading `tidyverse` at the beginning of our `r rproj()` Markdown document:
+2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
+
+Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend a verbose style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load `tidyverse` because the `dplyr` and `ggplot2` packages contain functions that are often used within other functions and in these cases the verbose style is difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+
+You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the `tidyverse` package (and any others if you're using a concise style) at the beginning of your Quarto document:
 
 ```{r eval = FALSE}
 library(tidyverse)
@@ -124,11 +141,11 @@ To work *outside of this tutorial* you need to download the following data files
 * [puppy_love.csv](https://www.discovr.rocks/csv/puppy_love.csv)
 * [hangover.csv](https://www.discovr.rocks/csv/hangover.csv)
 
-Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
+Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your Quarto document:
 
 ```{r, eval=FALSE}
-pupluv_tib <- here::here("data/puppy_love.csv") %>%
-  readr::read_csv() %>%
+pupluv_tib <- here::here("data/puppy_love.csv") |>
+  readr::read_csv() |>
   dplyr::mutate(
     dose = forcats::as_factor(dose)
   )
@@ -137,10 +154,10 @@ pupluv_tib <- here::here("data/puppy_love.csv") %>%
 This code reads in the data and converts the variable **dose** to a factor (categorical variable). For the hangover data use the code:
 
 ```{r, eval=FALSE}
-cure_tib <- here::here("data/hangover.csv") %>%
-  readr::read_csv() %>%
+cure_tib <- here::here("data/hangover.csv") |>
+  readr::read_csv() |>
   dplyr::mutate(
-    drink = forcats::as_factor(drink) %>% forcats::fct_relevel(., "Water", "Lucozade", "Cola")
+    drink = forcats::as_factor(drink) |> forcats::fct_relevel("Water", "Lucozade", "Cola")
   )
 ```
 
@@ -155,7 +172,7 @@ The main example in this tutorial extends the example about puppy therapy from *
 <figcaption>Figure 2: Milton the spaniel says 'there's no need to be afraid, just tickle the belly of statistics and it will love you forever.</figcaption>
 </figure> 
 
-The previous tutorial focussed on an example in which a researcher tested the efficacy of puppy therapy by exposing different groups of randomly-assigned people to (1) a no puppies control group; (2) 15 minutes of puppy therapy; and (3) 30 minutes of puppy contact. The dependent variable was a measure of happiness ranging from 0 (as unhappy as I can possibly imagine being) to 10 (as happy as I can possibly imagine being). The researchers who conducted the puppy therapy study realized that a participant’s love of dogs could affect whether puppy therapy affected happiness. Therefore, they replicated the study on different participants, but included a self-report measure of love of puppies from 0 (I am a weird person who hates puppies, please be deeply suspicious of me) to 7 (puppies are the best thing ever, one day I might marry one). The data are in [pupluv_tib]{.alt}, which contains the variables **id** (the participant’s id code), **dose** (1 = control, 2 = 15 minutes, 3 = 30 minutes), **happiness** (the person’s happiness on a scale from 0-10), and **puppy_love** (the love of puppies from 0 to 7)
+The previous tutorial focussed on an example in which a researcher tested the efficacy of puppy therapy by exposing different groups of randomly-assigned people to (1) a no puppies control group; (2) 15 minutes of puppy therapy; and (3) 30 minutes of puppy contact. The dependent variable was a measure of happiness ranging from 0 (as unhappy as I can possibly imagine being) to 10 (as happy as I can possibly imagine being). The researchers who conducted the puppy therapy study realized that a participants love of dogs could affect whether puppy therapy affected happiness. Therefore, they replicated the study on different participants, but included a self-report measure of love of puppies from 0 (I am a weird person who hates puppies, please be deeply suspicious of me) to 7 (puppies are the best thing ever, one day I might marry one). The data are in [pupluv_tib]{.alt}, which contains the variables **id** (the participants id code), **dose** (1 = control, 2 = 15 minutes, 3 = 30 minutes), **happiness** (the persons happiness on a scale from 0-10), and **puppy_love** (the love of puppies from 0 to 7)
 
 #### `r alien()` Alien coding challenge
 
@@ -204,7 +221,7 @@ Because I have set up the data within this tutorial you should see that the leve
 ```{r quiz_fct_relevel, echo = FALSE}
 quiz(caption = "Changing the order of factor levels",
      question("If the levels of dose were in the wrong order what function could we use to reorder the levels?",
-    answer("`forcats::fct_relevel()`", correct = T, message = "Specifically, we could use this code: `pupluv_tib <- pupluv_tib %>% \n dplyr::mutate(dose = forcats::fct_relevel(dose, \"No puppies\", \"15 mins\", \"30 mins\"))`"),
+    answer("`forcats::fct_relevel()`", correct = T, message = "Specifically, we could use this code: `pupluv_tib <- pupluv_tib |> \n dplyr::mutate(dose = forcats::fct_relevel(dose, \"No puppies\", \"15 mins\", \"30 mins\"))`"),
     answer("`forcats::reorder()`", message = ""),
     answer("`dplyr::fct_levels()`", message = ""),
     correct = "Correct - well done!",
@@ -220,51 +237,53 @@ quiz(caption = "Changing the order of factor levels",
 
 Use what you already know to compute the mean and a 95% confidence interval of happiness scores split by the therapy group to which a person belonged.
 
-```{r pupluv_sum, exercise = TRUE, exercise.lines = 7}
+```{r pupluv_sum, exercise = TRUE, exercise.lines = 10}
 
 ```
 
 ```{r pupluv_sum-hint-1}
 # Start by piping the tibble into the group_by function to group output by dose:
-pupluv_tib %>% 
+pup_sum <- pupluv_tib |> 
   dplyr::group_by(dose)
 # Now pipe the results into the summarize() function
 ```
 
 ```{r pupluv_sum-hint-2}
 # Pipe the results into the summarize() function
-pupluv_tib %>% 
-  dplyr::group_by(dose) %>% 
+pup_sum <- pupluv_tib |> 
+  dplyr::group_by(dose) |> 
   dplyr::summarize()
 # Within summarize(), use the mean() function to create a variable that is the mean happiness score
 ```
 
 ```{r pupluv_sum-hint-3}
 # Use the mean() function to create a variable that is the mean happiness score:
-pupluv_tib %>% 
-  dplyr::group_by(dose) %>% 
+pup_sum <- pupluv_tib |> 
+  dplyr::group_by(dose) |> 
   dplyr::summarize(
     mean = mean(happiness, na.rm = TRUE)
   )
 # Add two more rows that use mean_cl_normal to calculate the lower and upper boundary of the 95% confidence interval
 ```
 
-```{r pupluv_sum-hint-4}
-# Solution
-pupluv_tib %>% 
-  dplyr::group_by(dose) %>% 
+```{r pupluv_sum-solution}
+pup_sum <- pupluv_tib |> 
+  dplyr::group_by(dose) |> 
   dplyr::summarize(
     mean = mean(happiness, na.rm = TRUE),
     `95% CI lower` = mean_cl_normal(happiness)$ymin,
     `95% CI upper` = mean_cl_normal(happiness)$ymax
   )
+# display and round to 3dp
+pup_sum |> 
+  knitr::kable(digits = 3)
 ```
 
 Note that the mean happiness is very similar in the 15- and 30-minute groups and higher in these groups than the no puppies control.
 
 ## `r bmu()` The model [(1)]{.alt}
 
-As a reminder, we discovered in **discov_11** that we can include categorical predictors using dummy variables. In the simplest form, we can use dummy coding in which group membership is expressed in terms of 0s and 1s as in Table 1.
+As a reminder, we discovered in **discovr_11** that we can include categorical predictors using dummy variables. In the simplest form, we can use dummy coding in which group membership is expressed in terms of 0s and 1s as in Table 1.
 
 ```{r dummy_tbl, echo = FALSE, results = 'asis'}
 dummy_tbl <- tibble(
@@ -279,12 +298,13 @@ knitr::kable(dummy_tbl, caption = "Table 1: Dummy coding for the three-group pup
 The model we fitted in the previous tutorial (in which we compared means across the three groups without adjusting for the love of puppies) involved predicting happiness from the two dummy variables in Table 1, which represent the difference between the 15-minute group and the control (**short**) and the 30-minute group and the no puppies control (**long**):
 
 $$
-\hat{\text{happiness}}_i = \hat{b}_0 + \hat{b}_1\text{long}_i+ \hat{b}_2\text{short}_i + e_i
+\text{happiness}_i = \hat{b}_0 + \hat{b}_1\text{long}_i+ \hat{b}_2\text{short}_i + e_i
 $$
-A person’s happiness is predicted from knowing their group membership (i.e., the numeric values for the long and short dummy variables in Table 1) and the estimates of the parameters for these effects and the intercept ($b_0$). This equation can be extended to include a continuous predictor (sometimes referred to as a [covariate]{.alt}) by adding this variable and assigning it a parameter (a *b*). In this case, to include the variable **puppy_love** the model is extended to:
+
+A persons happiness is predicted from knowing their group membership (i.e., the numeric values for the long and short dummy variables in Table 1) and the estimates of the parameters for these effects and the intercept ($b_0$). This equation can be extended to include a continuous predictor (sometimes referred to as a [covariate]{.alt}) by adding this variable and assigning it a parameter (a *b*). In this case, to include the variable **puppy_love** the model is extended to:
 
 $$
-\hat{\text{happiness}}_i = \hat{b}_0 + \hat{b}_1\text{long}_i+ \hat{b}_2\text{short}_i + \hat{b}_3\text{puppy love}_i + e_i
+\text{happiness}_i = \hat{b}_0 + \hat{b}_1\text{long}_i+ \hat{b}_2\text{short}_i + \hat{b}_3\text{puppy love}_i + e_i
 $$
 
 #### `r alien()` Alien coding challenge
@@ -294,10 +314,10 @@ Use the `lm()` function to fit the model in the equation above (the one that inc
 <div class="tip">
   `r cat_space()` **Tip**
   
-  Remember that `r rproj()` will dummy code **dose** for you, so you don't need to create the variables **long** and **short** in the equation, you simply need to enter **dose** as a predictor. Remember to use `broom::tidy()` to show the model parameters.
+  Remember that `r rproj()` will dummy code **dose** for you, so you don't need to create the variables **long** and **short** in the equation, you need only to enter **dose** as a predictor. Remember to use `broom::tidy()` to show the model parameters.
 </div>
 
-```{r pupcov_lm, exercise = TRUE, exercise.lines = 2}
+```{r pupcov_lm, exercise = TRUE, exercise.lines = 5}
 
 ```
 
@@ -313,9 +333,15 @@ lm(happiness ~ puppy_love + dose, data = pupluv_tib)
 ```
 
 ```{r pupcov_lm-hint-3}
-# Solution:
-lm(happiness ~ puppy_love + dose, data = pupluv_tib) %>% 
-  broom::tidy(., conf.int = TRUE)
+lm(happiness ~ puppy_love + dose, data = pupluv_tib) |> 
+  broom::tidy(conf.int = TRUE)
+# round the values
+```
+
+```{r pupcov_lm-solution}
+lm(happiness ~ puppy_love + dose, data = pupluv_tib) |> 
+  broom::tidy(conf.int = TRUE) |> 
+  knitr::kable(digits = 3)
 ```
 
 Congratulations, you have fit a model that looks at the effect of doses of puppy therapy adjusting the means in each group for how much people love puppies. I wanted to show you that to fit a model that adjusts means for other predictors is really just a matter of extending the models that we have already fitted to include extra predictors. Unfortunately, there are some other things we need to think about.
@@ -346,7 +372,7 @@ Remember that we can summarize the overall effect of a categorical predictor usi
 </div>
 
 
-```{r cov_ind, exercise = TRUE, exercise.lines = 2}
+```{r cov_ind, exercise = TRUE, exercise.lines = 5}
 
 ```
 
@@ -362,16 +388,28 @@ luvdose_lm <- lm(puppy_love ~ dose, data = pupluv_tib)
 ```
 
 ```{r cov_ind-hint-3}
-# Solution:
 luvdose_lm <- lm(puppy_love ~ dose, data = pupluv_tib) 
 anova(luvdose_lm)
+#round the values (optional)
 ```
 
-The main effect of dose is not significant, *F*(2, 27) = 1.98, *p* = 0.158, which shows that the average level of love of puppies was (statistically speaking) roughly the same in the three puppy therapy groups. In other words, the means for love of puppies are not significantly different across the control, 15- and 30-minute groups. This result is good news for using love of puppies as a covariate to adjust the means in the model.
+```{r cov_ind-solution}
+luvdose_lm <- lm(puppy_love ~ dose, data = pupluv_tib) 
+anova(luvdose_lm) |> 
+  knitr::kable(digits = 3)
+```
+
+```{r, echo = F}
+luv_lm <- lm(puppy_love ~ dose, data = pupluv_tib) 
+luv_aov <- anova(luv_lm)
+```
+
+
+The main effect of dose is not significant, `r report_aovf(luv_aov)`, which shows that the average level of love of puppies was (statistically speaking) roughly the same in the three puppy therapy groups. In other words, the means for love of puppies are not significantly different across the control, 15- and 30-minute groups. This result is good news for using love of puppies as a covariate to adjust the means in the model.
 
 ## `r user_visor()` *F*-statistics with multiple predictors  [(2)]{.alt}
 
-We have seen how the *F*-statistic is used to evaluate the overall fit of a linear model, we’ve also seen that it can be used to look at the overall effect of a predictor: in the previous tutorial we used it to evaluate the overall effect of the puppy therapy group to which a person was assigned on happiness ratings. However, when we use the *F*-statistic to evaluate the unique contribution of more than one predictor to a model we need to be mindful of how *F* is calculated.
+We have seen how the *F*-statistic is used to evaluate the overall fit of a linear model, we've also seen that it can be used to look at the overall effect of a predictor: in the previous tutorial we used it to evaluate the overall effect of the puppy therapy group to which a person was assigned on happiness ratings. However, when we use the *F*-statistic to evaluate the unique contribution of more than one predictor to a model we need to be mindful of how *F* is calculated.
 
 ### `r user_astronaut()` An optional demonstration  [(3)]{.alt}
 
@@ -382,21 +420,21 @@ To illustrate the problem, here's a little demonstration.
 The code box contains the model that we have already fitted above, which predicts happiness from **puppy_love** and **dose**, but pipes it into `anova()` to get an *F*-statistic for each predictor. In the same code box, underneath the existing code, fit the same model but change the order of predictors so that **dose** is listed before **puppy_love**. Execute the code.
 
 ```{r f_stat, exercise = TRUE, exercise.lines = 6}
-lm(happiness ~ puppy_love + dose, data = pupluv_tib) %>% 
+lm(happiness ~ puppy_love + dose, data = pupluv_tib) |> 
   anova()
 
 
 ```
 
 ```{r f_stat-solution}
-lm(happiness ~ puppy_love + dose, data = pupluv_tib) %>% 
+lm(happiness ~ puppy_love + dose, data = pupluv_tib) |> 
   anova()
 
-lm(happiness ~ dose + puppy_love, data = pupluv_tib) %>% 
+lm(happiness ~ dose + puppy_love, data = pupluv_tib) |> 
   anova()
 ```
 
-Note that when we specify **puppy_love** as the first predictor then, according to the *F*-statistic, it doesn’t have a significant effect but **dose** does, but if we specify it second then **puppy_love** has a significant effect but **dose** doesn’t. In other words, we get different values of the sums of squares, *F*s and *p*s. If you look at the parameter estimates using `broom::tidy()` (and their significance tests), you'll see that they are the same for the two models, but for the *F*-statistics the order that you specify predictors matters.
+Note that when we specify **puppy_love** as the first predictor then, according to the *F*-statistic, it doesn't have a significant effect but **dose** does, but if we specify it second then **puppy_love** has a significant effect but **dose** doesn't. In other words, we get different values of the sums of squares, *F*s and *p*s. If you look at the parameter estimates using `broom::tidy()` (and their significance tests), you'll see that they are the same for the two models, but for the *F*-statistics the order that you specify predictors matters.
 
 ### `r user_visor()` Type III sums of squares [(2)]{.alt}
 
@@ -415,8 +453,8 @@ question("What's the pragmatic difference between Type I and Type III sums of sq
 
 For Type III sums of squares to be correctly calculated you must specify an orthogonal contrast for any categorical predictors. Orthogonal is just a posh word for independent. Thinking back to the previous tutorial and chapter, if you follow the rules for contrast coding you will get orthogonal contrasts. Also,  Helmert contrasts obtained using `contr.helmert()` are orthogonal (but might not compare the groups that interest you).
 
-<div class="tip">
-  `r cat_space()` **Tip: Type III sums of squares**
+<div class="infobox">
+  `r info()` **Type III sums of squares**
 
 If you want to use Type III sums of squares then you **must** set orthogonal contrasts, you cannot, for example, enter the categorical predictor and let `r rproj()` do dummy coding for you.
 
@@ -440,7 +478,7 @@ knitr::kable(con_tbl, caption = "Table 2: Contrast coding for the puppy example"
 As revision from the chapter, when using this coding scheme the model we're fitting is:
 
 $$
-\hat{\text{happiness}}_i = \hat{b}_0 + \hat{b}_1\text{contrast 1}_i+ \hat{b}_2\text{contrast 2}_i + e_i
+\text{happiness}_i = \hat{b}_0 + \hat{b}_1\text{contrast 1}_i+ \hat{b}_2\text{contrast 2}_i + e_i
 $$
 
 In which the variables **contrast 1** and **contrast 2** are the dummy variables that represents the no puppies group compared to all other groups (**contrast 1**), and the difference between the 15-minute group and the 30-minute group (**contrast 2**). These contrasts are orthogonal, so if we set these, we can use Type III sums of squares.
@@ -471,7 +509,7 @@ contrasts(pupluv_tib$dose) <- contr.helmert(3)
 
 Use the code from the example to set the contrasts in Table 2 for **dose**.
 
-```{r set_contrast, exercise = TRUE}
+```{r set_contrast, exercise = TRUE, exercise.lines = 5}
      
                
 ```
@@ -494,8 +532,7 @@ contrasts(pupluv_tib$dose) <- cbind(puppy_vs_none, short_vs_long)
 # Finally, view the weights to check they are set correctly
 ```
 
-```{r set_contrast-hint-4}
-# Put it all together:
+```{r set_contrast-solution}
 puppy_vs_none <- c(-2/3, 1/3, 1/3)
 short_vs_long <- c(0, -1/2, 1/2)
 contrasts(pupluv_tib$dose) <- cbind(puppy_vs_none, short_vs_long)
@@ -526,7 +563,7 @@ short_vs_long <- c(0, -1/2, 1/2)
 contrasts(pupluv_tib$dose) <- cbind(puppy_vs_none, short_vs_long)
 ```
 
-```{r pup_luv_III, exercise = TRUE, exercise.lines = 2, exercise.setup = "pupluv_oc"}
+```{r pup_luv_III, exercise = TRUE, exercise.lines = 4, exercise.setup = "pupluv_oc"}
 
 ```
 
@@ -545,9 +582,27 @@ pupluv_lm <- lm(happiness ~ puppy_love + dose, data = pupluv_tib)
 # Solution:
 pupluv_lm <- lm(happiness ~ puppy_love + dose, data = pupluv_tib)
 car::Anova(pupluv_lm, type = 3)
+#round the values (optional)
 ```
 
-Looking first at the significance values, the covariate significantly predicts the dependent variable (*p* = 0.035, which is less than 0.05). Therefore, the person’s happiness is significantly influenced by their love of puppies. What’s more interesting is that when the effect of love of puppies is removed, the effect of puppy therapy is significant (*p* = 0.027, which is less than 0.05).
+```{r pup_luv_III-solution}
+# Solution:
+pupluv_lm <- lm(happiness ~ puppy_love + dose, data = pupluv_tib)
+car::Anova(pupluv_lm, type = 3) |> 
+  knitr::kable(digits = 3)
+```
+
+```{r, echo = F}
+puppy_vs_none <- c(-2/3, 1/3, 1/3)
+short_vs_long <- c(0, -1/2, 1/2)
+contrasts(pupluv_tib$dose) <- cbind(puppy_vs_none, short_vs_long)
+pup_lm <- lm(happiness ~ puppy_love + dose, data = pupluv_tib)
+pup_aov <- car::Anova(pup_lm, type = 3) |> tibble::as_tibble()
+pup_par <- broom::tidy(pup_lm, conf.int = TRUE)
+```
+
+
+Looking first at the significance values, the covariate significantly predicts the dependent variable (*p* = `r get_par(pup_aov, row = 2, col = "Pr(>F)", digits = 3)`, which is less than 0.05). Therefore, the persons happiness is significantly influenced by their love of puppies. What's more interesting is that when the effect of love of puppies is held constant, the effect of puppy therapy is significant (*p* = `r get_par(pup_aov, row = 3, col = "Pr(>F)", digits = 3)`, which is less than 0.05).
 
 ```{r quiz_p_ex1, echo = FALSE}
 quiz(
@@ -567,13 +622,14 @@ quiz(
 
 Refit the model in the previous challenge but reverse the order of **dose** and **puppy_love** in the code. You should see that the resulting output is unchanged because we have used Type III sums of squares.
 
-```{r pup_luv_IIIb, exercise = TRUE, exercise.lines = 2, exercise.setup = "pupluv_oc"}
+```{r pup_luv_IIIb, exercise = TRUE, exercise.lines = 4, exercise.setup = "pupluv_oc"}
 
 ```
 
 ```{r pup_luv_IIIb-solution}
 pupluv_lm <- lm(happiness ~ dose + puppy_love, data = pupluv_tib)
-car::Anova(pupluv_lm, type = 3)
+car::Anova(pupluv_lm, type = 3) |> 
+  knitr::kable(digits = 3)
 ```
 
 ## `r user_visor()` Adjusted means [(2)]{.alt}
@@ -581,33 +637,36 @@ car::Anova(pupluv_lm, type = 3)
 Earlier on we computed the group means. They're displayed again for you in Table 3.
 
 ```{r results = 'asis', echo = FALSE}
-pupluv_tib %>% 
-  dplyr::group_by(dose) %>% 
+pupluv_tib |> 
+  dplyr::group_by(dose) |> 
   dplyr::summarize(
     mean = mean(happiness, na.rm = TRUE),
     `95% CI lower` = mean_cl_normal(happiness)$ymin,
     `95% CI upper` = mean_cl_normal(happiness)$ymax
-  ) %>% 
+  ) |> 
   knitr::kable(caption = "Table 3: Unadjusted mean (and 95% CI) happiness scores in each therapy group", digits = 2)
 ```
 
-Based on Table 3, you might think that the significant *F*-statistic for **dose** reflects a difference between the control group and the two experimental groups (because the 15- and 30-minute groups have very similar means, 4.88 and 4.85, whereas the control group mean is much lower at 3.22). However, we can’t use these means to interpret the effect because they have not been adjusted for the effect of the covariate.
+Based on Table 3, you might think that the significant *F*-statistic for **dose** reflects a difference between the control group and the two experimental groups (because the 15- and 30-minute groups have very similar means, 4.88 and 4.85, whereas the control group mean is much lower at 3.22). However, we cant use these means to interpret the effect because they have not been adjusted for the effect of the covariate.
 
 #### `r robot()` Code example
 
 To get the means adjusted for the covariate we use the `modelbased::estimate_means()` function, which takes the general form:
 
 ```{r, eval = F}
-modelbased::estimate_means(my_model, levels = "predictors", fixed = "covariates", ci = 0.95)
+modelbased::estimate_means(my_model,
+                           levels = "predictors",
+                           fixed = "covariates",
+                           ci = 0.95)
 ```
 
 We replace [my_model]{.alt} the name of the model into the function, then optionally specify these arguments:
 
 * [levels = "predictors"]{.alt}: the predictor(s) over which you want to compute means. In our case, we want means for the variable **dose**, so we could specify [levels = "dose"]{.alt}.
 * [fixed = "covariates"]{.alt}: the predictor(s) that you want to remain fixed (i.e. the variables that you want to adjust the means by). In our case, we want adjust means by the variable **puppy_love**, so we could specify [fixed = "puppy_love"]{.alt}.
-* [ci = 0.95]{.alt}: specifies the width of the confidence interval. It defaults to a 95% confidence interval so if you’re happy with that you can leave this argument out.
+* [ci = 0.95]{.alt}: specifies the width of the confidence interval. It defaults to a 95% confidence interval so if you're happy with that you can leave this argument out.
 
-Although we can explicitly set the [levels]{.alt} and [fixed]{.alt} arguments, we don’t need to in this case because the predicted means from the model will be the adjusted means. However, it is useful to specify the [fixed]{.alt} argument because doing so means that the output includes the value of the covariate at which the means are being adjusted. In other words, it will show us the mean level of **puppy_love.**.
+Although we can explicitly set the [levels]{.alt} and [fixed]{.alt} arguments, we don't need to in this case because the predicted means from the model will be the adjusted means. However, it is useful to specify the [fixed]{.alt} argument because doing so means that the output includes the value of the covariate at which the means are being adjusted. In other words, it will show us the mean level of **puppy_love.**.
 
 #### `r alien()` Alien coding challenge
 
@@ -622,21 +681,22 @@ pupluv_lm <- lm(happiness ~ puppy_love + dose, data = pupluv_tib)
 ```
 
 
-```{r adj_m, exercise = TRUE, exercise.lines = 2, exercise.setup = "pupluv_lm"}
+```{r adj_m, exercise = TRUE, exercise.lines = 3, exercise.setup = "pupluv_lm"}
 
 ```
 
 ```{r adj_m-hint-1}
 # Replace the xs:
 modelbased::estimate_means(xxxxxxx, fixed = "xxxxxx")
+#round the results (optional)
 ```
 
-```{r adj_m-hint-2}
-# Solution:
-modelbased::estimate_means(pupluv_lm, fixed = "puppy_love")
+```{r adj_m-solution}
+modelbased::estimate_means(pupluv_lm, fixed = "puppy_love") |> 
+  knitr::kable(digits = 3)
 ```
 
-From these adjusted means you can see that happiness increased across the three doses.
+From these adjusted means you can see that at average levels of puppy love, happiness increased across the three doses.
 
 ## `r user_visor()` Parameter estimates [(2)]{.alt}
 
@@ -658,14 +718,12 @@ broom::tidy(xxxxxx, conf.int = xxxxxx)
 ```{r pupluv_coef-hint-2}
 # Solution (basic):
 broom::tidy(pupluv_lm, conf.int = TRUE)
+# round the values
 ```
 
-```{r pupluv_coef-hint-3}
-# Solution (advanced). To round values:
-broom::tidy(pupluv_lm, conf.int = TRUE) %>% 
-  dplyr::mutate(
-    dplyr::across(where(is.numeric), ~round(., 3))
-  )
+```{r pupluv_coef-solution}
+broom::tidy(pupluv_lm, conf.int = TRUE) |> 
+  knitr::kable(digits = 3)
 ```
 
 ```{r quiz_cov_ex1, echo = FALSE}
@@ -682,12 +740,13 @@ quiz(caption = "Interpreting the covariate (level 2)",
 ```
 
 
-Moving onto the dummy variables, the first one (**dosepuppy_vs_none**) compares the control group with the 15- and 30-minute groups combined. Using the contrast codes that we have used, the *b*-value is the difference between the adjusted mean of the control group and the average of the adjusted means for the 15- and 30-minute groups. The associated *t*-statistic is significant (*p* = 0.010), indicating that the control group was significantly different from the combined adjusted mean of the puppy therapy groups. The *b*-value for the second dummy variable (**doseshort_vs_long**) is the difference between the adjusted means of the 15- and 30-minute groups. The associated *t*-statistic is not significant (*p* = 0.593), indicating that the 30-minute group did not produce significantly different happiness than the 15-minute group after adjusting for love of puppies.
+Moving onto the dummy variables, the first one (**dosepuppy_vs_none**) compares the control group with the 15- and 30-minute groups combined. Using the contrast codes that we have used, the *b*-value is the difference between the adjusted mean of the control group and the average of the adjusted means for the 15- and 30-minute groups. The associated *t*-statistic is significant (*p* = `r get_par(pup_par, row = 3, col = "p.value", digits = 3)`), indicating that the control group was significantly different from the combined adjusted mean of the puppy therapy groups. The *b*-value for the second dummy variable (**doseshort_vs_long**) is the difference between the adjusted means of the 15- and 30-minute groups. The associated *t*-statistic is not significant (*p* = `r get_par(pup_par, row = 4, col = "p.value", digits = 3)`), indicating that the 30-minute group did not produce significantly different happiness than the 15-minute group after adjusting for love of puppies.
 
 <div class="tip">
   `r cat_space()` **Tip: Raw effect sizes**
 
-The *b*s in this output are raw effect sizes. I can’t stress enough how useful it can be to interpret these. For example, the difference in happiness in the no puppy group compared to the combined puppy groups was about 2. So, happiness was 2 points higher on the scale (which ranged from 0-10), on average, for those who had some puppy therapy compared to those that didn’t. You can evaluate for yourself whether this difference is meaningful based on what we might know about the happiness scale.
+The *b*s in this output are raw effect sizes. I can't stress enough how useful it can be to interpret these. For example, the difference in happiness in the no puppy group compared to the combined puppy groups was
+`r get_par(pup_par, row = 3)`. So, happiness was about 2 points higher on the scale (which ranged from 0-10), on average, for those who had some puppy therapy compared to those that didn't. You can evaluate for yourself whether this difference is meaningful based on what we might know about the happiness scale.
 
 </div>
 
@@ -700,46 +759,49 @@ We can obtain *post hoc* tests in the same way that we did in **discovr_11** whe
 
 View *post hoc* for the model [pupluv_lm]{.alt} using a Bonferroni adjustment.
 
-<div class="tip">
-  `r cat_space()` **Tip: `estimate_contrasts()`**
+<div class="infobox">
+  `r info()` **Using `estimate_contrasts()`**
 
-Remember that the `estimate_contrasts()` function takes the general form:
+The `estimate_contrasts()` function takes the general form:
 
 ```{r eval = F, class.source = '.panel_alt'}
-modelbased::estimate_contrasts(my_model, adjust = "holm", ci = 0.95, fixed = "covariate_name")
+modelbased::estimate_contrasts(my_model, 
+                               contrast = "predictor_name",
+                               adjust = "holm",
+                               ci = 0.95,
+                               fixed = "covariate_name")
 ```
 </div>
 
 
-```{r pupluv_ph, exercise = TRUE, exercise.lines = 2, exercise.setup = "pupluv_lm"}
+```{r pupluv_ph, exercise = TRUE, exercise.lines = 6, exercise.setup = "pupluv_lm"}
 
 ```
 
 ```{r pupluv_ph-hint-1}
 # Replace the xs:
-modelbased::estimate_contrasts(xxxxxx, fixed = "xxxxxx")
+modelbased::estimate_contrasts(xxxxxx,
+                               contrast = "xxxxxx",
+                               fixed = "xxxxxx",
+                               adjust = "xxxxx")
+#round the results (optional)
 ```
 
-```{r pupluv_ph-hint-2}
-# Solution (basic):
-modelbased::estimate_contrasts(pupluv_lm, fixed = "puppy_love", adjust = "bonferroni")
+```{r pupluv_ph-solution}
+modelbased::estimate_contrasts(pupluv_lm,
+                               contrast = "dose",
+                               fixed = "puppy_love",
+                               adjust = "bonferroni") |> 
+  knitr::kable(digits = 3)
 ```
 
 ```{r, echo = F}
-puppy_vs_none <- c(-2/3, 1/3, 1/3)
-short_vs_long <- c(0, -1/2, 1/2)
-contrasts(pupluv_tib$dose) <- cbind(puppy_vs_none, short_vs_long)
-
-pupluv_lm <- lm(happiness ~ puppy_love + dose, data = pupluv_tib)
-
-pupluv_ph <- modelbased::estimate_contrasts(pupluv_lm, fixed = "puppy_love", adjust = "bonferroni")
+pup_ph <- modelbased::estimate_contrasts(pup_lm, contrast = "dose", fixed = "puppy_love", adjust = "bonferroni")
 ```
 
 
-The results show the Holm corrected (the default) *post hoc* comparisons. There is a significant difference between the adjusted mean happiness in the no puppies group and the 30-minute group (*p* = 
-`r round(pupluv_ph$p[3], 3)`) groups, but not between the no puppies and 15-minute group (*p* = 
-`r round(pupluv_ph$p[2], 3)`) or between the 30- and 15-minute groups (*p* = 
-`r round(pupluv_ph$p[1], 3)`). Note that the value of *Difference* is the difference between the adjusted means. The column labelled *puppy_love* reminds us that all differences are evaluated at average levels of puppy love, in other words, when puppy love equals 2.73.
+The results show the Bonferroni corrected *post hoc* comparisons. There is a significant difference between the adjusted mean happiness in the no puppies group and the 30-minute group (*p* = 
+`r get_par(pup_ph, col = "p", row = 3, digits = 3)`) groups, but not between the no puppies and 15-minute group (*p* = `r get_par(pup_ph, col = "p", row = 2, digits = 3)`) or between the 30- and 15-minute groups (*p* = `r get_par(pup_ph, col = "p", row = 1, digits = 3)`). Note that the value of *Difference* is the difference between the adjusted means. The column labelled *puppy_love* reminds us that all differences are evaluated at average levels of puppy love, in other words, when puppy love equals `r get_par(pup_ph, col = "puppy_love", row = 1)`.
 
 ## `r bmu()` Homogeneity of regression slopes [(1)]{.alt}
 
@@ -761,8 +823,8 @@ hors_lm <- update(pupluv_lm, .~. + dose:puppy_love)
 
 The update function takes the model containing the effects of dose and puppy_love ([pupluv_lm]{.alt}) and updates it. Remember that `.~.` means *keep the outcome variable and all of the predictors* and , and `+ dose:puppy_love` means *add the dose × puppy_love interaction*.
 
-<div class="tip">
-  `r cat_space()` **Tip: Specifying interactions**
+<div class="infobox">
+  `r info()` **Specifying interactions**
 
 Remember from **discovr_10** that `*` is used to specify all main effects and interactions whereas `:` is used to specify only an interaction.
 
@@ -776,27 +838,35 @@ Remember from **discovr_10** that `*` is used to specify all main effects and in
 Re-specify the model to include the **dose × puppy_love** interaction (use either method above) and look at the *F*-statistic with Type III sums of squares.
 
 
-```{r hors, exercise = TRUE, exercise.lines = 2, exercise.setup = "pupluv_lm"}
+```{r hors, exercise = TRUE, exercise.lines = 4, exercise.setup = "pupluv_lm"}
 
 ```
 
 ```{r hors-solution}
 hors_lm <- lm(happiness ~ puppy_love*dose, data = pupluv_tib) 
-car::Anova(hors_lm, type = 3)
+car::Anova(hors_lm, type = 3) |> 
+  knitr::kable(digits = 3)
 # or
 hors_lm <- update(pupluv_lm, .~. + dose:puppy_love)
-car::Anova(hors_lm, type = 3)
+car::Anova(hors_lm, type = 3) |> 
+  knitr::kable(digits = 3)
 ```
 
-The effects of the dose of puppy therapy and love of puppies are still significant, but so is the covariate by outcome interaction (**dose × puppy_love**), implying that the assumption of homogeneity of regression slopes is not realistic (*p* = 0.028).
+```{r, echo = F}
+hors_lm <- update(pup_lm, .~. + dose:puppy_love)
+hors_aov <- car::Anova(hors_lm, type = 3) |> tibble::as_tibble()
+```
+
+
+The effects of the dose of puppy therapy and love of puppies are still significant, but so is the covariate by outcome interaction (**dose × puppy_love**), implying that the assumption of homogeneity of regression slopes is not realistic (*p* = `r get_par(hors_aov, row = 4, col = "Pr(>F)", digits = 3)`).
 
 
 ### `r bmu()` Diagnostic plots [(1)]{.alt}
 
 As with any linear model, we can use the `plot()` function to produce diagnostic plots from the model.
 
-<div class="tip">
-  `r cat_space()` **Tip: Diagnostic plots**
+<div class="infobox">
+  `r info()` **Diagnostic plots**
 
 Remember that `plot()` takes this general form:
 
@@ -811,7 +881,7 @@ You can also use `ggplot2::autoplot()` to make pretty versions of the plot. To u
 
 Obtain plots 1, 3, 2 and 4 (in that order) for the model [pupluv_lm]{.alt}.
 
-```{r pup_zpred_resid, exercise = TRUE, exercise.lines = 2, exercise.setup = "pupluv_lm"}
+```{r pup_zpred_resid, exercise = TRUE, exercise.lines = 8, exercise.setup = "pupluv_lm"}
 
 ```
 
@@ -833,7 +903,7 @@ ggplot2::autoplot(pupluv_lm,
 ```{r quiz_zresid_ex1, echo = FALSE}
 quiz(caption = "Diagnostic plot quiz (level 2)",
   question("How would you interpret the *Residual vs. fitted* and *Scale-location* plots?",
-    answer("We’re in trouble: I see heteroscedasticity.", correct = TRUE, message = "The red line on the scale-location plot slopes up and the cloud of dots seems to fan out on both plots indicating heteroscedasticity."),
+    answer("Were in trouble: I see heteroscedasticity.", correct = TRUE, message = "The red line on the scale-location plot slopes up and the cloud of dots seems to fan out on both plots indicating heteroscedasticity."),
     answer("I'm not sure, give me a hint.", message = "Heteroscedasticity is shown up by a red line that isn't flat and a vertical spread of dots that changes as you move along the *x*-axis."),
     answer("Everything is fine - residuals show homogeneity.", message = "Unlucky. Clue: Heteroscedasticity is shown up by a red line that isn't flat and a vertical spread of dots that changes as you move along the *x*-axis."),
     correct = "Correct - well done!",
@@ -877,23 +947,35 @@ pupluv_rob <- robust::lmRob(happiness ~ puppy_love + dose, data = pupluv_tib)
 summary(pupluv_rob)
 ```
 
-The bottom of the output shows significance tests of bias. These tests suggest that bias in the original model is not problematic (because the *p*-value for these tests are not significant), but these tests are based on small samples and so have low power. More important, the robust parameter estimates have changed and are all non-significant (compare with the non-robust model). For example, for the covariate the estimate has changed from 0.42 to 0.63 and the significance value is now 0.287 instead of 0.035. For the dummy variable that compares no puppies to puppies, the *b* has decreased from 2.01 to 1.63 and the *p*-value has increased from 0.01 to 0.385.
+```{r, echo =  F}
+pup_rob <- robust::lmRob(happiness ~ puppy_love + dose, data = pupluv_tib)
+rob_par <- broom::tidy(pup_rob)
+```
+
+
+The bottom of the output shows significance tests of bias. These tests suggest that bias in the original model is not problematic (because the *p*-value for these tests are not significant), but these tests are based on small samples and so have low power. More important, the robust parameter estimates have changed and are all non-significant (compare with the non-robust model). For example, for the covariate the estimate has changed from `r get_par(pup_par, row = 2)` to `r get_par(rob_par, row = 2)` and the significance value is now `r get_par(rob_par, col = "p.value", row = 2, digits = 3)` instead of `r get_par(pup_par, col = "p.value", row = 2, digits = 3)`. For the dummy variable that compares no puppies to puppies, the *b* has decreased from `r get_par(pup_par, row = 3)` to `r get_par(rob_par, row = 3)` and the *p*-value has increased from `r get_par(pup_par, col = "p.value", row = 3, digits = 2)` to `r get_par(rob_par, col = "p.value", row = 3, digits = 3)`.
 
 #### `r alien()` Alien coding challenge
 
-Remember from **discovr_08** that to get a summary of an existing model like [pupluv_lm]{.alt} that uses heteroscedasticity-consistent standard errors (i.e. robust significance tests and confidence intervals), we put the model into `model_parameters()` and set [robust = TRUE, vcov.type = "HC4", digits = 3]{.alt}. Try this in the code box:
+Remember from **discovr_08** that to get a summary of an existing model like [pupluv_lm]{.alt} that uses heteroscedasticity-consistent standard errors (i.e. robust significance tests and confidence intervals), we put the model into `model_parameters()` and set [vcov = TRUE, vcov.type = "HC4"]{.alt}. Try this in the code box:
 
 ```{r pupp_hc4, exercise = TRUE, exercise.lines = 2, exercise.setup = "pupluv_lm"}
 
 ```
 
 ```{r pupp_hc4-solution}
-parameters::model_parameters(pupluv_lm, robust = TRUE, vcov.type = "HC4", digits = 3)
+parameters::model_parameters(pupluv_lm, vcov = TRUE, vcov.type = "HC4") |> 
+  knitr::kable(digits = 3)
 ```
 
-We see a different picture when we fit the model with heteroskedasticity-consistent standard errors. The parameter estimates will match the non-robust model but the standard errors, *p*-values and confidence intervals change because these are based on methods robust to heteroscedasticity (the HC4 estimates that we asked for). We can interpret the effects for dose in the same way as for the regular *p*-values and confidence intervals. For the effect of puppy love, The HC4 robust confidence interval and *p*-value supports the conclusion from the non-robust model: the *p*-value is 0.046, which less than 0.05, and the confidence interval does not contain zero (0.01, 0.82).
+```{r, echo = F}
+hc_par <- parameters::model_parameters(pup_lm, vcov = TRUE, vcov.type = "HC4")
+```
 
-Given the small sample size, we might also consider a bootstrap model of the parameter estimates and their confidence intervals and significance tests. We can obtain these using the `bootstrap_parameters()` function from `parameters`, which takes the general form:
+
+We see a different picture when we fit the model with heteroskedasticity-consistent standard errors. The parameter estimates will match the non-robust model but the standard errors, *p*-values and confidence intervals change because these are based on methods robust to heteroscedasticity (the HC4 estimates that we asked for). We can interpret the effects for dose in the same way as for the regular *p*-values and confidence intervals. For the effect of puppy love, The HC4 robust confidence interval and *p*-value supports the conclusion from the non-robust model: the *p*-value is `r get_par(hc_par, col = "p", row = 2, digits = 3)`, which less than 0.05, and the confidence interval does not contain zero `r paste0("[", get_par(hc_par, col = "CI_low", row = 2), ", ", get_par(hc_par, col = "CI_high", row = 2), "]")`.
+
+Given the small sample size, we might consider a bootstrap model instead of the robust model we have just fitted. We can obtain this model using the `bootstrap_parameters()` function from `parameters`, which takes the general form:
 
 ```{r eval = F}
 parameters::bootstrap_parameters(my_model)
@@ -911,14 +993,15 @@ Bootstrap the model :
 ```
 
 ```{r pupp_boot-solution}
-parameters::bootstrap_parameters(pupluv_lm)
+parameters::bootstrap_parameters(pupluv_lm) |> 
+  knitr::kable(digits = 3)
 ```
 
 The estimates themselves are quite similar to those from the non-robust model: the effect of puppy love on happiness is now non-significant, and the effect of puppies compared to none is significant.
 
 ```{r quiz_boot_ex1, echo = FALSE}
 quiz(caption = "Bootstrapping (level 2)",
-  question("The bootstrap confidence interval for the *b* for **puppy_love** ranges from $-0.01$ to $0.70$ (Your values may differ slightly becauseof how bootstrapping works). What does this tell us?",
+  question("When I ran the analysis, the bootstrap confidence interval for the *b* for **puppy_love** ranges from -0.01 to 0.70 (your values will differ slightly becauseof how bootstrapping works). What does this tell us?",
     answer("If this confidence interval is one of the 95% that contains the population value then the population value of the *b* lies between -0.01 and 0.70.", correct = TRUE),
     answer("There is a 95% chance that the population *b* lies between -0.01 and 0.70.", message = "You cannot make probability statements from a confidence interval. We don't know whether this particular CI is one of the 95% that contains the population value of the *b* or not."),
     answer("The probability of this confidence interval containing the population value is 0.95.", message = "The probability of this confidence interval containing the population value is either 0 (it doesn't) or 1 (it does) but it's impossible to know which."),
@@ -946,47 +1029,74 @@ We have talked about effect sizes for specific effects at various other points i
 
 #### `r robot()` Code example
 
-We can use the `eta_squared()` and `omega_squared()` functions from the `effectsize` package [@makowski_compute_2020], which take the general form:
+We can use the `eta_squared()` and `omega_squared()` functions from the `effectsize` package [@effectsize2020; @R-effectsize], which take the general form:
 
 ```{r, eval = F}
 effectsize::eta_squared(anova_object, partial = TRUE, ci = 0.9)
 effectsize::omega_squared(anova_object, partial = TRUE, ci = 0.9)
 ```
 
-All we do is put the ANOVA object into the function (or pipe it in). By default you’ll get partial eta-squared ($\eta^2_p$) and partial omega-squared ($\omega^2_p$), but you can get the non-partial version by setting [partial = FALSE]{.alt}, and you’ll get a 90% confidence interval, which you might want to change to some other value.
+All we do is put the ANOVA object into the function (or pipe it in). By default you'll get partial eta-squared ($\eta^2_p$) and partial omega-squared ($\omega^2_p$), but you can get the non-partial version by setting [partial = FALSE]{.alt}. You'll also get (by default) a 90% confidence interval, which you might want to change to some other value.
 
 #### `r alien()` Alien coding challenge
 
-The function uses the sums of squares from the object that is passed into it, so it’s safest to re-use our earlier code with `car::Anova()` where we set the sums of squares and pipe it into the function. Try this below.
+The function uses the sums of squares from the object that is passed into it, so its safest to re-use our earlier code with `car::Anova()` where we set the sums of squares and pipe it into the function. Try this below.
 
-```{r eta, exercise = TRUE, exercise.lines = 2, exercise.setup = "pupluv_lm"}
-car::Anova(pupluv_lm, type = 3) %>% 
-  effectsize::eta_squared(., ci = 0.95)
+```{r eta, exercise = TRUE, exercise.lines = 4, exercise.setup = "pupluv_lm"}
+car::Anova(pupluv_lm, type = 3) |> 
+  effectsize::eta_squared(ci = 0.95) |> 
+  knitr::kable(digits = 3)
 ```
 
-These values show that puppy therapy condition explains 24% of the variance in happiness not attributable to other variables, which is sizeable. Love of puppies explains 16%, which is also a lot. Partial eta squared is the most straightforward measure to explain, but like eta squared it is biased and so it’s typically better to use partial omega squared ($\omega^2_p$), which is an unbiased version.
+```{r, echo = F}
+pup_es <- car::Anova(pup_lm, type = 3) |> 
+  effectsize::eta_squared(ci = 0.95)
+
+pup_es <- pup_es |> 
+  dplyr::select(Eta2_partial) |> 
+  dplyr::pull()
+```
+
+
+These values show that puppy therapy condition explains `r sprintf("%.0f", 100*pup_es[2])`% of the variance in happiness not attributable to other variables, which is sizeable. Love of puppies explains `r sprintf("%.0f", 100*pup_es[1])`%, which is also a lot. Partial eta-squared is the most straightforward measure to explain, but like eta-squared it is biased and so its typically better to use partial omega squared ($\omega^2_p$), which is an unbiased version.
 
 #### `r alien()` Alien coding challenge
 
 Use the code example to compute partial omega squared for the predictors in [pupluv_lm]{.alt}.
 
-```{r omega, exercise = TRUE, exercise.lines = 2, exercise.setup = "pupluv_lm"}
+```{r omega, exercise = TRUE, exercise.lines = 4, exercise.setup = "pupluv_lm"}
 
 ```
 
 ```{r omega-hint-1}
 # begin with the anova part of the model
-car::Anova(pupluv_lm, type = 3) %>% 
+car::Anova(pupluv_lm, type = 3) |> 
 ```
 
 ```{r omega-hint-2}
 # Pipe it into omega_squared() 
-car::Anova(pupluv_lm, type = 3) %>% 
-  effectsize::omega_squared(., ci = 0.95)
+car::Anova(pupluv_lm, type = 3) |> 
+  effectsize::omega_squared(ci = 0.95)
+# round the results
+```
+
+```{r omega-solution}
+car::Anova(pupluv_lm, type = 3) |> 
+  effectsize::omega_squared(ci = 0.95) |> 
+  knitr::kable(digits = 3)
+```
+
+```{r, echo = F}
+pup_os <- car::Anova(pup_lm, type = 3) |> 
+  effectsize::omega_squared(ci = 0.95)
+
+pup_os <- pup_os |> 
+  dplyr::select(Omega2_partial) |> 
+  dplyr::pull()
 ```
 
 
-The effect sizes are slightly smaller than (as we’d expect) using omega-squared. The puppy therapy condition explains 17% of the variance in happiness not attributable to other variables, and love of puppies explains 12%, both of which are still sizeable amounts of variance for social science data.
+The effect sizes are slightly smaller than (as we'd expect) using omega-squared. The puppy therapy condition explains `r sprintf("%.0f", 100*pup_os[2])`% of the variance in happiness not attributable to other variables, and love of puppies explains `r sprintf("%.0f", 100*pup_os[1])`%, both of which are still sizeable amounts of variance for social science data.
 
 
 ## `r user_astronaut()` Bayes factors [(3)]{.alt}
@@ -998,7 +1108,10 @@ Like in previous tutorials (**discovr_08**, **discovr_09**, **discovr_11**) we c
 the `lmBF()` function has basically the same format as the `BayesFactor::anovaBF()` function, which we met in **discovr_11**:
 
 ```{r, eval = FALSE}
-my_model <- BayesFactor::lmBF(formula = outcome ~ predictor, data = my_tib, rscaleFixed = "medium", rscaleCont = "medium")
+my_model <- BayesFactor::lmBF(formula = outcome ~ predictor,
+                              data = my_tib,
+                              rscaleFixed = "medium",
+                              rscaleCont = "medium")
 ```
 
 Like the `anovaBF()` function, `lmBF()` uses default priors for categorical variables ([rscaleFixed]{.alt}) that can be specified as a number or as "medium" (the default), "wide", and "ultrawide". These labels correspond to *r* scale values of 1/2, $^\sqrt{2}/_2$, and 1. To set the prior for the covariate (a continuous predictor) we use a new argument [rscaleCont]{.alt}, which is set using a value or with pre-set values of "medium", "wide", and "ultrawide", which correspond *r* scales of $^\sqrt{2}/_4$, ^1/_2, and $^\sqrt{2}/_2$. Note these values are different to the corresponding values for [rscaleFixed]{.alt}. 
@@ -1055,8 +1168,7 @@ pup_bf <-  BayesFactor::lmBF(formula = happiness ~ puppy_love + dose, data = pup
 pup_bf/pupcov_bf
 ```
 
-```{r pupp_bf-hint-5}
-## Full solution:
+```{r pupp_bf-solution}
 pupcov_bf <-  BayesFactor::lmBF(formula = happiness ~ puppy_love, data = pupluv_tib, rscaleFixed = "medium", rscaleCont = "medium")
 
 pupcov_bf
@@ -1065,10 +1177,26 @@ pup_bf <-  BayesFactor::lmBF(formula = happiness ~ puppy_love + dose, data = pup
 
 pup_bf/pupcov_bf
 ```
-Looking at the first Bayes factor, the data are 0.68 times more likely under the alternative hypothesis (happiness is predicted from love of puppies) than under the null (love of puppies does not predict happiness). Our beliefs that love of puppies affects happiness (relative to not) should increase by a factor of about 0.68 – in other words it should get smaller and move towards the null. However, this value is fairly is very weak evidence.
 
-Looking at the second Bayes factor, The data are 2.1 times more likely under the model that predicts happiness from dose of therapy and love of puppies than under the model that predicts happiness from love of puppies alone. In other words, our beliefs that puppy therapy if efficacious (relative to not) should increase by a factor of about 2 (not particularly strong evidence).
+```{r, echo = F}
+pupcov_bf <-  BayesFactor::lmBF(formula = happiness ~ puppy_love, data = data.frame(pupluv_tib), rscaleFixed = "medium", rscaleCont = "medium")
+pup_bf <-  BayesFactor::lmBF(formula = happiness ~ puppy_love + dose, data = data.frame(pupluv_tib), rscaleCont = "medium", rscaleFixed = "medium")
+bf1 <- pupcov_bf
+bf2 <- pup_bf/pupcov_bf
+```
 
+
+Looking at the first Bayes factor, the data are `r get_bf(bf1)` times more likely under the alternative hypothesis (happiness is predicted from love of puppies) than under the null (love of puppies does not predict happiness). Our beliefs that love of puppies affects happiness (relative to not) should increase by a factor of about `r get_bf(bf1)` – in other words it should get smaller and move towards the null. However, this value is fairly is very weak evidence.
+
+
+<div class="tip">
+  `r cat_space()` **Tip**
+
+The Bayes factor computed using `pup_bf/pupcov_bf` is computed using a sampling process and so will change very slightly each time you run the code. It also means the value I report will differ from the one you obtain, which is confusing but nothing to worry about.
+
+</div>
+
+Looking at the second Bayes factor, the data are about `r get_bf(bf2)` times more likely under the model that predicts happiness from dose of therapy and love of puppies than under the model that predicts happiness from love of puppies alone. In other words, our beliefs that puppy therapy if efficacious (relative to not) should increase by a factor of about `r get_bf(bf2)` (not particularly strong evidence).
 
 
 ## `r user_visor()` Transfer task [(2)]{.alt}
@@ -1077,8 +1205,8 @@ Looking at the second Bayes factor, The data are 2.1 times more likely under the
 
 A marketing manager tested the benefit of soft drinks for curing hangovers. He took 15 people and got them drunk. The next morning as they awoke, dehydrated and feeling as though they'd licked a camel's sandy feet clean with their tongue, he gave five of them water to drink, five of them Lucozade (a very nice glucose-based UK drink) and the remaining five a leading brand of cola (this variable is called **drink**). He measured how well they felt (on a scale from 0 = I feel like death to 10 = I feel really full of beans and healthy) two hours later (this variable is called **well**). He measured how **drunk** the person got the night before on a scale of 0 = as sober as a nun to 10 = flapping about like a haddock out of water on the floor in a puddle of their own vomit. The data are preloaded in [cure_tib]{.alt}. Fit a model to see whether people felt better after different drinks when adjusting for how drunk they were the night before. The researcher predicted that sugary-drinks (Lucozade/Cola) would increase wellness compared to water and that Lucozade drinkers will have higher happiness scores than cola drinkers.
 
-<div class="tip">
-  `r cat_space()` **Tip**
+<div class="infobox">
+  `r info()` **Information**
 
 There is a detailed solution to this task at [https://www.discovr.rocks/solutions/alex/alex_12/#task-123](https://www.discovr.rocks/solutions/alex/alex_12/#task-123).
 </div>
@@ -1197,25 +1325,29 @@ car::Anova(xxxx, type = 3)
 ```{r cure_main-hint-2}
 # The main model will be:
 cure_lm <- lm(well ~ drunk + drink, data = cure_tib)
-car::Anova(cure_lm, type = 3)
+car::Anova(cure_lm, type = 3) |> 
+  knitr::kable(digits= 3)
 # Use tidy() to look at the parameter estimates
 ```
 
 ```{r cure_main-hint-3}
 # Use tidy() to look at the parameter estimates:
-broom::tidy(cure_lm, conf.int = TRUE)
+broom::tidy(cure_lm, conf.int = TRUE) |> 
+  knitr::kable(digits= 3)
 
 # get adjusted means with modelbased::estimate_means()
 ```
 
-```{r cure_main-hint-4}
-# Full solution:
+```{r cure_main-solution}
 cure_lm <- lm(well ~ drunk + drink, data = cure_tib)
-car::Anova(cure_lm, type = 3)
+car::Anova(cure_lm, type = 3) |> 
+  knitr::kable(digits= 3)
 
-broom::tidy(cure_lm, conf.int = TRUE)
+broom::tidy(cure_lm, conf.int = TRUE) |> 
+  knitr::kable(digits= 3)
 
-modelbased::estimate_means(cure_lm, fixed = "drunk")
+modelbased::estimate_means(cure_lm, fixed = "drunk") |> 
+  knitr::kable(digits= 3)
 ```
 
 ```{r cure_main_qz, echo = FALSE}
@@ -1294,7 +1426,7 @@ ggplot2::autoplot(cure_lm,
 ```{r cure_diag_qz, echo = FALSE}
 quiz(caption = "Diagnostic plot quiz (level 2)",
   question("How would you interpret the *Residual vs. fitted* and *Scale-location* plots?",
-    answer("We’re in trouble: I see heteroscedasticity.", correct = TRUE, message = "The red line on the scale-location plot slopes up and the cloud of dots seems to fan out on both plots indicating heteroscedasticity."),
+    answer("Were in trouble: I see heteroscedasticity.", correct = TRUE, message = "The red line on the scale-location plot slopes up and the cloud of dots seems to fan out on both plots indicating heteroscedasticity."),
     answer("I'm not sure, give me a hint.", message = "Heteroscedasticity is shown up by a red line that isn't flat and a vertical spread of dots that changes as you move along the *x*-axis."),
     answer("Everything is fine - residuals show homogeneity.", message = "Unlucky. Clue: Heteroscedasticity is shown up by a red line that isn't flat and a vertical spread of dots that changes as you move along the *x*-axis."),
     correct = "Correct - well done!",
@@ -1329,7 +1461,8 @@ Use the code box to get tests for the parameter estimates of [cure_lm]{.alt} tha
 ```
 
 ```{r cure_hc4-solution}
-parameters::model_parameters(cure_lm, robust = TRUE, vcov.type = "HC4", digits = 3)
+parameters::model_parameters(cure_lm, vcov = TRUE, vcov.type = "HC4") |> 
+  knitr::kable(digits= 3)
 ```
 
 ```{r cure_rob_qz, echo = FALSE}
@@ -1361,15 +1494,15 @@ quiz(caption = "Robust model quiz (level 2)",
 
 ### Statistics
 
-* The tutorials typically follow examples described in detail in @field_discovering_2022. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
+* The tutorials typically follow examples described in detail in @field_discovering_2023. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
 * If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
 * There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/).
 * There are free statistical resources on my websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [milton-the-cat.rocks](http://milton-the-cat.rocks).
 
-### `r rproj("h3")`
+### `r rproj()`
 
 * [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
-* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and `r rstudio()`.
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj()` and `r rstudio()`.
 * [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
 * [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
 

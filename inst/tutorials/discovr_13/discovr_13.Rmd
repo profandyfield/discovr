@@ -9,7 +9,7 @@ output:
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
 description: "Factorial designs. Fitting models for two-way factorial designs (independent measures) using both lm() and the afex package. This tutorial builds on previous ones to show how models can be fit with two categorical predictors to look at the interaction between them. We look at fitting the models, setting contrasts for the two categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, partial eta-squared and partial omega-squared, robust models and Bayes factors."
-bibliography: discovr_13.bib
+bibliography: [discovr_13.bib, packages.bib]
 ---
 <html lang="en">
 
@@ -20,20 +20,22 @@ knitr::opts_chunk$set(
 	warning = FALSE
 )
 
-library(learnr) #necessary to render tutorial correctly
-
+#necessary to render tutorial correctly
+library(learnr) 
+library(htmltools)
+#tidyverse
 library(dplyr)
 library(ggplot2)
-library(Hmisc)
-library(htmltools)
-library(magrittr)
-
+#non tidyverse
 library(afex)
 library(BayesFactor)
 library(broom)
+library(car)
 library(effectsize)
 library(emmeans)
 library(ggfortify)
+library(Hmisc)
+library(knitr)
 library(modelbased)
 library(parameters)
 library(sandwich)
@@ -45,11 +47,17 @@ source("./www/discovr_helpers.R")
 #Read data files needed for the tutorial
 
 goggles_tib <- discovr::goggles
-xbox_tib <- discovr::xbox %>% 
+xbox_tib <- discovr::xbox |> 
   dplyr::mutate(
-    game = forcats::as_factor(game) %>% forcats::fct_relevel(., "Static"),
-    console = forcats::as_factor(console) %>% forcats::fct_relevel(., "Xbox One")
+    game = forcats::as_factor(game) |> forcats::fct_relevel("Static"),
+    console = forcats::as_factor(console) |> forcats::fct_relevel("Xbox One")
   )
+```
+
+```{r, eval = F, echo = F}
+# Create bib file for R packages
+here::here("inst/tutorials/discovr_13/packages.bib") |>
+  knitr::write_bib(c('here', 'tidyverse', 'dplyr', 'readr', 'forcats', 'tibble', 'knitr', 'afex', 'BayesFactor', 'broom', "car", 'effectsize', 'emmeans', "ggfortify", 'Hmisc', 'modelbased', 'parameters', 'sandwich'), file = _)
 ```
 
 # discovr: Factorial designs (GLM 3)
@@ -59,25 +67,25 @@ xbox_tib <- discovr::xbox %>%
 <div class="infobox">
   <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
   
-  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2022] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
+  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2023] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
   
 </div>
 
-### `r cat_space(fill = "h3", height = 2)` Welcome to the `discovr` space pirate academy
+### `r cat_space(fill = blu)` Welcome to the `discovr` space pirate academy
 
 Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
-* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
-* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
+* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
+* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
-* `r alien(height = 2)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
-* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
-* `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
+* `r alien(height = 1.5)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
+* `r robot(height = 1.5)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
+* `r bug(height = 1.5)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
 
 Also, use hints and solutions to guide you through the exercises (Figure 1).
 
@@ -93,7 +101,7 @@ By for now and good luck - you'll be amazing!
 
 * Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
 
-* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an `r rproj()` markdown file within an `r rstudio()` project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
+* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an Quarto document within an `r rstudio()` project and practice everything you do in the tutorial in the Quarto document, make notes on things that confused you or that you want to remember, and save it. Within this Quarto document you will need to load the relevant packages and data. 
 
 ![](https://youtu.be/FhoYCsZttGc)
 
@@ -101,25 +109,49 @@ By for now and good luck - you'll be amazing!
 
 This tutorial uses the following packages:
 
-* `afex` [@singmann_afex_2020]
-* `broom` [@robinsonBroomConvertStatistical2019]
-* `effectsize` [@makowski_compute_2020]
-* `here` [@here]
-* `modelbased` [@makowski_modelbased_2020]
-* `parameters` [@makowski_parameters_2019]
-* `sandwich` [@zeileis_econometric_2004]
-* `tidyverse` [@tidyverse]
+* `afex` [@R-afex]
+* `BayesFactor` [@R-BayesFactor]
+* `broom` [@R-broom]
+* `car` [@R-car]
+* `effectsize` [@effectsize2020; @R-effectsize]
+* `emmeans` [@R-emmeans] is used by `modelbased`
+* `here` [@R-here]
+* `ggfortify` [@R-ggfortify; @tang_ggfortify_2016]
+* `Hmisc` [@R-Hmisc] is loaded by `ggplot2`
+* `knitr` [@R-knitr]
+* `modelbased` [@R-modelbased]
+* `parameters` [@parameters2020; @R-parameters]
+* `sandwich` [@R-sandwich; @sandwich2006] is automatically loaded by `parameters`
+
+It also uses these `tidyverse` packages [@R-tidyverse; @tidyverse2019]: `dplyr` [@R-dplyr], `forcats` [@R-forcats], `ggplot2` [@wickhamGgplot2ElegantGraphics2016], and `readr` [@R-readr], `.
+
+### Coding style
+
+There are (broadly) two styles of coding:
+
+1. **Verbose**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt verbose style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
+
+2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
+
+Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend a verbose style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load `tidyverse` because the `dplyr` and `ggplot2` packages contain functions that are often used within other functions and in these cases the verbose style is difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+
+You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the `tidyverse` package (and any others if you're using a concise style) at the beginning of your Quarto document:
+
+```{r eval = FALSE}
+library(tidyverse)
+```
+
 
 I try to follow the [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) in always declaring the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will write `dplyr::mutate()`. 
 
-It is good practice to be explicit about packages to avoid clashes where functions from different packages have the same name. It also means that you don't need to load packages at the start of your markdown document. 
+It is good practice to be explicit about packages to avoid clashes where functions from different packages have the same name. It also means that you don't need to load packages at the start of your Quarto document. 
 
 There are two main exceptions to this rule.
 
 1. There are functions within some `tidyverse` packages that would be used within other functions. Including the package name makes the code difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
-2. To use the pipe operator (`%>%`) you need to have `magrittr` loaded.
+2. To use the pipe operator (`|>`) you need to have `magrittr` loaded.
 
-We can load all of the packages that are exceptions in one step by loading `tidyverse` at the beginning of our `r rproj()` Markdown document:
+We can load all of the packages that are exceptions in one step by loading `tidyverse` at the beginning of our Quarto document:
 
 ```{r eval = FALSE}
 library(tidyverse)
@@ -132,11 +164,11 @@ To work *outside of this tutorial* you need to download the following data files
 * [goggles.csv](https://www.discovr.rocks/csv/goggles.csv)
 * [xbox.csv](https://www.discovr.rocks/csv/xbox.csv)
 
-Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
+Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your Quarto document:
 
 ```{r, eval=FALSE}
-goggles_tib <- here::here("data/goggles.csv") %>%
-  readr::read_csv() %>%
+goggles_tib <- here::here("data/goggles.csv") |>
+  readr::read_csv() |>
   dplyr::mutate(
     facetype = forcats::as_factor(facetype),
     alcohol = forcats::as_factor(alcohol)
@@ -146,17 +178,17 @@ goggles_tib <- here::here("data/goggles.csv") %>%
 This code reads in the data and converts the variables **alcohol** and **facetype** to a factor (categorical variable). For the xbox data use the code (in which I have also been explicit in setting certain categories as the first level of the factor):
 
 ```{r, eval=FALSE}
-xbox_tib <- here::here("data/xbox.csv") %>%
-  readr::read_csv() %>%
+xbox_tib <- here::here("data/xbox.csv") |>
+  readr::read_csv() |>
   dplyr::mutate(
-    game = forcats::as_factor(game) %>% forcats::fct_relevel(., "Static"),
-    console = forcats::as_factor(console) %>% forcats::fct_relevel(., "Xbox One")
+    game = forcats::as_factor(game) |> forcats::fct_relevel("Static"),
+    console = forcats::as_factor(console) |> forcats::fct_relevel("Xbox One")
   )
 ```
 
 ## `r bmu()` Beer goggles [(2)]{.alt}
 
-The main example in this tutorial is from [@field_discovering_2022], who uses an example of an experimental design with two independent variables (a two-way independent design). The study tested the prediction that subjective perceptions of physical attractiveness become inaccurate after drinking alcohol (the well-known beer-goggles effect). The example is based on research that looked at whether the beer-goggles effect was influenced by the attractiveness of the faces being rated [@chen_moderating_2014]. The logic is that alcohol consumption has been shown to reduce accuracy in symmetry judgements, and symmetric faces have been shown to be rated as more attractive. If the beer-goggles effect is driven by alcohol impairing symmetry judgements then you’d expect a stronger effect for unattractive (asymmetric) faces (because alcohol will affect the perception of asymmetry) than attractive (symmetric) ones. The data we’ll analyse are fictional, but the results mimic the findings of this research paper.
+The main example in this tutorial is from [@field_discovering_2023], who uses an example of an experimental design with two independent variables (a two-way independent design). The study tested the prediction that subjective perceptions of physical attractiveness become inaccurate after drinking alcohol (the well-known beer-goggles effect). The example is based on research that looked at whether the beer-goggles effect was influenced by the attractiveness of the faces being rated [@chen_moderating_2014]. The logic is that alcohol consumption has been shown to reduce accuracy in symmetry judgements, and symmetric faces have been shown to be rated as more attractive. If the beer-goggles effect is driven by alcohol impairing symmetry judgements then you'd expect a stronger effect for unattractive (asymmetric) faces (because alcohol will affect the perception of asymmetry) than attractive (symmetric) ones. The data well analyse are fictional, but the results mimic the findings of this research paper.
 
 An anthropologist was interested in the effects of facial attractiveness on the beer-goggles effect. She selected 48 participants who were randomly subdivided into three groups of 16: (1) a placebo group drank 500 ml of alcohol-free beer; (2) a low-dose group drank 500 ml of average strength beer (4% ABV); and (3) a high-dose group drank 500 ml of strong beer (7% ABV). Within each group, half (n = 8) rated the attractiveness of 50 photos of unattractive faces on a scale from 0 (pass me a paper bag) to 10 (pass me their phone number) and the remaining half rated 50 photos of attractive faces. The outcome for each participant was their median rating across the 50 photos (These photographs were from a larger pool of 500 that had been pre-rated by a different sample. The 50 photos with the highest and lowest ratings were used.). The data are in [goggles_tib]{.alt}, which contains the variables **facetype** (unattractive vs attractive), **alcohol** (placebo, low dose, high dose) and **attractiveness** (the median rating of each participant out of 10).
 
@@ -195,9 +227,7 @@ levels()
 name_of_tibble$name_of_variable
 ```
 
-```{r chk_levels-hint-3}
-# solution:
-
+```{r chk_levels-solution}
 levels(goggles_tib$facetype)
 levels(goggles_tib$alcohol)
 ```
@@ -208,31 +238,31 @@ Because I have set up the data within this tutorial you should see that the leve
 
 #### `r alien()` Alien coding challenge
 
-Use what you already know to compute the mean and a 95% confidence interval of attractiveness scores split by the type of face in the stimulus and the alcohol consumption.
+Use what you already know to create an object called [goggles_sum]{.alt} that contains the mean and a 95% confidence interval of attractiveness scores split by the type of face in the stimulus and the alcohol consumption. Print this object rounding to 2 decimal places and with a caption.
 
-```{r goggles_sum, exercise = TRUE, exercise.lines = 7}
+```{r goggles_sum, exercise = TRUE, exercise.lines = 10}
 
 ```
 
 ```{r goggles_sum-hint-1}
 # Start by piping the tibble into the group_by function to group output by facetype and alcohol:
-goggles_tib %>% 
+goggles_sum <- goggles_tib |> 
   dplyr::group_by(facetype, alcohol)
 # Now pipe the results into the summarize() function
 ```
 
 ```{r goggles_sum-hint-2}
 # Pipe the results into the summarize() function
-goggles_tib %>% 
-  dplyr::group_by(facetype, alcohol) %>% 
+goggles_sum <- goggles_tib |> 
+  dplyr::group_by(facetype, alcohol) |> 
   dplyr::summarize()
 # Within summarize(), use the mean() function to create a variable that is the mean attractiveness score
 ```
 
 ```{r goggles_sum-hint-3}
 # Use the mean() function to create a variable that is the mean attractiveness score:
-goggles_tib %>% 
-  dplyr::group_by(facetype, alcohol) %>% 
+goggles_sum <- goggles_tib |> 
+  dplyr::group_by(facetype, alcohol) |> 
   dplyr::summarize(
     mean = mean(attractiveness, na.rm = TRUE)
   )
@@ -240,14 +270,27 @@ goggles_tib %>%
 ```
 
 ```{r goggles_sum-hint-4}
-# Solution
-goggles_tib %>% 
-  dplyr::group_by(facetype, alcohol) %>% 
+goggles_sum <- goggles_tib |> 
+  dplyr::group_by(facetype, alcohol) |> 
   dplyr::summarize(
     mean = mean(attractiveness, na.rm = TRUE),
     `95% CI lower` = mean_cl_normal(attractiveness)$ymin,
     `95% CI upper` = mean_cl_normal(attractiveness)$ymax
   )
+# print to 2 decimal places
+```
+
+```{r goggles_sum-solution}
+goggles_sum <- goggles_tib |> 
+  dplyr::group_by(facetype, alcohol) |> 
+  dplyr::summarize(
+    mean = mean(attractiveness, na.rm = TRUE),
+    `95% CI lower` = mean_cl_normal(attractiveness)$ymin,
+    `95% CI upper` = mean_cl_normal(attractiveness)$ymax
+  )
+
+goggles_sum |> 
+  knitr::kable(digits = 2, caption = "Summary statistics for the beer goggles data")
 ```
 
 Note that the mean attractiveness is very similar across the doses of alcohol for the attractive faces, but varies in the unattractive faces.
@@ -309,7 +352,7 @@ ggplot2::ggplot(goggles_tib, aes(x = alcohol, y = attractiveness, colour = facet
   theme_minimal()
 ```
 
-Note that the mean attractiveness is very similar across the doses of alcohol for the attractive faces, but varies in the unattractive faces.
+Note again that the mean attractiveness is very similar across the doses of alcohol for the attractive faces, but varies in the unattractive faces.
 
 ## `r user_visor()` The model [(2)]{.alt}
 
@@ -317,8 +360,8 @@ The model we're fitting is described by the following equation:
 
 $$
 \begin{aligned}
-\hat{Y}_i & = \hat{b}_0 + \hat{b}_1X_i+ e_i\\
-\hat{\text{attractiveness}}_i & = \hat{b}_0 + \hat{b}_1\text{facetype}_i + \hat{b}_2\text{alcohol}_i + \hat{b}_3\text{facetype} \times \text{alcohol}_i + e_i
+Y_i & = \hat{b}_0 + \hat{b}_1X_i+ e_i\\
+\text{attractiveness}_i & = \hat{b}_0 + \hat{b}_1\text{facetype}_i + \hat{b}_2\text{alcohol}_i + \hat{b}_3[\text{facetype} \times \text{alcohol}]_i + e_i
 \end{aligned}
 $$
 
@@ -348,7 +391,7 @@ goggles_afx
 
 Use the `aov_4()` function to fit the model.
 
-```{r goggles_aov_4, exercise = TRUE, exercise.lines = 2}
+```{r goggles_aov_4, exercise = TRUE, exercise.lines = 2, message=TRUE}
 
 ```
 
@@ -397,8 +440,8 @@ quiz(caption = "Interpreting factorial designs",
 
 The results show significant main effects and interactions for all variables. The main effects are not interesting in the context of the significant interaction effect, so we'll focus on the significant interaction effect. We can interpret this interaction effect using a plot.
 
-<div class="warning">
-  `r cat_space(fill = "warning")` **Strange messages**
+<div class="bug">
+  `r bug()` **De-bug: Strange messages**
 
   You might be distressed by a message telling you
 
@@ -466,6 +509,19 @@ afex::afex_plot(goggles_afx, "alcohol", "facetype") +
 
 The plot seems to suggest that attractive stimuli are rated as more attractive than unattractive stimuli in the placebo group, but are rated fairly similarly in the low dose group and very similarly in the high alcohol dose group. Put another way, the beer googles effect seems to being rearing it's head: as more alcohol is consumed the ratings of unattractive faces get more similar to those of attractive faces.
 
+
+
+```{r, echo = F}
+goggles_afx <- afex::aov_4(attractiveness ~ facetype*alcohol + (1|id), data = goggles_tib)
+gog_afx_tbl <- goggles_afx$anova_table
+```
+
+<div class="reportbox">
+  `r pencil()` **Report it!**
+  
+There was a significant effects of the type of face used, `r report_afx(gog_afx_tbl, row = 1)`, and the dose of alcohol, `r report_afx(gog_afx_tbl, row = 2)`. However, these effects were superseded by a significant interaction between the type of face being rated and the dose of alcohol, `r report_afx(gog_afx_tbl, row = 3)`. This interaction suggests that the effect of alcohol is moderated by the type of face being rated (and vice versa). Based on the means (see plot) this interaction supports the 'beer-googles' hypothesis: when no alcohol is consumed symmetric faces were rated as more attractive than asymmetric faces but this difference diminishes as more alcohol is consumed.
+</div>
+
 ### `r bmu()` Estimated marginal means [(1)]{.alt}
 
 It's also fairly straightforward to get the means in the plot we've just made using the `emmeans()` function from the `emmeans` package. Place the name of your `afex` model into the function and include a vector of the variable names of predictors.
@@ -511,10 +567,10 @@ contrasts(goggles_tib$alcohol) <- contr.sum(3)
 
 Having done this we'd fit the model. We want to enter the following predictors: [facetype]{.alt}, [alcohol]{.alt} and the [facetype*alcohol]{.alt} interaction. We learnt how to do this in [discovr_10]{.alt}.
 
-<div class="tip">
-  `r cat_space()` **Tip:**
+<div class="infobox">
+  `r info()` **Specifying interactions**
 
-We can specify an interaction term within a model formula in `r rproj()` in two ways. Using the current variables of [facetype]{.alt} and [alcohol]{.alt}, the first is `facetype:alcohol`. Using this method we'd specify the model formula as:
+Remember that we can specify an interaction term within a model formula in `r rproj()` in two ways. Using the current variables of [facetype]{.alt} and [alcohol]{.alt}, the first is `facetype:alcohol`. Using this method we'd specify the model formula as:
 
 ```{r, eval = F, class.source = '.panel_alt'}
 attractiveness ~ facetype + alcohol + facetype:alcohol
@@ -554,7 +610,7 @@ car::Anova(goggles_lm, type = 3, white.adjust = "hc3")
 
 Try fitting the model as described above.
 
-```{r goggles_lm, exercise = TRUE, exercise.lines = 5}
+```{r goggles_lm, exercise = TRUE, exercise.lines = 6}
 
 ```
 
@@ -562,15 +618,9 @@ Try fitting the model as described above.
 contrasts(goggles_tib$facetype) <- contr.sum(2)
 contrasts(goggles_tib$alcohol) <- contr.sum(3)
 goggles_lm <- lm(attractiveness ~ facetype*alcohol, data = goggles_tib)
-car::Anova(goggles_lm, type = 3) # or car::Anova(goggle_lm, type = 3, white.adjust = "hc3")
+car::Anova(goggles_lm, type = 3) |>   # or car::Anova(goggle_lm, type = 3, white.adjust = "hc3")
+  knitr::kable(digits = 3)
 ```
-
-<div class="tip">
-  `r cat_space()` **Tip: Funny numbers**
-
-Remember that when `r rproj()` writes [7.912739e-04]{.alt} the [e-04]{.alt} means 'move the decimal places 4 places to the left', so [7.912739e-04]{.alt} is [0.0007912739]{.alt}.
-
-</div>
 
 The results show significant main effects and interactions for all variables. The main effects are not interesting in the context of the significant interaction effect, so we'll focus on the significant interaction effect. We can use the means we computed earlier to start to unpick this interaction. We can also used the `estimate_means()` function from `modelbased` to obtain them, which we met in [discovr_12]{.alt}. We have no covariates, so we could execute:
 
@@ -590,7 +640,7 @@ contrasts(goggles_tib$alcohol) <- contr.sum(3)
 goggles_lm <- lm(attractiveness ~ facetype*alcohol, data = goggles_tib)
 ```
 
-```{r goggles_modbased, exercise = TRUE, exercise.lines = 2, exercise.setup = "goggles_setup"}
+```{r goggles_modbased, exercise = TRUE, exercise.lines = 2, exercise.setup = "goggles_setup", message=TRUE}
 
 ```
 
@@ -598,10 +648,28 @@ goggles_lm <- lm(attractiveness ~ facetype*alcohol, data = goggles_tib)
 modelbased::estimate_means(goggles_lm)
 ```
 
+<div class="bug">
+  `r bug()` **De-bug**
+
+The output contains a message:
+
+```{r, eval = F, class.source = '.panel_alt'}
+We selected `at = c("facetype", "alcohol")`.
+```
+
+This warning appears because we didn't specify the [at]{.alt} argument of `estimate_means()` function, which tells the function the variables for which we want means. In the absence of the [at]{.alt} argument, the function assumes we want the means across all combinations of predictors, which is in fact what we want so we can ignore this message. Nevertheless, the message is helpful in reminding us that our instruction has been interpreted as
+
+```{r, eval = F, class.source = '.panel_alt'}
+modelbased::estimate_means(goggles_lm, at = c("facetype", "alcohol"))
+```
+
+</div>
+
+
 We can see that in the placebo group attractive stimuli are rated as more attractive than unattractive ones, this is also true (but to a lesser extent) in the low dose of alcohol group, but in the high dose of alcohol group the mean attractiveness ratings are similar for the different types of stimuli. In other words, at high doses of alcohol, attractive and unattractive faces are rated as similarly attractive but this isn't the case at lower doses of alcohol or for a placebo dose. 
 
 <div class="tip">
-  `r cat_space()` **Tip:**
+  `r cat_space()` **Tip**
 
 An alternative to `contr.sum(n)` is `contr.helmert(n)`, which will set up a contrast that compares each group to the average of previous groups. For example, our [alcohol]{.alt|} variable has 3 levels: placebo, low dose and high dose, `contr.helmert(3)` for this variable results in:
 
@@ -651,7 +719,7 @@ Having set the contrasts, we could fit the model using the same code as before.
 
 Try fitting the model as described above.
 
-```{r goggles_con, exercise = TRUE, exercise.lines = 6}
+```{r goggles_con, exercise = TRUE, exercise.lines = 8}
 
 ```
 
@@ -661,7 +729,8 @@ low_vs_high <- c(0, -1/2, 1/2)
 contrasts(goggles_tib$alcohol) <- cbind(alcohol_vs_none, low_vs_high)
 contrasts(goggles_tib$facetype) <- c(-1/2, 1/2)
 goggles_lm <- lm(attractiveness ~ facetype*alcohol, data = goggles_tib)
-car::Anova(goggles_lm, type = 3)
+car::Anova(goggles_lm, type = 3) |> 
+  knitr::kable(digits = 3)
 ```
 
 The overall results based on the *F*-statistic will be identical to before, however, because we have set up meaningful contrasts we can use the parameter estimates to interpret the interaction.
@@ -688,7 +757,8 @@ goggles_afx <- afex::aov_4(attractiveness ~ facetype*alcohol + (1|id), data = go
 ```
 
 ```{r goggles_tidy-solution}
-broom::tidy(goggles_lm)
+broom::tidy(goggles_lm) |> 
+  knitr::kable(digits = 3)
 ```
 
 
@@ -697,17 +767,23 @@ alcohol_vs_none <- c(-2/3, 1/3, 1/3)
 low_vs_high <- c(0, -1/2, 1/2)
 contrasts(goggles_tib$alcohol) <- cbind(alcohol_vs_none, low_vs_high)
 contrasts(goggles_tib$facetype) <- c(-1/2, 1/2)
-goggles_par <- lm(attractiveness ~ facetype*alcohol, data = goggles_tib) %>% broom::tidy()
+goggles_par <- lm(attractiveness ~ facetype*alcohol, data = goggles_tib) |> broom::tidy(conf.int = T)
 ```
-
-
 
 There are two key effects here:
 
-* [facetype1:alcoholalcohol_vs_none]{.alt}. This effect compares the effect of contrast 1 for alcohol in the unattractive and attractive stimuli. Imagine we calculate the difference in attractiveness ratings when participants had alcohol (low and high combined) compared to the placebo group, then compared this difference when rating attractive face stimuli compared to when rating unattractive ones. This effect is significant, *p* = `r round(goggles_par$p.value[5], 3)` suggesting that the effect of alcohol (compared to placebo) on ratings is significantly different for attractive and unattractive faces.
-* [facetype1:alcohollow_vs_high]{.alt}. This effect compares the effect of contrast 2 for alcohol in the unattractive and attractive stimuli. Imagine we calculate the difference in attractiveness ratings when participants had a low dose of alcohol compared to a high dose, then compared this difference when rating attractive face stimuli compared to when rating unattractive ones. This effect is significant, *p* = `r round(goggles_par$p.value[6], 3)`, suggesting that the effect of alcohol (low compared to high dose) on ratings is significantly different for attractive and unattractive faces. From earlier plots, it looks as though the effect of alcohol is significantly stronger for unattractive faces than for attractive ones.
+* [facetype1:alcoholalcohol_vs_none]{.alt}. This effect compares the effect of contrast 1 for alcohol in the unattractive and attractive stimuli. Imagine we calculate the difference in attractiveness ratings when participants had alcohol (low and high combined) compared to the placebo group, then compared this difference when rating attractive face stimuli compared to when rating unattractive ones. This effect is significant, *p* = `r get_par(goggles_par, col = "p.value", row = 5, digits = 3)` suggesting that the effect of alcohol (compared to placebo) on ratings is significantly different for attractive and unattractive faces.
+* [facetype1:alcohollow_vs_high]{.alt}. This effect compares the effect of contrast 2 for alcohol in the unattractive and attractive stimuli. Imagine we calculate the difference in attractiveness ratings when participants had a low dose of alcohol compared to a high dose, then compared this difference when rating attractive face stimuli compared to when rating unattractive ones. This effect is significant, *p* = `r get_par(goggles_par, col = "p.value", row = 6, digits = 3)`, suggesting that the effect of alcohol (low compared to high dose) on ratings is significantly different for attractive and unattractive faces. From earlier plots, it looks as though the effect of alcohol is significantly stronger for unattractive faces than for attractive ones.
 
 To sum up, the significant interaction is being driven by  alcohol consumption (any dose compared to placebo, and high dose compared to low) affecting ratings of unattractive face stimuli significantly more than it affects ratings of attractive face stimuli.
+
+<div class="reportbox">
+  `r pencil()` **Report it!**
+  
+There was a significant effects of the type of face used, `r report_afx(gog_afx_tbl, row = 1)`, and the dose of alcohol, `r report_afx(gog_afx_tbl, row = 2)`. However, these effects were superseded by a significant interaction between the type of face being rated and the dose of alcohol, `r report_afx(gog_afx_tbl, row = 3)`. Contrasts suggested that the difference between ratings of symmetric and asymmetric faces was significantly smaller after any dose of alcohol compared to no alcohol, $\hat{b}$ = `r report_pars(goggles_par, row = 5)`, and became smaller still when comparing a high- to a low-dose of alcohol, $\hat{b}$ = `r report_pars(goggles_par, row = 6)`. These effects support the 'beer-googles' hypothesis: when no alcohol is consumed symmetric faces were rated as more attractive than asymmetric faces but this difference diminishes as more alcohol is consumed.
+</div>
+
+
 
 ## `r user_visor()` Simple effects analysis [(2)]{.alt}
 
@@ -749,7 +825,7 @@ for the model created with `lm()` called [goggles_lm]{.alt}.
 
 #### `r alien()` Alien coding challenge
 
-Do a simple effects analysis to look at the effect of [alcohol]{.alt} separately for attractive and unattractive stimuli.
+Do a simple effects analysis to look at the effect of [alcohol]{.alt} separately for attractive and unattractive stimuli, use `kable()` to round values.
 
 ```{r goggles_se, exercise = TRUE, exercise.lines = 3, exercise.setup = "goggles_con_setup"}
 
@@ -761,8 +837,12 @@ emmeans::joint_tests(xxxxxx, "xxxxxx")
 ```
 
 ```{r goggles_se-solution}
-emmeans::joint_tests(goggles_afx, "facetype") # for the model created with afex
-emmeans::joint_tests(goggles_lm, "facetype") # for the model created with lm
+# for the model created with afex
+emmeans::joint_tests(goggles_afx, "facetype") |> 
+  knitr::kable(digits = 3)
+# for the model created with lm
+emmeans::joint_tests(goggles_lm, "facetype") |> 
+  knitr::kable(digits = 3)
 ```
 
 ```{r quiz_face_se, echo = F}
@@ -779,9 +859,10 @@ quiz(caption = "Interpreting simple effects 1 (level 2)",
 )
 ```
 
+
 #### `r alien()` Alien coding challenge
 
-Let's try the simple effects analysis the other way around: obtain the simple effect of [facetype]{.alt} separately for each dose of [alcohol]{.alt}.
+Let's try the simple effects analysis the other way around: obtain the simple effect of [facetype]{.alt} separately for each dose of [alcohol]{.alt}. Although there is no 'correct' way round to conduct the simple effects, this way makes the most sense (to me) in this example because it allows us to see at each dose of alcohol whether there is a significant difference in ratings of the two types of faces.
 
 ```{r goggles_se2, exercise = TRUE, exercise.lines = 3, exercise.setup = "goggles_con_setup"}
 
@@ -793,8 +874,12 @@ emmeans::joint_tests(xxxxxx, "xxxxxx")
 ```
 
 ```{r goggles_se2-solution}
-emmeans::joint_tests(goggles_afx, "alcohol") # for the model created with afex
-emmeans::joint_tests(goggles_lm, "alcohol") # for the model created with lm
+# for the model created with afex
+emmeans::joint_tests(goggles_afx, "alcohol") |> 
+  knitr::kable(digits = 3)
+# for the model created with lm
+emmeans::joint_tests(goggles_lm, "alcohol") |> 
+  knitr::kable(digits = 3)
 ```
 
 ```{r quiz_face_se2, echo = F}
@@ -812,13 +897,23 @@ quiz(caption = "Interpreting simple effects 2 (level 2)",
 )
 ```
 
+```{r echo = F}
+gog_se <- emmeans::joint_tests(goggles_afx, "alcohol")
+```
+
+<div class="reportbox">
+  `r pencil()` **Report it!**
+  
+There was a significant effects of the type of face used, `r report_afx(gog_afx_tbl, row = 1)`, and the dose of alcohol, `r report_afx(gog_afx_tbl, row = 2)`. However, these effects were superseded by a significant interaction between the type of face being rated and the dose of alcohol, `r report_afx(gog_afx_tbl, row = 3)`. Simple effects analysis revealed that symmetric faces were rated as significant more attractive than asymmetric faces after no alcohol, `r report_se(gog_se, row = 1)`, and a low dose, `r report_se(gog_se, row = 2)`, but were rated comparably after a high dose of alcohol, `r report_se(gog_se, row = 3)`. These effects support the 'beer-googles' hypothesis: the standard tendency to rate symmetric faces as more attractive than asymmetric faces was present at low doses and no alcohol, but was eliminated by a high dose of alcohol.
+</div>
+
 
 ## `r bmu()` Diagnostic plots [(1)]{.alt}
 
 As with any linear model created with `lm()`, we can use the `plot()` function to produce diagnostic plots from the model. We cannot use this with models created by `afex`.
 
-<div class="tip">
-  `r cat_space()` **Tip: Diagnostic plots**
+<div class="infobox">
+  `r info()` **Diagnostic plots**
 
 Remember that `plot()` takes this general form:
 
@@ -833,7 +928,7 @@ You can also use `ggplot2::autoplot()` to make pretty versions of the plot. To u
 
 Obtain plots 1, 3, 2 and 4 (in that order) for the model [goggles_lm]{.alt}.
 
-```{r goggles_zpred_resid, exercise = TRUE, exercise.lines = 2, exercise.setup = "goggles_con_setup"}
+```{r goggles_zpred_resid, exercise = TRUE, exercise.lines = 8, exercise.setup = "goggles_con_setup"}
 
 ```
 
@@ -855,7 +950,7 @@ ggplot2::autoplot(goggles_lm,
 ```{r quiz_zresid_ex1, echo = FALSE}
 quiz(caption = "Diagnostic plot quiz (level 2)",
   question("How would you interpret the *Residual vs. fitted* and *Scale-location* plots?",
-    answer("We’re in trouble: I see heteroscedasticity.", message = "Unlucky. The red line on the scale-location plot is fairly flat and the verstical lines of dots seem similar in length as we move along the *x*-axis indicating homoscedasticity."),
+    answer("Were in trouble: I see heteroscedasticity.", message = "Unlucky. The red line on the scale-location plot is fairly flat and the verstical lines of dots seem similar in length as we move along the *x*-axis indicating homoscedasticity."),
     answer("I'm not sure, give me a hint.", message = "Heteroscedasticity is shown up by a red line that isn't flat and a vertical spread of dots that changes as you move along the *x*-axis."),
     answer("Everything is fine - residuals show homogeneity.", correct = TRUE, message = "Yes, the red line is fiarly flat and the vertical spread of dots is similar as you move along the *x*-axis."),
     correct = "Correct - well done!",
@@ -904,14 +999,15 @@ The bottom of the output shows significance tests of bias. These tests suggest t
 
 #### `r alien()` Alien coding challenge
 
-Remember from previous tutorials that to get a summary of an existing model like [goggles_lm]{.alt} that uses heteroscedasticity-consistent standard errors (i.e. robust significance tests and confidence intervals), we put the model into `model_parameters()` and set [robust = TRUE, vcov.type = \"HC4\", digits = 3]{.alt}. Try this in the code box:
+Remember from previous tutorials that to get a summary of an existing model like [goggles_lm]{.alt} that uses heteroscedasticity-consistent standard errors (i.e. robust significance tests and confidence intervals), we put the model into `model_parameters()` and set [vcov = TRUE, vcov.type = \"HC4\", digits = 3]{.alt}. Try this in the code box:
 
-```{r goggles_hc4, exercise = TRUE, exercise.lines = 2, exercise.setup = "goggles_con_setup"}
+```{r goggles_hc4, exercise = TRUE, exercise.lines = 3, exercise.setup = "goggles_con_setup"}
 
 ```
 
 ```{r goggles_hc4-solution}
-parameters::model_parameters(goggles_lm, robust = TRUE, vcov.type = "HC4", digits = 3)
+parameters::model_parameters(goggles_lm, vcov = TRUE, vcov.type = "HC4", digits = 3) |> 
+  knitr::kable(digits = 3) 
 ```
 
 When we fit the model with heteroskedasticity-consistent standard errors the parameter estimates will match the non-robust model but the standard errors, *p*-values and confidence intervals change because these are based on methods robust to heteroscedasticity (the HC4 estimates that we asked for). For the two terms that represent the interaction term ([facetype1:alcoholalcohol_vs_none]{.alt} and [facetype1 : alcohollow_vs_high ]{.alt}) the profile of results is unchanged by using robust standard errors, both terms are significant and have 95% confidence intervals that do not contain 0. The fact that the profile of results is unchanged is not surprising given that the model plots suggested that homoscedasticity could be assumed.
@@ -934,7 +1030,8 @@ Bootstrap the model :
 ```
 
 ```{r goggles_boot-solution}
-parameters::bootstrap_parameters(goggles_lm)
+parameters::bootstrap_parameters(goggles_lm) |> 
+  knitr::kable(digits = 3)
 ```
 
 The estimates themselves are quite similar to those from the non-robust model and both terms for the interaction ([facetype1:alcoholalcohol_vs_none]{.alt} and [facetype1 : alcohollow_vs_high ]{.alt}) are again significant.
@@ -945,29 +1042,31 @@ We can interpret the *b*s from the model as raw effect sizes (and there's a lot 
 
 #### `r robot()` Code example
 
-Specifically, we can use the `eta_squared()` and `omega_squared()` functions from the `effectsize` package [@makowski_compute_2020], which take the general form:
+Specifically, we can use the `eta_squared()` and `omega_squared()` functions from the `effectsize` package [@effectsize2020; @R-effectsize], which take the general form:
 
 ```{r, eval = F}
 effectsize::eta_squared(anova_object, partial = TRUE, ci = 0.9)
 effectsize::omega_squared(anova_object, partial = TRUE, ci = 0.9)
 ```
 
-All we do is put the  object into the function (or pipe it in). By default you’ll get partial eta-squared ($\eta^2_p$) and partial omega-squared ($\omega^2_p$), but you can get the non-partial version by setting [partial = FALSE]{.alt}, and you’ll get a 90% confidence interval, which you might want to change to some other value.
+All we do is put the  object into the function (or pipe it in). By default you'll get partial eta-squared ($\eta^2_p$) and partial omega-squared ($\omega^2_p$), but you can get the non-partial version by setting [partial = FALSE]{.alt}, and you'll get a 90% confidence interval, which you might want to change to some other value.
 
 #### `r alien()` Alien coding challenge
 
-The function uses the sums of squares from the object that is passed into it, so it’s safest to re-use our earlier code with `car::Anova()` where we set the sums of squares and pipe it into the function. Try this below.
+The function uses the sums of squares from the object that is passed into it, so its safest to re-use our earlier code with `car::Anova()` where we set the sums of squares and pipe it into the function. Try this below.
 
-```{r eta, exercise = TRUE, exercise.lines = 3, exercise.setup = "goggles_con_setup"}
-car::Anova(goggles_lm, type = 3) %>% 
-  effectsize::eta_squared(., ci = 0.95)
+```{r eta, exercise = TRUE, exercise.lines = 5, exercise.setup = "goggles_con_setup"}
+car::Anova(goggles_lm, type = 3) |> 
+  effectsize::eta_squared(ci = 0.95) |> 
+  knitr::kable(digits = 3)
 ```
 
 If you fitted the model with `afex` you can pipe the model [goggles_afx]{.adj} directly into the function:
 
 ```{r eta_afx, exercise = TRUE, exercise.lines = 3, exercise.setup = "fit_afx"}
-goggles_afx %>% 
-  effectsize::eta_squared(., ci = 0.95)
+goggles_afx |> 
+  effectsize::eta_squared(ci = 0.95) |> 
+  knitr::kable(digits = 3)
 ```
 
 These values show that the $\text{facetype} \times \text{alcohol}$ interaction (the effect we care about) explains 29% of the variance in attractiveness not attributable to other predictors, which is sizeable. As we have seen before, it's typically better to use partial omega squared ($\omega^2_p$), which is an unbiased version of $\eta^2_p$.
@@ -982,14 +1081,28 @@ Use the code example to compute partial omega squared for the predictors in eith
 
 ```{r omega-solution}
 # solution for goggles_lm:
-car::Anova(goggles_lm, type = 3) %>% 
-  effectsize::omega_squared(., ci = 0.95)
+car::Anova(goggles_lm, type = 3) |> 
+  effectsize::omega_squared(ci = 0.95) |> 
+  knitr::kable(digits = 3)
 # solution for goggles_afx:
-goggles_afx %>% 
-  effectsize::omega_squared(., ci = 0.95)
+goggles_afx |> 
+  effectsize::omega_squared(ci = 0.95) |> 
+  knitr::kable(digits = 3)
 ```
 
+```{r, echo = F}
+gog_os <- goggles_afx |> 
+  effectsize::omega_squared(ci = 0.95)
+```
+
+
 The effect sizes are slightly smaller than (as we'd expect) using omega-squared. The interaction effect now explains about 25% of variation in attractiveness ratings.
+
+<div class="reportbox">
+  `r pencil()` **Report it!**
+  
+There was a significant effects of the type of face used, `r report_afx(gog_afx_tbl, row = 1)`, `r report_es(gog_os, col = "Omega2_partial", row = 1)`, and the dose of alcohol, `r report_afx(gog_afx_tbl, row = 2)`, `r report_es(gog_os, col = "Omega2_partial", row = 2)`. However, these effects were superseded by a significant interaction between the type of face being rated and the dose of alcohol, `r report_afx(gog_afx_tbl, row = 3)`, `r report_es(gog_os, col = "Omega2_partial", row = 3)`. This interaction suggests that the effect of alcohol is moderated by the type of face being rated (and vice versa). Based on the means (see plot) this interaction supports the 'beer-googles' hypothesis: when no alcohol is consumed symmetric faces were rated as more attractive than asymmetric faces but this difference diminishes as more alcohol is consumed.
+</div>
 
 
 ## `r user_astronaut()` Bayes factors [(3)]{.alt}
@@ -1001,13 +1114,18 @@ Like in previous tutorials (**discovr_08**, **discovr_09**, **discovr_11**, **di
 We saw in **discovr_12** that the `lmBF()` function has this format:
 
 ```{r, eval = FALSE}
-my_model <- BayesFactor::lmBF(formula = outcome ~ predictor, data = my_tib, rscaleFixed = "medium", rscaleCont = "medium")
+my_model <- BayesFactor::lmBF(formula = outcome ~ predictor,
+                              data = my_tib,
+                              rscaleFixed = "medium",
+                              rscaleCont = "medium")
 ```
 
 We also saw that `lmBF()` uses default priors for categorical variables ([rscaleFixed]{.alt}) that can be specified as a number or as "medium" (the default), "wide", and "ultrawide". These labels correspond to *r* scale values of 1/2, $^\sqrt{2}/_2$, and 1. We could, therefore, obtain a Bayes factor for the entire model with the following code:
 
 ```{r, eval = FALSE}
-goggles_bf <-  BayesFactor::lmBF(formula = attractiveness ~ alcohol*facetype, data = goggles_tib, rscaleFixed = "medium")
+goggles_bf <-  BayesFactor::lmBF(formula = attractiveness ~ alcohol*facetype,
+                                 data = goggles_tib,
+                                 rscaleFixed = "medium")
 ```
 
 However, we are more interested in quantifying the individual effects than the model overall, and in particular the interaction effect. Therefore, we're going to build three models: (1) **alcohol** as the only predictor; (2) a model that adds **facetype** as a predictor; (3) a model that adds the interaction term (**alcohol:facetype**). Having created these models, we'll compare them. So, we'll start by looking at the Bayes factor for **alcohol** as the sole predictor, then get the Bayes factor for what **facetype** adds to the model, then finally get the Bayes factor for what the interaction term adds to the model.
@@ -1084,22 +1202,20 @@ int_bf/facetype_bf
 ```
 
 ```{r, echo = F}
-alcohol_bf <- BayesFactor::lmBF(formula = attractiveness ~ alcohol, data = goggles_tib)
+m1 <- BayesFactor::lmBF(formula = attractiveness ~ alcohol, data = data.frame(goggles_tib))
+facetype_bf <-  BayesFactor::lmBF(formula = attractiveness ~ alcohol + facetype, data = data.frame(goggles_tib))
+int_bf <- BayesFactor::lmBF(formula = attractiveness ~ alcohol + facetype + alcohol:facetype, data = data.frame(goggles_tib))
 
-facetype_bf <-  BayesFactor::lmBF(formula = attractiveness ~ alcohol + facetype, data = goggles_tib)
-
-int_bf <- BayesFactor::lmBF(formula = attractiveness ~ alcohol + facetype + alcohol:facetype, data = goggles_tib)
-
-m1 <- alcohol_bf
-m2 <- facetype_bf/alcohol_bf
+m2 <- facetype_bf/m1
 m3 <- int_bf/facetype_bf
-
-
-get_bf <- function(bf, digits = 2){
-  BayesFactor::extractBF(bf, onlybf = T) %>% round(., digits)
-}
 ```
 
+<div class="tip">
+  `r cat_space()` **Tip**
+
+The Bayes factors in [facetype_bf]{.alt} and [int_bf]{.alt} are computed using a sampling process and so will change each time you run the code. It also means the values I report will differ from those you obtain, which is confusing but nothing to worry about.
+
+</div>
 
 
 Looking at the first Bayes factor, the data are `r get_bf(m1)` times more likely under the alternative hypothesis (attractiveness is predicted from the dose of alcohol) than under the null (the dose of alcohol does not predict attractiveness ratings). Our beliefs that the dose of alcohol affects attractiveness ratings should increase by a factor of about `r get_bf(m1)` – in other words it should move away from the null. This value is fairly weak evidence, but then again we're not interested in this effect because it collapses across the type of face being rated.
@@ -1112,15 +1228,15 @@ Looking at the final Bayes factor, the data are `r get_bf(m3)` times more likely
 
 ### Blow up your video
 
-Let's 's look at a second example from [@field_discovering_2022], which is about injuries from video games:
+Let's 's look at a second example from [@field_discovering_2023], which is about injuries from video games:
 
 ![](https://youtu.be/bE5knddsKpk)
 
 A researcher was interested in what factors contributed to injuries resulting from game console use. She tested 40 participants who were randomly assigned to either an active or static game played on either a Nintendo Switch or Xbox One Kinect. At the end of the session their physical condition was evaluated on an injury severity scale ranging from 0 (no injury) to 20 (severe injury). The data are in [xbox_tib]{.alt}, which contains the variables [id]{.alt}, [game]{.alt} (static, active), [console]{.alt} (Switch, Xbox One), and [injury]{.alt} (a score from 0 to 20). Fit a model to see whether injury severity is significantly predicted from the type of game, the type of console and their interaction. You can use either `lm()` or `aov_4()`.
 
 
-<div class="tip">
-  `r cat_space()` **Tip**
+<div class="infobox">
+  `r info()` **Information**
 
 There is a detailed solution to this task at [https://www.discovr.rocks/solutions/alex/alex_13/#task-1310](https://www.discovr.rocks/solutions/alex/alex_12/#task-1310). [Materials not yet live]
 </div>
@@ -1199,7 +1315,7 @@ contrasts(xbox_tib$console) <- switch_vs_xbox
 xbox_lm <- lm(xxx ~ xxx*xxx, data = xxxx)
 car::Anova(xxxx, type = 3)
 # using aov_4():
-xbox_afx <- afex::aov4(xxx ~ xxx*xxx + + (1|xxxx), data = xxxx)
+xbox_afx <- afex::aov_4(xxx ~ xxx*xxx + + (1|xxxx), data = xxxx)
 xbox_afx
 ```
 
@@ -1224,7 +1340,7 @@ xbox_lm <- lm(injury ~ game*console, data = xbox_tib)
 car::Anova(xbox_lm, type = 3)
 broom::tidy(xbox_lm, conf.int = TRUE)
 # using aov_4():
-xbox_afx <- afex::aov4(injury ~ game*console + (1|id), data = xbox_tib)
+xbox_afx <- afex::aov_4(injury ~ game*console + (1|id), data = xbox_tib)
 xbox_afx
 ```
 
@@ -1238,7 +1354,7 @@ switch_vs_xbox <- c(-1/2, 1/2)
 contrasts(xbox_tib$game) <- active_vs_static
 contrasts(xbox_tib$console) <- switch_vs_xbox
 xbox_lm <- lm(injury ~ game*console, data = xbox_tib)
-xbox_afx <- afex::aov4(injury ~ game*console + (1|id), data = xbox_tib)
+xbox_afx <- afex::aov_4(injury ~ game*console + (1|id), data = xbox_tib)
 ```
 
 ```{r xbox_emm, exercise = TRUE, exercise.lines = 6, exercise.setup = "xbox_models"}
@@ -1276,9 +1392,11 @@ emmeans::joint_tests(xxxx, "xxxx")
 
 ```{r xbox_se-solution}
 # using lm():
-emmeans::joint_tests(xbox_lm, "console")
+emmeans::joint_tests(xbox_lm, "console") |> 
+  knitr::kable(digits = 3)
 # using aov_4():
-emmeans::joint_tests(xbox_afx, "console")
+emmeans::joint_tests(xbox_afx, "console") |> 
+  knitr::kable(digits = 3)
 ```
 
 
@@ -1328,7 +1446,7 @@ ggplot2::autoplot(xbox_lm,
 ```{r xbox_diag_qz, echo = FALSE}
 quiz(caption = "Diagnostic plot quiz (level 2)",
   question("How would you interpret the *Residual vs. fitted* and *Scale-location* plots?",
-    answer("We’re in trouble: I see heteroscedasticity.", message = "Unlucky. The red line on the scale-location plot is fairly flat and the verstical lines of dots seem similar in length as we move along the *x*-axis indicating homoscedasticity."),
+    answer("Were in trouble: I see heteroscedasticity.", message = "Unlucky. The red line on the scale-location plot is fairly flat and the verstical lines of dots seem similar in length as we move along the *x*-axis indicating homoscedasticity."),
     answer("I'm not sure, give me a hint.", message = "Heteroscedasticity is shown up by a red line that isn't flat and a vertical spread of dots that changes as you move along the *x*-axis."),
     answer("Everything is fine - residuals show homogeneity.", correct = TRUE, message = "Yes, the red line is fiarly flat and the vertical spread of dots is similar as you move along the *x*-axis."),
     correct = "Correct - well done!",
@@ -1363,7 +1481,8 @@ If you used `lm()` to fit the model, use the code box to get tests for the param
 ```
 
 ```{r xbox_hc4-solution}
-parameters::model_parameters(xbox_lm, robust = TRUE, vcov.type = "HC4", digits = 3)
+parameters::model_parameters(xbox_lm, vcov = TRUE, vcov.type = "HC4") |> 
+  knitr::kable(digits = 3)
 ```
 
 ```{r cure_rob_qz, echo = FALSE}
@@ -1401,15 +1520,15 @@ quiz(caption = "Robust model quiz (level 3)",
 
 ### Statistics
 
-* The tutorials typically follow examples described in detail in @field_discovering_2022. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
+* The tutorials typically follow examples described in detail in @field_discovering_2023. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
 * If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
 * There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/).
 * There are free statistical resources on my websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [milton-the-cat.rocks](http://milton-the-cat.rocks).
 
-### `r rproj("h3")`
+### `r rproj()`
 
 * [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
-* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and `r rstudio()`.
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj()` and `r rstudio()`.
 * [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
 * [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
 

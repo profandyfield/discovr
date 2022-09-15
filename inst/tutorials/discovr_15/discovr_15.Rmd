@@ -9,7 +9,7 @@ output:
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
 description: "Repeated measures designs. Fitting models for one- and two-way repeated measures designs using the afex package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when these variables ahve been manipulated within the same entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors."
-bibliography: discovr_15.bib
+bibliography: [discovr_15.bib, packages.bib]
 ---
 <html lang="en">
 
@@ -20,27 +20,34 @@ knitr::opts_chunk$set(
 	warning = FALSE
 )
 
-library(learnr) #necessary to render tutorial correctly
-
+#necessary to render tutorial correctly
+library(learnr) 
+library(htmltools)
+#tidyverse
 library(dplyr)
 library(ggplot2)
-library(Hmisc)
-library(htmltools)
-library(magrittr)
-
+#non tidyverse
 library(afex)
+library(broom)
 library(emmeans)
+library(Hmisc)
+library(knitr)
 library(WRS2)
 
 
 source("./www/discovr_helpers.R")
 
-
 #Read data files needed for the tutorial
 
 sniff_tib <- discovr::sniffer_dogs
 scent_tib <- discovr::alien_scents
+```
 
+
+```{r, eval = F, echo = F}
+# Create bib file for R packages
+here::here("inst/tutorials/discovr_15/packages.bib") |>
+  knitr::write_bib(c('here', 'tidyverse', 'dplyr', 'readr', 'forcats', 'tibble', 'knitr', 'afex', 'emmeans', 'Hmisc', 'WRS2', 'broom'), file = _)
 ```
 
 # discovr: Repeated measures designs (GLM 4)
@@ -50,25 +57,25 @@ scent_tib <- discovr::alien_scents
 <div class="infobox">
   <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
   
-  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2022] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
+  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2023] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
   
 </div>
 
-### `r cat_space(fill = "h3", height = 2)` Welcome to the `discovr` space pirate academy
+### `r cat_space(fill = blu)` Welcome to the `discovr` space pirate academy
 
 Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
-* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
-* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
+* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
+* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
-* `r alien(height = 2)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
-* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
-* `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
+* `r alien(height = 1.5)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
+* `r robot(height = 1.5)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
+* `r bug(height = 1.5)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
 
 Also, use hints and solutions to guide you through the exercises (Figure 1).
 
@@ -84,7 +91,7 @@ By for now and good luck - you'll be amazing!
 
 * Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
 
-* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an `r rproj()` markdown file within an `r rstudio()` project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
+* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an Quarto document within an `r rstudio()` project and practice everything you do in the tutorial in the Quarto document, make notes on things that confused you or that you want to remember, and save it. Within this document you will need to load the relevant packages and data. 
 
 ![](https://youtu.be/FhoYCsZttGc)
 
@@ -93,20 +100,26 @@ By for now and good luck - you'll be amazing!
 This tutorial uses the following packages:
 
 * `afex` [@singmann_afex_2020]
-* `here` [@here]
-* `tidyverse` [@tidyverse]
-* `WRS2` [@Mair_Wilcox_2019]
+* `broom` [@R-broom]
+* `here` [@R-here]
+* `Hmisc` [@R-Hmisc] is loaded by `ggplot2`
+* `knitr` [@R-knitr]
+* `WRS2` [@R-WRS2; @WRS22020]
 
-I try to follow the [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) in always declaring the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will write `dplyr::mutate()`. 
+It also uses these `tidyverse` packages [@R-tidyverse; @tidyverse2019]: `dplyr` [@R-dplyr], `forcats` [@R-forcats], `ggplot2` [@wickhamGgplot2ElegantGraphics2016], and `readr` [@R-readr].
 
-It is good practice to be explicit about packages to avoid clashes where functions from different packages have the same name. It also means that you don't need to load packages at the start of your markdown document. 
 
-There are two main exceptions to this rule.
+### Coding style
 
-1. There are functions within some `tidyverse` packages that would be used within other functions. Including the package name makes the code difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
-2. To use the pipe operator (`%>%`) you need to have `magrittr` loaded.
+There are (broadly) two styles of coding:
 
-We can load all of the packages that are exceptions in one step by loading `tidyverse` at the beginning of our `r rproj()` Markdown document:
+1. **Verbose**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt verbose style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
+
+2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
+
+Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend a verbose style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load `tidyverse` because the `dplyr` and `ggplot2` packages contain functions that are often used within other functions and in these cases the verbose style is difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+
+You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the `tidyverse` package (and any others if you're using a concise style) at the beginning of your Quarto document:
 
 ```{r eval = FALSE}
 library(tidyverse)
@@ -119,15 +132,17 @@ To work *outside of this tutorial* you need to download the following data files
 * [alien_scents.csv](https://www.discovr.rocks/csv/alien_scents.csv)
 * [sniffer_dogs.csv](https://www.discovr.rocks/csv/sniffer_dogs.csv)
 
-Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
+Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your Quarto document:
 
 ```{r, eval=FALSE}
-scents_tib <- here::here("data/alien_scents.csv") %>%
-  readr::read_csv() %>%
+scents_tib <- here::here("data/alien_scents.csv") |>
+  readr::read_csv() |>
    dplyr::mutate(
-      entity = forcats::as_factor(entity) %>% forcats::fct_relevel("Human", "Shapeshifter", "Alien"),
-      scent_mask = forcats::as_factor(scent_mask) %>% forcats::fct_relevel("None", "Human", "Fox"),
-  )
+      entity = forcats::as_factor(entity) |>
+        forcats::fct_relevel("Human", "Shapeshifter", "Alien"),
+      scent_mask = forcats::as_factor(scent_mask) |>
+        forcats::fct_relevel("None", "Human", "Fox")
+      )
 ```
 
 This code reads in the data and converts the variables **entity** and **scent_mask** to a factor (categorical variable). It also uses `fct_relevel` to set the order of the levels of the factor **entity** to be human, shapeshifter, and alien. Similarly, the order of the levels of the factor **scent_mask** are set as none, human, and fox.
@@ -135,8 +150,8 @@ This code reads in the data and converts the variables **entity** and **scent_ma
 For the sniffer dogs data use the code below (which, like the code above converts the variable **entity** to a factor):
 
 ```{r, eval=FALSE}
-sniff_tib <- here::here("data/sniffer_dogs.csv") %>%
-  readr::read_csv() %>%
+sniff_tib <- here::here("data/sniffer_dogs.csv") |>
+  readr::read_csv() |>
   dplyr::mutate(
     entity = forcats::as_factor(entity)
   )
@@ -144,7 +159,7 @@ sniff_tib <- here::here("data/sniffer_dogs.csv") %>%
 
 ## `r bmu()` Aliens and sniffer dogs [(2)]{.alt}
 
-The main examples in this tutorial are from [@field_discovering_2022]. When the alien invasion comes we’ll need spaniels (or possibly other dogs, but lets hope its mainly spaniels because spaniels are cool) to help us to identify the space lizards. Having got wind of a potential invasion from alien space lizards, some of whom could shapeshift into humanoid form, the top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) met to come up with a plan for detecting the invading space lizards. They decided to test the plausibility of training sniffer dogs to detect aliens. Over many trials 8 of their best dogs (Milton, Woofy, Ramsey, Mr. Snifficus III, Willock, The Venerable Dr. Waggy, Lord Scenticle, and Professor Nose) were recruited for a pilot study. During training, these dogs were rewarded for making vocalisations while sniffing alien space lizards (which they happened to have a few of in Hangar 18). On the test trial, the 8 dogs were allowed to sniff 4 entities for 1-minute each: an alien space lizard, a shapeshifting alien space lizard who had taken on humanoid form and worked undetected as a statistics lecturer, a human, and a human mannequin). The number of vocalisations made during each 1-minute sniffing session was recorded. So, this is a [repeated measures design]{.alt}: each dog has four scores representing the number of vocalisations they made while sniffing each of the four entities. If training has been successful the dogs should vocalise more when sniffing space lizards.
+The main examples in this tutorial are from [@field_discovering_2023]. When the alien invasion comes well need spaniels (or possibly other dogs, but lets hope its mainly spaniels because spaniels are cool) to help us to identify the space lizards. Having got wind of a potential invasion from alien space lizards, some of whom could shapeshift into humanoid form, the top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) met to come up with a plan for detecting the invading space lizards. They decided to test the plausibility of training sniffer dogs to detect aliens. Over many trials 8 of their best dogs (Milton, Woofy, Ramsey, Mr. Snifficus III, Willock, The Venerable Dr. Waggy, Lord Scenticle, and Professor Nose) were recruited for a pilot study. During training, these dogs were rewarded for making vocalisations while sniffing alien space lizards (which they happened to have a few of in Hangar 18). On the test trial, the 8 dogs were allowed to sniff 4 entities for 1-minute each: an alien space lizard, a shapeshifting alien space lizard who had taken on humanoid form and worked undetected as a statistics lecturer, a human, and a human mannequin). The number of vocalisations made during each 1-minute sniffing session was recorded. So, this is a [repeated measures design]{.alt}: each dog has four scores representing the number of vocalisations they made while sniffing each of the four entities. If training has been successful the dogs should vocalise more when sniffing space lizards.
 
 #### `r alien()` Alien coding challenge
 
@@ -193,7 +208,8 @@ You should find that the levels are ordered as alien, human, mannequin, and shap
 
 #### `r alien()` Alien coding challenge
 
-Use what you already know to compute the mean and a 95% confidence interval of vocalisations split by the entity that the dog was sniffing.
+Use what you already know to create an object called [sniff_sum]{.alt} that contains the mean and a 95% confidence interval of attractiveness scores split by the type of face in the stimulus and the alcohol consumption. Print this object rounding to 2 decimal places and with a caption.
+
 
 ```{r sniff_sum, exercise = TRUE, exercise.lines = 7}
 
@@ -201,23 +217,23 @@ Use what you already know to compute the mean and a 95% confidence interval of v
 
 ```{r sniff_sum-hint-1}
 # Start by piping the tibble into the group_by function to group output by scent_mask and entity:
-sniff_tib %>% 
+sniff_sum <- sniff_tib |> 
   dplyr::group_by(scent_mask, entity)
 # Now pipe the results into the summarize() function
 ```
 
 ```{r sniff_sum-hint-2}
 # Pipe the results into the summarize() function
-sniff_tib %>% 
-  dplyr::group_by(entity) %>% 
+sniff_sum <- sniff_tib |> 
+  dplyr::group_by(entity) |> 
   dplyr::summarize()
 # Within summarize(), use the mean() function to create a variable that is the mean attractiveness score
 ```
 
 ```{r sniff_sum-hint-3}
 # Use the mean() function to create a variable that is the mean attractiveness score:
-sniff_tib %>% 
-  dplyr::group_by(entity) %>% 
+sniff_sum <- sniff_tib |> 
+  dplyr::group_by(entity) |> 
   dplyr::summarize(
     mean = mean(vocalisations, na.rm = TRUE)
   )
@@ -226,13 +242,27 @@ sniff_tib %>%
 
 ```{r sniff_sum-hint-4}
 # Solution
-sniff_tib %>% 
-  dplyr::group_by(entity) %>% 
+sniff_sum <- sniff_tib |> 
+  dplyr::group_by(entity) |> 
   dplyr::summarize(
     mean = mean(vocalisations, na.rm = TRUE),
     `95% CI lower` = mean_cl_normal(vocalisations)$ymin,
     `95% CI upper` = mean_cl_normal(vocalisations)$ymax
   )
+# round using kable()
+```
+
+```{r sniff_sum-solution}
+# Solution
+sniff_sum <- sniff_tib |> 
+  dplyr::group_by(entity) |> 
+  dplyr::summarize(
+    mean = mean(vocalisations, na.rm = TRUE),
+    `95% CI lower` = mean_cl_normal(vocalisations)$ymin,
+    `95% CI upper` = mean_cl_normal(vocalisations)$ymax
+  )
+
+knitr::kable(sniff_sum, digits = 2)
 ```
 
 It looks like the dogs made the most vocalisations when sniffing the alien and shapeshifting alien, which is what we would expect if training was successful.
@@ -313,7 +343,7 @@ The model we're fitting is described by the following equation (which is simplif
 
 $$
 \begin{aligned}
-\hat{\text{vocalisations}}_{ij} & = \hat{b}_{0j} + \hat{b}_{1j}\text{entity}_{ij}+ e_{ij}\\
+\text{vocalisations}_{ij} & = \hat{b}_{0j} + \hat{b}_{1j}\text{entity}_{ij}+ e_{ij}\\
 \hat{b}_{0j} & = \hat{b}_0 + \hat{u}_{0j} \\
 \hat{b}_{1j} & = \hat{b}_1 + \hat{u}_{1j}
 \end{aligned}
@@ -323,7 +353,7 @@ The main difference to models we have seen before is that the intercept ($\hat{b
 
 ## `r bmu()` Fitting a repeated measures model [(1)]{.alt}
 
-We can fit a simple overall model of type of entity predicting the number of dog vocalisations using the `afex` package, which we met in **discovr_13**. In the previous tutorial we saw that we can fit a model using this code:
+We can fit an overall model of type of entity predicting the number of dog vocalisations using the `afex` package, which we met in **discovr_13**. In the previous tutorial we saw that we can fit a model using this code:
 
 ```{r, eval = F}
 afex::aov_4(outcome ~ predictor + (1|id_variable), data = my_tib)
@@ -385,11 +415,35 @@ question("How would you interpret the effect of **entity** in the output?",
 )
 ```
 
+```{r echo = F}
+sniff_afx <- afex::aov_4(vocalisations ~ entity + (entity|dog_name), data = sniff_tib)
+sniff_tble <- sniff_afx$anova_table
+sniff_es <- sprintf("%.2f", 100*sniff_tble$ges)
+sniff_emm <- emmeans::emmeans(sniff_afx, ~entity, model = "multivariate")
+sniff_cons <- list(
+  aliens_vs_non = c(1/2, -1/2, -1/2, 1/2),
+  alien_vs_shape = c(1/2, 0, 0, -1/2),
+  human_vs_manquin = c(0, 1/2, -1/2, 0)
+  )
+
+sniff_con <- emmeans::contrast(sniff_emm, sniff_cons) |> 
+  broom::tidy()
+```
+
+
+
 ### `r user_visor()` Effect size for the overall effect [(2)]{.alt}
 
-We've discussed many times that having a single arbitrary cut-off for significance is problematic. In this case, the effect of **entity** was just about non-significant (*p* = 0.063), but the sample size is tiny (8 dogs), so the *F*-statistic will have been hugely underpowered to detect an effect. The effect size is a useful additional piece of information, so let's get it. In previous tutorials we used partial omega-squared $\omega^2_p$, which we can't get directly from `aov_4()`. However, it does, by default, calculate generalized partial eta-squared ($\eta^2_{G}$), and puts it in the column labelled [ges]{.alt}. 
+We've discussed many times that having a single arbitrary cut-off for significance is problematic. In this case, the effect of **entity** was just about non-significant, `r report_afx(sniff_tble)`, but the sample size is tiny (8 dogs), so the *F*-statistic will have been hugely underpowered to detect an effect. The effect size is a useful additional piece of information, so let's get it. In previous tutorials we used partial omega-squared $\omega^2_p$, which we can't get directly from `aov_4()`. However, it does, by default, calculate generalized partial eta-squared ($\eta^2_{G}$), and puts it in the column labelled [ges]{.alt}. 
 
-Generalized partial eta-squared differs from eta-squared in ways that you probably don't care about. (tl;dr: $\eta^2_{G}$ is more consistent than $\eta^2_{p}$ across study designs.) We can interpret it in much the same way, for our data, **entity** explains about 32.7% of the variance in vocalisations, which is a very substantial effect despite what the *p*-value might have you believe. 
+Generalized partial eta-squared differs from eta-squared in ways that you probably don't care about. (tl;dr: $\eta^2_{G}$ is more consistent than $\eta^2_{p}$ across study designs.) We can interpret it in much the same way, for our data, **entity** explains about `r sniff_es`% of the variance in vocalisations, which is a very substantial effect despite what the *p*-value might have you believe. 
+
+<div class="reportbox">
+  `r pencil()` **Report it!**
+
+There was no significant effect of the type of entity on sniffer dog's vocalisations when approaching them, `r report_afx(sniff_tble)`. However, the type of entity explained `r sniff_es`% of the variance in vocalisations ($\eta^2_{G}$ = `r get_par(sniff_tble, col = "ges")`), which is a very substantial effect suggesting that the study may have been under powered.
+</div>
+
 
 ### `r bmu()` Estimated marginal means [(1)]{.alt}
 
@@ -537,10 +591,11 @@ sniff_cons <- list(
   human_vs_manquin = c(0, 1/2, -1/2, 0)
   )
 
-emmeans::contrast(sniff_emm, sniff_cons)
+emmeans::contrast(sniff_emm, sniff_cons) |> 
+  knitr::kable(digits = 3)
 ```
 
-It seems as though vocalisations were significantly higher when sniffing aliens compared to non-aliens (*p* = 0.0036), but vocalisations were not significantly different when sniffing different types of aliens (*p* = 0.2267) or when sniffing a human compared to a mannequin (*p* = 0.9201).
+It seems as though vocalisations were significantly higher when sniffing aliens compared to non-aliens (*p* = `r get_par(sniff_con, row = 1, col = "p.value", digits = 3)`), but vocalisations were not significantly different when sniffing different types of aliens (*p* = `r get_par(sniff_con, row = 2, col = "p.value", digits = 3)` or when sniffing a human compared to a mannequin (*p* = `r get_par(sniff_con, row = 3, col = "p.value", digits = 3)`).
 
 ### `r user_visor()` *Post hoc* tests [(2)]{.alt}
 
@@ -554,7 +609,14 @@ Having already created our estimated marginal means object [sniff_emm]{.alt}, we
 pairs(sniff_emm, adjust = "bon")
 ```
 
-A popular alternative to Bonferroni is the Holm method [adjust = "holm"]{.alt}, which is slightly less conservative.
+A popular alternative to Bonferroni is the Holm method [adjust = "holm"]{.alt}, which is slightly less conservative. We can use `tidy()` to get confidence intervals for these post hoc tests in the usual way
+
+```{r, eval = F}
+pairs(sniff_emm, adjust = "bon") |> 
+  broom::tidy(conf.int = T)
+```
+
+We can also round values when rendering using `kable()`.
 
 #### `r alien()` Alien coding challenge
 
@@ -570,7 +632,9 @@ pairs(xxxxx, adjust = "xxxxx")
 ```
 
 ```{r sniff_ph-solution}
-pairs(sniff_emm, adjust = "holm")
+pairs(sniff_emm, adjust = "holm") |> 
+  broom::tidy(conf.int = T) |> 
+  knitr::kable(digits = 3)
 ```
 
 ```{r qn_ph_ex1, echo = F}
@@ -642,7 +706,14 @@ WRS2::rmanova(y = sniff_tib$vocalisations, groups = sniff_tib$entity, blocks = s
 WRS2::rmmcp(y = sniff_tib$vocalisations, groups = sniff_tib$entity, blocks = sniff_tib$dog_name)
 ```
 
-The robust test concurs with the non-robust one in that overall the group means were not significantly different, $F_t(2.31, 11.55) = 2.75, p = 0.10$. For the *post hoc* tests we're looking at whether the *p*-value is less than the value in the column **p.crit**. If it is then the test is significant and the **sig** column will read [TRUE]{.alt}. However, if the *p*-value is greater than the value in the column **p.crit** (as it is for all of the tests here), then the test is not significant and the **sig** column will read [FALSE]{.alt}. Unlike the non-robust tests these *post hoc* tests suggest no significant differences between any means. Again though, bare in mind that the sample size is tiny (*N* = 8).
+```{r, echo = F}
+sniff_rob <- WRS2::rmanova(y = sniff_tib$vocalisations, groups = sniff_tib$entity, blocks = sniff_tib$dog_name)
+
+report_sniff_rob <- paste0("$F_t$(", sprintf("%.2f", sniff_rob$df1), ", ", sprintf("%.2f", sniff_rob$df2), ") = ", sprintf("%.2f", sniff_rob$test), ", *p* = ", sprintf("%.2f", sniff_rob$p.value))
+```
+
+
+The robust test concurs with the non-robust one in that overall the group means were not significantly different, `r report_sniff_rob`. For the *post hoc* tests we're looking at whether the *p*-value is less than the value in the column **p.crit**. If it is then the test is significant and the **sig** column will read [TRUE]{.alt}. However, if the *p*-value is greater than the value in the column **p.crit** (as it is for all of the tests here), then the test is not significant and the **sig** column will read [FALSE]{.alt}. Unlike the non-robust tests these *post hoc* tests suggest no significant differences between any means. Again though, bare in mind that the sample size is tiny (*N* = 8).
 
 ## `r user_visor()` Factorial repeated measures designs [(2)]{.alt}
 
@@ -700,7 +771,7 @@ The model we're fitting is described by the following equation (which is simplif
 
 $$
 \begin{aligned}
-\hat{\text{vocalisations}}_{ij} & = \hat{b}_{0j} + \hat{b}_{1j}\text{entity}_{ij} + \hat{b}_{2j}\text{scent}_{ij} + \hat{b}_{3j}(\text{entity}_{ij}\times\text{scent}_{ij}) + e_{ij}\\
+\text{vocalisations}_{ij} & = \hat{b}_{0j} + \hat{b}_{1j}\text{entity}_{ij} + \hat{b}_{2j}\text{scent}_{ij} + \hat{b}_{3j}(\text{entity}_{ij}\times\text{scent}_{ij}) + e_{ij}\\
 \hat{b}_{0j} & = \hat{b}_0 + \hat{u}_{0j} \\
 \hat{b}_{1j} & = \hat{b}_1 + \hat{u}_{1j} \\
 \hat{b}_{2j} & = \hat{b}_2 + \hat{u}_{2j} \\
@@ -712,7 +783,7 @@ In this model we are modelling the possibility that all parameters ($b$) in the 
 
 $$
 \begin{aligned}
-\hat{\text{vocalisations}}_{ij} & = \hat{b}_{0j} + \hat{b}_{1}\text{entity}_{ij} + \hat{b}_{2}\text{scent}_{ij} + \hat{b}_{3}(\text{entity}_{ij}\times\text{scent}_{ij}) + e_{ij}\\
+\text{vocalisations}_{ij} & = \hat{b}_{0j} + \hat{b}_{1}\text{entity}_{ij} + \hat{b}_{2}\text{scent}_{ij} + \hat{b}_{3}(\text{entity}_{ij}\times\text{scent}_{ij}) + e_{ij}\\
 \hat{b}_{0j} & = \hat{b}_0 + \hat{u}_{0j} \\
 \end{aligned}
 $$
@@ -722,7 +793,7 @@ $$
 We can use the `aov_4()` function in much the same way as in the previous example. The main differences is that we need to specify the predictors in the model as **entity**, **scent_mask** and their interaction as repeated measures predictors.
 
 <div class="tip">
-  `r cat_space()` **Tip:**
+  `r cat_space()` **Tip**
 
 Remember that we can specify all main effects and their interactions using `*`. For example, `entity*scent_mask` will introduce the main effect of **entity**, the main effect of **scent_mask** and their interaction.
 
@@ -764,6 +835,19 @@ scent_afx <- afex::aov_4(vocalisations ~ entity*scent_mask + (entity*scent_mask|
 scent_afx #this shows us the model
 ```
 
+```{r, echo = F}
+scent_afx <- afex::aov_4(vocalisations ~ entity*scent_mask + (entity*scent_mask|dog_id), data = scent_tib)
+
+scent_tbl <- scent_afx$anova_table
+scent_se <- emmeans::joint_tests(scent_afx, "scent_mask")
+int_emm <- emmeans::emmeans(scent_afx, ~entity|scent_mask, method = "multivariate")
+scent_ph <- pairs(int_emm, adjust = "holm") |> 
+  broom::tidy(conf.int = T)
+```
+
+
+
+
 The main output shows us the three effects. Let's look at what the mean in turn.
 
 ### `r user_visor()` The main effect of **entity** [(2)]{.alt}
@@ -791,7 +875,7 @@ quiz(
 )
 ```
 
-Other things being equal, the main effect of **entity** isn't interesting because it is superseded by the interaction term. However, it seems to indicate that, when you ignore the scent worn, vocalisations were different for different entities, *F*(1.98, 96.88) = 315.95, *p* < .001. The generalized eta-squared suggests a fairly large effect ($\eta^2_G = 0.52$). You can use the code below to get the estimated marginal means for this effect (remember that we need to include [model = "multivariate"]{.alt} because we used a repeated measures design). You'll see that the vocalisations were highest for the two aliens compared to when a human was sniffed.
+Other things being equal, the main effect of **entity** isn't interesting because it is superseded by the interaction term. However, it seems to indicate that, when you ignore the scent worn, vocalisations were different for different entities, `r report_afx(scent_tbl)`. The generalized eta-squared suggests a fairly large effect ($\eta^2_G$ = `r get_par(scent_tbl, col = "ges", row = 1)`). You can use the code below to get the estimated marginal means for this effect (remember that we need to include [model = "multivariate"]{.alt} because we used a repeated measures design). You'll see that the vocalisations were highest for the two aliens compared to when a human was sniffed.
 
 #### `r alien()` Alien coding challenge
 
@@ -837,7 +921,7 @@ quiz(caption = "The main effect of **scent_mask** (level (2))",
 )
 ```
 
-Other things being equal, the main effect of **scent_mask** isn't interesting because it is superseded by the interaction term. However, it seems to indicate that, when you ignore the entity sniffed, vocalisations were different for different when different scents were worn, *F*(1.95, 95.75) = 12.91, *p* < .001. You can use the code below to get the estimated marginal means for this effect. You'll see that the vocalisations were lowest when a human scent was used. However, The generalized eta-squared suggests a trivial effect ($\eta^2_G = 0.02$).
+Other things being equal, the main effect of **scent_mask** isn't interesting because it is superseded by the interaction term. However, it seems to indicate that, when you ignore the entity sniffed, vocalisations were different for different when different scents were worn, `r report_afx(scent_tbl, row = 2)`. You can use the code below to get the estimated marginal means for this effect. You'll see that the vocalisations were lowest when a human scent was used. However, The generalized eta-squared suggests a trivial effect ($\eta^2_G$ = `r get_par(scent_tbl, col = "ges", row = 2)`).
 
 #### `r alien()` Alien coding challenge
 
@@ -869,7 +953,7 @@ quiz(caption = "The interaction quiz (level(2))",
 )
 ```
 
-The interaction effect suggests that the effect of **entity** on vocalisations was significantly moderated by what scent the entity was wearing, *F*(3.66, 179.27) = 60.26, *p* < .001. Let's break down this effect.
+The interaction effect suggests that the effect of **entity** on vocalisations was significantly moderated by what scent the entity was wearing, `r report_afx(scent_tbl, row = 3)`, $\eta^2_G$ = `r get_par(scent_tbl, col = "ges", row = 3)`. Let's break down this effect.
 
 ### `r bmu()` Plots using the `afex` package [(1)]{.alt}
 
@@ -915,7 +999,6 @@ afex::afex_plot(scent_afx, "scent_mask", "entity", error = "within") +
 ```
 
 ```{r afx_plot-solution}
-# solution:
 afex::afex_plot(scent_afx, "scent_mask", "entity", error = "within") +
   labs(x = "Scent used", y = "Number of vocalisations") +
   theme_minimal()
@@ -940,13 +1023,14 @@ scent_emm <- emmeans::emmeans(scent_afx, c("entity", "scent_mask"), model = "mul
 
 Obtain the estimated marginal means for the [scent_mask*entity]{.alt} interaction.
 
-```{r afx_emm2, exercise = TRUE, exercise.lines = 2, exercise.setup = "afx_fct"}
+```{r afx_emm2, exercise = TRUE, exercise.lines = 4, exercise.setup = "afx_fct"}
 
 ```
 
 ```{r afx_emm2-solution}
 scent_emm <- emmeans::emmeans(scent_afx, c("entity", "scent_mask"), model = "multivariate")
-scent_emm # we need this command to view the means
+scent_emm |> 
+  knitr::kable(digits = 3)# we need this command to view the means
 ```
 
 ### `r user_visor()` Simple effects analysis [(2)]{.alt}
@@ -985,14 +1069,9 @@ emmeans::joint_tests(xxxxxx, "xxxxxx")
 ```
 
 ```{r scent_afx_se-solution}
-emmeans::joint_tests(scent_afx, "scent_mask") 
+emmeans::joint_tests(scent_afx, "scent_mask") |> 
+  knitr::kable(digits = 3)
 ```
-
-<div class="tip">
-  `r cat_space()` **Tip: Reminder about scientific notation**
-
-Remember that in `r rproj()` when you see [e-x]{.alt} it means $\times 10^{-x}$ and when you see [e+x]{.alt} it means $\times 10^{x}$. For example, [e-07]{.alt} is $\times 10^{-7}$ and [e+22]{.alt} is $\times 10^{22}$. Therefore, the *p*-value of `1.281788e-06` is $1.281788 \times 10^{-6}= 0.000001281788$
-</div>
 
 
 ```{r quiz_face_se, echo = F}
@@ -1010,9 +1089,23 @@ Joy wouldn't feel so good if it wasn't for pain (Many Men (Wish Death))"),
 )
 ```
 
+<div class="reportbox">
+  `r pencil()` **Report it!**
+
+There were significant main effects of entity, `r report_afx(scent_tbl)`, $\eta^2_G$ = `r get_par(scent_tbl, col = "ges", row = 1)`, and scent, `r report_afx(scent_tbl, row = 2)`, $\eta^2_G$ = `r get_par(scent_tbl, col = "ges", row = 2)` on the number of vocalisations dogs made when approaching an entity. However, these effects were superseded by a significant entity $\times$ scent interaction, `r report_afx(scent_tbl, row = 3)`, $\eta^2_G$ = `r get_par(scent_tbl, col = "ges", row = 3)`, suggetsing that the effect of scent on vocalisations was moderated by the type of entity sniffed (and vice versa). Simple effects analysis revealed that the effect of entity was significant when no scent was used, `r report_se(scent_se, row = 1)`, when human scent was used, `r report_se(scent_se, row = 2)` and also when fox scent was used, `r report_se(scent_se, row = 3)`.
+</div>
+
+
+
 #### `r alien()` Alien coding challenge
 
-Let's try the simple effects analysis the other way around: obtain the simple effect of [scent_mask]{.alt} separately for each dose of [entity]{.alt}.
+Let's try the simple effects analysis the other way around: obtain the simple effect of [scent_mask]{.alt} separately for each [entity]{.alt}.
+
+<div class="tip">
+  `r cat_space()` **Tip**
+
+Remember, you wouldn't normally run the simple effects both ways around (because you are doing more tests and increasing your chance of a Type I error). You'd usually choose the way around that makes the most sense for your research question. In this situation, you'd ask yourself whether it's more useful to know the effect of scent within each entity, or the effect of entity within each scent. There's not a correct answer, but for me it makes most sense to look at the effect of entity within each scent because our main interest is in the effect of each scent as a mask. In other words, I'd conduct the previous simple effects analysis but not this one.
+</div>
 
 ```{r scent_se2, exercise = TRUE, exercise.lines = 3, exercise.setup = "afx_fct"}
 
@@ -1024,7 +1117,8 @@ emmeans::joint_tests(xxxxxx, "xxxxxx")
 ```
 
 ```{r scent_se2-solution}
-emmeans::joint_tests(scent_afx, "entity")
+emmeans::joint_tests(scent_afx, "entity") |> 
+  knitr::kable(digits = 3)
 ```
 
 ```{r quiz_face_se2, echo = F}
@@ -1059,7 +1153,9 @@ pairs(xxxxxx, adjust = "xxxxxx")
 ```
 
 ```{r scent_ph-solution}
-pairs(scent_emm, adjust = "holm")
+pairs(scent_emm, adjust = "holm") |> 
+  broom::tidy(conf.int = T) |> 
+  knitr::kable(digits = 3)
 ```
 
 The result is a bewildering 36 comparisons! Good luck making sense of those. Part of the problem is that every combination of means is tested. It's hard to see the wood for the trees. Let's make things more manageable by comparing only the mean vocalisations across entities, but doing this separately for each scent. To see what I mean, let's revisit the interaction plot (reproduced below). I'm suggesting comparing the values represented by the circle, triangle and square within each coloured area separately. This analysis answers three questions: (1) when no scent is worn, do the mean vocalisations differ when sniffing a human, shapeshifter and alien? (2) When human scent is worn, do the mean vocalisations differ when sniffing a human, shapeshifter and alien? and, (3)  When fox scent is worn, do the mean vocalisations differ when sniffing a human, shapeshifter and alien?
@@ -1126,14 +1222,46 @@ pairs(int_emm, adjust = "holm")
 ```{r int_ph-solution}
 #Put it all together:
 int_emm <- emmeans::emmeans(scent_afx, ~entity|scent_mask, method = "multivariate")
-pairs(int_emm, adjust = "holm")
+pairs(int_emm, adjust = "holm") |> 
+  broom::tidy(conf.int = T) |> 
+  knitr::kable(digits = 3)
 ```
 
-These tests make the interpretation of the interaction much more straightforward. When no scent is worn, mean vocalisations differ between all entities. From the means/plot, aliens elicit significantly more vocalisations than both shapeshifters and humans, and shapeshifters elicit significantly more vocalisations than humans. This pattern of findings is the same when a human scent is worn. The interaction, therefore, reflects a change in this pattern when fox scent is worn. When fox scent is worn, there are still significantly more vocalisations when sniffing aliens and shapeshifters compared to humans, but the difference between shapeshifters and aliens is now not significant. To sum up, the scents don't distract the sniffer dogs from detecting aliens compared to humans, but it does confuse them when distinguishing aliens in their natural lizard form (alien) compared to when in humanoid form (shapeshifter). 
+These tests make the interpretation of the interaction much more straightforward. When no scent is worn, mean vocalisations differ between all entities. From the means/plot, aliens elicit significantly more vocalisations than both shapeshifters and humans, and shapeshifters elicit significantly more vocalisations than humans. This pattern of findings is the same when a human scent is worn. The interaction, therefore, does not reflect a change in this pattern between no scent and human scent, and so must reflect a change in this pattern of results when fox scent is worn. The final set of tests supports this suggestion because when fox scent is worn, although there are still significantly more vocalisations when sniffing aliens and shapeshifters compared to humans, the difference between shapeshifters and aliens is now not significant.
+
+To sum up, the scents don't distract the sniffer dogs from detecting aliens compared to humans, but they do confuse them when distinguishing aliens in their natural lizard form (alien) compared to when in humanoid form (shapeshifter). Specifically, fox scent makes the sniffer dogs unable to distinguish aliens in humanoid compared to lizard form, but they can still distinguish them from actual humans. Phew!
+
+
+<div class="reportbox">
+  `r pencil()` **Report it!**
+
+There were significant main effects of entity, `r report_afx(scent_tbl)`, $\eta^2_G$ = `r get_par(scent_tbl, col = "ges", row = 1)`, and scent, `r report_afx(scent_tbl, row = 2)`, $\eta^2_G$ = `r get_par(scent_tbl, col = "ges", row = 2)` on the number of vocalisations dogs made when approaching an entity. However, these effects were superseded by a significant entity $\times$ scent interaction, `r report_afx(scent_tbl, row = 3)`, $\eta^2_G$ = `r get_par(scent_tbl, col = "ges", row = 3)`, suggesting that the effect of scent on vocalisations was moderated by the type of entity sniffed (and vice versa).
+
+Table 1 shows that *Post hoc*  using a Holm correction showed that when no mask and human scent was used vocalizations were significantly higher when sniffing aliens compared to shapeshifters and humans, but when fox scent was used vocalisations were significantly higher when sniffing aliens compared to humans, but tehre was no significant difference when sniffing the two types of aliens. In summary, fox scent made the sniffer dogs unable to distinguish aliens in humanoid compared to lizard form, but they could still distinguish aliens from actual humans.
+
+```{r echo = F}
+scent_ph |> 
+  dplyr::mutate(
+    ci = paste0("[", sprintf("%.2f", conf.low), ", ", sprintf("%.2f", conf.high), "]")
+  ) |> 
+  dplyr::select(scent_mask, contrast, estimate, ci, statistic, adj.p.value) |> 
+  knitr::kable(digits = c(0, 0, 2, 0, 2, 3),
+               caption = "Table 1: *Post hoc* tests",
+               col.names = c("Scent", "Comparison", "Mean difference", "95\\% CI", "*t*(49)", "*p*"),
+               format = "markdown")
+```
+
+
+</div>
+
+
+### `r user_visor()` Diagnostic plots [(2)]{.alt} 
+
+As with the one-way repeated measures design, we can't get diagnostic plots for factorial designs that use repeated measures when using `afex`.
 
 ### `r user_visor()` Robust models [(2)]{.alt} 
 
-As with the one-way repeated measures design, we can't get diagnostic plots for factorial designs that use repeated measures when using `afex`. There's also no easy way to fit a robust model (at least not if you're looking for a *p*-value).
+Unfortunately there's also no easy way to fit a robust model (at least not if you're looking for a *p*-value) for factorial designs that use repeated measures.
 
 
 <div class="infobox">
@@ -1149,15 +1277,15 @@ As with the one-way repeated measures design, we can't get diagnostic plots for 
 
 ### Statistics
 
-* The tutorials typically follow examples described in detail in @field_discovering_2022. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
+* The tutorials typically follow examples described in detail in @field_discovering_2023. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
 * If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
 * There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/).
 * There are free statistical resources on my websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [milton-the-cat.rocks](http://milton-the-cat.rocks).
 
-### `r rproj("h3")`
+### `r rproj()`
 
 * [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
-* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and `r rstudio()`.
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj()` and `r rstudio()`.
 * [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
 * [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
 

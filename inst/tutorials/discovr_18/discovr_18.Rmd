@@ -21,16 +21,16 @@ knitr::opts_chunk$set(
 )
 options(knitr.kable.NA = '')
 
-library(learnr) #necessary to render tutorial correctly
-
+#necessary to render tutorial correctly
+library(learnr) 
+library(htmltools)
+#tidyverse
 library(dplyr)
 library(ggplot2)
-library(Hmisc)
-library(htmltools)
-library(magrittr)
-
+#non tidyverse
 library(correlation)
 library(GPArotation)
+library(knitr)
 library(parameters)
 library(psych)
 
@@ -42,11 +42,18 @@ source("./www/discovr_helpers.R")
 # Read data files needed for the tutorial
 
 raq_tib <- discovr::raq
-raq_items_tib <- raq_tib %>% dplyr::select(-id)
+raq_items_tib <- raq_tib |> dplyr::select(-id)
 
 raq_poly <- psych::polychoric(raq_items_tib)
 raq_cor <- raq_poly$rho
-raq_fa <- raq_items_tib %>% psych::fa(nfactors = 4, scores = "tenBerge")
+raq_fa <- raq_items_tib |> psych::fa(nfactors = 4, scores = "tenBerge")
+```
+
+
+```{r, eval = F, echo = F}
+# Create bib file for R packages
+here::here("inst/tutorials/discovr_18/packages.bib") |>
+  knitr::write_bib(c('here', 'tidyverse', 'dplyr', 'readr', 'forcats', 'tibble', 'knitr', 'correlation', 'GPArotation', 'Hmisc', 'parameters', 'psych'), file = _)
 ```
 
 # discovr: Exploratory Factor Analysis (EFA)
@@ -56,25 +63,25 @@ raq_fa <- raq_items_tib %>% psych::fa(nfactors = 4, scores = "tenBerge")
 <div class="infobox">
   <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
   
-  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2022] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
+  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2023] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
   
 </div>
 
-### `r cat_space(fill = "h3", height = 2)` Welcome to the `discovr` space pirate academy
+### `r cat_space(fill = blu)` Welcome to the `discovr` space pirate academy
 
 Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu(height = 2)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
-* `r user_visor(height = 2)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
-* `r user_astronaut(height = 2)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
+* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
+* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
-* `r alien(height = 2)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
-* `r robot(height = 2)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
-* `r bug(height = 2)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
+* `r alien(height = 1.5)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
+* `r robot(height = 1.5)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
+* `r bug(height = 1.5)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
 
 Also, use hints and solutions to guide you through the exercises (Figure 1).
 
@@ -90,7 +97,7 @@ By for now and good luck - you'll be amazing!
 
 * Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
 
-* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an `r rproj()` markdown file within an `r rstudio()` project and practice everything you do in the tutorial in the `r rproj()` markdown file, make notes on things that confused you or that you want to remember, and save it. Within this markdown file you will need to load the relevant packages and data. 
+* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an Quarto document within an `r rstudio()` project and practice everything you do in the tutorial in the Quarto document, make notes on things that confused you or that you want to remember, and save it. Within this document you will need to load the relevant packages and data. 
 
 ![](https://youtu.be/FhoYCsZttGc)
 
@@ -98,24 +105,28 @@ By for now and good luck - you'll be amazing!
 
 This tutorial uses the following packages:
 
-* `correlation` [@makowski_methods_2020]
-* `GPArotation` [@bernaards_gradient_2005]
-* `here` [@here]
-* `parameters` [@makowski_parameters_2019]
-* `psych` [@revelle_psych:_2020]
-* `tidyverse` [@tidyverse]
+* `correlation` [@correlation2020; @R-correlation]
+* `GPArotation` [@R-GPArotation]
+* `here` [@R-here]
+* `knitr` [@R-knitr]
+* `parameters` [@parameters2020; @R-parameters]
+* `psych` [@R-psych]
 
 
-I try to follow the [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) in always declaring the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will write `dplyr::mutate()`. 
+It also uses these `tidyverse` packages [@R-tidyverse; @tidyverse2019]: `dplyr` [@R-dplyr] and `readr` [@R-readr].
 
-It is good practice to be explicit about packages to avoid clashes where functions from different packages have the same name. It also means that you don't need to load packages at the start of your markdown document. 
 
-There are two main exceptions to this rule.
+### Coding style
 
-1. There are functions within some `tidyverse` packages that would be used within other functions. Including the package name makes the code difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
-2. To use the pipe operator (`%>%`) you need to have `magrittr` loaded.
+There are (broadly) two styles of coding:
 
-We can load all of the packages that are exceptions in one step by loading `tidyverse` at the beginning of our `r rproj()` Markdown document:
+1. **Verbose**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt verbose style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
+
+2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
+
+Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend a verbose style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load `tidyverse` because the `dplyr` and `ggplot2` packages contain functions that are often used within other functions and in these cases the verbose style is difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+
+You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the `tidyverse` package (and any others if you're using a concise style) at the beginning of your Quarto document:
 
 ```{r eval = FALSE}
 library(tidyverse)
@@ -127,10 +138,10 @@ To work *outside of this tutorial* you need to download the following data files
 
 * [raq.csv](https://www.discovr.rocks/csv/raq.csv)
 
-Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r rproj()` Markdown document:
+Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your Quarto document:
 
 ```{r, eval=FALSE}
-raq_tib <- here::here("data/raq.csv") %>%
+raq_tib <- here::here("data/raq.csv") |>
   readr::read_csv()
 ```
 
@@ -189,7 +200,7 @@ Note that there are 24 variables:
 
 As we've seen, the data has a variable **id** containing the participant ID. We won't want this variable in the analyses we do. We can use `select()` to remove it each time we don't need it, but it will save a lot of repetitious code if we store a version of the data that contains only the scores from the RAQ items. 
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Use the code box to create an object called [raq_items_tib]{.alt} that contains only the questionnaire item variables. Inspect this new object and note that the [id]{.alt} variable has gone.
 
@@ -198,7 +209,7 @@ Use the code box to create an object called [raq_items_tib]{.alt} that contains 
 ```
 
 ```{r raq_items_tib-solution}
-raq_items_tib <- raq_tib %>% 
+raq_items_tib <- raq_tib |> 
   dplyr::select(-id)
 raq_items_tib
 ```
@@ -218,7 +229,8 @@ Using what you've learnt in previous tutorials produce a correlation matrix for 
   `r cat_space()` **Tip: Correlation memory jog**
 
 * We can use `correlation::correlation()` to get a correlations, and `summary()` to present them as a matrix/grid.
-* You need to select out the [id]{.alt} variable before computing the correlations.
+* You need to de-select the [id]{.alt} variable before computing the correlations, we can do this by using the [raq_items_tib]{.alt} version of the data that we just created.
+* You can round values by piping into `kable()` in the usual way.
 
 </div>
 
@@ -234,8 +246,9 @@ correlation::correlation(raq_items_tib)
 
 ```{r r_matrix-hint-2}
 # pipe into summary() to get a condensed table of correlations:
-correlation::correlation(raq_items_tib) %>%
-  summary()
+correlation::correlation(raq_items_tib) |>
+  summary() |> 
+  knitr::kable(digits = 2)
 ```
 
 That was great practice, but because our items use Likert style scales it is more appropriate to look at something called the [polychoric correlation]{.alt} rather than the Pearson correlation coefficient. We can obtain polychoric correlations by placing the tibble containing our data into the `polychoric()` function from the `psych` package. For example, 
@@ -250,11 +263,11 @@ This code takes the data from the RAQ (`raq_items_tib`), puts it through the `po
 raq_cor <- raq_poly$rho
 ```
 
-This code stores the polychoric correlation matrix as an object called `raq_cor`. We view these correlations by executing the name of the object, but it's helpful to round them to 2 decimal places before viewing them using the `round()` function that we have met before.
+This code stores the polychoric correlation matrix as an object called `raq_cor`. We view these correlations by executing the name of the object, but it's helpful to round them to 2 decimal places when viewing them using the `kable()` function that we have met before.
 
 #### `r alien()` Alien coding challenge
 
-Create an object called [raq_cor]{.alt} that contains the polychoric correlations for the 23 RAQ items. View it using `round()` to round values to 2 decimal places.
+Create an object called [raq_cor]{.alt} that contains the polychoric correlations for the 23 RAQ items. View it using `kable()` to round values to 2 decimal places.
 
 
 ```{r poly_matrix, exercise = TRUE, exercise.lines = 4}
@@ -273,14 +286,14 @@ raq_cor <- raq_poly$rho
 
 ```{r poly_matrix-hint-3}
 # view the correlations rounded to 2dp:
-round(raq_cor, 2)
+knitr::kable(raq_cor, digits = 2)
 ```
 
 ```{r poly_matrix-solution}
 # put it all together
 raq_poly <- psych::polychoric(raq_items_tib)
 raq_cor <- raq_poly$rho
-round(raq_cor, 2)
+knitr::kable(raq_cor, digits = 2)
 ```
 
 Staring at all of those numbers can make your eyes hurt. We can instead produce a heat map of correlations using the `cor.plot()` function from the `psych` package. This function plots a grid of the correlations and colours each cell by the strength and direction of the correlation. We can get a sense of the relationships in the data by looking for very lightly shaded cells (correlation close to zero) and very darkly shaded cells (correlations close to 1 or -1). Given that correlation matrices are symmetrical above and below the diagonal the information below the diagonal is identical to the information above it. It is, therefore, helpful to use [upper = FALSE]{.alt} to hide the information above the diagonal.
@@ -293,7 +306,7 @@ To use the `cor.plot()` function we feed the corrlation matrix we just created i
 psych::cor.plot(raq_cor, upper = FALSE)
 ```
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Use the code box to visualise the correlation matrix using `cor.plot()`.
 
@@ -321,7 +334,7 @@ We can implement Bartlett's test using the `psych::cortest.bartlett()` function.
 psych::cortest.bartlett(raq_cor, n = 2571)
 ```
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Use the code box to get Bartlett's test.
 
@@ -338,7 +351,7 @@ psych::cortest.bartlett(raq_cor, n = 2571)
 bartlett <- psych::cortest.bartlett(raq_cor, n = 2571)
 ```
 
-As expected, given the huge sample size, Bartlett's test is highly significant, $\chi^2$(`r bartlett$df`) = `r round(bartlett$chisq, 2)`, *p* = `r round(bartlett$p.value, 2)`. This significant value only really tells us that we don't have a massive problem, which is nice to know, I suppose.
+As expected, given the huge sample size, Bartlett's test is highly significant, $\chi^2$(`r bartlett$df`) = `r sprintf("%.2f", bartlett$chisq)`, *p* = `r sprintf("%.2f", bartlett$p.value)`. This significant value only really tells us that we don't have a massive problem, which is nice to know, I suppose.
 
 You might also want to check the sampling adequacy (spoiler: with 2571 participants I think we're good). The Kaiser–Meyer–Olkin (KMO) measure of sampling adequacy (KMO) varies between 0 and 1 with a value of 0 indicating that factor analysis is likely to be inappropriate. A value close to 1 indicates that patterns of correlations are relatively compact and so factor analysis should yield distinct and reliable factors. Kaiser and Rice (1974) provided appealing guidelines, especially if you like the letter M:
 
@@ -358,7 +371,7 @@ We can implement the KMO test using the `psych::KMO()` function. To use it, we a
 psych::KMO(raq_cor)
 ```
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Use the code box to get then KMO test.
 
@@ -375,7 +388,13 @@ psych::KMO(raq_cor)
 kmo <- psych::KMO(raq_cor)
 ```
 
-The KMO statistic ([Overall MSA]{.alt}) is `r round(kmo$MSA, 2)`, which is well above the minimum criterion of 0.5 and falls into the range of marvellous. The KMO values for individual variables range from `r round(min(kmo$MSAi), 2)` to `r round(max(kmo$MSAi), 2)`. All values are, therefore, well above 0.5, which is good news. If you find variables with values below 0.5 then consider excluding them from the analysis (or run the analysis with and without that variable and note the difference). Removal of a variable affects the KMO statistics, so if you plan to remove a variable be sure to re-examine the KMO for the correlation matrix that has the variable removed.
+The KMO statistic ([Overall MSA]{.alt}) is `r sprintf("%.2f", kmo$MSA)`, which is well above the minimum criterion of 0.5 and falls into the range of marvellous. The KMO values for individual variables range from `r sprintf("%.2f", min(kmo$MSAi))` to `r sprintf("%.2f", max(kmo$MSAi))`. All values are, therefore, well above 0.5, which is good news.
+
+<div class="infobox">
+  `r info()` **Information**
+
+If you find variables with KMO values below 0.5 then consider excluding them from the analysis (or run the analysis with and without that variable and note the difference). Removal of a variable affects the KMO statistics, so if you plan to remove a variable be sure to re-examine the KMO for the correlation matrix that has the variable removed.
+</div>
 
 
 ## `r bmu()` Parallel analysis [(2)]{.alt}
@@ -402,7 +421,7 @@ Alternatively, given that we have already computed the polychoric correlations a
 psych::fa.parallel(raq_cor, n.obs = 2571)
 ```
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Use the code box to run a parallel analysis with the default settings but specifying [fa = "fa"]{.alt}. How many factors should be extracted?
 
@@ -422,7 +441,7 @@ psych::fa.parallel(raq_cor, n.obs = 2571, fa = "fa")
 In a parallel analysis each eigenvalue (which represents the size of the factor) is compared against an eigenvalue for the corresponding factor in many randomly generated data sets that have the same characteristics as the data being analysed. In doing so, each eigenvalue is compared to an eigenvalue from a data set that has no underlying factors. This is a bit like asking whether our observed factor is bigger than a non-existing factor. Factors that are bigger than their ‘random' counterparts are retained. 
 In the scree plot, each factor is plotted on the *x*-axis with its corresponding eigenvalue on the *y*-axis. The observed eigenvalues for each factor are shown as blue triangles connected by a blue line to form the characteristic 'scree' shape. The red dotted line shows the corresponding line from randomly generated datasets. Given we want to keep factors that have eigen values larger than we'd expect in data that has no underlying factors, we want to keep factors that have triangles (eigenvalues) that fall above the red line. In this case, the first four factors have eigenvalues larger than their counterparts from random data. The output also contains a handy message confirming that we should extract 4 factors.
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Repeat the parallel analysis but this time using principal components to compute the eigenvalues.
 
@@ -492,7 +511,7 @@ To do factor rotation we need to have the `GPArotation` package loaded. Make sur
 install.packages('GPArotation')
 ```
 
-Once installed, make sure that in your markdown file you include (if you follow my advise you'll do this in the code chunk where you setup your markdown document)
+Once installed, make sure that in your Quarto document you include (if you follow my advise you'll do this in the code chunk where you setup your Quarto document)
 
 
 ```{r eval = F, class.source = '.panel_alt'}
@@ -525,7 +544,7 @@ raq_fa <- psych::fa(raq_cor,
                     ) 
 ```
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Use the code box to create the object [raq_fa]{.alt} using the code above and then inspect it.
 
@@ -551,38 +570,51 @@ raq_fa <- psych::fa(raq_cor, n.obs = 2571, nfactors = 4, scores = "tenBerge")
 There's a lot of output. First, we are shown the pattern matrix, but we'll return to this. Note that the factors are labelled [MR1]{.alt}, [MR2]{.alt}, [MR3]{.alt} and [MR4]{.alt}. We are given some information about how much variance each factor accounts for.
 
 ```{r, echo = F}
-raq_fa$Vaccounted %>%  round(., 2)
+raq_fa$Vaccounted |>
+  knitr::kable(digits = 2)
 ```
 
-We see, for example, from [Proportion Var]{.alt} that [MR1]{.alt} accounts for 0.13 of the overall variance (13%) and [MR2]{.alt} accounts for 0.10 of the variance (10%) and so on. The [Cumulative Var]{.alt} is the proportion of variance explained cumulatively by the factors. So, cumulatively, [MR1]{.alt} accounts for 0.13 of the overall variance (13%) and  [MR1]{.alt} and [MR2]{.alt} together account for 0.13 + 0.10 = 0.23 of the variance (23%). Importantly, we can see that all four factors in combination explain 0.40 of the overall variance (40%).
+```{r, echo = F}
+va <- raq_fa$Vaccounted
 
-The [Proportion Explained]{.alt} is the proportion of the explained variance, that is explained by a factor. So, of the 40% of variance accounted for, 0.33 (33%) is attributable to [MR1]{.alt}, 0.24 (24%) to [MR2]{.alt}, 0.22 (22%) to [MR4]{.alt} and 0.21 (21%) to [MR3]{.alt}.
+prop_var <- sprintf("%.2f", va[2, ])
+perc_var <- sprintf("%.0f", 100*va[2, ])
+cum_var <- sprintf("%.2f", va[3, ])
+cum_perc_var <- sprintf("%.0f", 100*va[3, ])
+pe <- sprintf("%.2f", va[4, ])
+pe_perc <- sprintf("%.0f", 100*va[4, ])
+```
+
+We see, for example, from [Proportion Var]{.alt} that [MR1]{.alt} accounts for `r prop_var[1]` of the overall variance (`r perc_var[1]`%) and [MR2]{.alt} accounts for `r prop_var[2]` of the variance (`r perc_var[2]`%) and so on. The [Cumulative Var]{.alt} is the proportion of variance explained cumulatively by the factors. So, cumulatively, [MR1]{.alt} accounts for `r prop_var[1]` of the overall variance (13%) and  [MR1]{.alt} and [MR2]{.alt} together account for `r prop_var[1]` + `r prop_var[2]` = `r cum_var[2]` of the variance (`r cum_perc_var[2]`%). Importantly, we can see that all four factors in combination explain `r cum_var[4]` of the overall variance (`r cum_perc_var[4]`%).
+
+The [Proportion Explained]{.alt} is the proportion of the explained variance, that is explained by a factor. So, of the `r cum_perc_var[4]`% of variance accounted for, `r pe[1]` (`r pe_perc[1]`%) is attributable to [MR1]{.alt}, `r pe[2]` (`r pe_perc[2]`%) to [MR2]{.alt}, `r pe[3]` (`r pe_perc[3]`%) to [MR4]{.alt} and `r pe[4]` (`r pe_perc[4]`%) to [MR3]{.alt}.
 
 The correlations between factors are also displayed:
 
 ```{r, echo = F}
-raq_fa$Phi %>%  round(., 2)
+raq_fa$Phi |>
+  knitr::kable(digits = 2)
 ```
 
 These are all non-zero indicating that factors are correlated (and oblique rotation was appropriate). It also tells us the degree to which factors are correlated. All of the factors positively, and fairly strongly, correlate with each other. In other words, the latent constructs represented by the factors are related.
 
 There are several fit indices that tell us how well the model fits the data.
 
-* The chi-square statistic for the model is given as the likelihood Chi Square, $\chi^2 = 267.21, p < 0.001$. We want this statistic to be non-significant but our value is highly significant. Given the sample size of 2571 a significant result is not at all surprising because even small deviations from a good fit will be significant. This result highlights the limitation of using significance to indicate model fit.
-* The Tucker Lewis Index of factoring reliability (TFI) is given as 0.991.
-* The RMSEA is 0.015 90% CI [0.012,  0.019].
-* The RMSR is 0.01.
+* The chi-square statistic for the model is given as the likelihood Chi Square, $\chi^2$ = `r sprintf("%.2f", raq_fa$STATISTIC)`, *p* < 0.001. We want this statistic to be non-significant but our value is highly significant. Given the sample size of `r raq_fa$nh` a significant result is not at all surprising because even small deviations from a good fit will be significant. This result highlights the limitation of using significance to indicate model fit.
+* The Tucker Lewis Index of factoring reliability (TFI) is given as `r sprintf("%.3f", raq_fa$TLI)`.
+* The RMSEA is `r sprintf("%.3f", raq_fa$RMSEA[1])` 90% CI [`r sprintf("%.3f", raq_fa$RMSEA[2])`,  `r sprintf("%.3f", raq_fa$RMSEA[3])`].
+* The RMSR is `r sprintf("%.2f", raq_fa$rms)`.
 
 
-<div class="tip">
-  `r cat_space()` **Tip: fit indices**
+<div class="infobox">
+  `r info()` **Fit indices**
 
 Good fit is (probably) indicated by
 
 * A combination of TLI > 0.96 and SRMR (RMSR in the output) < 0.06
 * A combination of RMSEA < 0.05 and SRMR < 0.09 
 
-The TLI is 0.99, which is greater than 0.96, and RMSR is 0.01 which is smaller than both 0.09 and 0.06. Furthermore, RMSEA is 0.015, which is less than 0.05. With the caveat that universal cut-offs need to be taken with a pinch of salt, it's reasonable to conclude that the model has excellent fit.
+The TLI is `r sprintf("%.2f", raq_fa$TLI)`, which is greater than 0.96, and RMSR is `r sprintf("%.2f", raq_fa$rms)` which is smaller than both 0.09 and 0.06. Furthermore, RMSEA is `r sprintf("%.3f", raq_fa$RMSEA[1])`, which is less than 0.05. With the caveat that universal cut-offs need to be taken with a pinch of salt, it's reasonable to conclude that the model has excellent fit.
 
 </div>
 
@@ -592,18 +624,19 @@ To interpret the factor analysis we look at the factor loadings for each questio
 parameters::model_parameters(my_fa_object, sort = TRUE, threshold = "max")
 ```
 
-In which [my_fa_object]{.alt} is the factor analysis object containing the factor loadings. By setting [sort = TRUE]{.alt} we sort the items by their factor loadings, and we can set  [threshold]{.alt} to a value above which we show values. By default the threshold is the maximum loading (i.e. all factor loadings are shown), but if we set, for example, [threshold = 0.2]{.alt} then only factor loadings above 0.2 will be displayed.
+In which [my_fa_object]{.alt} is the factor analysis object containing the factor loadings. By setting [sort = TRUE]{.alt} we sort the items by their factor loadings, and we can set  [threshold]{.alt} to a value above which we show values. By default the threshold is the maximum loading (i.e. for each item only the maximum loading is shown), to see all of the factor loadings we need to set [threshold = NULL]{.alt}, and to see loadings above a particular threshold (between 0 and 1) we can set the value of the threshold we want; for example, if we set [threshold = 0.2]{.alt} then only factor loadings above 0.2 will be displayed.
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
-Use the code box to sort the the factor loadings and display only those greater than 0.2. (Remember that earlier we saved the factor analysis object as [raq_fa]{.alt}.)
+Use the code box to sort the the factor loadings and display only those greater than 0.2. Round to 2 decimal places using `kable()` (Remember that earlier we saved the factor analysis object as [raq_fa]{.alt}.)
 
 ```{r mod_params, exercise = TRUE, exercise.lines = 4}
              
 ```
 
 ```{r mod_params-solution}
-parameters::model_parameters(raq_fa, sort = TRUE, threshold = 0.2)
+parameters::model_parameters(raq_fa, sort = TRUE, threshold = "0.2") |> 
+  knitr::kable(digits = 2)
 ```
 
 This makes it much easier to see the patterns in the questions that load onto the same factors. The questions that load highly on [MR1]{.alt} seem to be items that relate to **Fear of computers**:
@@ -675,7 +708,7 @@ key = c(1, 1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
 ```
 
 <div class="tip">
-  `r cat_space()` **Tip: using `rep()``**
+  `r cat_space()` **Tip: using `rep()`**
 
 The `rep()` function, which we've met before, can help us to specify the key argument. It takes the form
 
@@ -704,13 +737,13 @@ raq_omg <- psych::omega(raq_items_tib,
                         )
 ```
 
-This code pipes the raw data (in [raq_items_tib]{.alt}) into the `omega()` function, replicates the arguments used for the initial factor analysis, reverse scores **raq_03**,  and tells the function to compute polychoric correlations. The results are stored in an object that I've called [raq_omg]{.alt}. To view this object execute its name.
+This code puts the raw data (in [raq_items_tib]{.alt}) into the `omega()` function, replicates the arguments used for the initial factor analysis, reverse scores **raq_03**,  and tells the function to compute polychoric correlations. The results are stored in an object that I've called [raq_omg]{.alt}. To view this object execute its name.
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Use the code box to run a reliability analysis on the RAQ.
 
-```{r omega, exercise = TRUE, exercise.lines = 4}
+```{r omega, exercise = TRUE, exercise.lines = 7}
              
 ```
 
@@ -737,21 +770,21 @@ raq_omg <- psych::omega(raq_items_tib,
 The first thing to look at is the table of factor loadings (reproduced below). Note that **raq_03** is helpfully labelled as [raq_03-]{.alt} (note the minus sign suffix) to indicate that it is reverse scored. The column labelled [g]{.alt} shows the loading of each item on the general factor. This column should be inspected before anything else because both $\omega_h$ and $\omega_t$ are based on a model with a common factor. If any items load poorly to this general factor then a common factor model isn't appropriate. Also, remember that $\omega_h$ uses the communalities for each item with only the general factor so it is based on these loadings. All items here have loadings with the general factor far enough away from zero that we might consider a general factor model to be appropriate. The columns labelled F1 to F4 show the factor loadings for each item on the four factors that we asked to be extracted. Note that the values don't match those from the main factor analysis (because this model also includes a general factor) but the patterns of item loadings to factors do.
 
 ```{r, echo = F}
-raq_omg$schmid$sl %>%
-  as.data.frame() %>% 
+raq_omg$schmid$sl |>
+  as.data.frame() |> 
   dplyr::mutate(
-    across(`F1*`:`F4*`, ~ifelse(abs(.) > 0.2, ., NA))
-  ) %>% 
+    across(`F1*`:`F4*`, \(x) ifelse(abs(x) > 0.2, x, NA))
+  ) |> 
   knitr::kable(digits = 2)
 ```
 
 
-At the top of the text output are the reliability estimates for the general factor, which include Cronbach's $\alpha$  = `r round(raq_omg$alpha, 2)`, $\omega_h$ = `r round(raq_omg$omega_h, 2)` and $\omega_t$ = `r round(raq_omg$omega.tot, 2)`. If you're into $\alpha$ then there's a section for you later on. $\omega_h$ is a gauge of the extent to which items reflect a single construct and this value (`r round(raq_omg$omega_h, 2)`) suggests that to some extent they do, but there is still a lot of variance in the general factor that is unexplained. In fact, further down we're told that only about half (`r round(raq_omg$ECV, 2)`) of the variance in the general factor is explained by the items. $\omega_t$ is the total reliability and `r round(raq_omg$omega.tot, 2)` is a high value suggesting the scores are reliable (i.e., the scale is reliable in this sample). 
+At the top of the text output are the reliability estimates for the general factor, which include Cronbach's $\alpha$  = `r sprintf("%.2f", raq_omg$alpha)`, $\omega_h$ = `r sprintf("%.2f", raq_omg$omega_h)` and $\omega_t$ = `r sprintf("%.2f", raq_omg$omega.tot)`. If you're into $\alpha$ then there's a section for you later on. $\omega_h$ is a gauge of the extent to which items reflect a single construct and this value (`r sprintf("%.2f", raq_omg$omega_h)`) suggests that to some extent they do, but there is still a lot of variance in the general factor that is unexplained. In fact, further down we're told that only about half (`r sprintf("%.2f", raq_omg$ECV)`) of the variance in the general factor is explained by the items. $\omega_t$ is the total reliability and `r sprintf("%.2f", raq_omg$omega.tot)` is a high value suggesting the scores are reliable (i.e., the scale is reliable in this sample). 
 
 
-Next we get two lots of model fit statistics. The first set are for the model that has four factors and repeat the information from the original EFA. The chi-square statistic is significant, $\chi^2$ = `r round(raq_omg$schmid$STATISTIC, 2)`, *p* < 0.001, a bad thing but unsurprising given the sample size, the RMSR = `r round(raq_omg$schmid$rms, 2)` and the RMSEA = `r round(raq_omg$schmid$RMSEA[1], 3)` 90% CI [`r round(raq_omg$schmid$RMSEA[2], 3)`,  `r round(raq_omg$schmid$RMSEA[3], 3)`]. Next, we get the same information but for a model that contains only the general factor (and not the four sub-factors). The fit gets worse as shown by (1) a larger and more significant chi-square, $\chi^2$ = `r round(raq_omg$gstats$STATISTIC, 2)`, *p* < 0.001; (2) a larger RMSR = `r round(raq_omg$gstats$rms, 2)`; and (3) a larger RMSEA = `r round(raq_omg$gstats$RMSEA[1], 3)` 90% CI [`r round(raq_omg$gstats$RMSEA[2], 3)`,  `r round(raq_omg$gstats$RMSEA[3], 3)`]. This tells us that the model that characterises the RAQ in terms of four-factors is a better fit of the data than a model that characterises it as a single factor.
+Next we get two lots of model fit statistics. The first set are for the model that has four factors and repeat the information from the original EFA. The chi-square statistic is significant, $\chi^2$ = `r sprintf("%.2f", raq_omg$schmid$STATISTIC)`, *p* < 0.001, a bad thing but unsurprising given the sample size, the RMSR = `r sprintf("%.2f", raq_omg$schmid$rms)` and the RMSEA = `r sprintf("%.2f", raq_omg$schmid$RMSEA[1])` 90% CI [`r sprintf("%.2f", raq_omg$schmid$RMSEA[2])`,  `r sprintf("%.2f", raq_omg$schmid$RMSEA[3])`]. Next, we get the same information but for a model that contains only the general factor (and not the four sub-factors). The fit gets worse as shown by (1) a larger and more significant chi-square, $\chi^2$ = `r sprintf("%.2f", raq_omg$gstats$STATISTIC)`, *p* < 0.001; (2) a larger RMSR = `r sprintf("%.2f", raq_omg$gstats$rms)`; and (3) a larger RMSEA = `r sprintf("%.2f", raq_omg$gstats$RMSEA[1])` 90% CI [`r sprintf("%.2f", raq_omg$gstats$RMSEA[2])`,  `r sprintf("%.2f", raq_omg$gstats$RMSEA[3])`]. This tells us that the model that characterises the RAQ in terms of four-factors is a better fit of the data than a model that characterises it as a single factor.
 
-Finally, under Total, General and Subset omega for each subset we get the $\omega_t$ (labelled omega total) and $\omega_h$ (labelled Omega general) for the general factor (column [g]{.alt}) and for the subfactors. The values for the general factor repeat the information at the start of the output. The values for the sub-factors are particularly relevant for $\omega_t$ because it represents the total reliability of the scores, so these values tell us the total reliability of the scores from the underlying sub-scales. For anxiety related to computers (F1) we have $\omega_t$ = `r round(raq_omg$omega.group$total[2], 2)`, for anxiety around peer or social evaluation (F2) $\omega_t$ = `r round(raq_omg$omega.group$total[3], 2)`, for anxiety around statistics (F3) $\omega_t$ = `r round(raq_omg$omega.group$total[4], 2)`, and for anxiety around maths (F4) $\omega_t$ = `r round(raq_omg$omega.group$total[5], 2)`. Basically scores from each subscale are reliable but somewhat less so for anxiety around statistics.
+Finally, under Total, General and Subset omega for each subset we get the $\omega_t$ (labelled omega total) and $\omega_h$ (labelled Omega general) for the general factor (column [g]{.alt}) and for the subfactors. The values for the general factor repeat the information at the start of the output. The values for the sub-factors are particularly relevant for $\omega_t$ because it represents the total reliability of the scores, so these values tell us the total reliability of the scores from the underlying sub-scales. For anxiety related to computers (F1) we have $\omega_t$ = `r sprintf("%.2f", raq_omg$omega.group$total[2])`, for anxiety around peer or social evaluation (F2) $\omega_t$ = `r sprintf("%.2f", raq_omg$omega.group$total[3])`, for anxiety around statistics (F3) $\omega_t$ = `r sprintf("%.2f", raq_omg$omega.group$total[4])`, and for anxiety around maths (F4) $\omega_t$ = `r sprintf("%.2f", raq_omg$omega.group$total[5])`. Basically scores from each subscale are reliable but somewhat less so for anxiety around statistics.
 
 ### `r bmu()` Cronbach's $\alpha$ [(2)]{.alt}
 
@@ -770,12 +803,12 @@ We pipe the variables for each subscale into the `alpha()` function from `psych`
 For the *fear of computers* subscale we could execute (I'm excluding `raq_05` because it makes more sense conceptually on the fear of statistics factor):
 
 ```{r, eval = F}
-raq_tib %>% 
-  dplyr::select(raq_06, raq_07, raq_10, raq_13, raq_14, raq_15, raq_18) %>% 
+raq_tib |> 
+  dplyr::select(raq_06, raq_07, raq_10, raq_13, raq_14, raq_15, raq_18) |> 
   psych::alpha()
 ```
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Use the code box to run a reliability analysis on the *fear of computers* subscale:
 
@@ -784,38 +817,39 @@ Use the code box to run a reliability analysis on the *fear of computers* subsca
 ```
 
 ```{r rel_1-solution}
-raq_tib %>% 
-  dplyr::select(raq_05, raq_06, raq_07, raq_10, raq_13, raq_14, raq_15, raq_18) %>% 
+raq_tib |> 
+  dplyr::select(raq_05, raq_06, raq_07, raq_10, raq_13, raq_14, raq_15, raq_18) |> 
   psych::alpha()
 ```
 
 ```{r, echo = F}
-r1 <- raq_tib %>% 
-  dplyr::select(raq_05, raq_06, raq_07, raq_10, raq_13, raq_14, raq_15, raq_18) %>% 
+r1 <- raq_tib |> 
+  dplyr::select(raq_05, raq_06, raq_07, raq_10, raq_13, raq_14, raq_15, raq_18) |> 
   psych::alpha()
 
 get_alpha <- function(x, digits = 2){
+  dp <- paste0("%.", digits, "f")
   a <- x$total$raw_alpha
   se <- x$total$ase
   
-  ci_up <- round(a + 1.96*se, digits)
-  ci_lo <- round(a - 1.96*se, digits)
+  ci_up <- sprintf(dp, a + 1.96*se)
+  ci_lo <- sprintf(dp, a - 1.96*se)
   
   
-  paste0("$\\alpha$", " = ", round(a, digits), " [", ci_lo, ", ", ci_up, "]")  
+  paste0("$\\alpha$", " = ", sprintf(dp, a), " [", ci_lo, ", ", ci_up, "]")  
 }
 ```
 
 
 First, and perhaps most important, the value of Alpha at the very top is Cronbach's $\alpha$, and we are given its 95% confidence interval below: we're looking for values in the range of .7 to .8 (or thereabouts). In this case, `r get_alpha(r1)` so this probably indicates good reliability.
 
-Next, we get a table giving the statistics for the scale if we deleted each item in turn. The values in the column labelled [raw_alpha]{.alt} are the values of the overall $\alpha$ if that item is **not** included in the calculation. Basically it's the change in Cronbach's $\alpha$ that would be seen if a particular item were deleted. The overall $\alpha$ is `r round(r1$total$raw_alpha, 2)`, and so all values greater than this indicate that the overall $\alpha$ increases (i.e. reliability improves) if the item is removed. None of the items here would improve reliability if they were deleted.
+Next, we get a table giving the statistics for the scale if we deleted each item in turn. The values in the column labelled [raw_alpha]{.alt} are the values of the overall $\alpha$ if that item is **not** included in the calculation. Basically it's the change in Cronbach's $\alpha$ that would be seen if a particular item were deleted. The overall $\alpha$ is `r sprintf("%.2f", r1$total$raw_alpha)`, and so all values greater than this indicate that the overall $\alpha$ increases (i.e. reliability improves) if the item is removed. None of the items here would improve reliability if they were deleted.
 
 The table labelled [item statistics]{.alt} shows, in the column labelled [raw.r]{.alt} the correlations between each item and the total score from the scale — sometimes called item-total correlations. There's a problem with this statistic in that the item is included in the scale total, which inflates the overall correlation. Ideally we want these correlations to be computed without the item in question, and these are the values in [r.drop]{.alt}. In a reliable scale all items should correlate with the total. So, we're looking for items that don't correlate with the overall score from the sub-scale: if any of these values of [r.drop]{.alt} are less than about .3 then we've got problems, because it means that a particular item does not correlate very well with the subscale overall. [The .3 is an arbitrary value that represents a reasonable sized relationship, but there's nothing magic about so use your own judgement.] For the fear of computers subscale, all items have corrected item-total correlations above 0.3, which is encouraging.
 
 The final table tells us what percentage of people gave each response to each of the items.  This is useful to make sure that everyone in your sample is not giving the same response.  It is usually the case that an item where everyone (or almost everyone) gives the same response will almost certainly have poor reliability statistics. For this subscale few people responded with a 1 on any of the items suggesting that no-one is really feeling the love for computers or that the items are doing a poor job of eliciting those extreme responses.
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Use the code box to run a reliability analysis on the *Fear of peer/social evaluation* subscale:
 
@@ -824,21 +858,21 @@ Use the code box to run a reliability analysis on the *Fear of peer/social evalu
 ```
 
 ```{r rel_2-solution}
-raq_tib %>% 
-  dplyr::select(raq_02, raq_09, raq_19, raq_22, raq_23) %>% 
+raq_tib |> 
+  dplyr::select(raq_02, raq_09, raq_19, raq_22, raq_23) |> 
   psych::alpha()
 ```
 
 ```{r, echo = F}
-r2 <- raq_tib %>% 
-  dplyr::select(raq_02, raq_09, raq_19, raq_22, raq_23) %>% 
+r2 <- raq_tib |> 
+  dplyr::select(raq_02, raq_09, raq_19, raq_22, raq_23) |> 
   psych::alpha()
 ```
 
 
 Again we have good overall reliability (`r get_alpha(r2)`), no items improve this value if dropped, item correlations with the scale total are all really good and again we have issues with the items not eliciting extremely low responses (for all items only 0.02, or 2%, of responders responded with a 1).
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Use the code box to run a reliability analysis on the *Fear of mathematics* subscale:
 
@@ -847,14 +881,14 @@ Use the code box to run a reliability analysis on the *Fear of mathematics* subs
 ```
 
 ```{r rel_3-solution}
-raq_tib %>% 
-  dplyr::select(raq_08, raq_11, raq_17) %>% 
+raq_tib |> 
+  dplyr::select(raq_08, raq_11, raq_17) |> 
   psych::alpha()
 ```
 
 ```{r, echo = F}
-r3 <- raq_tib %>% 
-  dplyr::select(raq_08, raq_11, raq_17) %>% 
+r3 <- raq_tib |> 
+  dplyr::select(raq_08, raq_11, raq_17) |> 
   psych::alpha()
 ```
 
@@ -863,7 +897,7 @@ Overall reliability is still fairly high (`r get_alpha(r3)`), no items improve t
 The **fear of statistics** subscale has a reverse scored item: *Standard deviations excite me* (**raq_03**), so we need to indicate that this item is reverse scored. Like with the `omega()` function, we need to tell the `alpha()` function which items are reversed by using the [keys]{.alt} argument within the function. Just to confuse you note that the argument is [keys]{.alt} (with an s) whereas for `omega()` it was [key]{.alt} (without an s). We supply this argument with a vector of 1s and -1s as we did before. If we selected the items for the *Fear of statistics* subscale in order by using
 
 ```{r, eval = F}
-raq_tib %>% 
+raq_tib |> 
   dplyr::select(raq_01, raq_03, raq_04, raq_05, raq_12, raq_16, raq_20, raq_21)
 ```
 
@@ -880,12 +914,12 @@ Note that the -1 is in the same position (second) as [raq_03]{.alt} is in the va
 For the *fear of statistics* subscale we would execute:
 
 ```{r, eval = F}
-raq_tib %>% 
-  dplyr::select(raq_01, raq_03, raq_04, raq_05, raq_12, raq_16, raq_20, raq_21) %>% 
+raq_tib |> 
+  dplyr::select(raq_01, raq_03, raq_04, raq_05, raq_12, raq_16, raq_20, raq_21) |> 
   psych::alpha(keys = c(1, -1, 1, 1, 1, 1, 1, 1))
 ```
 
-#### `r bug()` Exercise
+#### `r alien()` Alien coding challenge
 
 Use the code box to run a reliability analysis on the *fear of computers* subscale:
 
@@ -894,15 +928,15 @@ Use the code box to run a reliability analysis on the *fear of computers* subsca
 ```
 
 ```{r rel_4-solution}
-raq_tib %>% 
-  dplyr::select(raq_01, raq_03, raq_04, raq_05, raq_12, raq_16, raq_20, raq_21) %>% 
+raq_tib |> 
+  dplyr::select(raq_01, raq_03, raq_04, raq_05, raq_12, raq_16, raq_20, raq_21) |> 
   psych::alpha(keys = c(1, -1, 1, 1, 1, 1, 1, 1))
 ```
 
 
 ```{r, echo = F}
-r4 <- raq_tib %>% 
-  dplyr::select(raq_01, raq_03, raq_04, raq_05, raq_12, raq_16, raq_20, raq_21) %>% 
+r4 <- raq_tib |> 
+  dplyr::select(raq_01, raq_03, raq_04, raq_05, raq_12, raq_16, raq_20, raq_21) |> 
   psych::alpha(keys = c(1, -1, 1, 1, 1, 1, 1, 1))
 ```
 
@@ -923,15 +957,15 @@ Mae was burnt out. She thought the tutorial writing was over. 'Just one term, th
 
 ### Statistics
 
-* The tutorials typically follow examples described in detail in @field_discovering_2022. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
+* The tutorials typically follow examples described in detail in @field_discovering_2023. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
 * If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
 * There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/).
 * There are free statistical resources on my websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [milton-the-cat.rocks](http://milton-the-cat.rocks).
 
-### `r rproj("h3")`
+### `r rproj()`
 
 * [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
-* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj("h3")` and `r rstudio()`.
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj()` and `r rstudio()`.
 * [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
 * [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
 

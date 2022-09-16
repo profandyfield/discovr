@@ -768,7 +768,7 @@ The output shows that
 * The correlation between slopes and intercepts across the zombies was `r report_pars(rehab_mod_fe, row = 6, fixed = F)`]
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
   
 There was non-zero variability in intercepts and slopes. The estimate of standard deviation of intercepts across zombies was $\hat{\sigma}_{u_0}$ = `r report_pars(rehab_mod_fe, row = 5, fixed = F)`, the standard deviation of slopes across zombies was $\hat{\sigma}_{u_\text{months}}$ = `r report_pars(rehab_mod_fe, row = 7, fixed = F)`, and the residual standard deviation was $\sigma$ = `r report_pars(rehab_mod_fe, row = 8, fixed = F)`. The estimated correlation between slopes and intercepts was $r_{u_0, u_\text{months}}$ = `r report_pars(rehab_mod_fe, row = 6, fixed = F)` suggesting that clinics with large intercepts tended to have smaller slopes.
 

@@ -1078,7 +1078,7 @@ bob_aov <- anova(cosmetic_bob) |> tibble::as_tibble(rownames = "effect")
 
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
 
   There are significant effects of baseline quality of life, `r report_aov(bob_aov, row = 3)` and the months × reason interaction, `r report_aov(bob_aov, row = 4)`, but not the overall effect of months, `r report_aov(bob_aov, row = 1)`, or the main effect of reason, `r report_aov(bob_aov, row = 2)`.
 </div>
@@ -1203,7 +1203,7 @@ The resulting plot shows what we already know from the parameter estimates for t
 
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
 
   There was non-zero variability in intercepts and slopes. The estimate of standard deviation of intercepts across clinics was $\hat{\sigma}_{u_0}$ = `r report_pars(bob_coef, row = 6, fixed = F)`, the standard deviation of slopes across clinics was $\hat{\sigma}_{u_\text{months}}$ = `r report_pars(bob_coef, row = 8, fixed = F)`, and the residual standard deviation was $\sigma$ = `r report_pars(bob_coef, row = 9, fixed = F)`. The estimated correlation between slopes and intercepts was $r_{u_0, u_\text{months}}$ = `r report_pars(bob_coef, row = 7, fixed = F)` suggesting that clinics with large intercepts tended to have smaller slopes.
   

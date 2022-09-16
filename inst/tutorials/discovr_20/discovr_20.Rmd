@@ -587,7 +587,7 @@ If the confidence interval contains 1 then the population value might be one tha
 Now we have the basic understanding of what the parameters mean, consider working through the optional section on looking at the overall model fit.
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
 
 A logistic regression model was fit predicting delivery of presents from the type of treat offered. The odds of delivery in those receiving pudding as a treat was significantly different to 1, odds = `r report_pars(santa_exp, row = 1)`. The odds ratio for the type of treat was also significant, $\widehat{OR}$ = `r report_pars(santa_exp, row = 2)`. The odds of delivery after wine were `r get_par(santa_exp, row = 2)` the size of the odds of delivery after pudding.
 
@@ -986,7 +986,7 @@ The output shows the effect of the quantity of mulled wine consumed on delivery 
 The interaction effect, therefore, reflects the fact that the effect of quantity on delivery is significantly different for Christmas pudding and mulled wine. As a rough approximation it means that in the plot, the blue and orange lines have different slopes.
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
 
 A logistic regression model was fit predicting delivery of presents from the type of treat offered, the quantity of treats and their interaction. Table 2 shows the parameter estimates, their 95% confidence intervals and significance tests. The main effects of Treat and Quantoity were not significant but the interaction was, suggesting that the effect of quantity was moderated by the type of treat (and vice versa).
 

@@ -762,7 +762,7 @@ quiz(
 The *p*-values in the table all tell us the long-run probability that we would get a a value of *t* at least as large as the ones we have if the the true relationship between each predictor and album sales was 0 (i.e., *b* = 0). In all cases the probabilities are less than 0.001, which researchers would generally take to mean that the observed $\hat{b}$s are significantly different from zero. Given the $\hat{b}$s quantify the relationship between each predictor and album sales, this conclusion implies that each predictor significantly predicts album sales.
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
 
 The model that included the band's image and airplay was a significantly better fit than the model that included advertising budget alone, `r report_aov_compare(album_aov)`. The final model explained  `r 100*round(album2_fit$r.squared, 3)`% of the variance in album sales. Advertising budget significantly predicted album sales $\hat{b}$ = `r report_pars(album2_par, row = 2, df_r = album2_fit$df.residual)`, as did airplay $\hat{b}$ = `r report_pars(album2_par, row = 3, df_r = album2_fit$df.residual)` and image, $\hat{b}$ = `r report_pars(album2_par, row = 4, df_r = album2_fit$df.residual)`.
 

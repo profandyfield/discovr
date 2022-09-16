@@ -903,7 +903,7 @@ three_way_con <- emmeans::contrast(
 -   The final contrast shows the effect of high attractive dates relative to average-looking ones, when they display high charisma compared average charisma, when dates played hard to get relative to when they didn't, `r report_em(three_way_con, row = 4)`. This contrast seems to show that interest in dating (as indicated by high ratings) attractive dates was the same regardless of whether they had high or average charisma (the green and blue dots are in a similar place). However, for average-looking dates, there was more interest when that person had high charisma rather than average charisma (the green dot is lower than the blue dot). The non-significance of this contrast indicates that this pattern of results is very similar when dates played hard to get and when they didn't.
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
 
 Greenhouse-Geisser corrected degrees of freedom are reported throughout. The main effect of strategy was not significant, `r report_afx(date_tbl, row = 1)`, but the main effects of looks, `r report_afx(date_tbl, row = 2)`, and personality, `r report_afx(date_tbl, row = 4)`, were. These effects were superseded by the following significant interactions: strategy $\times$ looks, `r report_afx(date_tbl, row = 3)`, strategy $\times$ personality, `r report_afx(date_tbl, row = 5)`, and personality $\times$ looks, `r report_afx(date_tbl, row = 6)`. These interactions were also superseded by the significant strategy $\times$ personality $\times$ looks interaction, `r report_afx(date_tbl, row = 7)`. Contrasts were used to break down this interaction.
 

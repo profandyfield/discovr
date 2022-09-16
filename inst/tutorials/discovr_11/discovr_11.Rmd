@@ -477,7 +477,7 @@ Moving onto the parameter estimates, $\hat{b}_0$ (the value in the column labell
 The *b*-value for the second dummy variable (labelled [dose30 mins]{.alt}) is equal to the difference between the means of the 30-minute group and the control group (`r pup_sum$mean[3]` $−$ `r pup_sum$mean[1]` = `r get_par(pup_par, row = 3)`). These values demonstrate how dummy coding partitions the variance in happiness scores to compare specific group means. We can see from the significance values of the associated *t*-tests that the difference between the 30-minute group and the control group is significant because *p* = `r sprintf("%.3f", pup_par$p[3])`, which is less than 0.05; however, the difference between the 15-minute and the control group is not (*p* = `r sprintf("%.3f", pup_par$p[2])`).
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
 
 Overall, happiness was significantly different across the three therapy groups, `r report_aovf(pup_aov)`. Happiness was significantly different to zero in the no puppies group, $\hat{b}$ = `r report_pars(pup_par, row = 1)`, was not significantly higher in the 15-minute therapy group compared to the no puppy control, $\hat{b}$ = `r report_pars(pup_par, row = 2)`, but was significantly higher the 15-minute therapy group compared to the no puppy control, $\hat{b}$ = `r report_pars(pup_par, row = 3)`. A 30-minutes dose of puppies, therefore, appears to improve happiness compared to no puppies but a 15-minutes does does not.
 </div>
@@ -775,7 +775,7 @@ The table of parameter estimates is different to before. Notice that the contras
 The second contrast shows that the mean happiness across the people having 30-minutes of puppy therapy was `r sprintf("%.2f", con_par$estimate[3])` higher than those having 15 minutes. Again, if we assume this sample is one of the 95% that yields confidence intervals containing the population values then this difference could be anything between `r sprintf("%.2f", con_par$conf.low[3])` (people who have 30 minutes of puppy therapy are less happy than those having 15 minutes) and `r sprintf("%.2f", con_par$conf.high[3])` (people having 30 minutes of puppy therapy are a fair bit happier than those having 15 minutes). The observed difference of `r sprintf("%.2f", con_par$estimate[3])` is not statistically significantly different from 0 as shown by the *t*-test, which has a *p* = `r sprintf("%.3f", con_par$p.value[3])`. This contrast suggests that happiness was statistically comparable in those receiving 15- and 30-minutes of puppy therapy.
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
 
 Overall, happiness was significantly different across the three therapy groups, `r report_aovf(con_aov)`. Happiness was significantly different to zero in the no puppies group, $\hat{b}$ = `r report_pars(con_par, row = 1)`. Happiness was significantly higher for those that had any puppy therapy compared to the no puppy control, $\hat{b}$ = `r report_pars(con_par, row = 2)`, but was not significantly different in the 30-minute therapy group compared to the 15-minute group, $\hat{b}$ = `r report_pars(con_par, row = 3)`. A dose of puppies, therefore, appears to improve happiness compared to no puppies but the duration of therapy did not have a significant impact.
 </div>
@@ -1006,7 +1006,7 @@ d_1530 <-puppy_tib |>
 ```
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
 
 Participants were significantly more happy after 30-minutes of puppy therapy compared to no puppies, $M_{\text{difference}}$ = `r report_pars(pup_ph, row = 3)`, `r report_es(d_con30, col = "Hedges_g")`. The effect size was suspiciously large. There was no significant difference in happiness between those exposed for 15-minutes compared to no puppies, $M_{\text{difference}}$ = `r report_pars(pup_ph, row = 2)`, `r report_es(d_con15,  col = "Hedges_g")` although the effect was large. Also, there was no significant difference in happiness between those exposed for 15-minutes compared to 30-minutes, $M_{\text{difference}}$ = `r report_pars(pup_ph, row = 1)`, `r report_es(d_1530,  col = "Hedges_g")` although the difference was greater than a standard deviation.
 

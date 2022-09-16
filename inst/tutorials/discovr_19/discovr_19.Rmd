@@ -622,7 +622,7 @@ cat_chi <- chisq.test(dance_tib$reward, dance_tib$dance)
 Whichever method you use, the output will be the same. The value of the chi-square statistic is `r sprintf("%.2f", cat_chi$statistic)` and this value is highly significant because the associated *p* is is smaller than 0.05 (it is `r sprintf("%.8f", cat_chi$p.value)`).
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
 
 There was a significant association between the type of reward used and whether cats danced, $\chi^2$(`r cat_chi$parameter`) = `r sprintf("%.2f", cat_chi$statistic)`, *p* < 0.001.
 </div>
@@ -735,7 +735,7 @@ You can take the reciprocal of the odds ratio to reverse the direction of the ef
 <br />
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
 
 There was a significant association between the type of reward used and whether cats danced, $\chi^2$(`r cat_chi$parameter`) = `r sprintf("%.2f", cat_chi$statistic)`, *p* < 0.001. If a cat was trained with affection the odds of their dancing were `r sprintf("%.2f", cat_or$Odds_ratio)` times the odds if they had been trained with affection, `r report_es(cat_or, col = "Odds_ratio")`
 
@@ -809,7 +809,7 @@ so the test reveals that the observed odds ratio is significantly different from
 
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
 
 Fisher's exact test showed that the odds ratio was significantly different from 1, $\widehat{\text{OR}}$ = `r sprintf("%.2f", cat_fish$estimate)`, [`r sprintf("%.2f", cat_fish$conf.int[1])`, `r sprintf("%.2f", cat_fish$conf.int[2])`], *p* < 0.001. If we assume that our sample is one of the 95% of samples that generates a 95% confidence interval containing the population value, that the population odds ratio is also not 1. In other words, there was a non-zero effect of reward on dancing.
 </div>

@@ -517,7 +517,7 @@ gog_afx_tbl <- goggles_afx$anova_table
 ```
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
   
 There was a significant effects of the type of face used, `r report_afx(gog_afx_tbl, row = 1)`, and the dose of alcohol, `r report_afx(gog_afx_tbl, row = 2)`. However, these effects were superseded by a significant interaction between the type of face being rated and the dose of alcohol, `r report_afx(gog_afx_tbl, row = 3)`. This interaction suggests that the effect of alcohol is moderated by the type of face being rated (and vice versa). Based on the means (see plot) this interaction supports the 'beer-googles' hypothesis: when no alcohol is consumed symmetric faces were rated as more attractive than asymmetric faces but this difference diminishes as more alcohol is consumed.
 </div>
@@ -778,7 +778,7 @@ There are two key effects here:
 To sum up, the significant interaction is being driven by  alcohol consumption (any dose compared to placebo, and high dose compared to low) affecting ratings of unattractive face stimuli significantly more than it affects ratings of attractive face stimuli.
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
   
 There was a significant effects of the type of face used, `r report_afx(gog_afx_tbl, row = 1)`, and the dose of alcohol, `r report_afx(gog_afx_tbl, row = 2)`. However, these effects were superseded by a significant interaction between the type of face being rated and the dose of alcohol, `r report_afx(gog_afx_tbl, row = 3)`. Contrasts suggested that the difference between ratings of symmetric and asymmetric faces was significantly smaller after any dose of alcohol compared to no alcohol, $\hat{b}$ = `r report_pars(goggles_par, row = 5)`, and became smaller still when comparing a high- to a low-dose of alcohol, $\hat{b}$ = `r report_pars(goggles_par, row = 6)`. These effects support the 'beer-googles' hypothesis: when no alcohol is consumed symmetric faces were rated as more attractive than asymmetric faces but this difference diminishes as more alcohol is consumed.
 </div>
@@ -902,7 +902,7 @@ gog_se <- emmeans::joint_tests(goggles_afx, "alcohol")
 ```
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
   
 There was a significant effects of the type of face used, `r report_afx(gog_afx_tbl, row = 1)`, and the dose of alcohol, `r report_afx(gog_afx_tbl, row = 2)`. However, these effects were superseded by a significant interaction between the type of face being rated and the dose of alcohol, `r report_afx(gog_afx_tbl, row = 3)`. Simple effects analysis revealed that symmetric faces were rated as significant more attractive than asymmetric faces after no alcohol, `r report_se(gog_se, row = 1)`, and a low dose, `r report_se(gog_se, row = 2)`, but were rated comparably after a high dose of alcohol, `r report_se(gog_se, row = 3)`. These effects support the 'beer-googles' hypothesis: the standard tendency to rate symmetric faces as more attractive than asymmetric faces was present at low doses and no alcohol, but was eliminated by a high dose of alcohol.
 </div>
@@ -1099,7 +1099,7 @@ gog_os <- goggles_afx |>
 The effect sizes are slightly smaller than (as we'd expect) using omega-squared. The interaction effect now explains about 25% of variation in attractiveness ratings.
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
   
 There was a significant effects of the type of face used, `r report_afx(gog_afx_tbl, row = 1)`, `r report_es(gog_os, col = "Omega2_partial", row = 1)`, and the dose of alcohol, `r report_afx(gog_afx_tbl, row = 2)`, `r report_es(gog_os, col = "Omega2_partial", row = 2)`. However, these effects were superseded by a significant interaction between the type of face being rated and the dose of alcohol, `r report_afx(gog_afx_tbl, row = 3)`, `r report_es(gog_os, col = "Omega2_partial", row = 3)`. This interaction suggests that the effect of alcohol is moderated by the type of face being rated (and vice versa). Based on the means (see plot) this interaction supports the 'beer-googles' hypothesis: when no alcohol is consumed symmetric faces were rated as more attractive than asymmetric faces but this difference diminishes as more alcohol is consumed.
 </div>

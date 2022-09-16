@@ -439,7 +439,7 @@ We've discussed many times that having a single arbitrary cut-off for significan
 Generalized partial eta-squared differs from eta-squared in ways that you probably don't care about. (tl;dr: $\eta^2_{G}$ is more consistent than $\eta^2_{p}$ across study designs.) We can interpret it in much the same way, for our data, **entity** explains about `r sniff_es`% of the variance in vocalisations, which is a very substantial effect despite what the *p*-value might have you believe. 
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
 
 There was no significant effect of the type of entity on sniffer dog's vocalisations when approaching them, `r report_afx(sniff_tble)`. However, the type of entity explained `r sniff_es`% of the variance in vocalisations ($\eta^2_{G}$ = `r get_par(sniff_tble, col = "ges")`), which is a very substantial effect suggesting that the study may have been under powered.
 </div>
@@ -1090,7 +1090,7 @@ Joy wouldn't feel so good if it wasn't for pain (Many Men (Wish Death))"),
 ```
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
 
 There were significant main effects of entity, `r report_afx(scent_tbl)`, $\eta^2_G$ = `r get_par(scent_tbl, col = "ges", row = 1)`, and scent, `r report_afx(scent_tbl, row = 2)`, $\eta^2_G$ = `r get_par(scent_tbl, col = "ges", row = 2)` on the number of vocalisations dogs made when approaching an entity. However, these effects were superseded by a significant entity $\times$ scent interaction, `r report_afx(scent_tbl, row = 3)`, $\eta^2_G$ = `r get_par(scent_tbl, col = "ges", row = 3)`, suggetsing that the effect of scent on vocalisations was moderated by the type of entity sniffed (and vice versa). Simple effects analysis revealed that the effect of entity was significant when no scent was used, `r report_se(scent_se, row = 1)`, when human scent was used, `r report_se(scent_se, row = 2)` and also when fox scent was used, `r report_se(scent_se, row = 3)`.
 </div>
@@ -1233,7 +1233,7 @@ To sum up, the scents don't distract the sniffer dogs from detecting aliens comp
 
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
 
 There were significant main effects of entity, `r report_afx(scent_tbl)`, $\eta^2_G$ = `r get_par(scent_tbl, col = "ges", row = 1)`, and scent, `r report_afx(scent_tbl, row = 2)`, $\eta^2_G$ = `r get_par(scent_tbl, col = "ges", row = 2)` on the number of vocalisations dogs made when approaching an entity. However, these effects were superseded by a significant entity $\times$ scent interaction, `r report_afx(scent_tbl, row = 3)`, $\eta^2_G$ = `r get_par(scent_tbl, col = "ges", row = 3)`, suggesting that the effect of scent on vocalisations was moderated by the type of entity sniffed (and vice versa).
 

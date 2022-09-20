@@ -281,6 +281,50 @@ pup_sum |>
 
 Note that the mean happiness is very similar in the 15- and 30-minute groups and higher in these groups than the no puppies control.
 
+## `r bmu()` Visualising the data [(1)]{.alt}
+
+#### `r alien()` Alien coding challenge
+
+Use what you already know to plot a violin plot of happiness scores in the three puppy therapy groups. Plot the raw data and display each group in a different colour.
+
+```{r pup_violin, exercise = TRUE, exercise.lines = 10}
+
+```
+
+```{r pup_violin-solution}
+ggplot2::ggplot(pupluv_tib, aes(x = dose, y = happiness, colour = dose)) +
+  geom_point(position = position_jitter(width = 0.1), alpha = 0.6) +
+  geom_violin(alpha = 0.2) + 
+  stat_summary(fun.data = "mean_cl_normal", geom = "pointrange", position = position_dodge(width = 0.9)) +
+  coord_cartesian(ylim = c(0, 10)) +
+  scale_y_continuous(breaks = 0:10) +
+  labs(x = "Puppy therapy group", y = "Happiness (0-10)", colour = "Puppy therapy group") +
+  theme_minimal()
+```
+
+Note (as we did before) that the mean happiness is very similar in the 15- and 30-minute groups and higher in these groups than the no puppies control.
+
+#### `r alien()` Alien coding challenge
+
+Now let's look at the relationship between puppy love and happiness in the three therapy groups. Use what you already know to plot a scatterplot and linear model of the relationship between puppy love and happiness scores. Plot the three puppy therapy groups in a different colour.
+
+```{r pup_scatter, exercise = TRUE, exercise.lines = 10}
+
+```
+
+```{r pup_scatter-solution}
+ggplot2::ggplot(pupluv_tib, aes(x = puppy_love, y = happiness, colour = dose, fill = dose)) +
+  geom_point() + 
+  geom_smooth(method = "lm") +
+  coord_cartesian(ylim = c(0, 10)) +
+  scale_x_continuous(breaks = 0:7) +
+  scale_y_continuous(breaks = 0:10) +
+  labs(x = "Puppy love (0-7)", y = "Happiness (0-10)", colour = "Treatment", fill = "Treatment") +
+  theme_minimal()
+```
+
+It looks like puppy love has a positive relationship to happiness in the no puppy and 15-minute groups, but a negative relationship in the 30-minute group. We'll return to this plot later.
+
 ## `r bmu()` The model [(1)]{.alt}
 
 As a reminder, we discovered in **discovr_11** that we can include categorical predictors using dummy variables. In the simplest form, we can use dummy coding in which group membership is expressed in terms of 0s and 1s as in Table 1.
@@ -803,65 +847,7 @@ pup_ph <- modelbased::estimate_contrasts(pup_lm, contrast = "dose", fixed = "pup
 The results show the Bonferroni corrected *post hoc* comparisons. There is a significant difference between the adjusted mean happiness in the no puppies group and the 30-minute group (*p* = 
 `r get_par(pup_ph, col = "p", row = 3, digits = 3)`) groups, but not between the no puppies and 15-minute group (*p* = `r get_par(pup_ph, col = "p", row = 2, digits = 3)`) or between the 30- and 15-minute groups (*p* = `r get_par(pup_ph, col = "p", row = 1, digits = 3)`). Note that the value of *Difference* is the difference between the adjusted means. The column labelled *puppy_love* reminds us that all differences are evaluated at average levels of puppy love, in other words, when puppy love equals `r get_par(pup_ph, col = "puppy_love", row = 1)`.
 
-## `r bmu()` Homogeneity of regression slopes [(1)]{.alt}
-
-Next we need to evaluate the assumption of homogeneity of regression slopes, which is the basically that the relationship between the covariate and outcome is similar across categories of the categorical predictor. In this model, we're interested in whether the relationship between **puppy_love** and **happiness** is similar in the no puppies, 15-minute and 30-minute groups.
-
-#### `r robot()` Code example
-
-To test the assumption of homogeneity of regression slopes we need to re-fit the model but include the interaction between the covariate and categorical predictor. We can refit the model from scratch:
-
-```{r, eval = F}
-hors_lm <- lm(happiness ~ puppy_love*dose, data = pupluv_tib)
-```
-
-Or use the `update()` function to add the interaction term to the previous model:
-
-```{r, eval = F}
-hors_lm <- update(pupluv_lm, .~. + dose:puppy_love)
-```
-
-The update function takes the model containing the effects of dose and puppy_love ([pupluv_lm]{.alt}) and updates it. Remember that `.~.` means *keep the outcome variable and all of the predictors* and , and `+ dose:puppy_love` means *add the dose × puppy_love interaction*.
-
-<div class="infobox">
-  `r info()` **Specifying interactions**
-
-Remember from **discovr_10** that `*` is used to specify all main effects and interactions whereas `:` is used to specify only an interaction.
-
-* `puppy_love*dose` specifies the effects of **puppy_love**, *dose* and the **dose × puppy_love** interaction
-* `puppy_love:dose` specifies the **dose × puppy_love** interaction
-
-</div>
-
-#### `r alien()` Alien coding challenge
-
-Re-specify the model to include the **dose × puppy_love** interaction (use either method above) and look at the *F*-statistic with Type III sums of squares.
-
-
-```{r hors, exercise = TRUE, exercise.lines = 4, exercise.setup = "pupluv_lm"}
-
-```
-
-```{r hors-solution}
-hors_lm <- lm(happiness ~ puppy_love*dose, data = pupluv_tib) 
-car::Anova(hors_lm, type = 3) |> 
-  knitr::kable(digits = 3)
-# or
-hors_lm <- update(pupluv_lm, .~. + dose:puppy_love)
-car::Anova(hors_lm, type = 3) |> 
-  knitr::kable(digits = 3)
-```
-
-```{r, echo = F}
-hors_lm <- update(pup_lm, .~. + dose:puppy_love)
-hors_aov <- car::Anova(hors_lm, type = 3) |> tibble::as_tibble()
-```
-
-
-The effects of the dose of puppy therapy and love of puppies are still significant, but so is the covariate by outcome interaction (**dose × puppy_love**), implying that the assumption of homogeneity of regression slopes is not realistic (*p* = `r get_par(hors_aov, row = 4, col = "Pr(>F)", digits = 3)`).
-
-
-### `r bmu()` Diagnostic plots [(1)]{.alt}
+## `r bmu()` Diagnostic plots [(1)]{.alt}
 
 As with any linear model, we can use the `plot()` function to produce diagnostic plots from the model.
 
@@ -1097,6 +1083,145 @@ pup_os <- pup_os |>
 
 
 The effect sizes are slightly smaller than (as we'd expect) using omega-squared. The puppy therapy condition explains `r sprintf("%.0f", 100*pup_os[2])`% of the variance in happiness not attributable to other variables, and love of puppies explains `r sprintf("%.0f", 100*pup_os[1])`%, both of which are still sizeable amounts of variance for social science data.
+
+## `r user_visor()` Interactions between categorical and continuous predictors [(2)]{.alt}
+
+People talk about the 'assumption' of homogeneity of regression slopes when the goal of the model is to look for differences between adjusted means (a so-called ANCOVA). To test the assumption of homogeneity of regression slopes we need to re-fit the model but include the interaction between the covariate and categorical predictor. We want that interaction effect to be non-significant and have a parameter estimate that reflects a small effect.
+
+In other contexts, a significant interaction between a continuous and categorical predictor might be desirable: for example, it provides support for moderation (that is the effect of one predictor moderates the effect of the other - see `discovr_10`).
+
+The information box explains more, but in this section we'll look at introducing an interaction term between the categorical predictor (**dose**) and the continuous predictor (**puppy_love**).
+
+<div class="infobox">
+  `r info()` **Homogeneity of regression slopes**
+  
+Homogeneity of regression slopes refers to the relationship between the covariate and outcome being similar across levels of the categorical predictor. In this model, homogeneity of regression slopes would mean that the relationship between **puppy_love** and **happiness** is similar in the no puppies, 15-minute and 30-minute groups. We know this is unlikely to be true from the scatterplot that we produced at the beginning of this tutorial.
+
+Homogeneity of regression slopes is desirable only if the goal is to look at the effect of the categorical variable adjusting for the covariate. In this case, what is the effect of puppy therapy at average levels of puppy love?  If the relationship between puppy love and happiness changes as a function of the treatment group (i.e. heterogeneity of regression slopes) then the effect of puppy therapy is undetermined because it varies according to the value of the covariate.
+
+However, in other situations homogeneity of regression doesn't matter. For example, in `discovr_10` we explored moderation effects; that is, where we hypothesize that the effect of one  predictor varies as a function of another. When your aim is to test for moderation between a categorical and continuous predictor a significant interaction provides support for moderation (it shows that the effect of one predictor varies as a function of the other). So, it's not the case that an interaction between a categorical and continuous predictor is necessarily a bad thing - it depends on the context. 
+
+</div>
+
+
+#### `r robot()` Code example
+
+We can refit the model from scratch:
+
+```{r, eval = F}
+hors_lm <- lm(happiness ~ puppy_love*dose, data = pupluv_tib)
+```
+
+Or use the `update()` function to add the interaction term to the previous model:
+
+```{r, eval = F}
+hors_lm <- update(pupluv_lm, .~. + dose:puppy_love)
+```
+
+The update function takes the model containing the effects of dose and puppy_love ([pupluv_lm]{.alt}) and updates it. Remember that `.~.` means *keep the outcome variable and all of the predictors* and , and `+ dose:puppy_love` means *add the dose × puppy_love interaction*.
+
+<div class="infobox">
+  `r info()` **Specifying interactions**
+
+Remember from **discovr_10** that `*` is used to specify all main effects and interactions whereas `:` is used to specify only an interaction.
+
+* `puppy_love*dose` specifies the effects of **puppy_love**, *dose* and the **dose × puppy_love** interaction
+* `puppy_love:dose` specifies the **dose × puppy_love** interaction
+
+</div>
+
+#### `r alien()` Alien coding challenge
+
+Re-specify the model to include the **dose × puppy_love** interaction (use either method above) and look at the *F*-statistic with Type III sums of squares.
+
+
+```{r hors, exercise = TRUE, exercise.lines = 4, exercise.setup = "pupluv_lm"}
+
+```
+
+```{r hors-solution}
+hors_lm <- lm(happiness ~ puppy_love*dose, data = pupluv_tib) 
+car::Anova(hors_lm, type = 3) |> 
+  knitr::kable(digits = 3)
+# or
+hors_lm <- update(pupluv_lm, .~. + dose:puppy_love)
+car::Anova(hors_lm, type = 3) |> 
+  knitr::kable(digits = 3)
+```
+
+```{r, echo = F}
+hors_lm <- lm(happiness ~ puppy_love*dose, data = pupluv_tib) 
+hors_aov <- car::Anova(hors_lm, type = 3) |> tibble::as_tibble()
+```
+
+
+The effects of the dose of puppy therapy and love of puppies are still significant, but so is the covariate by outcome interaction (**dose × puppy_love**), implying that the assumption of homogeneity of regression slopes is not realistic (*p* = `r get_par(hors_aov, row = 4, col = "Pr(>F)", digits = 3)`). This result isn't too surprising because at the beginning of this tutorial we plotted the relationship between **puppy_love** and **happiness** in the three therapy groups and found a positive relationship in the no puppy and 15-minute group but a negative relationship in the 30-minute group. Remember, the plot looked like this:
+
+```{r, echo = F}
+ggplot2::ggplot(pupluv_tib, aes(x = puppy_love, y = happiness, colour = dose, fill = dose)) +
+  geom_point() + 
+  geom_smooth(method = "lm") +
+  coord_cartesian(ylim = c(0, 10)) +
+  scale_x_continuous(breaks = 0:7) +
+  scale_y_continuous(breaks = 0:10) +
+  labs(x = "Puppy love (0-7)", y = "Happiness (0-10)", colour = "Treatment", fill = "Treatment") +
+  theme_minimal()
+```
+
+The significant interaction is "bad" from the perspective of interpreting the effect of puppy therapy dose at average levels of puppy love. We can't make firm conclusions about the effect of puppy therapy adjusted for the love of puppies. Sad face.
+
+However, in a parallel universe where we'd hypothesised and pre-registered a hypothesis that puppy love would moderate the effect of puppy therapy we'd be dancing around the room with joy at this significant result. We might also want to break the interaction down and look at the simple slopes (that is, the relationship between **puppy_love** and **happiness** within each treatment group). We can do this using what we learnt in `discovr_10` but we can also use the `estimate_slopes()` function from `modelbased`. It takes the form
+
+```{r, eval = F}
+modelbased::estimate_slopes(my_model,
+                            trend = "continuous_variable",
+                            at = "categorical_variable",
+                            ci = 0.95)
+```
+
+Within the function we replace [my_model]{.alt} with the model we have created ([hors_lm]{.alt}), replace [continuous_variable]{.alt} with the continuous predictor (**puppy_love**) and [categorical_variable]{.alt} with the grouping variable (**dose**). By default it will return 95% confidence intervals so we can omit this argument unless we want to use a different level. 
+
+#### `r robot()` Code example
+
+We can save the simple slopes for the current model in an object called [pup_slopes]{.alt} and view it by executing
+
+```{r, eval = F}
+pup_slopes <- modelbased::estimate_slopes(hors_lm,
+                                          trend = "puppy_love",
+                                          at = "dose",
+                                          ci = 0.95)
+pup_slopes
+```
+
+
+#### `r alien()` Alien coding challenge
+
+Use the code box below to obtain the simple slopes of **puppy_love** for each **dose**.
+
+```{r hors_lm}
+hors_lm <- lm(happiness ~ puppy_love*dose, data = pupluv_tib)
+```
+
+
+```{r pup_slope, exercise = TRUE, exercise.lines = 6, exercise.setup = "hors_lm"}
+          
+```
+
+
+```{r pup_slope-solution}
+pup_slopes <- modelbased::estimate_slopes(hors_lm,
+                                          trend = "puppy_love",
+                                          at = "dose",
+                                          ci = 0.95)
+pup_slopes |>
+  knitr::kable(digits = 3)
+```
+
+```{r, echo = F}
+pup_slopes <- modelbased::estimate_slopes(hors_lm, trend = "puppy_love", at = "dose", ci = 0.95)
+```
+
+In the no puppy group, $\hat{b}$ = `r report_pars(pup_slopes, row = 1)`, and the 15-minute group, $\hat{b}$ = `r report_pars(pup_slopes, row = 2)`, there were significant positive relationships between loving puppies and happiness. However, in the 30-minute group there was a nonsignificant relationship between loving puppies and happiness, $\hat{b}$ = `r report_pars(pup_slopes, row = 3)`. The significant interaction seems to reflect that the positive relationship between loving puppies and happiness is 'wiped out' by 30 minutes of puppy therapy. One interpretation of this effect might be that the 30-minutes of puppy therapy raises everyone's happiness, which attenuates the relationship between loving puppies and happiness.
 
 
 ## `r user_astronaut()` Bayes factors [(3)]{.alt}

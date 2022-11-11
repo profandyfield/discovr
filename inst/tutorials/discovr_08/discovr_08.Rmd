@@ -1627,10 +1627,10 @@ To test whether confidence intervals and significance tests are biased we can es
 
 #### `r robot()` Code example
 
-We can obtain models based on robust standard errors by setting [vcov = TRUE]{.alt} and using the argument [vcov.type]{.alt} to set which method to use. If we omit the argument it defaults to ["HC3"]{.alt} (which is fine), but we can change it to ["HC4"]{.alt} (which some consider better). This code makes our model robust by implementing HC4 standard errors.
+We can obtain models based on robust standard errors by setting [vcov = "method"]{.alt} and replacing ["method"]{.alt} with the name of the method we want to use to compute the robust standard errors. For example, [vcov = "HC3"]{.alt} will use the HC3 method (which is fine) and [vcov = "HC4"]{.alt} will use the HC4 method (which some consider better than HC3). This code makes our model robust by implementing HC4 standard errors.
 
 ```{r hc4, exercise = TRUE, exercise.lines = 3, exercise.setup = "album_lm_setup"}
-parameters::model_parameters(album_full_lm, vcov = TRUE, vcov.type = "HC4") |> 
+parameters::model_parameters(album_full_lm, vcov = "HC4") |> 
   knitr::kable(digits = 3)
 ```
 
@@ -1644,15 +1644,10 @@ Refit the model using "HC3" standard errors.
 
 ```{r hc3-hint-1}
 # We can change HC3 to HC4
-parameters::model_parameters(album_full_lm, vcov = TRUE, vcov.type = "HC3") |> 
+parameters::model_parameters(album_full_lm, vcov = "HC3") |> 
   knitr::kable(digits = 3)
 ```
 
-```{r hc3-hint-2}
-# or omit the vcov.type argument altogether (because it defaults to HC3)
-parameters::model_parameters(album_full_lm, vcov = TRUE) |> 
-  knitr::kable(digits = 3)
-```
 
 The output shows the resulting $\hat{b}$-values, their robust standard errors, confidence intervals and *p*-values. Compare these with the non-robust versions from earlier. The values are not much different (mainly because our original model didn't seem to violate its assumptions); for example, the standard error for the $\hat{b}$ for image has changed from 2.44 to 2.25, the associated *t*-statistic has changed from 4.55 to 4.93, and the confidence interval has changed from [6.28, 15.89] to [6.65, 15.52]. These changes are not dramatic, our interpretation of the model won't have changed. Nevertheless, this is a useful sensitivity analysis in that if a robust model yields basically the same values as the non-robust model then we know that the non-robust model has not been unduly biased. If the robust estimates are hugely different from the original estimates then use and report the robust versions. Fitting a robust model is a win-win.
 

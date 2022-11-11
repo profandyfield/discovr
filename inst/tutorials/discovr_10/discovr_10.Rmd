@@ -430,23 +430,18 @@ aggress_lm <- lm(aggress ~ caunts_cent*vid_game_cent, data = vids_tib)
 ```{r vid_mod_rob-hint-1}
 # Place the model aggress_lm into:
 parameters::model_parameters()
-# set the vcov argument to true
+# set the vcov argument to HC4
 ```
 
-```{r vid_mod_rob-hint-2}
-# set the robust argument to true:
-parameters::model_parameters(aggress_lm, vcov = TRUE)
-# Change the robust SE to HC4 and digits to print as 3
-```
 
 ```{r vid_mod_rob-hint-3}
 # Solution:
-parameters::model_parameters(aggress_lm, vcov = TRUE, vcov.type = "HC4") |> 
+parameters::model_parameters(aggress_lm, vcov = "HC4") |> 
   knitr::kable(digits = 3)
 ```
 
 ```{r echo = F}
-agg_rob <- parameters::model_parameters(agg_lm, vcov = TRUE, vcov.type = "HC4")
+agg_rob <- parameters::model_parameters(agg_lm, vcov = "HC4")
 ```
 
 

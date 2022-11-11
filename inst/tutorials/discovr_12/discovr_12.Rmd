@@ -943,19 +943,19 @@ The bottom of the output shows significance tests of bias. These tests suggest t
 
 #### `r alien()` Alien coding challenge
 
-Remember from **discovr_08** that to get a summary of an existing model like [pupluv_lm]{.alt} that uses heteroscedasticity-consistent standard errors (i.e. robust significance tests and confidence intervals), we put the model into `model_parameters()` and set [vcov = TRUE, vcov.type = "HC4"]{.alt}. Try this in the code box:
+Remember from **discovr_08** that to get a summary of an existing model like [pupluv_lm]{.alt} that uses heteroscedasticity-consistent standard errors (i.e. robust significance tests and confidence intervals), we put the model into `model_parameters()` and set [vcov = "HC4"]{.alt}. Try this in the code box:
 
 ```{r pupp_hc4, exercise = TRUE, exercise.lines = 2, exercise.setup = "pupluv_lm"}
 
 ```
 
 ```{r pupp_hc4-solution}
-parameters::model_parameters(pupluv_lm, vcov = TRUE, vcov.type = "HC4") |> 
+parameters::model_parameters(pupluv_lm, vcov = "HC4") |> 
   knitr::kable(digits = 3)
 ```
 
 ```{r, echo = F}
-hc_par <- parameters::model_parameters(pup_lm, vcov = TRUE, vcov.type = "HC4")
+hc_par <- parameters::model_parameters(pup_lm, vcov = "HC4")
 ```
 
 
@@ -1586,7 +1586,7 @@ Use the code box to get tests for the parameter estimates of [cure_lm]{.alt} tha
 ```
 
 ```{r cure_hc4-solution}
-parameters::model_parameters(cure_lm, vcov = TRUE, vcov.type = "HC4") |> 
+parameters::model_parameters(cure_lm, vcov = "HC4") |> 
   knitr::kable(digits= 3)
 ```
 

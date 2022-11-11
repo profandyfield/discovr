@@ -999,14 +999,14 @@ The bottom of the output shows significance tests of bias. These tests suggest t
 
 #### `r alien()` Alien coding challenge
 
-Remember from previous tutorials that to get a summary of an existing model like [goggles_lm]{.alt} that uses heteroscedasticity-consistent standard errors (i.e. robust significance tests and confidence intervals), we put the model into `model_parameters()` and set [vcov = TRUE, vcov.type = \"HC4\", digits = 3]{.alt}. Try this in the code box:
+Remember from previous tutorials that to get a summary of an existing model like [goggles_lm]{.alt} that uses heteroscedasticity-consistent standard errors (i.e. robust significance tests and confidence intervals), we put the model into `model_parameters()` and set [vcov = \"HC4\"]{.alt}. Try this in the code box:
 
 ```{r goggles_hc4, exercise = TRUE, exercise.lines = 3, exercise.setup = "goggles_con_setup"}
 
 ```
 
 ```{r goggles_hc4-solution}
-parameters::model_parameters(goggles_lm, vcov = TRUE, vcov.type = "HC4", digits = 3) |> 
+parameters::model_parameters(goggles_lm, vcov = "HC4") |> 
   knitr::kable(digits = 3) 
 ```
 
@@ -1481,7 +1481,7 @@ If you used `lm()` to fit the model, use the code box to get tests for the param
 ```
 
 ```{r xbox_hc4-solution}
-parameters::model_parameters(xbox_lm, vcov = TRUE, vcov.type = "HC4") |> 
+parameters::model_parameters(xbox_lm, vcov = "HC4") |> 
   knitr::kable(digits = 3)
 ```
 

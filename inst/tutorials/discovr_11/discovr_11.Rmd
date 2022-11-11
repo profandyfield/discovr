@@ -1072,14 +1072,14 @@ The bottom of the output shows significance tests of bias. These tests suggest t
 
 #### `r alien()` Alien coding challenge
 
-Remember from **discovr_08** that to get a summary of an existing model like [puppy_lm]{.alt} that uses heteroscedasticity-consistent standard errors (i.e. robust significance tests and confidence intervals), we put the model into `model_parameters()` and set [vcov = TRUE, vcov.type = "HC4", digits = 3]{.alt}. Try this in the code box:
+Remember from **discovr_08** that to get a summary of an existing model like [puppy_lm]{.alt} that uses heteroscedasticity-consistent standard errors (i.e. robust significance tests and confidence intervals), we put the model into `model_parameters()` and set [vcov = "HC4"]{.alt}. Try this in the code box:
 
 ```{r pupp_hc4, exercise = TRUE, exercise.lines = 2, exercise.setup = "puppy_lm"}
 
 ```
 
 ```{r pupp_hc4-solution}
-parameters::model_parameters(puppy_lm, vcov = TRUE, vcov.type = "HC4") |> 
+parameters::model_parameters(puppy_lm, vcov = "HC4") |> 
   knitr::kable(digits = 3)
 ```
 
@@ -1312,7 +1312,7 @@ hero_lm <- lm(injury ~ hero, data = hero_tib)
 
 ```{r hero2_asw-solution}
 oneway.test(injury ~ hero, data = hero_tib)
-parameters::model_parameters(hero_lm, vcov = TRUE, vcov.type = "HC4") |> 
+parameters::model_parameters(hero_lm, vcov = "HC3") |> 
   knitr::kable(digits = 3)
 ```
 

@@ -287,7 +287,7 @@ new_model <- t.test(outcome ~ predictor,
                     paired = FALSE,
                     var.equal = FALSE,
                     conf.level = 0.95,
-                    na.action)
+                    na.action = na.exclude)
 ```
 
 In which:

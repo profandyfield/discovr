@@ -141,7 +141,7 @@ For the [wish_tib]{.alt} execute the following code:
 wish_tib <- wish_tib |>
   dplyr::mutate(
     strategy = forcats::as_factor(strategy),
-    time = forcats::as_factor(time) |> forcats::fct_relevel(., "Baseline")
+    time = forcats::as_factor(time) |> forcats::fct_relevel("Baseline")
   )
 ```
 
@@ -668,7 +668,7 @@ To add the distribution of scores to the plot, simply add the line:
 geom_violin() +
 ```
 
-### r user_visor()` Exploring layers [(2)]{.alt}
+### `r user_visor()` Exploring layers [(2)]{.alt}
 
 This is a good opportunity to remind you that each line of the command adds a layer to the plot *in the order you specify them*. This optional section might help you to understand how layering works in `ggplot2`.
 

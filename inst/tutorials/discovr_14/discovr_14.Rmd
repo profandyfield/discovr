@@ -147,7 +147,8 @@ To work *outside of this tutorial* you need to download the following data files
 Set up an `r rstudio()` project in the way that [I recommend in this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your Quarto document:
 
 ```{r, eval=FALSE}
-cosmetic_tib <- cosmetic_tib |>
+cosmetic_tib <- here::here("data/cosmetic.csv") |>
+  readr::read_csv() |>
     dplyr::mutate(
       clinic = forcats::as_factor(clinic) |> forcats::fct_relevel(paste("Clinic", seq(1, 20, 1))),
       reason = forcats::as_factor(reason) |> forcats::fct_relevel("Change appearance")

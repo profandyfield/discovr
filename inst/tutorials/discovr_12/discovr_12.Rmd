@@ -221,7 +221,7 @@ Because I have set up the data within this tutorial you should see that the leve
 ```{r quiz_fct_relevel, echo = FALSE}
 quiz(caption = "Changing the order of factor levels",
      question("If the levels of dose were in the wrong order what function could we use to reorder the levels?",
-    answer("`forcats::fct_relevel()`", correct = T, message = "Specifically, we could use this code: `pupluv_tib <- pupluv_tib |> \n dplyr::mutate(dose = forcats::fct_relevel(dose, \"No puppies\", \"15 mins\", \"30 mins\"))`"),
+    answer("`forcats::fct_relevel()`", correct = T, message = "Specifically, we could use this code: `pupluv_tib <- pupluv_tib |>` \n `dplyr::mutate(dose = forcats::fct_relevel(dose, \"No puppies\", \"15 mins\", \"30 mins\"))`"),
     answer("`forcats::reorder()`", message = ""),
     answer("`dplyr::fct_levels()`", message = ""),
     correct = "Correct - well done!",

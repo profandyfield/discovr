@@ -710,7 +710,7 @@ We replace [my_model]{.alt} the name of the model into the function, then option
 * [fixed = "covariates"]{.alt}: the predictor(s) that you want to remain fixed (i.e. the variables that you want to adjust the means by). In our case, we want adjust means by the variable **puppy_love**, so we could specify [fixed = "puppy_love"]{.alt}.
 * [ci = 0.95]{.alt}: specifies the width of the confidence interval. It defaults to a 95% confidence interval so if you're happy with that you can leave this argument out.
 
-Although we can explicitly set the [levels]{.alt} and [fixed]{.alt} arguments, we don't need to in this case because the predicted means from the model will be the adjusted means. However, it is useful to specify the [fixed]{.alt} argument because doing so means that the output includes the value of the covariate at which the means are being adjusted. In other words, it will show us the mean level of **puppy_love.**.
+Although we can explicitly set the [levels]{.alt} and [fixed]{.alt} arguments, we don't need to in this case because the predicted means from the model will be the adjusted means. However, it is useful to specify the [fixed]{.alt} argument because doing so means that the output includes the value of the covariate at which the means are being adjusted. In other words, it will show us the mean level of **puppy_love**.
 
 #### `r alien()` Alien coding challenge
 

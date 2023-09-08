@@ -20,8 +20,8 @@ A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (
 Both Ozzy Osbourne and Judas Priest have been accused of putting backward masked messages on their albums
 that subliminally influence poor unsuspecting teenagers into doing things like blowing their heads off with
 shotguns. A psychologist was interested in whether backward masked messages could have an effect. He created
-a version of Britney Spears' 'Baby one more time' that contained the masked message 'deliver your soul to the
-dark lord' repeated in the chorus. He took this version, and the original, and played one version (randomly)
+a version of Taylor Swifts' 'Shake it off' that contained the masked message 'deliver your soul to the dark lord'
+repeated in the chorus. He took this version, and the original, and played one version (randomly)
 to a group of 32 people. Six months later he played them whatever version they hadn't heard the time before.
 So, each person heard both the original and the version with the masked message, but at different points in time.
 The psychologist measured the number of satanic intrusions the person had in the week after listening to each

@@ -25,7 +25,7 @@ it to a photo of them very obviously as part of a romantic couple and record the
 strangers over 3 weeks. The (fictional) data contains the following variables:
 \itemize{
 \item \strong{id}: Participant id
-\item \strong{rel_status}: Whether the participant's relationship status is 'sing;le' or 'in a relationship'
+\item \strong{rel_status}: Whether the participant's relationship status is 'single' or 'in a relationship'
 \item \strong{profile_pic}: Whether the participant's profile picture depicts them alone or as part of a couple
 \item \strong{requests}: The number of unsolicited friend requests (in 3 weeks) from random strangers who categorise their sexual orientation such that they are interested in people of the gender of the participant
 }

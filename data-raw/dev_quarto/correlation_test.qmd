@@ -1,0 +1,16 @@
+---
+title: "Untitled"
+format: html
+editor: visual
+---
+
+## Correlation
+
+```{r}
+exam_tib <- discovr::exam_anxiety
+
+exam_tib |> 
+  dplyr::select(exam_grade, revise) |> 
+  correlation::correlation() |> 
+  knitr::kable(digits = c(rep(2, 8), 3))
+```

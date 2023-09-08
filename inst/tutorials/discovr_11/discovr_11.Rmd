@@ -360,7 +360,7 @@ Based on previous tutorials we could do the following 4 steps:
 3. Obtain the model parameters and confidence intervals using `broom::tidy()`
 4. Plot diagnostics using `plot()`
 
-This is, basically, what we do except that when we're using the linear model to compare means, we often want an overall test of each predictor. We don't get this with `broom::glance()` (we get only the overall fit). Instead we can use the `anova()` function to get overall effects of the model and then pipe this into `parameters::parameters()` to get an effect size ($\omega^2$) for each predictor.
+This is, basically, what we do except that when we're using the linear model to compare means, we often want an overall test of each predictor. We don't get this with `broom::glance()` (we get only the overall fit). Instead we can use the `anova()` function to get overall effects of the model and then pipe this into `parameters::model_parameters()` to get an effect size ($\omega^2$) for each predictor.
 
 #### `r robot()` Code example
 
@@ -368,10 +368,10 @@ To get overall (*omnibus*) tests of categorical predictors we can use the follow
 
 ```{r, eval = F}
 anova(my_model) |> 
-  parameters::parameters(omega_squared = "raw")
+  parameters::model_parameters(effectsize_type = "omega")
 ```
 
-In which we replace [my_model]{.alt} with the name of a model created using `lm()`. By default we will get the overall effect size ($\omega^2$), but we will see in future tutorials that you can instead get a version of this effect size that adjusts for other predictors known as partial $\omega^2$, by changing [omega_squared = "raw"]{.alt} to [omega_squared = "partial"]{.alt}.
+In which we replace [my_model]{.alt} with the name of a model created using `lm()`. By default we will get the overall effect size ($\omega^2$), but we will see in future tutorials that you can instead get a version of this effect size that adjusts for other predictors known as partial $\omega^2$, by adding the argument [partial = TRUE]{.alt}.
 
 #### `r alien()` Alien coding challenge
 
@@ -400,7 +400,7 @@ puppy_lm <- lm(happiness ~ dose, data = puppy_tib)
 ```{r lm1-hint-3}
 # Adapt the sample code to get the summary of the model
 anova(puppy_lm) |> 
-  parameters::parameters(omega_squared = "raw")
+  parameters::model_parameters(effectsize_type = "omega")
 # Obtain the model parameters and confidence intervals using `tidy()`
 ```
 
@@ -409,7 +409,7 @@ anova(puppy_lm) |>
 puppy_lm <- lm(happiness ~ dose, data = puppy_tib, na.action = na.exclude)
 
 anova(puppy_lm) |> 
-  parameters::parameters(omega_squared = "raw") |> 
+  parameters::model_parameters(effectsize_type = "omega") |> 
   knitr::kable(digits = 3) # to round values
 
 broom::tidy(puppy_lm, conf.int = TRUE) |> 
@@ -724,7 +724,7 @@ contrasts(puppy_tib$dose) <- cbind(puppy_vs_none, short_vs_long)
 puppy_lm <- lm(happiness ~ dose, data = puppy_tib)
 
 anova(puppy_lm) |> 
-  parameters::parameters(omega_squared = "raw") |> 
+  parameters::model_parameters(effectsize_type = "omega") |> 
   knitr::kable(digits = 3)
 
 broom::tidy(puppy_lm, conf.int = TRUE) |> 
@@ -1253,13 +1253,13 @@ hero_lm <- lm(xxxxxx)
 hero_lm <- lm(injury ~ hero, data = hero_tib)
 # Now print the summary table using anova() and parameters():
 anova(xxxx) |> 
-  parameters::parameters(xxxxxx)
+  parameters::model_parameters(xxxxxx)
 ```
 
 ```{r hero_asw-hint-4}
 # print the summary table using anova() and parameters()
 anova(hero_lm) |> 
-  parameters::parameters(omega_squared = "raw")
+  parameters::model_parameters(effectsize_type = "omega")
 # Next, print the parameter estimates using tidy()
 # Optionally, round the values to 3 decimal places
 ```
@@ -1284,7 +1284,7 @@ contrasts(hero_tib$hero) <- cbind(flying_vs_not, super_vs_spider, hulk_vs_ninja)
 hero_lm <- lm(injury ~ hero, data = hero_tib)
 
 anova(hero_lm) |> 
-  parameters::parameters(omega_squared = "raw") |> 
+  parameters::model_parameters(effectsize_type = "omega") |> 
   knitr::kable(digits = 3)
 
 broom::tidy(hero_lm, conf.int = TRUE) |> 

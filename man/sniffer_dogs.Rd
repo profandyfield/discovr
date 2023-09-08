@@ -21,14 +21,14 @@ When the alien invasion comes we'll need spaniels (or possibly other dogs, but l
 to help us to identify the space lizards. The top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) was put together
 to test the plausibility of training sniffer dogs to detect aliens. Over many trials 8 of their best dogs (Milton, Woofy, Ramsey, Mr. Snifficus III,
 Willock, The Venerable Dr. Waggy, Lord Scenticle, and Professor Nose) were recruited for a pilot study. During training, these dogs were rewarded
-for making vocalisations while sniffing alien space lizards (which they happened to have a few of in Hangar 18).
+for making vocalizations while sniffing alien space lizards (which they happened to have a few of in Hangar 18).
 On the test trial, the 8 dogs were allowed to sniff 4 entities for 1-minute each: an alien space lizard, a shapeshifting alien space
-lizard who had taken on humanoid form and worked undetected as a statistics lecturer, a human, and a human mannequin). The number of vocalisations made
+lizard who had taken on humanoid form and worked undetected as a statistics lecturer, a human, and a human mannequin). The number of vocalizations made
 during each 1-minute sniffing session was recorded. For more alien lizard and sniffer dog adventures see \link{alien_scents}.
 \itemize{
 \item \strong{dog_name}: the name of the sniffer dog
 \item \strong{entity}: the entity being sniffed by the sniffer dog (alien, alien in humanoid form (shapeshifter), human, human mannequin)
-\item \strong{vocalisations}: the number of vocalisations made by the dog during a 1-minute sniff
+\item \strong{vocalizations}: the number of vocalizations made by the dog during a 1-minute sniff
 }
 }
 \keyword{datasets}

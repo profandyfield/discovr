@@ -24,15 +24,15 @@ that the two most effective masking scents would be human pheromones (which they
 and fox-pheromones (because they are a powerful, distracting smell for dogs). The aliens started smearing themselves with humans
 and foxes and prepared to invade.
 Meanwhile, the top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) had got wind of their plan and set about testing how effective it would be.
-They trained 50 sniffer dogs. During training, these dogs were rewarded for making vocalisations while sniffing alien space lizards.
+They trained 50 sniffer dogs. During training, these dogs were rewarded for making vocalizations while sniffing alien space lizards.
 On the test trials, the 50 dogs were allowed to sniff 9 different entities for 1-minute each: 3 alien space lizards, 3 shapeshifting alien space
 lizard who had taken on humanoid form, and 3 humans. Within each type of entity, 1 had no masking scent, 1 was smothered in human pheromones and 1 wore fox pheromones.
-The number of vocalisations made during each 1-minute sniffing session was recorded.
+The number of vocalizations made during each 1-minute sniffing session was recorded.
 \itemize{
 \item \strong{dog_id}: the id of the 50 sniffer dogs
 \item \strong{entity}: the entity being sniffed by the sniffer dog (alien, alien in humanoid form (shapeshifter), human)
 \item \strong{scent_mask}: the scent the entity used to mask their natural odour (None, human pheromones, fox pheromones)
-\item \strong{vocalisations}: the number of vocalisations made by the dog during a 1-minute sniff
+\item \strong{vocalizations}: the number of vocalizations made by the dog during a 1-minute sniff
 }
 }
 \keyword{datasets}

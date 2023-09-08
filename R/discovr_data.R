@@ -64,15 +64,15 @@
 #' and fox-pheromones (because they are a powerful, distracting smell for dogs). The aliens started smearing themselves with humans
 #' and foxes and prepared to invade.
 #' Meanwhile, the top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) had got wind of their plan and set about testing how effective it would be.
-#' They trained 50 sniffer dogs. During training, these dogs were rewarded for making vocalisations while sniffing alien space lizards.
+#' They trained 50 sniffer dogs. During training, these dogs were rewarded for making vocalizations while sniffing alien space lizards.
 #' On the test trials, the 50 dogs were allowed to sniff 9 different entities for 1-minute each: 3 alien space lizards, 3 shapeshifting alien space
 #' lizard who had taken on humanoid form, and 3 humans. Within each type of entity, 1 had no masking scent, 1 was smothered in human pheromones and 1 wore fox pheromones.
-#' The number of vocalisations made during each 1-minute sniffing session was recorded.
+#' The number of vocalizations made during each 1-minute sniffing session was recorded.
 #'
 #'   * **dog_id**: the id of the 50 sniffer dogs
 #'   * **entity**: the entity being sniffed by the sniffer dog (alien, alien in humanoid form (shapeshifter), human)
 #'   * **scent_mask**: the scent the entity used to mask their natural odour (None, human pheromones, fox pheromones)
-#'   * **vocalisations**: the number of vocalisations made by the dog during a 1-minute sniff
+#'   * **vocalizations**: the number of vocalizations made by the dog during a 1-minute sniff
 #'
 #' @format A tibble with 50 rows and 4 variables.
 #' @docType data
@@ -104,6 +104,25 @@
 #' @source [www.discovr.rocks/csv/animal_bride.csv](https://www.discovr.rocks/csv/animal_bride.csv)
 
 "animal_bride"
+
+#' Dancing cats and dogs data
+#'
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Fictional data about dancing cats and dogs. A researcher was interested in whether animals could be trained to dance.
+#' He took 200 cats and 70 dogs and tried to train them to line-dance by giving them either food or affection as a reward for dance-like behaviour.
+#' At the end of the week he counted how many animals could line-dance and how many could not.
+#' The object contains the following variables:
+#'
+#'   * **training**: factor describing whether the animal was trained using food of affection as a reward
+#'   * **dance**: factor describing whether the cat danced or not
+#'   * **animal**: factor describing whether the animal was a cat or a dog
+#'
+#' @docType data
+#' @format A tibble with 270 rows and 3 variables.
+#' @source [www.discovr.rocks/csv/animal_dance.csv](https://www.discovr.rocks/csv/animal_dance.csv)
+
+"animal_dance"
 
 #' Beckham (1929) data
 #'
@@ -473,8 +492,8 @@
 #' Both Ozzy Osbourne and Judas Priest have been accused of putting backward masked messages on their albums
 #' that subliminally influence poor unsuspecting teenagers into doing things like blowing their heads off with
 #' shotguns. A psychologist was interested in whether backward masked messages could have an effect. He created
-#' a version of Britney Spears' 'Baby one more time' that contained the masked message 'deliver your soul to the
-#' dark lord' repeated in the chorus. He took this version, and the original, and played one version (randomly)
+#' a version of Taylor Swifts' 'Shake it off' that contained the masked message 'deliver your soul to the dark lord'
+#' repeated in the chorus. He took this version, and the original, and played one version (randomly)
 #' to a group of 32 people. Six months later he played them whatever version they hadn't heard the time before.
 #' So, each person heard both the original and the version with the masked message, but at different points in time.
 #' The psychologist measured the number of satanic intrusions the person had in the week after listening to each
@@ -1395,6 +1414,29 @@
 
 "notebook"
 
+#' The notebook data
+#'
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Fictitious data about interventions for obsessive compulsive disorder. Obsessive compulsive disorder (OCD) is a mental health problem characterized
+#' by intrusive images or thoughts that the sufferer finds abhorrent.
+#' These thoughts lead the sufferer to engage in activities to neutralize the unpleasantness of these thoughts (these activities can be mental or physical).
+#' A group of clinical psychologists were interested in the efficacy of two different interventions for OCD offered at their clinic: cognitive behaviour therapy (CBT) and behaviour therapy (BT).
+#' A group who were awaiting treatment acted as a control (a no treatment condition, NT). To gauge the success of therapy, the clinical psychologists measured two outcomes:
+#' the occurrence of obsession-related behaviours (actions) and the occurrence of obsession-related cognitions (thoughts) on a single day. Service users were randomly assigned to
+#' group 1 (CBT), group 2 (BT) or group 3 (NT). The data contains the following variables:
+#'
+#'   * **id**: participant ID
+#'   * **group**: the group to which service users were assigned (BT, CBT or NT)
+#'   * **thoughts**: the number of Number of obsession-related thoughts
+#'   * **actions**: the number of Number of obsession-related behaviours
+#'
+#' @format A tibble with 30 rows and 4 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/ocd.csv](https://www.discovr.rocks/csv/ocd.csv)
+
+"ocd"
+
 
 #' Ong et al. (2011) data: wide/messy format
 #'
@@ -1454,6 +1496,27 @@
 
 "ong_tidy"
 
+#' Penalty kicks data
+#'
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#'  Fictional data set looking at predictors of success of penalty takers in soccer (or whatever sport you enjoy).
+#'  The outcome variable is whether a penalty is scored or missed. Based on (imaginary) past research
+#'  there are two factors that reliably predict whether a penalty kick will be missed or scored: (1) the extent to which
+#'  the penalty taker is prone to worry (measured using the Penn State Worry Questionnaire, PSWQ); and (2) the past success rate of the penalty taker.
+#'  State anxiety is also likely detrimental effects on performance so it was also measured. The data contain the following variables:
+#'
+#' * **id**: Penalty taker's id
+#' * **pswq**: proneness to worry on the Penn State Worry Questionnaire, PSWQ
+#' * **anxious**: state anxiety
+#' * **previous**: The percentage of previous penalties scored (to the nearest percent)
+#'
+#' @format A tibble with 75 rows and 5 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/penalty.csv](https://www.discovr.rocks/csv/penalty.csv)
+
+"penalty"
+
 #' Profile picture data
 #'
 #' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
@@ -1466,7 +1529,7 @@
 #'  strangers over 3 weeks. The (fictional) data contains the following variables:
 #'
 #' * **id**: Participant id
-#' * **rel_status**: Whether the participant's relationship status is 'sing;le' or 'in a relationship'
+#' * **rel_status**: Whether the participant's relationship status is 'single' or 'in a relationship'
 #' * **profile_pic**: Whether the participant's profile picture depicts them alone or as part of a couple
 #' * **requests**: The number of unsolicited friend requests (in 3 weeks) from random strangers who categorise their sexual orientation such that they are interested in people of the gender of the participant
 #'
@@ -1626,6 +1689,29 @@
 
 "roaming_cats"
 
+#' Roaming cats data
+#'
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Fictional data based on a study by Meston & Frohlich (2003) that showed that heterosexual people rate a
+#' picture of someone of the opposite sex as more attractive after riding a roller-coaster compared to before.
+#' Imagine we took 20 people as they came off the Rockit roller-coaster at Universal studios in Orlando
+#' and asked them to rate the attractiveness of people in a series of photographs on a scale of 0
+#' (looks like Jabba the Hut) to 10 (looks like Princess Leia or Han Solo). The mean of their
+#' attractiveness ratings was the outcome. We also recorded their fear during the ride using a device
+#' that collates various indicators of  physiological arousal and returns a value from 0, chill, to 10, terrified.
+#' This variable is the predictor. The prediction was that fear would be positively associated with ratings of attractiveness.
+#'
+#'   * **id**: Participant id
+#'   * **attractiveness**: Mean attractiveness rating people in a series of photographs from 0 (Jabba the Hut) to 10 (Princess Leia or Han Solo)
+#'   * **fear**: fear during the ride measured on a device that collates various indicators of physiological arousal into a value from 0, chill, to 10, terrified)
+#'
+#' @docType data
+#' @format A tibble with 20 rows and 3 variables.
+#' @source [www.discovr.rocks/csv/rollercoaster.csv](https://www.discovr.rocks/csv/rollercoaster.csv)
+
+"rollercoaster"
+
 #' Self-help book data
 #'
 #' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
@@ -1771,14 +1857,14 @@
 #' to help us to identify the space lizards. The top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) was put together
 #' to test the plausibility of training sniffer dogs to detect aliens. Over many trials 8 of their best dogs (Milton, Woofy, Ramsey, Mr. Snifficus III,
 #' Willock, The Venerable Dr. Waggy, Lord Scenticle, and Professor Nose) were recruited for a pilot study. During training, these dogs were rewarded
-#' for making vocalisations while sniffing alien space lizards (which they happened to have a few of in Hangar 18).
+#' for making vocalizations while sniffing alien space lizards (which they happened to have a few of in Hangar 18).
 #' On the test trial, the 8 dogs were allowed to sniff 4 entities for 1-minute each: an alien space lizard, a shapeshifting alien space
-#' lizard who had taken on humanoid form and worked undetected as a statistics lecturer, a human, and a human mannequin). The number of vocalisations made
+#' lizard who had taken on humanoid form and worked undetected as a statistics lecturer, a human, and a human mannequin). The number of vocalizations made
 #' during each 1-minute sniffing session was recorded. For more alien lizard and sniffer dog adventures see [alien_scents].
 #'
 #'   * **dog_name**: the name of the sniffer dog
 #'   * **entity**: the entity being sniffed by the sniffer dog (alien, alien in humanoid form (shapeshifter), human, human mannequin)
-#'   * **vocalisations**: the number of vocalisations made by the dog during a 1-minute sniff
+#'   * **vocalizations**: the number of vocalizations made by the dog during a 1-minute sniff
 #'
 #' @format A tibble with 32 rows and 3 variables.
 #' @docType data

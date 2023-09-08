@@ -61,6 +61,7 @@
 #' * [album_sales]: Fictitious data about predicting album sales from advertising, airplay and the band's image.
 #' * [alien_scents]: Fictitious data about training sniffer dogs to detect alien space lizards when they try to mask their identity with different scents. See also [sniffer_dogs].
 #' * [animal_bride]: Fictitious data about life satisfaction when married to a dog or a goat.
+#' * [animal_dance]: Fictitious data about training cats and dogs to dance.
 #' * [beckham_1929]: Data from a study by Beckham (1929).
 #' * [big_hairy_spider]: Fictitious data about whether anxiety is greater after exposure to real spiders or pictures of spiders.
 #' * [biggest_liar]: Fictitious data about creativity and telling lies.
@@ -111,8 +112,10 @@
 #' * [muris_2008]: Data about whether you can train children to interpret ambiguous situations in a particular way.
 #' * [nichols_2004]: Data from the development of the Internet Addiction Scale, IAS (Nichols & Nicki, 2004).
 #' * [notebook]: Fictitious data about whether watching the film the notebook is emotionally arousing.
+#' * [ocd]: Fictitious data about interventions for obsessive compulsive disorder.
 #' * [ong_2011]: Data about social media profile pictures and personality traits.
 #' * [ong_tidy]: Data about social media profile pictures and personality traits.
+#' * [penalty]: Fictitious data about predictors of penalty kick success in soccer (or whatever sport you enjoy).
 #' * [profile_pic]: Fictitious data related to whether the number of friend requests from random people on social media is affected by whether your profile picture depicts you as single or part of a romantic couple.
 #' * [pubs]: Data illustrating the difference between an outlier and an influential case.
 #' * [puppies]: Fictitious data related to whether puppy therapy works.
@@ -120,6 +123,7 @@
 #' * [raq]: Fictitious data relating to a fictional questionnaire about R anxiety that is not an actual questionnaire.
 #' * [r_exam]: Fictitious data relating to an R exam at two universities.
 #' * [roaming_cats]: Fictitious data about how far cats roam from their homes.
+#' * [rollercoaster]: Fictitious data about how rollercoaster induced fear affects attractiveness ratings.
 #' * [santas_log]: Fictitious data related to whether the type and quantity of treat consumed on Christmas night affects whether elves successfully deliver presents.
 #' * [self_help]: Fictitious data about whether self-help books improve relationship satisfaction.
 #' * [self_help_dsur]: Fictitious data about whether self-help books improve relationship satisfaction compared to statistics books.

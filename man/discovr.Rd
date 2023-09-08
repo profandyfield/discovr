@@ -68,6 +68,7 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{album_sales}: Fictitious data about predicting album sales from advertising, airplay and the band's image.
 \item \link{alien_scents}: Fictitious data about training sniffer dogs to detect alien space lizards when they try to mask their identity with different scents. See also \link{sniffer_dogs}.
 \item \link{animal_bride}: Fictitious data about life satisfaction when married to a dog or a goat.
+\item \link{animal_dance}: Fictitious data about training cats and dogs to dance.
 \item \link{beckham_1929}: Data from a study by Beckham (1929).
 \item \link{big_hairy_spider}: Fictitious data about whether anxiety is greater after exposure to real spiders or pictures of spiders.
 \item \link{biggest_liar}: Fictitious data about creativity and telling lies.
@@ -118,8 +119,10 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{muris_2008}: Data about whether you can train children to interpret ambiguous situations in a particular way.
 \item \link{nichols_2004}: Data from the development of the Internet Addiction Scale, IAS (Nichols & Nicki, 2004).
 \item \link{notebook}: Fictitious data about whether watching the film the notebook is emotionally arousing.
+\item \link{ocd}: Fictitious data about interventions for obsessive compulsive disorder.
 \item \link{ong_2011}: Data about social media profile pictures and personality traits.
 \item \link{ong_tidy}: Data about social media profile pictures and personality traits.
+\item \link{penalty}: Fictitious data about predictors of penalty kick success in soccer (or whatever sport you enjoy).
 \item \link{profile_pic}: Fictitious data related to whether the number of friend requests from random people on social media is affected by whether your profile picture depicts you as single or part of a romantic couple.
 \item \link{pubs}: Data illustrating the difference between an outlier and an influential case.
 \item \link{puppies}: Fictitious data related to whether puppy therapy works.
@@ -127,6 +130,7 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{raq}: Fictitious data relating to a fictional questionnaire about R anxiety that is not an actual questionnaire.
 \item \link{r_exam}: Fictitious data relating to an R exam at two universities.
 \item \link{roaming_cats}: Fictitious data about how far cats roam from their homes.
+\item \link{rollercoaster}: Fictitious data about how rollercoaster induced fear affects attractiveness ratings.
 \item \link{santas_log}: Fictitious data related to whether the type and quantity of treat consumed on Christmas night affects whether elves successfully deliver presents.
 \item \link{self_help}: Fictitious data about whether self-help books improve relationship satisfaction.
 \item \link{self_help_dsur}: Fictitious data about whether self-help books improve relationship satisfaction compared to statistics books.

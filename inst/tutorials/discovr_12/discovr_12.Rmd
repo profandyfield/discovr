@@ -221,7 +221,7 @@ Because I have set up the data within this tutorial you should see that the leve
 ```{r quiz_fct_relevel, echo = FALSE}
 quiz(caption = "Changing the order of factor levels",
      question("If the levels of dose were in the wrong order what function could we use to reorder the levels?",
-    answer("`forcats::fct_relevel()`", correct = T, message = "Specifically, we could use this code: `pupluv_tib <- pupluv_tib |> \n dplyr::mutate(dose = forcats::fct_relevel(dose, \"No puppies\", \"15 mins\", \"30 mins\"))`"),
+    answer("`forcats::fct_relevel()`", correct = T, message = "Specifically, we could use this code: `pupluv_tib <- pupluv_tib |>` \n `dplyr::mutate(dose = forcats::fct_relevel(dose, \"No puppies\", \"15 mins\", \"30 mins\"))`"),
     answer("`forcats::reorder()`", message = ""),
     answer("`dplyr::fct_levels()`", message = ""),
     correct = "Correct - well done!",
@@ -529,7 +529,7 @@ In which the variables **contrast 1** and **contrast 2** are the dummy variables
 
 #### `r robot()` Code example
 
-We also learnt that we can set these contrasts for **dose** using the `contrast()` (go back over **discovr_11** if this code doesn't make sense to you):
+We also learnt that we can set these contrasts for **dose** using the `contrasts()` (go back over **discovr_11** if this code doesn't make sense to you):
 
 ```{r, eval = F}
 puppy_vs_none <- c(-2/3, 1/3, 1/3)
@@ -710,7 +710,7 @@ We replace [my_model]{.alt} the name of the model into the function, then option
 * [fixed = "covariates"]{.alt}: the predictor(s) that you want to remain fixed (i.e. the variables that you want to adjust the means by). In our case, we want adjust means by the variable **puppy_love**, so we could specify [fixed = "puppy_love"]{.alt}.
 * [ci = 0.95]{.alt}: specifies the width of the confidence interval. It defaults to a 95% confidence interval so if you're happy with that you can leave this argument out.
 
-Although we can explicitly set the [levels]{.alt} and [fixed]{.alt} arguments, we don't need to in this case because the predicted means from the model will be the adjusted means. However, it is useful to specify the [fixed]{.alt} argument because doing so means that the output includes the value of the covariate at which the means are being adjusted. In other words, it will show us the mean level of **puppy_love.**.
+Although we can explicitly set the [levels]{.alt} and [fixed]{.alt} arguments, we don't need to in this case because the predicted means from the model will be the adjusted means. However, it is useful to specify the [fixed]{.alt} argument because doing so means that the output includes the value of the covariate at which the means are being adjusted. In other words, it will show us the mean level of **puppy_love**.
 
 #### `r alien()` Alien coding challenge
 

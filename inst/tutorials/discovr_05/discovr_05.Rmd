@@ -488,7 +488,7 @@ where [lower_limit]{.alt} is the value you want to start at, [upper_limit]{.alt}
 
 #### `r robot()` Code example
 
-For now, we're adjusting only the *y*-axis. If we want it to show values from 0 to 100 and display labels on every value of 5, we would add these lines to the plot:
+For now, we're adjusting only the *y*-axis. If we want it to show values from 0 to 100 and display labels on every value of 10, we would add these lines to the plot:
 
 ```{r, eval = F}
 coord_cartesian(ylim = c(0, 100)) +

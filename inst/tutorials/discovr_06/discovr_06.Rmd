@@ -791,7 +791,7 @@ make_z <- function(x){
 }
 ```
 
-Execute the code. Nothing will happen, but in fact you have created the function `make_z()`, that takes a single input, which is a set of scores. For example, if we execute `make_z(download_tib$day_1)` the function will return the *z*-scores corresponding to the values in **day_1** in the [download_tib}{.alt} tibble. Try adding this code underneath where you created the function and executing it. You should see a bunch of *z*-scores appearing. These are the *z*=scores corresponding to the raw scores in **day_01**.
+Execute the code. Nothing will happen, but in fact you have created the function `make_z()`, that takes a single input, which is a set of scores. For example, if we execute `make_z(download_tib$day_1)` the function will return the *z*-scores corresponding to the values in **day_1** in the [download_tib]{.alt} tibble. Try adding this code underneath where you created the function and executing it. You should see a bunch of *z*-scores appearing. These are the *z*=scores corresponding to the raw scores in **day_01**.
 
 If we use `dplyr::across()` within `mutate()` we can apply our function `make_z()` to multiple variables simultaneously. The function `across()` applies a mutation across certain columns (hence, the name). It works similarly to `rename_with()`, which we used earlier.
 
@@ -877,7 +877,7 @@ download_tib |>
   dplyr::filter(
     dplyr::if_any(
       .cols = zday_1:zday_3,
-      .fn = \(column) column >= 2.58
+      .fn = \(column) abs(column) >= 2.58
       )
     )
 ```
@@ -885,11 +885,11 @@ download_tib |>
 Note that within the `filter()` function we use `if_any()` and within that
 
 * `.cols = zday_1:zday_3` selects the columns containing the *z*-scores of hygiene fro the three days of the festival.
-* `.fn = \(column) column >= 2.58` sets the condition. The `\(column)` says *for each column selected* and `column >= 2.58` says *check whether the values are greater or equal to 2.58*. If the condition is met, the row of that column will be retained.
+* `.fn = \(column) abs(column) >= 2.58` sets the condition. The `\(column)` says *for each column selected* and `abs(column) >= 2.58` says *check whether the absolute values are greater or equal to 2.58*. If the condition is met, the row of that column will be retained.
 
-This code is the same as using the logical operator OR, we're basically saying that if **zday_1** OR **zday_2** OR **zday_3** is greater than or equal to 2.58 then retain the case.
+This code is the same as using the logical operator OR, we're basically saying that if the absolute value of **zday_1** OR **zday_2** OR **zday_3** is greater than or equal to 2.58 then retain the case.
 
-It turns out that there are 8 cases (out of 200) who have *z*-scores greater than or equal to 2.58 on at least one of the days, which is about what we'd expect (4% of cases). There are only two cases with *z*-scores greater than 3.29 (case 3374 on day 2 and case 4564 on days 2 and 3).
+It turns out that there are 8 cases (out of 200) who have *z*-scores with absolute values greater than or equal to 2.58 on at least one of the days, which is about what we'd expect (4% of cases). If you change the code to include `abs(column) >= 3.29` you'll see that there are only two cases with *z*-scores with absolute values greater than 3.29 (case 3374 on day 2 and case 4564 on days 2 and 3).
  
 
 ## `r bmu()` Spotting normality [(1)]{.alt}

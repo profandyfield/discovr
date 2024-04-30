@@ -983,7 +983,7 @@ We can see what's going on by executing the code in the box below. The code take
 ```{r soc_anx_n_missing, exercise = TRUE, exercise.lines = 5}
 soc_anx_tib |>
   dplyr::summarise(
-    across(.fns = list(valid = ~sum(!is.na(.x)), missing = ~sum(is.na(.x))), .names = "{.col}_{.fn}")
+    across(.cols = everything(), .fns = list(valid = ~sum(!is.na(.x)), missing = ~sum(is.na(.x))), .names = "{.col}_{.fn}")
     )
 ```
 

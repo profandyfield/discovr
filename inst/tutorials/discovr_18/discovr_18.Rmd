@@ -818,13 +818,13 @@ Use the code box to run a reliability analysis on the *fear of computers* subsca
 
 ```{r rel_1-solution}
 raq_tib |> 
-  dplyr::select(raq_05, raq_06, raq_07, raq_10, raq_13, raq_14, raq_15, raq_18) |> 
+  dplyr::select(raq_06, raq_07, raq_10, raq_13, raq_14, raq_15, raq_18) |> 
   psych::alpha()
 ```
 
 ```{r, echo = F}
 r1 <- raq_tib |> 
-  dplyr::select(raq_05, raq_06, raq_07, raq_10, raq_13, raq_14, raq_15, raq_18) |> 
+  dplyr::select(raq_06, raq_07, raq_10, raq_13, raq_14, raq_15, raq_18) |> 
   psych::alpha()
 
 get_alpha <- function(x, digits = 2){

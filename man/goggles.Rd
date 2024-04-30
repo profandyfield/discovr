@@ -23,7 +23,7 @@ subdivided into three groups of 16: (1) a placebo group drank 500 ml of alcohol-
 500 ml of average strength beer (4\% ABV); and (3) a high-dose group drank 500 ml of strong beer (7\% ABV).
 Within each group, half (\emph{n} = 8) rated the attractiveness of 50 photos of unattractive faces on a scale from
 0 (pass me a paper bag) to 10 (pass me their phone number) and the remaining half rated 50 photos of attractive faces.
-The outcome for each participant was their median rating across the 50 photos. The data set has three variables
+The outcome for each participant was their median rating across the 50 photos. The data set has four variables
 \itemize{
 \item \strong{id}: Participant's id
 \item \strong{facetype}: Whether the participant rated photos of 'attractive' or 'unattractive' faces

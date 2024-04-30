@@ -60,6 +60,8 @@
 #' * [acdc]: Data about whether Bon Scott or Brian Johnson is the best singer of AC/DC.
 #' * [album_sales]: Fictitious data about predicting album sales from advertising, airplay and the band's image.
 #' * [alien_scents]: Fictitious data about training sniffer dogs to detect alien space lizards when they try to mask their identity with different scents. See also [sniffer_dogs].
+#' * [angry_pigs]: fictitious data about whether playing the video game angry pigs makes people more aggressive towards pigs. See also [angry_real].
+#' * [angry_real]: fictitious data about whether playing the video game angry pigs makes people more aggressive in everyday life. See also [angry_pigs].
 #' * [animal_bride]: Fictitious data about life satisfaction when married to a dog or a goat.
 #' * [animal_dance]: Fictitious data about training cats and dogs to dance.
 #' * [beckham_1929]: Data from a study by Beckham (1929).
@@ -85,10 +87,12 @@
 #' * [escape]: Fictitious data about whether I'm a better songwriter than my school bandmate Malcolm.
 #' * [essay_marks]: Fictitious data about essay marking.
 #' * [exam_anxiety]: Fictitious data about exam performance, anxiety and revision.
+#' * [field_2006]: Data that tests a hypothesis that threat information affects children's avoidance of novel animals.
 #' * [gallup_2003]: Data that tests a hypothesis about why penises have a bell end.
 #' * [gelman_2009]: Data used to critically evaluate the explanations (and claim) that there are more beautiful women than men in the world.
 #' * [glastonbury]: More fictitious data about music festivals and being smelly.
 #' * [goggles]: Fictitious data about whether alcohol affects perception of physical attractiveness.
+#' * [goggles_lighting]: fictitious data about the moderating effect of lighting on the ratings of attractivenesses of faces after different doses of alcohol.
 #' * [grades]: Fictitious data about statistics grades.
 #' * [ice_bucket]: Data about the ice bucket challenge.
 #' * [invisibility_base]: Fictitious data about how much mischief people would get up to if they had an invisibility cloak using a pre-post study design.
@@ -108,6 +112,7 @@
 #' * [metal_health]: Fictitious data about whether listening to heavy metal negatively affects mental health.
 #' * [metallica]: Data about thrash metal band Metallica.
 #' * [miller_2007]: Data from Miller et al. (2007) testing the hidden-estrus theory.
+#' * [mixed_attitude]: Fictitious data about whether different type of imagery in advertising affect ratings of different types of drinks based on the gender identity of the participant.
 #' * [murder]: Fictitious data about the number of murder each month at three street locations (Ruskin Avenue, Acacia Avenue and Rue Morgue).
 #' * [muris_2008]: Data about whether you can train children to interpret ambiguous situations in a particular way.
 #' * [nichols_2004]: Data from the development of the Internet Addiction Scale, IAS (Nichols & Nicki, 2004).
@@ -122,8 +127,9 @@
 #' * [puppy_love]: Fictitious data related to whether puppy therapy works when you adjust for a person's love of puppies.
 #' * [raq]: Fictitious data relating to a fictional questionnaire about R anxiety that is not an actual questionnaire.
 #' * [r_exam]: Fictitious data relating to an R exam at two universities.
+#' * [reality_tv]: Fictitious data relating to whether being on a reality TV show exacerbates personality disorder traits.
 #' * [roaming_cats]: Fictitious data about how far cats roam from their homes.
-#' * [rollercoaster]: Fictitious data about how rollercoaster induced fear affects attractiveness ratings.
+#' * [rollercoaster]: Fictitious data about how roller-coaster induced fear affects attractiveness ratings.
 #' * [santas_log]: Fictitious data related to whether the type and quantity of treat consumed on Christmas night affects whether elves successfully deliver presents.
 #' * [self_help]: Fictitious data about whether self-help books improve relationship satisfaction.
 #' * [self_help_dsur]: Fictitious data about whether self-help books improve relationship satisfaction compared to statistics books.
@@ -144,9 +150,11 @@
 #' * [tea_716]: Fictitious data based on real data about cognitive functioning and drinking tea.
 #' * [teaching]: Fictitious data about the success of different methods of teaching.
 #' * [teach_method]: More fictitious data about the success of different methods of teaching.
+#' * [text_messages]: fictitious data about whether use of messaging apps ruins your grammar.
 #' * [tosser]: Fictitious data relating to a fictional questionnaire about The Teaching of Statistics for Scientific Experiments, which is fictional.
 #' * [tuk_2011]: Data about whether needing to urinate helps decision making.
 #' * [tumour]: fictitious data about mobile phone use and brain tumours.
+#' * [tutor_marks]: fictitious data comparing 4 tutors marks of the same essays.
 #' * [van_bourg_2020]: Data from van Bourg et al (2020) relating to whether dogs would release their distressed owners from a box.
 #' * [video_games]: Fictitious data about the relationship between video game use, callous unemotional traits and aggression.
 #' * [williams]: Data relating to the development of a questionnaire to measure organizational ability.
@@ -198,9 +206,12 @@
 #' * Field, A. P. (2023). *Discovering statistics using R and RStudio* (2nd ed.). London: Sage.
 #'
 #' @import learnr
-#' @docType package
 #' @name discovr
 #'
 #'
 #'
+"_PACKAGE"
+
+## usethis namespace: start
+## usethis namespace: end
 NULL

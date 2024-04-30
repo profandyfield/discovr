@@ -80,6 +80,46 @@
 
 "alien_scents"
 
+#' Video games and aggression example 1
+#'
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#'  Angry Birds is a video game in which you fire birds at pigs.  A (fabricated) study was set up in which people
+#'  played Angry Birds and a control game (Tetris) over a 2-year period (1 year per game).
+#'  They were put in a pen of pigs for a day before the study, and after 1 month, 6 months and 12 months.
+#'  Their violent acts towards the pigs were counted. The (fictional) data contains
+#'
+#'   * **id**: participant ID
+#'   * **game**: whether the participant had been assigned to play angry pigs or tetris
+#'   * **time**: the time at which aggressive acts were measured (Baseline, 1 month, 6 months and 12 months)
+#'   * **aggression**: the number of aggressive acts towards pigs
+#'
+#' @format A tibble with 336 rows and 4 variables
+#' @docType data
+#' @source [www.discovr.rocks/csv/speed_date.csv](https://www.discovr.rocks/csv/angry_pigs.csv)
+
+"angry_pigs"
+
+#' Video games and aggression example 2
+#'
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#'  Angry Birds is a video game in which you fire birds at pigs.  A (fabricated) study was set up in which people
+#'  played Angry Birds and a control game (Tetris) over a 2-year period (1 year per game).
+#'  The participant’s violent acts in everyday life were monitored before the study, and after 1 month, 6 months and 12 months.
+#'  The (fictional) data contains
+#'
+#'   * **id**: participant ID
+#'   * **game**: whether the participant had been assigned to play angry pigs or tetris
+#'   * **time**: the time at which aggressive acts were measured (Baseline, 1 month, 6 months and 12 months)
+#'   * **aggression**: the number of aggressive acts in everyday life
+#'
+#' @format A tibble with 504 rows and 4 variables
+#' @docType data
+#' @source [www.discovr.rocks/csv/speed_date.csv](https://www.discovr.rocks/csv/angry_real.csv)
+
+"angry_real"
+
 
 #' Animal bride data
 #'
@@ -753,6 +793,31 @@
 
 "gallup_2003"
 
+
+#' Field (2006) data
+#'
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Early in my career I looked at the effect of giving children information about entities. In one study (Field, 2006),
+#' I used three novel entities (the quoll, quokka and cuscus) and children were told threat information about one of the entities,
+#' positive information about another, and given no information about the third (our control). After the information I asked the
+#'  children to place their hands in three wooden boxes each of which they believed contained one of the aforementioned entities
+#' The data from the study has three variables:
+#'
+#' * **id**: The participant's id (these do not come from the study data file)
+#' * **info_type**: the type of information given about the animal
+#' * **latency**: the time taken for the child to approach the box (children who had not approached the box within 15s were assumed to be not consenting to that task and were scored as 15s)
+#'
+#' @format A tibble with 381 rows and 3 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/gallup_2003.csv](https://www.discovr.rocks/csv/field_2006.csv)
+#' @references
+#'
+#' Field, A. P. (2006). The behavioral inhibition system and the verbal information pathway to children’s fears. *Journal of Abnormal Psychology*, *115*, 742–752. \doi{10.1037/0021-843x.115.4.742}
+
+"field_2006"
+
+
 #' Gelman & Weakliem (2009) data
 #'
 #' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
@@ -814,7 +879,7 @@
 #' 500 ml of average strength beer (4% ABV); and (3) a high-dose group drank 500 ml of strong beer (7% ABV).
 #' Within each group, half (*n* = 8) rated the attractiveness of 50 photos of unattractive faces on a scale from
 #' 0 (pass me a paper bag) to 10 (pass me their phone number) and the remaining half rated 50 photos of attractive faces.
-#' The outcome for each participant was their median rating across the 50 photos. The data set has three variables
+#' The outcome for each participant was their median rating across the 50 photos. The data set has four variables
 #'
 #'   * **id**: Participant's id
 #'   * **facetype**: Whether the participant rated photos of 'attractive' or 'unattractive' faces
@@ -827,6 +892,27 @@
 #' @source [www.discovr.rocks/csv/goggles.csv](https://www.discovr.rocks/csv/goggles.csv)
 
 "goggles"
+
+#' Beer goggles and lighting data
+#'
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Fictional data about the moderating effect of lighting on the beer goggles effect. In previous edxample we came across the beer-goggles
+#' which suggests that alcohol impairs judgements of facial attractiveness. In this fictional follow-up study a sample of 26 people
+#' are given doses of alcohol (0 pints, 2 pints, 4 pints and 6 pints of lager) over four different weeks. They are asked to rate a
+#' bunch of photos of faces in either dim or bright lighting. The outcome measure was the mean attractiveness rating (out of 100)
+#' of the faces and the predictors were the dose of alcohol and the lighting conditions  The data set has four variables
+#'
+#'   * **id**: Participant's id
+#'   * **lighting**: Whether the photos were viewed in dim or bright lighting
+#'   * **alcohol**: The dose of alcohol taken before ratings were made
+#'   * **rating**: the median rating of the attractiveness  of the photos rated from 0 (pass me a paper bag) to 10 (pass me their phone number)
+#'
+#' @docType data
+#' @format A tibble with 208 rows and 4 variables.
+#' @source [www.discovr.rocks/csv/goggles.csv](https://www.discovr.rocks/csv/goggles_lighting.csv)
+
+"goggles_lighting"
 
 #' Grades data
 #'
@@ -1280,6 +1366,28 @@
 
 "miller_2007"
 
+#' Imagery and advertising example
+#'
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#'  A marketing researcher was interested in the effects of types of imagery (positive, negative or neutral)
+#'  on perceptions of different types of drink (beer, wine, water). Participants viewed videos of different
+#'  drink products in the context of positive, negative or neutral imagery and then rated the products on a
+#'  scale from –100 (extremely dislike) through 0 (neutral) to 100 (extremely like).
+#'  Those who identify as men and women might respond differently to the products, so participants self-reported
+#'  their gender (a between-group variable). The (fictional) data contains the following variables:
+#'
+#'   * **id**: participant ID
+#'   * **gender**: gender identity (self-identify as male or female)
+#'   * **drink**: The drink use din the advert (beer, wine or water)
+#'   * **imagery**: The valence of the imagery used in the advert (positive, negative, neutral)
+#'
+#' @format A tibble with 180 rows and 5 variables
+#' @docType data
+#' @source [www.discovr.rocks/csv/speed_date.csv](https://www.discovr.rocks/csv/mixed_attitude.csv)
+
+"mixed_attitude"
+
 #' Murder in the streets data
 #'
 #' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
@@ -1670,6 +1778,28 @@
 #' @source [www.discovr.rocks/csv/r_exam.csv](https://www.discovr.rocks/csv/r_exam.csv)
 
 "r_exam"
+
+#' Reality TV example
+#'
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#'  A researcher hypothesized that reality TV show contestants start off with personality disorders that
+#'  are exacerbated by being forced to spend time with people as attention-seeking as them.
+#'  To test this hypothesis, she gave eight contestants a questionnaire measuring personality disorders
+#'  before and after they entered the show. A second group of eight people were given the questionnaires
+#'  at the same time; these people were short-listed to go on the show, but never did. The (fictional) data
+#'  contains the following variables:
+#'
+#'   * **id**: participant ID
+#'   * **contestant**: whether the participant was a contestant or was on the short list but never went on the show
+#'   * **time**: the time at which personality disorder traits were measured (before or after the show)
+#'   * **pd_score**: the score on a personality disorder traits questionnaire
+#'
+#' @format A tibble with 32 rows and 4 variables
+#' @docType data
+#' @source [www.discovr.rocks/csv/speed_date.csv](https://www.discovr.rocks/csv/reality_tv.csv)
+
+"reality_tv"
 
 #' Roaming cats data
 #'
@@ -2180,6 +2310,29 @@
 
 "tea_716"
 
+#' Messaging apps and grammar example
+#'
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#'  Text messaging and Twitter encourage communication using abbreviated forms of words (if u no wat I mean).
+#'  A researcher wanted to see the effect this had on children’s understanding of grammar.
+#'  One group of 25 children was encouraged to send text messages on their mobile phones over a 6-month period.
+#'  A second group of 25 was forbidden from sending text messages for the same period (to ensure adherence,
+#'  this group were given armbands that administered painful shocks in the presence of a phone signal).
+#'  The outcome was a score on a grammatical test (as a percentage) that was measured both before and after the experiment.
+#'  The (fictional) data contains the following variables:
+#'
+#'   * **id**: participant ID
+#'   * **group**: whether the participant was assigned to the text message group or control group
+#'   * **time**: the time at which grammar ability was measured (baseline or 6 months later)
+#'   * **grammar**: the score on the grammar test as a percentage (%)
+#'
+#' @format A tibble with 100 rows and 4 variables
+#' @docType data
+#' @source [www.discovr.rocks/csv/speed_date.csv](https://www.discovr.rocks/csv/text_messages.csv)
+
+"text_messages"
+
 #' The Teaching of Statistics for Scientific Experiments—Revised (TOSSE-R) data
 #'
 #' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
@@ -2232,8 +2385,6 @@
 "tosser"
 
 
-
-
 #' Tuk et al. (2011) data
 #'
 #' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
@@ -2279,6 +2430,25 @@
 #' @source [www.discovr.rocks/csv/tumour.csv](https://www.discovr.rocks/csv/tumour.csv)
 
 "tumour"
+
+#' Tutor marking data
+#'
+#' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' It is common that lecturers obtain reputations for being ‘hard’ or ‘light’ markers, but there is often little
+#' to substantiate these reputations. A group of students investigated the consistency of marking by submitting the
+#' same essays to four different lecturers. The outcome was the percentage mark given by each lecturer and the
+#' predictor was the lecturer who marked the report. The fictitious data contains three variables:
+#'
+#'   * **id**: participant's id
+#'   * **tutor**: The tutor who marked the work
+#'   * **exam**: The mark on the essay (%)
+#'
+#' @format A tibble with 32 rows and 3 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/tutor_marks.csv](https://www.discovr.rocks/csv/teach_method.csv)
+
+"tutor_marks"
 
 
 #' Van Bourg et al. (2020) data

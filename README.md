@@ -68,9 +68,9 @@ remotes::install_github("profandyfield/discovr", lib = "N:/Documents/R/win-libra
 
 ## Interactive tutorials
 
-I recommend working through [this
-tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/) on
-how to install, set up and work within
+I recommend working through [this playlist of
+tutorials](https://youtube.com/playlist?list=PLEzw67WWDg83weG3idsgy4wuOIJAashA2&si=PiI-sDvqc1DkaWOq)
+on how to install, set up and work within
 <img src="./data-raw/images/r_logo.png" width="18"> and
 <img src="./data-raw/images/rstudio_logo.png" width="48"> before
 starting the interactive tutorials.
@@ -384,6 +384,12 @@ the book’s website.
   different scents. For details execute `?alien_scents`.
 - **animal_bride**: fictitious data about life satisfaction when married
   to a dog or a goat. For details execute `?animal_bride`.
+- **angry_pigs**: fictitious data about whether playing the video game
+  angry pigs makes people more aggressive towards pigs. For details
+  execute `?angry_pigs`.
+- **angry_real**: fictitious data about whether playing the video game
+  angry pigs makes people more aggressive in everyday life. For details
+  execute `?angry_real`.
 - **animal_dance**: Fictitious data about training cats and dogs to
   dance.`?animal_dance`
 - **beckham_1929**: Data from a study by Beckham (1929). For details
@@ -438,6 +444,9 @@ the book’s website.
   execute `?essay_marks`.
 - **exam_anxiety**: fictitious data about exam performance, anxiety and
   revision. For details execute `?exam_anxiety`.
+- **field_2006**: Data that tests a hypothesis that threat information
+  affects children’s avoidance of novel animals. For details execute
+  `?field_2006`.
 - **gallup_2003**: Data that tests a hypothesis about why penises have a
   bell end. For details execute `?gallup_2003`.
 - **gelman_2009**: Data used to critically evaluate the explanations
@@ -447,6 +456,9 @@ the book’s website.
   smelly. For details execute `?glastonbury`.
 - **goggles**: fictitious data about whether alcohol affects perception
   of physical attractiveness. For details execute `?goggles`.
+- **goggles_lighting**: fictitious data about the moderating effect of
+  lighting on the ratings of attractivenesses of faces after different
+  doses of alcohol. For details execute `?goggles_lighting`.
 - **grades**: fictitious data about statistics grades. For details
   execute `?grades`.
 - **hangover**: fictitious data about the efficacy of different drinks
@@ -492,6 +504,10 @@ the book’s website.
   execute `?metallica`.
 - **miller_2007**: Data from Miller et al. (2007) testing the
   hidden-estrus theory. For details execute `?miller_2007`.
+- **mixed_attitude**: Fictitious data about whether different type of
+  imagery in advertising affect ratings of different types of drinks
+  based on the gender identity of the participant. For details execute
+  `?mixed_attitude`.
 - **murder**: fictitious data about the number of murder each month at
   three street locations (Ruskin Avenue, Acacia Avenue and Rue Morgue).
   For details execute `?murder`.
@@ -525,11 +541,17 @@ the book’s website.
   `?puppy_love`.
 - **r_exam**: Fictitious data relating to an R exam at two universities.
   For details execute `?r_exam`.
+- **reality_tv**: Fictitious data relating to whether being on a reality
+  TV show exacerbates personality disorder traits. For details execute
+  `?reality_tv`.
 - **raq**: Fictitious data relating to a fictional questionnaire about R
   anxiety that is not an actual questionnaire. For details execute
   `?raq`.
 - **roaming_cats**: fictitious data about how far cats roam from their
-  homes For details execute `?roaming_cats`.
+  homes. For details execute `?roaming_cats`.
+- **rollercoaster**: Fictitious data about how roller-coaster induced
+  fear affects attractiveness ratings. For details execute
+  `?rollercoaster`.
 - **santas_log**: Fictitious data related to whether the type and
   quantity of treat consumed on Christmas night affects whether elves
   successfully deliver presents. For details execute `?santas_log`.
@@ -577,6 +599,8 @@ the book’s website.
   of teaching. For details execute `?teaching`.
 - **teach_method**: more fictitious data about the success of different
   methods of teaching. For details execute `?teach_method`.
+- **text_messages**: fictitious data about whether use of messaging apps
+  ruins your grammar. For details execute `?text_messages`.
 - **tosser**: Fictitious data relating to a fictional questionnaire
   about The Teaching of Statistics for Scientific Experiments, which is
   fictional. For details execute `?tosser`.
@@ -584,6 +608,8 @@ the book’s website.
   making. For details execute `?tuk_2011`.
 - **tumour**: fictitious data about mobile phone use and brain tumours.
   For details execute `?tumour`.
+- **tutor_marks**: fictitious data comparing 4 tutors marks of the same
+  essays. For details execute `?tutor_marks`.
 - **van_bourg_2020**: Data from van Bourg et al (2020) relating to
   whether dogs would release their distressed owners from a box. For
   details execute `?van_bourg_2020`.

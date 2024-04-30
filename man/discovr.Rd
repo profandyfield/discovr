@@ -2,6 +2,7 @@
 % Please edit documentation in R/discovr.R
 \docType{package}
 \name{discovr}
+\alias{discovr-package}
 \alias{discovr}
 \title{discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2023)}
 \description{
@@ -67,6 +68,8 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{acdc}: Data about whether Bon Scott or Brian Johnson is the best singer of AC/DC.
 \item \link{album_sales}: Fictitious data about predicting album sales from advertising, airplay and the band's image.
 \item \link{alien_scents}: Fictitious data about training sniffer dogs to detect alien space lizards when they try to mask their identity with different scents. See also \link{sniffer_dogs}.
+\item \link{angry_pigs}: fictitious data about whether playing the video game angry pigs makes people more aggressive towards pigs. See also \link{angry_real}.
+\item \link{angry_real}: fictitious data about whether playing the video game angry pigs makes people more aggressive in everyday life. See also \link{angry_pigs}.
 \item \link{animal_bride}: Fictitious data about life satisfaction when married to a dog or a goat.
 \item \link{animal_dance}: Fictitious data about training cats and dogs to dance.
 \item \link{beckham_1929}: Data from a study by Beckham (1929).
@@ -92,10 +95,12 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{escape}: Fictitious data about whether I'm a better songwriter than my school bandmate Malcolm.
 \item \link{essay_marks}: Fictitious data about essay marking.
 \item \link{exam_anxiety}: Fictitious data about exam performance, anxiety and revision.
+\item \link{field_2006}: Data that tests a hypothesis that threat information affects children's avoidance of novel animals.
 \item \link{gallup_2003}: Data that tests a hypothesis about why penises have a bell end.
 \item \link{gelman_2009}: Data used to critically evaluate the explanations (and claim) that there are more beautiful women than men in the world.
 \item \link{glastonbury}: More fictitious data about music festivals and being smelly.
 \item \link{goggles}: Fictitious data about whether alcohol affects perception of physical attractiveness.
+\item \link{goggles_lighting}: fictitious data about the moderating effect of lighting on the ratings of attractivenesses of faces after different doses of alcohol.
 \item \link{grades}: Fictitious data about statistics grades.
 \item \link{ice_bucket}: Data about the ice bucket challenge.
 \item \link{invisibility_base}: Fictitious data about how much mischief people would get up to if they had an invisibility cloak using a pre-post study design.
@@ -115,6 +120,7 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{metal_health}: Fictitious data about whether listening to heavy metal negatively affects mental health.
 \item \link{metallica}: Data about thrash metal band Metallica.
 \item \link{miller_2007}: Data from Miller et al. (2007) testing the hidden-estrus theory.
+\item \link{mixed_attitude}: Fictitious data about whether different type of imagery in advertising affect ratings of different types of drinks based on the gender identity of the participant.
 \item \link{murder}: Fictitious data about the number of murder each month at three street locations (Ruskin Avenue, Acacia Avenue and Rue Morgue).
 \item \link{muris_2008}: Data about whether you can train children to interpret ambiguous situations in a particular way.
 \item \link{nichols_2004}: Data from the development of the Internet Addiction Scale, IAS (Nichols & Nicki, 2004).
@@ -129,8 +135,9 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{puppy_love}: Fictitious data related to whether puppy therapy works when you adjust for a person's love of puppies.
 \item \link{raq}: Fictitious data relating to a fictional questionnaire about R anxiety that is not an actual questionnaire.
 \item \link{r_exam}: Fictitious data relating to an R exam at two universities.
+\item \link{reality_tv}: Fictitious data relating to whether being on a reality TV show exacerbates personality disorder traits.
 \item \link{roaming_cats}: Fictitious data about how far cats roam from their homes.
-\item \link{rollercoaster}: Fictitious data about how rollercoaster induced fear affects attractiveness ratings.
+\item \link{rollercoaster}: Fictitious data about how roller-coaster induced fear affects attractiveness ratings.
 \item \link{santas_log}: Fictitious data related to whether the type and quantity of treat consumed on Christmas night affects whether elves successfully deliver presents.
 \item \link{self_help}: Fictitious data about whether self-help books improve relationship satisfaction.
 \item \link{self_help_dsur}: Fictitious data about whether self-help books improve relationship satisfaction compared to statistics books.
@@ -151,9 +158,11 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{tea_716}: Fictitious data based on real data about cognitive functioning and drinking tea.
 \item \link{teaching}: Fictitious data about the success of different methods of teaching.
 \item \link{teach_method}: More fictitious data about the success of different methods of teaching.
+\item \link{text_messages}: fictitious data about whether use of messaging apps ruins your grammar.
 \item \link{tosser}: Fictitious data relating to a fictional questionnaire about The Teaching of Statistics for Scientific Experiments, which is fictional.
 \item \link{tuk_2011}: Data about whether needing to urinate helps decision making.
 \item \link{tumour}: fictitious data about mobile phone use and brain tumours.
+\item \link{tutor_marks}: fictitious data comparing 4 tutors marks of the same essays.
 \item \link{van_bourg_2020}: Data from van Bourg et al (2020) relating to whether dogs would release their distressed owners from a box.
 \item \link{video_games}: Fictitious data about the relationship between video game use, callous unemotional traits and aggression.
 \item \link{williams}: Data relating to the development of a questionnaire to measure organizational ability.
@@ -218,3 +227,16 @@ The following palettes exist.
 }
 }
 
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://www.discovr.rocks}
+  \item \url{https://github.com/profandyfield/discovr}
+  \item Report bugs at \url{https://github.com/profandyfield/discovr/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Andy Field \email{andyf@sussex.ac.uk}
+
+}

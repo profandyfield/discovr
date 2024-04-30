@@ -809,7 +809,7 @@ contrasts(puppy_tib$dose) <- contr.poly(3)
 puppy_trend <- lm(happiness ~ dose, data = puppy_tib)
 
 anova(puppy_trend) |> 
-  parameters::parameters(omega_squared = "raw") |> 
+  parameters::parameters(effectsize_type = "omega") |> 
   knitr::kable(digits = 3) #only necessary to round values
 
 broom::tidy(puppy_trend, conf.int = TRUE) |> 

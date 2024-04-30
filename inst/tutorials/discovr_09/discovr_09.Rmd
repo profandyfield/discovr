@@ -346,6 +346,14 @@ cloak_mod
 ```
 
 ```{r, echo = F}
+cloak_sum <- cloak_tib |> 
+  dplyr::group_by(cloak) |> 
+  dplyr::summarize(
+    n = n(),
+    mean = mean(mischief),
+    ci_lower = ggplot2::mean_cl_normal(mischief)$ymin,
+    ci_upper = ggplot2::mean_cl_normal(mischief)$ymax
+  )
 cloak_mod <- t.test(mischief ~ cloak, data = cloak_tib)
 ```
 
@@ -432,7 +440,7 @@ question("Which of these statements about Cohen's *d* is **NOT** correct?",
 <div class="reportbox">
   `r pencil()` **Report**`r rproj()`
 
-On average, participants given a cloak of invisibility engaged in more acts of mischief (*M* = `r cloak_mod$estimate[2]`, *SE* = 0.48), than those not given a cloak (*M* = `r cloak_mod$estimate[1]`, *SE* = 0.55). Having a cloak of invisibility did not significantly affect the amount of mischief a person got up to: the mean difference, *M* = `r round(cloak_mod$estimate[2]-cloak_mod$estimate[1], 2)`, 95% CI [`r round(cloak_mod$conf.int[1], 2)`, `r round(cloak_mod$conf.int[2], 2)`], was not significantly different from 0, *t*(`r round(as.numeric(cloak_mod$parameter, 2))`) = `r round(cloak_mod$statistic, 2)`, *p* = `r round(cloak_mod$p.value, 2)`. This effect was very large, `r report_es(d_cloak, col = "Cohens_d")`, but the confidence interval for the effect size contained zero. If this confidence interval is one of the 95% that captures the population effect size then this suggests that a zero effect is plausible. 
+On average, participants given a cloak of invisibility engaged in more acts of mischief (*M* = `r cloak_mod$estimate[2]`, 95% CI[`r round(cloak_sum$ci_lower[2], 2)`, `r round(cloak_sum$ci_upper[2], 2)`]), than those not given a cloak (*M* = `r cloak_mod$estimate[1]`, 95% CI[`r round(cloak_sum$ci_lower[1], 2)`, `r round(cloak_sum$ci_upper[1], 2)`]). Having a cloak of invisibility did not significantly affect the amount of mischief a person got up to: the mean difference, *M* = `r round(cloak_mod$estimate[2]-cloak_mod$estimate[1], 2)`, 95% CI [`r round(cloak_mod$conf.int[1], 2)`, `r round(cloak_mod$conf.int[2], 2)`], was not significantly different from 0, *t*(`r round(as.numeric(cloak_mod$parameter, 2))`) = `r round(cloak_mod$statistic, 2)`, *p* = `r round(cloak_mod$p.value, 2)`. This effect was very large, `r report_es(d_cloak, col = "Cohens_d")`, but the confidence interval for the effect size contained zero. If this confidence interval is one of the 95% that captures the population effect size then this suggests that a zero effect is plausible. 
 </div>
 
 
@@ -466,7 +474,7 @@ We conduct a paired *t*-test in exactly the same way as an independent *t*-test 
 ```
 
 ```{r t_text_rm-solution}
-cloak_rm_mod <- t.test(mischief ~ cloak, data = cloak_tib, paired = TRUE)
+cloak_rm_mod <- t.test(mischief ~ cloak, data = cloak_rm_tib, paired = TRUE)
 cloak_rm_mod
 ```
 
@@ -543,7 +551,7 @@ effectsize::cohens_d(mischief ~ cloak, data = cloak_rm_tib) |>
 <div class="reportbox">
   `r pencil()` **Report**`r rproj()`
 
-On average, participants given a cloak of invisibility engaged in more acts of mischief (*M* = 5, *SE* = 0.48), than those not given a cloak (*M* = 3.75, *SE* = 0.55). Having a cloak of invisibility affected the amount of mischief a person got up to: the mean difference, *M* = `r round(as.numeric(cloak_rm_mod$estimate), 2)`, 95% CI [`r round(cloak_rm_mod$conf.int[1], 2)`, `r round(cloak_rm_mod$conf.int[2], 2)`], was significantly different from 0, *t*(`r round(as.numeric(cloak_rm_mod$parameter, 2))`) = `r round(cloak_rm_mod$statistic, 2)`, *p* = `r round(cloak_rm_mod$p.value, 2)`. This effect was very large, `r report_es(d_cloak, col = "Cohens_d")`, but the confidence interval for the effect size contained zero. If this confidence interval is one of the 95% that captures the population effect size then this suggests that a zero effect is plausible. 
+On average, participants given a cloak of invisibility engaged in more acts of mischief (*M* = 5), than those not given a cloak (*M* = 3.75). Having a cloak of invisibility affected the amount of mischief a person got up to: the mean difference, *M* = `r round(as.numeric(cloak_rm_mod$estimate), 2)`, 95% CI [`r round(cloak_rm_mod$conf.int[1], 2)`, `r round(cloak_rm_mod$conf.int[2], 2)`], was significantly different from 0, *t*(`r round(as.numeric(cloak_rm_mod$parameter, 2))`) = `r round(cloak_rm_mod$statistic, 2)`, *p* = `r round(cloak_rm_mod$p.value, 2)`. This effect was very large, `r report_es(d_cloak, col = "Cohens_d")`, but the confidence interval for the effect size contained zero. If this confidence interval is one of the 95% that captures the population effect size then this suggests that a zero effect is plausible. 
 </div>
 
 

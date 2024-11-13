@@ -980,7 +980,7 @@ cosmetic_mod <- lmerTest::lmer(post_qol ~ months*reason + base_qol + (months|cli
 
 
 ```{r months_allfit-solution}
-lme4::allFit(cosmetic_mod)
+lme4:allFit(cosmetic_mod)
 ```
 
 
@@ -998,7 +998,7 @@ For example, to specify the bobyqa optimizer, we would fit the model as
 cosmetic_bob <- lmerTest::lmer(
   post_qol ~ months*reason + base_qol + (months|clinic),
   data = cosmetic_tib,
-  control = lmerControl(optimizer="bobyqa")
+  control = lme4::lmerControl(optimizer="bobyqa")
   )
 ```
 
@@ -1017,7 +1017,7 @@ Use the code box below to create [cosmetic_bob]{.alt} using months as a predicto
 cosmetic_bob <- lmerTest::lmer(
   post_qol ~ months*reason + base_qol + (months|clinic),
   data = cosmetic_tib,
-  control = lmerControl(optimizer="bobyqa")
+  control = lme4::lmerControl(optimizer="bobyqa")
   )
 summary(cosmetic_bob)
 ```
@@ -1042,7 +1042,7 @@ Use the code box below to obtain the *F*−statistics for the fixed effects from
 cosmetic_bob <- lmerTest::lmer(
   post_qol ~ months*reason + base_qol + (months|clinic),
   data = cosmetic_tib,
-  control = lmerControl(optimizer="bobyqa")
+  control = lme4::lmerControl(optimizer="bobyqa")
   )
 ```
 
@@ -1065,7 +1065,7 @@ cosmetic_bob <- cosmetic_tib |>
   ) |> lmerTest::lmer(
   post_qol ~ months*reason + base_qol + (months|clinic),
   data = _,
-  control = lmerControl(optimizer="bobyqa")
+  control = lme4::lmerControl(optimizer="bobyqa")
   ) 
 
 

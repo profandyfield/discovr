@@ -155,7 +155,7 @@ cosmetic_tib <- here::here("data/cosmetic.csv") |>
   )
 ```
 
-This code reads in the data and converts the variables **reason** and **clinic** to factors (categorical variable). It uses `fct_relevel` to set the order of the levels of the factor **reason** to be change appearance and physical reason, and to set the levels of the factor **clinic** to be Clinic 1, Clinic 2 ... Clinic 10 in numeric order (try executing the code `paste("Clinic ", seq(1, 10, 1))` and you'll see it pastes the text "Clinic " to the numbers 1 to 10 in turn.
+This code reads in the data and converts the variables **reason** and **clinic** to factors (categorical variable). It uses `fct_relevel` to set the order of the levels of the factor **reason** to be change appearance and physical reason, and to set the levels of the factor **clinic** to be Clinic 1, Clinic 2 ... Clinic 10 in numeric order (try executing the code `paste("Clinic", seq(1, 10, 1))` and you'll see it pastes the text "Clinic " to the numbers 1 to 10 in turn.
 
 ## `r bmu()` Cosmetic surgery [(1)]{.alt}
 
@@ -629,7 +629,7 @@ We can also store the coefficient table of each model we've fitted in a new vari
 dplyr::mutate(
     model = purrr::map(.x = data,
                        .f = \(clinic_tib) lm(post_qol ~ days*reason + base_qol, data = clinic_tib)),
-    coefs = purrr::map(model, tidy, conf.int = TRUE)
+    coefs = purrr::map(model, broom::tidy, conf.int = TRUE)
     )
 ```
 
@@ -644,7 +644,7 @@ clinic_lms <- cosmetic_tib  |>
   tidyr::nest()  |> 
   dplyr::mutate(
     model = purrr::map(.x = data, .f = \(clinic_tib) lm(post_qol ~ days*reason + base_qol, data = clinic_tib)),
-    coefs = purrr::map(model, tidy, conf.int = TRUE)
+    coefs = purrr::map(model, broom::tidy, conf.int = TRUE)
     )
 ```
 
@@ -664,7 +664,7 @@ clinic_lms <- cosmetic_tib  |>
   tidyr::nest()  |> 
   dplyr::mutate(
     model = purrr::map(.x = data, .f = \(clinic_tib) lm(post_qol ~ days*reason + base_qol, data = clinic_tib)),
-    coefs = purrr::map(model, tidy, conf.int = TRUE)
+    coefs = purrr::map(model, broom::tidy, conf.int = TRUE)
     )
 clinic_lms
 ```
@@ -678,7 +678,7 @@ clinic_lms <- cosmetic_tib  |>
   tidyr::nest()  |> 
   dplyr::mutate(
     model = purrr::map(.x = data, .f = \(clinic_tib) lm(post_qol ~ days*reason + base_qol, data = clinic_tib)),
-    coefs = purrr::map(model, tidy, conf.int = TRUE)
+    coefs = purrr::map(model, broom::tidy, conf.int = TRUE)
     )
 ```
 
@@ -724,7 +724,7 @@ The result is a 100 row tibble. Basically we have stacked the tables of model pa
 
 #### `r alien()` Alien coding challenge
 
-All of these questions are difficult to answer when scanning a 100-row table. Let's make life a bit easier by plotting the information instead. Use what you know about `ggplot2` to plot the parameter estimates in [models]{.alt} (in the variable **estimate**) using `geom_density()` and then `facet_wrap()` to create different plots for the different predictors in the model (in the variable **terms**).
+All of these questions are difficult to answer when scanning a 100-row table. Let's make life a bit easier by plotting the information instead. Use what you know about `ggplot2` to plot the parameter estimates in [models]{.alt} (in the variable **estimate**) using `geom_density()` and then `facet_wrap()` to create different plots for the different predictors in the model (in the variable **term**).
 
 ```{r parameter_plot_setup, exercise.setup = "clinic_lms_setup"}
 models_tib <- clinic_lms  |>
@@ -860,7 +860,7 @@ Well, that didn't go so well, did it?
 
 ###  `r user_astronaut()` A visit from the cockroach of convergence [(3)]{.alt}
 
-You should find that `r rproj()` produces one of those unpleasant error message that it is prone to throw at you. It uses words like 'converge' and 'unidentifiable'. No-one wants to see those words. The 'failed to converge' bit relates to the cockroach of convergence who has scuttled into your model and invited his friends along to spray their cuticular hydrocarbons everywhere and mess with your shit. The book discusses convergence in more detail, but one immediate step is to use the `allFit()` function on your model -  it will try all available optimizers and report back.
+You should find that `r rproj()` produces one of those unpleasant error message that it is prone to throw at you. It uses words like 'converge' and 'unidentifiable'. No-one wants to see those words. The 'failed to converge' bit relates to the cockroach of convergence who has scuttled into your model and invited his friends along to spray their cuticular hydrocarbons everywhere and mess with your shit. The book discusses convergence in more detail, but one immediate step is to use the `lme4::allFit()` function on your model -  it will try all available optimizers and report back.
 
 #### `r alien()` Alien coding challenge
 
@@ -871,7 +871,7 @@ Let's give it a whirl by executing.
 ```
 
 ```{r all_fit, exercise = TRUE, exercise.lines = 2}
-allFit(cosmetic_mod)          
+lme4::allFit(cosmetic_mod)          
 ```
 
 The attempts to fit the model with different optimizers haven't gone well. The cockroach of convergence has graffitied your console with his red text of despair. The model fails to converge with every optimizer (bobyqa, Nelder_Mead, nlminbwrap etc.). On the plus side, we know the original failure wasn't a false positive: our model is definitely messed up. 
@@ -980,7 +980,7 @@ cosmetic_mod <- lmerTest::lmer(post_qol ~ months*reason + base_qol + (months|cli
 
 
 ```{r months_allfit-solution}
-allFit(cosmetic_mod)
+lme4::allFit(cosmetic_mod)
 ```
 
 

@@ -8,7 +8,7 @@ output:
     theme: "united"
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
-description: "Repeated measures designs. Fitting models for one- and two-way repeated measures designs using the afex package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when these variables ahve been manipulated within the same entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors."
+description: "Repeated measures designs. Fitting models for one- and two-way repeated measures designs using the afex package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when these variables have been manipulated within the same entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, robust models and Bayes factors."
 bibliography: [discovr_15.bib, packages.bib]
 ---
 <html lang="en">
@@ -173,7 +173,7 @@ View the data in [sniff_tib]{.alt}.
 sniff_tib
 ```
 
-Note that there are three variables: the **dog_name**, which is a character variable (note the [<chr>]{.alt} under the name), **entity** (alien, shapeshifter, human, mannequin), which is a factor (note the [<fct>]{.alt} under the name) and **vocalizations** (the number of vocalizations made during 1 minute of sniffing), which is numeric and has the data type 'double' (note the [<dbl>]{.alt} under the name). The data are in tidy format, which means that each row represents an instance of the outcome variable and the columns code information about each instance, for example, which dog the instance is related to and what they sniffed. Consequently each dog occupies 4 rows of the tibble (because each dog contributes four instances of the outcome variable, **vocalizations**).
+Note that there are three variables: the **dog_name**, which is a character variable (note the `<chr>` under the name), **entity** (alien, shapeshifter, human, mannequin), which is a factor (note the `<fct>` under the name) and **vocalizations** (the number of vocalizations made during 1 minute of sniffing), which is numeric and has the data type 'double' (note the `<dbl>` under the name). The data are in tidy format, which means that each row represents an instance of the outcome variable and the columns code information about each instance, for example, which dog the instance is related to and what they sniffed. Consequently each dog occupies 4 rows of the tibble (because each dog contributes four instances of the outcome variable, **vocalizations**).
 
 The variable **entity** is a factor (categorical variable), so having read the data file and converted this variable to a factor it's a good idea to check the order of the levels of this variables.
 
@@ -216,9 +216,9 @@ Use what you already know to create an object called [sniff_sum]{.alt} that cont
 ```
 
 ```{r sniff_sum-hint-1}
-# Start by piping the tibble into the group_by function to group output by scent_mask and entity:
+# Start by piping the tibble into the group_by function to group output by entity:
 sniff_sum <- sniff_tib |> 
-  dplyr::group_by(scent_mask, entity)
+  dplyr::group_by(entity)
 # Now pipe the results into the summarize() function
 ```
 
@@ -345,11 +345,10 @@ $$
 \begin{aligned}
 \text{vocalizations}_{ij} & = \hat{b}_{0j} + \hat{b}_{1j}\text{entity}_{ij}+ e_{ij}\\
 \hat{b}_{0j} & = \hat{b}_0 + \hat{u}_{0j} \\
-\hat{b}_{1j} & = \hat{b}_1 + \hat{u}_{1j}
 \end{aligned}
 $$
 
-The main difference to models we have seen before is that the intercept ($\hat{b}_{0j}$) is made up of the overall intercept ($\hat{b}_0$) and an estimate of the variance of intercepts for each individual ($\hat{u}_{0j}$). Put another way, we model the fact that individual dogs will vary in the overall number of vocalizations they make. We can also model the fact that individual dogs will differ in their ability to discriminate the four entities, and these individual differences can be modelled by entertaining the possibility that the effect of entity is made up of the overall effect ($\hat{b}_{1}$) and an estimate of how much the effect varies from dog to dog, or the variance in the effect across dogs ($\hat{u}_{1j}$).
+The main difference to models we have seen before is that the intercept ($\hat{b}_{0j}$) is made up of the overall intercept ($\hat{b}_0$) and an estimate of the variance of intercepts for each individual ($\hat{u}_{0j}$). Put another way, we model the fact that individual dogs will vary in the overall number of vocalizations they make. 
 
 ## `r bmu()` Fitting a repeated measures model [(1)]{.alt}
 
@@ -733,7 +732,7 @@ View the data in [scent_tib]{.alt}.
 scent_tib
 ```
 
-Note that there are four variables: the participant's **dog_id**, which is a character variable (note the [<chr>]{.alt} under the name), the **entity** that the dog sniffed (alien, shapeshifter or human) and the **scent_mask** used to cover the entity's natural smell (none, human scent, fox scent), both of which are factors (note the [<fct>]{.alt} under the names). Finally, **vocalizations** is a numeric variable and has the data type 'double' (note the [<dbl>]{.alt} under the name).
+Note that there are four variables: the participant's **dog_id**, which is a character variable (note the `<chr>` under the name), the **entity** that the dog sniffed (alien, shapeshifter or human) and the **scent_mask** used to cover the entity's natural smell (none, human scent, fox scent), both of which are factors (note the `<fct>` under the names). Finally, **vocalizations** is a numeric variable and has the data type 'double' (note the `<dbl>` under the name).
 
 The variables **entity** and **scent_mask** are factors (categorical variable), so having read the data file and converted these variables to factors it's a good idea to check that the levels of these variables are in the order that we want. Ideally we want to order them so that the control category is first. For **entity** the control category is human (the other two categories are both types of alien) and for **scent_mask** the control category is 'none' (i.e. no scent was worn).
 
@@ -767,7 +766,31 @@ Because I have set up the data within this tutorial you should see that the leve
 
 ### `r user_astronaut()` The model [(3)]{.alt}
 
-The model we're fitting is described by the following equation (which is simplified in that I have represented the predictor variables **entity** and **scent_mask** as single variables. (In fact, because both variables contain three categories they would be entered into the model as two dummy variables.). The most complex form of the model looks like this:
+The model we're fitting is described by the following equation (which is simplified in that I have represented the predictor variables **entity** and **scent_mask** as single variables. (In fact, because both variables contain three categories they would be entered into the model as two dummy variables.)
+
+The design of the study is such that each dog sniffed 9 things. We denote these sniffs with the letter $i$. Also, let's denote the dogs with the letter $j$. Using these symbols, we can say that each of $i = 1, 2, \ldots , 9$ sniffs is nested within each of $j = 1, 2, \ldots , 50$ dogs. If we fit a random intercept model; that is, we estimate the variability in vocalizations due to individual differences between dogs, we would write the model as:
+
+$$
+\begin{aligned}
+\text{vocalizations}_{ij} & = \hat{b}_{0j} + \hat{b}_{1}\text{entity}_{ij} + \hat{b}_{2}\text{scent}_{ij} + \hat{b}_{3}(\text{entity}_{ij}\times\text{scent}_{ij}) + e_{ij}\\
+\hat{b}_{0j} & = \hat{b}_0 + \hat{u}_{0j} \\
+\end{aligned}
+$$
+
+This model will capture the 'repeated measures' aspect of the design in that $\hat{u}_{0j}$ represents the difference in vocalizations for a particular dog from the overall mean number of vocalizations, and the model will now include a parameter that estimates the variance in vocalizations across dogs ($\hat{\sigma}^2_{\mu_0}$).
+
+However, we might also want to capture individual differences in the effects of **entity** and **scent**, by adding in terms that represent the difference in vocalizations for a particular dog from the overall effect of **entity** ($\hat{u}_{Ej}$) and **scent** ($\hat{u}_{Sj}$):
+
+$$
+\begin{aligned}
+\text{vocalizations}_{ij} & = \hat{b}_{0j} + \hat{b}_{1}\text{entity}_{ij} + \hat{b}_{2}\text{scent}_{ij} + \hat{b}_{3}(\text{entity}_{ij}\times\text{scent}_{ij}) + e_{ij}\\
+\hat{b}_{0j} & = \hat{b}_0 + \hat{u}_{0j} + \hat{u}_{Ej} +  \hat{u}_{Sj}\\
+\end{aligned}
+$$
+
+These terms will each have an associated parameter that estimates the variance (across dogs) of the effect of **entity** ($\hat{\sigma}^2_{\mu_E}$) and **scent** ($\hat{\sigma}^2_{\mu_S}$).
+
+This is a suitable model when we want to treat our factors as fixed effects. However, there will be situations where you want to treat a factor as a random effect. For example, our scents were strategically chosen (none, human scent, fox scent), but what if we hadn't started with specific ideas of what scents might effectively mask the entity's smell. Instead, we chose (arbitrarily) a selection of perfumes, and we might want to generalize findings beyond these perfumes (because there was no particular reason we selected them). In this case, we might want to fit a random effect for **scent** and we could do this in the usual way by changing the parameter associated with it ($\hat{b}_{2}$) so that it varies across dogs ($\hat{b}_{2j}$) and include the associated term to reflect these individual differences in dogs ($\hat{u}_{2j}$). At the extreme, we could fit a model with all random effects:
 
 $$
 \begin{aligned}
@@ -779,14 +802,7 @@ $$
 \end{aligned}
 $$
 
-In this model we are modelling the possibility that all parameters ($b$) in the model vary across individuals. This introduces a lot of complexity into the model. The simplest version of the repeated measures model instead treats the effects of predictor variables as fixed, but acknowledges that dogs, overall, will vary in their vocalizations. In this model only the intercept parameter $\hat{b}_{0j}$ modelled such that it varies across participants (dogs):
-
-$$
-\begin{aligned}
-\text{vocalizations}_{ij} & = \hat{b}_{0j} + \hat{b}_{1}\text{entity}_{ij} + \hat{b}_{2}\text{scent}_{ij} + \hat{b}_{3}(\text{entity}_{ij}\times\text{scent}_{ij}) + e_{ij}\\
-\hat{b}_{0j} & = \hat{b}_0 + \hat{u}_{0j} \\
-\end{aligned}
-$$
+This model introduces a lot of complexity into the model and possibly too many parameters for the data to support. So, we will stick to an analogue of analysis of variance and only include a random intercept overall and for each of the two factors (i.e. the first equation above).
 
 ### `r user_visor()` Fitting the model for factorial repeated measures designs [(2)]{.alt}
 

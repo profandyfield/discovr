@@ -185,10 +185,10 @@ santa_tib
 
 Note that there are four variables:
 
-* **id**: a character variable (note the [<chr>]{.alt} under the name) containing the name of the elf.
-* **quantity**: a numeric variable (note the [<dbl>]{.alt} under the name) indicating how many treats the elf ate before attempting the delivery.
-* **treat**: a factor variable (note the [<fct>]{.alt} under the name) indicating the type of treat(s) that the elf consumed (Christmas [pudding]{.alt} or [Mulled wine]{.alt}).
-* **delivered**: a factor variable (note the [<fct>]{.alt} under the name) whether the presents were delivered by the elf ([Delivered]{.alt} or [Not delivered]{.alt}).
+* **id**: a character variable (note the `<chr>` under the name) containing the name of the elf.
+* **quantity**: a numeric variable (note the `<dbl>` under the name) indicating how many treats the elf ate before attempting the delivery.
+* **treat**: a factor variable (note the `<fct>` under the name) indicating the type of treat(s) that the elf consumed (Christmas [pudding]{.alt} or [Mulled wine]{.alt}).
+* **delivered**: a factor variable (note the `<fct>` under the name) whether the presents were delivered by the elf ([Delivered]{.alt} or [Not delivered]{.alt}).
  
 The variables **treat** and **delivered** are factors (categorical variable), so having read the data file and converted these variables to factors it's a good idea to check the order of the levels for each one.
 

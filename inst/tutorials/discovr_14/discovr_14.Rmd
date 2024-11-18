@@ -37,6 +37,7 @@ library(interactions)
 library(lme4)
 library(lmerTest)
 library(modelbased)
+library(performance)
 
 
 
@@ -57,7 +58,7 @@ cosmetic_evil_tib <- cosmetic_tib |>
 ```{r, eval = F, echo = F}
 # Create bib file for R packages
 here::here("inst/tutorials/discovr_14/packages.bib") |> 
-  knitr::write_bib(c('tidyverse', 'dplyr', 'readr', 'forcats', 'tibble', 'tidyr', 'here', 'purrr', "broom", "broom.mixed", 'datawizard', 'Hmisc', 'insight', 'interactions', 'lme4', 'lmerTest', 'modelbased'), file = _)
+  knitr::write_bib(c('tidyverse', 'dplyr', 'readr', 'forcats', 'tibble', 'tidyr', 'here', 'purrr', "broom", "broom.mixed", 'datawizard', 'Hmisc', 'insight', 'interactions', 'lme4', 'lmerTest', 'modelbased', 'robustlmm', 'performance'), file = _)
 ```
 
 
@@ -118,6 +119,7 @@ This tutorial uses the following packages:
 * `lme4` [@bates_fitting_2015]
 * `lmerTest` [@kuznetsova_lmertest_2017]
 * `modelbased` [@R-modelbased]
+* `performance` [@R-performance]
 
 It also uses these `tidyverse` packages [@R-tidyverse; @tidyverse2019]: `readr` [@R-readr], `dplyr` [@R-dplyr], `forcats` [@R-forcats],  `ggplot2` [@wickhamGgplot2ElegantGraphics2016], `purrr` [@R-purrr], `tibble` [@R-tibble], and `tidyr` [@R-tidyr].
 
@@ -1070,10 +1072,7 @@ cosmetic_bob <- cosmetic_tib |>
 
 
 bob_coef <- broom.mixed::tidy(cosmetic_bob, conf.int = T)
-
-
 bob_slopes <- modelbased::estimate_slopes(cosmetic_bob, trend = "months", at = "reason", ci = 0.95)
-
 bob_aov <- anova(cosmetic_bob) |> tibble::as_tibble(rownames = "effect")
 ```
 
@@ -1214,6 +1213,43 @@ The resulting plot shows what we already know from the parameter estimates for t
 For those who had surgery to change their appearance, their quality of life increased over time but not significantly so,  $\beta$ = `r report_pars(bob_slopes, row = 1)`. In contrast, for those who had surgery to help with a physical problem, their quality of life significantly increased over time, $\beta$ = `r report_pars(bob_slopes, row = 2)`. The change in quality of life over the same time period for people who had surgery for a physical reason is about double that of people who had it for a cosmetic reason.
   
 </div>
+
+
+### `r user_visor()` Diagnostic plots [(2)]{.alt} 
+
+We can get diagnostic plots using the `check_model()` function from the `performance` package [@R-performance]. To use this we place the name of our model into the function and then use `check = c()` to include a list of the plots you want.
+
+We can include the following terms within `c()` to get specific plots:
+
+- `linearity`: plot to test linearity
+- `homogeneity`: plot of the square root of the absolute values of standardized residuals against the fitted value to check homoscedasticity.
+- `outliers`: a plot of leverage values against standardized residuals to check for outliers and influential cases.
+- `qq`: a QQ plot to check normality of residuals.
+- `reqq`: a QQ plot to check normality of random effects (something that is now relevant because we have fitted a multilevel models)
+
+#### `r alien()` Alien coding challenge
+
+Use the code below to get diagnostic plots for our final model.
+
+
+```{r diag_plot, exercise = TRUE, exercise.lines = 6, exercise.setup = "cosbob"}
+performance::check_model(cosmetic_bob,
+                         check = c("linearity", "homogeneity", "outliers", "qq", "reqq"))
+```
+
+
+It looks as though linearity and homogeneity can be assumed and residuals and random effects are approximately normally distributed. However,  there are many points outside of the contour lines.
+
+### `r user_astronaut()` Robust models [(3)]{.alt} 
+
+You can fit a robust model using the `rlmer()` function from the `robustlmm` package [@R-robustlmm], which essentially takes the same syntax as `lmer()`, so we could a robust version of our previous model using
+
+```{r, eval = F}
+cosmetic_rob <- robustlmm::rlmer(post_qol ~ months*reason + base_qol + (months|clinic), data = cosmetic_tib
+```
+
+There are other arguments that can be used to tweak the settings but the defaults will give robust estimates. These robust models can take a lot of time to converge (if they converge at all) so this section is more for information - we will not attempt to fit this model.
+
 
 <br />
 

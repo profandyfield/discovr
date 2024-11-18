@@ -208,7 +208,7 @@ You should find that the levels are ordered as alien, human, mannequin, and shap
 
 #### `r alien()` Alien coding challenge
 
-Use what you already know to create an object called [sniff_sum]{.alt} that contains the mean and a 95% confidence interval of attractiveness scores split by the type of face in the stimulus and the alcohol consumption. Print this object rounding to 2 decimal places and with a caption.
+Use what you already know to create an object called [sniff_sum]{.alt} that contains the mean and a 95% confidence interval of vocalization scores split by the type of entity that was sniffed. Print this object rounding to 2 decimal places and with a caption.
 
 
 ```{r sniff_sum, exercise = TRUE, exercise.lines = 7}
@@ -778,31 +778,6 @@ $$
 $$
 
 This model will capture the 'repeated measures' aspect of the design in that $\hat{u}_{0j}$ represents the difference in vocalizations for a particular dog from the overall mean number of vocalizations, and the model will now include a parameter that estimates the variance in vocalizations across dogs ($\hat{\sigma}^2_{\mu_0}$).
-
-However, we might also want to capture individual differences in the effects of **entity** and **scent**, by adding in terms that represent the difference in vocalizations for a particular dog from the overall effect of **entity** ($\hat{u}_{Ej}$) and **scent** ($\hat{u}_{Sj}$):
-
-$$
-\begin{aligned}
-\text{vocalizations}_{ij} & = \hat{b}_{0j} + \hat{b}_{1}\text{entity}_{ij} + \hat{b}_{2}\text{scent}_{ij} + \hat{b}_{3}(\text{entity}_{ij}\times\text{scent}_{ij}) + e_{ij}\\
-\hat{b}_{0j} & = \hat{b}_0 + \hat{u}_{0j} + \hat{u}_{Ej} +  \hat{u}_{Sj}\\
-\end{aligned}
-$$
-
-These terms will each have an associated parameter that estimates the variance (across dogs) of the effect of **entity** ($\hat{\sigma}^2_{\mu_E}$) and **scent** ($\hat{\sigma}^2_{\mu_S}$).
-
-This is a suitable model when we want to treat our factors as fixed effects. However, there will be situations where you want to treat a factor as a random effect. For example, our scents were strategically chosen (none, human scent, fox scent), but what if we hadn't started with specific ideas of what scents might effectively mask the entity's smell. Instead, we chose (arbitrarily) a selection of perfumes, and we might want to generalize findings beyond these perfumes (because there was no particular reason we selected them). In this case, we might want to fit a random effect for **scent** and we could do this in the usual way by changing the parameter associated with it ($\hat{b}_{2}$) so that it varies across dogs ($\hat{b}_{2j}$) and include the associated term to reflect these individual differences in dogs ($\hat{u}_{2j}$). At the extreme, we could fit a model with all random effects:
-
-$$
-\begin{aligned}
-\text{vocalizations}_{ij} & = \hat{b}_{0j} + \hat{b}_{1j}\text{entity}_{ij} + \hat{b}_{2j}\text{scent}_{ij} + \hat{b}_{3j}(\text{entity}_{ij}\times\text{scent}_{ij}) + e_{ij}\\
-\hat{b}_{0j} & = \hat{b}_0 + \hat{u}_{0j} \\
-\hat{b}_{1j} & = \hat{b}_1 + \hat{u}_{1j} \\
-\hat{b}_{2j} & = \hat{b}_2 + \hat{u}_{2j} \\
-\hat{b}_{3j} & = \hat{b}_3 + \hat{u}_{3j} \\
-\end{aligned}
-$$
-
-This model introduces a lot of complexity into the model and possibly too many parameters for the data to support. So, we will stick to an analogue of analysis of variance and only include a random intercept overall and for each of the two factors (i.e. the first equation above).
 
 ### `r user_visor()` Fitting the model for factorial repeated measures designs [(2)]{.alt}
 

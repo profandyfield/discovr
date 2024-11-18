@@ -136,7 +136,11 @@ starting the interactive tutorials.
   marginal means, interaction plots, simple effects analysis, diagnostic
   plots, partial eta-squared and partial omega-squared, robust models
   and Bayes factors.
-- **discovr_14**: Multilevel models.
+- **discovr_14**: Multilevel models. This tutorial looks at fitting
+  multilevel models using the `lme4` package. It begins with an optional
+  section on checking and coding categorical variables before moving on
+  to show you how to fit and interpret a multilevel model. We also
+  briefly look at the `purrr` package.
 - **discovr_15**: Repeated measures designs. Fitting models for one- and
   two-way repeated measures designs using the `afex` package. This
   tutorial builds on previous ones to show how models can be fit with
@@ -144,7 +148,16 @@ starting the interactive tutorials.
   manipulated within the same entities. We look at fitting the models,
   setting contrasts for the categorical predictors, obtaining estimated
   marginal means, interaction plots, simple effects analysis, diagnostic
-  plots, robust models and Bayes factors.
+  plots and robust models.
+- **discovr_15_mlm**: Repeated measures designs as multilevel models.
+  Fitting models for one- and two-way repeated measures designs using a
+  multilevel model framework. This tutorial builds on previous ones to
+  show how models can be fit with one or two categorical predictors when
+  these variables have been manipulated within the same entities. We
+  look at fitting the models, setting contrasts for the categorical
+  predictors and diagnostic plots.
+- **discovr_15_growth**: Modelling change over time. Growth models using
+  multilevel modelling.
 - **discovr_16**: Mixed designs. Fitting models for mixed designs using
   the `afex` package. This tutorial builds on previous ones to show how
   models can be fit with one or two categorical predictors when at least

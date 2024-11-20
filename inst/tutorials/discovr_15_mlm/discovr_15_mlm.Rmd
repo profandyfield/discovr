@@ -583,7 +583,7 @@ Also note in the random effects that the variance for the intercept is `r get_pa
 <div class="reportbox">
   `r pencil()` **Report**`r rproj()`
 
-There was a significant effect of the type of entity on sniffer dog's vocalizations when approaching them, `r report_lrt(sniff_lrt)`. Contrasts revealed that vocalizations were significantly higher when sniffing aliens compared to non-aliens, `r report_pars(sniff_pars, row = 2)`), but vocalizations were not significantly different when sniffing different types of aliens, `r report_pars(sniff_pars, row = 3)` or when sniffing a human compared to a mannequin, `r report_pars(sniff_pars, row = 4)`).
+There was a significant effect of the type of entity on sniffer dog's vocalizations when approaching them, `r report_lrt(sniff_lrt)`. Contrasts revealed that vocalizations were significantly higher when sniffing aliens compared to non-aliens, $\hat{b}$ = `r report_pars(sniff_pars, row = 2)`), but vocalizations were not significantly different when sniffing different types of aliens, $\hat{b}$ = `r report_pars(sniff_pars, row = 3)` or when sniffing a human compared to a mannequin, $\hat{b}$ = `r report_pars(sniff_pars, row = 4)`).
 
 
 </div>
@@ -1026,7 +1026,7 @@ scent_emm |>
 <div class="reportbox">
   `r pencil()` **Report**`r rproj()`
 
-The first contrast was significant, `r report_pars(scent_pars, row = 6)`. The plot shows that the significance means that the distance between the lines when no scent is used is greater than the distance between the lines when a human scent is used. In other words, the difference in the number of vocalisations (which reflect a difference when dogs sniff shapeshifters compared to humans) is more pronounced when no scent is used compared to human scent. Basically, dogs’ abilities to differentiate shapeshifters from humans is reduced by applying a human scent.
+The first contrast was significant, $\hat{b} = $ `r report_pars(scent_pars, row = 6)`. The plot shows that the significance means that the distance between the lines when no scent is used is greater than the distance between the lines when a human scent is used. In other words, the difference in the number of vocalisations (which reflect a difference when dogs sniff shapeshifters compared to humans) is more pronounced when no scent is used compared to human scent. Basically, dogs’ abilities to differentiate shapeshifters from humans is reduced by applying a human scent.
 
 </div>
 
@@ -1052,7 +1052,7 @@ scent_emm |>
 <div class="reportbox">
   `r pencil()` **Report**`r rproj()`
 
-The second contrast was significant, `r report_pars(scent_pars, row = 7)`. The plot shows that the significance means that the distance between the lines when no scent is used is greater than the distance between the lines when a human scent is used. In other words, the difference in the number of vocalisations (which reflect a difference when dogs sniff an alien that looks like a lizard compared to humans) is more pronounced when no scent is used compared to human scent. Basically, dogs’ abilities to differentiate aliens from humans is reduced by applying a human scent.
+The second contrast was significant, $\hat{b}$ = `r report_pars(scent_pars, row = 7)`. The plot shows that the significance means that the distance between the lines when no scent is used is greater than the distance between the lines when a human scent is used. In other words, the difference in the number of vocalisations (which reflect a difference when dogs sniff an alien that looks like a lizard compared to humans) is more pronounced when no scent is used compared to human scent. Basically, dogs’ abilities to differentiate aliens from humans is reduced by applying a human scent.
 
 </div>
 
@@ -1078,7 +1078,7 @@ scent_emm |>
 <div class="reportbox">
   `r pencil()` **Report**`r rproj()`
 
-The third contrast was significant, `r report_pars(scent_pars, row = 8)`. The plot shows that the significance means the significance means that the distance between the lines when no scent is used is greater than the distance between the lines when fox scent is used. In other words, the difference in the number of vocalisations (which reflect a difference when dogs sniff shapeshifters compared to humans) is more pronounced when no scent is used compared to fox scent. Dogs’ abilities to differentiate shapeshifters from humans is reduced by applying a fox scent.
+The third contrast was significant, $\hat{b}$ = `r report_pars(scent_pars, row = 8)`. The plot shows that the significance means the significance means that the distance between the lines when no scent is used is greater than the distance between the lines when fox scent is used. In other words, the difference in the number of vocalisations (which reflect a difference when dogs sniff shapeshifters compared to humans) is more pronounced when no scent is used compared to fox scent. Dogs’ abilities to differentiate shapeshifters from humans is reduced by applying a fox scent.
 
 </div>
 
@@ -1103,7 +1103,7 @@ scent_emm |>
 <div class="reportbox">
   `r pencil()` **Report**`r rproj()`
 
-The final contrast was significant, `r report_pars(scent_pars, row = 9)`. The plot shows that the significance means the significance means that the distance between the lines when no scent is used is greater than the distance between the lines when fox scent is used. In other words, the difference in the number of vocalisations (which reflect a difference when dogs sniff aliens compared to humans) is more pronounced when no scent is used compared to fox scent. Dogs’ abilities to differentiate aliens from humans is reduced by applying a fox scent.
+The final contrast was significant, $\hat{b}$ = `r report_pars(scent_pars, row = 9)`. The plot shows that the significance means the significance means that the distance between the lines when no scent is used is greater than the distance between the lines when fox scent is used. In other words, the difference in the number of vocalisations (which reflect a difference when dogs sniff aliens compared to humans) is more pronounced when no scent is used compared to fox scent. Dogs’ abilities to differentiate aliens from humans is reduced by applying a fox scent.
 
 </div>
 

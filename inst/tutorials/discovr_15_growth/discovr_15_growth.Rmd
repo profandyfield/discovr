@@ -377,7 +377,7 @@ Use the code box below to create a plot with **time_num** on the *x*-axis and **
 
 * Include [colour = intervention, fill = intervention]{.alt} in the initial `ggplot()` function to ensure that both the lines (colour) and their confidence intervals (fill) are coloured by intervention group.
 * Include [position = position_jitter(width = 0.1, height = 0.1)]{.alt} within `geom_point()` to avoid over plotting of the raw data.
-* Include [scale_x_continuous(breaks = c(0, 1, 6, 12), labels = c("0", "1", "6", "12"))]{.alt} to set breaks at each of the 4 time points and to assign them labels
+* Include `scale_x_continuous(breaks = c(0, 1, 6, 12), labels = c("0", "1", "6", "12"))` to set breaks at each of the 4 time points and to assign them labels
 * Include [colour = "Intervention", fill = "Intervention"]{.alt} in the `labs()` function to avoid getting separate legends for the colour and fill aesthetics.
 
 Use the hints to help you, but also run your code after each hint so you can see how each additional line of code affects the plot.
@@ -488,7 +488,7 @@ To fit the model we use the `lme()` function from the `nlme` package [@R-nlme], 
 The `lme()` function takes the following general form (I've retained only the key options):
 
 ```{r, eval = F}
-new_object <- nlme::lme(outcome ~ predictors,
+new_model <- nlme::lme(outcome ~ predictors,
                         random = formula,
                         data = my_tibble,
                         method = "REML",
@@ -511,7 +511,7 @@ We might want to test formally whether the effect of time varies by individuals 
 
 #### `r robot()` Code example
 
-To compare the model that includes the random intercept of **time** with a model that also includes the random slop, we can use this code
+To compare the model that includes the random intercept of **time** with a model that also includes the random slope, we can use this code
 
 ```{r echo = TRUE, eval = FALSE}
 rehab_ri <- nlme::lme(resemblance ~ time_num,
@@ -763,7 +763,7 @@ broom.mixed::tidy(rehab_mod, conf.int = T, effects = "ran_pars") |>
 
 The output shows that
 
-* The standard deviation of the intercepts was `r report_pars(rehab_mod_fe, row = 5, fixed = F)`. This is the standard deviation of the values of the intercepts across the zomnbies. In other words, it quantifies how variable the baseline resemblance scores are around the average baseline resemblance score (i.e. around the overall estimate of `r report_pars(rehab_mod_fe, row = 1, fixed = F)`).
+* The standard deviation of the intercepts was `r report_pars(rehab_mod_fe, row = 5, fixed = F)`. This is the standard deviation of the values of the intercepts across the zombies. In other words, it quantifies how variable the baseline resemblance scores are around the average baseline resemblance score (i.e. around the overall estimate of `r report_pars(rehab_mod_fe, row = 1, fixed = F)`).
 * The standard deviation of the rate of change of resemblance scores  was `r report_pars(rehab_mod_fe, row = 7, fixed = F)`]. This is the standard deviation of the slopes (the rate of change of resemblance over time) across the zombies. In other words, it quantifies how variable the individual change in resemblance over time (within zombies) are around the group-level change over time (`r report_pars(rehab_mod_fe, row = 2, fixed = F)`).
 * The correlation between slopes and intercepts across the zombies was `r report_pars(rehab_mod_fe, row = 6, fixed = F)`]
 

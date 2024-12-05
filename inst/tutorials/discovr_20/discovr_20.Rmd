@@ -486,7 +486,7 @@ In which you replace [outcome ~ predictor(s)]{.alt} with the formula for your mo
 
 In addition to these familiar arguments, there is 
 
-* [family = guassian()]{.alt}, which determines the distribution of errors. By default the family is set to `guassian()` (a posh word for 'normal') and the function will fit a standard linear model. By changing it to [family = binomial()]{.alt} we get a logistic linear model.
+* [family = gaussian()]{.alt}, which determines the distribution of errors. By default the family is set to `gaussian()` (a posh word for 'normal') and the function will fit a standard linear model. By changing it to [family = binomial()]{.alt} we get a logistic linear model.
 
 #### `r robot()` Code example
 
@@ -809,10 +809,15 @@ The odds ratio for the interaction effect is much less than 1 ($\widehat{OR}$ = 
 A useful way to visualise the interaction is to plot it. The `interact_plot()` function from `interactions` will plot interaction effects from logistic models. It takes the general form:
 
 ```{r, eval = F}
-interactions::interact_plot(my_model, pred = my_predictor, modx = my_moderator)
+interactions::interact_plot(my_model,
+                            pred = my_predictor,
+                            modx = my_moderator,
+                            legend.main = "label for the legend")
 ```
 
-Basically you replace [my_model]{.alt} with the name of your model, [my_predictor]{.alt} with the name of the predictor variable (in this case **quantity** makes sense) and [my_moderator]{.alt} with the name of the moderator variable (in this case **treat** makes sense). We looked at moderation in **discovr_10**, but in this context what matters is that the predictor is plotted on the *x*-axis whereas the moderator is used to split the data. If we specify **quantity** as the predictor and **treat** as the moderator we'll get the effect of quantity on delivery and different lines for Christmas pudding and mulled wine.
+Basically you replace [my_model]{.alt} with the name of your model, [my_predictor]{.alt} with the name of the predictor variable (in this case **quantity** makes sense) and [my_moderator]{.alt} with the name of the moderator variable (in this case **treat** makes sense). We looked at moderation in **discovr_10**, but in this context what matters is that the predictor is plotted on the *x*-axis whereas the moderator is used to split the data. The resulting legend will use the variable name but we can override this by including `legend.main` and specifying a text label within quotes.
+
+For our data, if we specify **quantity** as the predictor and **treat** as the moderator we'll get the effect of quantity on delivery and different lines for Christmas pudding and mulled wine.
 
 The output is a `ggplot2` object, which means that you can augment it with any functions and themes from `ggplot2` by adding them as layers to the plot in the usual way.
 
@@ -821,13 +826,16 @@ The output is a `ggplot2` object, which means that you can augment it with any f
 To plot the **treat × quantity** interaction effect use this code:
 
 ```{r, eval = F}
-interactions::interact_plot(santa_full_glm, pred = quantity, modx = treat)
+interactions::interact_plot(santa_full_glm,
+                            pred = quantity,
+                            modx = treat,
+                            legend.main = "Type of treat")
 ```
 
 
 #### `r alien()` Alien coding challenge
 
-Plot the **treat × quantity** interaction effect. Use what you know about `ggplot2` to add labels and a minimal theme.
+Plot the **treat × quantity** interaction effect. Use what you know about `ggplot2` to add *x*- and *y*-labels and a minimal theme.
 
 
 ```{r plot_int, exercise = TRUE, exercise.setup = "santa_full_setup"}
@@ -836,24 +844,25 @@ Plot the **treat × quantity** interaction effect. Use what you know about `ggpl
 
 ```{r plot_int-hint-1}
 #Basic plot
-interactions::interact_plot(xxxxx, pred = xxxx, modx = xxxxx)
+interactions::interact_plot(xxxxx, pred = xxxx, modx = xxxxx, legend.main = xxxx)
 ```
 
 ```{r plot_int-hint-2}
 #Basic plot
-interactions::interact_plot(santa_full_glm, pred = quantity, modx = treat)
+interactions::interact_plot(santa_full_glm, pred = quantity, modx = treat, legend.main = "Type of treat")
 # Now use 'labs()` to add x and y label axes
 ```
 
 ```{r plot_int-hint-3}
 # Now use 'labs()` to add x and y label axes
-interactions::interact_plot(santa_full_glm, pred = quantity, modx = treat) + labs(x = "Quantity of treats consumed", y = "Probability of delivery", fill = "Treat")
+interactions::interact_plot(santa_full_glm, pred = quantity, modx = treat, legend.main = "Type of treat") + 
+  labs(x = "Quantity of treats consumed", y = "Probability of delivery")
 # now add a minimal theme
 ```
 
 ```{r plot_int-solution}
-interactions::interact_plot(santa_full_glm, pred = quantity, modx = treat) +
-  labs(x = "Quantity of treats consumed", y = "Probability of delivery", fill = "Treat") +
+interactions::interact_plot(santa_full_glm, pred = quantity, modx = treat, legend.main = "Type of treat") +
+  labs(x = "Quantity of treats consumed", y = "Probability of delivery") +
   theme_minimal()
 ```
 

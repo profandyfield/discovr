@@ -1512,7 +1512,7 @@
 #' The data contains the following variables:
 #'
 #'   * **id**: participant ID
-#'   * **sex**: sex to which the participant mostly self-identifies
+#'   * **gender_identity**: gender with which the participant mostly self-identifies
 #'   * **film**: whether the person watched The Notebook or a documentary about notebooks
 #'   * **arousal**: the person's average physiological arousal (e.g., emotional response) during the film.
 #'
@@ -1522,7 +1522,7 @@
 
 "notebook"
 
-#' The notebook data
+#' OCD data
 #'
 #' A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'

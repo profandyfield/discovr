@@ -14,7 +14,7 @@ A tibble with 270 rows and 3 variables.
 animal_dance
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Fictional data about dancing cats and dogs. A researcher was interested in whether animals could be trained to dance.

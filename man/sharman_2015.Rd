@@ -14,7 +14,7 @@ A tibble with 117 rows and 4 variables.
 sharman_2015
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 There's a perception that listening to extreme music causes anger and associated behavioural problems.

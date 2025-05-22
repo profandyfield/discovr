@@ -14,7 +14,7 @@ A tibble with 201 rows and 6 variables.
 van_bourg_2020
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Pet dogs often engage in behaviours helpful to their owners (mine likes to cuddle me when I’ve had a bad day, and in fact when I’ve had a good day, and now I think of it, pretty much any day regardless of how good or bad its been).

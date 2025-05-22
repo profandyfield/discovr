@@ -14,7 +14,7 @@ A tibble with 190 rows and 6 variables.
 zombie_rehab
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 In the story within Field (2016) a lot of people get turned into zombies. At the end of the book

@@ -14,7 +14,7 @@ A tibble with 32 rows and 4 variables
 reality_tv
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 A researcher hypothesized that reality TV show contestants start off with personality disorders that

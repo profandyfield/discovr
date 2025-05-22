@@ -14,7 +14,7 @@ A tibble with 180 rows and 5 variables
 speed_date
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Imagine a scientist designed a study to look at the interplay between looks, personality and

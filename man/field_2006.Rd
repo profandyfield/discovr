@@ -14,7 +14,7 @@ A tibble with 381 rows and 3 variables.
 field_2006
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Early in my career I looked at the effect of giving children information about entities. In one study (Field, 2006),

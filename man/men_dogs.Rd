@@ -14,7 +14,7 @@ A tibble with 40 rows and 3 variables.
 men_dogs
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 A psychologist was interested in the cross-species differences between men and dogs. She observed a group

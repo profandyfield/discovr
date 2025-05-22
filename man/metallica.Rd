@@ -14,7 +14,7 @@ A tibble with 7 rows and 9 variables.
 metallica
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 The data show various pieces of information about past and present members of the band Metallica that may or may not be accurate at the time of writing (2019).

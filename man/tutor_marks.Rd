@@ -14,7 +14,7 @@ A tibble with 32 rows and 3 variables.
 tutor_marks
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 It is common that lecturers obtain reputations for being ‘hard’ or ‘light’ markers, but there is often little

@@ -14,7 +14,7 @@ A tibble with 10 rows and 7 variables.
 students
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Some fictional data about students and lecturers.

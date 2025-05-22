@@ -14,7 +14,7 @@ A tibble with 102 rows and 3 variables
 tumour
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Mobile phones emit microwaves, and so holding one next to your brain for large parts of the day is a bit like

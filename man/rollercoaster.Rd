@@ -14,7 +14,7 @@ A tibble with 20 rows and 3 variables.
 rollercoaster
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Fictional data based on a study by Meston & Frohlich (2003) that showed that heterosexual people rate a

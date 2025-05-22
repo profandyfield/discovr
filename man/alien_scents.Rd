@@ -14,7 +14,7 @@ A tibble with 50 rows and 4 variables.
 alien_scents
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 The aliens, excited by humans' apparent inability to train sniffer dogs to detect them (see \link{sniffer_dogs}), decided to move their invasion plan forward.

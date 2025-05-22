@@ -14,7 +14,7 @@ A tibble with 30 rows and 4 variables.
 ocd
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Fictitious data about interventions for obsessive compulsive disorder. Obsessive compulsive disorder (OCD) is a mental health problem characterized

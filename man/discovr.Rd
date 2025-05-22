@@ -88,6 +88,7 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{daniels_2012}: Data about the effects of sexualised sports images on self-image.
 \item \link{dark_lord}: Fictitious data about the subliminal messages in songs.
 \item \link{davey_2003}: Data about the effects mood and stop rules on checking behaviour.
+\item \link{dog_training}: Data about the training dogs to vocalise when they sniff alien life forms.
 \item \link{download}: Fictitious data about the download music festival and being smelly.
 \item \link{df_beta}: Fictitious data used to illustrate the DF Beta statistic.
 \item \link{eel}: Fictitious data about a randomized control trial to test whether eel therapy is an effective treatment of constipation.

@@ -14,7 +14,7 @@ A tibble with 947 rows and 5 variables
 bronstein_2019
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 The rapid increase in 'fake news' and misinformation is a worrying trend in recent years.

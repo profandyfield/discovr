@@ -14,7 +14,7 @@ A tibble with 64 rows and 3 variables.
 dark_lord
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Both Ozzy Osbourne and Judas Priest have been accused of putting backward masked messages on their albums

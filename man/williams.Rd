@@ -14,7 +14,7 @@ A tibble with 239 rows and 29 variables.
 williams
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Dr Sian Williams (University of Brighton) devised a questionnaire to measure organizational ability.

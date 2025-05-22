@@ -14,7 +14,7 @@ A tibble with 430 rows and 12 variables.
 chamorro_premuzic
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 There is some evidence that students tend to pick courses of lecturers they perceive to be enthusastic and good communicators.

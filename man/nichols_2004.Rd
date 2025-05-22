@@ -14,7 +14,7 @@ A tibble with 207 rows and 38 variables.
 nichols_2004
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 The increasing populatrity (and usefulness) of the Internet has led to the serious problem of internet addiction.

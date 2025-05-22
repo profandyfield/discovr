@@ -14,7 +14,7 @@ A tibble with 947 rows and 5 variables
 bronstein_miss_2019
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 A version of the Bronstein et al. (2019) fake news data (\link{bronstein_2019}) but with missing values inserted using MCAR amputation (with the help of the \code{mice} package and \code{ampute()} function).

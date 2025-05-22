@@ -14,7 +14,7 @@ A tibble with 45 rows and 4 variables.
 essay_marks
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Fictional data about essay marks. A student was interested in whether there was a positive relationship between the time spent doing an essay and the mark received.

@@ -14,7 +14,7 @@ A tibble with 25 rows and 3 variables.
 grades
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Fictional data about stats grades. As a statistics lecturer I am interested in the factors that determine whether a

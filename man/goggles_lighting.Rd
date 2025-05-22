@@ -14,7 +14,7 @@ A tibble with 208 rows and 4 variables.
 goggles_lighting
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Fictional data about the moderating effect of lighting on the beer goggles effect. In previous edxample we came across the beer-goggles

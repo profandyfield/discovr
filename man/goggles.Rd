@@ -14,7 +14,7 @@ A tibble with 48 rows and 4 variables.
 goggles
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Fictional data about the beer goggles effect. An anthropologist was interested in the effects of facial

@@ -14,7 +14,7 @@ A tibble with 100 rows and 4 variables.
 social_media
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Imagine we conducted an experiment in which a group of 25 people were encouraged to message their friends and

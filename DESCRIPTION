@@ -1,10 +1,10 @@
 Package: discovr
 Type: Package
 Title: Interactive Tutorials and Data for "Discovering Statistics Using R and RStudio"
-Version: 0.2.0.2
+Version: 0.2.0.3
 Authors@R: person("Andy", "Field", email = "andyf@sussex.ac.uk", role = c("aut", "cre"))
 Maintainer: Andy Field <andyf@sussex.ac.uk>
-Description: Interactive 'R' tutorials and datasets for the textbook Field (2023), "Discovering Statistics Using R and RStudio", <https://www.discovr.rocks/>.
+Description: Interactive 'R' tutorials and datasets for the textbook Field (2026), "Discovering Statistics Using R and RStudio", <https://www.discovr.rocks/>.
     Interactive tutorials cover general workflow in 'R' and 'RStudio', summarizing data, visualizing data, fitting models and bias, correlation, the general linear model, 
     moderation, mediation, missing values, comparing means using the GLM (a.k.a. ANOVA), comparing adjusted means (a.k.a. ANCOVA), factorial designs, repeated measures designs, exploratory factor analysis (EFA). There are no functions, only datasets and interactive tutorials.
 License: GPL-3
@@ -13,13 +13,14 @@ Depends:
   learnr (>= 0.11.4)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
 Imports:
     ggplot2,
     scales,
     glue
 Suggests: 
+    easystats,
     knitr,
     rmarkdown
 URL: https://www.discovr.rocks, https://github.com/profandyfield/discovr

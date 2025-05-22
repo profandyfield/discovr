@@ -14,7 +14,7 @@ A tibble with 100 rows and 4 variables
 text_messages
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Text messaging and Twitter encourage communication using abbreviated forms of words (if u no wat I mean).

@@ -14,7 +14,7 @@ A tibble with 336 rows and 4 variables
 angry_pigs
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Angry Birds is a video game in which you fire birds at pigs.  A (fabricated) study was set up in which people

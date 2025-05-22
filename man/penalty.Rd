@@ -14,7 +14,7 @@ A tibble with 75 rows and 5 variables.
 penalty
 }
 \description{
-A dataset from Field, A. P. (2023). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
 Fictional data set looking at predictors of success of penalty takers in soccer (or whatever sport you enjoy).

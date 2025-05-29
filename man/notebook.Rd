@@ -23,7 +23,7 @@ The other half watched a documentary about notebooks as a control. In all cases 
 The data contains the following variables:
 \itemize{
 \item \strong{id}: participant ID
-\item \strong{sex}: sex to which the participant mostly self-identifies
+\item \strong{gender_identity}: gender with which the participant mostly self-identifies
 \item \strong{film}: whether the person watched The Notebook or a documentary about notebooks
 \item \strong{arousal}: the person's average physiological arousal (e.g., emotional response) during the film.
 }

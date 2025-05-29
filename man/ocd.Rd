@@ -3,7 +3,7 @@
 \docType{data}
 \name{ocd}
 \alias{ocd}
-\title{The notebook data}
+\title{OCD data}
 \format{
 A tibble with 30 rows and 4 variables.
 }

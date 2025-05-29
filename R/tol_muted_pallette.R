@@ -87,7 +87,7 @@ scale_color_tol <- function(n, type = "discrete",
 }
 
 #' @title scale_colour_tol
-#' @rdname okabe_ito_pal
+#' @rdname tol_muted_pal
 #' @export
 #' @examples
 #'

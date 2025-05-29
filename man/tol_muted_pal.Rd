@@ -3,12 +3,15 @@
 \name{tol_muted_pal}
 \alias{tol_muted_pal}
 \alias{scale_color_tol}
+\alias{scale_colour_tol}
 \alias{scale_fill_tol}
 \title{Tol muted palette}
 \usage{
 tol_muted_pal(n, type = c("discrete", "continuous"), reverse = FALSE)
 
 scale_color_tol(n, type = "discrete", reverse = FALSE, ...)
+
+scale_colour_tol(n, type = "discrete", reverse = FALSE, ...)
 
 scale_fill_tol(n, type = "discrete", reverse = FALSE, ...)
 }
@@ -107,6 +110,13 @@ ggplot(classic_era, aes(x = energy, y = valence, color = album_name)) +
   geom_point(size = 2) +
   theme_minimal() +
   scale_color_tol()
+
+# Plot some data and apply theme to colour (note UK English)
+
+ggplot(classic_era, aes(x = energy, y = valence, color = album_name)) +
+  geom_point(size = 2) +
+  theme_minimal() +
+  scale_colour_tol()
 
 # Plot some data and apply theme to fill
 

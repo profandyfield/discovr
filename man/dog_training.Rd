@@ -5,7 +5,7 @@
 \alias{dog_training}
 \title{Dog training data}
 \format{
-A tibble with 328 rows and 3variables.
+A tibble with 668 rows and 3 variables.
 }
 \source{
 \href{https://www.discovr.rocks/csv/dog_training.csv}{www.discovr.rocks/csv/dog_training.csv}

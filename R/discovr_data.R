@@ -609,7 +609,7 @@
 #'   * **vocalizations**: the percentage of trials during which the dog vocalised.
 #'
 #' @docType data
-#' @format A tibble with 328 rows and 3variables.
+#' @format A tibble with 668 rows and 3 variables.
 #' @source [www.discovr.rocks/csv/dog_training.csv](https://www.discovr.rocks/csv/dog_training.csv)
 
 "dog_training"

@@ -202,21 +202,22 @@ A colour blind-friendly pallette based on \href{https://jfly.uni-koeln.de/color/
 If you're wondering why some albums are missing, here's the explanation: X Factor (would basically be 8 shades of grey), Fear of the Dark (terrible album), The Book of Souls (would be 8 shades of black).
 The following palettes exist.
 \itemize{
-\item \link{amolad_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/discography/details/a-matter-of-life-and-death}{A Matter of Life and Death} album sleeve. In \code{ggplot2} use \link{scale_color_amolad} and \link{scale_fill_amolad}.
-\item \link{bnw_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/discography/details/brave-new-world}{Brave New World} album sleeve. In \code{ggplot2} use \link{scale_color_bnw} and \link{scale_fill_bnw}.
-\item \link{dod_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/discography/details/dance-of-death}{Dance of Death} album sleeve. In \code{ggplot2} use \link{scale_color_dod} and \link{scale_fill_dod}.
-\item \link{frontier_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/discography/details/the-final-frontier}{The Final Frontier} album sleeve. In \code{ggplot2} use \link{scale_color_frontier} and \link{scale_fill_frontier}.
-\item \link{im_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/discography/details/iron-maiden}{eponymous} album sleeve. In \code{ggplot2} use \link{scale_color_im} and \link{scale_fill_im}.
-\item \link{killers_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/discography/details/killers}{Killers} album sleeve. In \code{ggplot2} use \link{scale_color_killers} and \link{scale_fill_killers}.
-\item \link{nob_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/discography/details/the-number-of-the-beast-album}{The Number of the Beast} album sleeve. In \code{ggplot2} use \link{scale_color_nob} and \link{scale_fill_nob}.
+\item \link{amolad_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/studio-album/a-matter-of-life-and-death}{A Matter of Life and Death} album sleeve. In \code{ggplot2} use \link{scale_color_amolad} and \link{scale_fill_amolad}.
+\item \link{bnw_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/studio-album/brave-new-world}{Brave New World} album sleeve. In \code{ggplot2} use \link{scale_color_bnw} and \link{scale_fill_bnw}.
+\item \link{dod_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/studio-album/dance-of-death}{Dance of Death} album sleeve. In \code{ggplot2} use \link{scale_color_dod} and \link{scale_fill_dod}.
+\item \link{frontier_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/studio-album/the-final-frontier}{The Final Frontier} album sleeve. In \code{ggplot2} use \link{scale_color_frontier} and \link{scale_fill_frontier}.
+\item \link{im_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/studio-album/iron-maiden}{eponymous} album sleeve. In \code{ggplot2} use \link{scale_color_im} and \link{scale_fill_im}.
+\item \link{killers_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/studio-album/killers}{Killers} album sleeve. In \code{ggplot2} use \link{scale_color_killers} and \link{scale_fill_killers}.
+\item \link{nob_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/studio-album/the-number-of-the-beast}{The Number of the Beast} album sleeve. In \code{ggplot2} use \link{scale_color_nob} and \link{scale_fill_nob}.
 \item \link{okabe_ito_pal}: Colourblind-friendly palette (8 colour) from \href{https://jfly.uni-koeln.de/color/}{Okabe and Ito}. In \code{ggplot2} use \link{scale_color_oi} and \link{scale_fill_oi}.
-\item \link{pom_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/discography/details/piece-of-mind}{Piece of Mind} album sleeve. In \code{ggplot2} use \link{scale_color_pom} and \link{scale_fill_pom}.
-\item \link{power_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/discography/details/powerslave}{Powerslave} album sleeve. In \code{ggplot2} use \link{scale_color_power} and \link{scale_fill_power}.
-\item \link{prayer_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/discography/details/no-prayer-for-the-dying}{No Prayer for the Dying} album sleeve. Use \link{scale_color_prayer} and \link{scale_fill_prayer}.
-\item \link{senjutsu_pal}: Colour palette (10 colour) based on the inner gatefold image of Iron Maiden's \href{https://www.ironmaiden.com/discography/details/senjutsu}{Senjutsu album} album sleeve. In \code{ggplot2} use \link{scale_color_senjutsu} and \link{scale_fill_senjutsu}.
-\item \link{sit_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/discography/details/somewhere-in-time}{Somewhere in Time} album sleeve. In \code{ggplot2} use \link{scale_color_sit} and \link{scale_fill_sit}.
-\item \link{ssoass_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/discography/details/seventh-son-of-a-seventh-son}{Seventh Son of a Seventh Son} album sleeve. In \code{ggplot2} use \link{scale_color_ssoass} and \link{scale_fill_ssoass}.
-\item \link{virtual_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/discography/details/virtual-xi}{Virtual IX} album sleeve. In \code{ggplot2} use \link{scale_color_virtual} and \link{scale_fill_virtual}.
+\item \link{pom_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/studio-album/piece-of-mind}{Piece of Mind} album sleeve. In \code{ggplot2} use \link{scale_color_pom} and \link{scale_fill_pom}.
+\item \link{power_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/studio-album/powerslave}{Powerslave} album sleeve. In \code{ggplot2} use \link{scale_color_power} and \link{scale_fill_power}.
+\item \link{prayer_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/studio-album/no-prayer-for-the-dying}{No Prayer for the Dying} album sleeve. Use \link{scale_color_prayer} and \link{scale_fill_prayer}.
+\item \link{senjutsu_pal}: Colour palette (10 colour) based on the inner gatefold image of Iron Maiden's \href{https://www.ironmaiden.com/studio-album/senjutsu}{Senjutsu album} album sleeve. In \code{ggplot2} use \link{scale_color_senjutsu} and \link{scale_fill_senjutsu}.
+\item \link{sit_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/studio-album/somewhere-in-time}{Somewhere in Time} album sleeve. In \code{ggplot2} use \link{scale_color_sit} and \link{scale_fill_sit}.
+\item \link{ssoass_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/studio-album/seventh-son-of-a-seventh-son}{Seventh Son of a Seventh Son} album sleeve. In \code{ggplot2} use \link{scale_color_ssoass} and \link{scale_fill_ssoass}.
+\item \link{tol_muted_pal}: Palette (9 colour) used in the book from \href{https://sronpersonalpages.nl/~pault/data/colourschemes.pdf}{Paul Tol}. In \code{ggplot2} use \link{scale_color_tol} and \link{scale_fill_tol}.
+\item \link{virtual_pal}: Colour palette (8 colour) based on Iron Maiden's \href{https://www.ironmaiden.com/studio-album/virtual-xi}{Virtual IX} album sleeve. In \code{ggplot2} use \link{scale_color_virtual} and \link{scale_fill_virtual}.
 }
 }
 }
@@ -238,6 +239,6 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Andy Field \email{andyf@sussex.ac.uk}
+\strong{Maintainer}: Andy Field \email{andyf@sussex.ac.uk} [copyright holder]
 
 }

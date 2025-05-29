@@ -4,6 +4,7 @@
 # discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2023)
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 <div style="float: right">
@@ -36,9 +37,10 @@ familiarise yourself with
 <img src="./data-raw/images/r_logo.png" width="18">,
 <img src="./data-raw/images/rstudio_logo.png" width="48"> and good
 workflow practice. You can do this using [this interactive
-tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/). Once
-you have installed <img src="./data-raw/images/r_logo.png" width="18">
-and <img src="./data-raw/images/rstudio_logo.png" width="48"> you can
+tutorial](https://milton-the-cat.rocks/learnr/r/r_getting_started/).
+Once you have installed
+<img src="./data-raw/images/r_logo.png" width="18"> and
+<img src="./data-raw/images/rstudio_logo.png" width="48"> you can
 install `discovr`. The package is in development so you have to install
 it from github. To install the package execute (in
 <img src="./data-raw/images/rstudio_logo.png" width="48">):
@@ -69,7 +71,7 @@ remotes::install_github("profandyfield/discovr", lib = "N:/Documents/R/win-libra
 ## Interactive tutorials
 
 I recommend working through [this playlist of
-tutorials](https://youtube.com/playlist?list=PLEzw67WWDg83weG3idsgy4wuOIJAashA2&si=PiI-sDvqc1DkaWOq)
+tutorials](https://www.youtube.com/playlist?list=PLEzw67WWDg83weG3idsgy4wuOIJAashA2&si=PiI-sDvqc1DkaWOq)
 on how to install, set up and work within
 <img src="./data-raw/images/r_logo.png" width="18"> and
 <img src="./data-raw/images/rstudio_logo.png" width="48"> before
@@ -240,6 +242,7 @@ also provides practice in using
 See this video explaining my suggested workflow:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/FhoYCsZttGc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+
 </iframe>
 
 ## Colour palettes
@@ -263,71 +266,67 @@ The following palettes exist.
 
 - `amolad_pal()`: Colour palette (8 colour) based on Iron Maiden’s [A
   Matter of Life and
-  Death](https://www.ironmaiden.com/discography/details/a-matter-of-life-and-death)
+  Death](https://www.ironmaiden.com/studio-album/a-matter-of-life-and-death/)
   album sleeve. In `ggplot2` use `scale_color_amolad()` and
   `scale_fill_amolad()`.
 - `bnw_pal()`: Colour palette (8 colour) based on Iron Maiden’s [Brave
-  New
-  World](https://www.ironmaiden.com/discography/details/brave-new-world)
+  New World](https://www.ironmaiden.com/studio-album/brave-new-world/)
   album sleeve. In `ggplot2` use `scale_color_bnw()` and
   `scale_fill_bnw()`.
 - `dod_pal()`: Colour palette (8 colour) based on Iron Maiden’s [Dance
-  of
-  Death](https://www.ironmaiden.com/discography/details/dance-of-death)
+  of Death](https://www.ironmaiden.com/studio-album/dance-of-death/)
   album sleeve. In `ggplot2` use `scale_color_dod()` and
   `scale_fill_dod()`.
 - `frontier_pal()`: Colour palette (8 colour) based on Iron Maiden’s
   [The Final
-  Frontier](https://www.ironmaiden.com/discography/details/the-final-frontier)
+  Frontier](https://www.ironmaiden.com/studio-album/the-final-frontier/)
   album sleeve. In `ggplot2` use `scale_color_frontier()` and
   `scale_fill_frontier()`.
 - `im_pal()`: Colour palette (8 colour) based on Iron Maiden’s
-  [eponymous](https://www.ironmaiden.com/discography/details/iron-maiden)
+  [eponymous](https://www.ironmaiden.com/studio-album/iron-maiden/)
   album sleeve. In `ggplot2` use `scale_color_im()` and
   `scale_fill_im()`.
 - `killers_pal()`: Colour palette (8 colour) based on Iron Maiden’s
-  [Killers](https://www.ironmaiden.com/discography/details/killers)
-  album sleeve. In `ggplot2` use `scale_color_killers()` and
+  [Killers](https://www.ironmaiden.com/studio-album/killers/) album
+  sleeve. In `ggplot2` use `scale_color_killers()` and
   `scale_fill_killers()`.
 - `nob_pal()`: Colour palette (8 colour) based on Iron Maiden’s [The
   Number of the
-  Beast](https://www.ironmaiden.com/discography/details/the-number-of-the-beast-album)
+  Beast](https://www.ironmaiden.com/studio-album/the-number-of-the-beast/)
   album sleeve. In `ggplot2` use `scale_color_nob()` and
   `scale_fill_nob()`.
 - `okabe_ito_pal`: Colourblind-friendly palette (8 colour) from [Okabe
   and Ito](https://jfly.uni-koeln.de/color/). In `ggplot2` use
   `scale_color_oi()` and `scale_fill_oi()`.
 - `pom_pal()`: Colour palette (8 colour) based on Iron Maiden’s [Piece
-  of Mind](https://www.ironmaiden.com/discography/details/piece-of-mind)
-  album sleeve. In `ggplot2` use `scale_color_pom()` and
-  `scale_fill_pom()`.
+  of Mind](https://www.ironmaiden.com/studio-album/piece-of-mind/) album
+  sleeve. In `ggplot2` use `scale_color_pom()` and `scale_fill_pom()`.
 - `power_pal()`: Colour palette (8 colour) based on Iron Maiden’s
-  [Powerslave](https://www.ironmaiden.com/discography/details/powerslave)
+  [Powerslave](https://www.ironmaiden.com/studio-album/powerslave/)
   album sleeve. In `ggplot2` use `scale_color_power()` and
   `scale_fill_power()`.
 - `prayer_pal()`: Colour palette (8 colour) based on Iron Maiden’s [No
   Prayer for the
-  Dying](https://www.ironmaiden.com/discography/details/no-prayer-for-the-dying)
+  Dying](https://www.ironmaiden.com/studio-album/no-prayer-for-the-dying/)
   album sleeve. Use `scale_color_prayer()` and `scale_fill_prayer()`.
 - `senjutsu_pal()`: Colour palette (10 colour) based on the inner
   gatefold image of Iron Maiden’s [Senjutsu
-  album](https://www.ironmaiden.com/discography/details/senjutsu) album
+  album](https://www.ironmaiden.com/studio-album/senjutsu/) album
   sleeve. In `ggplot2` use `scale_color_senjutsu()` and
   `scale_fill_senjutsu()`.
 - `sit_pal()`: Colour palette (8 colour) based on Iron Maiden’s
   [Somewhere in
-  Time](https://www.ironmaiden.com/discography/details/somewhere-in-time)
+  Time](https://www.ironmaiden.com/studio-album/somewhere-in-time/)
   album sleeve. In `ggplot2` use `scale_color_sit()` and
   `scale_fill_sit()`.
 - `ssoass_pal()`: Colour palette (8 colour) based on Iron Maiden’s
   [Seventh Son of a Seventh
-  Son](https://www.ironmaiden.com/discography/details/seventh-son-of-a-seventh-son)
+  Son](https://www.ironmaiden.com/studio-album/seventh-son-of-a-seventh-son/)
   album sleeve. In `ggplot2` use `scale_color_ssoass()` and
   `scale_fill_ssoass()`.
 - `virtual_pal()`: Colour palette (8 colour) based on Iron Maiden’s
-  [Virtual
-  IX](https://www.ironmaiden.com/discography/details/virtual-xi) album
-  sleeve. In `ggplot2` use `scale_color_virtual()` and
+  [Virtual IX](https://www.ironmaiden.com/studio-album/virtual-xi/)
+  album sleeve. In `ggplot2` use `scale_color_virtual()` and
   `scale_fill_virtual()`.
 
 To view the palette execute

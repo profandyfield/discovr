@@ -168,7 +168,7 @@ This code reads in the data and converts the variable **drink** to a factor (cat
 The main example in this tutorial extends the example about puppy therapy from **discovr_11**. On the assumption that you can't have enough puppies in your life, here's another picture of my dog looking cute to help you to deal with the psychological trauma of this statistics tutorial.
 
 <figure>
-<img src="./images/discovr_12_milton.png" alt="My golden cocker spaniel, Milton, looking up at me with his tongue sticking out." style="width:100%">
+<img src="./images/discovr_12_milton.jpg" alt="My golden cocker spaniel, Milton, looking up at me with his tongue sticking out." style="width:100%">
 <figcaption>Figure 2: Milton the spaniel says 'there's no need to be afraid, just tickle the belly of statistics and it will love you forever.</figcaption>
 </figure> 
 
@@ -813,7 +813,7 @@ modelbased::estimate_contrasts(my_model,
                                contrast = "predictor_name",
                                adjust = "holm",
                                ci = 0.95,
-                               fixed = "covariate_name")
+                               by = "covariate_name")
 ```
 </div>
 
@@ -826,7 +826,7 @@ modelbased::estimate_contrasts(my_model,
 # Replace the xs:
 modelbased::estimate_contrasts(xxxxxx,
                                contrast = "xxxxxx",
-                               fixed = "xxxxxx",
+                               by = "xxxxxx",
                                adjust = "xxxxx")
 #round the results (optional)
 ```
@@ -834,13 +834,13 @@ modelbased::estimate_contrasts(xxxxxx,
 ```{r pupluv_ph-solution}
 modelbased::estimate_contrasts(pupluv_lm,
                                contrast = "dose",
-                               fixed = "puppy_love",
+                               by = "puppy_love",
                                adjust = "bonferroni") |> 
   knitr::kable(digits = 3)
 ```
 
 ```{r, echo = F}
-pup_ph <- modelbased::estimate_contrasts(pup_lm, contrast = "dose", fixed = "puppy_love", adjust = "bonferroni")
+pup_ph <- modelbased::estimate_contrasts(pup_lm, contrast = "dose", by = "puppy_love", adjust = "bonferroni")
 ```
 
 

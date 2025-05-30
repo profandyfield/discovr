@@ -13,7 +13,7 @@
 #'
 #' **Getting started**:
 #'
-#' I recommend working through [this tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/) on how to install, set up and work within R and RStudio before starting the interactive tutorials.
+#' I recommend working through [this tutorial](https://milton-the-cat.rocks/learnr/r/r_getting_started/) on how to install, set up and work within R and RStudio before starting the interactive tutorials.
 #'
 #' **Running a tutorial**:
 #'
@@ -186,22 +186,22 @@
 #'  If you're wondering why some albums are missing, here's the explanation: X Factor (would basically be 8 shades of grey), Fear of the Dark (terrible album), The Book of Souls (would be 8 shades of black).
 #'  The following palettes exist.
 #'
-#' * [amolad_pal]: Colour palette (8 colour) based on Iron Maiden's [A Matter of Life and Death](https://www.ironmaiden.com/studio-album/a-matter-of-life-and-death) album sleeve. In \code{ggplot2} use [scale_color_amolad] and [scale_fill_amolad].
-#' * [bnw_pal]: Colour palette (8 colour) based on Iron Maiden's [Brave New World](https://www.ironmaiden.com/studio-album/brave-new-world) album sleeve. In \code{ggplot2} use [scale_color_bnw] and [scale_fill_bnw].
-#' * [dod_pal]: Colour palette (8 colour) based on Iron Maiden's [Dance of Death](https://www.ironmaiden.com/studio-album/dance-of-death) album sleeve. In \code{ggplot2} use [scale_color_dod] and [scale_fill_dod].
-#' * [frontier_pal]: Colour palette (8 colour) based on Iron Maiden's [The Final Frontier](https://www.ironmaiden.com/studio-album/the-final-frontier) album sleeve. In \code{ggplot2} use [scale_color_frontier] and [scale_fill_frontier].
-#' * [im_pal]: Colour palette (8 colour) based on Iron Maiden's [eponymous](https://www.ironmaiden.com/studio-album/iron-maiden) album sleeve. In \code{ggplot2} use [scale_color_im] and [scale_fill_im].
-#' * [killers_pal]: Colour palette (8 colour) based on Iron Maiden's [Killers](https://www.ironmaiden.com/studio-album/killers) album sleeve. In \code{ggplot2} use [scale_color_killers] and [scale_fill_killers].
-#' * [nob_pal]: Colour palette (8 colour) based on Iron Maiden's [The Number of the Beast](https://www.ironmaiden.com/studio-album/the-number-of-the-beast) album sleeve. In \code{ggplot2} use [scale_color_nob] and [scale_fill_nob].
+#' * [amolad_pal]: Colour palette (8 colour) based on Iron Maiden's [A Matter of Life and Death](https://www.ironmaiden.com/studio-album/a-matter-of-life-and-death/) album sleeve. In \code{ggplot2} use [scale_color_amolad] and [scale_fill_amolad].
+#' * [bnw_pal]: Colour palette (8 colour) based on Iron Maiden's [Brave New World](https://www.ironmaiden.com/studio-album/brave-new-world/) album sleeve. In \code{ggplot2} use [scale_color_bnw] and [scale_fill_bnw].
+#' * [dod_pal]: Colour palette (8 colour) based on Iron Maiden's [Dance of Death](https://www.ironmaiden.com/studio-album/dance-of-death/) album sleeve. In \code{ggplot2} use [scale_color_dod] and [scale_fill_dod].
+#' * [frontier_pal]: Colour palette (8 colour) based on Iron Maiden's [The Final Frontier](https://www.ironmaiden.com/studio-album/the-final-frontier/) album sleeve. In \code{ggplot2} use [scale_color_frontier] and [scale_fill_frontier].
+#' * [im_pal]: Colour palette (8 colour) based on Iron Maiden's [eponymous](https://www.ironmaiden.com/studio-album/iron-maiden/) album sleeve. In \code{ggplot2} use [scale_color_im] and [scale_fill_im].
+#' * [killers_pal]: Colour palette (8 colour) based on Iron Maiden's [Killers](https://www.ironmaiden.com/studio-album/killers/) album sleeve. In \code{ggplot2} use [scale_color_killers] and [scale_fill_killers].
+#' * [nob_pal]: Colour palette (8 colour) based on Iron Maiden's [The Number of the Beast](https://www.ironmaiden.com/studio-album/the-number-of-the-beast/) album sleeve. In \code{ggplot2} use [scale_color_nob] and [scale_fill_nob].
 #' * [okabe_ito_pal]: Colourblind-friendly palette (8 colour) from [Okabe and Ito](https://jfly.uni-koeln.de/color/). In \code{ggplot2} use [scale_color_oi] and [scale_fill_oi].
-#' * [pom_pal]: Colour palette (8 colour) based on Iron Maiden's [Piece of Mind](https://www.ironmaiden.com/studio-album/piece-of-mind) album sleeve. In \code{ggplot2} use [scale_color_pom] and [scale_fill_pom].
-#' * [power_pal]: Colour palette (8 colour) based on Iron Maiden's [Powerslave](https://www.ironmaiden.com/studio-album/powerslave) album sleeve. In \code{ggplot2} use [scale_color_power] and [scale_fill_power].
-#' * [prayer_pal]: Colour palette (8 colour) based on Iron Maiden's [No Prayer for the Dying](https://www.ironmaiden.com/studio-album/no-prayer-for-the-dying) album sleeve. Use [scale_color_prayer] and [scale_fill_prayer].
-#' * [senjutsu_pal]: Colour palette (10 colour) based on the inner gatefold image of Iron Maiden's [Senjutsu album](https://www.ironmaiden.com/studio-album/senjutsu) album sleeve. In \code{ggplot2} use [scale_color_senjutsu] and [scale_fill_senjutsu].
-#' * [sit_pal]: Colour palette (8 colour) based on Iron Maiden's [Somewhere in Time](https://www.ironmaiden.com/studio-album/somewhere-in-time) album sleeve. In \code{ggplot2} use [scale_color_sit] and [scale_fill_sit].
-#' * [ssoass_pal]: Colour palette (8 colour) based on Iron Maiden's [Seventh Son of a Seventh Son](https://www.ironmaiden.com/studio-album/seventh-son-of-a-seventh-son) album sleeve. In \code{ggplot2} use [scale_color_ssoass] and [scale_fill_ssoass].
+#' * [pom_pal]: Colour palette (8 colour) based on Iron Maiden's [Piece of Mind](https://www.ironmaiden.com/studio-album/piece-of-mind/) album sleeve. In \code{ggplot2} use [scale_color_pom] and [scale_fill_pom].
+#' * [power_pal]: Colour palette (8 colour) based on Iron Maiden's [Powerslave](https://www.ironmaiden.com/studio-album/powerslave/) album sleeve. In \code{ggplot2} use [scale_color_power] and [scale_fill_power].
+#' * [prayer_pal]: Colour palette (8 colour) based on Iron Maiden's [No Prayer for the Dying](https://www.ironmaiden.com/studio-album/no-prayer-for-the-dying/) album sleeve. Use [scale_color_prayer] and [scale_fill_prayer].
+#' * [senjutsu_pal]: Colour palette (10 colour) based on the inner gatefold image of Iron Maiden's [Senjutsu album](https://www.ironmaiden.com/studio-album/senjutsu/) album sleeve. In \code{ggplot2} use [scale_color_senjutsu] and [scale_fill_senjutsu].
+#' * [sit_pal]: Colour palette (8 colour) based on Iron Maiden's [Somewhere in Time](https://www.ironmaiden.com/studio-album/somewhere-in-time/) album sleeve. In \code{ggplot2} use [scale_color_sit] and [scale_fill_sit].
+#' * [ssoass_pal]: Colour palette (8 colour) based on Iron Maiden's [Seventh Son of a Seventh Son](https://www.ironmaiden.com/studio-album/seventh-son-of-a-seventh-son/) album sleeve. In \code{ggplot2} use [scale_color_ssoass] and [scale_fill_ssoass].
 #' * [tol_muted_pal]: Palette (9 colour) used in the book from [Paul Tol](https://sronpersonalpages.nl/~pault/data/colourschemes.pdf). In \code{ggplot2} use [scale_color_tol] and [scale_fill_tol].
-#' * [virtual_pal]: Colour palette (8 colour) based on Iron Maiden's [Virtual IX](https://www.ironmaiden.com/studio-album/virtual-xi) album sleeve. In \code{ggplot2} use [scale_color_virtual] and [scale_fill_virtual].
+#' * [virtual_pal]: Colour palette (8 colour) based on Iron Maiden's [Virtual IX](https://www.ironmaiden.com/studio-album/virtual-xi/) album sleeve. In \code{ggplot2} use [scale_color_virtual] and [scale_fill_virtual].
 #'
 #' @section References:
 #'

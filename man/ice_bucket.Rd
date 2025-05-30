@@ -5,7 +5,7 @@
 \alias{ice_bucket}
 \title{Ice bucket challenge data}
 \format{
-A tibble with 2,323,452 rows and 1 variable.
+A tibble with 23,230 rows and 1 variable.
 }
 \source{
 \href{https://www.discovr.rocks/csv/ice_bucket.csv}{www.discovr.rocks/csv/ice_bucket.csv}
@@ -17,9 +17,10 @@ ice_bucket
 A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
-AGoogle data relating to the ice bucket challenge from 2014. Golfer Chris Kennedy tipped a bucket of iced water on his head to raise awareness of the disease amyotrophic lateral sclerosis (ALS, also known as Lou Gehrig's disease).
+Google data relating to the ice bucket challenge from 2014. Golfer Chris Kennedy tipped a bucket of iced water on his head to raise awareness of the disease amyotrophic lateral sclerosis (ALS, also known as Lou Gehrig's disease).
 The idea is that you are challenged and have 24 hours to post a video of you having a bucket of iced water poured over your head in this video you also challenge at least three other people.
-If you fail to complete the challenge your forfeit is to donate to charity (in this case ALS). The data show the the number of days after Chris Kennedy's initial ice bucket challenge that each of 2,323,452 ice bucket challenge video was uploaded to YouTube.
+If you fail to complete the challenge your forfeit is to donate to charity (in this case ALS). The CSV file contains the number of days after Chris Kennedy's initial ice bucket challenge that each of 2,323,452 ice bucket challenge video was uploaded to YouTube.
+The data here contains a randomly selected 1\% of the original data (23,230 cases).
 \itemize{
 \item \strong{upload_days}: the number of days after Chris Kennedy's initial ice bucket challenge that an ice bucket challenge video was uploaded to YouTube
 }

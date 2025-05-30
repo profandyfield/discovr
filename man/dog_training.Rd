@@ -21,7 +21,7 @@ Fictional data about dogs being trained to vocalize whenever they sniff an alien
 This data shows how vocalisations change over blocks of these training trials. The tibble contains the following variables:
 \itemize{
 \item \strong{id}: name of the fictional dog. (Fun fact, the names are real pet names randomly selected from the pet registry in Seattle: \url{https://randommer.io/pet-names})
-\item \strong{trials}: the block of trials (each block represents 100 trials, so block 1 is the result of the first 100 trials and 5 is the result of trials 400-500)
+\item \strong{block}: the block of trials (each block represents 100 trials, so block 1 is the result of the first 100 trials and 5 is the result of trials 400-500)
 \item \strong{vocalizations}: the percentage of trials during which the dog vocalised.
 }
 }

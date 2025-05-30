@@ -605,7 +605,7 @@
 #' This data shows how vocalisations change over blocks of these training trials. The tibble contains the following variables:
 #'
 #'   * **id**: name of the fictional dog. (Fun fact, the names are real pet names randomly selected from the pet registry in Seattle: [https://randommer.io/pet-names](https://randommer.io/pet-names))
-#'   * **trials**: the block of trials (each block represents 100 trials, so block 1 is the result of the first 100 trials and 5 is the result of trials 400-500)
+#'   * **block**: the block of trials (each block represents 100 trials, so block 1 is the result of the first 100 trials and 5 is the result of trials 400-500)
 #'   * **vocalizations**: the percentage of trials during which the dog vocalised.
 #'
 #' @docType data
@@ -1070,14 +1070,15 @@
 #'
 #' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' AGoogle data relating to the ice bucket challenge from 2014. Golfer Chris Kennedy tipped a bucket of iced water on his head to raise awareness of the disease amyotrophic lateral sclerosis (ALS, also known as Lou Gehrig's disease).
+#' Google data relating to the ice bucket challenge from 2014. Golfer Chris Kennedy tipped a bucket of iced water on his head to raise awareness of the disease amyotrophic lateral sclerosis (ALS, also known as Lou Gehrig's disease).
 #' The idea is that you are challenged and have 24 hours to post a video of you having a bucket of iced water poured over your head in this video you also challenge at least three other people.
-#' If you fail to complete the challenge your forfeit is to donate to charity (in this case ALS). The data show the the number of days after Chris Kennedy's initial ice bucket challenge that each of 2,323,452 ice bucket challenge video was uploaded to YouTube.
+#' If you fail to complete the challenge your forfeit is to donate to charity (in this case ALS). The CSV file contains the number of days after Chris Kennedy's initial ice bucket challenge that each of 2,323,452 ice bucket challenge video was uploaded to YouTube.
+#' The data here contains a randomly selected 1% of the original data (23,230 cases).
 #'
 #'   * **upload_days**: the number of days after Chris Kennedy's initial ice bucket challenge that an ice bucket challenge video was uploaded to YouTube
 #'
 #' @docType data
-#' @format A tibble with 2,323,452 rows and 1 variable.
+#' @format A tibble with 23,230 rows and 1 variable.
 #' @source [www.discovr.rocks/csv/ice_bucket.csv](https://www.discovr.rocks/csv/ice_bucket.csv)
 
 "ice_bucket"

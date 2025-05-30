@@ -63,7 +63,7 @@ sit_pal <- function(n, type = c("discrete", "continuous"),
 #' # I'm not including fear of the dark because it's not in any way classic.
 #' # No prayer for the dying was pushing its luck too if I'm honest.
 #'
-#' classic_era <- subset(eddiefy, year < 1992)
+#' classic_era <- subset(eddiefy, year < 1992, select = c("energy", "valence", "album_name"))
 #'
 #' # Plot some data and apply theme to color (note US English)
 #'

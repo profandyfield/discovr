@@ -80,7 +80,7 @@ By for now and good luck - you'll be amazing!
 
 ### Workflow
 
-* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](http://milton-the-cat.rocks/learnr/r/r_getting_started/).
+* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](https://milton-the-cat.rocks/learnr/r/r_getting_started/).
 
 * The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an Quarto file within an `r rstudio()` project and practice everything you do in the tutorial in the Quarto file, make notes on things that confused you or that you want to remember, and save it. Within this Quarto document you will need to load the relevant packages and data. 
 
@@ -300,7 +300,7 @@ Even with explicit style it makes sense to load `dplyr` and `ggplot2` at the sta
 
 ### `r bmu()`	Concise coding style [(1)]{.alt}
 
-Using concise  style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently. See this tutorial on [loading packages](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-installing-and-loading-packages)). Here's the code from the previous section but in concise style
+Using concise  style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently. See this tutorial on [loading packages](https://milton-the-cat.rocks/learnr/r/r_getting_started/#section-installing-and-loading-packages)). Here's the code from the previous section but in concise style
 
 ```{r, eval = F}
 library(dplyr)
@@ -382,7 +382,7 @@ The tidyverse is a set of packages built upon a common philosophy of data scienc
 </figure> 
 
 
-You [install and load](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-installing-and-loading-packages) the tidyverse packages as you would any package in `r rproj()`. You can install all of the tidyverse packages in one go using
+You [install and load](https://milton-the-cat.rocks/learnr/r/r_getting_started/#section-installing-and-loading-packages) the tidyverse packages as you would any package in `r rproj()`. You can install all of the tidyverse packages in one go using
 
 ```{r, eval = F}
 install.packages('tidyverse')
@@ -420,7 +420,7 @@ The tidyverse approach to coding `r rproj()` makes use of something called the p
 </div>
 
 
-As the name suggests, the pipe operator involves thinking of any command as a pipe through which instructions flow from left to right. To take a really simple example, in the [introduction tutorial](http://milton-the-cat.rocks/learnr/r/r_getting_started/) to `r rproj()` and `r rstudio()`, we used the `here::here()` function to create a path to a file that we wanted to open with the function `readr::read_csv()`. The command we used was:
+As the name suggests, the pipe operator involves thinking of any command as a pipe through which instructions flow from left to right. To take a really simple example, in the [introduction tutorial](https://milton-the-cat.rocks/learnr/r/r_getting_started/) to `r rproj()` and `r rstudio()`, we used the `here::here()` function to create a path to a file that we wanted to open with the function `readr::read_csv()`. The command we used was:
 
 ```{r, eval=FALSE}
 my_data <- readr::read_csv(here::here("data/metallica.csv"))
@@ -582,7 +582,7 @@ my_sentence |>
 
 ## `r bmu()` Data types [(1)]{.alt}
 
-Often when analysing data you will [input your data with an external software](http://milton-the-cat.rocks/learnr/r/r_getting_started/) such as Microsoft Excel, Google sheets, or Numbers and then import it into `r rproj()`. However, you can enter data directly. It's also useful to know about the different ways in which `r rproj()` stores data. `r rproj()` can store information using several different data types:
+Often when analysing data you will [input your data with an external software](https://milton-the-cat.rocks/learnr/r/r_getting_started/) such as Microsoft Excel, Google sheets, or Numbers and then import it into `r rproj()`. However, you can enter data directly. It's also useful to know about the different ways in which `r rproj()` stores data. `r rproj()` can store information using several different data types:
 
 * [int]{.alt}: variables containing integers (i.e., whole numbers).
 *	[dbl]{.alt}: variables containing doubles (i.e., real numbers).
@@ -1452,7 +1452,7 @@ We now begin to see the beauty of the pipe: it enables us to put together a sequ
 * The tutorials typically follow examples described in detail in @field_discovering_2023. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
 * If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
 * There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/).
-* There are free statistical resources on my websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [milton-the-cat.rocks](http://milton-the-cat.rocks).
+* There are free statistical resources on my websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [milton-the-cat.rocks](https://milton-the-cat.rocks).
 
 ### `r rproj("h3")`
 

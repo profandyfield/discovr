@@ -660,10 +660,9 @@
 #' * **valence**: From the Spotify API: "A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry)."
 #' * **tempo**: From the Spotify API: "The overall estimated tempo of a track in beats per minute (BPM). In musical terminology, tempo is the speed or pace of a given piece and derives directly from the average beat duration."
 #' * **time_signature**: From the Spotify API: "An estimated overall time signature of a track. The time signature (meter) is a notational convention to specify how many beats are in each bar (or measure)."
-#' * **song_duration**: Song length as a `lubridate` duration object
 #' * **duration_ms**: Song length in milliseconds as an integer value.
 #'
-#' @format A tibble with 173 rows and 18 variables.
+#' @format A tibble with 173 rows and 17 variables.
 #' @docType data
 #' @source [www.discovr.rocks/csv/eddiefy.csv](https://www.discovr.rocks/csv/eddiefy.csv)
 #'

@@ -5,7 +5,7 @@
 \alias{eddiefy}
 \title{Iron Maiden Spotify song features data}
 \format{
-A tibble with 173 rows and 18 variables.
+A tibble with 173 rows and 17 variables.
 }
 \source{
 \href{https://www.discovr.rocks/csv/eddiefy.csv}{www.discovr.rocks/csv/eddiefy.csv}
@@ -36,7 +36,6 @@ Data were obtained using the \href{https://www.rcharlie.com/spotifyr/}{spotifyr}
 \item \strong{valence}: From the Spotify API: "A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry)."
 \item \strong{tempo}: From the Spotify API: "The overall estimated tempo of a track in beats per minute (BPM). In musical terminology, tempo is the speed or pace of a given piece and derives directly from the average beat duration."
 \item \strong{time_signature}: From the Spotify API: "An estimated overall time signature of a track. The time signature (meter) is a notational convention to specify how many beats are in each bar (or measure)."
-\item \strong{song_duration}: Song length as a \code{lubridate} duration object
 \item \strong{duration_ms}: Song length in milliseconds as an integer value.
 }
 }

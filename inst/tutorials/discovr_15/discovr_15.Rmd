@@ -159,7 +159,7 @@ sniff_tib <- here::here("data/sniffer_dogs.csv") |>
 
 ## `r bmu()` Aliens and sniffer dogs [(2)]{.alt}
 
-The main examples in this tutorial are from [@field_discovering_2023]. When the alien invasion comes well need spaniels (or possibly other dogs, but lets hope its mainly spaniels because spaniels are cool) to help us to identify the space lizards. Having got wind of a potential invasion from alien space lizards, some of whom could shapeshift into humanoid form, the top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) met to come up with a plan for detecting the invading space lizards. They decided to test the plausibility of training sniffer dogs to detect aliens. Over many trials 8 of their best dogs (Milton, Woofy, Ramsey, Mr. Snifficus III, Willock, The Venerable Dr. Waggy, Lord Scenticle, and Professor Nose) were recruited for a pilot study. During training, these dogs were rewarded for making vocalizations while sniffing alien space lizards (which they happened to have a few of in Hangar 18). On the test trial, the 8 dogs were allowed to sniff 4 entities for 1-minute each: an alien space lizard, a shapeshifting alien space lizard who had taken on humanoid form and worked undetected as a statistics lecturer, a human, and a human mannequin). The number of vocalizations made during each 1-minute sniffing session was recorded. So, this is a [repeated measures design]{.alt}: each dog has four scores representing the number of vocalizations they made while sniffing each of the four entities. If training has been successful the dogs should vocalise more when sniffing space lizards.
+The main examples in this tutorial are from [@field_discovering_2023]. When the alien invasion comes we'll need spaniels (or possibly other dogs, but lets hope its mainly spaniels because spaniels are cool) to help us to identify the space lizards. Having got wind of a potential invasion from alien space lizards, some of whom could shapeshift into humanoid form, the top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) met to come up with a plan for detecting the invading space lizards. They decided to test the plausibility of training sniffer dogs to detect aliens. Over many trials 8 of their best dogs (Milton, Woofy, Ramsey, Mr. Snifficus III, Willock, The Venerable Dr. Waggy, Lord Scenticle, and Professor Nose) were recruited for a pilot study. During training, these dogs were rewarded for making vocalizations while sniffing alien space lizards (which they happened to have a few of in Hangar 18). On the test trial, the 8 dogs were allowed to sniff 4 entities for 1-minute each: an alien space lizard, a shapeshifting alien space lizard who had taken on humanoid form and worked undetected as a statistics lecturer, a human, and a human mannequin). The number of vocalizations made during each 1-minute sniffing session was recorded. So, this is a [repeated measures design]{.alt}: each dog has four scores representing the number of vocalizations they made while sniffing each of the four entities. If training has been successful the dogs should vocalise more when sniffing space lizards.
 
 #### `r alien()` Alien coding challenge
 
@@ -282,23 +282,23 @@ ggplot2::ggplot(xxxxx, aes(x = xxxxx, y = xxxxx))
 ```
 
 ```{r sniff_gg-hint-2}
-# Now use geom_point() to add the raw data. I've used position_jitter to add a random horizontal adjustment so that the dots don't line up vertically. Feel free to change the colour by replacing #2C5577 with a different HEX code. 
+# Now use geom_point() to add the raw data. I've used position_jitter to add a random horizontal adjustment so that the dots don't line up vertically. Feel free to change the colour by replacing #DDCC77 with a different HEX code. 
 ggplot2::ggplot(sniff_tib, aes(x = entity, y = vocalizations)) +
-  geom_point(colour = "#2C5577", alpha = 0.7, position = position_jitter(width = 0.1)) +
+  geom_point(colour = "#DDCC77", position = position_jitter(width = 0.1)) +
 ```
 
 ```{r sniff_gg-hint-3}
 # Now use stat_summary() to add the data (replace the xs)
 ggplot2::ggplot(sniff_tib, aes(x = entity, y = vocalizations)) +
-  geom_point(colour = "#2C5577", alpha = 0.7, position = position_jitter(width = 0.1)) +
-  stat_summary(fun.data = "xxxxx", geom = "xxxxxx")
+  geom_point(colour = "#DDCC77", position = position_jitter(width = 0.1)) +
+  stat_summary(fun.data = "xxxx", geom = "xxxx", colour = "#882255") +
 ```
 
 ```{r sniff_gg-hint-4}
 # Use coord_cartesian() and scale_y_continuous to set the limits and breaks for the y-axis to be whole numbers between 0 and 10 (replace the xs):
 ggplot2::ggplot(sniff_tib, aes(x = entity, y = vocalizations)) +
-  geom_point(colour = "#2C5577", alpha = 0.7, position = position_jitter(width = 0.1)) +
-  stat_summary(fun.data = "mean_cl_normal", geom = "pointrange") +
+  geom_point(colour = "#DDCC77", position = position_jitter(width = 0.1)) +
+  stat_summary(fun.data = "xxxx", geom = "xxxx", colour = "#882255") +
   coord_cartesian(xxxxxx) +
   scale_y_continuous(xxxxx)
 ```
@@ -306,8 +306,8 @@ ggplot2::ggplot(sniff_tib, aes(x = entity, y = vocalizations)) +
 ```{r sniff_gg-hint-5}
 # use labs() to add axis labels to the x, y and colour legend (replace xxxs):
 ggplot2::ggplot(sniff_tib, aes(x = entity, y = vocalizations)) +
-  geom_point(colour = "#2C5577", alpha = 0.7, position = position_jitter(width = 0.1)) +
-  stat_summary(fun.data = "mean_cl_normal", geom = "pointrange") +
+  geom_point(colour = "#DDCC77", position = position_jitter(width = 0.1)) +
+  stat_summary(fun.data = "xxxx", geom = "xxxx", colour = "#882255") +
   coord_cartesian(ylim = c(0,10)) +
   scale_y_continuous(breaks = 0:10) +
   labs(x = "xxxxxxx", y = "xxxxxxx")
@@ -316,8 +316,8 @@ ggplot2::ggplot(sniff_tib, aes(x = entity, y = vocalizations)) +
 ```{r sniff_gg-hint-6}
 # add a theme (replace the xs):
 ggplot2::ggplot(sniff_tib, aes(x = entity, y = vocalizations)) +
-  geom_point(colour = "#2C5577", alpha = 0.7, position = position_jitter(width = 0.1)) +
-  stat_summary(fun.data = "mean_cl_normal", geom = "pointrange") +
+  geom_point(colour = "#DDCC77", position = position_jitter(width = 0.1)) +
+  stat_summary(fun.data = "xxxx", geom = "xxxx", colour = "#882255") +
   coord_cartesian(ylim = c(0,10)) +
   scale_y_continuous(breaks = 0:10) +
   labs(x = "Entity sniffed", y = "Number of vocalizations") +
@@ -327,8 +327,8 @@ ggplot2::ggplot(sniff_tib, aes(x = entity, y = vocalizations)) +
 ```{r sniff_gg-solution}
 # Solution
 ggplot2::ggplot(sniff_tib, aes(x = entity, y = vocalizations)) +
-  geom_point(colour = "#2C5577", alpha = 0.7, position = position_jitter(width = 0.1)) +
-  stat_summary(fun.data = "mean_cl_normal", geom = "pointrange") +
+  geom_point(colour = "#DDCC77", position = position_jitter(width = 0.1)) +
+  stat_summary(fun.data = "xxxx", geom = "xxxx", colour = "#882255") +
   coord_cartesian(ylim = c(0,10)) +
   scale_y_continuous(breaks = 0:10) +
   labs(x = "Entity sniffed", y = "Number of vocalizations") +
@@ -543,7 +543,7 @@ You should find that the levels are in the order:
 levels(sniff_tib$entity)
 ```
 
-Remembering this order, to set the contrasts we create a list using `list()`. We give this list a name (for example, [sniff_cons]{.alt}) and within the list we specify each contrast in turn. On the left-hand side of the equals sign we give the contrast a name. For example, I have called the first contrast **aliens_vs_non**. You can call them what you like but the names can't contain spaces. On the right-hand side we specify the contrast weights in Table 1. For example, for contrast 1 we specify [c(-1/2, 1/2, 1/2, -1/2)]{.alt}, which, remembering the order of the levels of **entity**,  means that the alien and shapeshifter conditions are assigned weights of $\frac{1}{2}$ whereas the human and mannequin conditions are assigned weights of $-\frac{1}{2}$.
+Remembering this order, to set the contrasts we create a list using `list()`. We give this list a name (for example, [sniff_cons]{.alt}) and within the list we specify each contrast in turn. On the left-hand side of the equals sign we give the contrast a name. For example, I have called the first contrast **aliens_vs_non**. You can call them what you like but the names can't contain spaces. On the right-hand side we specify the contrast weights in Table 1. For example, for contrast 1 we specify [c(1/2, -1/2, -1/2, 1/2)]{.alt}, which, remembering the order of the levels of **entity**,  means that the alien and shapeshifter conditions are assigned weights of $\frac{1}{2}$ whereas the human and mannequin conditions are assigned weights of $-\frac{1}{2}$.
 
 ```{r, eval = F}
 sniff_cons <- list(

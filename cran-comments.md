@@ -1,3 +1,10 @@
+## Resubmission
+This is a resubmission. Thank you for the feedback. In this version I have:
+
+* Explained acronyms in the DESCRIPTION.
+
+* Added a \value to all .R files.
+
 ## Package size
 
 Installed size is 6.5Mb. This package contains learnr tutorials and associated data. I have minimized image/data files, but with 20 tutorials the total file sizes adds up, 

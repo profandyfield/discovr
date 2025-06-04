@@ -88,6 +88,9 @@ every level in a legend, the layer should use \code{show.legend = TRUE}.}
     \item{\code{super}}{The super class to use for the constructed scale}
   }}
 }
+\value{
+A \link[ggplot2:discrete_scale]{discrete} or \link[ggplot2:continuous_scale]{continuous} scale.
+}
 \description{
 Colour palette based on Iron Maiden's Seventh Son of a Seventh Son album sleeve.
 }

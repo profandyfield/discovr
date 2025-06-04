@@ -15,6 +15,7 @@ virtual_palette <- c(
 #' @param n number of colours
 #' @param type discrete or continuous
 #' @param reverse reverse order, Default: FALSE
+#' @return A [discrete][ggplot2::discrete_scale] or [continuous][ggplot2::continuous_scale] scale.
 #' @rdname virtual_pal
 #' @examples
 #' library(scales)

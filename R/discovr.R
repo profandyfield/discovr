@@ -88,6 +88,7 @@
 #' * [escape]: Fictitious data about whether I'm a better songwriter than my school bandmate Malcolm.
 #' * [essay_marks]: Fictitious data about essay marking.
 #' * [exam_anxiety]: Fictitious data about exam performance, anxiety and revision.
+#' * [exercise]: Fictitious data from a randomised control trial of the effect of exercise on emotional well-being.
 #' * [field_2006]: Data that tests a hypothesis that threat information affects children's avoidance of novel animals.
 #' * [gallup_2003]: Data that tests a hypothesis about why penises have a bell end.
 #' * [gelman_2009]: Data used to critically evaluate the explanations (and claim) that there are more beautiful women than men in the world.

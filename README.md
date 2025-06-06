@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2023)
+# discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2026)
 
 <!-- badges: start -->
 
@@ -16,7 +16,7 @@
 > **NOTE**: This package is incomplete but under active development.
 > Check back here for updates/new tutorials.
 
-The `discovr` package contains resources for my 2023 textbook
+The `discovr` package contains resources for my 2026 textbook
 [Discovering Statistics Using
 <img src="./data-raw/images/r_logo.png" width="18"> and
 <img src="./data-raw/images/rstudio_logo.png" width="48">](https://www.discovr.rocks/).
@@ -41,9 +41,16 @@ tutorial](https://milton-the-cat.rocks/learnr/r/r_getting_started/).
 Once you have installed
 <img src="./data-raw/images/r_logo.png" width="18"> and
 <img src="./data-raw/images/rstudio_logo.png" width="48"> you can
-install `discovr`. The package is in development so you have to install
-it from github. To install the package execute (in
-<img src="./data-raw/images/rstudio_logo.png" width="48">):
+install `discovr`.
+
+The current released version is available from CRAN:
+
+``` r
+install.packages("discovr")
+```
+
+However, the package is currently in constant development to get the
+most recent version install it from github.
 
 ``` r
 if(!require(remotes)){
@@ -365,7 +372,7 @@ ggplot(classic_era, aes(x = energy, y = valence, color = album_name)) +
   theme_minimal()
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
 
 Similarly to apply the Powerslave palette to the fill of objects in a
 ggplot add `scale_fill_power()` as a layer:
@@ -378,7 +385,7 @@ ggplot(classic_era, aes(x = album_name, y = valence, fill = album_name)) +
   theme_minimal()
 ```
 
-<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
 
 ## Datasets
 
@@ -441,6 +448,8 @@ the book’s website.
   For details execute `?dark_lord`.
 - **davey_2003**: Data about the effects mood and stop rules on checking
   behaviour. For details execute `?davey_2003`.
+- **dog_training**: Data about the training dogs to vocalise when they
+  sniff alien life forms. For details execute `?dog_training`.
 - **download**: fictitious data about the download music festival and
   being smelly. For details execute `?download`.
 - **df_beta**: fictitious data used to illustrate the DF Beta statistic.
@@ -456,6 +465,9 @@ the book’s website.
   execute `?essay_marks`.
 - **exam_anxiety**: fictitious data about exam performance, anxiety and
   revision. For details execute `?exam_anxiety`.
+- **exercise**: Fictitious data from a randomised control trial of the
+  effect of exercise on emotional well-being. For details execute
+  `?exercise`.
 - **field_2006**: Data that tests a hypothesis that threat information
   affects children’s avoidance of novel animals. For details execute
   `?field_2006`.

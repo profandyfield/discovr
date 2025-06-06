@@ -96,6 +96,7 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{escape}: Fictitious data about whether I'm a better songwriter than my school bandmate Malcolm.
 \item \link{essay_marks}: Fictitious data about essay marking.
 \item \link{exam_anxiety}: Fictitious data about exam performance, anxiety and revision.
+\item \link{exercise}: Fictitious data from a randomised control trial of the effect of exercise on emotional well-being.
 \item \link{field_2006}: Data that tests a hypothesis that threat information affects children's avoidance of novel animals.
 \item \link{gallup_2003}: Data that tests a hypothesis about why penises have a bell end.
 \item \link{gelman_2009}: Data used to critically evaluate the explanations (and claim) that there are more beautiful women than men in the world.

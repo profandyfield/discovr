@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2023)
+# discovr: Resources for Discovering Statistics Using R and RStudio (Field, 2026)
 
 <!-- badges: start -->
 
@@ -25,11 +25,19 @@ knitr::opts_chunk$set(
 
 > **NOTE**: This package is incomplete but under active development. Check back here for updates/new tutorials.
 
-The `discovr` package contains resources for my 2023 textbook [Discovering Statistics Using <img src="./data-raw/images/r_logo.png" width="18"> and <img src="./data-raw/images/rstudio_logo.png" width="48">](https://www.discovr.rocks/). There are tutorials written using [learnr](https://rstudio.github.io/learnr/). Once a tutorial is running it's a bit like reading a book but with places where you can practice the <img src="./data-raw/images/r_logo.png" width="18"> code that you have just been taught. The `discovr` package is free and offered to support tutors and students using my textbook who want to learn <img src="./data-raw/images/r_logo.png" width="18">.
+The `discovr` package contains resources for my 2026 textbook [Discovering Statistics Using <img src="./data-raw/images/r_logo.png" width="18"> and <img src="./data-raw/images/rstudio_logo.png" width="48">](https://www.discovr.rocks/). There are tutorials written using [learnr](https://rstudio.github.io/learnr/). Once a tutorial is running it's a bit like reading a book but with places where you can practice the <img src="./data-raw/images/r_logo.png" width="18"> code that you have just been taught. The `discovr` package is free and offered to support tutors and students using my textbook who want to learn <img src="./data-raw/images/r_logo.png" width="18">.
 
 ## Installing `discovr`
 
-To use `discovr` you first need to install <img src="./data-raw/images/r_logo.png" width="18"> and <img src="./data-raw/images/rstudio_logo.png" width="48"> and familiarise yourself with <img src="./data-raw/images/r_logo.png" width="18">, <img src="./data-raw/images/rstudio_logo.png" width="48"> and good workflow practice. You can do this using [this interactive tutorial](https://milton-the-cat.rocks/learnr/r/r_getting_started/). Once you have installed <img src="./data-raw/images/r_logo.png" width="18"> and <img src="./data-raw/images/rstudio_logo.png" width="48"> you can install `discovr`. The package is in development so you have to install it from github. To install the package execute (in <img src="./data-raw/images/rstudio_logo.png" width="48">):
+To use `discovr` you first need to install <img src="./data-raw/images/r_logo.png" width="18"> and <img src="./data-raw/images/rstudio_logo.png" width="48"> and familiarise yourself with <img src="./data-raw/images/r_logo.png" width="18">, <img src="./data-raw/images/rstudio_logo.png" width="48"> and good workflow practice. You can do this using [this interactive tutorial](https://milton-the-cat.rocks/learnr/r/r_getting_started/). Once you have installed <img src="./data-raw/images/r_logo.png" width="18"> and <img src="./data-raw/images/rstudio_logo.png" width="48"> you can install `discovr`.
+
+The current released version is available from CRAN:
+
+```{r, eval = F}
+install.packages("discovr")
+```
+
+However, the package is currently in constant development to get the most recent version install it from github. 
 
 ```{r, eval = F}
 if(!require(remotes)){
@@ -200,6 +208,7 @@ See the book or data descriptions for more details. This is a list of available 
 * **daniels_2012**: Data about the effects of sexualised sports images on self-image. For details execute `?daniels_2012`.
 * **dark_lord**: fictitious data about the subliminal messages in songs. For details execute `?dark_lord`.
 * **davey_2003**: Data about the effects mood and stop rules on checking behaviour. For details execute `?davey_2003`.
+* **dog_training**: Data about the training dogs to vocalise when they sniff alien life forms. For details execute `?dog_training`.
 * **download**: fictitious data about the download music festival and being smelly. For details execute `?download`.
 * **df_beta**: fictitious data used to illustrate the DF Beta statistic. For details execute `?df_beta`.
 * **eel**: Fictitious data about a randomized control trial to test whether eel therapy is an effective treatment of constipation. For details execute `?eel`.
@@ -207,6 +216,7 @@ See the book or data descriptions for more details. This is a list of available 
 * **escape**: Fictitious data about whether I'm a better songwriter than my old bandmate Malcolm `?escape`.
 * **essay_marks**: fictitious data about essay marking. For details execute `?essay_marks`.
 * **exam_anxiety**: fictitious data about exam performance, anxiety and revision. For details execute `?exam_anxiety`.
+* **exercise**: Fictitious data from a randomised control trial of the effect of exercise on emotional well-being. For details execute `?exercise`.
 * **field_2006**: Data that tests a hypothesis that threat information affects children's avoidance of novel animals. For details execute `?field_2006`.
 * **gallup_2003**: Data that tests a hypothesis about why penises have a bell end. For details execute `?gallup_2003`.
 * **gelman_2009**: Data used to critically evaluate the explanations (and claim) that there are more beautiful women than men in the world. For details execute `?gelman_2009`.

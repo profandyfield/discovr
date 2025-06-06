@@ -781,6 +781,27 @@
 
 "exam_anxiety"
 
+#' Exercise and emotional well-being data
+#'
+#' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' A psychologist was interested in the effects of exercise on emotional well-being. The researcher tracked emotional well-being over 12 months using the The Warwick-Edinburgh Mental Well-being Scale (WEMWBS). Half of the sample were randomised to an exercise programme involving 3 exercise classes per week.
+#' The remaining participants were on a wait list to receive the same programme.
+#' The data contains measures from 141 participants measured at four timepoints (baseline and 1, 6, and 12 month follow-up).
+#'
+#' * **id**: The participant's id
+#' * **intervention**: a factor that codes which arm of the trial the participant was randomized to (wait list or exercise).
+#' * **time**: a categorical variable indicating at which phase of the trial emotional well-being was measured (Baseline, 1 month, 6 months or 12 months).
+#' * **time_num**: a numerical variable indicating how many months since the intervention emotional well-being was measured.
+#' * **wemwbs**: The participant's score on the The Warwick-Edinburgh Mental Well-being Scale (WEMWBS). Scores can range from 14 to 70 and a higher value equates to better emotional well-being.
+#'
+#'
+#' @docType data
+#' @format A tibble with 564 rows and 5 variables.
+#' @source [www.discovr.rocks/csv/exercise.csv](https://www.discovr.rocks/csv/exercise.csv)
+
+"exercise"
+
 #' Gallup et al. (2003) data
 #'
 #' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.

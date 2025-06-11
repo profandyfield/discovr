@@ -39,7 +39,7 @@ ticket to get me as far away from them as possible'). The (fictional) data conta
 \item \strong{id}: participant ID
 \item \strong{strategy}: Whether the stooge acted normally or played hard to get
 \item \strong{looks}: Whether the stooge was rated as high, average or low on looks
-\item \strong{personality}: Whether the stooge acted with high, average or low charisma
+\item \strong{charisma}: Whether the stooge acted with high, average or low charisma
 \item \strong{date}: rating how much the participant would like to have a proper date with the stooge as a percentage (100\% = 'I'd pay large sums of money for their phone number', 0\% = 'I'd pay a large sum of money for a plane ticket to get me as far away from them as possible')
 }
 }

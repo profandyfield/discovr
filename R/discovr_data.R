@@ -790,7 +790,7 @@
 #' The data contains measures from 141 participants measured at four timepoints (baseline and 1, 6, and 12 month follow-up).
 #'
 #' * **id**: The participant's id
-#' * **intervention**: a factor that codes which arm of the trial the participant was randomized to (wait list or exercise).
+#' * **intervention**: a factor that codes to which arm of the trial the participant was randomized (wait list or exercise).
 #' * **time**: a categorical variable indicating at which phase of the trial emotional well-being was measured (Baseline, 1 month, 6 months or 12 months).
 #' * **time_num**: a numerical variable indicating how many months since the intervention emotional well-being was measured.
 #' * **wemwbs**: The participant's score on the The Warwick-Edinburgh Mental Well-being Scale (WEMWBS). Scores can range from 14 to 70 and a higher value equates to better emotional well-being.
@@ -2126,7 +2126,7 @@
 #'   * **id**: participant ID
 #'   * **strategy**: Whether the stooge acted normally or played hard to get
 #'   * **looks**: Whether the stooge was rated as high, average or low on looks
-#'   * **personality**: Whether the stooge acted with high, average or low charisma
+#'   * **charisma**: Whether the stooge acted with high, average or low charisma
 #'   * **date**: rating how much the participant would like to have a proper date with the stooge as a percentage (100% = 'I'd pay large sums of money for their phone number', 0% = 'I'd pay a large sum of money for a plane ticket to get me as far away from them as possible')
 #'
 #' @format A tibble with 180 rows and 5 variables
@@ -2717,7 +2717,7 @@
 #'
 #' * **p_id**: The zombie's id.
 #' * **clinic_id**: id for the clinic attended anonymised as Clinic 1 to Clinic 10.
-#' * **intervention**: a factor that codes which arm of the trial the participant was randomized to (wait list or gene therapy).
+#' * **intervention**: a factor that codes to which arm of the trial the participant was randomized (wait list or gene therapy).
 #' * **resemblance**: How closely their face resembled their pre-zombified state (100\% = the participants face is exactly like their original face, 0\% the person bears no resemblance to their pre-zombified face).
 #' * **zombification**: whether the initial zombification was achieved through low- or high-intensity zombification.
 #' * **months_as_zombie**: the time (in months) that the person had spend in a zombified state before starting the intervention.

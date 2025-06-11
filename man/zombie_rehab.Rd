@@ -25,7 +25,7 @@ how much they resembled their pre-zombie state (as a percentage).
 \itemize{
 \item \strong{p_id}: The zombie's id.
 \item \strong{clinic_id}: id for the clinic attended anonymised as Clinic 1 to Clinic 10.
-\item \strong{intervention}: a factor that codes which arm of the trial the participant was randomized to (wait list or gene therapy).
+\item \strong{intervention}: a factor that codes to which arm of the trial the participant was randomized (wait list or gene therapy).
 \item \strong{resemblance}: How closely their face resembled their pre-zombified state (100\\% = the participants face is exactly like their original face, 0\\% the person bears no resemblance to their pre-zombified face).
 \item \strong{zombification}: whether the initial zombification was achieved through low- or high-intensity zombification.
 \item \strong{months_as_zombie}: the time (in months) that the person had spend in a zombified state before starting the intervention.

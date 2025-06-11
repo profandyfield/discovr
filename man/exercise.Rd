@@ -22,7 +22,7 @@ The remaining participants were on a wait list to receive the same programme.
 The data contains measures from 141 participants measured at four timepoints (baseline and 1, 6, and 12 month follow-up).
 \itemize{
 \item \strong{id}: The participant's id
-\item \strong{intervention}: a factor that codes which arm of the trial the participant was randomized to (wait list or exercise).
+\item \strong{intervention}: a factor that codes to which arm of the trial the participant was randomized (wait list or exercise).
 \item \strong{time}: a categorical variable indicating at which phase of the trial emotional well-being was measured (Baseline, 1 month, 6 months or 12 months).
 \item \strong{time_num}: a numerical variable indicating how many months since the intervention emotional well-being was measured.
 \item \strong{wemwbs}: The participant's score on the The Warwick-Edinburgh Mental Well-being Scale (WEMWBS). Scores can range from 14 to 70 and a higher value equates to better emotional well-being.

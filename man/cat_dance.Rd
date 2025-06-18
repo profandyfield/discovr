@@ -22,7 +22,7 @@ He took 200 cats and tried to train them to line-dance by giving them either foo
 At the end of the week he counted how many animals could line-dance and how many could not.
 The object contains the following variables:
 \itemize{
-\item \strong{reward}: factor describing whether the cat was trained using food of affection as a reward
+\item \strong{training}: factor describing whether the cat was trained using food of affection as a reward
 \item \strong{dance}: factor describing whether the cat danced or not
 }
 }

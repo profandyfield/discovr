@@ -331,7 +331,7 @@
 #' At the end of the week he counted how many animals could line-dance and how many could not.
 #' The object contains the following variables:
 #'
-#'   * **reward**: factor describing whether the cat was trained using food of affection as a reward
+#'   * **training**: factor describing whether the cat was trained using food of affection as a reward
 #'   * **dance**: factor describing whether the cat danced or not
 #'
 #' @docType data

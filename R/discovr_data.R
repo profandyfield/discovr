@@ -313,12 +313,12 @@
 #'   * **interaction**: the interaction of dance and reward (i.e. dance multiplied by reward)
 #'   * **observed**: the observed frequency for the combination of dance and reward
 #'   * **expected**: the expected frequency for the combination of dance and reward
-#'   * **lmobserved**: the natural logarithm of the observed frequency for the combination of dance and reward
-#'   * **lmexpected**: the natural logarithm of the expected frequency for the combination of dance and reward
+#'   * **ln_observed**: the natural logarithm of the observed frequency for the combination of dance and reward
+#'   * **ln_expected**: the natural logarithm of the expected frequency for the combination of dance and reward
 #'
 #' @docType data
 #' @format A tibble with 200 rows and 7 variables.
-#' @source [www.discovr.rocks/csv/cat_regression.csv](https://www.discovr.rocks/csv/cat_regression.csv)
+#' @source [www.discovr.rocks/csv/cat_regression.csv](https://www.discovr.rocks/csv/cat_reg.csv)
 
 "cat_reg"
 

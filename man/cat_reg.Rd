@@ -8,7 +8,7 @@
 A tibble with 200 rows and 7 variables.
 }
 \source{
-\href{https://www.discovr.rocks/csv/cat_regression.csv}{www.discovr.rocks/csv/cat_regression.csv}
+\href{https://www.discovr.rocks/csv/cat_reg.csv}{www.discovr.rocks/csv/cat_regression.csv}
 }
 \usage{
 cat_reg
@@ -24,8 +24,8 @@ Fictional data illustrating how the chi-square test is a linear model. It's abou
 \item \strong{interaction}: the interaction of dance and reward (i.e. dance multiplied by reward)
 \item \strong{observed}: the observed frequency for the combination of dance and reward
 \item \strong{expected}: the expected frequency for the combination of dance and reward
-\item \strong{lmobserved}: the natural logarithm of the observed frequency for the combination of dance and reward
-\item \strong{lmexpected}: the natural logarithm of the expected frequency for the combination of dance and reward
+\item \strong{ln_observed}: the natural logarithm of the observed frequency for the combination of dance and reward
+\item \strong{ln_expected}: the natural logarithm of the expected frequency for the combination of dance and reward
 }
 }
 \keyword{datasets}

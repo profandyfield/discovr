@@ -40,7 +40,7 @@ source("./www/discovr_helpers.R")
 dance_tib <- discovr::cat_dance
 
 cat_tbl <- dance_tib |> 
-  dplyr::group_by(dance, reward) |> 
+  dplyr::group_by(dance, training) |> 
   dplyr::tally() |> 
   dplyr::ungroup()
 
@@ -50,8 +50,8 @@ cat_cont <- cat_tbl |>
     values_from = "n"
   )
 
-cat_chi <- chisq.test(dance_tib$reward, dance_tib$dance)
-cat_xtab <- xtabs(n ~ reward + dance, data = cat_tbl)
+cat_chi <- chisq.test(dance_tib$training, dance_tib$dance)
+cat_xtab <- xtabs(n ~ training + dance, data = cat_tbl)
 ```
 
 ```{r, eval = F, echo = F}
@@ -146,24 +146,24 @@ dance_tib <- here::here("data/cat_dance.csv") |> readr::read_csv()
 
 ### Preparing data
 
-To work *outside of this tutorial* you need to turn categorical variables into factors and set an appropriate baseline category using `forcats::as_factor` and `forcats::fct_relevel`. There are two categorical variables here: **reward** (the animal was trained using either food or affection, not both) and **dance** (the animal either learnt to dance or it did not). For each variable, think about which category you'd want as your baseline or reference.  For **reward** it doesn't matter too much, but for **dance** it makes sense to have 'No' as the reference category. Therefore, you might convert these variables to factors using this code:
+To work *outside of this tutorial* you need to turn categorical variables into factors and set an appropriate baseline category using `forcats::as_factor` and `forcats::fct_relevel`. There are two categorical variables here: **training** (the animal was trained using either food or affection, not both) and **dance** (the animal either learnt to dance or it did not). For each variable, think about which category you'd want as your baseline or reference.  For **training** it doesn't matter too much, but for **dance** it makes sense to have 'No' as the reference category. Therefore, you might convert these variables to factors using this code:
 
 ```{r, eval= FALSE}
 dance_tib <- dance_tib |> 
   dplyr::mutate(
     dance = forcats::as_factor(dance) |>
       forcats::fct_relevel("No"),
-    reward = forcats::as_factor(reward)
+    training = forcats::as_factor(training)
   )
 ```
 
 ## `r bmu()` Dancing cats and entering data [(1)]{.alt}
 
-A researcher was interested in whether animals could be trained to dance. He took 200 cats and tried to train them to dance by giving them either food or affection as a reward for dance-like behaviour. (Historically in this example the cats were taught to line dance. I was tempted to update the example to something more contemporary, like twerking cats, but I'm now haunted by intrusive images of lines of twerking cats slowly but purposefully following me around, which proves that sometimes it's best to leave well alone.) At the end of the week he counted how many animals could line-dance and how many could not. There are two categorical variables here: **reward** (the animal was trained using either food or affection, not both) and **dance** (the animal either learnt to dance or it did not). By combining categories, we end up with four different categories. All we then need to do is to count how many cats fall into each category. Table 1 shows these frequencies.
+A researcher was interested in whether animals could be trained to dance. He took 200 cats and tried to train them to dance by giving them either food or affection as a reward for dance-like behaviour. (Historically in this example the cats were taught to line dance. I was tempted to update the example to something more contemporary, like twerking cats, but I'm now haunted by intrusive images of lines of twerking cats slowly but purposefully following me around, which proves that sometimes it's best to leave well alone.) At the end of the week he counted how many animals could line-dance and how many could not. There are two categorical variables here: **training** (the animal was trained using either food or affection, not both) and **dance** (the animal either learnt to dance or it did not). By combining categories, we end up with four different categories. All we then need to do is to count how many cats fall into each category. Table 1 shows these frequencies.
 
 ```{r, echo = FALSE}
 tibble::tribble(
-  ~`Reward`, ~`Danced`, ~`Did not dance`,
+  ~`Training`, ~`Danced`, ~`Did not dance`,
   "Food", 28, 10,
   "Affection", 48, 114
 ) |> 
@@ -173,7 +173,7 @@ tibble::tribble(
 
 ### `r bmu()` Entering raw scores [(1)]{.alt}
 
-The first way is to enter each cat's data as a row of the data. You would create two variables (**reward** and **dance**) and **reward** might take on values of 'Food' and 'Affection', and dance would have values of 'Yes' and 'no'.
+The first way is to enter each cat's data as a row of the data. You would create two variables (**training** and **dance**) and **training** might take on values of 'Food' and 'Affection', and dance would have values of 'Yes' and 'no'.
 
 #### `r alien()` Alien coding challenge
 
@@ -187,22 +187,22 @@ These are what the data look like in `dance_tib`. Inspect this object using the 
 dance_tib
 ```
 
-Note that there are 200 cats and, therefore, 200 rows of data. At this point you would convert **reward** and **dance** to factors (as described in [preparing the data]{.alt}). Within this tutorial the variables are already converted to factors with the levels set such that 'No' is the baseline category for **dance**, and 'food' is the baseline category for **reward**.
+Note that there are 200 cats and, therefore, 200 rows of data. At this point you would convert **training** and **dance** to factors (as described in [preparing the data]{.alt}). Within this tutorial the variables are already converted to factors with the levels set such that 'No' is the baseline category for **dance**, and 'food' is the baseline category for **training**.
 
 #### `r robot()` Code example
 
-To transform these raw data into a contingency table we can use a couple of functions from `dplyr`. First we can group the data in [dance_tib]{.alt} by **dance** and **reward** by piping it into the `group_by()` function. We then use the `tally()` function, which count the number of cases. By first grouping by **dance** and **reward**, `tally()` will count how many cases fall into each combination of categories of those variables. In other words, it gives us the counts we need for the contingency table. We use `ungroup()` to remove the earlier grouping of the data so that when we use [cat_tbl]{.alt} in the future it operations are not grouped by **dance** and **reward**.
+To transform these raw data into a contingency table we can use a couple of functions from `dplyr`. First we can group the data in [dance_tib]{.alt} by **dance** and **training** by piping it into the `group_by()` function. We then use the `tally()` function, which count the number of cases. By first grouping by **dance** and **training**, `tally()` will count how many cases fall into each combination of categories of those variables. In other words, it gives us the counts we need for the contingency table. We use `ungroup()` to remove the earlier grouping of the data so that when we use [cat_tbl]{.alt} in the future it operations are not grouped by **dance** and **training**.
 
 ```{r, eval = F}
 cat_tbl <- dance_tib |> 
-  dplyr::group_by(dance, reward) |> 
+  dplyr::group_by(dance, training) |> 
   dplyr::tally() |> 
   dplyr::ungroup()
 ```
 
 #### `r alien()` Alien coding challenge
 
-Use the code example to create and view an object called [cat_tbl]{.alt} containing the frequencies for the combinations of categories of **dance** and **reward**.
+Use the code example to create and view an object called [cat_tbl]{.alt} containing the frequencies for the combinations of categories of **dance** and **training**.
 
 ```{r tally, exercise = TRUE, exercise.lines = 6}
 
@@ -210,7 +210,7 @@ Use the code example to create and view an object called [cat_tbl]{.alt} contain
 
 ```{r tally-solution}
 cat_tbl <- dance_tib |> 
-  dplyr::group_by(dance, reward) |> 
+  dplyr::group_by(dance, training) |> 
   dplyr::tally() |> 
   dplyr::ungroup()
 cat_tbl # to view the object
@@ -227,7 +227,7 @@ tidyr::pivot_wider(
 )
 ```
 
-If we want to spread values associated with 'danced' and 'did not dance' across columns then we want to get the column [names_from]{.alt} the variable **dance**. The frequencies are stored in the variable **n**, so we'd want to get [values_from]{.alt} from that variable. Finally, we want to leave categories of **reward** in rows so we'd select **reward** as the [id_cols]{.alt} (although we can omit this argument because the function will assume that non-named variables should not be restructured).
+If we want to spread values associated with 'danced' and 'did not dance' across columns then we want to get the column [names_from]{.alt} the variable **dance**. The frequencies are stored in the variable **n**, so we'd want to get [values_from]{.alt} from that variable. Finally, we want to leave categories of **training** in rows so we'd select **training** as the [id_cols]{.alt} (although we can omit this argument because the function will assume that non-named variables should not be restructured).
 
 #### `r robot()` Code example
 
@@ -261,7 +261,7 @@ cat_cont # This line displays the object we created above
 
 ### `r bmu()` Entering data as a contingency table [(1)]{.alt}
 
-If you don't have the raw data but know the frequencies, you can enter the contingency table directly using the `tribble()` function from `tibble`. To mimic the table that we just created we might create a tibble that has a variable **reward** that specifies whether the food was reward or affection, then a variable **Yes** containing the total number of cats that danced for food (28) and affection (10) and a variable called **No** containing the total number of cats that did not dance when food (48) and affection (114) were used as rewards.
+If you don't have the raw data but know the frequencies, you can enter the contingency table directly using the `tribble()` function from `tibble`. To mimic the table that we just created we might create a tibble that has a variable **training** that specifies whether the food was reward or affection, then a variable **Yes** containing the total number of cats that danced for food (28) and affection (10) and a variable called **No** containing the total number of cats that did not dance when food (48) and affection (114) were used as rewards.
 
 #### `r robot()` Code example
 
@@ -269,13 +269,13 @@ We can create this a tibble like this called `cat_cont` using the `tribble()` fu
 
 ```{r, eval= FALSE}
 cat_cont <- tibble::tribble(
-  ~reward, ~Yes, ~No,
+  ~training, ~Yes, ~No,
   "Food", 28, 10,
   "Affection", 48, 114
 )
 ```
 
-The `tribble()` function lets you enter raw data in tabulated form, where each row represents a row of the data and columns are separated using commas. Notice the first row contains the variable names, so this sets up three columns, the first named **reward** the second **Yes** and so on. Each column name is preceded by a [~]{.alt}. After the first row, we input the raw data. For example row 2 tells `r rproj()` that the value of **reward** is the word ["Food"]{.alt}, the corresponding value of **Yes** is 28 and the corresponding value of **No** is 10. Note that each row is ended with a comma except the last.
+The `tribble()` function lets you enter raw data in tabulated form, where each row represents a row of the data and columns are separated using commas. Notice the first row contains the variable names, so this sets up three columns, the first named **training** the second **Yes** and so on. Each column name is preceded by a [~]{.alt}. After the first row, we input the raw data. For example row 2 tells `r rproj()` that the value of **training** is the word ["Food"]{.alt}, the corresponding value of **Yes** is 28 and the corresponding value of **No** is 10. Note that each row is ended with a comma except the last.
 
 <div class="tip">
   `r cat_space()` **Tip**
@@ -284,7 +284,7 @@ If you want to use a column name with a space (not advised but hey, ho), then yo
 
 ```{r, eval = F, class.source = '.panel_alt'}
 cat_cont <- tibble::tribble(
-  ~reward, ~danced, ~`did not dance`,
+  ~training, ~danced, ~`did not dance`,
   "Food", 28, 10,
   "Affection", 48, 114
 )
@@ -301,7 +301,7 @@ Create and inspect the object `cat_cont` using the code example in the previous 
 
 ```{r cat_cont-solution}
 cat_cont <- tibble::tribble(
-  ~reward, ~Yes, ~No,
+  ~training, ~Yes, ~No,
   "Food", 28, 10,
   "Affection", 48, 114
 )
@@ -338,12 +338,12 @@ prop_total <- cat_tbl |>
   )
 ```
 
-We can again use `pivot_wider()` to view these proportions in a contingency table, but this time setting [values_from = "prop"]{.alt} and setting [id_cols = "reward"]{.alt}
+We can again use `pivot_wider()` to view these proportions in a contingency table, but this time setting [values_from = "prop"]{.alt} and setting [id_cols = "training"]{.alt}
 
 ```{r, eval = F}
 prop_total |> 
   tidyr::pivot_wider(
-    id_cols = "reward",
+    id_cols = "training",
     names_from = "dance",
     values_from = "prop"
   )
@@ -363,7 +363,7 @@ prop_total <- cat_tbl |>
     prop = n/sum(n)
   ) |> 
   tidyr::pivot_wider(
-    id_cols = "reward",
+    id_cols = "training",
     names_from = "dance",
     values_from = "prop"
   )
@@ -378,14 +378,14 @@ prop_total <- cat_tbl |>
     perc = sprintf("%.0f", 100*n/sum(n))
   )
 
-cat_xtab <- xtabs(n ~ reward + dance, cat_tbl)
+cat_xtab <- xtabs(n ~ training + dance, cat_tbl)
 prop_dance <- proportions(cat_xtab, margin = "dance") |> 
   tibble::as_tibble() |> 
   dplyr::mutate(
     perc = sprintf("%.0f", 100*n),
     n = sprintf("%.2f", n)
   )
-prop_reward <- proportions(cat_xtab, margin = "reward") |> 
+prop_training <- proportions(cat_xtab, margin = "training") |> 
   tibble::as_tibble()|> 
   dplyr::mutate(
     perc = sprintf("%.0f", 100*n),
@@ -407,22 +407,22 @@ In which, [tibble]{.alt} is a tibble of frequencies in long format, in this case
 
 #### `r robot()` Code example
 
-To convert [cat_tbl]{.alt} to a contingency table in which **reward** is spread across rows and **dance** is spread across columns (this is the format we used previously), we'd execute
+To convert [cat_tbl]{.alt} to a contingency table in which **training** is spread across rows and **dance** is spread across columns (this is the format we used previously), we'd execute
 
 ```{r, eval = F}
-cat_xtab <- xtabs(n ~ reward + dance, data = cat_tbl)
+cat_xtab <- xtabs(n ~ training + dance, data = cat_tbl)
 ```
 
 #### `r bug()` Alien coding challenge
 
-Use the code box to create a table of frequencies [cat_xtab]{.alt} for the variables of **reward** and **dance**. You should get a table that looks the same as [cat_cont]{.alt}, which we created earlier. (In fact, this would be a legitimate alternative way to create the contingency table.)
+Use the code box to create a table of frequencies [cat_xtab]{.alt} for the variables of **training** and **dance**. You should get a table that looks the same as [cat_cont]{.alt}, which we created earlier. (In fact, this would be a legitimate alternative way to create the contingency table.)
 
 ```{r cat_xtab, exercise = TRUE, exercise.lines = 4}
              
 ```
 
 ```{r cat_xtab-solution}
-cat_xtab <- xtabs(n ~ reward + dance, data = cat_tbl)
+cat_xtab <- xtabs(n ~ training + dance, data = cat_tbl)
 cat_xtab
 ```
 
@@ -461,28 +461,28 @@ The resulting table shows that of the cats that did *not* dance `r prop_dance$n[
 
 #### `r robot()` Code example
 
-Now let's look at the proportions within the variable **reward**. This variable is spread across rows in the contingency table, so we'd set [margin = 1]{.alt} and use this code
+Now let's look at the proportions within the variable **training**. This variable is spread across rows in the contingency table, so we'd set [margin = 1]{.alt} and use this code
 
 ```{r, eval = F}
-prop_reward <- proportions(cat_xtab, margin = 1)
+prop_training <- proportions(cat_xtab, margin = 1)
 ```
 
-which creates table of proportions called [prop_reward]{.alt} by feeding our contingency table([cat_xtab]{.alt}) into the function and telling it to compute the proportions *within rows* by setting [margin = 1]{.alt}.
+which creates table of proportions called [prop_training]{.alt} by feeding our contingency table([cat_xtab]{.alt}) into the function and telling it to compute the proportions *within rows* by setting [margin = 1]{.alt}.
 
 #### `r bug()` Alien coding challenge
 
-Use the code box to create a table of proportions [prop_reward]{.alt} where the proportions are computed within each level of **reward** separately. View the resulting table.
+Use the code box to create a table of proportions [prop_training]{.alt} where the proportions are computed within each level of **training** separately. View the resulting table.
 
-```{r prop_reward, exercise = TRUE, exercise.lines = 4}
+```{r prop_training, exercise = TRUE, exercise.lines = 4}
              
 ```
 
-```{r prop_reward-solution}
-prop_reward <- proportions(cat_xtab, margin = 1)
-prop_reward
+```{r prop_training-solution}
+prop_training <- proportions(cat_xtab, margin = 1)
+prop_training
 ```
 
-The resulting table shows that of the cats rewarded with food `r prop_reward$n[1]` (`r prop_reward$perc[1]`%) did *not* dance and `r prop_reward$n[3]` (`r prop_reward$perc[3]`%) did dance. This pattern was reversed for cats trained with affection, with `r prop_reward$n[2]` (`r prop_reward$perc[2]`%) *not* dancing and `r prop_reward$n[4]` (`r prop_reward$perc[4]`%) dancing. In short, using a food reward about 3/4 of cats danced and 1/4 didn't, whereas with affection the opposite was true with about 1/3 of cats dancing and 2/3 refusing.
+The resulting table shows that of the cats rewarded with food `r prop_training$n[1]` (`r prop_training$perc[1]`%) did *not* dance and `r prop_training$n[3]` (`r prop_training$perc[3]`%) did dance. This pattern was reversed for cats trained with affection, with `r prop_training$n[2]` (`r prop_training$perc[2]`%) *not* dancing and `r prop_training$n[4]` (`r prop_training$perc[4]`%) dancing. In short, using a food reward about 3/4 of cats danced and 1/4 didn't, whereas with affection the opposite was true with about 1/3 of cats dancing and 2/3 refusing.
 
 ## `r bmu()` The chi-square test [(1)]{.alt}
 
@@ -508,11 +508,11 @@ cat_cont
 
 #### `r robot()` Code example
 
-Note that the numbers are stored in the variables called **Yes** and **No** (the variable **reward** contains words describing which reward was given). We can do this by, for example, using `select()` to select these columns (in the code below I de-select **reward** which will leave us with **Yes** and **No**). We then pipe this into into `chisq.test()` and if we accept the continuity correction then we don't need to include any arguments. 
+Note that the numbers are stored in the variables called **Yes** and **No** (the variable **training** contains words describing which reward was given). We can do this by, for example, using `select()` to select these columns (in the code below I de-select **training** which will leave us with **Yes** and **No**). We then pipe this into into `chisq.test()` and if we accept the continuity correction then we don't need to include any arguments. 
 
 ```{r, eval = F}
 cat_chi <- cat_cont |> 
-  dplyr::select(-reward) |> 
+  dplyr::select(-training) |> 
   chisq.test()
 ```
 
@@ -521,7 +521,7 @@ This code creates an object called [cat_chi]{.alt} that stores information from 
 
 #### `r alien()` Alien coding challenge
 
-Use the example code to get a chi-square test for **reward** as a predictor of **dance**.
+Use the example code to get a chi-square test for **training** as a predictor of **dance**.
 
 ```{r crosstab_cont, exercise = TRUE, exercise.lines = 5}
 
@@ -529,7 +529,7 @@ Use the example code to get a chi-square test for **reward** as a predictor of *
 
 ```{r crosstab_cont-solution}
 cat_chi <- cat_cont |> 
-  dplyr::select(-reward) |> 
+  dplyr::select(-training) |> 
   chisq.test()
 cat_chi #shows the results of the test
 ```
@@ -550,7 +550,7 @@ If we set [correct = F]{.alt} to remove the continuity correction we get the fol
 
 ```{r}
 cat_chi <- cat_cont |> 
-  dplyr::select(-reward) |> 
+  dplyr::select(-training) |> 
   chisq.test(correct = F)
 cat_chi
 ```
@@ -566,16 +566,16 @@ If you are working with raw scores rather than a contingency table you can eithe
 
 #### `r robot()` Code example
 
-If you choose to work with the raw data (i.e. two categorical variables) method then you need to set the [x]{.alt} and [y]{.alt} arguments within `chisq.test()` to the variables for which you want to quantify the association. In our case, the raw data [dance_tib]{.alt} contains only the variables **dance** and **reward**, and these are the variables we want to use, so we could execute
+If you choose to work with the raw data (i.e. two categorical variables) method then you need to set the [x]{.alt} and [y]{.alt} arguments within `chisq.test()` to the variables for which you want to quantify the association. In our case, the raw data [dance_tib]{.alt} contains only the variables **dance** and **training**, and these are the variables we want to use, so we could execute
 
 ```{r, eval = F}
-cat_chi <- chisq.test(x = dance_tib$reward, y = dance_tib$dance)
+cat_chi <- chisq.test(x = dance_tib$training, y = dance_tib$dance)
 ```
 
 or more succinctly
 
 ```{r, eval = F}
-cat_chi <- chisq.test(dance_tib$reward, dance_tib$dance)
+cat_chi <- chisq.test(dance_tib$training, dance_tib$dance)
 ```
 
 
@@ -600,14 +600,14 @@ meaning 'the variable called **dance** within the tibble called [dance_tib]{.alt
 
 #### `r alien()` Alien coding challenge
 
-Use the example code to get a chi-square test for **reward** as a predictor of **dance** using the raw data.
+Use the example code to get a chi-square test for **training** as a predictor of **dance** using the raw data.
 
 ```{r crosstab_raw, exercise = TRUE, exercise.lines = 4}
 
 ```
 
 ```{r crosstab_raw-solution}
-cat_chi <- chisq.test(dance_tib$reward, dance_tib$dance)
+cat_chi <- chisq.test(dance_tib$training, dance_tib$dance)
 cat_chi #shows the results of the test
 ```
 
@@ -615,7 +615,7 @@ cat_chi #shows the results of the test
 ### `r bmu()` Interpreting the chi-square test [(1)]{.alt}
 
 ```{r, echo = F}
-cat_chi <- chisq.test(dance_tib$reward, dance_tib$dance)
+cat_chi <- chisq.test(dance_tib$training, dance_tib$dance)
 ```
 
 
@@ -632,15 +632,15 @@ There was a significant association between the type of reward used and whether 
 We know that there is a significant association between the type of reward used and whether cats danced, but to understand what's driving that association we can look at the tables of proportions we obtained earlier. These proportions can be particularly useful for 2 × 2 contingency tables. For example, remember that the proportions of cats dancing within each reward was
 
 ```{r, echo = F}
-prop_reward |> 
+prop_training |> 
   tidyr::pivot_wider(
-    id_cols = "reward",
+    id_cols = "training",
     names_from = "dance",
     values_from = "n"
   )
 ```
 
-which shows us that of the cats rewarded with food `r prop_reward$n[1]` (`r prop_reward$perc[1]`%) did *not* dance and `r prop_reward$n[3]` (`r prop_reward$perc[3]`%) did dance. This pattern was reversed for cats trained with affection, with `r prop_reward$n[2]` (`r prop_reward$perc[2]`%) *not* dancing and `r prop_reward$n[4]` (`r prop_reward$perc[4]`%) dancing. In short, using a food reward about 3/4 of cats danced and 1/4 didn't, whereas with affection the opposite was true with about 1/3 of cats dancing and 2/3 refusing. The overall association between rewards and dancing seems to reflect the fact that food rewards were more effective at getting cats to dance than affection.
+which shows us that of the cats rewarded with food `r prop_training$n[1]` (`r prop_training$perc[1]`%) did *not* dance and `r prop_training$n[3]` (`r prop_training$perc[3]`%) did dance. This pattern was reversed for cats trained with affection, with `r prop_training$n[2]` (`r prop_training$perc[2]`%) *not* dancing and `r prop_training$n[4]` (`r prop_training$perc[4]`%) dancing. In short, using a food reward about 3/4 of cats danced and 1/4 didn't, whereas with affection the opposite was true with about 1/3 of cats dancing and 2/3 refusing. The overall association between rewards and dancing seems to reflect the fact that food rewards were more effective at getting cats to dance than affection.
 
 
 ### `r user_astronaut()` Using standardized residuals [(3)]{.alt}
@@ -771,14 +771,14 @@ Using the contingency table we get
 
 ```{r}
 cat_fish <- cat_cont |> 
-  dplyr::select(-reward) |>
+  dplyr::select(-training) |>
   fisher.test()
 ```
 
 and using the raw variables we get
 
 ```{r}
-cat_fish <- fisher.test(dance_tib$reward, dance_tib$dance)
+cat_fish <- fisher.test(dance_tib$training, dance_tib$dance)
 ```
 
 #### `r alien()` Alien coding challenge
@@ -791,14 +791,14 @@ Conduct and view Fisher's exact test.
 
 ```{r fet-solution}
 cat_fish <- cat_cont |> 
-  dplyr::select(-reward) |>
+  dplyr::select(-training) |>
   fisher.test()
 cat_fish #to view the results
 ```
 
 ```{r, echo = F}
 cat_fish <- cat_cont |> 
-  dplyr::select(-reward) |>
+  dplyr::select(-training) |>
   fisher.test()
 ```
 

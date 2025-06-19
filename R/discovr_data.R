@@ -331,11 +331,12 @@
 #' At the end of the week he counted how many animals could line-dance and how many could not.
 #' The object contains the following variables:
 #'
+#'   * **cat_id**: participant id of the cat
 #'   * **training**: factor describing whether the cat was trained using food of affection as a reward
 #'   * **dance**: factor describing whether the cat danced or not
 #'
 #' @docType data
-#' @format A tibble with 200 rows and 2 variables.
+#' @format A tibble with 200 rows and 3 variables.
 #' @source [www.discovr.rocks/csv/cat_dance.csv](https://www.discovr.rocks/csv/cat_dance.csv)
 
 "cat_dance"

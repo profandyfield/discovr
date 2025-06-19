@@ -5,7 +5,7 @@
 \alias{cat_dance}
 \title{Dancing cats data}
 \format{
-A tibble with 200 rows and 2 variables.
+A tibble with 200 rows and 3 variables.
 }
 \source{
 \href{https://www.discovr.rocks/csv/cat_dance.csv}{www.discovr.rocks/csv/cat_dance.csv}
@@ -22,6 +22,7 @@ He took 200 cats and tried to train them to line-dance by giving them either foo
 At the end of the week he counted how many animals could line-dance and how many could not.
 The object contains the following variables:
 \itemize{
+\item \strong{cat_id}: participant id of the cat
 \item \strong{training}: factor describing whether the cat was trained using food of affection as a reward
 \item \strong{dance}: factor describing whether the cat danced or not
 }

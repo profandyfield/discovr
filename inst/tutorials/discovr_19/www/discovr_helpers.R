@@ -254,7 +254,9 @@ report_es <- function(es_obj, col, row = 1, digits = 2){
 
   par <- ifelse(grepl("Cohen", col), "$\\hat{d}$",
                 ifelse(grepl("Hedges", col), "$\\hat{g}$",
-                       ifelse(grepl("Omega", col), "$\\hat{\\omega}_p$", "$\\hat{\\eta}_p$")))
+                       ifelse(grepl("Omega", col), "$\\hat{\\omega}_p$",
+                              ifelse(grepl("Odds", col), "$\\hat{OR}$",
+                              "$\\hat{\\eta}_p$"))))
 
   es_row  <- es_obj |>
     tibble::as_tibble() |>

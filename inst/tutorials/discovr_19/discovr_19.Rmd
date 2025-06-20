@@ -535,14 +535,12 @@ The function takes the general form
 janitor::chisq.test(x = my_tabyl, correct = TRUE)
 ```
 
-Basically, input your contingency table [cat_xtbl]{.alt} to the function and you're good to go. The other argument is:
-
-- [correct]{.alt}: when [TRUE]{.alt} Yates' continuity correction is applied when the contingency table is 2 $\times$ 2 in size. There's no reason to change the default of applying this correction.
+Basically, input your contingency table [cat_xtbl]{.alt} to the function and you're good to go. The other argument is [correct = TRUE]{.alt} which, by default, applies Yates' continuity correction when the contingency table is 2 $\times$ 2 in size. There's no reason to change this default to FALSE so we can exclude this argument.
  
 
 #### `r robot()` Code example
 
-Given that the defaults are fine, we can apply the chi-square test to our contingency table [cat_xtbl]{.alt} using the following code:
+We can apply the chi-square test to our contingency table [cat_xtbl]{.alt} using the following code:
 
 ```{r, eval = F}
 cat_chi <- janitor::chisq.test(x = cat_xtbl)
@@ -550,7 +548,7 @@ model_parameters(cat_chi) |>
   display()
 ```
 
-This code creates an object called [cat_chi]{.alt} that stores information from the chi-square test. We are saving the test to an object because to fully interpret the test we need extract some of this information later. As with any other model, we use `model_parameters()` to extract the key information, and `display()` to display the results.
+This code creates an object called [cat_chi]{.alt} that stores information from the chi-square test. We are saving the test to an object because to fully interpret the test we need extract some of this information later. We then use our usual workflow of extracting the key information using `model_parameters()` and using `display()` to display the results.
 
 <div class="bug">
   `r bug()` **De-bug**

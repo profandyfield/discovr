@@ -397,7 +397,7 @@ tidyr::pivot_wider(
 )
 ```
 
-If we want to spread values associated with 'yes' and 'no' on the variable **dance** across columns then we want to get the column [names_from]{.alt} the variable **dance**. The frequencies are stored in the variable **n**, so we'd want to get [values_from]{.alt} from that variable. Finally, we want to leave categories of **training** in rows so we'd select **training** as the [id_cols]{.alt} (in fact we can omit this argument because the function will assume that non-named variables should not be restructured). We'd also pipe the result through `janitor::as_tabyl()` to convert it to a [tabyl]{.alt}.
+If we want to spread values associated with 'yes' and 'no' on the variable **dance** across columns then we want to get the column [names_from]{.alt} the variable **dance**. The frequencies are stored in the variable **n**, so we'd want to get [values_from]{.alt} from that variable. Finally, we want to leave categories of **training** in rows so we'd select **training** as the [id_cols]{.alt} (in fact we can omit this argument because the function will assume that non-named variables should not be restructured). We'd also pipe the result through `as.data.frame()` (to remove some unhelpful attributes of tibbles) and `janitor::as_tabyl()` (to convert it to a [tabyl]{.alt}).
 
 #### `r robot()` Code example
 
@@ -408,7 +408,8 @@ cat_xtbl <- cat_freq |>
   pivot_wider(
     values_from = "n",
     names_from = "dance"
-  ) |> 
+  ) |>
+  as.data.frame() |> 
   janitor::as_tabyl()
 ```
 
@@ -425,7 +426,8 @@ cat_xtbl <- cat_freq |>
   pivot_wider(
     values_from = "n",
     names_from = "dance"
-  ) |> 
+  ) |>
+  as.data.frame() |> 
   janitor::as_tabyl()
 # This  displays the object we created above
 cat_xtbl |>  

@@ -22,8 +22,9 @@ He took 200 cats and 70 dogs and tried to train them to line-dance by giving the
 At the end of the week he counted how many animals could line-dance and how many could not.
 The object contains the following variables:
 \itemize{
+\item \strong{id}: participant ID
 \item \strong{training}: factor describing whether the animal was trained using food of affection as a reward
-\item \strong{dance}: factor describing whether the cat danced or not
+\item \strong{dance}: factor describing whether the animal danced or not
 \item \strong{animal}: factor describing whether the animal was a cat or a dog
 }
 }

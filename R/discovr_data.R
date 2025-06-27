@@ -106,7 +106,7 @@
 #'
 #'  Angry Birds is a video game in which you fire birds at pigs.  A (fabricated) study was set up in which people
 #'  played Angry Birds and a control game (Tetris) over a 2-year period (1 year per game).
-#'  The participant’s violent acts in everyday life were monitored before the study, and after 1 month, 6 months and 12 months.
+#'  The participant's violent acts in everyday life were monitored before the study, and after 1 month, 6 months and 12 months.
 #'  The (fictional) data contains
 #'
 #'   * **id**: participant ID
@@ -728,7 +728,7 @@
 #'
 #' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' In my teens I was in a band called Andromeda. I sang, we had a guitarist called Malcolm. We learnt several Queen and Iron Maiden songs and we were truly awful. Suffice it to say, you'd be hard pushed to recognize which Iron Maiden and Queen songs we were trying to play. It's common for bands to tire of cover versions and to get lofty ambitions to write their own tunes. I wrote one called ‘Escape From Inside’ about the film The Fly that contained the rhyming couplet of 'I am a fly, I want to die' – the great lyricists of the time quaked in their boots at the young new talent on the scene. The only thing we did that resembled the activities of a 'proper' band was to split up due to 'musical differences': Malcolm wanted to write 15-part symphonies about a boy's journey to worship electricity pylons, whereas I wanted to write songs about flies and dying (preferably both). When we could not agree on a musical direction the split became inevitable. Had I had the power of statistics in my hands back then, rather than split up we could have tested empirically the best musical direction for the band. This study imagines such a world. A study was conducted to see whether I wrote better songs than my old bandmate Malcolm, and whether this depended on the type of song (a symphony or song about flies). The outcome variable was the number of screams elicited by audience members during the songs.
+#' In my teens I was in a band called Andromeda. I sang, we had a guitarist called Malcolm. We learnt several Queen and Iron Maiden songs and we were truly awful. Suffice it to say, you'd be hard pushed to recognize which Iron Maiden and Queen songs we were trying to play. It's common for bands to tire of cover versions and to get lofty ambitions to write their own tunes. I wrote one called 'Escape From Inside' about the film The Fly that contained the rhyming couplet of 'I am a fly, I want to die' – the great lyricists of the time quaked in their boots at the young new talent on the scene. The only thing we did that resembled the activities of a 'proper' band was to split up due to 'musical differences': Malcolm wanted to write 15-part symphonies about a boy's journey to worship electricity pylons, whereas I wanted to write songs about flies and dying (preferably both). When we could not agree on a musical direction the split became inevitable. Had I had the power of statistics in my hands back then, rather than split up we could have tested empirically the best musical direction for the band. This study imagines such a world. A study was conducted to see whether I wrote better songs than my old bandmate Malcolm, and whether this depended on the type of song (a symphony or song about flies). The outcome variable was the number of screams elicited by audience members during the songs.
 #'
 #'   * **id**: Particiant id
 #'   * **song_type**: Whether participants listened to a symphony or a song about a fly
@@ -852,7 +852,7 @@
 #' @source [www.discovr.rocks/csv/gallup_2003.csv](https://www.discovr.rocks/csv/field_2006.csv)
 #' @references
 #'
-#' Field, A. P. (2006). The behavioral inhibition system and the verbal information pathway to children’s fears. *Journal of Abnormal Psychology*, *115*, 742–752. \doi{10.1037/0021-843x.115.4.742}
+#' Field, A. P. (2006). The behavioral inhibition system and the verbal information pathway to children's fears. *Journal of Abnormal Psychology*, *115*, 742–752. \doi{10.1037/0021-843x.115.4.742}
 
 "field_2006"
 
@@ -1649,21 +1649,31 @@
 #' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #'  Fictional data set looking at predictors of success of penalty takers in soccer (or whatever sport you enjoy).
-#'  The outcome variable is whether a penalty is scored or missed. Based on (imaginary) past research
-#'  there are two factors that reliably predict whether a penalty kick will be missed or scored: (1) the extent to which
-#'  the penalty taker is prone to worry (measured using the Penn State Worry Questionnaire, PSWQ); and (2) the past success rate of the penalty taker.
-#'  State anxiety is also likely detrimental effects on performance so it was also measured. The data contain the following variables:
+#'  Imagine we wanted to research the factors that affect penalty-taking success. In soccer, games in knockout competitions
+#'  are sometimes decided by a penalty shootout. The format is that each team takes five penalties using five different players.
+#'  inning team is the one that scores the most goals from the five penalties. If after this initial stage both teams have
+#'   the same number of goals it goes to an excitingly named 'sudden death'. Fortunately no one suddenly dies,
+#'   but instead each team takes a penalty and if both score or both miss another penalty is taken, but if one team
+#'   scores and the other misses the scoring team wins the game. As you might imagine, the pressure ramps up considerably
+#'   with each successive penalty. If the first player misses his or her kick, then it's not necessarily a disaster
+#'   because there are four more kicks to be taken, and (most important) opportunities for your opponent to miss or to make up for your mistake.
+#'   However, if you are the player taking the fifth penalty you are under a lot more pressure because a miss is highly likely to result in your team losing.
+#'   The pressure ramps up, the more penalties are taken. A sports scientist wanted to look at whether the position in the penalty shootout did predict success in a shootout.
+#'   She collated data from penalty shootouts across various worldwide men's and women's soccer leagues as well as getting coaches'
+#'   ratings of players. The outcome variable is whether a penalty is scored or missed.
+#'
+#'   The data contain the following variables:
 #'
 #' * **id**: Penalty taker's id
-#' * **pswq**: proneness to worry on the Penn State Worry Questionnaire, PSWQ
-#' * **anxious**: state anxiety
-#' * **previous**: The percentage of previous penalties scored (to the nearest percent)
+#' * **ability**: Each player was rated against all other players the coaches had coached using a scale from 1 to 10, where 1 is 'their penalties are in the bottom 10% of players I've coached', 2 is 'their penalties are in the bottom 10–20% of players I've coached', and 10 is 'their penalties are in the top 10% of players I've coached'.
+#' * **position**: position in the shootout (1 = first penalty, 5 = fifth penalty).
+#' * **scored**: Whether the penalty was missed or scored
 #'
-#' @format A tibble with 75 rows and 5 variables.
+#' @format A tibble with 868 rows and 4 variables.
 #' @docType data
-#' @source [www.discovr.rocks/csv/penalty.csv](https://www.discovr.rocks/csv/penalty.csv)
+#' @source [www.discovr.rocks/csv/penalty.csv](https://www.discovr.rocks/csv/penalty_shootout.csv)
 
-"penalty"
+"penalty_shootout"
 
 #' Profile picture data
 #'
@@ -2355,7 +2365,7 @@
 #' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #'  Text messaging and Twitter encourage communication using abbreviated forms of words (if u no wat I mean).
-#'  A researcher wanted to see the effect this had on children’s understanding of grammar.
+#'  A researcher wanted to see the effect this had on children's understanding of grammar.
 #'  One group of 25 children was encouraged to send text messages on their mobile phones over a 6-month period.
 #'  A second group of 25 was forbidden from sending text messages for the same period (to ensure adherence,
 #'  this group were given armbands that administered painful shocks in the presence of a phone signal).
@@ -2475,7 +2485,7 @@
 #'
 #' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' It is common that lecturers obtain reputations for being ‘hard’ or ‘light’ markers, but there is often little
+#' It is common that lecturers obtain reputations for being 'hard' or 'light' markers, but there is often little
 #' to substantiate these reputations. A group of students investigated the consistency of marking by submitting the
 #' same essays to four different lecturers. The outcome was the percentage mark given by each lecturer and the
 #' predictor was the lecturer who marked the report. The fictitious data contains three variables:
@@ -2495,9 +2505,9 @@
 #'
 #' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
-#' Pet dogs often engage in behaviours helpful to their owners (mine likes to cuddle me when I’ve had a bad day, and in fact when I’ve had a good day, and now I think of it, pretty much any day regardless of how good or bad its been).
-#' It’s unclear whether these behaviours are truly prosocial. Can a dog engage in prosocial behaviours that haven’t been explicitly trained?
-#' Bourg et al (2020) addressed this question by trapping some dog’s owners in boxes! In the study 60 dogs were tested in three conditions all of which involved being in a room with large restrainer box
+#' Pet dogs often engage in behaviours helpful to their owners (mine likes to cuddle me when I've had a bad day, and in fact when I've had a good day, and now I think of it, pretty much any day regardless of how good or bad its been).
+#' It's unclear whether these behaviours are truly prosocial. Can a dog engage in prosocial behaviours that haven't been explicitly trained?
+#' Bourg et al (2020) addressed this question by trapping some dog's owners in boxes! In the study 60 dogs were tested in three conditions all of which involved being in a room with large restrainer box
 #' (a large acrylic box with holes in the side that could be closed by resting a foam board door across its opening). Each dog had three experiences in the room and each time the experimenters were interested in whether the dog would open the restrainer box within 120 seconds.
 #' The order of the 3 experiences was counterbalanced so different dogs completed the experiences in different orders.
 #'

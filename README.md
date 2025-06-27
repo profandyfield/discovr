@@ -359,12 +359,6 @@ library(ggplot2)
 # No prayer for the dying was pushing its luck too if I'm honest.
 
 classic_era <- subset(discovr::eddiefy, year < 1992)
-#> Loading required package: lubridate
-#> 
-#> Attaching package: 'lubridate'
-#> The following objects are masked from 'package:base':
-#> 
-#>     date, intersect, setdiff, union
  
 ggplot(classic_era, aes(x = energy, y = valence, color = album_name)) +
   geom_point(size = 2) +
@@ -549,8 +543,8 @@ the book’s website.
   traits. For details execute `?ong_2011`.
 - **ong_tidy**: Data about social media profile pictures and personality
   traits. For details execute `?ong_tidy`.
-- **penalty**: Fictitious data about predictors of penalty kick success
-  in soccer (or whatever sport you enjoy). For details execute
+- **penalty_shootout**: Fictitious data about predictors of penalty kick
+  success in soccer (or whatever sport you enjoy). For details execute
   `?penalty`.
 - **profile_pic**: Fictitious data related to whether the number of
   friend requests from random people on social media is affected by

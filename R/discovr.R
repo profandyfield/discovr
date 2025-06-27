@@ -122,7 +122,7 @@
 #' * [ocd]: Fictitious data about interventions for obsessive compulsive disorder.
 #' * [ong_2011]: Data about social media profile pictures and personality traits.
 #' * [ong_tidy]: Data about social media profile pictures and personality traits.
-#' * [penalty]: Fictitious data about predictors of penalty kick success in soccer (or whatever sport you enjoy).
+#' * [penalty_shootout]: Fictitious data about predictors of penalty kick success in soccer (or whatever sport you enjoy).
 #' * [profile_pic]: Fictitious data related to whether the number of friend requests from random people on social media is affected by whether your profile picture depicts you as single or part of a romantic couple.
 #' * [pubs]: Data illustrating the difference between an outlier and an influential case.
 #' * [puppies]: Fictitious data related to whether puppy therapy works.

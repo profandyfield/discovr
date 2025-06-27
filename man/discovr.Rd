@@ -130,7 +130,7 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{ocd}: Fictitious data about interventions for obsessive compulsive disorder.
 \item \link{ong_2011}: Data about social media profile pictures and personality traits.
 \item \link{ong_tidy}: Data about social media profile pictures and personality traits.
-\item \link{penalty}: Fictitious data about predictors of penalty kick success in soccer (or whatever sport you enjoy).
+\item \link{penalty_shootout}: Fictitious data about predictors of penalty kick success in soccer (or whatever sport you enjoy).
 \item \link{profile_pic}: Fictitious data related to whether the number of friend requests from random people on social media is affected by whether your profile picture depicts you as single or part of a romantic couple.
 \item \link{pubs}: Data illustrating the difference between an outlier and an influential case.
 \item \link{puppies}: Fictitious data related to whether puppy therapy works.

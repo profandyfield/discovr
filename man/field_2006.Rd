@@ -29,6 +29,6 @@ The data from the study has three variables:
 }
 }
 \references{
-Field, A. P. (2006). The behavioral inhibition system and the verbal information pathway to children’s fears. \emph{Journal of Abnormal Psychology}, \emph{115}, 742–752. \doi{10.1037/0021-843x.115.4.742}
+Field, A. P. (2006). The behavioral inhibition system and the verbal information pathway to children's fears. \emph{Journal of Abnormal Psychology}, \emph{115}, 742–752. \doi{10.1037/0021-843x.115.4.742}
 }
 \keyword{datasets}

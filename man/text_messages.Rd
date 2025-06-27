@@ -18,7 +18,7 @@ A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (
 }
 \details{
 Text messaging and Twitter encourage communication using abbreviated forms of words (if u no wat I mean).
-A researcher wanted to see the effect this had on children’s understanding of grammar.
+A researcher wanted to see the effect this had on children's understanding of grammar.
 One group of 25 children was encouraged to send text messages on their mobile phones over a 6-month period.
 A second group of 25 was forbidden from sending text messages for the same period (to ensure adherence,
 this group were given armbands that administered painful shocks in the presence of a phone signal).

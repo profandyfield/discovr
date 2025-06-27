@@ -19,7 +19,7 @@ A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (
 \details{
 Angry Birds is a video game in which you fire birds at pigs.  A (fabricated) study was set up in which people
 played Angry Birds and a control game (Tetris) over a 2-year period (1 year per game).
-The participant’s violent acts in everyday life were monitored before the study, and after 1 month, 6 months and 12 months.
+The participant's violent acts in everyday life were monitored before the study, and after 1 month, 6 months and 12 months.
 The (fictional) data contains
 \itemize{
 \item \strong{id}: participant ID

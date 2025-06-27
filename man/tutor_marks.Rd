@@ -17,7 +17,7 @@ tutor_marks
 A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 }
 \details{
-It is common that lecturers obtain reputations for being ‘hard’ or ‘light’ markers, but there is often little
+It is common that lecturers obtain reputations for being 'hard' or 'light' markers, but there is often little
 to substantiate these reputations. A group of students investigated the consistency of marking by submitting the
 same essays to four different lecturers. The outcome was the percentage mark given by each lecturer and the
 predictor was the lecturer who marked the report. The fictitious data contains three variables:

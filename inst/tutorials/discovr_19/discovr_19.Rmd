@@ -23,19 +23,19 @@ knitr::opts_chunk$set(
 library(learnr) 
 library(htmltools)
 #easystats
+library(datawizard)
 library(effectsize)
 library(insight)
 library(parameters)
 #tidyverse
 library(dplyr)
 library(tibble)
-library(tidyr)
-#non tidyverse
-library(janitor)
+#non tidyverse/easystats
+
 # not used by student
+library(janitor) # needed because datawizard crosstabs are hard to extract proportions from
 library(kableExtra)
 library(knitr)
-library(stringr)
 
 source("./www/discovr_helpers.R")
 
@@ -99,9 +99,9 @@ get_xtab_prop <- function(tably, row = 1, col = 1, percent = F, digits = 0){
 ```{r, eval = F, echo = F}
 # Create bib file for R packages
 
-tidylist <- c('tidyverse', 'dplyr', 'forcats', 'readr', 'stringr', 'tibble', 'tidyr')
-easylist <- c('easystats', 'effectsize', 'insight', 'parameters')
-otherlist <- c('here', 'janitor', 'knitr', 'kableExtra')
+tidylist <- c('tidyverse', 'dplyr', 'forcats', 'readr', 'tibble', 'tidyr')
+easylist <- c('easystats', 'datawizard', 'effectsize', 'insight', 'parameters')
+otherlist <- c('here', 'knitr', 'kableExtra')
 
 here::here("inst/tutorials/discovr_19/packages.bib") |>
   knitr::write_bib(c(easylist, tidylist, otherlist), file = _)
@@ -110,65 +110,34 @@ here::here("inst/tutorials/discovr_19/packages.bib") |>
 
 # discovr: categorical variables
 
-## Overview
+```{r, child = "intro.Rmd"}
 
-<div class="infobox">
-  <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
-  
-  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2026] by [Andy Field](https://profandyfield.com/). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
-  
-</div>
+```
 
-### `r cat_space(fill = blu)` Welcome to the `discovr` space pirate academy
 
-Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
+## Packages
 
-On your way you will face many challenges, but follow Mae's system to keep yourself on track:
+In this tutorial all packages are pre-loaded. If working outside of the tutorial, load the `easystats` and `tidyverse` packages (and any others if you're using a concise style - see previous section) at the beginning of your Quarto document:
 
-* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
-* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
-* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
-
-It's not just me that's here to help though, you will meet other characters along the way:
-
-* `r alien(height = 1.5)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
-* `r robot(height = 1.5)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
-* `r bug(height = 1.5)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
-
-Also, use hints and solutions to guide you through the exercises (Figure 1).
-
-<figure>
-<img src="./images/discovr_hints.png" alt="Each codebox has a hints or solution button that activates a popup window containing code and text to guide you through each exercise." style="width:100%">
-<figcaption>Figure 1: In a code exercise click the hints button to guide you through the exercise.</figcaption>
-</figure> 
- 
-
-By for now and good luck - you'll be amazing!
-
-### Workflow
-
-* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](https://milton-the-cat.rocks/learnr/r/r_getting_started/).
-
-* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an Quarto document within an `r rstudio()` project and practice everything you do in the tutorial in the Quarto document, make notes on things that confused you or that you want to remember, and save it. Within this document you will need to load the relevant packages and data. 
-
-![](https://youtu.be/mqT7c17tofE)
-
-### Packages
+```{r eval = FALSE}
+library(easystats)
+library(tidyverse)
+```
 
 This tutorial uses the following packages:
 
-* `janitor` [@R-janitor]
-* `here` [@R-here]
+- `here` [@R-here]
 
 It also uses these packages from:
 
-#### easystats 
+### easystats 
 
+- `datawizard` [@R-datawizard; @datawizard2022]
 - `effectsize` [@R-effectsize; @effectsize2020]
 - `insight` [@R-insight]
 - `parameters` [@R-parameters; @parameters2020]
  
-#### tidyverse 
+### tidyverse 
  
 - `dplyr` [@R-dplyr]
 - `forcats` [@R-forcats]
@@ -176,25 +145,6 @@ It also uses these packages from:
 - `tibble` [@R-tibble]
 - `tidyr` [@R-tidyr].
 
-### Coding style
-
-There are (broadly) two styles of coding:
-
-1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document but code can get busy.
-
-2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently. The resulting code is less busy, but you can can stumble across clashes with functions.
-
-Coding style is a personal choice, and neither approach is 'correct'. I recommend a hybrid which tries to have the best of both worlds, which is:
-
-- Use concise style for `tidyverse` and `easystats` because by loading these in your first code chunk most functions you need will be loaded and so your code will be succinct.
-- Use explicit style for packages that you'll use rarely.
-
-You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the `easystats` and `tidyverse` packages (and any others if you're using a concise style) at the beginning of your Quarto document:
-
-```{r eval = FALSE}
-library(easystats)
-library(tidyverse)
-```
 
 ## Data
 
@@ -205,18 +155,18 @@ To work *outside of this tutorial* you need to download the following data file:
 Set up an `r rstudio()` project in the way that [I recommend in this tutorial](https://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your Quarto document:
 
 ```{r, eval=FALSE}
-dance_tib <- here::here("data/cat_dance.csv") |> readr::read_csv()
+dance_tib <- here::here("data/cat_dance.csv") |> read_csv()
 ```
 
 ### Preparing data
 
-To work *outside of this tutorial* you need to turn categorical variables into factors and set an appropriate baseline category using `forcats::as_factor` and `forcats::fct_relevel`. There are two categorical variables here: **training** (the animal was trained using either food or affection, not both) and **dance** (the animal either learnt to dance or it did not). For each variable, think about which category you'd want as your baseline or reference.  For **training** it doesn't matter too much, but for **dance** it makes sense to have 'No' as the reference category. Therefore, you might convert these variables to factors using this code:
+To work *outside of this tutorial* you need to turn categorical variables into factors and set an appropriate baseline category using `as_factor` and `fct_relevel` from the `forcats` package. There are two categorical variables here: **training** (the animal was trained using either food or affection, not both) and **dance** (the animal either learnt to dance or it did not). For each variable, think about which category you'd want as your baseline or reference.  For **training** it doesn't matter too much, but for **dance** it makes sense to have 'No' as the reference category. Therefore, you might convert these variables to factors using this code:
 
 ```{r, eval= FALSE}
 dance_tib <- dance_tib |> 
   dplyr::mutate(
     dance = as_factor(dance) |> fct_relevel("No"),
-    training = forcats::as_factor(training) |> fct_relevel("Food")
+    training = as_factor(training) |> fct_relevel("Food")
   )
 ```
 
@@ -267,33 +217,17 @@ cat_freq <- tibble::tribble(
   "Food", "No", 10,
   "Food", "Yes", 28,
   "Affection", "No", 114,
-  "Affection", "Yes", 48,
+  "Affection", "Yes", 48
 )
 ```
 
 The `tribble()` function lets you enter raw data in tabulated form, where each row represents a row of the data and columns are separated using commas. Notice the first row contains the variable names, so this sets up three columns, the first named **training** the second **dance** and so on. Each column name is preceded by a [~]{.alt}. After the first row, we input the raw data. For example row 2 tells `r rproj()` that the value of **training** is the word ["Food"]{.alt}, the corresponding value of **dance** is ["No"]{.alt} and the corresponding value of **n** is 10. Note that each row is ended with a comma except the last.
 
-<div class="tip">
-  `r cat_space()` **Tip**
-
-If you want to use a column name with a space (not advised but hey, ho), then you need to include the name in backticks. In the previous example, if we wanted to use **did they dance** as the variable name instead of **dance** we can do so by using [\`did they dance\`]{.alt} as shown in the code below
-
-```{r, eval = F, class.source = '.panel_alt'}
-cat_freq <- tibble::tribble(
-  ~training, ~`did they dance`, ~n,
-  "Food", "No", 10,
-  "Food", "Yes", 28,
-  "Affection", "No", 114,
-  "Affection", "Yes", 48,
-)
-```
-</div>
-
 #### `r alien()` Alien coding challenge
 
 Create and inspect the object `cat_freq` using the code example in the previous section:
 
-```{r cat_cont, exercise = TRUE, exercise.lines = 7}
+```{r cat_cont, exercise = TRUE, exercise.lines = 10}
 
 ```
 
@@ -303,7 +237,7 @@ cat_freq <- tibble::tribble(
   "Food", "No", 10,
   "Food", "Yes", 28,
   "Affection", "No", 114,
-  "Affection", "Yes", 48,
+  "Affection", "Yes", 48
 )
 cat_freq
 ```
@@ -345,18 +279,18 @@ cat_freq
 ## `r bmu()` Exploring the data [(1)]{.alt}
 ### `r user_visor()` Creating contingency tables  [(2)]{.alt}
 
-It can be helpful to display our frequencies in something know as a crosstabulation, which is where one variable (for example, **training**) makes up the rows and the other (**dance**) makes up the columns resulting in a 2 × 2 grid of frequencies. There are lots of ways to do this with R but we'll use the **janitor** package [@R-janitor], which creates [tabyl]{.alt} objects.
-
-Let's use the `janitor::tabyl()` function to create a contingency table from the raw data (`dance_tib`). It has the general form:
+It can be helpful to display our frequencies in something know as a crosstabulation, which is where one variable (for example, **training**) makes up the rows and the other (**dance**) makes up the columns resulting in a 2 × 2 grid of frequencies. There are lots of ways to do this with R but we'll use `data_tabulate()` from the **datawizard** package [@R-datawizard]. It has the general form:
 
 ```{r, eval = F}
-tabyl(dat = my_tibble,
-      var1 = "variable_for_rows",
-      var2 = "variable_for_columns",
-      var3 = "variable_for_tables") 
+data_tabulate(x = my_tibble,
+              select = "row_variable",
+              by = "column_data",
+              weights = "variable_containing_frequencies",
+              remove_na = FALSE,
+              proportions = NULL)
 ```
 
-So, you put your data in (or pipe it in) and then if you specify two variable names it will use the first to construct rows of the contingency table, and the second to construct columns. In more complex situations you can also specify a third variable, and a 2 × 2 contingency table will be created for each category in this third variable.
+In its simplest form, you put your data in (or pipe it in) and then replace ["row_variable"]{.alt} with the name of the variable you want to spread across the rows of the table, and ["column_variable"]{.alt} with the name of the variable you want to spread across the columns of the table. If you have a dataset with no missing values you’d include `remove_na = TRUE` so that counts of missing values are not included in the table..
 
 #### `r robot()` Code example
 
@@ -364,7 +298,7 @@ For our raw data we could execute
 
 ```{r, aval = F}
 cat_xtbl <- dance_tib |>
-  janitor::tabyl(training, dance)
+  data_tabulate(select = "training", by = "dance", remove_na = TRUE)
 ```
 
 
@@ -378,7 +312,7 @@ Use the code example to create and view an object called [cat_xtbl]{.alt} contai
 
 ```{r tally-solution}
 cat_xtbl <- dance_tib |>
-  janitor::tabyl(training, dance)
+  data_tabulate(select = "training", by = "dance", remove_na = TRUE)
 # to view the object
 cat_xtbl |> 
   display() 
@@ -386,18 +320,7 @@ cat_xtbl |>
 
 We can see, for example, that 10 cats did not dance when rewarded with food. 
 
-If working with frequency data, we take a different approach. The frequency data is in long format, whereas a contingency table typically spreads one variable across different columns. For example, we might choose to have the 'danced' or 'did not dance' data in separate columns. To achieve this we use the `pivot_wider()` function from `tidyr`, which we encountered in `discovr_06` and  `discovr_09`. To remind you, the `pivot_wider()` restructures rows into columns. It's general form is:
-
-```{r, eval = FALSE}
-tidyr::pivot_wider(
-  data = tibble,
-  id_cols = variables_that_you_do_not_want_to_restructure,
-  names_from = "variable_containing_the_names_of_columns",
-  values_from = " variable_containing_the_scores",
-)
-```
-
-If we want to spread values associated with 'yes' and 'no' on the variable **dance** across columns then we want to get the column [names_from]{.alt} the variable **dance**. The frequencies are stored in the variable **n**, so we'd want to get [values_from]{.alt} from that variable. Finally, we want to leave categories of **training** in rows so we'd select **training** as the [id_cols]{.alt} (in fact we can omit this argument because the function will assume that non-named variables should not be restructured). We'd also pipe the result through `as.data.frame()` (to remove some unhelpful attributes of tibbles) and `janitor::as_tabyl()` (to convert it to a [tabyl]{.alt}).
+If we're working with frequency data ([cat_freq]{.alt}), all that changes is that we include the `weights` argument and replace ["variable_containing_frequencies"]{.alt} with the name of the variable containing the frequencies (in this case the variable **n**). 
 
 #### `r robot()` Code example
 
@@ -405,12 +328,7 @@ To create a contingency table called [cat_xtbl]{.alt} from the frequency data in
 
 ```{r eval = FALSE}
 cat_xtbl <- cat_freq |>
-  pivot_wider(
-    values_from = "n",
-    names_from = "dance"
-  ) |>
-  as.data.frame() |> 
-  janitor::as_tabyl()
+  data_tabulate(select = "training", by = "dance", weights = "n", remove_na = TRUE)
 ```
 
 #### `r bug()` Alien coding challenge
@@ -423,12 +341,7 @@ Use the example code to create an object called [cat_xtbl]{.alt}, which is the c
 
 ```{r piv_wide-solution}
 cat_xtbl <- cat_freq |>
-  pivot_wider(
-    values_from = "n",
-    names_from = "dance"
-  ) |>
-  as.data.frame() |> 
-  janitor::as_tabyl()
+  data_tabulate(select = "training", by = "dance", weights = "n", remove_na = TRUE)
 # This  displays the object we created above
 cat_xtbl |>  
   display() 
@@ -436,21 +349,15 @@ cat_xtbl |>
 
 ### `r user_visor()` Tables of proportions [(2)]{.alt}
 
-For interpretation purposes it can also be useful to convert the raw frequencies into proportions, but also to look at the proportions *within* each variable. Having created a [tabyl]{.alt} object (rather than a tibble) we can feed our contingency table into `janitor::adorn_percentages()`, which takes the general form
-
-```{r, eval = F}
-my_new_tbl <- janitor::adorn_percentages(dat = my_tabyl, denominator = "row")
-```
-
-in which [my_tabyl]{.alt} is the name of your contingency table, and [denominator]{.alt} determines whether proportions are computed within rows ([denominator = "row"]{.alt}), the default, within columns ([denominator = "col"]{.alt}), or overall ([denominator = "all"]{.alt}).
+For interpretation purposes it can be useful to convert the raw frequencies into proportions, but also to look at the proportions within each variable. We can include these in the contingency table using the proportions argument. Proportions can be computed within rows (`proportions = "row"`), within columns (`proportions = "column"`) or overall (`proportions = "full"`).
 
 #### `r robot()` Code example
 
-Let's first look at the overall proportions. To convert the frequencies in [cat_xtbl]{.alt} to overall proportions we could use this code.
+Let's first add the overall proportions to our contingency table using this code:
 
 ```{r, eval = F}
-prop_total <- cat_xtbl  |>
-  janitor::adorn_percentages(denominator = "all")
+prop_total <- dance_tib |>
+  data_tabulate(select = "training", by = "dance", proportions = "full", remove_na = TRUE)
 ```
 
 #### `r bug()` Alien coding challenge
@@ -462,22 +369,22 @@ Use the code box to create and view a table of proportions called [prop_total]{.
 ```
 
 ```{r prop_total-solution}
-prop_total <- cat_xtbl  |>
-  janitor::adorn_percentages(denominator = "all")
+prop_total <- dance_tib |>
+  data_tabulate(select = "training", by = "dance", proportions = "full", remove_na = TRUE)
 # display the table
 prop_total |> 
   display()
 ```
 
 
-The resulting table shows that `r get_xtab_prop(prop_total, 1, 1)` of all cats (`r get_xtab_prop(prop_total, 1, 1, percent = T)`) did not dance when given food, `r get_xtab_prop(prop_total, 2, 1)` of all cats (`r get_xtab_prop(prop_total, 2, 1, percent = T)`) did not dance when given affection, `r get_xtab_prop(prop_total, 1, 2)` of all cats (`r get_xtab_prop(prop_total, 1, 2, percent = T)`) danced when given food, and `r get_xtab_prop(prop_total, 2, 2)` of all cats (`r get_xtab_prop(prop_total, 2, 2, percent = T)`) danced when given affection.
+The resulting table shows that `r get_xtab_prop(prop_total, 1, 1, percent = T)` of all cats did not dance when given food,  `r get_xtab_prop(prop_total, 2, 1, percent = T)` of all cats did not dance when given affection, `r get_xtab_prop(prop_total, 1, 2, percent = T)` of all cats danced when given food, and `r get_xtab_prop(prop_total, 2, 2, percent = T)` of all cats danced when given affection.
 
 It's also instructive to look at proportions *within* each variable. Let's first look at proportions within the variable **dance**. By looking at proportions within **dance** we ask the questions:
 
 - Of the cats that danced, what proportion received food?
 - Of the cats that did not dance, what proportion received food?
 
-To get these proportions, we again use the `janitor::adorn_percentages()` but setting [denominator = "col"]{.alt} because the variable **dance** is spread across the columns of the contingency table.
+To get these proportions, we set `proportions = "column"` because the variable **dance** is spread across the columns of the contingency table.
 
 
 #### `r bug()` Alien coding challenge
@@ -489,21 +396,22 @@ Use the code box to adapt the previous code to create a table of proportions [pr
 ```
 
 ```{r prop_dance-solution}
-prop_dance <- cat_xtbl  |>
-  janitor::adorn_percentages(denominator = "col")
+prop_dance <- dance_tib |>
+  data_tabulate(select = "training", by = "dance", proportions = "column", remove_na = TRUE)
+
 # display the table
 prop_dance |> 
   display(digits = 2)
 ```
 
-The resulting table shows that of the cats that did *not* dance `r get_xtab_prop(prop_dance, 1, 1)` (`r get_xtab_prop(prop_dance, 1, 1, percent = T)`) were trained with food and `r get_xtab_prop(prop_dance, 2, 1)` (`r get_xtab_prop(prop_dance, 2, 1, percent = T)`) with affection. In contrast, of the cats that *did* dance `r get_xtab_prop(prop_dance, 1, 2)` (`r get_xtab_prop(prop_dance, 1, 2, percent = T)`) were trained with food and `r get_xtab_prop(prop_dance, 2, 2)` (`r get_xtab_prop(prop_dance, 2, 2, percent = T)`) with affection.
+The resulting table shows that of the cats that did *not* dance `r get_xtab_prop(prop_dance, 1, 1, percent = T)` were trained with food and `r get_xtab_prop(prop_dance, 2, 1, percent = T)` with affection. In contrast, of the cats that *did* dance `r get_xtab_prop(prop_dance, 1, 2, percent = T)` were trained with food and `r get_xtab_prop(prop_dance, 2, 2, percent = T)` with affection.
 
 Now let's look at proportions within the variable **training** to ask the questions
 
 - Of the cats that received food, what proportion danced?
 - Of the cats that received affection, what proportion danced?
 
-To get these proportions, we again use the `janitor::adorn_percentages()` but setting [denominator = "row"]{.alt} because the variable **training** is spread across the rows of the contingency table.
+To get these proportions, we set `proportions = "row"` because the variable **training** is spread across the rows of the contingency table.
 
 
 #### `r bug()` Alien coding challenge
@@ -515,27 +423,26 @@ Use the code box to create a table of proportions [prop_training]{.alt} where th
 ```
 
 ```{r prop_training-solution}
-prop_training <- cat_xtbl  |>
-  janitor::adorn_percentages(denominator = "row")
+prop_training <- dance_tib |>
+  data_tabulate(select = "training", by = "dance", proportions = "row", remove_na = TRUE)
+
 # display the table
 prop_training |> 
   display(digits = 2)
 ```
 
-The resulting table shows that of the cats rewarded with food `r get_xtab_prop(prop_training, 1, 1)` (`r get_xtab_prop(prop_training, 1, 1, percent = T)`) did *not* dance and `r get_xtab_prop(prop_training, 1, 2)` (`r get_xtab_prop(prop_training, 1, 2, percent = T)`) did dance. This pattern was reversed for cats trained with affection, with `r get_xtab_prop(prop_training, 2, 1)` (`r get_xtab_prop(prop_training, 2, 1, percent = T)`) *not* dancing and `r get_xtab_prop(prop_training, 2, 2)` (`r get_xtab_prop(prop_training, 2, 2, percent = T)`) dancing. In short, using a food reward about 3/4 of cats danced and 1/4 didn't, whereas with affection the opposite was true with about 1/3 of cats dancing and 2/3 refusing.
+The resulting table shows that of the cats rewarded with food `r get_xtab_prop(prop_training, 1, 1, percent = T)` did *not* dance and `r get_xtab_prop(prop_training, 1, 2, percent = T)` did dance. This pattern was reversed for cats trained with affection, with `r get_xtab_prop(prop_training, 2, 1, percent = T)` *not* dancing and `r get_xtab_prop(prop_training, 2, 2, percent = T)` dancing. In short, using a food reward about 3/4 of cats danced and 1/4 didn't, whereas with affection the opposite was true with about 1/3 of cats dancing and 2/3 refusing.
 
 ## `r bmu()` The chi-square test [(1)]{.alt}
 ### `r bmu()` Running the test [(1)]{.alt}
 
-There is a function `chisq.test()` in base `r rproj()` to obtain a chi-square test, but so we can use our contingency table, we will use `janitor::chisq.test()`. The functions work identically, but the later one allows us to input our tably object.
-
-The function takes the general form
+There is a function `chisq.test()` in base `r rproj()` to obtain a chi-square test, which takes the general form
 
 ```{r, eval = F}
-janitor::chisq.test(x = my_tabyl, correct = TRUE)
+chisq.test(x = my_table, correct = TRUE)
 ```
 
-Basically, input your contingency table [cat_xtbl]{.alt} to the function and you're good to go. The other argument is [correct = TRUE]{.alt} which, by default, applies Yates' continuity correction when the contingency table is 2 $\times$ 2 in size. There's no reason to change this default to FALSE so we can exclude this argument.
+Basically, we put the information in the contingency table into the function and we're good to go. However, our table has columns and rows with totals which we need to remove. To do this, we can pipe our table ([cat_xtbl]{.alt}) through `as.table(simplify = TRUE)` which essentially extracts the frequencies from the table. The other argument is `correct = TRUE` which, by default, applies Yates' continuity correction when the contingency table is 2 × 2 in size. There's no reason to change this default to FALSE so we can exclude this argument. 
  
 
 #### `r robot()` Code example
@@ -543,9 +450,12 @@ Basically, input your contingency table [cat_xtbl]{.alt} to the function and you
 We can apply the chi-square test to our contingency table [cat_xtbl]{.alt} using the following code:
 
 ```{r, eval = F}
-cat_chi <- janitor::chisq.test(x = cat_xtbl)
+cat_chi <- cat_xtbl |> 
+  as.table(simplify = TRUE) |> 
+  chisq.test()
 model_parameters(cat_chi) |> 
   display()
+
 ```
 
 This code creates an object called [cat_chi]{.alt} that stores information from the chi-square test. We are saving the test to an object because to fully interpret the test we need extract some of this information later. We then use our usual workflow of extracting the key information using `model_parameters()` and using `display()` to display the results.
@@ -553,7 +463,7 @@ This code creates an object called [cat_chi]{.alt} that stores information from 
 <div class="bug">
   `r bug()` **De-bug**
 
-  Note, the `janitor::` part is important to make sure we're using the version of the text that works with [tably]{.alt} objects.
+  Note, the `as.table(simplify = TRUE)` part is important to make sure we're only inputting the frequencies from the contingency table into the `chisq.test()` function.
 </div>
 
 
@@ -567,7 +477,9 @@ Use the example code to get a chi-square test for **training** as a predictor of
 
 ```{r crosstab_cont-solution}
 # Fit the model
-cat_chi <- janitor::chisq.test(x = cat_xtbl)
+cat_chi <- cat_xtbl |> 
+  as.table(simplify = TRUE) |> 
+  chisq.test()
 # Show the results
 model_parameters(cat_chi) |> 
   display() 
@@ -582,7 +494,10 @@ model_parameters(cat_chi) |>
 If we set [correct = F]{.alt} to remove the continuity correction we get the following results
 
 ```{r}
-cat_chi <- janitor::chisq.test(x = cat_xtbl, correct = FALSE)
+cat_chi <- cat_xtbl |> 
+  as.table(simplify = TRUE) |> 
+  chisq.test(correct = FALSE)
+
 model_parameters(cat_chi) |> 
   display()
 ```
@@ -613,7 +528,7 @@ prop_training |>
 
 
 
-which shows us that of the cats trained with food `r get_xtab_prop(prop_training, 1, 1)` (`r get_xtab_prop(prop_training, 1, 1, percent = T)`) did *not* dance and `r get_xtab_prop(prop_training, 1, 2)` (`r get_xtab_prop(prop_training, 1, 2, percent = T)`) did dance. This pattern was reversed for cats trained with affection, with `r get_xtab_prop(prop_training, 2, 1)` (`r get_xtab_prop(prop_training, 2, 1, percent = T)`) *not* dancing and `r get_xtab_prop(prop_training, 2, 2)` (`r get_xtab_prop(prop_training, 2, 2, percent = T)`) dancing. In short, using a food reward about 3/4 of cats danced and 1/4 didn't, whereas with affection the opposite was true with about 1/3 of cats dancing and 2/3 refusing.
+which shows us that of the cats trained with food `r get_xtab_prop(prop_training, 1, 1, percent = T)` did *not* dance and `r get_xtab_prop(prop_training, 1, 2, percent = T)` did dance. This pattern was reversed for cats trained with affection, with `r get_xtab_prop(prop_training, 2, 1, percent = T)` *not* dancing and `r get_xtab_prop(prop_training, 2, 2, percent = T)` dancing. In short, using a food reward about 3/4 of cats danced and 1/4 didn't, whereas with affection the opposite was true with about 1/3 of cats dancing and 2/3 refusing.
 
 > The overall association between rewards and dancing seems to reflect the fact that food rewards were more effective at getting cats to dance than affection.
 
@@ -640,39 +555,19 @@ get_residuals(cat_chi) |>
   display()
 ```
 
-There are four residuals: one for each combination of the type of reward and whether the cats danced. When food was used as a reward the standardized residual was significant for both those that danced (*z* = `r get_xtab_prop(cat_chi$residuals, 1, 2)`) and those that didn't dance (*z* = `r get_xtab_prop(cat_chi$residuals, 1, 1)`). The plus or minus sign tells us something about the direction of the effect. We can interpret these standardized residuals as follows: when food was used as a reward significantly more cats than expected danced, and significantly fewer cats than expected did not dance.
+There are four residuals: one for each combination of the type of reward and whether the cats danced. When food was used as a reward the standardized residual was significant for both those that danced (*z* = `r get_xtab_prop(cat_chi$residuals, 1, 1)`) and those that didn't dance (*z* = `r get_xtab_prop(cat_chi$residuals, 1, 0)`). The plus or minus sign tells us something about the direction of the effect. We can interpret these standardized residuals as follows: when food was used as a reward significantly more cats than expected danced, and significantly fewer cats than expected did not dance.
 
-When affection was used as a reward the standardized residual was not significant both for those that danced (*z* = `r get_xtab_prop(cat_chi$residuals, 2, 2)`) and those that did not (*z* = `r get_xtab_prop(cat_chi$residuals, 2, 1)`). These residuals tell us that when affection was used a reward as many cats as expected danced and did not dance.
+When affection was used as a reward the standardized residual was not significant both for those that danced (*z* = `r get_xtab_prop(cat_chi$residuals, 2, 1)`) and those that did not (*z* = `r get_xtab_prop(cat_chi$residuals, 2, 0)`). These residuals tell us that when affection was used a reward as many cats as expected danced and did not dance.
 
 In a nutshell, the cells for when food was used as a reward both significantly contribute to the overall chi-square statistic: the association between the type of reward and dancing is mainly driven by when food is a reward.
 
 ## `r bmu()` Checking assumptions [(1)]{.alt}
 
-Finally, let's check the expected frequencies. We have a 2 × 2 table, so all expected frequencies need to be greater than 5. The expected frequencies are stored in a variable called **expected** and we can access them using
+Finally, let's check the expected frequencies. We have a 2 × 2 table, so all expected frequencies need to be greater than 5. The expected frequencies are stored within the [cat_chi]{.alt} object and we can access them using `get_predicted()` from the `insight` package.
 
 ```{r, eval = F}
-cat_chi$expected
+get_predicted(cat_chi)
 ```
-
-
-<div class="tip">
-  `r cat_space()` **Tip**
-
-Remember that to specify something within an object we use `$` to mean 'within', so the general format is
-
-```{r, eval = F, class.source = '.panel_alt'}
-object$item
-```
-
-meaning 'the item within the object'. For example, to access the variable **dance** within the tibble called [dance_tib]{.alt} we'd use
-
-```{r, eval = F, class.source = '.panel_alt'}
-dance_tib$dance
-```
-
-meaning 'the variable called **dance** within the tibble called [dance_tib]{.alt}'.
-
-</div>
 
 
 
@@ -685,11 +580,11 @@ View the expected frequencies from [cat_chi]{.alt}.
 ```
 
 ```{r expct-solution}
-cat_chi$expected |> 
+get_predicted(cat_chi) |> 
   display()
 ```
 
-The smallest expected count is `r sprintf("%.2f", min(cat_chi$expected[2:3]))` (for cats that were trained with food and did dance). This value exceeds 5 and so the assumption has been met.
+The smallest expected count is `r sprintf("%.2f", min(cat_chi$expected))` (for cats that were trained with food and did dance). This value exceeds 5 and so the assumption has been met.
 
 <div class="infobox">
   `r info()` **When assumptions are broken**
@@ -700,27 +595,20 @@ When the expected frequencies of the contingency table are too small (i.e. the a
 
 ## `r user_visor()` The odds ratio [(2)]{.alt}
 
-A common and useful measure of effect size for categorical data is the odds ratio. We can use the `oddsratio()` function from the `effectsize` package to obtain this measure. Essentially we enter our contingency table `cat_xtbl` into the function. 
+A common and useful measure of effect size for categorical data is the odds ratio. We can use the `oddsratio()` function from the `effectsize` package to obtain this measure.
 
 #### `r robot()` Code example
 
-Our contingency table looks like this: 
-
-```{r}
-cat_xtbl |> 
-  display()
-```
-
-but `oddsratio()` wants only the numbers in that table, so we need to remove the first column (which, for our data, is called **training**). We can do this using `dplyr::select()`, which we have used many times before. 
+Essentially, we enter the numbers in our contingency table ([cat_xtbl]{.alt}) into the function. However, as with the chi-square test itself we need to use `as.table()` to extract the frequencies before the table gets to `oddsratio()`
 
 ```{r, eval = F}
-cat_xtbl |> 
-  select(-training) |> 
+cat_xtbl |>
+  as.table(simplify = TRUE) |> 
   oddsratio() |> 
   display()
 ```
 
-This code takes our contingency table, subtracts (removes) the column called **training**, feeds it into `oddsratio()` to, erm, get the odds ratio and then displays the results.
+This code takes our contingency table, extracts the frequencies, feeds it into `oddsratio()` to, erm, get the odds ratio and then displays the results.
 
 #### `r alien()` Alien coding challenge
 
@@ -731,8 +619,8 @@ Obtain and view the odds ratio from [cat_chi]{.alt}.
 ```
 
 ```{r or-solution}
-cat_xtbl |> 
-  select(-training) |> 
+cat_xtbl |>
+  as.table(simplify = TRUE) |> 
   oddsratio() |> 
   display()
 ```
@@ -757,10 +645,10 @@ There was a significant association between the type of reward used and whether 
 
 ## `r user_visor()` Fisher's exact test [(2)]{.alt}
 
-When the expected frequencies of the contingency table are too small (i.e. the assumption of the chi-square test that we explored earlier is broken), you should instead use Fisher's exact test. The `janitor::fisher.test()` function, which again is the same as the `fisher.test()` function from base ` rproj()`, but works on tably objects. This function is very similar to the `chisq.test()` function, but has a few more arguments. The general form including the more relevant arguments is
+When the expected frequencies of the contingency table are too small (i.e. the assumption of the chi-square test that we explored earlier is broken), you should instead use Fisher's exact test. The `fisher.test()` function will perform this test for us. The general form including the more relevant arguments is
 
 ```{r, eval = F}
-janitor::fisher.test(x = my_tably,
+fisher.test(x = my_table,
            alternative = "two.sided",
            or = 1,
            conf.int = TRUE,
@@ -783,7 +671,8 @@ Using the contingency table we get
 
 ```{r}
 cat_fish <- cat_xtbl |> 
-  janitor::fisher.test()
+  as.table(simplify = TRUE) |> 
+  fisher.test()
 ```
 
 
@@ -797,7 +686,9 @@ Conduct and view Fisher's exact test.
 
 ```{r fet-solution}
 cat_fish <- cat_xtbl |> 
-  janitor::fisher.test()
+  as.table(simplify = TRUE) |> 
+  fisher.test()
+
 #to view the results
 model_parameters(cat_fish) |> 
   display()
@@ -813,26 +704,13 @@ Fisher's exact test showed that the odds ratio was significantly different from 
 </div>
 
 
-## Resources {data-progressive=FALSE}
+## Resources/References {data-progressive=FALSE}
 
-### Statistics
+```{r, child = "resources.Rmd"}
 
-* The tutorials typically follow examples described in detail in @field_discovering_2026. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
-* If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2022].
-* There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/).
-* There are free statistical resources on my various websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [profandyfield.com/discoverse](https://profandyfield.com/discoverse).
+```
 
-### `r rproj()`
 
-* [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
-* [ModernDive](https://moderndive.com/v2/) is an open-access textbook on `r rproj()` and `r rstudio()`.
-* [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
-* [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
-
-### Acknowledgement
-
-I'm extremely grateful to [Allison Horst](https://www.allisonhorst.com/) for her very informative blog post on [styling learnr tutorials with CSS](https://education.rstudio.com/blog/2020/05/learnr-for-remote/) and also for sending me a CSS template file and allowing me to adapt it. Without Allison, these tutorials would look a lot worse (but she can't be blamed for my colour scheme).
-
-## References
+### References
 
 

@@ -61,7 +61,7 @@ here::here("inst/tutorials/discovr_16/packages.bib") |>
 <div class="infobox">
 <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." class="img_left" style="width:100px;height:116px;"/>
 
-**Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2023] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
+**Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@fielddsr22026] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
 </div>
 
 ### `r cat_space(fill = blu)` Welcome to the `discovr` space pirate academy
@@ -171,7 +171,7 @@ profile_tib <- here::here("data/profile_pic.csv") |>
 
 ## `r bmu()` A speed dating example [(2)]{.alt}
 
-The main examples in this tutorial are from [@field_discovering_2023]. A big discussion in magazines seems to be the factors that get you a relationship, for example, the relative importance of looks, personality, and dating strategies (whether you should 'treat them mean to keep them keen' and all that stuff). Scientists have looked at these issues too. For example, the top three most highly rated attributes of a partner in teenagers are reliability, honesty and kindness [@ha_effects_2010]. Beyond that, in the same study boys tended to rate attractiveness slightly higher than girls, and girls rate a sense of humour more highly than boys (although both are ranked in the top 10 by both sexes). With regard to dating strategies, @dai_when_2014 suggest that if someone is committed to pursuing a relationship with a person who plays hard to get, they will find that person more desirable but less likeable.
+The main examples in this tutorial are from [@fielddsr22026]. A big discussion in magazines seems to be the factors that get you a relationship, for example, the relative importance of looks, personality, and dating strategies (whether you should 'treat them mean to keep them keen' and all that stuff). Scientists have looked at these issues too. For example, the top three most highly rated attributes of a partner in teenagers are reliability, honesty and kindness [@ha_effects_2010]. Beyond that, in the same study boys tended to rate attractiveness slightly higher than girls, and girls rate a sense of humour more highly than boys (although both are ranked in the top 10 by both sexes). With regard to dating strategies, @dai_when_2014 suggest that if someone is committed to pursuing a relationship with a person who plays hard to get, they will find that person more desirable but less likeable.
 
 Imagine a scientist designed a study to look at the interplay between looks, personality and dating strategies on evaluations of a date. She set up a speed-dating night with nine tables at which there sat a 'date'. All the dates were stooges selected to vary in their attractiveness (high, average, and low), you might remember from a previous lecture that this could perhaps be gauged with facial symmetry (symmetrical faces tend to be perceived as more attractive). The dates were trained to vary their charisma (high, average, low), and also the strategy they employ during the conversation (normal or playing hard to get). The stooge dates were trained before the study to act charismatically to varying degrees, and also how to act in a way that made them seem unobtainable (hard to get) or not. As such, across the nine dates/stooges there were three attractive dates, one of whom acted charismatically, one who acted normally (average) and another who acted like they write statistics books, and likewise for the three average-looking dates and the three low attractiveness dates.
 
@@ -929,24 +929,11 @@ I need sleep sooooo badly.
 </div>
 
 
-## Resources {data-progressive="FALSE"}
+## Resources/References {data-progressive=FALSE}
 
-### Statistics
+```{r, child = "resources.Rmd"}
 
--   The tutorials typically follow examples described in detail in @field_discovering_2023. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
--   If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
--   There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/).
--   There are free statistical resources on my websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [milton-the-cat.rocks](https://milton-the-cat.rocks).
+```
 
-### `r rproj()`
 
--   [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
--   [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj()` and `r rstudio()`.
--   [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
--   [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
-
-### Acknowledgement
-
-I'm extremely grateful to [Allison Horst](https://www.allisonhorst.com/) for her very informative blog post on [styling learnr tutorials with CSS](https://education.rstudio.com/blog/2020/05/learnr-for-remote/) and also for sending me a CSS template file and allowing me to adapt it. Without Allison, these tutorials would look a lot worse (but she can't be blamed for my colour scheme).
-
-## References
+### References

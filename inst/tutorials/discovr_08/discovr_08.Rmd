@@ -62,7 +62,7 @@ here::here("inst/tutorials/discovr_08/packages.bib") |>
 <div class="infobox">
   <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
   
-  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2023] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
+  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@fielddsr22026] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
   
 </div>
 
@@ -160,7 +160,7 @@ Figure 2 shows the general process of fitting linear model. First, we should pro
 
 ## `r bmu()` The example [(1)]{.alt}
 
-This tutorial follows the example from [@field_discovering_2023] that looks at predicting physical, downloaded and streamed album sales (outcome variable) from various predictor variables. The data file has 200 rows, each one representing a different album. There are also several columns, one of which contains the sales (in thousands) of each album in the week after release (**sales**) and one containing the amount (in thousands of pounds/dollars/euro/whatever currency you use) spent promoting the album before release (**adverts**). The other columns represent how many times songs from the album were played on a prominent national radio station in the week before release (**airplay**), and the 'look' of the band out of 10 (**image**). The data are in a tibble called [album_tib]{.alt}.
+This tutorial follows the example from [@fielddsr22026] that looks at predicting physical, downloaded and streamed album sales (outcome variable) from various predictor variables. The data file has 200 rows, each one representing a different album. There are also several columns, one of which contains the sales (in thousands) of each album in the week after release (**sales**) and one containing the amount (in thousands of pounds/dollars/euro/whatever currency you use) spent promoting the album before release (**adverts**). The other columns represent how many times songs from the album were played on a prominent national radio station in the week before release (**airplay**), and the 'look' of the band out of 10 (**image**). The data are in a tibble called [album_tib]{.alt}.
 
 #### `r alien()` Alien coding challenge
 
@@ -1210,7 +1210,7 @@ plot(album_full_lm, which = c(1, 2))
 
 ### `r user_visor()` Residual plots [(2)]{.alt}
 
-We use residual plots (plots 1 and 3) to look for linearity and homoscedasticity. The Figure below (taken from @field_discovering_2023) shows that we're looking for a random scatter of dots. Curvature in the plot indicates a lack of linearity, and a funnel shape (residuals that 'fan out') indicates heteroscedasticity. Curvature *and* a funnel shape indicates both non-linearity and heteroscedasticity. We can also use Q-Q plots to look for normality in residuals.
+We use residual plots (plots 1 and 3) to look for linearity and homoscedasticity. The Figure below (taken from @fielddsr22026) shows that we're looking for a random scatter of dots. Curvature in the plot indicates a lack of linearity, and a funnel shape (residuals that 'fan out') indicates heteroscedasticity. Curvature *and* a funnel shape indicates both non-linearity and heteroscedasticity. We can also use Q-Q plots to look for normality in residuals.
 
 <figure>
 <img src="./images/dsr2_fig_06_29_pred_resid.png" alt="Description in main text" style="width:100%">
@@ -1368,7 +1368,7 @@ ggplot2::autoplot(album_full_lm,
 
 ### `r user_visor()` Influential cases and outliers: plots [(2)]{.alt}
 
-As a bare minimum we should use Cook's distance to identify influential cases and standardized residuals to check for outliers. @field_discovering_2023 describes a much wider battery of values that you can use to check for these things so if you're starting to get the stats bug (?!) then check that out.
+As a bare minimum we should use Cook's distance to identify influential cases and standardized residuals to check for outliers. @fielddsr22026 describes a much wider battery of values that you can use to check for these things so if you're starting to get the stats bug (?!) then check that out.
 
 <div class="infobox">
   `r info()` **Outliers and influence**
@@ -2024,27 +2024,11 @@ The Bayesian estimate of $\hat{b}$ can be found in the column labelled Mean. In 
 </div>
 
 
+## Resources/References {data-progressive=FALSE}
 
-## Resources {data-progressive=FALSE}
+```{r, child = "resources.Rmd"}
 
-### Statistics
-
-* The tutorials typically follow examples described in detail in @field_discovering_2023. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
-* If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
-* There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/).
-* There are free statistical resources on my websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [milton-the-cat.rocks](https://milton-the-cat.rocks).
-
-### `r rproj()`
-
-* [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
-* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj()` and `r rstudio()`.
-* [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
-* [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
-
-### Acknowledgement
-
-I'm extremely grateful to [Allison Horst](https://www.allisonhorst.com/) for her very informative blog post on [styling learnr tutorials with CSS](https://education.rstudio.com/blog/2020/05/learnr-for-remote/) and also for sending me a CSS template file and allowing me to adapt it. Without Allison, these tutorials would look a lot worse (but she can't be blamed for my colour scheme).
-
-## References
+```
 
 
+### References

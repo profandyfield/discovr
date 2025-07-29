@@ -6,23 +6,25 @@ Adapted from the sanddollar theme by Allison Horst, which uses these colours:
 
 Colours this theme uses:
 
-Burnt umber #912D25 (hyperlink hover only)
-Persian Red #CA3E34 (202, 62, 52) (dark red)
+white: #FFFFFF rgba(255, 255, 255, 1)
+bg: #E8EAE5 rgba(232, 234, 229, 1)
+grey: #616161 rgba(97, 97, 97, 1)
+purple: #49345b rgba(44, 28, 60, 1)
+brown: #844B2A rgba(188, 108, 60, 1)
+vom: #86753E rgba(134, 117, 62, 1)
+gangreen: #597F75 rgba(89, 127, 117, 1)
+blue: #3C648C rgba(60, 100, 140, 1)
+grate: #2F4F4F rgba(47, 79, 79, 1)
 
-Field drab #775418 (119, 84, 24) (dark champagne)
-champagne #f3e2c4 (243, 226, 196) (light browny-yellow)
-
-spanish blue #136CB9 (19, 108, 185)
-bedazzled blue #2C5577 (44, 85, 119)
-dark_blue_grey #6F709F (111, 112, 159) purple
-
-platinum #e8eae5 (232, 234, 229) paler green/grey
-slate-gray-dark: #2F4F4F;
-
-Contrast compliancy grid at: http://contrast-grid.eightshapes.com/?background-colors=&foreground-colors=FFFFFF%0D%0A912D25%0D%0ACA3E34%0D%0A775418%0D%0AF3E2C4%0D%0A136CB9%0D%0A2C5577%0D%0A6F709F%0D%0AE8EAE5%0D%0A3F3F3F&es-color-form__tile-size=compact
+Contrast compliancy grid at: https://contrast-grid.eightshapes.com/?version=1.1.0&background-colors=%23FFFFFF%0D%0A%23E8EAE5%0D%0A&foreground-colors=%23FFFFFF%0D%0A%23E8EAE5%0D%0A%23616161%0D%0A%2349345b%0D%0A%23844B2A%0D%0A%2386753E%0D%0A%23597F75%0D%0A%233C648C%0D%0A%232F4F4F%0D%0A&es-color-form__tile-size=compact&es-color-form__show-contrast=aaa&es-color-form__show-contrast=aa&es-color-form__show-contrast=aa18&es-color-form__show-contrast=dnp
 
 
 */
+
+
+
+
+
 
 .inline-image{
   height: 1em;
@@ -69,22 +71,32 @@ ul {
 }
 
 h2 {
-  color: #2C5577;
+  color: #49345b;
 }
 
 h3 {
-  color: #136CB9;
+  color: #86753E;
 }
 
 h4 {
-  color: #CA3E34;
+  color: #597F75;
 }
 
 .alt {
-    color: #912D25;
+    color: #597F75;
     font-size: 1em;
 }
 
+.kt {
+    color: #3C648C;
+    font-size: 1em;
+}
+
+.pkg {
+    color: #597F75;
+    font-size: 1em;
+    font-weight: bold;
+}
 
 
 /* Tutorial start over button */
@@ -107,7 +119,7 @@ h4 {
 
 /*------- Rectangle panels --------*/
 .panel, pre {
-    color: #2C5577;
+    color: #49345b;
     border-radius: 10;
     background-color: #e8eae5;
     border: 0;
@@ -151,9 +163,9 @@ h4 {
 
 /*------- In line code aesthetic --------*/
 code {
-    color: white;
-    background-color: #2C5577;
-    background-color: rgba(44, 85, 119, 0.8);
+    color: #597F75;
+    background-color: #597F75;
+    background-color: rgba(89, 127, 117, 0.1);
     font-size: 14px;
 }
 
@@ -161,18 +173,18 @@ code {
 
 /*------- Hyperlinks --------*/
 a {
-    color: #136CB9;
+    color: #86753E;
     text-decoration: none;
 }
 
 a:hover, a:focus {
-    color: #2C5577;
+    color: #844B2A;
     text-decoration: underline;
 }
 
 /*------- Main menu -------*/
 .topicsList .topic {
-    color: #2C5577;
+    color: #49345b;
     line-height: 40px;
     font-size: 20px;
     padding-left: 10px;
@@ -198,7 +210,7 @@ a:hover, a:focus {
 }
 /*--- When hovering ---*/
 .topicsList .topic:hover {
-    background-color: #2C5577;
+    background-color: #49345b;
     color: white;
     border: 0;
 }
@@ -206,7 +218,7 @@ a:hover, a:focus {
 /*------- Solution / Hint buttons -------*/
 .tutorial-exercise-input .btn-tutorial-solution {
     margin-left: 15px;
-    background-color: #2C5577;
+    background-color: #49345b;
     color: white;
     font-family: 'Jaldi', sans-serif;
     font-size: 13px;
@@ -220,7 +232,7 @@ a:hover, a:focus {
     padding: 8px 14px;
     font-size: 14px;
     background-color: #E8EAE5;
-    border-bottom: 1px solid #2C5577;
+    border-bottom: 1px solid #49345b;
     border-radius: 5px 5px 0 0;
     color: #3F3F3F;
     text-shadow: none;
@@ -231,7 +243,7 @@ a:hover, a:focus {
 
 .btn-primary, .btn-success, .btn-info, .btn-xs, .btn-default {
     color: white;
-    background-color: #2C5577;
+    background-color: #86753E;
     background-image: none;
     border: 0;
     font-size: 15px;
@@ -240,7 +252,7 @@ a:hover, a:focus {
 
 /*------- Buttons when hovering -------*/
 .btn-default:hover, btn-success:hover, btn-info:hover, btn-primary:hover {
-  background-color: #136CB9;
+  background-color: #844B2A;
   color: white;
 }
 
@@ -257,7 +269,7 @@ a:hover, a:focus {
     margin-left: 12px;
     padding-right: 8px;
     font-weight: normal;
-    background-color: #136CB9;
+    background-color: #844B2A;
     color: white;
     border: 0;
 }
@@ -274,7 +286,7 @@ a:hover, a:focus {
 /*------- Update Next Section button -------*/
 .topicActions .btn-primary:hover {
     color: white;
-    background-color: #136CB9;
+    background-color: #844B2A;
     background-image: none;
     border: none;
 }
@@ -297,28 +309,30 @@ a:hover, a:focus {
 .tip {
   border-radius: 10px;
   padding: 10px;
-  border: 2px solid #136CB9;
-  background-color: #136CB9;
-  background-color: rgba(19, 108, 185, 0.1);
-  color: #2C5577;
+  border: 2px solid #49345b;
+  background-color: #49345b;
+  background-color: rgba(44, 28, 60, 0.1);
+  color: #49345b;
 }
+
 
 .bug {
   border-radius: 10px;
   padding: 10px;
   border: 2px solid #f3e2c4;
   background-color: #f3e2c4;
-  background-color: rgba(243, 226, 196, 0.1);
-  color: #775418;
+  background-color: rgba(243, 226, 196, 0.2);
+  color: #86753E;
 }
+
 
 .warning {
   border-radius: 10px;
   padding: 10px;
-  border: 2px solid #CA3E34;
-  background-color: #CA3E34;
-  background-color: rgba(202, 62, 52, 0.1);
-  color: #912D25;
+  border: 2px solid #844B2A;
+  background-color: #844B2A;
+  background-color: rgba(188, 108, 60, 0.1);
+  color: #844B2A;
 }
 
 .infobox {
@@ -333,11 +347,12 @@ a:hover, a:focus {
 .reportbox {
   border-radius: 10px;
   padding: 10px;
-  border: 2px solid #82b1b0;
-  background-color: #82b1b0;
-  background-color: rgba(130, 177, 176, 0.1);
-  color: #427479;
+  border: 2px solid #3C648C;
+  background-color: #3C648C;
+  background-color: rgba(60, 100, 140, 0.1);
+  color: #3C648C;
 }
+
 
 .img_left {
  float: left;

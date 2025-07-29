@@ -39,25 +39,4 @@ Also, use hints and solutions to guide you through the exercises (Figure 1).
 
 By for now and good luck - you'll be amazing!
 
-### Workflow
-
-- If you are unfamilar with `r rproj()`, `r rstudio()` and `r quarto()`, it's a good idea to work through the first tutorial (`discovr_01`) before attempting this one.
-
-- The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an `r quarto()` document within an `r rstudio()` project and practice everything you do in the tutorial in the `r quarto()` document, make notes on things that confused you or that you want to remember, and save it. Within your `r quarto()` document you will need to load the relevant packages and data. 
-
-![](https://youtu.be/mqT7c17tofE)
-
-### Coding style
-
-There are (broadly) two styles of coding:
-
-1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document but code can get busy.
-
-2. **Concise**: Using this style you load all of the packages at the start of your `r quarto()` document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently. The resulting code is less busy, but you can can stumble across clashes with functions.
-
-Coding style is a personal choice, and neither approach is 'correct'. I recommend the best of both worlds, which is:
-
-- Use concise style for `tidyverse` and `easystats` because by loading these in your first code chunk most functions you need will be loaded and so your code will be succinct.
-- Use explicit style for packages that you'll use rarely.
-
 

@@ -1,8 +1,15 @@
 # discovr (development version)
 
 ## General
+
 * Added dataset about exercise and emotional well-being (`exercise`)
 * Fixed typos in documentation.
+
+## Changes to tutorials
+
+* `discovr_01` now covers orientation to R and Quarto and links to various videos.
+* The former `discovr_01` has been split across two tutorials. `discovr_02` covers basic code fundamentals and data types whereas `discovr_03` contains the material about tibbles and `dplyr` functions.
+* `discovr_04` (which didn't previously exist) covers summarizing data and confidence intervals (formerly in `discovr_03`).
 
 ## Changes to datasets
 

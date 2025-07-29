@@ -86,14 +86,18 @@ starting the interactive tutorials.
 
 ### List of tutorials
 
-- **discovr_01**: Key concepts in
+- **discovr_01**: Introducing
+  <img src="./data-raw/images/r_logo.png" width="18">, RStudio and
+  Quarto: What is R, tour of RStudio and Quarto, getting help,
+  installing packages, coding style and loading packages.
+- **discovr_02**: Key concepts in
   <img src="./data-raw/images/r_logo.png" width="18"> (functions and
   objects, packages and functions, style, data types, tidyverse,
   tibbles)
-- **discovr_02**: Summarizing data (frequency distributions, grouped
+- **discovr_03**: Summarizing data (frequency distributions, grouped
   frequency distributions, relative frequencies, histograms, mean,
   median, variance, standard deviation, interquartile range)
-- **discovr_03**: Confidence intervals: interactive app demonstrating
+- **discovr_04**: Confidence intervals: interactive app demonstrating
   what a confidence interval is, computing normal and bootstrap
   confidence intervals using
   <img src="./data-raw/images/r_logo.png" width="18">, adding confidence
@@ -104,7 +108,7 @@ starting the interactive tutorials.
 - **discovr_06**: The beast of bias. Restructuring data from messy to
   tidy format (and back). Spotting outliers using histograms and
   boxplots. Calculating *z*-scores (standardizing scores). Writing your
-  own function. Using z-scores to detect outliers. Q-Q plots.
+  own function. Using *z*-scores to detect outliers. Q-Q plots.
   Calculating skewness, kurtosis and the number of valid cases. Grouping
   summary statistics by multiple categorical/grouping variables.
 - **discovr_07**: Associations. Plotting data with GGally. Pearson’s

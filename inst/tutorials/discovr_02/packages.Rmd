@@ -1,0 +1,32 @@
+---
+title: "packages"
+author: "Andy Field"
+output: learnr::tutorial
+---
+
+
+```{r, eval = F, echo = F}
+# Create bib file for R packages
+
+tidylist <- c('forcats', 'lubridate', 'readr')
+otherlist <- c('here')
+
+here::here("inst/tutorials/discovr_01/packages.bib") |>
+  knitr::write_bib(c(easylist, tidylist, otherlist), file = _)
+```
+
+In this tutorial all packages are pre-loaded. If working outside of the tutorial, load the `tidyverse` package at the beginning of your `r quarto()` document:
+
+```{r eval = FALSE}
+library(tidyverse)
+```
+
+This tutorial uses the following packages:
+
+- `here` [@R-here]
+
+It also uses these packages from `tidyverse`
+ 
+- `forcats` [@R-forcats]
+- `lubridate` [@R-lubridate]
+- `readr` [@R-readr]

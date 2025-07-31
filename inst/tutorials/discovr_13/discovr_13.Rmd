@@ -6,6 +6,7 @@ output:
     progressive: true
     allow_skip: true
     theme: "united"
+    highlight: "kate"
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
 description: "Factorial designs. Fitting models for two-way factorial designs (independent measures) using both lm() and the afex package. This tutorial builds on previous ones to show how models can be fit with two categorical predictors to look at the interaction between them. We look at fitting the models, setting contrasts for the two categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, partial eta-squared and partial omega-squared, robust models and Bayes factors."
@@ -23,23 +24,25 @@ knitr::opts_chunk$set(
 #necessary to render tutorial correctly
 library(learnr) 
 library(htmltools)
+#easystats
+library(effectsize)
+library(insight)
+library(modelbased)
+library(parameters)
 #tidyverse
 library(dplyr)
 library(ggplot2)
-#non tidyverse
+#non tidyverse/easystats
 library(afex)
 library(BayesFactor)
 library(broom)
 library(car)
-library(effectsize)
 library(emmeans)
 library(ggfortify)
 library(Hmisc)
+#students don't use
 library(knitr)
-library(modelbased)
-library(parameters)
 library(sandwich)
-
 
 source("./www/discovr_helpers.R")
 
@@ -77,9 +80,9 @@ Hi, welcome to **discovr** space pirate academy. Well done on embarking on this 
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
-* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
-* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(A)]{.lbl}.
+* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(B)]{.lbl}.
+* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(C)]{.lbl}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
@@ -113,45 +116,45 @@ This tutorial uses the following packages:
 * `BayesFactor` [@R-BayesFactor]
 * `broom` [@R-broom]
 * `car` [@R-car]
-* `effectsize` [@effectsize2020; @R-effectsize]
-* `emmeans` [@R-emmeans] is used by `modelbased`
-* `here` [@R-here]
+* [effectsize]{.pkg} [@effectsize2020; @R-effectsize]
+* `emmeans` [@R-emmeans] is used by [modelbased]{.pkg}
+* [here]{.pkg} [@R-here]
 * `ggfortify` [@R-ggfortify; @tang_ggfortify_2016]
-* `Hmisc` [@R-Hmisc] is loaded by `ggplot2`
+* `Hmisc` [@R-Hmisc] is loaded by [ggplot2]{.pkg}
 * `knitr` [@R-knitr]
-* `modelbased` [@R-modelbased]
-* `parameters` [@parameters2020; @R-parameters]
-* `sandwich` [@R-sandwich; @sandwich2006] is automatically loaded by `parameters`
+* [modelbased]{.pkg} [@R-modelbased]
+* [parameters]{.pkg} [@parameters2020; @R-parameters]
+* [sandwich]{.pkg} [@R-sandwich; @sandwich2006] is automatically loaded by [parameters]{.pkg}
 
-It also uses these `tidyverse` packages [@R-tidyverse; @tidyverse2019]: `dplyr` [@R-dplyr], `forcats` [@R-forcats], `ggplot2` [@wickhamGgplot2ElegantGraphics2016], and `readr` [@R-readr], `.
+It also uses these [tidyverse]{.pkg} packages [@R-tidyverse; @tidyverse2019]: [dplyr]{.pkg} [@R-dplyr], [forcats]{.pkg} [@R-forcats], [ggplot2]{.pkg} [@wickhamGgplot2ElegantGraphics2016], and [readr]{.pkg} [@R-readr], `.
 
 ### Coding style
 
 There are (broadly) two styles of coding:
 
-1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
+1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
 
-2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
+2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
 
-Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load `tidyverse` because the `dplyr` and `ggplot2` packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load [tidyverse]{.pkg} because the [dplyr]{.pkg} and [ggplot2]{.pkg} packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from [ggplot2]{.pkg}.
 
-You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the `tidyverse` package (and any others if you're using a concise style) at the beginning of your Quarto document:
+You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the [tidyverse]{.pkg} package (and any others if you're using a concise style) at the beginning of your Quarto document:
 
 ```{r eval = FALSE}
 library(tidyverse)
 ```
 
 
-I try to follow the [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) in always declaring the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will write `dplyr::mutate()`. 
+I try to follow the [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) in always declaring the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will write `dplyr::mutate()`. 
 
 It is good practice to be explicit about packages to avoid clashes where functions from different packages have the same name. It also means that you don't need to load packages at the start of your Quarto document. 
 
 There are two main exceptions to this rule.
 
-1. There are functions within some `tidyverse` packages that would be used within other functions. Including the package name makes the code difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+1. There are functions within some [tidyverse]{.pkg} packages that would be used within other functions. Including the package name makes the code difficult to read. Also, no-one wants to write `ggplot2::` before every function from [ggplot2]{.pkg}.
 2. To use the pipe operator (`|>`) you need to have `magrittr` loaded.
 
-We can load all of the packages that are exceptions in one step by loading `tidyverse` at the beginning of our Quarto document:
+We can load all of the packages that are exceptions in one step by loading [tidyverse]{.pkg} at the beginning of our Quarto document:
 
 ```{r eval = FALSE}
 library(tidyverse)
@@ -186,7 +189,7 @@ xbox_tib <- here::here("data/xbox.csv") |>
   )
 ```
 
-## `r bmu()` Beer goggles [(2)]{.alt}
+## `r bmu()` Beer goggles [(B)]{.lbl}
 
 The main example in this tutorial is from [@fielddsr22026], who uses an example of an experimental design with two independent variables (a two-way independent design). The study tested the prediction that subjective perceptions of physical attractiveness become inaccurate after drinking alcohol (the well-known beer-goggles effect). The example is based on research that looked at whether the beer-goggles effect was influenced by the attractiveness of the faces being rated [@chen_moderating_2014]. The logic is that alcohol consumption has been shown to reduce accuracy in symmetry judgements, and symmetric faces have been shown to be rated as more attractive. If the beer-goggles effect is driven by alcohol impairing symmetry judgements then you'd expect a stronger effect for unattractive (asymmetric) faces (because alcohol will affect the perception of asymmetry) than attractive (symmetric) ones. The data well analyse are fictional, but the results mimic the findings of this research paper.
 
@@ -234,7 +237,7 @@ levels(goggles_tib$alcohol)
 
 Because I have set up the data within this tutorial you should see that the levels are listed in the order that we want them when you execute the code.
 
-## `r bmu()` Exploring the data [(1)]{.alt}
+## `r bmu()` Exploring the data [(A)]{.lbl}
 
 #### `r alien()` Alien coding challenge
 
@@ -354,7 +357,7 @@ ggplot2::ggplot(goggles_tib, aes(x = alcohol, y = attractiveness, colour = facet
 
 Note again that the mean attractiveness is very similar across the doses of alcohol for the attractive faces, but varies in the unattractive faces.
 
-## `r user_visor()` The model [(2)]{.alt}
+## `r user_visor()` The model [(B)]{.lbl}
 
 The model we're fitting is described by the following equation:
 
@@ -367,7 +370,7 @@ $$
 
 We can include categorical predictors in the linear model using dummy variables and the function `lm()` as we have done before. However, when looking at *F*-statistics for the overall effect of predictors things get quite complicated as we saw in the previous tutorial. The `lm()` method is useful for when you want control over what the parameter estimates, but it's complicated. A simpler method is to use the `afex` package. We'll start with this method.
 
-## `r bmu()` Fitting the model using the `afex` package [(1)]{.alt}
+## `r bmu()` Fitting the model using the `afex` package [(A)]{.lbl}
 
 When faced with a factorial design (i.e. only categorical predictors) a more user-friendly approach is offered by the `afex` package (stands for [a]{.alt}nalysis of [f]{.alt}actorial [ex]{.alt}periments). We're going to use the `aov_4()` function, which the the following format:
 
@@ -452,15 +455,15 @@ Contrasts set to contr.sum for the following variables: facetype, alcohol.
 This message is nothing to worry about, but if you want to know what it's all about work through the section on fitting the model using `lm()` where all is revealed. 
 </div>
 
-### `r bmu()` Plots using the `afex` package [(1)]{.alt}
+### `r bmu()` Plots using the `afex` package [(A)]{.lbl}
 
-A neat feature of `afex` is that you can get plots of the interaction without needing to do it using `ggplot2` (even though I forced you to do that for practice at the start of the tutorial). Having created an `afex` object we can feed it into the `afex_plot()`, which takes the general form:
+A neat feature of `afex` is that you can get plots of the interaction without needing to do it using [ggplot2]{.pkg} (even though I forced you to do that for practice at the start of the tutorial). Having created an `afex` object we can feed it into the `afex_plot()`, which takes the general form:
 
 ```{r, eval = F}
 afex::afex_plot(afx_object, x_variable, line_shape_variable, panel_variable)
 ```
 
-In which you replace [afx_object]{.alt} with the name of the model you fitted with `aov_4()`, [x_variable]{.alt} with the predictor you want on the *x*-axis, and [line_shape_variable]{.alt} with a predictor that you want to be depicted using different lines/shapes. If you have a third categorical predictor, replace [panel_variable]{.alt} with the name of that predictor and its different categories will be displayed across different panels (e.g., `facet_wrap()` style). The result is a `ggplot` object so you can use `ggplot2` code to edit the results, for example, you can apply a standard `ggplot2` theme. 
+In which you replace [afx_object]{.alt} with the name of the model you fitted with `aov_4()`, [x_variable]{.alt} with the predictor you want on the *x*-axis, and [line_shape_variable]{.alt} with a predictor that you want to be depicted using different lines/shapes. If you have a third categorical predictor, replace [panel_variable]{.alt} with the name of that predictor and its different categories will be displayed across different panels (e.g., `facet_wrap()` style). The result is a `ggplot` object so you can use [ggplot2]{.pkg} code to edit the results, for example, you can apply a standard [ggplot2]{.pkg} theme. 
 
 #### `r robot()` Code example
 
@@ -522,7 +525,7 @@ gog_afx_tbl <- goggles_afx$anova_table
 There was a significant effects of the type of face used, `r report_afx(gog_afx_tbl, row = 1)`, and the dose of alcohol, `r report_afx(gog_afx_tbl, row = 2)`. However, these effects were superseded by a significant interaction between the type of face being rated and the dose of alcohol, `r report_afx(gog_afx_tbl, row = 3)`. This interaction suggests that the effect of alcohol is moderated by the type of face being rated (and vice versa). Based on the means (see plot) this interaction supports the 'beer-googles' hypothesis: when no alcohol is consumed symmetric faces were rated as more attractive than asymmetric faces but this difference diminishes as more alcohol is consumed.
 </div>
 
-### `r bmu()` Estimated marginal means [(1)]{.alt}
+### `r bmu()` Estimated marginal means [(A)]{.lbl}
 
 It's also fairly straightforward to get the means in the plot we've just made using the `emmeans()` function from the `emmeans` package. Place the name of your `afex` model into the function and include a vector of the variable names of predictors.
 
@@ -546,13 +549,13 @@ Obtain the estimated marginal means for the [facetype*alcohol]{.alt} interaction
 emmeans::emmeans(goggles_afx, c("alcohol", "facetype"))
 ```
 
-## `r user_visor()` Fitting the model using `lm()` [(2)]{.alt}
+## `r user_visor()` Fitting the model using `lm()` [(B)]{.lbl}
 
 You might have noticed that when you used `aov_4()` that a message told you that contrasts had been set using `contr.sum()`. Remember that typically we want Type III sums of squares and these require predictor variables to have independent (or to use the posh term [orthogonal]{.alt}) contrasts. Orthogonal means that the numbers used to code groups must sum to zero and cross multiple to sum to zero. By default, `r_proj()` will use dummy coding (0s and 1s) which results in non-orthogonal contrasts. The message is telling you that `aov_4()` has created orthogonal contrasts for you so you don't have to worry about it. In short, `aov_4()` makes it super easy to test the predictors and their interaction without needing to think too much. The price you pay is a lack of flexibility in the contrasts. Which leads us on to the gateway to hell that is using `lm()`.
 
 You can extend everything from [discovr_12]{.alt} to the situation with multiple categorical predictors. Here's how.
 
-### `r user_visor()` Using built in contrasts [(2)]{.alt}
+### `r user_visor()` Using built in contrasts [(B)]{.lbl}
 
 Unlike when using `aov_4()`, when using `lm()` we **do** have to think about setting orthogonal contrasts. The simplest way to ensure orthogonal contrasts is to set them using `contr.sum(n)` replacing the *n* with the number of categories/groups (the sum means that contrasts sum to zero). This is what `aov_4()` did for us.
 
@@ -622,7 +625,7 @@ car::Anova(goggles_lm, type = 3) |>   # or car::Anova(goggle_lm, type = 3, white
   knitr::kable(digits = 3)
 ```
 
-The results show significant main effects and interactions for all variables. The main effects are not interesting in the context of the significant interaction effect, so we'll focus on the significant interaction effect. We can use the means we computed earlier to start to unpick this interaction. We can also used the `estimate_means()` function from `modelbased` to obtain them, which we met in [discovr_12]{.alt}. We have no covariates, so we could execute:
+The results show significant main effects and interactions for all variables. The main effects are not interesting in the context of the significant interaction effect, so we'll focus on the significant interaction effect. We can use the means we computed earlier to start to unpick this interaction. We can also used the `estimate_means()` function from [modelbased]{.pkg} to obtain them, which we met in [discovr_12]{.alt}. We have no covariates, so we could execute:
 
 ```{r, eval = F}
 modelbased::estimate_means(goggles_lm)
@@ -677,7 +680,7 @@ An alternative to `contr.sum(n)` is `contr.helmert(n)`, which will set up a cont
 * Contrast 2: high vs. average of low and placebo groups combined
 </div>
 
-### `r user_astronaut()` Using manual contrasts [(3)]{.alt}
+### `r user_astronaut()` Using manual contrasts [(C)]{.lbl}
 
 From the point of view of the *F*-statistics it doesn't matter whether you use `contr.sum()` or `contr.helmert()` but it will affect the parameter estimates (*b*s) and what they represent. You might therefore, want to manually set contrasts like we did in [discovr_12]{.alt}.
 
@@ -785,7 +788,7 @@ There was a significant effects of the type of face used, `r report_afx(gog_afx_
 
 
 
-## `r user_visor()` Simple effects analysis [(2)]{.alt}
+## `r user_visor()` Simple effects analysis [(B)]{.lbl}
 
 Regardless of whether you fit the model with `lm()` or `aov_4()`, a particularly effective way to break down interactions is [simple effects analysis]{.alt}, which looks at the effect of one predictor at individual levels of another. For example, we could do a simple effects analysis looking at the effect of type of face at each level of alcohol. This would mean taking the average attractiveness rating of unattractive faces and comparing it to that for attractive faces after a placebo drink, then making the same comparison after a low dose of alcohol, and then finally for a high dose. By doing so we ask: what is the effect of [facetype]{.alt} within each alcohol group?
 
@@ -908,7 +911,7 @@ There was a significant effects of the type of face used, `r report_afx(gog_afx_
 </div>
 
 
-## `r bmu()` Diagnostic plots [(1)]{.alt}
+## `r bmu()` Diagnostic plots [(A)]{.lbl}
 
 As with any linear model created with `lm()`, we can use the `plot()` function to produce diagnostic plots from the model. We cannot use this with models created by `afex`.
 
@@ -977,7 +980,7 @@ quiz(caption = "Diagnostic plot quiz (level 2)",
 ```
 
 
-## `r user_visor()` Robust models [(2)]{.alt} 
+## `r user_visor()` Robust models [(B)]{.lbl} 
 
 As for previous linear models(e.g., in **discovr_08**, **discovr_09** and **discovr_11**), we can get robust parameter estimates using `robust::lmRob()` and robust tests of these parameters using `parameters::model_parameters()`. These methods won't work for models created with `afex`.
 
@@ -1012,7 +1015,7 @@ parameters::model_parameters(goggles_lm, vcov = "HC4") |>
 
 When we fit the model with heteroskedasticity-consistent standard errors the parameter estimates will match the non-robust model but the standard errors, *p*-values and confidence intervals change because these are based on methods robust to heteroscedasticity (the HC4 estimates that we asked for). For the two terms that represent the interaction term ([facetype1:alcoholalcohol_vs_none]{.alt} and [facetype1 : alcohollow_vs_high ]{.alt}) the profile of results is unchanged by using robust standard errors, both terms are significant and have 95% confidence intervals that do not contain 0. The fact that the profile of results is unchanged is not surprising given that the model plots suggested that homoscedasticity could be assumed.
 
-Given the small sample size, we might also consider a bootstrap model of the parameter estimates and their confidence intervals and significance tests. We can obtain these using the `bootstrap_parameters()` function from `parameters`, which takes the general form:
+Given the small sample size, we might also consider a bootstrap model of the parameter estimates and their confidence intervals and significance tests. We can obtain these using the `bootstrap_parameters()` function from [parameters]{.pkg}, which takes the general form:
 
 ```{r eval = F}
 parameters::bootstrap_parameters(my_model)
@@ -1036,13 +1039,13 @@ parameters::bootstrap_parameters(goggles_lm) |>
 
 The estimates themselves are quite similar to those from the non-robust model and both terms for the interaction ([facetype1:alcoholalcohol_vs_none]{.alt} and [facetype1 : alcohollow_vs_high ]{.alt}) are again significant.
 
-## `r user_astronaut()` Effect sizes [(3)]{.alt}
+## `r user_astronaut()` Effect sizes [(C)]{.lbl}
 
 We can interpret the *b*s from the model as raw effect sizes (and there's a lot to be said for doing that). However, in previous tutorials we have seen that we can obtain effect sizes for the overall effect of a predictor (i.e. effect sizes that relate to the *F*-statistics for each predictor).
 
 #### `r robot()` Code example
 
-Specifically, we can use the `eta_squared()` and `omega_squared()` functions from the `effectsize` package [@effectsize2020; @R-effectsize], which take the general form:
+Specifically, we can use the `eta_squared()` and `omega_squared()` functions from the [effectsize]{.pkg} package [@effectsize2020; @R-effectsize], which take the general form:
 
 ```{r, eval = F}
 effectsize::eta_squared(anova_object, partial = TRUE, ci = 0.9)
@@ -1105,7 +1108,7 @@ There was a significant effects of the type of face used, `r report_afx(gog_afx_
 </div>
 
 
-## `r user_astronaut()` Bayes factors [(3)]{.alt}
+## `r user_astronaut()` Bayes factors [(C)]{.lbl}
 
 Like in previous tutorials (**discovr_08**, **discovr_09**, **discovr_11**, **discovr_12**) we can use the `BayesFactor` package [@morey_bayesfactor_2018]. For factorial designs we use the `lmBF()` function.
 
@@ -1224,7 +1227,7 @@ Looking at the second Bayes factor, the data are `r get_bf(m2)` times more likel
 
 Looking at the final Bayes factor, the data are `r get_bf(m3)` times more likely under the model that predicts attractiveness ratings from the combined effect of the type of face and the dose of alcohol than under the model that predicts attractiveness from the main effects of dose of alcohol and type of face. In other words, our beliefs that the type of face moderates the effect of alcohol on the ratings of attractiveness should shift away from the null by a factor of `r get_bf(m3)` (a substantial change and strong evidence).
 
-## `r user_visor()` Transfer task [(2)]{.alt}
+## `r user_visor()` Transfer task [(B)]{.lbl}
 
 ### Blow up your video
 

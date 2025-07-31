@@ -6,6 +6,7 @@ output:
     progressive: true
     allow_skip: true
     theme: "united"
+    highlight: "kate"
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
 description: "Categorical outcomes (logistic regression). This tutorial builds on previous ones to show how the general linear model model extends to situations where you want to predict a binary outcome (logistic regression). We look at fitting the models and interpretting the odds ratio."
@@ -23,18 +24,24 @@ knitr::opts_chunk$set(
 #necessary to render tutorial correctly
 library(learnr) 
 library(htmltools)
+#easystats
+library(correlation)
+library(insight)
+library(modelbased)
+library(parameters)
+library(performance)
 #tidyverse
 library(dplyr)
 library(forcats)
 library(ggplot2)
 library(tidyr)
-#non tidyverse
+#non tidyverse/easystats
 library(broom)
 library(interactions)
-library(knitr)
 library(robustbase)
 #students don't use
 library(gt)
+library(knitr)
 
 source("./www/discovr_helpers.R")
 
@@ -66,9 +73,9 @@ Hi, welcome to **discovr** space pirate academy. Well done on embarking on this 
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
-* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
-* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(A)]{.lbl}.
+* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(B)]{.lbl}.
+* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(C)]{.lbl}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
@@ -101,22 +108,22 @@ This tutorial uses the following packages:
 * `broom` [@R-broom]
 * `interactions` [@interactions]
 * `knitr` [@R-knitr]
-* `here` [@R-here]
+* [here]{.pkg} [@R-here]
 
-It also uses these `tidyverse` packages [@R-tidyverse; @tidyverse2019]: `dplyr` [@R-dplyr], `forcats` [@R-forcats], `ggplot2` [@wickhamGgplot2ElegantGraphics2016], `readr` [@R-readr], and `tidyr` [@R-tidyr].
+It also uses these [tidyverse]{.pkg} packages [@R-tidyverse; @tidyverse2019]: [dplyr]{.pkg} [@R-dplyr], [forcats]{.pkg} [@R-forcats], [ggplot2]{.pkg} [@wickhamGgplot2ElegantGraphics2016], [readr]{.pkg} [@R-readr], and [tidyr]{.pkg} [@R-tidyr].
 
 
 ### Coding style
 
 There are (broadly) two styles of coding:
 
-1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
+1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
 
-2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
+2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
 
-Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load `tidyverse` because the `dplyr` and `ggplot2` packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load [tidyverse]{.pkg} because the [dplyr]{.pkg} and [ggplot2]{.pkg} packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from [ggplot2]{.pkg}.
 
-You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the `tidyverse` package (and any others if you're using a concise style) at the beginning of your Quarto document:
+You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the [tidyverse]{.pkg} package (and any others if you're using a concise style) at the beginning of your Quarto document:
 
 ```{r eval = FALSE}
 library(tidyverse)
@@ -144,7 +151,7 @@ santa_tib <- here::here("data/santas_log.csv") |>
 
 This code reads in the data and converts the variables **treat** and **delivered** to be factors (categorical variable). It also uses `fct_relevel()` to set the order of the levels of each factor.
 
-## `r bmu()` A Christmas disaster [(2)]{.alt}
+## `r bmu()` A Christmas disaster [(B)]{.lbl}
 
 Let's begin with a Christmas tale. A year ago Santa was resting in his workshop studying his nice and naughty lists. He noticed a name on the naughty list in bold, upper case letters. It said **ANDY FIELD OF UNIVERSITY OF SUSSEX**. He went to look up the file of this Andy Field character. He stared into his snow globe, and as the mists cleared he saw a sad, lonely, friend-less character walking across campus. Under one arm a box of chocolates, under the other a small pink Hippo. As he walked the campus he enticed the young students around him to follow him by offering chocolate. Like the Pied Piper, he led them to a large hall. Once inside, the boys and girls' eyes glistened in anticipation of more chocolate. Instead he unleashed a monologue about the general linear model of such fearsome tedium that Santa began to wonder how anyone could have grown to be so soulless and cruel.
 
@@ -226,7 +233,7 @@ You'll find that the factor levels are:
 
 These category orders are as they are because I set the data up within this tutorial. Working outside of the tutorial you might need to manually set the order of levels for each factor using `forcats::fct_relevel()` as described in the [Data]{.alt} part of this tutorial.
 
-## `r bmu()` The model [(2)]{.alt}
+## `r bmu()` The model [(B)]{.lbl}
 
 We'll start by looking solely at the effect of the type of **treat**. The model is described by the following equation:
 
@@ -334,11 +341,11 @@ quiz(caption = "Odds ratio quiz (level 2)",
 
 We will interpret these values as we encounter them later on.
 
-## `r user_visor()` Exploring the data [(2)]{.alt}
+## `r user_visor()` Exploring the data [(B)]{.lbl}
 
 Our outcome variable is categorical so to summarise it we want to look at frequencies, or counts (that is, how many cases fall into different categories). A simple but crude way to get a crosstabulation table of frequencies is the `xtabs()` function, but we can also use what we know about tidyverse too. We used both of these methods in `discovr_19`, and we'll revisit them here.
 
-### `r bmu()` Using `xtabs()` [(1)]{.alt}
+### `r bmu()` Using `xtabs()` [(A)]{.lbl}
 
 The `xtabs()` function is part of base `r rproj()`. When we used it in `discovr_19` we applied it to a data set that contained the frequencies rather than the raw data, and we saw that it takes this form.
 
@@ -375,9 +382,9 @@ delivery_xtab <- xtabs(~ treat + delivered, data = santa_tib)
 delivery_xtab
 ```
 
-### `r user_visor()` Using tidyverse [(2)]{.alt}
+### `r user_visor()` Using tidyverse [(B)]{.lbl}
 
-A different approach is to use all of the tidyverse skills we have acquired. Specifically, we can use code that we learnt about in `discovr_19`. To remind you, in that tutorial we used the following `dplyr` functions:
+A different approach is to use all of the tidyverse skills we have acquired. Specifically, we can use code that we learnt about in `discovr_19`. To remind you, in that tutorial we used the following [dplyr]{.pkg} functions:
 
 * `group_by()`: groups the data by whatever variable (or variables) you name within the function.
 * `tally()`: counts the number of cases.
@@ -470,8 +477,8 @@ santa_xtab <- santa_xtab |>
 santa_xtab # This line displays the object we created above
 ```
 
-## `r user_visor()` Fitting the model [(2)]{.alt}
-### `r user_visor()` The `glm()` function [(2)]{.alt}
+## `r user_visor()` Fitting the model [(B)]{.lbl}
+### `r user_visor()` The `glm()` function [(B)]{.lbl}
 
 To fit the model we use the function `glm()` which stands for 'generalized linear model'. The function takes the same form as `lm()`, which we have used many times before. However, it differs in that it allows you to specify a specific distribution for the errors in the model. When the outcome is a dichotomy (categorical with two categories) we need to specify the family as `binomial()` giving us a general form of the function as follows:
 
@@ -593,7 +600,7 @@ A logistic regression model was fit predicting delivery of presents from the typ
 
 </div>
 
-### `r user_astronaut()` Assessing overall fit [(3)]{.alt}
+### `r user_astronaut()` Assessing overall fit [(C)]{.lbl}
 
 To get test of overall fit we need to build up models step-by_step and use `anova()` to compare them. In this example, with only a single predictor this would mean fitting a model with only the intercept, then fitting a model that includes the predictor and comparing the two models:
 
@@ -633,11 +640,11 @@ santa_aov <- anova(santa_int, santa_treat, test = "Chisq") |>
 
 The residual deviance statistic [Resid. Dev]{.alt} is a measure of model fit (think of it like the total error - large values mean poorer fit). Note that with the intercept only model the residual deviance is `r sprintf("%.2f", santa_aov$resid_dev[1])` but when we include treat it reduces to `r sprintf("%.2f", santa_aov$resid_dev[2])` : a reduction of `r sprintf("%.2f", santa_aov$Deviance[2])` (the value in the table under [Deviance]{.alt}) The fact that the deviance got smaller means that the fit has improved. The Chi-square test tells us whether this reduction of `r sprintf("%.2f", santa_aov$Deviance[2])` is significantly different from zero (i.e., no reduction). If this change in the residual deviance is significantly different from 0 then the model fit has improved, which is the case here. Put another way, a significant deviance shows that by including **treat** as a predictor the fit of the model significantly improves compared to when it wasn't included.
 
-## `r user_visor()` Multiple predictors [(2)]{.alt}
+## `r user_visor()` Multiple predictors [(B)]{.lbl}
 
 It seems like the type of treat affects the odds of delivery. However, the elves don't want to be banned from the mulled wine so they ask Santa whether the issue might actually be the quantity of treats they consume? We can extend the model to include the quantity of treats as a predictor and also the interaction between the quantity of treats consumed and the type of treat consumed.
 
-### `r user_visor()` The model [(2)]{.alt}
+### `r user_visor()` The model [(B)]{.lbl}
 
 The model is described by the following equation:
 
@@ -652,7 +659,7 @@ $$
 
 In this version we predict the *log odds* of delivery from the standard equation for a linear model.
 
-### `r user_astronaut()` Hierarchical variable entry [(3)]{.alt}
+### `r user_astronaut()` Hierarchical variable entry [(C)]{.lbl}
 
 This optional section shows how we could build up the model step-by-step and look at the overall change in the fit at each step. This is useful in two situations. First if you want to do hierarchical variable entry (that is, build up the model in a theory-driven way) this would be the way to do it. Second, it is useful to quantify the overall significance of categorical predictors made up of several categories (i.e., that are split across several dummy variables).
 
@@ -718,7 +725,7 @@ Note that for each model we add one new predictor so the degrees of freedom decr
 
 As I mentioned, this step-by-step process is useful if (1) you want to do hierarchical variable entry (that is, build up the model in a theory-driven way), or (2) you have a predictor with multiple categories and you want to know its overall effect. 
 
-### `r user_visor()` Fitting the model in one step [(2)]{.alt}
+### `r user_visor()` Fitting the model in one step [(B)]{.lbl}
 
 We can extend the model using `glm()` but with an updated formula. 
 
@@ -804,7 +811,7 @@ The odds ratio for the interaction effect is much less than 1 ($\widehat{OR}$ = 
 1. Plot the interaction
 2. Fit models that predict deliveries from **quantity** alone separately for mulled wine and Christmas pudding (simple slopes).
 
-### `r user_visor()` Plotting the interaction [(2)]{.alt}
+### `r user_visor()` Plotting the interaction [(B)]{.lbl}
 
 A useful way to visualise the interaction is to plot it. The `interact_plot()` function from `interactions` will plot interaction effects from logistic models. It takes the general form:
 
@@ -819,7 +826,7 @@ Basically you replace [my_model]{.alt} with the name of your model, [my_predicto
 
 For our data, if we specify **quantity** as the predictor and **treat** as the moderator we'll get the effect of quantity on delivery and different lines for Christmas pudding and mulled wine.
 
-The output is a `ggplot2` object, which means that you can augment it with any functions and themes from `ggplot2` by adding them as layers to the plot in the usual way.
+The output is a [ggplot2]{.pkg} object, which means that you can augment it with any functions and themes from [ggplot2]{.pkg} by adding them as layers to the plot in the usual way.
 
 #### `r robot()` Code example
 
@@ -835,7 +842,7 @@ interactions::interact_plot(santa_full_glm,
 
 #### `r alien()` Alien coding challenge
 
-Plot the **treat × quantity** interaction effect. Use what you know about `ggplot2` to add *x*- and *y*-labels and a minimal theme.
+Plot the **treat × quantity** interaction effect. Use what you know about [ggplot2]{.pkg} to add *x*- and *y*-labels and a minimal theme.
 
 
 ```{r plot_int, exercise = TRUE, exercise.setup = "santa_full_setup"}
@@ -868,7 +875,7 @@ interactions::interact_plot(santa_full_glm, pred = quantity, modx = treat, legen
 
 The plot very clearly shows that for Christmas pudding the probability of delivery doesn't change much as the quantity of treats increases (the blue line is flat). However, for mulled wine, as the quantity consumed goes up the probability of delivery decreases: basically, the more wine the elves drink the lower the probability of delivery. This effect really starts to kick in at a quantity of two.
 
-### `r user_visor()` Breaking down the interaction [(2)]{.alt}
+### `r user_visor()` Breaking down the interaction [(B)]{.lbl}
 
 Another approach is to look at what the odds ratio of `r get_par(santa_full_exp, row = 4)` for the interaction means, by fitting separate models for mulled wine and Christmas pudding that predict deliveries from **quantity** alone. There's various ways we could do this. We could, for example, use `filter()` to select only cases of mulled wine before piping into the `glm()` function. However, the `glm()` function contains an argument [subset]{.alt} that allows you to subset the data directly from within the function. In general
 
@@ -1046,7 +1053,7 @@ $−1.11−(−0.08) = −1.03$, which was the parameter estimate for the intera
 So, the odds ratio for the interaction is the odds ratio for the difference in the effect of one predictor across levels of the other. In this case, it's the odds ratio for the difference between the effect of quantity of Christmas pudding on delivery and the effect of the quantity of mulled wine on delivery.
 
 
-## `r user_visor()` Robust logistic regression [(2)]{.alt}
+## `r user_visor()` Robust logistic regression [(B)]{.lbl}
 
 It is also possible to create a robust model using the `glmrob()` function from the `robustbase` package. This takes the same form as the `glm()` function but returns robust estimates of parameters and associated standard errors and *p*-values.
 

@@ -6,6 +6,7 @@ output:
     progressive: true
     allow_skip: true
     theme: "united"
+    highlight: "kate"
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
 description: "Comparing several means. Essentially 'One-way independent ANOVA' but taught using a general linear model framework. Covers setting contrasts (dummy coding, contrast coding, and linear and quadratic trends), the *F*-statistic and Welch's robust *F*, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of means based on trimmed data, *post hoc* tests, Bayes factors."
@@ -23,18 +24,21 @@ knitr::opts_chunk$set(
 #necessary to render tutorial correctly
 library(learnr) 
 library(htmltools)
+#easystats
+library(effectsize)
+library(insight)
+library(modelbased)
+library(parameters)
 #tidyverse
 library(dplyr)
 library(ggplot2)
-#non tidyverse
+#non tidyverse/easystats
 library(BayesFactor)
 library(broom)
-library(effectsize)
 library(ggfortify)
 library(Hmisc)
+#students don't use
 library(knitr)
-library(modelbased)
-library(parameters)
 library(sandwich)
 
 source("./www/discovr_helpers.R")
@@ -69,9 +73,9 @@ Hi, welcome to **discovr** space pirate academy. Well done on embarking on this 
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
-* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
-* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(A)]{.lbl}.
+* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(B)]{.lbl}.
+* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(C)]{.lbl}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
@@ -103,29 +107,29 @@ This tutorial uses the following packages:
 
 * `BayesFactor` [@R-BayesFactor]
 * `broom` [@R-broom]
-* `effectsize` [@effectsize2020; @R-effectsize]
-* `emmeans` [@R-emmeans] is used by `modelbased`
-* `here` [@R-here]
+* [effectsize]{.pkg} [@effectsize2020; @R-effectsize]
+* `emmeans` [@R-emmeans] is used by [modelbased]{.pkg}
+* [here]{.pkg} [@R-here]
 * `ggfortify` [@R-ggfortify; @ggfortify2016]
-* `Hmisc` [@R-Hmisc] is loaded by `ggplot2`
+* `Hmisc` [@R-Hmisc] is loaded by [ggplot2]{.pkg}
 * `knitr` [@R-knitr]
-* `modelbased` [@R-modelbased]
-* `parameters` [@parameters2020; @R-parameters]
-* `sandwich` [@R-sandwich; @sandwich2006] is automatically loaded by `parameters`
+* [modelbased]{.pkg} [@R-modelbased]
+* [parameters]{.pkg} [@parameters2020; @R-parameters]
+* [sandwich]{.pkg} [@R-sandwich; @sandwich2006] is automatically loaded by [parameters]{.pkg}
 
-It also uses these `tidyverse` packages [@R-tidyverse; @tidyverse2019]: `dplyr` [@R-dplyr], `forcats` [@R-forcats], `ggplot2` [@wickhamGgplot2ElegantGraphics2016], and `readr` [@R-readr], `.
+It also uses these [tidyverse]{.pkg} packages [@R-tidyverse; @tidyverse2019]: [dplyr]{.pkg} [@R-dplyr], [forcats]{.pkg} [@R-forcats], [ggplot2]{.pkg} [@wickhamGgplot2ElegantGraphics2016], and [readr]{.pkg} [@R-readr], `.
 
 ### Coding style
 
 There are (broadly) two styles of coding:
 
-1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
+1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
 
-2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
+2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
 
-Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load `tidyverse` because the `dplyr` and `ggplot2` packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load [tidyverse]{.pkg} because the [dplyr]{.pkg} and [ggplot2]{.pkg} packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from [ggplot2]{.pkg}.
 
-You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the `tidyverse` package (and any others if you're using a concise style) at the beginning of your Quarto document:
+You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the [tidyverse]{.pkg} package (and any others if you're using a concise style) at the beginning of your Quarto document:
 
 ```{r eval = FALSE}
 library(tidyverse)
@@ -150,7 +154,7 @@ puppy_tib <- here::here("data/puppies.csv") |>
 
 This code reads in the data and converts the variable **dose** to a factor (categorical variable).
 
-## `r bmu()` A puppy-tastic example [(1)]{.alt}
+## `r bmu()` A puppy-tastic example [(A)]{.lbl}
 
 The main example in this tutorial is about puppies. Here's my dog, Milton, when he was a puppy:
 
@@ -209,7 +213,7 @@ puppy_tib <- puppy_tib |>
   )
 ```
 
-## `r bmu()` The model [(1)]{.alt}
+## `r bmu()` The model [(A)]{.lbl}
 
 We can include categorical predictors using dummy coding (there are other forms of coding too, we'll look at one of those later, contrast coding, later).
 
@@ -232,7 +236,7 @@ $$
 $$
 in which a persons happiness is predicted from knowing their group code (i.e., the numeric code for the long and short dummy variables in Table 1) and the estimates of the parameters for these effects and the intercept ($b_0$).
 
-## `r bmu()` Exploring the data [(1)]{.alt}
+## `r bmu()` Exploring the data [(A)]{.lbl}
 
 #### `r alien()` Alien coding challenge
 
@@ -331,9 +335,9 @@ quiz(caption = "Confidence interval quiz (level 3)",
 )
 ```
 
-## `r bmu()` Fit the model [(1)]{.alt}
+## `r bmu()` Fit the model [(A)]{.lbl}
 
-### `r bmu()` Dummy coding in `r rproj()` [(1)]{.alt} 
+### `r bmu()` Dummy coding in `r rproj()` [(A)]{.lbl} 
 
 `r rproj()` automatically dummy codes categorical predictors. If the categorical predictor is a factor, then it uses the first level of the variable as its reference category. For the variable **dose** (which is a factor) the levels are ordered [No puppies]{.alt}, [15 minutes]{.alt} and [30 minutes]{.alt}. As such, dummy variable 1 will represent the no puppies group vs. the 15-minute group. `r rproj()` will label this variable as **dose15 mins**, which tells us that this dummy variable represents the part of **dose** that compares the 15-minute group to the no puppies group. Dummy variable 2 will represent the no puppies group vs. the 30-minute group. `r rproj()` will label this variable as **dose30 mins**, which tells us that this dummy variable represents the part of **dose** that compares the 30-minute group to the no puppies group.
 
@@ -345,7 +349,7 @@ For these data, these default comparisons make sense (we compare everything to t
   You can use character variables (rather than factors) as predictors in linear models and `r rproj()` will try to do something sensible with them. Specifically, it orders the categories alphabetically and creates dummy variables using the first category as the reference category. However, it's good practice to convert character variables to factors yourself and specify the order of levels so that you are in control of what goes into the model.
 </div>
 
-### `r bmu()` Using `lm()` [(1)]{.alt}
+### `r bmu()` Using `lm()` [(A)]{.lbl}
 
 To fit the model we use the `lm()` function, because we are fitting a linear model with a categorical predictor. We've used this function before, just to recap it takes the following general form (I've retained only the key options):
 
@@ -483,7 +487,7 @@ Overall, happiness was significantly different across the three therapy groups, 
 </div>
 
 
-### `r bmu()` Diagnostic plots [(1)]{.alt}
+### `r bmu()` Diagnostic plots [(A)]{.lbl}
 
 As with any linear model, we can use the `plot()` function to produce diagnostic plots from the model. We have used this function in previous tutorials. Remember that it takes this general form:
 
@@ -551,7 +555,7 @@ quiz(caption = "Diagnostic plot quiz (level 2)",
 
 The *Residual vs. fitted* and *Scale-location* plots show points that are equally spread for the three groups, which implies that residual variances are similar across groups. The dots look odd because they are aligned in columns, but this reflects the fact there are only 3 possible values of the predictor variable (no puppies, 15 minutes and 30 minutes). The Q-Q plot tells us about the normality of residuals in the model. We want our residuals to be normally distributed which means that the dots on the graph should cling lovingly to the diagonal line. Ours look like they have had a bit of an argument with the diagonal line, which suggests that we may not be able to assume normality of errors and should perhaps use a robust model (which will be explained sooner than you might like). The plot of Cooks distances shows that they are all well below 1, so no influential cases to worry about.
 
-## `r user_visor()` Contrast coding [(2)]{.alt}
+## `r user_visor()` Contrast coding [(B)]{.lbl}
 
 You might be quite bored by now. At the beginning I tried to motivate you with a photo of my dog, Milton. I don't know whether it worked, but I'm going to ramp up the cute factor with a video of the first time I met Milton because you can never have too many puppies.
 
@@ -782,7 +786,7 @@ Overall, happiness was significantly different across the three therapy groups, 
 
 
 
-## `r user_visor()` Trend analysis (polynomial contrasts) [(2)]{.alt} 
+## `r user_visor()` Trend analysis (polynomial contrasts) [(B)]{.lbl} 
 
 Our groups have a meaningful order, so we might have wanted to conduct trend analysis. Had we wanted to do this we first make sure that the levels of dose were in the correct order (no puppies, 15-minutes and 30-minutes) and if not re-ordered them.
 
@@ -826,9 +830,9 @@ trend_par <- broom::tidy(puppy_trend, conf.int = TRUE)
 
 The resulting Output breaks down the experimental effect to see whether it can explained by either a linear (**dose.L**) or a quadratic (**dose.Q**) relationship in the means First, lets look at the linear component. This contrast tests whether the means increase across groups in a linear way. For the linear trend the *t*-statistic is `r sprintf("%.2f", trend_par$estimate[2])` and this value is significant at *p* = `r sprintf("%.3f", trend_par$p.value[2])`. Therefore, we can say that as the dose of puppy therapy increased from nothing to 15 minutes to 30 minutes, happiness increased proportionately. The quadratic trend tests whether the pattern of means is curvilinear (i.e., is represented by a curve that has one bend). The error bars on the violin plot, which we created in the *Exploring data* section, suggest that the means cannot be represented by a curve and the results for the quadratic trend bear this out. The *t*-statistic for the quadratic trend is non-significant, *p* = `r sprintf("%.3f", trend_par$p.value[3])`, which is not very significant at all. 
 
-## `r user_visor()` *Post hoc* tests [(2)]{.alt} 
+## `r user_visor()` *Post hoc* tests [(B)]{.lbl} 
 
-Were going to use the `estimate_contrasts()` function from the `modelbased` package [@R-modelbased], which builds upon the `emmeans` package [@R-emmeans] to provide more user-friendly experience. 
+Were going to use the `estimate_contrasts()` function from the [modelbased]{.pkg} package [@R-modelbased], which builds upon the `emmeans` package [@R-emmeans] to provide more user-friendly experience. 
 
 #### `r robot()` Code example
 
@@ -885,9 +889,9 @@ The first row of the output compares the 15-minute and the 30-minute puppy thera
 
 The output also shows us the mean difference in happiness between each pair of groups and the confidence interval for that difference. For example, we can see that comparing the no puppies group to the 30 minute group the difference in mean happiness was `r sprintf("%.2f", pup_ph$Difference[3])`. The direction of the value reflects the order of the groups: because no puppies is listed as *Level1* and 30 mins as *Level2* the minus sign tells us that happiness was lower in the no puppies group. If we assume that this sample is one of the 95% that yields a confidence interval containing the population value, then this difference in mean happiness might be as large in magnitude as `r sprintf("%.2f", abs(pup_ph$CI_low[3]))` (a very large effect given happiness is measured on a 10-point scale) or as small as `r sprintf("%.2f", abs(pup_ph$CI_high[3]))` (virtually no difference).
 
-## `r user_astronaut()` Cohen's *d* [(3)]{.alt} 
+## `r user_astronaut()` Cohen's *d* [(C)]{.lbl} 
 
-We can use the `effectsize` package [@effectsize2020; @R-effectsize], which we met in `discovr_09`, to calculate Cohen's *d*. Our samples are small (*n* < 20) so we'll actually use Hedge's *g* (`hedges_g()`), which is a bias corrected version of *d* for small samples. Because we have three groups, and we want to quantify the effect between all pairs of groups we are going to need to filter the data to include only the groups we want to compare before we pass it into `hedges_g()`. So, for each effect size we'd adapt this code
+We can use the [effectsize]{.pkg} package [@effectsize2020; @R-effectsize], which we met in `discovr_09`, to calculate Cohen's *d*. Our samples are small (*n* < 20) so we'll actually use Hedge's *g* (`hedges_g()`), which is a bias corrected version of *d* for small samples. Because we have three groups, and we want to quantify the effect between all pairs of groups we are going to need to filter the data to include only the groups we want to compare before we pass it into `hedges_g()`. So, for each effect size we'd adapt this code
 
 ```{r, eval = F, echo= T}
 my_tib |>
@@ -1013,9 +1017,9 @@ Participants were significantly more happy after 30-minutes of puppy therapy com
 </div>
 
 
-## `r user_visor()` Robust models [(2)]{.alt} 
+## `r user_visor()` Robust models [(B)]{.lbl} 
 
-### `r user_visor()` Heteroscedasticity-consistent methods [(2)]{.alt} 
+### `r user_visor()` Heteroscedasticity-consistent methods [(B)]{.lbl} 
 
 Welchs *F* is a robust variant of the *F*-statistic which can be obtained using the `oneway.test()` function which comes as part of `r rproj()`. 
 
@@ -1085,7 +1089,7 @@ parameters::model_parameters(puppy_lm, vcov = "HC4") |>
 
 When we fit the model with heteroscedasticity-consistent standard errors, the significance tests change but we are again left with a profile of results that show that happiness is significantly lower for the no puppy group than both puppy groups combined, but not significantly different after 30-minutes compared to 15.
 
-## `r user_astronaut()` Methods based on trimmed means [(3)]{.alt} 
+## `r user_astronaut()` Methods based on trimmed means [(C)]{.lbl} 
 
 A different approach is to use these functions from the WRS2 package [@Mair_Wilcox_2019]:
 
@@ -1128,7 +1132,7 @@ WRS2::lincon(happiness ~ dose, data = puppy_tib)
 
 The overall test suggests a non-significant difference between trimmed means across the therapy groups, $F_t$ (2, 4) = 3, *p* = .16. The *post hoc* tests (which we should ignore anyway because the overall effect is not significant) show no significant differences between pairs of trimmed means. The value of psyhat ($\hat{\psi}$) and its confidence intervals reflect the difference between trimmed means. Note that the confidence intervals are corrected for the number of tests, but the *p*-values are not. As such, we should ascertain significance from whether or not the confidence intervals cross zero. In this case they all do, which implies that none of the groups are significantly different. This is different to what we found when we did not trim the means (see the earlier model).
 
-## `r user_astronaut()` Bayes factors [(3)]{.alt}
+## `r user_astronaut()` Bayes factors [(C)]{.lbl}
 
 Like in previous tutorials (**discovr_08**, **discovr_09**) we can use the `BayesFactor` package [@R-BayesFactor]. In this scenario we use the `anovaBF()` function.
 
@@ -1166,7 +1170,7 @@ puppy_bf <- BayesFactor::anovaBF(formula = happiness ~ dose, data = data.frame(p
 
 The Bayes factor compares the full model (predicting happiness from dose  and the intercept) to the null model (predicting happiness from only the intercept). It, therefore, quantifies the overall effect of dose. The Bayes Factor is `r get_bf(puppy_bf)`, which means that the data are `r get_bf(puppy_bf)` times more likely under the alternative hypothesis (dose of puppy therapy has an effect) than under the null (dose of puppy therapy has no effect). This value is not strong evidence, but nevertheless suggests we should shift our belief about puppy therapy towards it being effective by a factor of about `r get_bf(puppy_bf, digits = 0)`.
 
-## `r user_visor()` Transfer task [(2)]{.alt}
+## `r user_visor()` Transfer task [(B)]{.lbl}
 
 ### There goes my hero ... watch him as he goes (to hospital)
 

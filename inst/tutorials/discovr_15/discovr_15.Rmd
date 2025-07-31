@@ -6,6 +6,7 @@ output:
     progressive: true
     allow_skip: true
     theme: "united"
+    highlight: "kate"
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
 description: "Repeated measures designs. Fitting models for one- and two-way repeated measures designs using the afex package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when these variables have been manipulated within the same entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, and robust models."
@@ -23,16 +24,21 @@ knitr::opts_chunk$set(
 #necessary to render tutorial correctly
 library(learnr) 
 library(htmltools)
+#easystats
+library(insight)
+library(modelbased)
+library(parameters)
 #tidyverse
 library(dplyr)
 library(ggplot2)
-#non tidyverse
+#non tidyverse/easystats
 library(afex)
 library(broom)
 library(emmeans)
 library(Hmisc)
-library(knitr)
 library(WRS2)
+#students don't use
+library(knitr)
 
 
 source("./www/discovr_helpers.R")
@@ -67,9 +73,9 @@ Hi, welcome to **discovr** space pirate academy. Well done on embarking on this 
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
-* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
-* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(A)]{.lbl}.
+* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(B)]{.lbl}.
+* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(C)]{.lbl}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
@@ -101,25 +107,25 @@ This tutorial uses the following packages:
 
 * `afex` [@singmann_afex_2020]
 * `broom` [@R-broom]
-* `here` [@R-here]
-* `Hmisc` [@R-Hmisc] is loaded by `ggplot2`
+* [here]{.pkg} [@R-here]
+* `Hmisc` [@R-Hmisc] is loaded by [ggplot2]{.pkg}
 * `knitr` [@R-knitr]
 * `WRS2` [@R-WRS2; @WRS22020]
 
-It also uses these `tidyverse` packages [@R-tidyverse; @tidyverse2019]: `dplyr` [@R-dplyr], `forcats` [@R-forcats], `ggplot2` [@wickhamGgplot2ElegantGraphics2016], and `readr` [@R-readr].
+It also uses these [tidyverse]{.pkg} packages [@R-tidyverse; @tidyverse2019]: [dplyr]{.pkg} [@R-dplyr], [forcats]{.pkg} [@R-forcats], [ggplot2]{.pkg} [@wickhamGgplot2ElegantGraphics2016], and [readr]{.pkg} [@R-readr].
 
 
 ### Coding style
 
 There are (broadly) two styles of coding:
 
-1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
+1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
 
-2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
+2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
 
-Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load `tidyverse` because the `dplyr` and `ggplot2` packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load [tidyverse]{.pkg} because the [dplyr]{.pkg} and [ggplot2]{.pkg} packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from [ggplot2]{.pkg}.
 
-You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the `tidyverse` package (and any others if you're using a concise style) at the beginning of your Quarto document:
+You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the [tidyverse]{.pkg} package (and any others if you're using a concise style) at the beginning of your Quarto document:
 
 ```{r eval = FALSE}
 library(tidyverse)
@@ -157,7 +163,7 @@ sniff_tib <- here::here("data/sniffer_dogs.csv") |>
   )
 ```
 
-## `r bmu()` Aliens and sniffer dogs [(2)]{.alt}
+## `r bmu()` Aliens and sniffer dogs [(B)]{.lbl}
 
 The main examples in this tutorial are from [@fielddsr22026]. When the alien invasion comes we'll need spaniels (or possibly other dogs, but lets hope its mainly spaniels because spaniels are cool) to help us to identify the space lizards. Having got wind of a potential invasion from alien space lizards, some of whom could shapeshift into humanoid form, the top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) met to come up with a plan for detecting the invading space lizards. They decided to test the plausibility of training sniffer dogs to detect aliens. Over many trials 8 of their best dogs (Milton, Woofy, Ramsey, Mr. Snifficus III, Willock, The Venerable Dr. Waggy, Lord Scenticle, and Professor Nose) were recruited for a pilot study. During training, these dogs were rewarded for making vocalizations while sniffing alien space lizards (which they happened to have a few of in Hangar 18). On the test trial, the 8 dogs were allowed to sniff 4 entities for 1-minute each: an alien space lizard, a shapeshifting alien space lizard who had taken on humanoid form and worked undetected as a statistics lecturer, a human, and a human mannequin). The number of vocalizations made during each 1-minute sniffing session was recorded. So, this is a [repeated measures design]{.alt}: each dog has four scores representing the number of vocalizations they made while sniffing each of the four entities. If training has been successful the dogs should vocalise more when sniffing space lizards.
 
@@ -204,7 +210,7 @@ levels(sniff_tib$entity)
 
 You should find that the levels are ordered as alien, human, mannequin, and shapeshifter.
 
-### `r bmu()` Exploring the data [(1)]{.alt}
+### `r bmu()` Exploring the data [(A)]{.lbl}
 
 #### `r alien()` Alien coding challenge
 
@@ -337,7 +343,7 @@ ggplot2::ggplot(sniff_tib, aes(x = entity, y = vocalizations)) +
 
 The plot reiterates what we know from the means: dogs made the most vocalizations when sniffing the alien and shapeshifting alien, which is what we would expect if training was successful.
 
-### `r user_visor()` The model [(2)]{.alt}
+### `r user_visor()` The model [(B)]{.lbl}
 
 The model we're fitting is described by the following equation (which is simplified in that I have represented the predictor variable **entity** as a single variable rather than the three dummy variables that represent it in the actual fitted model):
 
@@ -350,7 +356,7 @@ $$
 
 The main difference to models we have seen before is that the intercept ($\hat{b}_{0j}$) is made up of the overall intercept ($\hat{b}_0$) and an estimate of the variance of intercepts for each individual ($\hat{u}_{0j}$). Put another way, we model the fact that individual dogs will vary in the overall number of vocalizations they make. 
 
-## `r bmu()` Fitting a repeated measures model [(1)]{.alt}
+## `r bmu()` Fitting a repeated measures model [(A)]{.lbl}
 
 We can fit an overall model of type of entity predicting the number of dog vocalizations using the `afex` package, which we met in **discovr_13**. In the previous tutorial we saw that we can fit a model using this code:
 
@@ -431,7 +437,7 @@ sniff_con <- emmeans::contrast(sniff_emm, sniff_cons) |>
 
 
 
-### `r user_visor()` Effect size for the overall effect [(2)]{.alt}
+### `r user_visor()` Effect size for the overall effect [(B)]{.lbl}
 
 We've discussed many times that having a single arbitrary cut-off for significance is problematic. In this case, the effect of **entity** was just about non-significant, `r report_afx(sniff_tble)`, but the sample size is tiny (8 dogs), so the *F*-statistic will have been hugely underpowered to detect an effect. The effect size is a useful additional piece of information, so let's get it. In previous tutorials we used partial omega-squared $\omega^2_p$, which we can't get directly from `aov_4()`. However, it does, by default, calculate generalized partial eta-squared ($\eta^2_{G}$), and puts it in the column labelled [ges]{.alt}. 
 
@@ -444,7 +450,7 @@ There was no significant effect of the type of entity on sniffer dog's vocalizat
 </div>
 
 
-### `r bmu()` Estimated marginal means [(1)]{.alt}
+### `r bmu()` Estimated marginal means [(A)]{.lbl}
 
 The results of the overall *F*-statistic showed no significant effect of the variable **entity**,  , suggesting that the number of dog vocalizations were not significantly different across the four entities that they sniffed. Had we found a significant test, we might have wanted to know which entities differed. As we have seen before we can do this using contrasts or *post hoc* tests. To do these we first need to obtain and store the estimated marginal means using the `emmeans()` function from the `emmeans` package, which we used in [discovr_13]{.alt}. Place the name of your `afex` model into the function and include the name of the predictor. Unlike in the previous tutorial we need to include [model = "multivariate"]{.alt} in the function, which means that contrasts are computed using test statistics that do not assume sphericity.
 
@@ -481,7 +487,7 @@ sniff_emm # shows us the means
 
 The estimated marginal means show us what we already know, that sniffer dogs made the most vocalizations when sniffing the alien or the alien in humanoid form (shapeshifter), and made fewer vocalizations when sniffing the human or mannequin. We can use the object containing these means, [sniff_emm]{.alt}, to compute contrasts.
 
-### `r user_visor()` Planned contrasts [(2)]{.alt}
+### `r user_visor()` Planned contrasts [(B)]{.lbl}
 
 If the dog training had been successful then we'd expect sniffer dogs to make more vocalizations when sniffing alien entities than non alien-entities. Therefore, our first contrast would be to compare vocalizations to alien entities (aliens and shapeshifting aliens) against those for humans and mannequin:
 
@@ -596,7 +602,7 @@ emmeans::contrast(sniff_emm, sniff_cons) |>
 
 It seems as though vocalizations were significantly higher when sniffing aliens compared to non-aliens (*p* = `r get_par(sniff_con, row = 1, col = "p.value", digits = 3)`), but vocalizations were not significantly different when sniffing different types of aliens (*p* = `r get_par(sniff_con, row = 2, col = "p.value", digits = 3)` or when sniffing a human compared to a mannequin (*p* = `r get_par(sniff_con, row = 3, col = "p.value", digits = 3)`).
 
-### `r user_visor()` *Post hoc* tests [(2)]{.alt}
+### `r user_visor()` *Post hoc* tests [(B)]{.lbl}
 
 An alternative to contrasts is to compare all means to each other with *post hoc* tests. This procedure tends to be used when you have no specific *a priori* hypotheses (although why you'd be doing research without prior hypotheses is anyone's guess).
 
@@ -652,7 +658,7 @@ quiz(caption = "Post hoc test quiz (level 2)",
 )
 ```
 
-### `r user_visor()` Robust models [(2)]{.alt} 
+### `r user_visor()` Robust models [(B)]{.lbl} 
 
 It seems then that (notwithstanding the non-significant overall effect), sniffer dogs could discriminate between aliens and humans and aliens and mannequins, but not between other entities. Ordinarily at this point we'd look at diagnostic plots to test the model assumptions. However, these plots are not available for designs using repeated measures (well, not if you use `aov_4()` to fit the model). A pragmatic solution is to routinely run a robust model and compare the results.
 
@@ -714,7 +720,7 @@ report_sniff_rob <- paste0("$F_t$(", sprintf("%.2f", sniff_rob$df1), ", ", sprin
 
 The robust test concurs with the non-robust one in that overall the group means were not significantly different, `r report_sniff_rob`. For the *post hoc* tests we're looking at whether the *p*-value is less than the value in the column **p.crit**. If it is then the test is significant and the **sig** column will read [TRUE]{.alt}. However, if the *p*-value is greater than the value in the column **p.crit** (as it is for all of the tests here), then the test is not significant and the **sig** column will read [FALSE]{.alt}. Unlike the non-robust tests these *post hoc* tests suggest no significant differences between any means. Again though, bare in mind that the sample size is tiny (*N* = 8).
 
-## `r user_visor()` Factorial repeated measures designs [(2)]{.alt}
+## `r user_visor()` Factorial repeated measures designs [(B)]{.lbl}
 
 The aliens, excited by humans' apparent inability to train sniffer dogs to detect them, decided to move their invasion plan forward. Aliens are far too wedded to *p*-values in small samples. They decided that they could make themselves even harder to detect by fooling the sniffer dogs by masking their alien smell. After extensive research they agreed that the two most effective masking scents would be human pheromones (which they hoped would make them smell human-like) and fox-pheromones (because they are a powerful, distracting smell for dogs). The aliens started smearing themselves with humans and foxes and prepared to invade.
 
@@ -764,7 +770,7 @@ levels(scent_tib$scent_mask)
 
 Because I have set up the data within this tutorial you should see that the levels are listed in the order that we want them when you execute the code. The information at the beginning of the tutorial about the data files gives you code to order the factor levels in the same way.
 
-### `r user_astronaut()` The model [(3)]{.alt}
+### `r user_astronaut()` The model [(C)]{.lbl}
 
 The model we're fitting is described by the following equation (which is simplified in that I have represented the predictor variables **entity** and **scent_mask** as single variables. (In fact, because both variables contain three categories they would be entered into the model as two dummy variables.)
 
@@ -779,7 +785,7 @@ $$
 
 This model will capture the 'repeated measures' aspect of the design in that $\hat{u}_{0j}$ represents the difference in vocalizations for a particular dog from the overall mean number of vocalizations, and the model will now include a parameter that estimates the variance in vocalizations across dogs ($\hat{\sigma}^2_{\mu_0}$).
 
-### `r user_visor()` Fitting the model for factorial repeated measures designs [(2)]{.alt}
+### `r user_visor()` Fitting the model for factorial repeated measures designs [(B)]{.lbl}
 
 We can use the `aov_4()` function in much the same way as in the previous example. The main differences is that we need to specify the predictors in the model as **entity**, **scent_mask** and their interaction as repeated measures predictors.
 
@@ -841,7 +847,7 @@ scent_ph <- pairs(int_emm, adjust = "holm") |>
 
 The main output shows us the three effects. Let's look at what the mean in turn.
 
-### `r user_visor()` The main effect of **entity** [(2)]{.alt}
+### `r user_visor()` The main effect of **entity** [(B)]{.lbl}
 
 ```{r quiz_entity_ex2, echo = F}
 quiz(
@@ -880,7 +886,7 @@ scent_emm <- emmeans::emmeans(scent_afx, c("entity", "scent_mask"), model = "mul
 emmeans::emmeans(scent_afx, ~entity, model = "multivariate")
 ```
 
-### `r user_visor()` The main effect of **scent_mask** [(2)]{.alt}
+### `r user_visor()` The main effect of **scent_mask** [(B)]{.lbl}
 
 The main output from the model is reproduced below (to save you scrolling).
 
@@ -920,7 +926,7 @@ Other things being equal, the main effect of **scent_mask** isn't interesting be
 emmeans::emmeans(scent_afx, ~scent_mask, model = "multivariate")
 ```
 
-### `r user_visor()` The interaction effect [(2)]{.alt}
+### `r user_visor()` The interaction effect [(B)]{.lbl}
 
 The effect we really care about is the interaction term. The main output from the model is reproduced below (to save you scrolling).
 
@@ -946,7 +952,7 @@ quiz(caption = "The interaction quiz (level(2))",
 
 The interaction effect suggests that the effect of **entity** on vocalizations was significantly moderated by what scent the entity was wearing, `r report_afx(scent_tbl, row = 3)`, $\eta^2_G$ = `r get_par(scent_tbl, col = "ges", row = 3)`. Let's break down this effect.
 
-### `r bmu()` Plots using the `afex` package [(1)]{.alt}
+### `r bmu()` Plots using the `afex` package [(A)]{.lbl}
 
 We saw in [discovr_13]{.alt} that you can get plots of the interaction by feeding an `afex` object into the `afex_plot()` function. Remember, this function takes the general form:
 
@@ -954,7 +960,7 @@ We saw in [discovr_13]{.alt} that you can get plots of the interaction by feedin
 afex::afex_plot(afx_object, x_variable, line_shape_variable, panel_variable)
 ```
 
-In which you replace [afx_object]{.alt} with the name of the the model you fitted with `aov_4()`, [x_variable]{.alt} with the predictor you want on the *x*-axis, [line_shape_variable]{.alt} with a predictor that you want to be depicted with using different lines/shapes. If you have a third categorical predictor, replace [panel_variable]{.alt} with a predictor the levels of which you want displayed in different panels (e.g., `facet_wrap()` style). The result is a `ggplot` object so you can use `ggplot2` code to edit the results, for example, you can apply a standard `ggplot2` theme. 
+In which you replace [afx_object]{.alt} with the name of the the model you fitted with `aov_4()`, [x_variable]{.alt} with the predictor you want on the *x*-axis, [line_shape_variable]{.alt} with a predictor that you want to be depicted with using different lines/shapes. If you have a third categorical predictor, replace [panel_variable]{.alt} with a predictor the levels of which you want displayed in different panels (e.g., `facet_wrap()` style). The result is a `ggplot` object so you can use [ggplot2]{.pkg} code to edit the results, for example, you can apply a standard [ggplot2]{.pkg} theme. 
 
 When using a repeated measures design (as we are here) we need to add [error = "within"]{.adj} to the function to get error bars that are corrected for the study design. So, in general, for repeated measures designs, the code would be:
 
@@ -998,7 +1004,7 @@ afex::afex_plot(scent_afx, "scent_mask", "entity", error = "within") +
 The plot seems to suggest that when no scent is used, both types of aliens elicit more vocalizations when the dogs sniff them than when they sniff humans. This is also true when a human scent is used. However, when fox scent is used the number of vocalizations 
 when sniffing a human matches the number (more or less) when sniffing both types of aliens.
 
-### `r bmu()` Estimated marginal means [(1)]{.alt}
+### `r bmu()` Estimated marginal means [(A)]{.lbl}
 
 To get the means in the plot we've just made use the `emmeans()`. Place the name of your `afex` model into the function and include a vector of the variable names of predictors. Remember that because we have a repeated measures design we need to include [model = "multivariate"]{.alt}. We're going to save this object as [scent_emm]{.alt} so we can use it later.
 
@@ -1024,7 +1030,7 @@ scent_emm |>
   knitr::kable(digits = 3)# we need this command to view the means
 ```
 
-### `r user_visor()` Simple effects analysis [(2)]{.alt}
+### `r user_visor()` Simple effects analysis [(B)]{.lbl}
 
 We saw in [discovr_13]{.alt} that an effective way to break down interactions is [simple effects analysis]{.alt}, which looks at the effect of one predictor at individual levels of another. For example, we could do a simple effects analysis looking at the effect of type of scent used at each level of entity. This would mean testing whether the mean number of vocalizations differed across the three scents when sniffing a human, then making the same comparison after sniffing a shapeshifter, and then finally for sniffing an alien. By doing so we ask: what is the effect of [scent_mask]{.alt} within each entity group?
 
@@ -1126,7 +1132,7 @@ quiz(caption = "Interpreting simple effects 2 (level 2)",
 )
 ```
 
-### `r user_visor()` Post hoc tests across an interaction [(2)]{.alt}
+### `r user_visor()` Post hoc tests across an interaction [(B)]{.lbl}
 
 In this case, the simple effects analysis doesn't help us break down the interaction because all effects are significant all all levels of the other effect! We can also break down an interaction by doing pairwise comparisons of all means remembering to correct for the number of tests we've done. We can do this in the same way as before by placing the estimated marginal means (which we saved earlier as [scent_emm]{.alt}) into the `pairs()` function and specifying an adjustment for the number of tests.
 
@@ -1246,11 +1252,11 @@ scent_ph |>
 </div>
 
 
-### `r user_visor()` Diagnostic plots [(2)]{.alt} 
+### `r user_visor()` Diagnostic plots [(B)]{.lbl} 
 
 As with the one-way repeated measures design, we can't get diagnostic plots for factorial designs that use repeated measures when using `afex`.
 
-### `r user_visor()` Robust models [(2)]{.alt} 
+### `r user_visor()` Robust models [(B)]{.lbl} 
 
 Unfortunately there's also no easy way to fit a robust model (at least not if you're looking for a *p*-value) for factorial designs that use repeated measures.
 

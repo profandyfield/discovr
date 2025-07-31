@@ -6,6 +6,7 @@ output:
     progressive: true
     allow_skip: true
     theme: "united"
+    highlight: "kate"
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
 description: "Repeated measures designs. Fitting models for one- and two-way repeated measures designs using a multilevel model framework. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when these variables ahve been manipulated within the same entities. We look at fitting the models, setting contrasts for the categorical predictors and diagnostic plots."
@@ -24,20 +25,22 @@ knitr::opts_chunk$set(
 #necessary to render tutorial correctly
 library(learnr) 
 library(htmltools)
+#easystats
+library(insight)
+library(modelbased)
+library(parameters)
+library(performance)
 #tidyverse
 library(dplyr)
 library(ggplot2)
-#non tidyverse
-
+#non tidyverse/easystats
 library(emmeans)
 library(Hmisc)
-library(insight)
 library(interactions)
-library(knitr)
 library(lme4)
 library(lmerTest)
-library(modelbased)
-library(performance)
+#students don't use
+library(knitr)
 
 
 source("./www/discovr_helpers.R")
@@ -72,9 +75,9 @@ Hi, welcome to **discovr** space pirate academy. Well done on embarking on this 
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
-* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
-* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(A)]{.lbl}.
+* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(B)]{.lbl}.
+* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(C)]{.lbl}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
@@ -106,28 +109,28 @@ This tutorial uses the following packages:
 
 * `broom` [@R-broom]
 * `broom.mixed` [@R-broom.mixed]
-* `here` [@R-here]
+* [here]{.pkg} [@R-here]
 * `interactions` [@interactions]
 * `knitr` [@R-knitr]
 * `lme4` [@bates_fitting_2015]
 * `lmerTest` [@kuznetsova_lmertest_2017]
-* `modelbased` [@R-modelbased]
-* `performance` [@R-performance]
+* [modelbased]{.pkg} [@R-modelbased]
+* [performance]{.pkg} [@R-performance]
 
-It also uses these `tidyverse` packages [@R-tidyverse; @tidyverse2019]:  `dplyr` [@R-dplyr], `forcats` [@R-forcats],  `ggplot2` [@wickhamGgplot2ElegantGraphics2016], `readr` [@R-readr], and `tibble` [@R-tibble].
+It also uses these [tidyverse]{.pkg} packages [@R-tidyverse; @tidyverse2019]:  [dplyr]{.pkg} [@R-dplyr], [forcats]{.pkg} [@R-forcats],  [ggplot2]{.pkg} [@wickhamGgplot2ElegantGraphics2016], [readr]{.pkg} [@R-readr], and [tibble]{.pkg} [@R-tibble].
 
 
 ### Coding style
 
 There are (broadly) two styles of coding:
 
-1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
+1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
 
-2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
+2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
 
-Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load `tidyverse` because the `dplyr` and `ggplot2` packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load [tidyverse]{.pkg} because the [dplyr]{.pkg} and [ggplot2]{.pkg} packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from [ggplot2]{.pkg}.
 
-You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the `tidyverse` package (and any others if you're using a concise style) at the beginning of your Quarto document:
+You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the [tidyverse]{.pkg} package (and any others if you're using a concise style) at the beginning of your Quarto document:
 
 ```{r eval = FALSE}
 library(tidyverse)
@@ -165,7 +168,7 @@ sniff_tib <- here::here("data/sniffer_dogs.csv") |>
   )
 ```
 
-## `r bmu()` Aliens and sniffer dogs [(2)]{.alt}
+## `r bmu()` Aliens and sniffer dogs [(B)]{.lbl}
 
 The main examples in this tutorial are from [@fielddsr22026]. When the alien invasion comes well need spaniels (or possibly other dogs, but lets hope its mainly spaniels because spaniels are cool) to help us to identify the space lizards. Having got wind of a potential invasion from alien space lizards, some of whom could shapeshift into humanoid form, the top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) met to come up with a plan for detecting the invading space lizards. They decided to test the plausibility of training sniffer dogs to detect aliens. Over many trials 8 of their best dogs (Milton, Woofy, Ramsey, Mr. Snifficus III, Willock, The Venerable Dr. Waggy, Lord Scenticle, and Professor Nose) were recruited for a pilot study. During training, these dogs were rewarded for making vocalizations while sniffing alien space lizards (which they happened to have a few of in Hangar 18). On the test trial, the 8 dogs were allowed to sniff 4 entities for 1-minute each: an alien space lizard, a shapeshifting alien space lizard who had taken on humanoid form and worked undetected as a statistics lecturer, a human, and a human mannequin). The number of vocalizations made during each 1-minute sniffing session was recorded. So, this is a [repeated measures design]{.alt}: each dog has four scores representing the number of vocalizations they made while sniffing each of the four entities.
 
@@ -190,7 +193,7 @@ sniff_tib
 Note that there are three variables: the **dog_name**, which is a character variable (note the `<chr>` under the name), **entity** (alien, shapeshifter, human, mannequin), which is a factor (note the `<fct>` under the name) and **vocalizations** (the number of vocalizations made during 1 minute of sniffing), which is numeric and has the data type 'double' (note the `<dbl>` under the name). The data are in tidy format, which means that each row represents an instance of the outcome variable and the columns code information about each instance, for example, which dog the instance is related to and what they sniffed. Consequently each dog occupies 4 rows of the tibble (because each dog contributes four instances of the outcome variable, **vocalizations**).
 
 
-### `r bmu()` Exploring the data [(1)]{.alt}
+### `r bmu()` Exploring the data [(A)]{.lbl}
 
 #### `r alien()` Alien coding challenge
 
@@ -323,7 +326,7 @@ ggplot2::ggplot(sniff_tib, aes(x = entity, y = vocalizations)) +
 
 The plot reiterates what we know from the means: dogs made the most vocalizations when sniffing the alien and shapeshifting alien, which is what we would expect if training was successful.
 
-### `r user_astronaut()` The model [(3)]{.alt}
+### `r user_astronaut()` The model [(C)]{.lbl}
 
 We can get a conceptual grasp of the model we're fitting by thinking about the predictor variable **entity** as a single variable
 
@@ -360,7 +363,7 @@ $$
 The main difference to models we have seen before is that we have added a term that reflects the deviation of each dog's intercept from the overall intercept ($\hat{u}_{0j}$), and this term will have an associated variance that is estimated from the data. Put another way, we model the fact that individual dogs will vary in the overall number of vocalizations they make.
 
 
-### `r user_visor()` Planned contrasts [(2)]{.alt}
+### `r user_visor()` Planned contrasts [(B)]{.lbl}
 
 To code the contrasts from the previous section, we follow the rules for contrast coding (see **discovr_11**):
 
@@ -446,7 +449,7 @@ contrasts(sniff_tib$entity) <-  sniff_cons
 Now, let's fit the model.
 
 
-## `r user_visor()` Fitting a repeated measures model [(2)]{.alt}
+## `r user_visor()` Fitting a repeated measures model [(B)]{.lbl}
 
 We can fit an overall model of type of entity predicting the number of dog vocalizations using the `lmer()` function, which we met in **discovr_14**, but also use the `lmerTest` package to get *p*-values for the model parameters. Remember the caveats about *p*-values in the book. As a reminder, the `lmer` function takes the following form
 
@@ -589,7 +592,7 @@ There was a significant effect of the type of entity on sniffer dog's vocalizati
 </div>
 
 
-### `r user_visor()` *Post hoc* tests [(2)]{.alt}
+### `r user_visor()` *Post hoc* tests [(B)]{.lbl}
 
 An alternative to contrasts is to compare all means to each other with *post hoc* tests. This procedure tends to be used when you have no specific *a priori* hypotheses (although why you'd be doing research without prior hypotheses is anyone's guess).
 
@@ -667,7 +670,7 @@ quiz(caption = "Post hoc test quiz (level 2)",
 )
 ```
 
-### `r user_astronaut()` Robust models [(3)]{.alt} 
+### `r user_astronaut()` Robust models [(C)]{.lbl} 
 
 You can fit a robust model using the `rlmer()` function from the `robustlmm` package [@R-robustlmm], which essentially takes the same syntax as `lmer()`, so we could a robust version of our previous model using
 
@@ -678,7 +681,7 @@ sniff_rob <- robustlmm::rlmer(vocalizations ~ entity + (1|dog_name), data = snif
 There are other arguments that can be used to tweak the settings but the defaults will give robust estimates. For such a small dataset the above will almost certainly fail, and these robust models can take a lot of time to converge (if they converge at all) so this section is more for information - we will not attempt to fit this model.
 
 
-## `r user_astronaut()` Factorial repeated measures designs [(3)]{.alt}
+## `r user_astronaut()` Factorial repeated measures designs [(C)]{.lbl}
 
 The aliens, excited by humans' apparent inability to train sniffer dogs to detect them, decided to move their invasion plan forward. Aliens are far too wedded to *p*-values in small samples. They decided that they could make themselves even harder to detect by fooling the sniffer dogs by masking their alien smell. After extensive research they agreed that the two most effective masking scents would be human pheromones (which they hoped would make them smell human-like) and fox-pheromones (because they are a powerful, distracting smell for dogs). The aliens started smearing themselves with humans and foxes and prepared to invade.
 
@@ -699,7 +702,7 @@ scent_tib
 Note that there are four variables: the participant's **dog_id**, which is a character variable (note the `<chr>` under the name), the **entity** that the dog sniffed (alien, shapeshifter or human) and the **scent_mask** used to cover the entity's natural smell (none, human scent, fox scent), both of which are factors (note the `<fct>` under the names). Finally, **vocalizations** is a numeric variable and has the data type 'double' (note the `<dbl>` under the name).
 
 
-### `r user_astronaut()` The model [(3)]{.alt}
+### `r user_astronaut()` The model [(C)]{.lbl}
 
 The model we're fitting is described by the following equation (which is simplified in that I have represented the predictor variables **entity** and **scent_mask** as single variables). (In fact, because both variables contain three categories they would each be entered into the model as two dummy variables, and the interaction would be 4 dummy variables. Under the hood the model, therefore has 8 predictors.)
 
@@ -742,7 +745,7 @@ With multiple predictors, assuming we care about testing the individual contribu
 The order of models 2 and 3 is determined by the fact we assume entity would have a significant effect in a larger sample based on the previous study. However, in many cases we will care mainly about the interaction so the order in which we enter main effects might be relatively arbitrary.  
 
 
-### `r user_visor()` Planned contrasts [(2)]{.alt}
+### `r user_visor()` Planned contrasts [(B)]{.lbl}
 
 There are no specific hypotheses this time around, but we still need to think about what to do with out categorical predictors (**scent_mask** and **entity**). We have a natural control group for the **entity**, which is when dogs sniffed a human (both other categories involve aliens). A sensible coding scheme would therefore be the default of dummy coding.
 
@@ -812,7 +815,7 @@ contrasts(scent_tib$scent_mask) <- contr.treatment(3, base = 1)
 </div>
 
 
-### `r user_visor()` Fitting the model for factorial repeated measures designs [(2)]{.alt}
+### `r user_visor()` Fitting the model for factorial repeated measures designs [(B)]{.lbl}
 
 Having set up contrasts (or at least set up our categorical predictors to have the correct reference category) we can use the `lmer()` function in much the same way as in the previous example. We saw earlier that we'll build our model sequentially.
 
@@ -955,7 +958,7 @@ There were significant main effects of the type of entity `r report_lrt(model_lr
 
 </div>
 
-### `r user_astronaut()` Decomposing the interaction effect [(3)]{.alt}
+### `r user_astronaut()` Decomposing the interaction effect [(C)]{.lbl}
 
 The interaction effect supersedes the main effects, so let's concentrate on interpreting that with the parameter estimates form the model.
 
@@ -985,7 +988,7 @@ parameters::model_parameters(scent_int, effects = "fixed") |>
 
 For each contrast it's useful to get a quick plot of what it represents. Rather than spending ages getting a  publication-ready plot, we can get a quick plot by:
 
-1. Getting the estimated marginal means for all combinations of **entity** and **scent_mask** using `estimate_means()` from the `modelbased` package [@R-modelbased]:
+1. Getting the estimated marginal means for all combinations of **entity** and **scent_mask** using `estimate_means()` from the [modelbased]{.pkg} package [@R-modelbased]:
 
 ```{r, eval = F, echo = T, class.source = '.panel_alt'}
 scent_emm <- modelbased::estimate_means(scent_int, by = c("scent_mask", "entity"))
@@ -999,7 +1002,7 @@ dplyr::filter(entity != "Alien" & scent_mask != "Fox")
 
 which translates as *entity is not equal to the word "Alien" and scent_mask is not equal to the word "Fox"*. This will leave us with the means for humans and shapeshifters and no scent and human scent.
 
-3. Use the `plot()` function from the `see` package to plot these means on top of the data. The resulting plot is a `ggplot2` object so we can add a theme, labels and so on in the usual way. So, to plot the means in contrast 1 we'd use:
+3. Use the `plot()` function from the `see` package to plot these means on top of the data. The resulting plot is a [ggplot2]{.pkg} object so we can add a theme, labels and so on in the usual way. So, to plot the means in contrast 1 we'd use:
 
 ```{r, eval = F, echo = T, class.source = '.panel_alt'}
 scent_emm |> 
@@ -1107,7 +1110,7 @@ The final contrast was significant, $\hat{b}$ = `r report_pars(scent_pars, row =
 
 </div>
 
-### `r user_astronaut()` Random effects [(3)]{.alt}
+### `r user_astronaut()` Random effects [(C)]{.lbl}
 
 #### `r alien()` Alien coding challenge
 
@@ -1125,9 +1128,9 @@ parameters::model_parameters(scent_int, effects = "random") |>
 The standard deviation of intercepts was $\hat{\sigma}_{u_{0}}$ = `r report_pars(scent_pars, row = 10, fixed = F)` suggetsing there was variance in overall vocalisations across dogs.
 
 
-### `r user_visor()` Diagnostic plots [(2)]{.alt} 
+### `r user_visor()` Diagnostic plots [(B)]{.lbl} 
 
-We can get diagnostic plots using the `check_model()` function from the `performance` package [@R-performance]. To use this we place the name of our model into the function and then use `check = c()` to include a list of the plots you want.
+We can get diagnostic plots using the `check_model()` function from the [performance]{.pkg} package [@R-performance]. To use this we place the name of our model into the function and then use `check = c()` to include a list of the plots you want.
 
 We can include the following terms within `c()` to get specific plots:
 
@@ -1152,7 +1155,7 @@ performance::check_model(scent_int, check = c("outliers"))
 It looks as though there might be a lack of linearity and also heteroscedasticity, residuals deviate from normal at the extremes but random effects are normal.
 
 
-### `r user_astronaut()` Robust models [(3)]{.alt} 
+### `r user_astronaut()` Robust models [(C)]{.lbl} 
 
 Again we can (but we won't) fit a robust model using the `rlmer()` function from the `robustlmm` package [@R-robustlmm], which essentially takes the same syntax as `lmer()`. We could fit a robust version of our final model using
 

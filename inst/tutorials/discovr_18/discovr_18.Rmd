@@ -6,6 +6,7 @@ output:
     progressive: true
     allow_skip: true
     theme: "united"
+    highlight: "kate"
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
 description: "Exploratory factor analysis (EFA). This tutorial looks at using exploratory factor analysis in the context of questionnaire design. It covers factor analysis, parallel analysis and relibaility analysis using both MacDonal'd Omega and Cronbach's alpha."
@@ -24,15 +25,20 @@ options(knitr.kable.NA = '')
 #necessary to render tutorial correctly
 library(learnr) 
 library(htmltools)
+#easystats
+library(correlation)
+library(insight)
+library(modelbased)
+library(parameters)
+library(performance)
 #tidyverse
 library(dplyr)
 library(ggplot2)
-#non tidyverse
-library(correlation)
+#non tidyverse/easystats
 library(GPArotation)
-library(knitr)
-library(parameters)
 library(psych)
+#students don't use
+library(knitr)
 
 source("./www/discovr_helpers.R")
 
@@ -73,9 +79,9 @@ Hi, welcome to **discovr** space pirate academy. Well done on embarking on this 
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
-* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
-* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(A)]{.lbl}.
+* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(B)]{.lbl}.
+* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(C)]{.lbl}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
@@ -105,28 +111,28 @@ By for now and good luck - you'll be amazing!
 
 This tutorial uses the following packages:
 
-* `correlation` [@correlation2020; @R-correlation]
+* [correlation]{.pkg} [@correlation2020; @R-correlation]
 * `GPArotation` [@R-GPArotation]
-* `here` [@R-here]
+* [here]{.pkg} [@R-here]
 * `knitr` [@R-knitr]
-* `parameters` [@parameters2020; @R-parameters]
+* [parameters]{.pkg} [@parameters2020; @R-parameters]
 * `psych` [@R-psych]
 
 
-It also uses these `tidyverse` packages [@R-tidyverse; @tidyverse2019]: `dplyr` [@R-dplyr] and `readr` [@R-readr].
+It also uses these [tidyverse]{.pkg} packages [@R-tidyverse; @tidyverse2019]: [dplyr]{.pkg} [@R-dplyr] and [readr]{.pkg} [@R-readr].
 
 
 ### Coding style
 
 There are (broadly) two styles of coding:
 
-1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
+1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
 
-2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
+2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
 
-Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load `tidyverse` because the `dplyr` and `ggplot2` packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load [tidyverse]{.pkg} because the [dplyr]{.pkg} and [ggplot2]{.pkg} packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from [ggplot2]{.pkg}.
 
-You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the `tidyverse` package (and any others if you're using a concise style) at the beginning of your Quarto document:
+You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the [tidyverse]{.pkg} package (and any others if you're using a concise style) at the beginning of your Quarto document:
 
 ```{r eval = FALSE}
 library(tidyverse)
@@ -147,7 +153,7 @@ raq_tib <- here::here("data/raq.csv") |>
 
 This code reads in the data into an object called `raq_tib`.
 
-## `r bmu()` An `r rproj()`-induced anxiety example  [(2)]{.alt}
+## `r bmu()` An `r rproj()`-induced anxiety example  [(B)]{.lbl}
 
 Factor analysis is used frequently to develop questionnaires. A lot of students become very stressed about `r rproj()`. Imagine that I wanted to design a questionnaire to measure a trait that I termed ‘`r rproj()` anxiety'. I devised a questionnaire to measure various aspects of students' anxiety towards learning `r rproj()` and statistics, the RAQ. I generated questions based on interviews with anxious and non-anxious students and came up with 23 possible questions to include. Each question was a statement followed by a five-point Likert scale: *strongly disagree* = 1, *disagree* = 2, *neither agree nor disagree* = 3, *agree* = 4 and *strongly agree* = 5. I wanted to know whether anxiety about `r rproj()` could be broken down into specific forms of anxiety. In other words, what latent variables contribute to anxiety about learning or using `r rproj()`? 
 
@@ -196,7 +202,7 @@ Note that there are 24 variables:
 * **id**: a character variable (note the `<chr>` under the name) containing the participant ID.
 * Twenty three variables labelled from **raq_01** to **raq_23** that are all numeric (note the `<dbl>` under the name) that contain the responses to the 23 questions on the questionnaire.
 
-## `r bmu()` Pre-analysis  [(2)]{.alt}
+## `r bmu()` Pre-analysis  [(B)]{.lbl}
 
 As we've seen, the data has a variable **id** containing the participant ID. We won't want this variable in the analyses we do. We can use `select()` to remove it each time we don't need it, but it will save a lot of repetitious code if we store a version of the data that contains only the scores from the RAQ items. 
 
@@ -217,7 +223,7 @@ raq_items_tib
 We will use this new object, [raq_items_tib]{.alt}, for the remainder of the tutorial.
 
 
-### `r bmu()` Inspect the correlation matrix  [(2)]{.alt}
+### `r bmu()` Inspect the correlation matrix  [(B)]{.lbl}
 
 The first thing to do is to look at the correlations between RAQ items.
 
@@ -322,7 +328,7 @@ We can visually scan the correlation matrix and look for correlations between ab
 
 All questions in the RAQ correlate reasonably well with all others and none of the correlation coefficients are excessively large; therefore, we won't eliminate any questions based on the size of the correlations.
 
-### `r bmu()` Bartlett's test and the KMO test  [(2)]{.alt}
+### `r bmu()` Bartlett's test and the KMO test  [(B)]{.lbl}
 
 Another way to inspect the correlation matrix is with Bartlett's test of sphericity, which tests whether the correlation matrix is significantly different from an identity matrix (i.e. it tests whether the correlation coefficients are all 0). It's testing a pretty extreme scenario and because significance depends on sample size, and in factor analysis sample sizes are very large, the test will nearly always be significant. So it's not a particularly useful test, but worth doing because in the unlikely event that it is non-significant you likely have a big problem on your hands. 
 
@@ -397,7 +403,7 @@ If you find variables with KMO values below 0.5 then consider excluding them fro
 </div>
 
 
-## `r bmu()` Parallel analysis [(2)]{.alt}
+## `r bmu()` Parallel analysis [(B)]{.lbl}
 
 To determine how many factors we should extract, we can use the `psych::fa.parallel()` function to run parallel analysis. This function has a lot of arguments, the ones most likley to be of use to you are
 
@@ -472,7 +478,7 @@ quiz(caption = "Parallel analysis Quiz",
 ```
 
 
-## `r bmu()` Factor analysis [(2)]{.alt}
+## `r bmu()` Factor analysis [(B)]{.lbl}
 
 We can now run the factor analysis, extracting 4 factors, using the `psych::fa()` function. This function has this general format (I'm including only the arguments you're most likely to use):
 
@@ -679,8 +685,8 @@ The questions that load highly on [MR3]{.alt} seem to be items that relate to **
 
 This analysis seems to reveal that the questionnaire is composed of four subscales: fear of statistics, fear of computers, fear of maths and fear of negative peer evaluation. There are two possibilities here. The first is that the RAQ failed to measure what it set out to (namely, `r rproj()` anxiety) but instead measures related constructs. The second is that these four constructs are sub-components of `r rproj()` anxiety; however, the factor analysis does not indicate which of these possibilities is true.
 
-## `r bmu()` Reliability analysis [(2)]{.alt}
-### `r bmu()` McDonald's $\omega_t$ and $\omega_h$ [(2)]{.alt}
+## `r bmu()` Reliability analysis [(B)]{.lbl}
+### `r bmu()` McDonald's $\omega_t$ and $\omega_h$ [(B)]{.lbl}
 
 If the items are all scored in the same direction then we can select the variables on a particular subscale and pipe them into the `omega()` functions from the `psych` package. This function has the following general format
 
@@ -786,7 +792,7 @@ Next we get two lots of model fit statistics. The first set are for the model th
 
 Finally, under Total, General and Subset omega for each subset we get the $\omega_t$ (labelled omega total) and $\omega_h$ (labelled Omega general) for the general factor (column [g]{.alt}) and for the subfactors. The values for the general factor repeat the information at the start of the output. The values for the sub-factors are particularly relevant for $\omega_t$ because it represents the total reliability of the scores, so these values tell us the total reliability of the scores from the underlying sub-scales. For anxiety related to computers (F1) we have $\omega_t$ = `r sprintf("%.2f", raq_omg$omega.group$total[2])`, for anxiety around peer or social evaluation (F2) $\omega_t$ = `r sprintf("%.2f", raq_omg$omega.group$total[3])`, for anxiety around statistics (F3) $\omega_t$ = `r sprintf("%.2f", raq_omg$omega.group$total[4])`, and for anxiety around maths (F4) $\omega_t$ = `r sprintf("%.2f", raq_omg$omega.group$total[5])`. Basically scores from each subscale are reliable but somewhat less so for anxiety around statistics.
 
-### `r bmu()` Cronbach's $\alpha$ [(2)]{.alt}
+### `r bmu()` Cronbach's $\alpha$ [(B)]{.lbl}
 
 There are lots of reasons not to use Cronbach's alpha (see the book for details). If you really must compute alpha then you need to compute it on the individual subscales. As a quick reminder, we had four subscales:
 

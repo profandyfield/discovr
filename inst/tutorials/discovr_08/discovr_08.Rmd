@@ -6,6 +6,7 @@ output:
     progressive: true
     allow_skip: true
     theme: "united"
+    highlight: "kate"
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
 description: "The general linear model (GLM). Visualizing the data, fitting GLMs with one and two predictors. Viewing model parameters with broom, model parameters, standard errors, confidence intervals, fit statistics, significance, Bayes factors and Bayesian estimates (using default priors)."
@@ -24,18 +25,22 @@ knitr::opts_chunk$set(
 #necessary to render tutorial correctly
 library(learnr) 
 library(htmltools)
+#easystats
+library(insight)
+library(parameters)
 #tidyverse
 library(dplyr)
 library(ggplot2)
 library(tibble)
-#non tidyverse
+#non tidyverse/easystats
 library(BayesFactor)
 library(broom)
 library(GGally)
 library(ggfortify)
 library(knitr)
-library(parameters)
 library(robust)
+#students don't use
+library(knitr)
 library(sandwich)
 
 source("./www/discovr_helpers.R")
@@ -72,9 +77,9 @@ Hi, welcome to **discovr** space pirate academy. Well done on embarking on this 
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
-* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
-* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(A)]{.lbl}.
+* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(B)]{.lbl}.
+* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(C)]{.lbl}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
@@ -106,27 +111,27 @@ This tutorial uses the following packages:
 
 * `BayesFactor` [@R-BayesFactor]
 * `broom` [@R-broom]
-* `GGally` [@R-GGally]
+* [GGally]{.pkg} [@R-GGally]
 * `ggfortify` [@ggfortify2016; @R-ggfortify]
-* `here` [@R-here]
+* [here]{.pkg} [@R-here]
 * `knitr` [@R-knitr]
-* `parameters` [@parameters2020; @R-parameters]
+* [parameters]{.pkg} [@parameters2020; @R-parameters]
 * `robust` [@R-robust] is automatically loaded by `r rproj()` 
-* `sandwich` [@R-sandwich; @sandwich2006] is automatically loaded by `parameters`
+* [sandwich]{.pkg} [@R-sandwich; @sandwich2006] is automatically loaded by [parameters]{.pkg}
 
-It also uses these `tidyverse` packages [@R-tidyverse; @tidyverse2019]: `dplyr` [@R-dplyr], `forcats` [@R-forcats], `ggplot2` [@wickhamGgplot2ElegantGraphics2016], `readr` [@R-readr] and `tibble` [@R-tibble].
+It also uses these [tidyverse]{.pkg} packages [@R-tidyverse; @tidyverse2019]: [dplyr]{.pkg} [@R-dplyr], [forcats]{.pkg} [@R-forcats], [ggplot2]{.pkg} [@wickhamGgplot2ElegantGraphics2016], [readr]{.pkg} [@R-readr] and [tibble]{.pkg} [@R-tibble].
 
 ### Coding style
 
 There are (broadly) two styles of coding:
 
-1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
+1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
 
-2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
+2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
 
-Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load `tidyverse` because the `dplyr` and `ggplot2` packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load [tidyverse]{.pkg} because the [dplyr]{.pkg} and [ggplot2]{.pkg} packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from [ggplot2]{.pkg}.
 
-You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the `tidyverse` package (and any others if you're using a concise style) at the beginning of your Quarto document:
+You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the [tidyverse]{.pkg} package (and any others if you're using a concise style) at the beginning of your Quarto document:
 
 ```{r eval = FALSE}
 library(tidyverse)
@@ -149,7 +154,7 @@ soc_anx_tib <- here::here("data/social_anxiety.csv") |> readr::read_csv()
 metal_tib <- here::here("data/metal_health.csv")  |> readr::read_csv()
 ```
 
-## `r bmu()` The linear model process [(1)]{.alt} 
+## `r bmu()` The linear model process [(A)]{.lbl} 
 
 Figure 2 shows the general process of fitting linear model. First, we should produce scatterplots to get some idea of whether the assumption of linearity is met, and to look for outliers or obvious unusual cases. Having done this initial screen for problems we fit a model and save the various diagnostic statistics that we discuss later. If we want to generalize our model beyond the sample, or we are interested in interpreting significance tests and confidence intervals then we examine these residuals to check for homoscedasticity, normality, independence and linearity. If we find problems then we take corrective action, which involves fitting a different model. If the problem is lack of linearity then we fit a non-linear model, for lack of independent errors we'd use a multilevel model, and in all other situations we fit a robust version of the model using either bootstrapping (small samples) or robust standard errors. This process might seem complex, but its not as bad as it seems.
 
@@ -158,7 +163,7 @@ Figure 2 shows the general process of fitting linear model. First, we should pro
 <figcaption>Figure 2: The general process for fitting a linear model (regression).</figcaption>
 </figure>
 
-## `r bmu()` The example [(1)]{.alt}
+## `r bmu()` The example [(A)]{.lbl}
 
 This tutorial follows the example from [@fielddsr22026] that looks at predicting physical, downloaded and streamed album sales (outcome variable) from various predictor variables. The data file has 200 rows, each one representing a different album. There are also several columns, one of which contains the sales (in thousands) of each album in the week after release (**sales**) and one containing the amount (in thousands of pounds/dollars/euro/whatever currency you use) spent promoting the album before release (**adverts**). The other columns represent how many times songs from the album were played on a prominent national radio station in the week before release (**airplay**), and the 'look' of the band out of 10 (**image**). The data are in a tibble called [album_tib]{.alt}.
 
@@ -182,9 +187,9 @@ album_tib
 
 Note how the data are laid out: each variable is in a column and each row represents a different album. So, the first album had £10,260 spent advertising it, sold 330,000 copies, received 43 plays on radio the week before release, and was made by a band with a pretty sick image (10 out of 10!).
 
-## `r bmu()` Visualizing the data [(1)]{.alt}
+## `r bmu()` Visualizing the data [(A)]{.lbl}
 
-We can visualise the data easily using the `GGally` package, which we met in `discovr_07`. When you want to plot continuous variables, the `ggscatmat()` function from this package produces a matrix of scatterplots (below the diagonal), distributions (along the diagonal) and the correlation coefficient (above the diagonal). It takes the general form:
+We can visualise the data easily using the [GGally]{.pkg} package, which we met in `discovr_07`. When you want to plot continuous variables, the `ggscatmat()` function from this package produces a matrix of scatterplots (below the diagonal), distributions (along the diagonal) and the correlation coefficient (above the diagonal). It takes the general form:
 
 ```{r, eval = FALSE}
 GGally::ggscatmat(my_tibble, columns = c("variable 1", " variable 2", " variable 3" …))
@@ -208,7 +213,7 @@ GGally::ggscatmat(album_tib, columns = c("sales", "adverts", "airplay", "image")
 
 #### `r alien()` Alien coding challenge
 
-Its as simple as that! Like other plots we have done, we can apply a theme (I like `theme_minimal()`) in the usual way. Using the code example above add a `ggplot2` theme and put into place the advice in the cat-det's tip. :
+Its as simple as that! Like other plots we have done, we can apply a theme (I like `theme_minimal()`) in the usual way. Using the code example above add a [ggplot2]{.pkg} theme and put into place the advice in the cat-det's tip. :
 
 ```{r album_plot, exercise = TRUE, exercise.lines = 2}
 
@@ -230,14 +235,14 @@ GGally::ggscatmat(album_tib, columns = c("adverts", "airplay", "image", "sales")
   theme_minimal()
 ```
 
-### `r bmu()` Interpretation [(1)]{.alt}
+### `r bmu()` Interpretation [(A)]{.lbl}
 
 Although the data are messy, the three predictors have reasonably linear relationships with the album sales and there are no obvious outliers (except maybe in the bottom left of the scatterplot with band image). Across the diagonal, we see the distributions of scores. Advertising is very skewed and airplay and sales look quite heavy-tailed.
 
 We can use the correlations in the plot to get a sense of the relationships between predictors and the outcome. If we look only at the predictors (ignore album sales) then the highest correlation is between the ratings of the bands image and the amount of airplay which is significant at the 0.01 level (*r* = 0.18). Focussing on the outcome variable, of all of the predictors, adverts and airplay correlate best with the outcome (*r*s = 0.58 and 0.6 respectively).
 
-## `r bmu()` One predictor [(1)]{.alt}
-### `r bmu()` Fitting the model [(1)]{.alt}
+## `r bmu()` One predictor [(A)]{.lbl}
+### `r bmu()` Fitting the model [(A)]{.lbl}
 
 To begin with we will predict sales from advertising alone. The model we're fitting is described by the following equation:
 
@@ -279,7 +284,7 @@ You might think that you've made a mistake because nothing much happens. In fact
 </div>
 
 
-###	`r bmu()` Extracting model information with `summary()` [(1)]{.alt}
+###	`r bmu()` Extracting model information with `summary()` [(A)]{.lbl}
 
 There are different ways to inspect the model we have just fitted. The bread and butter way is to use the `summary()` function, into which we place the name of model that we just created ([album_lm]{.alt}):
 
@@ -328,7 +333,7 @@ Replacing [dp_for_column_1]{.alt} with a number indicating the number of decimal
 </div>
 
 
-###	`r bmu()` Overall fit of the model` [(1)]{.alt}
+###	`r bmu()` Overall fit of the model` [(A)]{.lbl}
 
 To get overall model fit statistics we place out model ([album_lm]{.alt}) into `glance()`.
 
@@ -379,7 +384,7 @@ It also reports an *F*-statistic (labelled **statistic**) and its *p*-value (lab
 
 The degrees of freedom for the *F* are `r round(album_fit$df, 0)` (as shown in the variable **df**) and `r round(album_fit$df.residual, 0)` (as shown in the variable **df.residual**). Therefore, we can say that adding the predictor of **advertising** significantly improved the fit of the model to the data compared to having no predictors in the model, *F*(`r round(album_fit$df, 0)`, `r round(album_fit$df.residual, 0)`) = `r round(album_fit$statistic, 2)`, *p* < .001. In other words, adding advertising as a predictor significantly improved the model fit.
 
-### `r bmu()` Model parameters [(1)]{.alt}
+### `r bmu()` Model parameters [(A)]{.lbl}
 
 To see the model parameters we can use `broom::tidy()`, which takes the general form
 
@@ -421,7 +426,7 @@ The scientific notation can be confusing. If you round the output to 3 decimal p
 </div>
 
 
-### `r user_visor()` Exploring the standard error of $\hat{b}$ [(2)]{.alt}
+### `r user_visor()` Exploring the standard error of $\hat{b}$ [(B)]{.lbl}
 
 This video shows a demonstration that may help you to get a better understanding of what the standard error and sampling distribution of a model parameter *b*-value represents.
 
@@ -441,7 +446,7 @@ quiz(
 )
 ```
 
-### `r user_visor()` Confidence intervals for $\hat{b}$ [(2)]{.alt}
+### `r user_visor()` Confidence intervals for $\hat{b}$ [(B)]{.lbl}
 
 ```{r echo = FALSE}
 album_lm <- lm(sales ~ adverts, data = album_tib, na.action = na.exclude)
@@ -455,7 +460,7 @@ The typical pragmatic solution to this problem is to assume that your sample is 
 
 Looking at the 95% confidence interval for advertising (reproduced above), if our sample is one of the 95% producing confidence intervals that contain the population value then the confidence interval tells us that the population value of b for advertising budget is likely to fall between `r round(album_par$conf.low[2], 3)` and `r round(album_par$conf.high[2], 3)` and because this interval doesn't include zero we might conclude that there is a genuine positive relationship between advertising budget and album sales in the population.
 
-### `r bmu()` Using the model	[(1)]{.alt}
+### `r bmu()` Using the model	[(A)]{.lbl}
 
 Let's use the model to make some predictions. First, replace the *b*-values with their estimates ($\hat{b}$) from the output:
 
@@ -476,7 +481,7 @@ $$
 \end{aligned}
 $$
 
-## `r bmu()` Several predictors [(1)]{.alt}
+## `r bmu()` Several predictors [(A)]{.lbl}
 
 Let's extend the model to include airplay and the band's image as additional predictors. The executive has past research indicating that advertising budget is a significant predictor of album sales, and so the new predictors (airplay and attract) should be entered into the model *after* advertising budget. This method is *hierarchical* (the researcher decides in which order to enter variables into the model based on past research). The model we're fitting is described by the following equation:
 
@@ -487,7 +492,7 @@ Y_i & = b_0 + b_1X_{1i}+ b_2X_{2i} + \ldots + b_nX_{ni} + \varepsilon_i\\
 \end{aligned}
 $$
 
-### `r bmu()` Building the model [(1)]{.alt}
+### `r bmu()` Building the model [(A)]{.lbl}
 
 We already have fitted a model predicting sales from advertising that is stored in [album_lm]{.alt}. Were now going to create a second model that builds upon this model by adding airplay and image as predictors. In other words, were building the model in the equation above.
 
@@ -521,7 +526,7 @@ album_full_lm <- lm(sales ~ adverts + airplay + image, data = album_tib, na.acti
 
 This code creates a model in which **sales** is predicted from **advertising**, **airplay** and the bands **image** and stores it in an object called [album_full_lm]{.alt}. Again nothing seems to have happened, but actually the model has been created and stored. Next we need to extract information from it.
 
-### `r bmu()` Fit statistics [(1)]{.alt}
+### `r bmu()` Fit statistics [(A)]{.lbl}
 
 As with our earlier model, we can obtain the (nicely formatted) fit statistics by placing the name of our model into `glance()`
 
@@ -557,7 +562,7 @@ quiz(
 
 The variable **statistic** contains the *F*-statistic. The *F*-statistic represents the ratio of the improvement in prediction that results from fitting the model, relative to the inaccuracy that still exists in the model. The variable **p.value** contains the *p*-value associated with *F*, which in this case is $2.88 \times 10^{-46}$, in other words a lot smaller than 0.001. The degrees of freedom for the *F*-statistic are (in terms of these variables) **df** and **df.residual**, so we could report `r report_glancef(album2_fit)`. We can interpret this result as meaning that the model significantly improves our ability to predict the outcome variable compared to not fitting the model.
 
-### `r user_visor()` Comparing models [(2)]{.alt}
+### `r user_visor()` Comparing models [(B)]{.lbl}
 
 We can compare hierarchical models using an *F*-statistic using the `anova()` function, which takes the general form:
 
@@ -608,7 +613,7 @@ anova(album_lm, album_full_lm) |>
 
 The value of *F* is `r round(album_aov$statistic[2], 2)` (**statistic**) and the corresponding *p* (**p.value**) is [`r album_aov$p.value[2]`]{.alt} (i.e., `r round(10^{30}*album_aov$p.value[2], 2)` $\times 10^{-30}$). The degrees of freedom for this *F* are the difference in the degrees of freedom between the two models (in this case `r album_aov$df[2]` as shown in the variable **df**) and the degrees of freedom for the newer model (in this case `r album_aov$df.residual[2]` as shown in the variable **df.residual**). Therefore, we can say that adding the predictors of image and airplay ([album_full_lm]{.alt}) significantly improved the fit of the model to the data compared to having only advertising as a predictor ([album_lm]{.alt}), `r report_aov_compare(album_aov, row = 2)`. In other words, adding airplay and image as predictors significantly improved the model fit.
 
-### `r bmu()` Model parameter estimates ($\hat{b}$) [(1)]{.alt}
+### `r bmu()` Model parameter estimates ($\hat{b}$) [(A)]{.lbl}
 
 As with our earlier model, we can obtain the parameter estimates and their confidence intervals as text by executing `summary(album_full_lm)` but it's better to use `broom::tidy()` to get a nicely formatted table:
 
@@ -647,9 +652,9 @@ We've looked at the band's image, but for the other two predictors:
 * Advertising budget: $\hat{b}$ = `r round(album2_par$estimate[2], 3)` indicates that as advertising budget increases by one unit, album sales increase by `r round(album2_par$estimate[2], 3)` units. Both variables were measured in thousands; therefore, for every £1000 more spent on advertising, an extra `r round(album2_par$estimate[2], 3)` thousand albums (`r 1000*round(album2_par$estimate[2], 3)` albums) are sold. This interpretation is true only if the effects of band image and airplay are held constant.
 * Airplay: $\hat{b}$ = `r round(album2_par$estimate[3], 3)` indicates that as the number of plays on radio in the week before release increases by one, album sales increase by `r round(album2_par$estimate[3], 3)` units. Every additional play of a song on radio (in the week before release) is associated with an extra `r round(album2_par$estimate[3], 3)` thousand albums (`r 1000*round(album2_par$estimate[3], 3)` albums) being sold. This interpretation is true only if the effects of the bands image and advertising budget are held constant.
 
-### `r user_visor()` Standardized $\hat{b}$s [(2)]{.alt}
+### `r user_visor()` Standardized $\hat{b}$s [(B)]{.lbl}
 
-The `lm()` function does not produce standardized betas but you can get them using the `model_parameters()` function from the `parameters` package, which takes the general form:
+The `lm()` function does not produce standardized betas but you can get them using the `model_parameters()` function from the [parameters]{.pkg} package, which takes the general form:
 
 ```{r eval = FALSE}
 parameters::model_parameters(my_model, standardize = NULL)
@@ -697,7 +702,7 @@ Let's summarize the values for the remaining predictors:
 * Advertising budget: Standardized $\hat{\beta}$ = `r round(album_z$Coefficient[2], 3)` indicates that as advertising budget increases by one standard deviation (£485,655), album sales increase by `r round(album_z$Coefficient[2], 3)` standard deviations. The standard deviation for album sales is 80,699, so this constitutes a change of 41,240 sales (`r round(album_z$Coefficient[2], 3)` × 80,699). Therefore, for every £485,655 more spent on advertising, an extra 41,240 albums are sold. This interpretation is true only if the effects of the bands image and airplay are held constant.
 * Image: Standardized $\hat{\beta}$ = `r round(album_z$Coefficient[4], 3)` indicates that a band rated one standard deviation (1.40 units) higher on the image scale can expect additional album sales of `r round(album_z$Coefficient[4], 3)` standard deviations units. This is a change of 15,490 sales (`r round(album_z$Coefficient[4], 3)` × 80,699). A band with an image rating 1.40 higher than another band can expect 15,490 additional sales. This interpretation is true only if the effects of airplay and advertising are held constant.
 
-### `r user_visor()` Confidence intervals [(2)]{.alt}
+### `r user_visor()` Confidence intervals [(B)]{.lbl}
 
 ```{r echo = FALSE}
 album_full_lm <- lm(sales ~ adverts + airplay + image, data = album_tib, na.action = na.exclude)
@@ -728,7 +733,7 @@ The quiz told you about the confidence interval for airplay, for the remaining p
 
 The two best predictors (advertising and airplay) have very tight confidence intervals indicating that the estimates for the current model are likely to be representative of the true population values. The interval for the bands image is wider (but still does not cross zero) indicating that the parameter for this variable is less representative, but nevertheless significant.
 
-### `r bmu()` Significance tests [(1)]{.alt}
+### `r bmu()` Significance tests [(A)]{.lbl}
 
 ```{r echo = FALSE}
 album_full_lm <- lm(sales ~ adverts + airplay + image, data = album_tib, na.action = na.exclude)
@@ -770,8 +775,8 @@ The model that included the band's image and airplay was a significantly better 
 
 
 
-## `r bmu()` Unguided Examples [(1)]{.alt}
-### `r bmu()` Metal and mental health [(1)]{.alt}
+## `r bmu()` Unguided Examples [(A)]{.lbl}
+### `r bmu()` Metal and mental health [(A)]{.lbl}
 
 <div class="warning">
   `r warning()` **Advisory**
@@ -869,7 +874,7 @@ quiz(
 ```
 
 
-### `r user_visor()` Predicting social anxiety [(2)]{.alt}
+### `r user_visor()` Predicting social anxiety [(B)]{.lbl}
 
 <div class="warning">
   `r warning()` **Advisory**
@@ -1119,7 +1124,7 @@ quiz(
 )
 ```
 
-## `r user_visor()` The beast of bias [(2)]{.alt}
+## `r user_visor()` The beast of bias [(B)]{.lbl}
 
 In this section we look at whether the model we have just fitted is biased. First, let's see whether you understood book chapter/lecture with a quiz, because everyone loves a quiz. Or is that chocolate? "Everyone loves chocolate?" does *sound* plausible, but I get so confused between the two. No, I'm pretty sure it's quizzes that people love, not chocolate, so here goes:
 
@@ -1157,7 +1162,7 @@ quiz(
 ```
 
 
-### `r user_visor()` Getting diagnostic plots [(2)]{.alt}
+### `r user_visor()` Getting diagnostic plots [(B)]{.lbl}
 
 We can use the `plot()` function to produce diagnostic plots from the model, which takes the general form:
 
@@ -1208,7 +1213,7 @@ plot(album_full_lm, which = c(1, 2))
   If we want all 6 plots we specify this using [which = 1:6]{.alt}.
 </div>
 
-### `r user_visor()` Residual plots [(2)]{.alt}
+### `r user_visor()` Residual plots [(B)]{.lbl}
 
 We use residual plots (plots 1 and 3) to look for linearity and homoscedasticity. The Figure below (taken from @fielddsr22026) shows that we're looking for a random scatter of dots. Curvature in the plot indicates a lack of linearity, and a funnel shape (residuals that 'fan out') indicates heteroscedasticity. Curvature *and* a funnel shape indicates both non-linearity and heteroscedasticity. We can also use Q-Q plots to look for normality in residuals.
 
@@ -1297,14 +1302,14 @@ quiz(
 )
 ```
 
-### `r user_astronaut()` Pretty residual plots [(3)]{.alt}
+### `r user_astronaut()` Pretty residual plots [(C)]{.lbl}
 
-With the `ggfortify` package loaded, you can use `ggplot2::autoplot()` to produce nicely formatted plots that are `ggplot2` objects, which means that you can add other `ggplot2` elements to them, such as themes.
+With the `ggfortify` package loaded, you can use `ggplot2::autoplot()` to produce nicely formatted plots that are [ggplot2]{.pkg} objects, which means that you can add other [ggplot2]{.pkg} elements to them, such as themes.
 
 <div class="tip">
   `r cat_space()` **Tip: Using `ggfortify`**
   
-For the `autoplot()` function to work the `ggfortify` package must be loaded. (This is a situation where we can't use explicit code because `ggfortify` adds functionality to `ggplot2` rather than to itself.) Basically, outside of this tutorial you'd need to include `library(ggfortify)` at the start of your document for the code in this section to work.
+For the `autoplot()` function to work the `ggfortify` package must be loaded. (This is a situation where we can't use explicit code because `ggfortify` adds functionality to [ggplot2]{.pkg} rather than to itself.) Basically, outside of this tutorial you'd need to include `library(ggfortify)` at the start of your document for the code in this section to work.
 </div>
 
 #### `r robot()` Code example
@@ -1318,14 +1323,14 @@ ggplot2::autoplot(album_full_lm, which = 1)
 
 #### `r robot()` Code example
 
-You can add a `ggplot2` element to this plot in the usual way with the `+` symbol. For example, to apply my ever-favourite `theme_minimal()` we could use:
+You can add a [ggplot2]{.pkg} element to this plot in the usual way with the `+` symbol. For example, to apply my ever-favourite `theme_minimal()` we could use:
 
 ```{r ce_resid_pred_fortify2, exercise = TRUE, exercise.lines = 2, exercise.setup = "album_lm_setup"}
 ggplot2::autoplot(album_full_lm, which = 1) + 
   theme_minimal()
 ```
 
-`ggfortify` also adds some useful arguments to `autoplot()` that map onto aesthetics that we have met in earlier tutorials. As with any `ggplot2` plot we can change colours using [hex codes](https://www.color-hex.com/). Here's some properties that we can change within `autoplot()`:
+`ggfortify` also adds some useful arguments to `autoplot()` that map onto aesthetics that we have met in earlier tutorials. As with any [ggplot2]{.pkg} plot we can change colours using [hex codes](https://www.color-hex.com/). Here's some properties that we can change within `autoplot()`:
 
 * [colour]{.alt}. Sets the colour of the points on the plot.
 * [smooth.colour]{.alt}. Set the colour of the trend line on the plots.
@@ -1366,7 +1371,7 @@ ggplot2::autoplot(album_full_lm,
 ```
 
 
-### `r user_visor()` Influential cases and outliers: plots [(2)]{.alt}
+### `r user_visor()` Influential cases and outliers: plots [(B)]{.lbl}
 
 As a bare minimum we should use Cook's distance to identify influential cases and standardized residuals to check for outliers. @fielddsr22026 describes a much wider battery of values that you can use to check for these things so if you're starting to get the stats bug (?!) then check that out.
 
@@ -1414,7 +1419,7 @@ ggplot2::autoplot(album_full_lm,
 
 The first plot shows the value of Cooks distance for each case and labels cases with the largest values (cases 1, 164 and 169). Looking at the y-axis its easy to see that the largest values are in the region of 0.06, which is well below the threshold of 1. The second plot shows leverage values plotted against standardized residuals. We want the trend line (the solid red line) to be flat and lie along the zero, which is what we see in this plot. If the red line deviates substantially from the horizontal then it can indicate that one of the assumptions of the model has been violated. This plot also usually has red dashed lines indicating values of Cooks distance of 0.5 and 1. Notice that our plot has no dashed red lines, which is because all values of Cooks distance are well below these thresholds. The final plot shows leverage, Cooks distance and the standardized residual for each case on the same plot. It can be used to identify cases that have high leverage, high Cooks distance, large residual or some combination of the three. For example, across the plots case 164 has a standardized residual between -2.5 and -3 and the largest Cooks distance (although still only in the region of 0.07).
 
-### `r user_visor()` Influential cases and outliers: numbers [(2)]{.alt}
+### `r user_visor()` Influential cases and outliers: numbers [(B)]{.lbl}
 
 For a more precise look, we can obtain values for Cooks distance and standardized residuals using `broom::augment()`. All we need to do is to pass our linear model object into this function and save the results as a new tibble. It's also useful to save the case number as a variable so that you can identify cases should you need to.
 
@@ -1572,11 +1577,11 @@ quiz(
 )
 ```
 
-## `r user_visor()` Robust linear models [(2)]{.alt}
+## `r user_visor()` Robust linear models [(B)]{.lbl}
 
 Our model appears, in most senses, to be both accurate for the sample and generalizable to the population. Sometimes this won't be the case. There are two things we might want to do: (1) test whether the parameter estimates have been biased, and (2) check whether confidence intervals and significance tests have been biased.
 
-### `r user_astronaut()` Robust parameter estimates [(3)]{.alt}
+### `r user_astronaut()` Robust parameter estimates [(C)]{.lbl}
 
 To check the parameter estimates we can fit a robust model using the `robust::lmRob()` function. This function is used in the same way as `lm()`, so to get a robust version of our final model we can simply replace `lm()` with `lmRob()` in our earlier code. Unfortunately, we cant use any `broom` functions with `lmRob()`, so we get text output using `summary()`.
 
@@ -1621,7 +1626,7 @@ I tend to use [_rob]{.alt} to denote robust models
 
 The bottom of the output shows significance tests of bias. With the usual caveats about significance tests needing to be interpreted within the context of the sample size, these tests suggest that bias in the original model is not problematic (because the *p*-value for these tests are not significant). Mainly we want to compare the robust parameter estimates to the original ones. For adverts the original $\hat{b}$ was 0.085 and the robust estimate is the same, for airplay the original $\hat{b}$ was 3.37 and the robust one is 3.42 and for image the original $\hat{b}$ was 11.09 and the robust estimate is 11.77. In short, the robust estimates are virtually identical to the originals suggesting the original model is unbiased. 
 
-### `r user_visor()` Robust confidence intervals and significance tests [(2)]{.alt}
+### `r user_visor()` Robust confidence intervals and significance tests [(B)]{.lbl}
 
 To test whether confidence intervals and significance tests are biased we can estimate the model with standard errors designed for heteroscedastic residuals or if the sample size is small use a bootstrap. We can do both of these by placing the model in the `parameters::model_parameters()` function. You might recall that we used this function to standardize the parameter estimates. There are three arguments in this function that we didn't explore before that we'll look at now.
 
@@ -1703,7 +1708,7 @@ quiz(
 ```
 
 
-## `r user_visor()` Unguided example [(2)]{.alt}
+## `r user_visor()` Unguided example [(B)]{.lbl}
 
 Following on from the earlier unguided example about predicting social anxiety. To recap, the data are in the tibble [soc_anx_tib]{.alt}, which contains three variables of interest to us:
 
@@ -1816,7 +1821,7 @@ soc_anx_rsd |>
 ```
 
 
-### `r user_visor()` Plots quiz [(2)]{.alt}
+### `r user_visor()` Plots quiz [(B)]{.lbl}
 
 ```{r quiz_zresid_ug, echo = F}
 quiz(
@@ -1838,7 +1843,7 @@ quiz(
 )
 ```
 
-### `r user_visor()` Diagnostics quiz [(2)]{.alt}
+### `r user_visor()` Diagnostics quiz [(B)]{.lbl}
 
 To answer these questions remember that the effective sample size was 132 (*N* = 134 but there were 2 cases with missing values excluded).
 
@@ -1879,11 +1884,11 @@ quiz(
 ```
 
 
-## `r user_astronaut()` Bayesian approaches [(3)]{.alt}
+## `r user_astronaut()` Bayesian approaches [(C)]{.lbl}
 
 There are two things we might do: (1) compare models using Bayes factors; (2) estimate model parameters using Bayesian methods. In both cases, you can fit the models using either default priors, which set distributions that represent very diffuse prior beliefs, or subjective priors, which allow you to specify prior distributions reflecting specific beliefs about the model parameters.
 
-### `r user_astronaut()` Bayes factors [(3)]{.alt}
+### `r user_astronaut()` Bayes factors [(C)]{.lbl}
 
 
 First, lets compare models using a Bayes factor using the `regressionBF()` function in the `BayesFactor` [@R-BayesFactor]. Essentially, we want to compare models against each other hierarchically to see which model has the largest Bayes factor, and to evaluate the strength of evidence that this Bayes factor suggests that a particular model predicts the outcome better than the intercept alone (i.e. a model with no predictors). The function takes the general form
@@ -1925,7 +1930,7 @@ album_bf
 
 The output shows the Bayes factors for all the potential models that we could get from our three predictor variables (7 in total). Each model is compared to a model that includes only the intercept. All models have huge Bayes factors, which suggest that they all provide strong evidence for the hypothesis that the model predicts the outcome better than the intercept alone. The question then is which model is best? We can answer that by finding the model with the largest Bayes factor, which is model 7, the model that includes all three predictors (note it has a Bayes factor of $7.75 × 10^{42}$).
 
-### `r user_astronaut()` Bayesian parameter estimates [(3)]{.alt}
+### `r user_astronaut()` Bayesian parameter estimates [(C)]{.lbl}
 
 Knowing that model 7 is best (which concurs with our non-Bayesian model), we can estimate the parameters in this model using Bayesian methods using the `lmBF()` function, which has the same format as `regressionBF()`. The difference between the functions is that `lmBF()` fits only the model we specify in the formula and not all of the subordinate models.
 

@@ -63,7 +63,7 @@ ice_tib <- discovr::ice_bucket
 ```
 
 
-## `r bmu()` Histograms [(1)]{.alt}
+## `r bmu()` Histograms [(A)]{.lbl}
 
 
 We will use data about memes, which typically have a common pattern: they start small, rapidly expand in popularity and then die out. Specifically we'll use data from the ice bucket challenge. You can check Wikipedia for the full story, but it all started (arguably) with golfer Chris Kennedy tipping a bucket of iced water on his head to raise awareness of the disease amyotrophic lateral sclerosis (ALS, also known as Lou Gehrig's disease).  The idea is that you are challenged and have 24 hours to post a video of you having a bucket of iced water poured over your head. In this video you also challenge at least three other people. If you fail to complete the challenge your forfeit is to donate to charity (in this case ALS). Many people completed the challenge and made donations.
@@ -72,7 +72,7 @@ The ice bucket challenge generated 2,323,452 ice bucket related videos uploaded 
 
 It's hard to see the wood for the trees with 23,230 data points (let alone 2.3 million!) but we can start to make sense of the data using descriptive statistics. First though, let's visualise the distribution. The tutorial `discovr_05` looks at data visualization using the [ggplot2]{.pkg} in detail, but we'll get a flavour of what's to come by producing a histogram of the ice bucket data.
 
-### `r bmu()` A basic histogram [(1)]{.alt}
+### `r bmu()` A basic histogram [(A)]{.lbl}
 
 Let's start by plotting a histogram of number of days between the original ice bucket challenge video and when subsequent videos were uploaded. Remember, the data are stored in a variable called **upload_day** in the [ice_tib]{.alt} tibble. To initiate the plot we use the `ggplot()` function from the [ggplot2]{.pkg} package, which is part of [tidyverse]{.alt}. In its simplest the function has this general form:
 
@@ -92,7 +92,7 @@ ggplot(ice_tib, aes(x = upload_day))
 
 **That doesn't look right!?**
 
-Don't worry, you haven't done anything wrong: this command tells `ggplot2` *what* to plot, but not *how* to plot it. We need to add something called a **geom** to display the data. For a histogram we use `geom_histogram()`. 
+Don't worry, you haven't done anything wrong: this command tells [ggplot2]{.pkg} *what* to plot, but not *how* to plot it. We need to add something called a **geom** to display the data. For a histogram we use `geom_histogram()`. 
 
 #### `r alien()` Alien coding challenge
 
@@ -110,9 +110,9 @@ ggplot(ice_tib, aes(x = upload_day)) +
 The completed command tells `r rproj()` to take the object created by `ggplot(ice_tib, aes(x = upload_day))` and add (`+`) a layer to it using `geom_histogram()`. You should see a beautiful histogram now! 
 
 
-### `r bmu()` Changing the bin widths [(1)]{.alt}
+### `r bmu()` Changing the bin widths [(A)]{.lbl}
 
-By default `ggplot2` constructs the bins of the histogram to be 1/30th the width of the data. You can over-ride this default by specifying [binwidth =]{.alt} within the `geom_histogram()` function. In the code box below, type [binwidth = 1]{.alt} into the brackets after `geom_histogram()` and execute the code. Note how the histogram changes. A binwidth of 1 makes sense for these data because responses could only be whole numbers (days), but try some other values and note how the histogram changes.
+By default [ggplot2]{.pkg} constructs the bins of the histogram to be 1/30th the width of the data. You can over-ride this default by specifying [binwidth =]{.alt} within the `geom_histogram()` function. In the code box below, type [binwidth = 1]{.alt} into the brackets after `geom_histogram()` and execute the code. Note how the histogram changes. A binwidth of 1 makes sense for these data because responses could only be whole numbers (days), but try some other values and note how the histogram changes.
 
 ```{r ice_bin, exercise=TRUE}
 ggplot(ice_tib, aes(x = upload_day)) +
@@ -128,7 +128,7 @@ ggplot(ice_tib, aes(x = upload_day)) +
 The histogram shows us that the peak of video uploads was about 38 days after the video that started the ice bucket trend. So it took about a month for the challenge to reach its peak virility. There's a really dramatic increase in uploads between 20-40 days after the initial video as people start jumping on the bandwagon. After 38 days, video uploads dramatically decline as the challenge becomes 'old news' and people lose interest. However, the distribution is skewed and has a long tail to the right where after about 50 days there's still a trickle of videos being posted (presumably by middle aged men like myself who have been too pre-occupied with statistical models to notice what's happening in the real world until long after its relevant and suddenly get the urge to be 'down with the kids' by chucking a bucket of water over my head).
 
 
-### `r bmu()` Changing the colours of the bars [(1)]{.alt}
+### `r bmu()` Changing the colours of the bars [(A)]{.lbl}
 
 We can change the colour of the bars by including [fill =]{.alt} within the `geom_histogram()` function.
 
@@ -177,7 +177,7 @@ ggplot(ice_tib, aes(x = upload_day)) +
   geom_histogram(binwidth = 1, fill = "#56B4E9")
 ```
 
-### `r bmu()` Changing the transparency of the bars [(1)]{.alt}
+### `r bmu()` Changing the transparency of the bars [(A)]{.lbl}
 
 You can also make filled objects semi-transparent by using [alpha =]{.alt} where alpha is a proportion (i.e., between 0 and 1). For example, if you want the histograms to have 20% opacity you could include [alpha = 0.2]{.alt} in the `geom_histogram()` function (remembering to separate it from other options with a comma).
 
@@ -202,7 +202,7 @@ ggplot(ice_tib, aes(x = upload_day)) +
   geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5)
 ```
 
-### `r bmu()` Editing axis labels [(1)]{.alt}
+### `r bmu()` Editing axis labels [(A)]{.lbl}
 
 #### `r robot()` Code example
 
@@ -240,9 +240,9 @@ ggplot(ice_tib, aes(x = upload_day)) +
 </div>
 
 
-### `r bmu()` Changing theme [(1)]{.alt}
+### `r bmu()` Changing theme [(A)]{.lbl}
 
-`ggplot2` has various built in themes that change the appearance of the plot. The two we will use most often are `theme_bw()`, which applies a black and white theme and `theme_minimal()` which applies a minimalist theme. Both of these themes are good for scientific plots (like the ones you'll find in journal articles).
+[ggplot2]{.pkg} has various built in themes that change the appearance of the plot. The two we will use most often are `theme_bw()`, which applies a black and white theme and `theme_minimal()` which applies a minimalist theme. Both of these themes are good for scientific plots (like the ones you'll find in journal articles).
 
 #### `r robot()` Code example
 
@@ -291,11 +291,11 @@ ggplot(ice_tib, aes(x = upload_day)) +
 
 This gives you a flavour of the [ggplot2]{.pkg} package, but we'll look at it in more depth in `discovr_05`.
 
-## `r bmu()` Summarizing data [(1)]{.alt}
+## `r bmu()` Summarizing data [(A)]{.lbl}
 
 We've seen already that functions take the form of a command followed by brackets. We also saw that there are usually options that can be placed within those brackets (for example, in the previous section we changed the binwidth and bar colour of the histogram by placing instructions within the `geom_histogram()` function). We'll explore this idea more by looking at the function to estimate the mean and median of the ice bucket scores.
 
-### `r bmu()` The mean and median [(1)]{.alt}
+### `r bmu()` The mean and median [(A)]{.lbl}
 
 We can compute the mean using the built-in function `mean()`. The full format of the function is:
 
@@ -362,7 +362,7 @@ median(ice_tib$upload_day)
 
 We can see from the mean and median that the average amount of days after the challenge started that a video was upoloaded was 38-39 days (which is the peak of the histogram).
 
-### `r bmu()` Quantifying the 'fit' of the mean [(1)]{.alt}
+### `r bmu()` Quantifying the 'fit' of the mean [(A)]{.lbl}
 
 We can use the functions `var()`, `sd()` to get the variance and standard deviation of the ice bucket scores. These functions behave exactly like `mean()` in that we input the variable for which we want the variance and standard deviation and specify how we treat missing values (by default they are not removed):
 
@@ -392,7 +392,7 @@ var(ice_tib$upload_day)
 sd(ice_tib$upload_day)
 ```
 
-### `r bmu()` The inter-quartile range [(1)]{.alt}
+### `r bmu()` The inter-quartile range [(A)]{.lbl}
 
 We can use the `IQR()` function to obtain the interquartile range of a set of scores. This function has an additional option of [type =]{.alt} which allows you to specify one of 8 different ways to calculate the IQR. The default is 7. There is an argument for using [type  = 8]{.alt}, which uses a method recommended by [@hyndman_sample_1996].
 
@@ -441,7 +441,7 @@ IQR(ice_tib$upload_day, type = 8)
 ```
 
 
-## `r user_visor()` Creating a summary table [(2)]{.alt}
+## `r user_visor()` Creating a summary table [(B)]{.lbl}
 
 So far we have looked at computing individual statistics for a set of scores, but what if we want to combine these values into a table? We can do this using the `summarise()` function from the [dply]{.pkg}, which is part of the [tidyverse]{.pkg}.
 
@@ -535,7 +535,7 @@ upload_summary <- ice_tib |>
 ```
 
 
-## `r bmu()` Confidence intervals [(1)]{.alt}
+## `r bmu()` Confidence intervals [(A)]{.lbl}
 
 As a brief recap, we usually use a sample value as an estimate of a parameter (e.g., the mean) in the population. The estimate of a parameter (e.g., the mean) will differ across samples, and we can use the standard error to get some idea of the extent to which these estimates differ across samples. We can also use this information to calculate boundaries within which we believe the population value will fall. Such boundaries are called [confidence intervals]{.alt}. Although what I'm about to describe applies to any parameter, we'll stick with the mean to keep things consistent with what you have already learnt.
 
@@ -547,7 +547,7 @@ Let's imagine that you were particularly fixated with Japanese quail sperm, and 
 
 The parameter estimate (in this case the mean) is always in the centre of the confidence interval. We know that 95% of confidence intervals contain the population value, so we might assume that this confidence interval contains the true mean (but remember this is an assumption and 5% of the time we will be incorrect). Under this assumption, if the interval is small, the sample mean must be very close to the true mean and if the confidence interval is very wide then the sample mean could be very different from the true mean, indicating that the sample estimate is a poor representation of the population. We'll now use an interactive activity to explore this explanation of a confidence interval.
 
-## `r bmu()` Confidence interval explorer [(1)]{.alt}
+## `r bmu()` Confidence interval explorer [(A)]{.lbl}
 
 ```{r ci_ui, echo = FALSE}
 fluidPage(
@@ -785,7 +785,7 @@ quiz(caption = "Confidence interval quiz",
 ``` 
 
 
-## `r bmu()` Easier descriptives using `datawizard` [(1)]{.alt}
+## `r bmu()` Easier descriptives using [datawizard]{.pkg} [(A)]{.lbl}
 
 Creating a bespoke table of summary statistics is useful and helped us to learn more about functions and practice our tidyverse skills, but we can get a set of descriptive statistics using the `describe_distribution()` function from the [datawizard]{.pkg} package from [easystats]{.pkg} that includes confidence intervals. The function has the following form:
 
@@ -863,7 +863,7 @@ question("The 95% confidence interval for the upload days ranges from 39.57 to 3
 ```
 
 
-## `r bmu()` Nicer tables with insight [(1)]{.alt}
+## `r bmu()` Nicer tables with insight [(A)]{.lbl}
 
 If you've tried out any of the code above in a `r quarto()` document and rendered it you’ll see that the output is plain text. It doesn't look great. A straightforward way to turn this output into beautifully rendered tables, is to put it into the `display()` function from [insight]{.pkg}, which is part of [easystats]{.pkg}. It takes this general form
 

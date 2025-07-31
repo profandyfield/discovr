@@ -6,6 +6,7 @@ output:
     progressive: true
     allow_skip: true
     theme: "united"
+    highlight: "kate"
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
 description: "Comparing means adjusted for other variables. Essentially 'Analysis of Covariance (ANCOVA)' designs but taught using a general linear model framework. Covers setting contrasts, Type III sums of squares, the *F*-statistic, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of adjusted means, *post hoc* tests, Bayes factors."
@@ -23,20 +24,23 @@ knitr::opts_chunk$set(
 #necessary to render tutorial correctly
 library(learnr) 
 library(htmltools)
+#easystats
+library(effectsize)
+library(insight)
+library(modelbased)
+library(parameters)
 #tidyverse
 library(dplyr)
 library(ggplot2)
 library(tibble)
-#non tidyverse
+#non tidyverse/easystats
 library(BayesFactor)
 library(broom)
 library(car)
-library(effectsize)
 library(ggfortify)
 library(Hmisc)
+#students don't use
 library(knitr)
-library(modelbased)
-library(parameters)
 library(sandwich)
 
 source("./www/discovr_helpers.R")
@@ -71,9 +75,9 @@ Hi, welcome to **discovr** space pirate academy. Well done on embarking on this 
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
-* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
-* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(A)]{.lbl}.
+* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(B)]{.lbl}.
+* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(C)]{.lbl}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
@@ -106,29 +110,29 @@ This tutorial uses the following packages:
 * `BayesFactor` [@R-BayesFactor]
 * `broom` [@R-broom]
 * `car` [@R-car]
-* `effectsize` [@effectsize2020; @R-effectsize]
-* `emmeans` [@R-emmeans] is used by `modelbased`
-* `here` [@R-here]
+* [effectsize]{.pkg} [@effectsize2020; @R-effectsize]
+* `emmeans` [@R-emmeans] is used by [modelbased]{.pkg}
+* [here]{.pkg} [@R-here]
 * `ggfortify` [@R-ggfortify; @tang_ggfortify_2016]
-* `Hmisc` [@R-Hmisc] is loaded by `ggplot2`
+* `Hmisc` [@R-Hmisc] is loaded by [ggplot2]{.pkg}
 * `knitr` [@R-knitr]
-* `modelbased` [@R-modelbased]
-* `parameters` [@parameters2020; @R-parameters]
-* `sandwich` [@R-sandwich; @sandwich2006] is automatically loaded by `parameters`
+* [modelbased]{.pkg} [@R-modelbased]
+* [parameters]{.pkg} [@parameters2020; @R-parameters]
+* [sandwich]{.pkg} [@R-sandwich; @sandwich2006] is automatically loaded by [parameters]{.pkg}
 
-It also uses these `tidyverse` packages [@R-tidyverse; @tidyverse2019]: `dplyr` [@R-dplyr], `forcats` [@R-forcats], `ggplot2` [@wickhamGgplot2ElegantGraphics2016], and `readr` [@R-readr], `.
+It also uses these [tidyverse]{.pkg} packages [@R-tidyverse; @tidyverse2019]: [dplyr]{.pkg} [@R-dplyr], [forcats]{.pkg} [@R-forcats], [ggplot2]{.pkg} [@wickhamGgplot2ElegantGraphics2016], and [readr]{.pkg} [@R-readr], `.
 
 ### Coding style
 
 There are (broadly) two styles of coding:
 
-1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
+1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
 
-2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
+2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
 
-Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load `tidyverse` because the `dplyr` and `ggplot2` packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load [tidyverse]{.pkg} because the [dplyr]{.pkg} and [ggplot2]{.pkg} packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from [ggplot2]{.pkg}.
 
-You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the `tidyverse` package (and any others if you're using a concise style) at the beginning of your Quarto document:
+You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the [tidyverse]{.pkg} package (and any others if you're using a concise style) at the beginning of your Quarto document:
 
 ```{r eval = FALSE}
 library(tidyverse)
@@ -163,7 +167,7 @@ cure_tib <- here::here("data/hangover.csv") |>
 
 This code reads in the data and converts the variable **drink** to a factor (categorical variable) and sets the order of the levels of **drink** to match this tutorial.
 
-## `r bmu()` Puppy love! [(1)]{.alt}
+## `r bmu()` Puppy love! [(A)]{.lbl}
 
 The main example in this tutorial extends the example about puppy therapy from **discovr_11**. On the assumption that you can't have enough puppies in your life, here's another picture of my dog looking cute to help you to deal with the psychological trauma of this statistics tutorial.
 
@@ -231,7 +235,7 @@ quiz(caption = "Changing the order of factor levels",
 )
 ```
 
-## `r bmu()` Exploring the data [(1)]{.alt}
+## `r bmu()` Exploring the data [(A)]{.lbl}
 
 #### `r alien()` Alien coding challenge
 
@@ -281,7 +285,7 @@ pup_sum |>
 
 Note that the mean happiness is very similar in the 15- and 30-minute groups and higher in these groups than the no puppies control.
 
-## `r bmu()` Visualising the data [(1)]{.alt}
+## `r bmu()` Visualising the data [(A)]{.lbl}
 
 #### `r alien()` Alien coding challenge
 
@@ -325,7 +329,7 @@ ggplot2::ggplot(pupluv_tib, aes(x = puppy_love, y = happiness, colour = dose, fi
 
 It looks like puppy love has a positive relationship to happiness in the no puppy and 15-minute groups, but a negative relationship in the 30-minute group. We'll return to this plot later.
 
-## `r bmu()` The model [(1)]{.alt}
+## `r bmu()` The model [(A)]{.lbl}
 
 As a reminder, we discovered in **discovr_11** that we can include categorical predictors using dummy variables. In the simplest form, we can use dummy coding in which group membership is expressed in terms of 0s and 1s as in Table 1.
 
@@ -399,7 +403,7 @@ The basic process for fitting a model that compares means while adjusting for a 
 5. Check the model diagnostics and possibly fit a robust version of the model.
 6. Assess homogeneity of regression slopes
 
-## `r bmu()` Independence of the covariate  [(1)]{.alt}
+## `r bmu()` Independence of the covariate  [(A)]{.lbl}
 
 The first issue is whether the covariate is independent of the categorical predictor. Although independence is not a statistical condition, it is easier to interpret the categorical predictor if we know that levels of the covariate are similar across the categories. We can test this by simply fitting a model, using `lm()` that predicts the covariate from the categorical predictor. If the categorical predictor does not significantly predict the covariate then they can be thought of as relatively independent (notwithstanding that significance will depend on sample size).
 
@@ -451,11 +455,11 @@ luv_aov <- anova(luv_lm)
 
 The main effect of dose is not significant, `r report_aovf(luv_aov)`, which shows that the average level of love of puppies was (statistically speaking) roughly the same in the three puppy therapy groups. In other words, the means for love of puppies are not significantly different across the control, 15- and 30-minute groups. This result is good news for using love of puppies as a covariate to adjust the means in the model.
 
-## `r user_visor()` *F*-statistics with multiple predictors  [(2)]{.alt}
+## `r user_visor()` *F*-statistics with multiple predictors  [(B)]{.lbl}
 
 We have seen how the *F*-statistic is used to evaluate the overall fit of a linear model, we've also seen that it can be used to look at the overall effect of a predictor: in the previous tutorial we used it to evaluate the overall effect of the puppy therapy group to which a person was assigned on happiness ratings. However, when we use the *F*-statistic to evaluate the unique contribution of more than one predictor to a model we need to be mindful of how *F* is calculated.
 
-### `r user_astronaut()` An optional demonstration  [(3)]{.alt}
+### `r user_astronaut()` An optional demonstration  [(C)]{.lbl}
 
 To illustrate the problem, here's a little demonstration.
 
@@ -480,7 +484,7 @@ lm(happiness ~ dose + puppy_love, data = pupluv_tib) |>
 
 Note that when we specify **puppy_love** as the first predictor then, according to the *F*-statistic, it doesn't have a significant effect but **dose** does, but if we specify it second then **puppy_love** has a significant effect but **dose** doesn't. In other words, we get different values of the sums of squares, *F*s and *p*s. If you look at the parameter estimates using `broom::tidy()` (and their significance tests), you'll see that they are the same for the two models, but for the *F*-statistics the order that you specify predictors matters.
 
-### `r user_visor()` Type III sums of squares [(2)]{.alt}
+### `r user_visor()` Type III sums of squares [(B)]{.lbl}
 
 The sums of squares on which the *F*-statistic is based can be calculated in different ways. By default, *F* is computed using Type I, or sequential, sums of squares. This means that any predictor entered into the model is evaluated after predictors before it in the model. Hence, order matters: if you specify the model as [happiness ~ puppy_love + dose]{.alt} then **puppy_love** is evaluated as the only term in the model whereas if you specify the model as [happiness ~ dose + puppy_love ]{.alt} then, because it is listed after **dose**, it is evaluated after the effect of **dose** has already been entered into the model and evaluated. For this reason, Type I sums of squares tend not to be used to evaluate hypothesis about main effects and interactions (because the order of predictors changes the results).
 
@@ -505,7 +509,7 @@ If you want to use Type III sums of squares then you **must** set orthogonal con
 </div>
 
 
-## `r user_visor()` Orthogonal contrasts [(2)]{.alt}
+## `r user_visor()` Orthogonal contrasts [(B)]{.lbl}
 
 We've just discovered that to use Type III sums of squares we **must** set orthogonal contrasts. In the previous tutorial, we predicted that any form of puppy therapy should be better (i.e. higher happiness scores) than the no puppies condition and that as exposure time increases happiness will increase too (a dose-response hypothesis). We operationalized these hypotheses as two dummy variables using the contrast coding in Table 2.
 
@@ -583,7 +587,7 @@ contrasts(pupluv_tib$dose) <- cbind(puppy_vs_none, short_vs_long)
 contrasts(pupluv_tib$dose) # This line prints the contrast weights so we can check them
 ```
 
-## `r user_visor()` Fitting the model [(2)]{.alt}
+## `r user_visor()` Fitting the model [(B)]{.lbl}
 
 Having set orthogonal contrasts, we can fit the model and then use the `car::Anova()` function to get Type III sums of squares for the overall effects.
 
@@ -676,7 +680,7 @@ car::Anova(pupluv_lm, type = 3) |>
   knitr::kable(digits = 3)
 ```
 
-## `r user_visor()` Adjusted means [(2)]{.alt}
+## `r user_visor()` Adjusted means [(B)]{.lbl}
 
 Earlier on we computed the group means. They're displayed again for you in Table 3.
 
@@ -742,7 +746,7 @@ modelbased::estimate_means(pupluv_lm, fixed = "puppy_love") |>
 
 From these adjusted means you can see that at average levels of puppy love, happiness increased across the three doses.
 
-## `r user_visor()` Parameter estimates [(2)]{.alt}
+## `r user_visor()` Parameter estimates [(B)]{.lbl}
 
 We can view the parameter estimates in the usual way using `broom::tidy()`:
 
@@ -795,7 +799,7 @@ The *b*s in this output are raw effect sizes. I can't stress enough how useful i
 </div>
 
 
-## `r user_visor()` *Post hoc* tests [(2)]{.alt}
+## `r user_visor()` *Post hoc* tests [(B)]{.lbl}
 
 We can obtain *post hoc* tests in the same way that we did in **discovr_11** when we fitted the same model but without the covariate. Basically, we use the `modelbased::estimate_contrasts()` function and, like when we used the the `estimate_means()` function earlier we can optionally specify the covariate as a fixed variable so that the output shows us the value at which other effects are evaluated.
 
@@ -847,7 +851,7 @@ pup_ph <- modelbased::estimate_contrasts(pup_lm, contrast = "dose", by = "puppy_
 The results show the Bonferroni corrected *post hoc* comparisons. There is a significant difference between the adjusted mean happiness in the no puppies group and the 30-minute group (*p* = 
 `r get_par(pup_ph, col = "p", row = 3, digits = 3)`) groups, but not between the no puppies and 15-minute group (*p* = `r get_par(pup_ph, col = "p", row = 2, digits = 3)`) or between the 30- and 15-minute groups (*p* = `r get_par(pup_ph, col = "p", row = 1, digits = 3)`). Note that the value of *Difference* is the difference between the adjusted means. The column labelled *puppy_love* reminds us that all differences are evaluated at average levels of puppy love, in other words, when puppy love equals `r get_par(pup_ph, col = "puppy_love", row = 1)`.
 
-## `r bmu()` Diagnostic plots [(1)]{.alt}
+## `r bmu()` Diagnostic plots [(A)]{.lbl}
 
 As with any linear model, we can use the `plot()` function to produce diagnostic plots from the model.
 
@@ -916,7 +920,7 @@ quiz(caption = "Diagnostic plot quiz (level 2)",
 ```
 
 
-## `r user_visor()` Robust models [(2)]{.alt} 
+## `r user_visor()` Robust models [(B)]{.lbl} 
 
 As for previous linear models(e.g., in **discovr_08** and **discovr_11**), we can get robust parameter estimates using `robust::lmRob()` and robust tests of these parameters using `parameters::model_parameters()`.
 
@@ -961,7 +965,7 @@ hc_par <- parameters::model_parameters(pup_lm, vcov = "HC4")
 
 We see a different picture when we fit the model with heteroskedasticity-consistent standard errors. The parameter estimates will match the non-robust model but the standard errors, *p*-values and confidence intervals change because these are based on methods robust to heteroscedasticity (the HC4 estimates that we asked for). We can interpret the effects for dose in the same way as for the regular *p*-values and confidence intervals. For the effect of puppy love, The HC4 robust confidence interval and *p*-value supports the conclusion from the non-robust model: the *p*-value is `r get_par(hc_par, col = "p", row = 2, digits = 3)`, which less than 0.05, and the confidence interval does not contain zero `r paste0("[", get_par(hc_par, col = "CI_low", row = 2), ", ", get_par(hc_par, col = "CI_high", row = 2), "]")`.
 
-Given the small sample size, we might consider a bootstrap model instead of the robust model we have just fitted. We can obtain this model using the `bootstrap_parameters()` function from `parameters`, which takes the general form:
+Given the small sample size, we might consider a bootstrap model instead of the robust model we have just fitted. We can obtain this model using the `bootstrap_parameters()` function from [parameters]{.pkg}, which takes the general form:
 
 ```{r eval = F}
 parameters::bootstrap_parameters(my_model)
@@ -1009,13 +1013,13 @@ quiz(caption = "Bootstrapping (level 2)",
 ```
 
 
-## `r user_astronaut()` Effect sizes [(3)]{.alt}
+## `r user_astronaut()` Effect sizes [(C)]{.lbl}
 
 We have talked about effect sizes for specific effects at various other points in this tutorial. We can also obtain effect sizes for the overall effect of a predictor (i.e. effect sizes that relate to the *F*-statistics for each predictor).
 
 #### `r robot()` Code example
 
-We can use the `eta_squared()` and `omega_squared()` functions from the `effectsize` package [@effectsize2020; @R-effectsize], which take the general form:
+We can use the `eta_squared()` and `omega_squared()` functions from the [effectsize]{.pkg} package [@effectsize2020; @R-effectsize], which take the general form:
 
 ```{r, eval = F}
 effectsize::eta_squared(anova_object, partial = TRUE, ci = 0.9)
@@ -1084,7 +1088,7 @@ pup_os <- pup_os |>
 
 The effect sizes are slightly smaller than (as we'd expect) using omega-squared. The puppy therapy condition explains `r sprintf("%.0f", 100*pup_os[2])`% of the variance in happiness not attributable to other variables, and love of puppies explains `r sprintf("%.0f", 100*pup_os[1])`%, both of which are still sizeable amounts of variance for social science data.
 
-## `r user_visor()` Interactions between categorical and continuous predictors [(2)]{.alt}
+## `r user_visor()` Interactions between categorical and continuous predictors [(B)]{.lbl}
 
 People talk about the 'assumption' of homogeneity of regression slopes when the goal of the model is to look for differences between adjusted means (a so-called ANCOVA). To test the assumption of homogeneity of regression slopes we need to re-fit the model but include the interaction between the covariate and categorical predictor. We want that interaction effect to be non-significant and have a parameter estimate that reflects a small effect.
 
@@ -1170,7 +1174,7 @@ ggplot2::ggplot(pupluv_tib, aes(x = puppy_love, y = happiness, colour = dose, fi
 
 The significant interaction is "bad" from the perspective of interpreting the effect of puppy therapy dose at average levels of puppy love. We can't make firm conclusions about the effect of puppy therapy adjusted for the love of puppies. Sad face.
 
-However, in a parallel universe where we'd hypothesised and pre-registered a hypothesis that puppy love would moderate the effect of puppy therapy we'd be dancing around the room with joy at this significant result. We might also want to break the interaction down and look at the simple slopes (that is, the relationship between **puppy_love** and **happiness** within each treatment group). We can do this using what we learnt in `discovr_10` but we can also use the `estimate_slopes()` function from `modelbased`. It takes the form
+However, in a parallel universe where we'd hypothesised and pre-registered a hypothesis that puppy love would moderate the effect of puppy therapy we'd be dancing around the room with joy at this significant result. We might also want to break the interaction down and look at the simple slopes (that is, the relationship between **puppy_love** and **happiness** within each treatment group). We can do this using what we learnt in `discovr_10` but we can also use the `estimate_slopes()` function from [modelbased]{.pkg}. It takes the form
 
 ```{r, eval = F}
 modelbased::estimate_slopes(my_model,
@@ -1224,7 +1228,7 @@ pup_slopes <- modelbased::estimate_slopes(hors_lm, trend = "puppy_love", at = "d
 In the no puppy group, $\hat{b}$ = `r report_pars(pup_slopes, row = 1)`, and the 15-minute group, $\hat{b}$ = `r report_pars(pup_slopes, row = 2)`, there were significant positive relationships between loving puppies and happiness. However, in the 30-minute group there was a nonsignificant relationship between loving puppies and happiness, $\hat{b}$ = `r report_pars(pup_slopes, row = 3)`. The significant interaction seems to reflect that the positive relationship between loving puppies and happiness is 'wiped out' by 30 minutes of puppy therapy. One interpretation of this effect might be that the 30-minutes of puppy therapy raises everyone's happiness, which attenuates the relationship between loving puppies and happiness.
 
 
-## `r user_astronaut()` Bayes factors [(3)]{.alt}
+## `r user_astronaut()` Bayes factors [(C)]{.lbl}
 
 Like in previous tutorials (**discovr_08**, **discovr_09**, **discovr_11**) we can use the `BayesFactor` package [@morey_bayesfactor_2018]. In this scenario we use the `lmBF()` function.
 
@@ -1324,7 +1328,7 @@ The Bayes factor computed using `pup_bf/pupcov_bf` is computed using a sampling 
 Looking at the second Bayes factor, the data are about `r get_bf(bf2)` times more likely under the model that predicts happiness from dose of therapy and love of puppies than under the model that predicts happiness from love of puppies alone. In other words, our beliefs that puppy therapy if efficacious (relative to not) should increase by a factor of about `r get_bf(bf2)` (not particularly strong evidence).
 
 
-## `r user_visor()` Transfer task [(2)]{.alt}
+## `r user_visor()` Transfer task [(B)]{.lbl}
 
 ### Give me the cure
 

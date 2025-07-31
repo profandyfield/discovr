@@ -6,6 +6,7 @@ output:
     progressive: true
     allow_skip: true
     theme: "united"
+    highlight: "kate"
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
 description: "Moderation and mediation. Centring variables (grand mean centring), specifying interaction terms, moderation analysis, simple slopes analysis, Johnson-Neyman intervals, mediation with one predictor, direct and indirect effects, mediation using lavaan."
@@ -23,15 +24,19 @@ knitr::opts_chunk$set(
 #necessary to render tutorial correctly
 library(learnr) 
 library(htmltools)
+#easystats
+library(effectsize)
+library(insight)
+library(parameters)
 #tidyverse
 library(dplyr)
 library(ggplot2)
-#non tidyverse
+#non tidyverse/easystats
 library(broom)
 library(interactions)
-library(knitr)
 library(lavaan)
-library(parameters)
+#students don't use
+library(knitr)
 library(sandwich)
 
 source("./www/discovr_helpers.R")
@@ -71,9 +76,9 @@ Hi, welcome to **discovr** space pirate academy. Well done on embarking on this 
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
-* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
-* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(A)]{.lbl}.
+* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(B)]{.lbl}.
+* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(C)]{.lbl}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
@@ -104,26 +109,26 @@ By for now and good luck - you'll be amazing!
 This tutorial uses the following packages:
 
 * `broom` [@R-broom]
-* `here` [@R-here]
+* [here]{.pkg} [@R-here]
 * `interactions` [@R-interactions]
 * `knitr` [@R-knitr]
 * `lavaan` [@R-lavaan; @rosseel_lavaan_2012]
-* `parameters` [@parameters2020; @R-parameters]
-* `sandwich` [@R-sandwich; @sandwich2006] is automatically loaded by `parameters`
+* [parameters]{.pkg} [@parameters2020; @R-parameters]
+* [sandwich]{.pkg} [@R-sandwich; @sandwich2006] is automatically loaded by [parameters]{.pkg}
 
-It also uses these `tidyverse` packages [@R-tidyverse; @tidyverse2019]: `dplyr` [@R-dplyr], `forcats` [@R-forcats], `ggplot2` [@wickhamGgplot2ElegantGraphics2016], and `readr` [@R-readr].
+It also uses these [tidyverse]{.pkg} packages [@R-tidyverse; @tidyverse2019]: [dplyr]{.pkg} [@R-dplyr], [forcats]{.pkg} [@R-forcats], [ggplot2]{.pkg} [@wickhamGgplot2ElegantGraphics2016], and [readr]{.pkg} [@R-readr].
 
 ### Coding style
 
 There are (broadly) two styles of coding:
 
-1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
+1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
 
-2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
+2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
 
-Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load `tidyverse` because the `dplyr` and `ggplot2` packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load [tidyverse]{.pkg} because the [dplyr]{.pkg} and [ggplot2]{.pkg} packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from [ggplot2]{.pkg}.
 
-You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the `tidyverse` package (and any others if you're using a concise style) at the beginning of your Quarto document:
+You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the [tidyverse]{.pkg} package (and any others if you're using a concise style) at the beginning of your Quarto document:
 
 ```{r eval = FALSE}
 library(tidyverse)
@@ -144,7 +149,7 @@ vids_tib  <- here::here("data/video_games.csv") |> readr::read_csv()
 infidelity_tib <- here::here("data/lambert_2012.csv") |> readr::read_csv()
 ```
 
-## `r user_visor()` Moderation [(2)]{.alt}
+## `r user_visor()` Moderation [(B)]{.lbl}
 
 Well use an example of whether violent video games make people antisocial. Video games have been linked to increased aggression in youths. Another predictor of aggression and conduct problems is callous-unemotional traits such as lack of guilt, lack of empathy, callous use of others for personal gain. Imagine that a scientist explored the relationship between playing violent video games. She measured aggressive behaviour (**aggress**), callous-traits (**caunts**), and the number of hours per week they play video games (**vid_game**) in 442 youths. These data are stored in [vids_tib]{.alt}.
 
@@ -168,15 +173,15 @@ $$
 
 The moderation effect is represented by $b_3$, the parameter attached to the interaction term ($\text{Gaming}\times\text{Callous}$).
 
-### `r bmu()` Centring variables [(1)]{.alt}
+### `r bmu()` Centring variables [(A)]{.lbl}
 
 **Centring** refers to the process of transforming a variable into deviations around a fixed point. This fixed point can be any value that you choose, but typically its the grand mean (i.e. the overall mean of scores on a variable). Grand mean centring for a given variable is achieved by taking each score and subtracting from it the mean of all scores (for that variable).
 
-### `r user_visor()` Why centering matters [(2)]{.alt}
+### `r user_visor()` Why centering matters [(B)]{.lbl}
 
 Centring is important when your model contains an interaction term because it makes the *b*s for lower-order effects interpretable. There are good reasons for not caring about the lower-order effects when the higher-order interaction involving those effects is significant; for example, if the gaming × callous traits interaction is significant, then its not clear why we would be interested in the individual effects of gaming and callous traits. However, when the interaction is not significant, centring makes interpreting the main effects easier. With centred variables the *b*s for individual predictors have two interpretations (1) they are the effect of that predictor at the mean value of the sample; and (2) they are the average effect of the predictor across the range of scores for the other predictors. To explain the second interpretation, imagine we took everyone who spent no hours gaming, estimated the linear model between aggression and callous traits and noted the *b*. We then took everyone who played games for 1 hour and did the same, and then took everyone who gamed for 2 hours per week and did the same. We continued doing this until we had estimated linear models for every different value of the hours spent gaming. We'd have a lot of bs, each one representing the relationship between callous traits and aggression for different amounts of gaming. If we took an average of these bs then we'd get the same value as the b for callous traits (centred) when we use it as a predictor with gaming (centred) and their interaction.
 
-### `r bmu()` Centring variables using `r rproj()` [(1)]{.alt}
+### `r bmu()` Centring variables using `r rproj()` [(A)]{.lbl}
 
 We can centre variables using the `mutate()` function, which we've used many times before.
 
@@ -246,7 +251,7 @@ question("Grand mean centring for a given variable is achieved by:",
 ```
 
 
-### `r user_astronaut()` Using a function to center variables [(3)]{.alt}
+### `r user_astronaut()` Using a function to center variables [(C)]{.lbl}
 
 If you need to centre more than a couple of variables, you might find it useful to do something a bit trickier using `across()` to apply a mutation to multiple variables. In this case the mutation we want to apply is to subtract the mean score from each score.
 
@@ -296,7 +301,7 @@ vids_tib
 
 This code uses `mutate()` to add variables to [vids_tib]{.alt} that contain centred scores. Within `mutate()` we use `across()` to select the variables to be mutated (in this case **vid_game** and **caunts**) and to apply the function `centre()`, which we created to centre scores, to them. To prevent the original variables from being overwritten I have specified [list(cent = centre)]{.alt} within `across()`. This code tells `across()` to apply the function [centre]{.alt}, but to add the suffix [_cent]{.alt} to the variable name. The end result is that the centred variables will be named after the original variables but with [_cent]{.alt} added to the end; in this case, you should hopefully get two new variables called **caunts_cent** and **vid_game_cent** that contain the centred scores.
 
-### `r user_visor()` Specifying interaction terms  [(2)]{.alt}
+### `r user_visor()` Specifying interaction terms  [(B)]{.lbl}
 
 I mentioned already that moderation is represented by the interaction between the predictor and moderator in a linear model. Mathematically speaking, we are literally looking at the effect of the two variables multiplied together. The interaction variable in our example would be the scores on the time spent gaming multiplied by the scores for callous-unemotional traits.
 
@@ -334,7 +339,7 @@ aggress ~ caunts_cent*vid_game_cent
 
 The two methods are comparable.
 
-### `r user_visor()` Fitting a moderation model  [(2)]{.alt}
+### `r user_visor()` Fitting a moderation model  [(B)]{.lbl}
 
 To fit a model that assesses moderation we first centre the predictor and moderator, then fit a linear model using `lm()` with the centred predictor, centred moderator and the interaction of the two centred variables as predictors.
 
@@ -408,7 +413,7 @@ broom::tidy(aggress_lm, conf.int = TRUE) |>
 </div>
 
 
-### `r user_astronaut()` Robust moderation models  [(3)]{.alt}
+### `r user_astronaut()` Robust moderation models  [(C)]{.lbl}
 
 Use what you have learnt before to fit a robust version of the model by putting it into the `model_parameters()` function (see **discovr_08**). Use HC4 standard errors and print to three decimal places.
 
@@ -453,7 +458,7 @@ Consistent with the non-robust model, the robust model shows a significant moder
 
 
  
-### `r user_visor()` Simple slopes and the Johnson-Neyman interval  [(2)]{.alt}
+### `r user_visor()` Simple slopes and the Johnson-Neyman interval  [(B)]{.lbl}
 
 To interpret the moderation effect we examine the simple slopes and Johnson-Neyman interval. We can obtain both of these using the `sim_slopes()` function from the `interactions` package. 
 
@@ -559,7 +564,7 @@ When callous traits are low, there is a non-significant negative relationship be
 
 These results tell us that the relationship between time spent playing violent video games and aggression only really emerges in people with average or greater levels of callous-unemotional traits.
 
-### `r user_astronaut()` Plotting simple slopes [(3)]{.alt}
+### `r user_astronaut()` Plotting simple slopes [(C)]{.lbl}
 
 #### `r robot()` Code example
 
@@ -654,7 +659,7 @@ interactions::interact_plot(
 
 The resulting plot shows what we found from the simple slopes analysis. When callous traits are low (one standard deviation below the mean, labelled as $-1$ SD) there is a non-significant negative relationship between time spent gaming and aggression; at the mean value of callous traits (the line labelled Mean) there is small positive relationship between time spent gaming and aggression; and this relationship gets even stronger at high levels of callous traits (one standard deviation above the mean, labelled as +1 SD).
 
-## `r user_visor()` Mediation [(2)]{.alt}
+## `r user_visor()` Mediation [(B)]{.lbl}
 
 Whereas moderation alludes to the combined effect of two variables on an outcome, mediation refers to a situation when the relationship between a predictor variable and an outcome variable can be explained by their relationship to a third variable (the mediator). Let's look at an example. Research has shown that physical attractiveness, conscientiousness and neuroticism predict marital satisfaction. Pornography use probably doesn't: it is related to infidelity [@lambert_love_2012]. Mediation is about the variables that explain relationships like these: its unlikely that everyone who catches a glimpse of porn suddenly rushes out of their house to have an affair – presumably it leads to some kind of emotional or cognitive change that undermines the love glue that holds us and our partners together. Figure 2 shows the hypothesis that Lambert et al. tested. The relationship between pornography consumption (the predictor) and infidelity (the outcome) is mediated by (or works via) relationship commitment (the mediator). This model suggests that the relationship between pornography consumption and infidelity (labelled as path *c*) isn't a direct effect but operates though porn consumption reducing relationship commitment (labelled as path *a*) and relationship commitment affecting infidelity (labelled as path *b*). When conducting mediation analysis we therefore distinguish between the **direct effect** of the predictor on the outcome and the **indirect effect** (the effect via other variables) of the predictor on the outcome. In this example, We can partition the total effect of pornography consumption on infidelity into the direct effect, which is the relationship between them adjusting for relationship commitment, and the indirect effect, which is the effect of pornography consumption on infidelity *through* relationship commitment.
 
@@ -677,7 +682,7 @@ Inspect the data in [infidelity_tib]{.alt}.
 infidelity_tib
 ```
 
-### `r user_astronaut()` Mediation as two linear models [(3)]{.alt}
+### `r user_astronaut()` Mediation as two linear models [(C)]{.lbl}
 
 Mathematically we can represent mediation as two models. The first model predicts the outcome variable (infidelity) from both the mediator (commitment) and the predictor (porn consumption). We can express this model with the following equation (we don't need an intercept), in which I use $\hat{c}$ and $\hat{b}$ to distinguish model parameters attached to different predictors rather than the usual $\hat{b}_1$ and $\hat{b}_2$. These letters map to the paths in Figure 2.
 
@@ -697,7 +702,7 @@ We can use these models to express the direct and indirect effects in terms of t
 
 It follows that the total effect of porn use on infidelity can be expressed as the sum of the direct and indirect effects, in other words $\hat{c} + (\hat{a} \times \hat{b})$
 
-### `r user_visor()` Mediation using `r rproj()` [(2)]{.alt}
+### `r user_visor()` Mediation using `r rproj()` [(B)]{.lbl}
 
 To fit the median model were going to use the `sem()` function from `lavaan`, but it has many others! This function is the same as the more general `lavaan()` function but with a few default options set. In fact, there are more than 50 arguments/options that allow you to control a vast array of things about your model.
 

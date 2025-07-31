@@ -75,7 +75,7 @@ metalli_tib <- discovr::metallica
 
 
 
-##	`r bmu()` Tidy and messy data [(1)]{.alt}
+##	`r bmu()` Tidy and messy data [(A)]{.lbl}
 
 There are two common data formats, which are sometimes referred to as [tidy]{.kt} data and [messy]{.kt} data. In tidy data, scores on an outcome variable appear in a single column and rows represent a combination of the attributes of those scores. Each row, therefore, represents an instance of an outcome and any information about that score (e.g., the entity that produced it, characteristics of that entity, the conditions under which the score was observed) is placed in columns across that row. In tidy format, scores from a single entity can appear over multiple rows where each row represents a different instance of the score (for example, the time point at which it was collected). Conversely, in messy (wide) format each row represents data from one entity and each column represents a variable. Each row represents one entity's data (be that entity a human, mouse, tulip, business, or water sample) and any information about that entity should be entered across the data editor. 
 
@@ -92,7 +92,7 @@ Contrast this arrangement with messy format, in which every participant's inform
 
 
 
-##	`r bmu()` Tibbles [(1)]{.alt}
+##	`r bmu()` Tibbles [(A)]{.lbl}
 
 In `discovr_02` we looked at how to create variables by entering come variable relating to the rock band [Metallica](http://www.metallica.com). What if we want to combine these variables into a tabulated data set in tidy format? The tidyverse way to do this is to create something called a **tibble**. 
 
@@ -131,11 +131,11 @@ metalli_tib
 
 From viewing the tibble, you can see that it collects together the objects called **name**, **birth_date**, **death_date**, **instrument**, **current_member**, **songs_written**, and **net_worth** into columns. When we created these variables we consistently entered the data in the order of Lars, James, Kirk, Rob, Jason, Cliff and Dave, therefore, each row represents the data for each member. For example, we can see that Lars plays drums and has a song writing credit on 123 songs. The whole thing looks like Table 1.
  
-##	`r bmu()` Creating new variables using `mutate()` [(1)]{.alt}
+##	`r bmu()` Creating new variables using `mutate()` [(A)]{.lbl}
 
-###	`r bmu()` Adding a variable to a tibble [(1)]{.alt}
+###	`r bmu()` Adding a variable to a tibble [(A)]{.lbl}
 
-We can create new variables within a tibble using the `mutate()` function from the [dplyr]{.pkg} (which is part of `tidyverse`).
+We can create new variables within a tibble using the `mutate()` function from the [dplyr]{.pkg} (which is part of [tidyverse]{.pkg}).
 
 #### `r robot()` Code example
 
@@ -194,7 +194,7 @@ metalli_tib
 
 The first line creates the object [metalli_tib]{.alt} from a version of itself in which the original tibble is passed through the pipe into `mutate()`, where the new variable is created. You'll see that the new version of [metalli_tib]{.alt} has an extra column called **albums** that contains the values we entered.
 
-###	`r bmu()` Creating new variables from existing variables [(1)]{.alt}
+###	`r bmu()` Creating new variables from existing variables [(A)]{.lbl}
 
 We can also compute variables from existing variables. Let's imagine we now wanted to work out how much money per song contributed each band member made. We know how many songs each member contributed to (**songs_written**) and their net worth (**net_worth**) so their 'worth per song' will be their net worth divided by the number of songs written. We can create a variable that takes the values for net_worth and divides them by the corresponding value of **songs_written** using one of the arithmetic operators built into `r rproj()`. Amongst other things, we can add, subtract, multiply and divide using [+]{.alt}, [-]{.alt}, [\*]{.alt} and [/]{.alt} respectively. So, let's use [/]{.alt} to create a new variable that we'll call **worth_per_song** that is **net_worth** divided by **songs_written**. The command within `mutate()` to create this variable will be:
 
@@ -244,7 +244,7 @@ metalli_tib
 
 Note that within the `mutate()` function we create the new variable (which we name on the left hand side of the equals sign) by taking the existing variable **net_worth** from the tibble and divided it by another existing variable in the tibble, **songs_written**. If you look at the resulting tibble you'll see that Lars earns about \$2.85 million per song, but the real winner here is Jason who contributed to only 3 songs which puts his earnings per song at around \$20 million. Nice work if you can get it.
 
-## `r bmu()` Selecting variables using `select()` [(1)]{.alt}
+## `r bmu()` Selecting variables using `select()` [(A)]{.lbl}
 
 Sometimes we might want to subset tibbles to focus on specific variables or cases of data. First we'll look at selecting variables. The most extreme case would to look at or retain only at a single variable. To select variables from within a tibble we use the `select()` function from the [dplyr]{.pkg} package (which is loaded as part of [tidyverse]{.pkg}). The function takes this general form:
 
@@ -384,7 +384,7 @@ Inspect the variable **worth_per_song** from [metalli_tib]{.alt}.
 metalli_tib$worth_per_song
 ```
 
-##	`r bmu()` Selecting cases using `filter()` [(1)]{.alt}
+##	`r bmu()` Selecting cases using `filter()` [(A)]{.lbl}
 
 Sometimes we want to select cases rather than (or as well as) variables. For example, maybe we want to work with only the current members of Metallica. To do this, we'd need to select rows of the tibble on the basis of whether the variable **current_member** was true. To filter rows of a tibble you use the `filter()` function from [dplyr]{.pkg}. Like the `select()` function in the previous section, you feed in the name of the tibble and some instructions about how to filter:
 
@@ -447,7 +447,7 @@ metalli_tib |>
 
 Notice that the result displays only the bassists and drummers.
 
-##	`r bmu()` Selecting cases and variables [(1)]{.alt}
+##	`r bmu()` Selecting cases and variables [(A)]{.lbl}
 
 We can combine what we have learnt in the previous sections to select variables *and* cases in a single command. For example, let's say we want to create a new object called [metalli_worth]{.alt} that contains only the names and net worth of the current members. This involves two operations:
 

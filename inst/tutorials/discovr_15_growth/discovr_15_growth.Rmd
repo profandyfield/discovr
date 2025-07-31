@@ -6,6 +6,7 @@ output:
     progressive: true
     allow_skip: true
     theme: "united"
+    highlight: "kate"
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
 description: "Modelling change over time. Growth models using multilevel modelling."
@@ -23,15 +24,21 @@ knitr::opts_chunk$set(
 #necessary to render tutorial correctly
 library(learnr) 
 library(htmltools)
+#easystats
+library(insight)
+library(modelbased)
+library(parameters)
+library(performance)
 #tidyverse
 library(dplyr)
 library(ggplot2)
 library(tibble)
-#non tidyverse
+#non tidyverse/easystats
 library(broom.mixed)
 library(Hmisc)
-library(knitr)
 library(nlme)
+#students don't use
+library(knitr)
 
 source("./www/discovr_helpers.R")
 
@@ -95,9 +102,9 @@ Hi, welcome to **discovr** space pirate academy. Well done on embarking on this 
 
 On your way you will face many challenges, but follow Mae's system to keep yourself on track:
 
-* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
-* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
-* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(A)]{.lbl}.
+* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(B)]{.lbl}.
+* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(C)]{.lbl}.
 
 It's not just me that's here to help though, you will meet other characters along the way:
 
@@ -129,25 +136,25 @@ This tutorial uses the following packages:
 
 * `emmeans` [@R-emmeans]
 * `broom.mixed` [@R-broom.mixed]
-* `here` [@R-here]
-* `Hmisc` [@R-Hmisc] is loaded by `ggplot2`
+* [here]{.pkg} [@R-here]
+* `Hmisc` [@R-Hmisc] is loaded by [ggplot2]{.pkg}
 * `knitr` [@R-knitr]
 * `nlme` [@R-nlme]
 
-It also uses these `tidyverse` packages [@R-tidyverse; @tidyverse2019]: `dplyr` [@R-dplyr], `forcats` [@R-forcats], `ggplot2` [@wickhamGgplot2ElegantGraphics2016], `readr` [@R-readr] and `tibble` [@R-tibble].
+It also uses these [tidyverse]{.pkg} packages [@R-tidyverse; @tidyverse2019]: [dplyr]{.pkg} [@R-dplyr], [forcats]{.pkg} [@R-forcats], [ggplot2]{.pkg} [@wickhamGgplot2ElegantGraphics2016], [readr]{.pkg} [@R-readr] and [tibble]{.pkg} [@R-tibble].
 
 
 ### Coding style
 
 There are (broadly) two styles of coding:
 
-1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
+1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
 
-2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
+2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
 
-Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load `tidyverse` because the `dplyr` and `ggplot2` packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load [tidyverse]{.pkg} because the [dplyr]{.pkg} and [ggplot2]{.pkg} packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from [ggplot2]{.pkg}.
 
-You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the `tidyverse` package (and any others if you're using a concise style) at the beginning of your Quarto document:
+You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the [tidyverse]{.pkg} package (and any others if you're using a concise style) at the beginning of your Quarto document:
 
 ```{r eval = FALSE}
 library(tidyverse)
@@ -175,7 +182,7 @@ rehab_growth_tib <- here::here("data/zombie_growth.csv") |>
 
 This code reads in the data and converts the variables **intervention** and **time** to factors (categorical variable). It uses `fct_relevel` to set the order of the levels of the factor **intervention** to be wait list and intervention. Similarly, the order of the levels of the factor **time** are set as baseline, 1 month, 6 months, 12 months.
 
-## `r bmu()` Zombie rehabilitation [(1)]{.alt}
+## `r bmu()` Zombie rehabilitation [(A)]{.lbl}
 
 My book *An Adventure in Statistics* [@fieldAdventureStatisticsReality2016] as well as teaching statistics, has a narrative flowing through it about a brilliant geneticist (Alice) who vanishes much to the dismay of her Musician boyfriend (Zach). Zach is compelled to find her, but his only clue is some of Alice's research, which he doesn't understand. To find her, he has to learn statistics which, from his perspective, is an unfortunate turn of events. Anyway, along the way he meets a lot of people who have been recruited by a company called JIG:SAW to take part in their genetic enhancement programme, which unfortunately turns them into zombies.
 
@@ -199,7 +206,7 @@ View the data in [rehab_growth_tib]{.alt}.
 rehab_growth_tib   
 ```
 
-## `r bmu()` Preparing categorical variables [(1)]{.alt}
+## `r bmu()` Preparing categorical variables [(A)]{.lbl}
 
 In [discovr_01]{.alt} and [discovr_14]{.alt} we learnt the following good advice
 
@@ -229,7 +236,7 @@ levels(growth_evil_tib$time)
 
 The evilness of this tibble should now be apparent because for **intervention**, the first level is gene therapy and the second level is wait list. This order is the opposite of what we want because ideally we want the *b* for this effect to represent the difference in the mean resemblance in the therapy group relative to the control (not the control relative to the therapy group). For **time** the order of levels is Baseline, 6 months, 12 months and 1 month. Yuk.
 
-In [discovr_01]{.alt} and [discovr_14]{.alt} we met the `fct_relevel()` function from the `forcats` package. Let's see whether we can recall how to use it (use the hints if you get stuck) refresh our memories. 
+In [discovr_01]{.alt} and [discovr_14]{.alt} we met the `fct_relevel()` function from the [forcats]{.pkg} package. Let's see whether we can recall how to use it (use the hints if you get stuck) refresh our memories. 
 
 
 #### `r alien()` Alien coding challenge
@@ -306,7 +313,7 @@ levels(growth_evil_tib$time)
 
 That was a little detour to into the habit of checking the levels of categorical predictors and making sure that the categories are in the order you want them. We'll return to using the tibble called [rehab_growth_tib]{.alt} that has the categorical variables set up as we want them.
 
-## `r user_astronaut()` The model [(3)]{.alt}
+## `r user_astronaut()` The model [(C)]{.lbl}
 
 The data has a hierarchical structure because resemblance scores are nested within zombies (Figure 1). We, therefore, need to model the individual differences in resemblance scores (random intercept) and the variance in the change in resemblance scores over time (random slopes). We also want to include the effect of treatment condition and the interaction it has with the change in resemblance over time.
 
@@ -337,8 +344,8 @@ e_{ij} &= \text{portion individual's resemblance score that is unpredicted at ti
 $$
 
 
-## `r user_visor()` Exploring data [(2)]{.alt}
-### `r user_visor()` Descriptive statistics [(2)]{.alt}
+## `r user_visor()` Exploring data [(B)]{.lbl}
+### `r user_visor()` Descriptive statistics [(B)]{.lbl}
 
 
 #### `r alien()` Alien coding challenge
@@ -349,7 +356,7 @@ Using what you've learnt in previous tutorials, create a tibble called [growth_s
 <div class="tip">
   `r cat_space()` **Tip: Grouping means**
 
-To group means you can use `dplyr::group_by(grouping_variable_1, grouping_variable_2 ...)`. For time use the variable **time** not **time_num**. If you're doing this outside of the tutorial remember to load the `tidyverse` package.
+To group means you can use `dplyr::group_by(grouping_variable_1, grouping_variable_2 ...)`. For time use the variable **time** not **time_num**. If you're doing this outside of the tutorial remember to load the [tidyverse]{.pkg} package.
 
 </div>
 
@@ -370,7 +377,7 @@ growth_sum |>
   knitr::kable(digits = 3)
 ```
 
-### `r user_visor()` Visualizing data [(2)]{.alt}
+### `r user_visor()` Visualizing data [(B)]{.lbl}
 #### `r alien()` Alien coding challenge
 
 Use the code box below to create a plot with **time_num** on the *x*-axis and **resemblance** on the *y*-axis, and a line that summarizes the linear trend over time for each intervention condition as a separate colour. Some tips to help you out:
@@ -465,9 +472,9 @@ ggplot2::ggplot(rehab_growth_tib, aes(time_num, resemblance, colour = interventi
   theme_minimal()
 ```
 
-## `r user_astronaut()` Fitting a growth model [(3)]{.alt}
+## `r user_astronaut()` Fitting a growth model [(C)]{.lbl}
 
-###  `r user_astronaut()` Modelling time  [(3)]{.alt}
+###  `r user_astronaut()` Modelling time  [(C)]{.lbl}
 
 Traditionally many people would treat the design of this study as, what's known as, a *mixed design*. It is so-called because the predictors (independent variables) are a 'mix' of repeated measures and independent measures. Specifically:
 
@@ -481,7 +488,7 @@ The RM-ANOVA approach can be used to analyse these 'mixed' designs. The RM-ANOVA
 
 When we're dealing with change over time, it also means that we're treating time points as equally spaced. That is, we treat time as a factor where different time points are different categories. Therefore, in our data we'd have categories of *Baseline*, *1 month*, *6 months* and *12 months*. The fact that *Baseline* and *1 month* were 1 month apart, but *6 months* and *12 months* were 6 months apart is ignored. The categories are assumed to be equally spaced. Clearly it's better if we represent time along a continuum that represents the actual temporal spacing of events than to lose information by converting this continuous information to categories. The variable **time_num** represents time in this way as months from baseline. As such it contains values of 0 (baseline), 1 (1 month form baseline), 6 (6 months from baseline) and 12 (12 months from baseline). Growth models allow us to treat time in this flexible way by using a numeric variable to represent time rather than a factor (i.e. categories).
 
-###  `r user_astronaut()` Revision of `lme()`  [(3)]{.alt}
+###  `r user_astronaut()` Revision of `lme()`  [(C)]{.lbl}
 
 To fit the model we use the `lme()` function from the `nlme` package [@R-nlme], because we want to model the dependency between scores within zombies (see the earlier description of the hierarchical data structure and Figure 1). We could also use the `lmer()` function from `lme4` (because we are fitting a multilevel model), but this function doesn't allow us to model different covariance structures.
 
@@ -505,7 +512,7 @@ In which
 * [method]{.alt}: defines which estimation method is used. By default restricted maximum likelihood is used ([REML]{.alt}), but if you want to compare models you should override the default and use maximum likelihood ([method = "ML"]{.alt}).
 * [na.action]{.alt}: If you have complete data (as we have here) exclude this option, but if you have missing values (i.e., NAs in the data frame) then by default the model will fail, so include [na.action = na.exclude]{.alt} to exclude cases with missing values.
 
-###  `r user_astronaut()` Testing for individual differences in change over time [(3)]{.alt}
+###  `r user_astronaut()` Testing for individual differences in change over time [(C)]{.lbl}
 
 We might want to test formally whether the effect of time varies by individuals (i.e., test whether the random slope of time improves the fit of the model), in which case we can specify a random intercept model, then add the random slope, and compare the two.
 
@@ -574,7 +581,7 @@ Note that the degrees of freedom quoted for the significance test are `r re_rs_a
 </div>
 
 
-###  `r user_astronaut()` Modelling the effect of the intervention  [(3)]{.alt}
+###  `r user_astronaut()` Modelling the effect of the intervention  [(C)]{.lbl}
 
 We expect the change over time to be moderated by the intervention condition (we'd predict greater change for those in the gene therapy group than the wait list. In effect we're predicting an interaction between **intervention** and **time_num**. To test this interaction we need to add the fixed effect of **intervention** as a predictor and also its interaction with **time_num**. To specify an interaction in `r rproj()` we use a colon. For example, to specify the interaction between **time_num** and **intervention** we would use [time_num:intervention]{.alt}.
 
@@ -619,7 +626,7 @@ Note that the degrees of freedom quoted for the significance test for [rehab_mod
 </div>
 
 
-###  `r user_astronaut()` *F*-statistics for fixed effects [(3)]{.alt}
+###  `r user_astronaut()` *F*-statistics for fixed effects [(C)]{.lbl}
 
 We can look at *F*-statistics for the fixed effects in the model by placing the model in the `anova()` function.
 
@@ -643,7 +650,7 @@ rehab_mod_fixed <- anova(rehab_mod)
 
 The results show no significant main effect of **intervention**, `r report_aov_nlme(rehab_mod_fixed, row = 3)`. However, the main effect of **time_num** was significant, `r report_aov_nlme(rehab_mod_fixed, row = 2)`, and the **time_num** ×  **intervention** interaction, `r report_aov_nlme(rehab_mod_fixed, row = 4)`.
 
-###  `r user_astronaut()` Model parameters for fixed effects [(3)]{.alt}
+###  `r user_astronaut()` Model parameters for fixed effects [(C)]{.lbl}
 
 
 In [discovr_14]{.alt} we used the `tidy()` function from the `broom.mixed` package to view multilevel model parameters. To recap, we place the model name into the function and set [conf.int = TRUE]{.alt} to get the 95% confidence intervals.
@@ -684,7 +691,7 @@ The final model shows that
 * Resemblance scores significantly changed over time $\hat{\gamma}$ = `r report_pars(rehab_mod_fe, row = 2, df = 421)`. For every month that passed, resemblance scores changed by `r get_par(rehab_mod_fe, row = 2)` percent (remember resemblance is measured on a percentage scale), that is, they resembled their pre-zombification state less.
 * The change over time of resemblance scores was significantly affected by whether the zombie had gene therapy or was in the wait list, $\hat{\gamma}$ = `r report_pars(rehab_mod_fe, row = 4, df = 421)`. The rate of change in resemblance scores is `r get_par(rehab_mod_fe, row = 4)` higher in the intervention group than in the wait list group.
 
-###  `r user_astronaut()` Breaking down the interaction [(3)]{.alt}
+###  `r user_astronaut()` Breaking down the interaction [(C)]{.lbl}
 
 The interaction effect is the one that tests our hypothesis, but what does it mean that the rate of change in resemblance scores is `r get_par(rehab_mod_fe, row = 4)` higher in the intervention group than in the wait list group?
 
@@ -745,7 +752,7 @@ The output shows us that
 * In the gene therapy group the parameter for time is `r gt_par` suggesting that for every month that passes resemblance scores change by `r gt_par`, that is they increase: the zombies look *more* like their pre-zombified state. They look better.
 * If we take the difference between these parameter values we get the parameter for the interaction term (look back to the previous section), which was `r get_par(rehab_mod_fe, row = 4)`: $\hat{\gamma}_\text{time (gene therapy)} - \hat{\gamma}_\text{time (wait list)}$ = `r gt_par` - (`r wl_par`) = `r as.numeric(gt_par) - as.numeric(wl_par)`.
 
-###  `r user_astronaut()` Model parameters for random effects [(3)]{.alt}
+###  `r user_astronaut()` Model parameters for random effects [(C)]{.lbl}
 
 
 #### `r alien()` Alien coding challenge
@@ -778,7 +785,7 @@ This interaction reflected the fact that in the gene therapy group, resemblance 
 
 </div>
 
-##  `r user_astronaut()` Modelling nonlinear effects of time  [(3)]{.alt}
+##  `r user_astronaut()` Modelling nonlinear effects of time  [(C)]{.lbl}
 
 We can model more complex changes over time, such as a second-order polynomial or quadratic trend (i.e. a curvilinear trend). To do this, we can replace the predictor **time_num** with `poly(time_num, 2)`. This action creates a power polynomial up to the order of 2 (because we put 2 in the function). In effect this creates two variables that represent linear (order 1) and quadratic (order 2) trends over time. The advantage of this method is that the resulting predictors for the two trends are independent from each other.
 
@@ -875,7 +882,7 @@ The output shows that
 * The quadratic trend significantly improves the fit of the model, $\chi^2$(`r quad_df`) = `r quad_chi`, *p* = `r quad_p`.
 * Including the random effect of the polynomial also significantly improved the fit of the model, $\chi^2$(`r quad_rs_df`) = `r quad_rs_chi`, *p* < 0.001.
 
-###  `r user_astronaut()` Model parameters for fixed effects [(3)]{.alt}
+###  `r user_astronaut()` Model parameters for fixed effects [(C)]{.lbl}
 
 #### `r alien()` Alien coding challenge
 
@@ -939,7 +946,7 @@ ggplot2::ggplot(rehab_growth_tib, aes(time_num, resemblance, colour = interventi
 
 The resulting plot shows that resemblance scores in the gene therapy group have a curvilinear effect: there is improvement up to about 6 months and then it plateaus, whereas the wait list group seem to show a constant linear decrease in resemblance scores.
 
-###  `r user_astronaut()` Model parameters for random effects [(3)]{.alt}
+###  `r user_astronaut()` Model parameters for random effects [(C)]{.lbl}
 
 #### `r alien()` Alien coding challenge
 

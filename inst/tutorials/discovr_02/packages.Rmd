@@ -15,7 +15,7 @@ here::here("inst/tutorials/discovr_01/packages.bib") |>
   knitr::write_bib(c(easylist, tidylist, otherlist), file = _)
 ```
 
-In this tutorial all packages are pre-loaded. If working outside of the tutorial, load the `tidyverse` package at the beginning of your `r quarto()` document:
+In this tutorial all packages are pre-loaded. If working outside of the tutorial, load the [tidyverse]{.pkg} package at the beginning of your `r quarto()` document:
 
 ```{r eval = FALSE}
 library(tidyverse)
@@ -23,10 +23,10 @@ library(tidyverse)
 
 This tutorial uses the following packages:
 
-- `here` [@R-here]
+- [here]{.pkg} [@R-here]
 
-It also uses these packages from `tidyverse`
+It also uses these packages from [tidyverse]{.pkg}
  
-- `forcats` [@R-forcats]
-- `lubridate` [@R-lubridate]
-- `readr` [@R-readr]
+- [forcats]{.pkg} [@R-forcats]
+- [lubridate]{.pkg} [@R-lubridate]
+- [readr]{.pkg} [@R-readr]

@@ -12,11 +12,12 @@ grey: #616161 rgba(97, 97, 97, 1)
 purple: #49345b rgba(44, 28, 60, 1)
 brown: #844B2A rgba(188, 108, 60, 1)
 vom: #86753E rgba(134, 117, 62, 1)
-gangreen: #597F75 rgba(89, 127, 117, 1)
+gangreen: #427479 rgba(866, 116, 121, 1)
 blue: #3C648C rgba(60, 100, 140, 1)
 grate: #2F4F4F rgba(47, 79, 79, 1)
+byzantine: #882255 rgba(136 34 85, 1)
 
-Contrast compliancy grid at: https://contrast-grid.eightshapes.com/?version=1.1.0&background-colors=%23FFFFFF%0D%0A%23E8EAE5%0D%0A&foreground-colors=%23FFFFFF%0D%0A%23E8EAE5%0D%0A%23616161%0D%0A%2349345b%0D%0A%23844B2A%0D%0A%2386753E%0D%0A%23597F75%0D%0A%233C648C%0D%0A%232F4F4F%0D%0A&es-color-form__tile-size=compact&es-color-form__show-contrast=aaa&es-color-form__show-contrast=aa&es-color-form__show-contrast=aa18&es-color-form__show-contrast=dnp
+Contrast compliancy grid at: https://contrast-grid.eightshapes.com/?version=1.1.0&background-colors=%23FFFFFF%0D%0A%23E8EAE5%0D%0A&foreground-colors=%23FFFFFF%0D%0A%23E8EAE5%0D%0A%23616161%0D%0A%2349345b%0D%0A%23844B2A%0D%0A%2386753E%0D%0A%23427479%0D%0A%233C648C%0D%0A%232F4F4F%0D%0A%23882255%0D%0A&es-color-form__tile-size=compact&es-color-form__show-contrast=aaa&es-color-form__show-contrast=aa&es-color-form__show-contrast=aa18&es-color-form__show-contrast=dnp
 
 
 */
@@ -79,11 +80,11 @@ h3 {
 }
 
 h4 {
-  color: #597F75;
+  color: #427479;
 }
 
 .alt {
-    color: #597F75;
+    color: #427479;
     font-size: 1em;
 }
 
@@ -92,6 +93,16 @@ h4 {
     font-size: 1em;
 }
 
+.pkg {
+    color: #882255;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.lbl {
+    color: #882255;
+    font-size: 1em;
+}
 
 
 /* Tutorial start over button */
@@ -122,7 +133,7 @@ h4 {
 }
 
 .panel_alt {
-    background-color: transparent
+    background-color: transparent;
 }
 
 /*-------- Code chunk main panel --------*/
@@ -158,9 +169,9 @@ h4 {
 
 /*------- In line code aesthetic --------*/
 code {
-    color: #597F75;
-    background-color: #597F75;
-    background-color: rgba(89, 127, 117, 0.1);
+    color: #427479;
+    background-color: #427479;
+    background-color: rgba(66, 116, 121, 0.1);
     font-size: 14px;
 }
 

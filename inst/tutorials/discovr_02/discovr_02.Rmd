@@ -51,7 +51,7 @@ source("./www/discovr_helpers.R")
 ```
 
 
-## `r bmu()` Functions [(1)]{.alt}
+## `r bmu()` Functions [(A)]{.lbl}
 
 Our conversation with `r rproj()` involves typing commands. The strength of this approach is reproducibility, but the cost (for many people) is untold mental anguish — the learning curve is steep, but you can do it. Functions are the core building blocks of these 'conversations'.
 
@@ -143,7 +143,7 @@ Note that we haven't included the names of the arguments, we have instead includ
 </div>
 
 
-## `r bmu()` Creating objects (1)
+## `r bmu()` Creating objects [(A)]{.lbl}
 
 A simple 'conversation' with `r rproj()` follows the common structure shown in Figure 4.
 
@@ -240,7 +240,7 @@ learnr::quiz(caption = "A fun ... ction quiz",
 ```
 
 
-### `r bmu()` General style principals (1)
+### `r bmu()` General style principals [(A)]{.lbl}
 
 It is important to adopt consistent principles about how to name the objects you create in `r rproj()`. I recommend following Hadley Wickham's [tidyverse style guide](http://style.tidyverse.org/). The style guide has a lot to take in, so a few key tips are:
 
@@ -291,7 +291,7 @@ This example shows poor style. Note that I have not annotated what I am doing, t
 ```
 
 
-##	`r bmu() ` The `here()` function [(1)]{.alt}
+##	`r bmu() ` The `here()` function [(A)]{.lbl}
 
 Let's look at a simple function that comes in very useful for loading data: the `here()` function from the [here]{.pkg} package. In the book I recommend using an `r rstudio()` project (see the workflow section in the introduction of this tutorial) and the `here()` returns the path to your project folder.
 
@@ -338,7 +338,7 @@ here::here("data", "metallica.csv")
 The `here()` function generates the filepath for the project folder each time it is called, so if you move your project folder to another machine or a different location on the same machine your code will still work.
 
 
-##	`r bmu() ` The pipe operator `|>` [(1)]{.alt}
+##	`r bmu() ` The pipe operator `|>` [(A)]{.lbl}
 
 The tidyverse approach to coding `r rproj()` makes use of something called the pipe operator (`|>`) to link functions together. This operator, known as the [native pipe]{.alt}, is built into `r rproj()`.
 
@@ -535,7 +535,7 @@ my_model |>
   
 </div>
 
-## `r bmu()` Data types [(1)]{.alt}
+## `r bmu()` Data types [(A)]{.lbl}
 
 Often when analysing data you will input your data with an external software such as Microsoft Excel, Google sheets, or Numbers and then import it into `r rproj()`. However, you can enter data directly. It's also useful to know about the different ways in which `r rproj()` stores data. `r rproj()` can store information using several different data types:
 
@@ -564,7 +564,7 @@ tibble::tribble(
 ```
 
 
-### `r bmu()` Character variables [(1)]{.alt}
+### `r bmu()` Character variables [(A)]{.lbl}
 
 We created a character variable (also called a [string]{.kt} variable) when we entered the names of the members of Metallica. To recap, we used the `c()` function to 'collect' together values. Each value (known as a character string) is separated by commas and placed in straight quotes so that `r rproj()` knows that it is text:
 
@@ -609,7 +609,7 @@ name <- c("Lars Ulrich", "James Hetfield", "Kirk Hammett", "Rob Trujillo", "Jaso
 name
 ```
 
-###	`r bmu()` Double or integer variables [(1)]{.alt}
+###	`r bmu()` Double or integer variables [(A)]{.lbl}
 
 We have three numeric variables in Table 1: the number of Metallica songs written by each member, their net worth in millions of dollars and the number of albums they played on. A variable that contain numbers is called a numeric variable. By default, `r rproj()` stores numbers as double precision floating point numbers ([double]{kt}), which basically means it includes decimal places, but you can force `r rproj()` to store them as whole numbers ([integer]{.kt}). Other things being equal storing numbers as doubles makes sense. To create a numeric variable, type the numeric values into the `c()` function in the order you want them. For example, to create the variables **songs_written** and **net_worth** we would execute:
 
@@ -637,7 +637,7 @@ songs_written
 net_worth
 ```
 
-### `r user_visor()` Date variables [(2)]{.alt}
+### `r user_visor()` Date variables [(B)]{.lbl}
 
 The second column of Table 1 contains dates. To create a date variable we do much the same as for a character variable except that we also need to tell `r rproj()` that the values are dates. The conversion from text to dates is important if you want to do computations on the dates. If your dates are stored as characters (rather than dates) computations won't work. The most versatile way to handle dates is the [lubridate]{.pkg} package (part of the tidyverse), which contains a suite of functions specifically designed for working with times and dates.
 
@@ -698,7 +698,7 @@ birth_date <- c("1963-12-26", "1963-08-03", "1962-11-18", "1964-10-23", "1963-03
 birth_date
 ```
 
-###	`r bmu()` Missing values [(1)]{.alt}
+###	`r bmu()` Missing values [(A)]{.lbl}
 
 Although as researchers we strive to collect complete sets of data, it is often the case that we have missing data. We denote missing values with [NA]{.alt} (in capital letters), which stands for 'not available'. Many functions in `r rproj()` have arguments to specify how you handle missing values so if you have missing values remember to set a value for these arguments.
 The dates of the member's deaths are included in Table 1. At the time of writing all but one of the members are alive (Cliff Burton was tragically killed in a tour bus accident), so we (thankfully) have a lot of missing values. We enter these values as [NA]{.alt} (not in quotes).
@@ -740,7 +740,7 @@ death_date <- c(NA, NA, NA, NA, NA, "1986-09-27", NA) |>
 death_date
 ```
 
-### `r bmu()` logical variables [(1)]{.alt}
+### `r bmu()` logical variables [(A)]{.lbl}
 
 Table 1 contains a logical variable, which is one that contains values of `TRUE` and `FALSE`. In this case true and false relate to whether the member is currently in the band. Logical variables are created much the same as integers and doubles except that you enter TRUE and FALSE (in upper case) instead of numbers into the `c()` function.
 
@@ -780,11 +780,11 @@ current_member <- c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
 current_member
 ```
 
-### `r bmu()` Factor variables [(1)]{.alt}
+### `r bmu()` Factor variables [(A)]{.lbl}
 
 A factor variable is one that uses numbers to represent different categories or groups of data. It is a numeric variable, but the numbers represent names (i.e., it is a nominal variable). These groups of data could be levels of a treatment variable in an experiment, different groups of people, different geographic locations, different organisations, etc. In Table 1 we have a factor variable that codes the instrument played by each member. We could enter this variable as a character variable and hope that `r rproj()` treats the variable sensibly when we try to enter it into a statistical model. Often it will, but it is usually a good idea to explicitly define these variables as factors and assign the numeric codes that you want to each category.
 
-The `as_factor()` function from the [forcats]{.pkg} package (which is part of `tidyverse`) uses something called dummy coding, meaning that we specify a sensible order (if there is one) for our groups and let `as_factor()` assign numeric codes for us.
+The `as_factor()` function from the [forcats]{.pkg} package (which is part of [tidyverse]{.pkg}) uses something called dummy coding, meaning that we specify a sensible order (if there is one) for our groups and let `as_factor()` assign numeric codes for us.
 
 
 #### `r robot()` Code example
@@ -889,7 +889,7 @@ levels(instrument)
   
   **A message from Mae Jemstone:**
   
-  Well done on completing this mission! You have worked very hard and gained a good foundation in how to code `r rproj()`. You know what a function is, how to instruct `r rproj()` to do things and how to create variables. Your next mission is to enter the `tidyverse` to look at how to store your variables as something called a tibble!
+  Well done on completing this mission! You have worked very hard and gained a good foundation in how to code `r rproj()`. You know what a function is, how to instruct `r rproj()` to do things and how to create variables. Your next mission is to enter the [tidyverse]{.pkg} to look at how to store your variables as something called a tibble!
   
 </div>
 

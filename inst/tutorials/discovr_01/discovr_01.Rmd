@@ -48,63 +48,63 @@ here::here("inst/tutorials/discovr_00/packages.bib") |>
 ```
 
 
-##	`r bmu()` What is R? (1)
+##	`r bmu()` What is R? [(A)]{.lbl}
 
 `r rproj()` [@R-base] is a free software environment for statistical analysis and graphics that was released in 2000. The application itself (so called 'base R') has a reasonable amount of functionality, but R's real power is that it can be extended by installing and loading [packages]{.kt}. So, what are packages and how do we get them?
 
-###	`r bmu()`	Packages and the CRAN (1)
+###	`r bmu()`	Packages and the CRAN [(A)]{.lbl}
 
-A package is a bundle of code that implements something in `r rproj()`. For example, the `ggplot2` package [@R-ggplot2] bestows upon you the gift of being able to create just about any data visualisation you can think of. Packages, as well as `r rproj()` itself, are typically stored in a central location known as the [CRAN]{.kt} (Comprehensive R Archive Network).  Once a package is stored in the CRAN, anyone with an internet connection can download and install it to use within their own copy of `r rproj()`. To use a package, you need to do two things:
+A package is a bundle of code that implements something in `r rproj()`. For example, the [ggplot2]{.pkg} package [@R-ggplot2] bestows upon you the gift of being able to create just about any data visualisation you can think of. Packages, as well as `r rproj()` itself, are typically stored in a central location known as the [CRAN]{.kt} (Comprehensive R Archive Network).  Once a package is stored in the CRAN, anyone with an internet connection can download and install it to use within their own copy of `r rproj()`. To use a package, you need to do two things:
 
 1.	**Install the package**: you need to install the package into `r rproj()`'s repository of packages on your computer. When you update or re-install `r rproj()` you need to re-install packages. 
 2.	**Load the package**: to use a particular package in a current session/document you need to load it from the repository.
 
 We'll look at how to do these two things in due course.
 
-###	`r bmu()`	The tidyverse (1)
+###	`r bmu()`	The tidyverse [(A)]{.lbl}
 
 <img src="./images/tidyverse_hex.png" alt="tidyverse package hex sticker, space-like background with the word tidyverse." style="width:100px;" class = "img_left">
 
-The [tidyverse]{.kt} [@R-tidyverse] is a suite of packages that we use extensively in the book and these tutorials. The packages within tidyverse are built upon a common philosophy of data science developed by Hadley Wickham [@wickham_r_2023]. In `r rproj()` there are always multiple ways to achieve the same goal, and in these tutorials we typically use the tidyverse way. The main `tidyverse` packages are (Figure 1):
+The [tidyverse]{.kt} [@R-tidyverse] is a suite of packages that we use extensively in the book and these tutorials. The packages within tidyverse are built upon a common philosophy of data science developed by Hadley Wickham [@wickham_r_2023]. In `r rproj()` there are always multiple ways to achieve the same goal, and in these tutorials we typically use the tidyverse way. The main [tidyverse]{.pkg} packages are (Figure 1):
 
-- `dplyr` [@R-dplyr]
-- `forcats` [@R-forcats]
-- `ggplot2` [@R-ggplot2; @wickham_ggplot2_2016]
-- `lubridate` [@R-lubridate]
-- `purrr` [@R-purrr]
-- `readr` [@R-readr]
-- `stringr` [@R-stringr]
-- `tibble` [@R-tibble]
-- `tidyr` [@R-tidyr]
+- [dplyr]{.pkg} [@R-dplyr]
+- [forcats]{.pkg} [@R-forcats]
+- [ggplot2]{.pkg} [@R-ggplot2; @wickham_ggplot2_2016]
+- [lubridate]{.pkg} [@R-lubridate]
+- [purrr]{.pkg} [@R-purrr]
+- [readr]{.pkg} [@R-readr]
+- [stringr]{.pkg} [@R-stringr]
+- [tibble]{.pkg} [@R-tibble]
+- [tidyr]{.pkg} [@R-tidyr]
 
 <figure>
 <img src="./images/tidy_hexes.png" alt="A selection of Hex logos for the tidyverse packages forcats, dplyr, ggplot2, purrr, readr, stringr, tidyr and tibble." style="width:500px">
-<figcaption>Figure 1: the `tidyverse` packages.</figcaption>
+<figcaption>Figure 1: the [tidyverse]{.pkg} packages.</figcaption>
 </figure> 
 
-###	`r bmu()`	The easystats package (1)
+###	`r bmu()`	The easystats package [(A)]{.lbl}
 
 <img src="./images/easystats_hex.png" alt="easystats package hex sticker, icon of a hand clicking the finger and thumb." style="width:100px;" class = "img_left">
 
-Another suite of packages that we'll use in the book and these tutorials is [easystats]{.kt} [@R-easystats]. Like `tidyverse`, `easystats` is an umbrella for a collection of packages including 
+Another suite of packages that we'll use in the book and these tutorials is [easystats]{.kt} [@R-easystats]. Like [tidyverse]{.pkg}, [easystats]{.pkg} is an umbrella for a collection of packages including 
 
-- `correlation` [@R-correlation]
-- `datawizard` [@R-datawizard]
-- `effectsize` [@R-effectsize]
-- `insight` [@R-insight]
-- `modelbased` [@R-modelbased]
-- `performance` [@R-performance]
-- `parameters` [@R-parameters]
+- [correlation]{.pkg} [@R-correlation]
+- [datawizard]{.pkg} [@R-datawizard]
+- [effectsize]{.pkg} [@R-effectsize]
+- [insight]{.pkg} [@R-insight]
+- [modelbased]{.pkg} [@R-modelbased]
+- [performance]{.pkg} [@R-performance]
+- [parameters]{.pkg} [@R-parameters]
 
-Whereas `tidyverse` focusses on data wrangling, the `easystats` packages focus on creating a coherent ecosystem for fitting and extracting information from statistical models. By using `easystats` I can teach things early on that are repeated throughout the book; this consistency will flatten your learning curve.  
+Whereas [tidyverse]{.pkg} focusses on data wrangling, the [easystats]{.pkg} packages focus on creating a coherent ecosystem for fitting and extracting information from statistical models. By using [easystats]{.pkg} I can teach things early on that are repeated throughout the book; this consistency will flatten your learning curve.  
 
 <figure>
 <img src="./images/easy_hexes.png" alt="A selection of Hex logos for the easystats packages." style="width:500px">
-<figcaption>Figure 2: the `easystats` packages.</figcaption>
+<figcaption>Figure 2: the [easystats]{.pkg} packages.</figcaption>
 </figure> 
 
 
-##	`r bmu()` Getting started (1)
+##	`r bmu()` Getting started [(A)]{.lbl}
 
 `r rproj()` is best used from within the `r rstudio()` integrated development environment (IDE). The book explains RStudio in detail, but essentially it enables you keep track of files and packages, keep track of your working environment, and send commands directly to `r rproj()`. `r rstudio()` also integrates with a powerful application called [Quarto]{.alt} that makes it possible to write (beautiful) documents that integrate text with code and output.
 
@@ -143,7 +143,7 @@ learnr::quiz(
 ```
 
 
-##	`r bmu()`  RStudio (1)
+##	`r bmu()`  RStudio [(A)]{.lbl}
 
 ![](https://youtu.be/jAHJyeOqe24?si=Pt-QCLomHFbG9QYq)
 
@@ -184,31 +184,31 @@ learnr::question("In what pane do you view the objects that you have created in 
 ```
 
 
-##	`r bmu()`  Quarto (1)
+##	`r bmu()`  Quarto [(A)]{.lbl}
 
-###	`r bmu()`	`r quarto()`: Creating a document (1)
+###	`r bmu()`	`r quarto()`: Creating a document [(A)]{.lbl}
 
 ![](https://youtu.be/31Q9ZTZOHIM?si=AxMNTEGMNQM87vbb)
 
-###	`r bmu()`	`r quarto()`: Formatting text, images, hyperlinks and code chunks (1)
+###	`r bmu()`	`r quarto()`: Formatting text, images, hyperlinks and code chunks [(A)]{.lbl}
 
 ![](https://youtu.be/QlYgnf_qCNo?si=Lpj8bXAlQwvmuGPy)
 
 
-###	`r bmu()`	`r quarto()`: Equations, callouts and citations (1)
+###	`r bmu()`	`r quarto()`: Equations, callouts and citations [(A)]{.lbl}
 
 ![](https://youtu.be/Au7MqvBCi5Y?si=sMitibMaJ4Ko1ETG)
 
-###	`r bmu()`	`r quarto()`: Setting global document options using YAML (1)
+###	`r bmu()`	`r quarto()`: Setting global document options using YAML [(A)]{.lbl}
 
 ![](https://youtu.be/Auo1hjyeCl4?si=cv01-T0ktb-fmzqJ)
 
-###	`r bmu()`	`r quarto()`: Cross referencing (1)
+###	`r bmu()`	`r quarto()`: Cross referencing [(A)]{.lbl}
 
 ![](https://youtu.be/wVf-k1azNE0?si=MoeBahBu_NZthEn2)
 
 
-##	`r bmu()` 	Getting help (1)
+##	`r bmu()` 	Getting help [(A)]{.lbl}
 
 You can type commands directly into the console (rather than using a `r quarto()` document). The first situation where you might use the console (rather than `r quarto()`) is to access help. The good news is that there is an enormous amount of in-built help in `r rproj()`, the bad news is that most of it is written by statisticians and is incomprehensible to us mortals. If you want to try your luck, then go to the console and execute:
 
@@ -230,7 +230,7 @@ or
 ```
 
 
-For help with the `geom_boxplot()` function within the `ggplot2` package (which is part of `t`idyverse`) you would execute:
+For help with the `geom_boxplot()` function within the [ggplot2]{.pkg} package (which is part of `t`idyverse`) you would execute:
 
 ```{r, eval = F}
 ?geom_boxplot
@@ -260,7 +260,7 @@ learnr::quiz(
 ```
 
 
-##	`r bmu()` 	Installing packages (1)
+##	`r bmu()` 	Installing packages [(A)]{.lbl}
 
 Another situation where you would use the console (rather than your `r quarto()` document) is to install packages using the `install.packages()` function, that takes the general form:
 
@@ -269,13 +269,13 @@ install.packages("package_name")
 ```
 
 
-Note that the name of the package must be enclosed in straight (not curly) quotes.  For example, you install the `tidyverse` suite of packages go to the `r rproj()` console, type:
+Note that the name of the package must be enclosed in straight (not curly) quotes.  For example, you install the [tidyverse]{.pkg} suite of packages go to the `r rproj()` console, type:
 
 ```{r, eval = F}
 install.packages("tidyverse")
 ```
 
-then press return. You'll see a load of red text, which is normal. We also make extensive use of the `easystats` packages. To install these, go to the `r rproj()` console, type:
+then press return. You'll see a load of red text, which is normal. We also make extensive use of the [easystats]{.pkg} packages. To install these, go to the `r rproj()` console, type:
 
 ```{r, eval = F}
 install.packages("easystats")
@@ -287,22 +287,22 @@ and press return. More red text will ensue. When the prompt re-appears type
 easystats::install_suggested()
 ```
 
-and press return to install a bunch of stuff upon which `easystats` relies.
+and press return to install a bunch of stuff upon which [easystats]{.pkg} relies.
 
 ##	`r bmu()` Loading packages and coding style
 
 There are (broadly) two styles of coding:
 
-1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your `r quarto()` document but code can get busy.
+1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your `r quarto()` document but code can get busy.
 
-2. **Concise**: Using this style you load all of the packages at the start of your `r quarto()` document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently. The resulting code is less busy, but you can can stumble across clashes with functions.
+2. **Concise**: Using this style you load all of the packages at the start of your `r quarto()` document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently. The resulting code is less busy, but you can can stumble across clashes with functions.
 
 Coding style is a personal choice, and neither approach is 'correct'. I recommend a hybrid which tries to have the best of both worlds, which is:
 
-- Use concise style for `tidyverse` and `easystats` because by loading these in your first code chunk most functions you need will be loaded and so your code will be succinct.
+- Use concise style for [tidyverse]{.pkg} and [easystats]{.pkg} because by loading these in your first code chunk most functions you need will be loaded and so your code will be succinct.
 - Use explicit style for packages that you'll use rarely.
 
-In these tutorials all packages are pre-loaded. If working outside of the tutorial, I suggest loading the `tidyverse` and `easystats` packages at the beginning of your document:
+In these tutorials all packages are pre-loaded. If working outside of the tutorial, I suggest loading the [tidyverse]{.pkg} and [easystats]{.pkg} packages at the beginning of your document:
 
 ```{r eval = FALSE}
 library(easystats)

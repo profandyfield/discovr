@@ -1,0 +1,51 @@
+---
+title: "data"
+author: "Andy Field"
+output: learnr::tutorial
+---
+
+To work *outside of this tutorial* you need to download the following data file:
+
+* [jiminy_cricket.csv](https://www.discovr.rocks/csv/jiminy_cricket.csv)
+* [notebook.csv](https://www.discovr.rocks/csv/notebook.csv)
+* [exam_anxiety.csv](https://www.discovr.rocks/csv/exam_anxiety.csv)
+
+Set up an `r rstudio()` project in the way that [I recommend in this video](https://youtu.be/mqT7c17tofE?si=R0aSApz66fGQKESl), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r quarto()` document:
+
+```{r, eval=FALSE}
+wish_tib <- here::here("data/jiminy_cricket.csv") |> read_csv()
+notebook_tib <- here::here("data/notebook.csv") |> read_csv()
+exam_tib <- here::here("data/exam_anxiety.csv") |> read_csv()
+```
+
+### Preparing data
+
+To work *outside of this tutorial* you need to turn categorical variables into factors and set an appropriate baseline category using `as_factor()` and `fct_relevel()` from the [forcats]{.pkg} package. For the [wish_tib]{.alt} execute the following code:
+
+```{r, eval=FALSE}
+wish_tib <- wish_tib |>
+  dplyr::mutate(
+    strategy = as_factor(strategy),
+    time = as_factor(time) |> fct_relevel("Baseline")
+  )
+```
+
+For [notebook_tib]{.alt} execute the following code:
+
+```{r, eval=FALSE}
+notebook_tib <- notebook_tib |>
+  dplyr::mutate(
+    sex = as_factor(sex),
+    film = as_factor(film)
+  )
+```
+
+For [exam_tib]{.alt} execute the following code:
+
+```{r, eval=FALSE}
+exam_tib <- exam_tib |>
+  dplyr::mutate(
+    id = as_factor(id),
+    sex = as_factor(sex)
+  )
+```

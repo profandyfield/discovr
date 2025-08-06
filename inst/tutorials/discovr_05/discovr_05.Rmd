@@ -150,7 +150,7 @@ For [notebook_tib]{.alt} execute the following code:
 ```{r, eval=FALSE}
 notebook_tib <- notebook_tib |>
   dplyr::mutate(
-    sex = forcats::as_factor(sex),
+    gender_identity = forcats::as_factor(gender_identity),
     film = forcats::as_factor(film)
   )
 ```
@@ -824,13 +824,13 @@ wish_plot +
 
 Imagine that a film company director was interested in whether there was really such a thing as a 'chick flick' (a film that has the stereotype of appealing to women more than to men). He took 20 men and 20 women and showed half of each sample a film that was supposed to be a 'chick flick' (The Notebook). The other half watched a documentary about notebooks as a control. In all cases the company director measured participants' emotional arousal as an indicator of how much they enjoyed the film. The data are in [notebook_tib]{.alt} and contains three variables:
 
-* **sex**: the biological sex of the participant
+* **gender_identity**: the gender identity of the participant
 * **film**: whether they watched the notebook or a documentary about notebooks
 * **arousal**: the participant's emotional arousal during the film.
 
 #### `r alien()` Alien coding challenge task 1
 
-Plot a boxplot of the data that shows **sex** on the *x*-axis, and fills the boxplots in different colours for different films. Name the plot object [note_plot]{.alt}.
+Plot a boxplot of the data that shows **gender identity** on the *x*-axis, and fills the boxplots in different colours for different films. Name the plot object [note_plot]{.alt}.
 
 ```{r transfer_1, exercise = TRUE, exercise.lines = 8}
 
@@ -843,7 +843,7 @@ note_plot <- ggplot2::ggplot(xxxx, aes(xxx, xxxx, fill = xxxx))
 
 ```{r transfer_1-hint-2}
 # add the boxplot geom
-note_plot <- ggplot2::ggplot(notebook_tib, aes(sex, arousal, fill = film))
+note_plot <- ggplot2::ggplot(notebook_tib, aes(gender_identity, arousal, fill = film))
 note_plot +
   geom_boxplot()
 ```
@@ -858,10 +858,10 @@ labs(x = "xxxxx", y = "xxxx", fill = "xxxxx")
 ```
 
 ```{r transfer_1-hint-4}
-note_plot <- ggplot2::ggplot(notebook_tib, aes(sex, arousal, fill = film))
+note_plot <- ggplot2::ggplot(notebook_tib, aes(gender_identity, arousal, fill = film))
 note_plot +
   geom_boxplot() +
-  labs(x = "Biological sex", y = "Arousal", fill = "Film watched")
+  labs(x = "Gender identity", y = "Arousal", fill = "Film watched")
 
 # now, set limits of the y-axis
 
@@ -871,10 +871,10 @@ coord_cartesian(ylim = c(xxx, xxxx))
 ```
 
 ```{r transfer_1-hint-5}
-note_plot <- ggplot2::ggplot(notebook_tib, aes(sex, arousal, fill = film))
+note_plot <- ggplot2::ggplot(notebook_tib, aes(gender_identity, arousal, fill = film))
 note_plot +
   geom_boxplot() +
-  labs(x = "Biological sex", y = "Arousal", fill = "Film watched") +
+  labs(x = "Gender identity", y = "Arousal", fill = "Film watched") +
   coord_cartesian(ylim = c(0, 50))
 
 # now, set breaks of the y-axis
@@ -888,10 +888,10 @@ scale_y_continuous(breaks = seq(xx, xx, xx))
 ```{r transfer_1-hint-6}
 # Finally, apply a theme:
 
-note_plot <- ggplot2::ggplot(notebook_tib, aes(sex, arousal, fill = film))
+note_plot <- ggplot2::ggplot(notebook_tib, aes(gender_identity, arousal, fill = film))
 note_plot +
   geom_boxplot() +
-  labs(x = "Biological sex", y = "Arousal", fill = "Film watched") +
+  labs(x = "Gender identity", y = "Arousal", fill = "Film watched") +
   coord_cartesian(ylim = c(0, 50)) +
   scale_y_continuous(breaks = seq(0, 50, 5)) +
   theme_minimal()
@@ -900,7 +900,7 @@ note_plot +
 
 #### `r alien()` Alien coding challenge task 1
 
-Plot a violin plot (with means) of the data that shows **sex** on the *x*-axis, and plots points and violins for different films in different colours. Name the plot object [note_plot]{.alt}.
+Plot a violin plot (with means) of the data that shows **Gender identity** on the *x*-axis, and plots points and violins for different films in different colours. Name the plot object [note_plot]{.alt}.
 
 ```{r transfer_2, exercise = TRUE, exercise.lines = 8}
 
@@ -913,7 +913,7 @@ note_plot <- ggplot2::ggplot(xxxx, aes(xxx, xxxx, colour = xxxx))
 
 ```{r transfer_2-hint-2}
 # add the violin geom
-note_plot <- ggplot2::ggplot(notebook_tib, aes(sex, arousal, colour = film))
+note_plot <- ggplot2::ggplot(notebook_tib, aes(gender_identity, arousal, colour = film))
 note_plot +
   geom_violin()
 ```
@@ -927,7 +927,7 @@ stat_summary(fun = xxxx, geom = xxxxx, size = xxxxx, position = position_dodge(x
 ```
 
 ```{r transfer_2-hint-4}
-note_plot <- ggplot2::ggplot(notebook_tib, aes(sex, arousal, colour = film))
+note_plot <- ggplot2::ggplot(notebook_tib, aes(gender_identity, arousal, colour = film))
 note_plot +
   geom_violin() +
   stat_summary(fun = "mean", geom = "point", size = 4, position = position_dodge(width = 0.9))
@@ -940,11 +940,11 @@ labs(x = "xxxxx", y = "xxxx", fill = "xxxxx")
 ```
 
 ```{r transfer_2-hint-5}
-note_plot <- ggplot2::ggplot(notebook_tib, aes(sex, arousal, colour = film))
+note_plot <- ggplot2::ggplot(notebook_tib, aes(gender_identity, arousal, colour = film))
 note_plot +
   geom_violin() +
   stat_summary(fun = "mean", geom = "point", size = 4, position = position_dodge(width = 0.9)) +
-  labs(x = "Biological sex", y = "Arousal", colour = "Film watched")
+  labs(x = "Gender identity", y = "Arousal", colour = "Film watched")
 
 # now, set limits of the y-axis
 
@@ -954,11 +954,11 @@ coord_cartesian(ylim = c(xxx, xxxx))
 ```
 
 ```{r transfer_2-hint-6}
-note_plot <- ggplot2::ggplot(notebook_tib, aes(sex, arousal, colour = film))
+note_plot <- ggplot2::ggplot(notebook_tib, aes(gender_identity, arousal, colour = film))
 note_plot +
   geom_violin() +
   stat_summary(fun = "mean", geom = "point", size = 4, position = position_dodge(width = 0.9)) +
-  labs(x = "Biological sex", y = "Arousal", colour = "Film watched") +
+  labs(x = "Gender identity", y = "Arousal", colour = "Film watched") +
   coord_cartesian(ylim = c(0, 50))
 
 # now, set breaks of the y-axis
@@ -971,11 +971,11 @@ scale_y_continuous(breaks = seq(xx, xx, xx))
 ```{r transfer_2-hint-7}
 # Finally, apply a theme:
 
-note_plot <- ggplot2::ggplot(notebook_tib, aes(sex, arousal, colour = film))
+note_plot <- ggplot2::ggplot(notebook_tib, aes(gender_identity, arousal, colour = film))
 note_plot +
   geom_violin() +
   stat_summary(fun = "mean", geom = "point", size = 4, position = position_dodge(width = 0.9)) +
-  labs(x = "Biological sex", y = "Arousal", colour = "Film watched") +
+  labs(x = "Gender identity", y = "Arousal", colour = "Film watched") +
   coord_cartesian(ylim = c(0, 50)) +
   scale_y_continuous(breaks = seq(0, 50, 5)) +
   theme_minimal()
@@ -1167,7 +1167,7 @@ We can also specifying different colours for men and women using [colour = sex]{
 exam_plot <- ggplot2::ggplot(exam_tib, aes(anxiety, exam_grade, colour = sex))
 ```
 
-To colour the interval around the line by sex, we'd also need to include [fill = sex`:
+To colour the interval around the line by sex, we'd also need to include [fill = sex]:
 
 ```{r, eval = FALSE}
 exam_plot <- ggplot2::ggplot(exam_tib, aes(anxiety, exam_grade, colour = sex, fill = sex))

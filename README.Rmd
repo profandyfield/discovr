@@ -17,15 +17,18 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 
+[![CRAN status](https://www.r-pkg.org/badges/version/discovr)](https://CRAN.R-project.org/package=discovr)
+[![](https://cranlogs.r-pkg.org/badges/discovr)](https://cran.r-project.org/package=discovr)
 
 <!-- badges: end -->
 
-<div style="float: right"><img src="./data-raw/images/discovr_hex.png" width="150"></div>
+<div style="float: right"><img src="./data-raw/images/discovr_hex_sage.png" width="150"></div>
 
-
-> **NOTE**: This package is incomplete but under active development. Check back here for updates/new tutorials.
 
 The `discovr` package contains resources for my 2026 textbook [Discovering Statistics Using <img src="./data-raw/images/r_logo.png" width="18"> and <img src="./data-raw/images/rstudio_logo.png" width="48">](https://www.discovr.rocks/). There are tutorials written using [learnr](https://rstudio.github.io/learnr/). Once a tutorial is running it's a bit like reading a book but with places where you can practice the <img src="./data-raw/images/r_logo.png" width="18"> code that you have just been taught. The `discovr` package is free and offered to support tutors and students using my textbook who want to learn <img src="./data-raw/images/r_logo.png" width="18">.
+
+> **NOTE**
+> Over summer 2025 the tutorials within this package are undergoing a major overhaul. While this update is in progress there will be inconsistencies in the look, feel, and code between updated and yet-to-be updated tutorials. For this reason, I strongly recommend installing the CRAN release and not the development version on GitHub. 
 
 ## Installing `discovr`
 
@@ -37,7 +40,7 @@ The current released version is available from CRAN:
 install.packages("discovr")
 ```
 
-However, the package is currently in constant development to get the most recent version install it from github. 
+The package is currently in constant development to get the most recent version install it from github (but see the note above). 
 
 ```{r, eval = F}
 if(!require(remotes)){
@@ -47,12 +50,6 @@ if(!require(remotes)){
 remotes::install_github("profandyfield/discovr")
 ```
 
-If you are trying to install on a networked computer the install might fail (it's to do install.packages not liking UNC paths, which I'm not even going to pretend to understand). The solution is to specify the location of your <img src="./data-raw/images/r_logo.png" width="18"> library at the point of install. Most networks will map network locations to a drive name (for example, at my own University, users accounts are on the 'N' drive). Find the location of your <img src="./data-raw/images/r_logo.png" width="18"> library (e.g., `N:/Documents/R/win-library/3.5`), possibly executing `.libPaths()` to help you, and specify this location using the `lib` argument:
-
-```{r, eval = F}
-remotes::install_github("profandyfield/discovr", lib = "N:/Documents/R/win-library/3.5")
-```
-
 ## Interactive tutorials
 
 I recommend working through [this playlist of tutorials](https://www.youtube.com/playlist?list=PLEzw67WWDg83weG3idsgy4wuOIJAashA2&si=PiI-sDvqc1DkaWOq) on how to install, set up and work within <img src="./data-raw/images/r_logo.png" width="18"> and <img src="./data-raw/images/rstudio_logo.png" width="48"> before starting the interactive tutorials.
@@ -60,9 +57,9 @@ I recommend working through [this playlist of tutorials](https://www.youtube.com
 ### List of tutorials
 
 - **discovr_01**: Introducing <img src="./data-raw/images/r_logo.png" width="18">, RStudio and Quarto: What is R, tour of RStudio and Quarto, getting help, installing packages, coding style and loading packages.
-- **discovr_02**: Key concepts in <img src="./data-raw/images/r_logo.png" width="18"> (functions and objects, packages and functions, style, data types, tidyverse, tibbles)
-- **discovr_03**: Summarizing data (frequency distributions, grouped frequency distributions, relative frequencies, histograms, mean, median, variance, standard deviation, interquartile range)
-- **discovr_04**: Confidence intervals: interactive app demonstrating what a confidence interval is, computing normal and bootstrap confidence intervals using <img src="./data-raw/images/r_logo.png" width="18">, adding confidence intervals to data summaries.
+- **discovr_02**: Code fundamentals: Functions and objects, packages and functions, style, data types.
+- **discovr_03**: The tidyverse: tidy and messy data, tibbles, adding and selecting variables, filtering cases.
+- **discovr_04**: Summarizing data: mean, median, variance, standard deviation, interquartile range,  normal and bootstrap confidence intervals, tables of summary statistics. Includes an interactive app demonstrating what a confidence interval is.
 - **discovr_05**: Visualizing data. The ggplot2 package, boxplots, plotting means, violin plots, scatterplots, grouping by colour, grouping using facets, adjusting scales, adjusting positions."
 - **discovr_06**: The beast of bias. Restructuring data from messy to tidy format (and back). Spotting outliers using histograms and boxplots. Calculating *z*-scores (standardizing scores). Writing your own function. Using *z*-scores to detect outliers. Q-Q plots. Calculating skewness, kurtosis and the number of valid cases. Grouping summary statistics by multiple categorical/grouping variables.
 - **discovr_07**: Associations. Plotting data with GGally. Pearson's *r*, Spearman's Rho, Kendall's tau, robust correlations.

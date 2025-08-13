@@ -31,9 +31,10 @@ Replacing \code{name_of_tutorial} with the name in bold below. For example, to l
 
 \code{learnr::run_tutorial("discovr_02", package = "discovr")}
 \itemize{
-\item \strong{discovr_01}: Key concepts in R (functions and objects, packages and functions, style, data types, tidyverse, tibbles)
-\item \strong{discovr_02}: Summarizing data (frequency distributions, grouped frequency distributions, relative frequencies, histograms, mean, median, variance, standard deviation, interquartile range)
-\item \strong{discovr_03}: Confidence intervals: interactive app demonstrating what a confidence interval is, computing normal and bootstrap confidence intervals using R, adding confidence intervals to data summaries
+\item \strong{discovr_01}: Introducing R, RStudio and Quarto: What is R, tour of RStudio and Quarto, getting help, installing packages, coding style and loading packages
+\item \strong{discovr_02}: Code fundamentals: Functions and objects, packages and functions, style, data types.
+\item \strong{discovr_03}: The tidyverse: tidy and messy data, tibbles, adding and selecting variables, filtering cases.
+\item \strong{discovr_04}: Summarizing data: mean, median, variance, standard deviation, interquartile range,  normal and bootstrap confidence intervals, tables of summary statistics. Includes an interactive app demonstrating what a confidence interval is.
 \item \strong{discovr_05}: Visualizing data. The \code{ggplot2} package, boxplots, plotting means, violin plots, scatterplots, grouping by colour, grouping using facets, adjusting scales, adjusting positions.
 \item \strong{discovr_06}: The beast of bias. Restructuring data from messy to tidy format (and back). Spotting outliers using histograms and boxplots. Calculating \emph{z}-scores (standardizing scores). Writing your own function. Using \emph{z}-scores to detect outliers. Q-Q plots. Calculating skewness, kurtosis and the number of valid cases. Grouping summary statistics by multiple categorical/grouping variables.
 \item \strong{discovr_07}: Associations. Plotting data with \code{GGally}. Pearson's \emph{r}, Spearman's Rho, Kendall's tau, robust correlations.

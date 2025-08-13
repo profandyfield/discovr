@@ -962,7 +962,7 @@ afex::afex_plot(afx_object, x_variable, line_shape_variable, panel_variable)
 
 In which you replace [afx_object]{.alt} with the name of the the model you fitted with `aov_4()`, [x_variable]{.alt} with the predictor you want on the *x*-axis, [line_shape_variable]{.alt} with a predictor that you want to be depicted with using different lines/shapes. If you have a third categorical predictor, replace [panel_variable]{.alt} with a predictor the levels of which you want displayed in different panels (e.g., `facet_wrap()` style). The result is a `ggplot` object so you can use [ggplot2]{.pkg} code to edit the results, for example, you can apply a standard [ggplot2]{.pkg} theme. 
 
-When using a repeated measures design (as we are here) we need to add [error = "within"]{.adj} to the function to get error bars that are corrected for the study design. So, in general, for repeated measures designs, the code would be:
+When using a repeated measures design (as we are here) we need to add [error = "within"]{.alt} to the function to get error bars that are corrected for the study design. So, in general, for repeated measures designs, the code would be:
 
 ```{r, eval = F}
 afex::afex_plot(afx_object, x_variable, line_shape_variable, panel_variable, error = "within")

@@ -265,7 +265,7 @@ centre <- function(var){
 }
 ```
 
-This code creates a function called `centre()` which takes a set of scores as its input. I've named this input [var]{.adj} (short for variable), but it could be anything. Within the function, we take whatever scores are passed into the function (remember these scores are represented by [var]{.adj}), and subtract the mean of those scores from them. The function will, therefore, return the scores you pass in with their mean subtracted. In other words, it returns the centred scores.
+This code creates a function called `centre()` which takes a set of scores as its input. I've named this input [var]{.alt} (short for variable), but it could be anything. Within the function, we take whatever scores are passed into the function (remember these scores are represented by [var]{.alt}), and subtract the mean of those scores from them. The function will, therefore, return the scores you pass in with their mean subtracted. In other words, it returns the centred scores.
 
 For example, if we execute the code above (to create the function) and execute:
 
@@ -398,7 +398,7 @@ agg_lm <- lm(aggress ~ caunts_cent*vid_game_cent, data = vids_tib)
 agg_tidy <-  broom::tidy(agg_lm, conf.int = TRUE)
 ```
 
-Moderation is shown up by a significant interaction effect, and that's what we've got here, $\hat{b}$ = `r report_pars(agg_tidy, row = 4, digits = 3)` indicating that the relationship between the time spent gaming and aggression is moderated by callous traits. (Remember that [1.221295e-04]{.adj} is $1.22 \times 10^{-4}$ or 0.000122.)
+Moderation is shown up by a significant interaction effect, and that's what we've got here, $\hat{b}$ = `r report_pars(agg_tidy, row = 4, digits = 3)` indicating that the relationship between the time spent gaming and aggression is moderated by callous traits. (Remember that [1.221295e-04]{.alt} is $1.22 \times 10^{-4}$ or 0.000122.)
 
 <div class="tip">
   `r cat_space()` **Tip: rounding values in tables**

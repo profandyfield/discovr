@@ -1064,7 +1064,7 @@ car::Anova(goggles_lm, type = 3) |>
   knitr::kable(digits = 3)
 ```
 
-If you fitted the model with `afex` you can pipe the model [goggles_afx]{.adj} directly into the function:
+If you fitted the model with `afex` you can pipe the model [goggles_afx]{.alt} directly into the function:
 
 ```{r eta_afx, exercise = TRUE, exercise.lines = 3, exercise.setup = "fit_afx"}
 goggles_afx |> 

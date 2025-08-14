@@ -26,14 +26,14 @@ library(htmltools)
 #easystats
 library(correlation)
 library(insight)
-library(parameters)
 #tidyverse
 library(dplyr)
 library(ggplot2)
 #non tidyverse/easystats
 library(GGally)
 #students don't use
-library(knitr)
+library(WRS2)
+
 
 source("./www/discovr_helpers.R")
 
@@ -51,114 +51,22 @@ here::here("inst/tutorials/discovr_07/packages.bib") |>
 
 # discovr: Associations
 
-## Overview
+```{r, child = "intro.Rmd"}
 
-<div class="infobox">
-  <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
-  
-  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@fielddsr22026] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
-  
-</div>
-
-### `r cat_space(fill = blu)` Welcome to the `discovr` space pirate academy
-
-Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
-
-On your way you will face many challenges, but follow Mae's system to keep yourself on track:
-
-* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(A)]{.lbl}.
-* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(B)]{.lbl}.
-* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(C)]{.lbl}.
-
-It's not just me that's here to help though, you will meet other characters along the way:
-
-* `r alien(height = 1.5)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
-* `r robot(height = 1.5)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
-* `r bug(height = 1.5)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
-
-Also, use hints and solutions to guide you through the exercises (Figure 1).
-
-<figure>
-<img src="./images/discovr_hints.png" alt="Each codebox has a hints or solution button that activates a popup window containing code and text to guide you through each exercise." style="width:100%">
-<figcaption>Figure 1: In a code exercise click the hints button to guide you through the exercise.</figcaption>
-</figure> 
- 
-
-By for now and good luck - you'll be amazing!
-
-### Workflow
-
-* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](https://milton-the-cat.rocks/learnr/r/r_getting_started/).
-
-* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an Quarto document within an `r rstudio()` project and practice everything you do in the tutorial in the Quarto document, make notes on things that confused you or that you want to remember, and save it. Within this Quarto document you will need to load the relevant packages and data. 
-
-![](https://youtu.be/mqT7c17tofE)
-
-### Packages
-
-This tutorial uses the following packages:
-
-* [correlation]{.pkg} [@correlation2020; @R-correlation]
-* [GGally]{.pkg} [@R-GGally]
-* [here]{.pkg} [@R-here]
-* `knitr` [@R-knitr]
-
-It also uses these [tidyverse]{.pkg} packages [@R-tidyverse; @tidyverse2019]: [dplyr]{.pkg} [@R-dplyr], [forcats]{.pkg} [@R-forcats], [ggplot2]{.pkg} [@wickhamGgplot2ElegantGraphics2016], and [readr]{.pkg} [@R-readr].
-
-
-### Coding style
-
-There are (broadly) two styles of coding:
-
-1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
-
-2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package [dplyr]{.pkg}, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
-
-Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load [tidyverse]{.pkg} because the [dplyr]{.pkg} and [ggplot2]{.pkg} packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from [ggplot2]{.pkg}.
-
-You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the [tidyverse]{.pkg} package (and any others if you're using a concise style) at the beginning of your Quarto document:
-
-```{r eval = FALSE}
-library(tidyverse)
 ```
 
-### Data
+## Packages
 
-To work *outside of this tutorial* you need to download the following data files:
+```{r, child = "packages.Rmd"}
 
-* [biggest_liar.csv](https://www.discovr.rocks/csv/biggest_liar.csv)
-* [exam_anxiety.csv](https://www.discovr.rocks/csv/exam_anxiety.csv)
-
-Set up an `r rstudio()` project in the way that [I recommend in this tutorial](https://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your Quarto document:
-
-```{r, eval=FALSE}
-liar_tib <- here::here("data/biggest_liar.csv") |> readr::read_csv()
-exam_tib <- here::here("data/exam_anxiety.csv") |> readr::read_csv()
 ```
 
-### Preparing data 
 
-To work *outside of this tutorial* you need to turn categorical variables into factors and set an appropriate baseline category using `forcats::as_factor` and `forcats::fct_relevel`.
+## Data
 
-For [liar_tib]{.alt} execute the following code:
+```{r, child = "data.Rmd"}
 
-```{r, eval=FALSE}
-liar_tib <- liar_tib |> 
-  dplyr::mutate(
-    novice = forcats::as_factor(novice)
-  )
 ```
-
-For [exam_tib]{.alt} execute the following code:
-
-```{r, eval=FALSE}
-exam_tib <- exam_tib |>
-  dplyr::mutate(
-    id = forcats::as_factor(id),
-    sex = forcats::as_factor(sex)
-  )
-```
-
 
 ## `r bmu()` Correlation process [(A)]{.lbl}
 
@@ -167,7 +75,7 @@ Figure 2 shows a general procedure to follow when computing a bivariate correlat
 If the data have outliers, are not normal implying a non-normal sampling distribution (and the sample is small) or your variables are measured at the ordinal level then you can use Spearman's rho or Kendall's tau, which are versions of the correlation coefficient applied to ranked data. Ranking the data reduces the impact of outliers but we lose information so, we can instead fit a robust variant such as the percentile bend correlation or Winsorized correlation. Furthermore, given that normality of the sampling distribution matters only for inferring significance and computing confidence intervals in small samples, we could use a bootstrap to compute the confidence interval in small samples, then we don't need to worry about this assumption.
 
 <figure>
-<img src="./images/dsr2_fig_07_05_correlation_process.png" alt="See main text for description." style="width:100%">
+<img src="./images/dsr2_fig_07_06_correlation_process.svg" alt="See main text for description." style="width:100%">
 <figcaption>Figure 2: The general process for conducting correlation analysis.</figcaption>
 </figure> 
 
@@ -188,21 +96,29 @@ These data are preloaded in this tutorial in a tibble called [exam_tib]{.alt}. U
 exam_tib
 ```
 
-Note there are five variables: the participant **id**, the hours spent revising (**revise**), their **exam_grade**, their exam **anxiety**, and their biological **sex**. We can visualise the data easily using the [GGally]{.pkg} package. When you want to plot continuous variables, the `ggscatmat()` function from this package produces a matrix of scatterplots (below the diagonal), distributions (along the diagonal) and the correlation coefficient (above the diagonal). 
+Note there are five variables: the participant `id`, the hours spent revising (`revise`), their `exam_grade`, their exam `anxiety`, and whether the participant self-identified as male or female (`sex`). We can visualise the data using the [GGally]{.pkg} package. When you want to plot continuous variables, the `ggscatmat()` function from this package produces a matrix of scatterplots (below the diagonal), distributions (along the diagonal) and the correlation coefficient (above the diagonal). 
 
 #### `r robot()` Code example
 
 The `ggscatmat()` function takes the general form:
 
 ```{r, eval = FALSE}
-GGally::ggscatmat(my_tibble, columns = c("variable 1", " variable 2", " variable 3" …))
+GGally::ggscatmat(my_tibble, columns = c("variable 1", " variable 2", " variable 3" ...))
 ```
 
 Basically, you feed in the name of the tibble containing the variables, and use the columns argument to name the variables that you want to plot.
 
+<div class="bug">
+  `r bug()` **Explicit and concise code**
+
+In keeping with our recommended practice on code style, we wouldn't load the entire [GGally]{.pkg} to produce a few plots but instead use the namespace when calling the function we want. Hence, our code uses `GGally::ggscatmat()` rather than `ggscatmat()`. However, if you were producing a lot of plots, or using many functions from [GGally]{.pkg} you might prefer to include `library(GGally)` in your setup code chunk and use only the function names thereafter (e.g., use `ggscatmat()`).
+</div>
+
+
+
 #### `r alien()` Alien coding challenge
 
-For example, to plot the variables called **exam_grade**, **revise**, and **anxiety** we replace ["variable 1"]{.alt} with ["exam_grade"]{.alt}, ["variable 2"]{.alt} with ["revise"]{.alt} and so on. It's as simple as that! Plot the scatterplot of the three variables.
+To plot the variables called `exam_grade`, `revise`, and `anxiety` we replace ["variable 1"]{.alt} with ["exam_grade"]{.alt}, ["variable 2"]{.alt} with ["revise"]{.alt} and so on. It's as simple as that! Plot the scatterplot of the three variables.
 
 ```{r exam_plot, exercise = TRUE, exercise.lines = 4}
 
@@ -215,7 +131,7 @@ GGally::ggscatmat(exam_tib, columns = c("exam_grade", "revise", "anxiety"))
 
 #### `r alien()` Alien coding challenge
 
-Like other plots we have done, we can also apply a [ggplot2]{.pkg} theme in the usual way. Copy the code from the previous task and try applying `theme_minimal()`
+Like other plots we have done, we can apply a [ggplot2]{.pkg} theme in the usual way. Copy the code from the previous task and try applying `theme_minimal()`
 
 ```{r exam_plot2, exercise = TRUE, exercise.lines = 4}
 
@@ -230,44 +146,47 @@ The resulting plot shows that all of the variables are skewed. This skew could b
 
 ##	`r bmu()` Pearson's correlation using `r rproj()` [(A)]{.lbl}
 
-The [correlation]{.pkg} package brings together lots of correlation-related stuff into a nice, easy-to-use bundle of loveliness. It has one workhorse function called … wait for it … `correlation()`. 
+The [correlation]{.pkg} package [@R-correlation] brings together lots of correlation-related stuff into a nice, easy-to-use bundle of loveliness. It has one workhorse function called ... wait for it ... `correlation()`. 
 
 #### `r robot()` Code example
 
 The `correlation()` function takes the general form:
 
 ```{r eval = FALSE}
-correlation::correlation(tibble,
+correlation::correlation(data = tibble,
+                         select = c("variable 1", "variable 2" ...),
+                         rename = c("new name variable 1", "new name variable 2" ...),
                          method = "pearson",
                          p_adjust = "holm",
-                         ci = 0.95
-                         )
+                         ci = 0.95)
 ```
 
 I've listed the main arguments, but there are others. For now, we'll just look at the main arguments that we will use:
 
-* [tibble]{.alt}. This word should be replaced with the name of the tibble containing any variables that you wish to correlate.
-* [method]{.alt}. This argument sets the method for the correlation coefficient. By default it is set to [pearson]{.alt} (to calculate Pearson's coefficient) but can be changed to [spearman]{.alt}, [kendall]{.alt}, [biserial]{.alt}, [polychoric]{.alt}, [tetrachoric]{.alt}, and [percentage]{.alt} (for the percentage bend correlation) amongst others. We'll look at some, but not all of these methods.
-* [p_adjust]{.alt}. By default the function corrects the *p*-value for the number of tests you have performed (a good idea) using the Holm-Bonferroni method, which applies the Bonferroni criterion in a slightly less strict way that controls the Type I error rate but with less risk of a Type II error. You can change this argument to [none]{.alt} (i.e. don't correct for multiple tests, a bad idea), [bonferroni]{.alt} (to apply the standard Bonferroni method) or several other methods.
-*	[ci]{.alt}. This argument sets the confidence interval width. By default it is 0.95 for a 95% confidence interval, which will probably be what you'll generally use.
+* `data`: The word [tibble]{.alt} should be replaced with the name of the tibble containing any variables that you wish to correlate.
+* `select`: optional argument to select the variables from the tibble that you wish to correlate.
+* `rename`. optionally you can provide different names for your variables to appear in the output (handy for nice output).
+* `method`. This argument sets the method for the correlation coefficient. By default it is set to [pearson]{.alt} (to calculate Pearson's coefficient) but can be changed to [spearman]{.alt}, [kendall]{.alt}, [biserial]{.alt}, [polychoric]{.alt}, [tetrachoric]{.alt}, and [percentage]{.alt} (for the percentage bend correlation) amongst others. We'll look at some, but not all of these methods.
+* `p_adjust`. By default the function corrects the *p*-value for the number of tests you have performed (a good idea) using the Holm-Bonferroni method, which applies the Bonferroni criterion in a slightly less strict way that controls the Type I error rate but with less risk of a Type II error. You can change this argument to [none]{.alt} (i.e. don't correct for multiple tests, a bad idea), [bonferroni]{.alt} (to apply the standard Bonferroni method) or several other methods.
+*	`ci`. This argument sets the confidence interval width. By default it is 0.95 for a 95% confidence interval, which will probably be what you'll generally use.
 
-To use the function, take your tibble, pipe it into the `select()` function from [dplyr]{.pkg} to select the variables you want to correlate, then pipe that into the correlation function. You can use the same code structure whether you want to correlate two variables or produce all correlations between pairs of multiple variables.
 
 #### `r robot()` Code example
 
-To calculate the Pearson correlation between the variables **exam_grade** and **revise** in [exam_tib]{.alt}, we'd execute:
+You can use the same code structure whether you want to correlate two variables or produce all correlations between pairs of multiple variables.
+For example, to calculate the Pearson correlation between the variables `exam_grade` and `revise` in [exam_tib]{.alt}, we'd execute:
 
-```{r basicr, exercise = TRUE, exercise.lines = 5}
-exam_tib |> 
-  dplyr::select(exam_grade, revise) |> 
-  correlation::correlation()
+```{r eval = F}
+correlation(data = exam_tib,
+            select = c("exam_grade", "revise"),
+            rename = c("Exam grade (%)", "Time revising"))
 ```
 
-This code takes the [exam_tib]{.alt} and uses the `select()` function to select the variables exam_grade and revise. The result is that a tibble with these two variables in is fed into the `correlation()` function to compute the correlation between them.
+This code takes the [exam_tib]{.alt} and uses the [select]{.alt} argument to select the variables `exam_grade` and `revise` (note they have to be in quotes). The [rename]{.alt} argument is used to give these variables more descriptive names in the output.
 
 #### `r alien()` Alien coding challenge
 
-Calculate the Pearson correlation between the variables **exam_grade** and **anxiety**. Use `kable()` to round the output to 3 decimal places.
+Calculate the Pearson correlation between the variables `exam_grade` and `anxiety`. Use `display()` to round the output to 3 decimal places.
 
 ```{r basicr2, exercise = TRUE, exercise.lines = 5}
 
@@ -275,36 +194,36 @@ Calculate the Pearson correlation between the variables **exam_grade** and **anx
 
 
 ```{r basicr2-hint-1}
-exam_tib |> 
-  dplyr::select(exam_grade, anxiety) |> 
-  correlation::correlation() 
-# add kable() to round to 3 decimal places
+correlation(data = exam_tib,
+            select = c("exam_grade", "revise"),
+            rename = c("Exam grade (%)", "Time revising"))
+# add display() to round to 3 decimal places
 ```
 
 
 ```{r basicr2-solution}
-exam_tib |> 
-  dplyr::select(exam_grade, anxiety) |> 
-  correlation::correlation() |> 
-  knitr::kable(digits = 3)
+correlation(data = exam_tib,
+            select = c("exam_grade", "revise"),
+            rename = c("Exam grade (%)", "Time revising")) |> 
+  display(digits = 3)
 ```
 
 #### `r robot()` Code example
 
-This approach scales up nicely. For example, if we now also want to see the correlations between all three variables we need only extend the list of variables within the `select()` function. Adapt the code to compute the correlations between exam grade, revision and anxiety.
+This approach scales up nicely. For example, if we now also want to see the correlations between all three variables we need only extend the list of variables within the [select]{.alt} argument. Adapt the code to compute the correlations between exam grade, revision and anxiety (remember to both [select]{.alt} and [rename]{.alt} anxiety).
 
 ```{r tidypr, exercise = TRUE, exercise.lines = 5}
-exam_tib |> 
-  dplyr::select() |> 
-  correlation::correlation() |> 
-  knitr::kable(digits = 3)
+correlation(data = exam_tib,
+            select = c("exam_grade", "revise"),
+            rename = c("Exam grade (%)", "Time revising")) |> 
+  display(digits = 3)
 ```
 
 ```{r tidypr-solution}
-exam_tib |> 
-  dplyr::select(exam_grade, revise, anxiety) |> 
-  correlation::correlation() |> 
-  knitr::kable(digits = 3)
+correlation(data = exam_tib,
+            select = c("exam_grade", "revise", "anxiety"),
+            rename = c("Exam grade (%)", "Time revising", "Exam anxiety")) |> 
+  display(digits = 3)
 ```
 
 ```{r quiz_pearson_ex1, echo = FALSE}
@@ -322,7 +241,7 @@ quiz(
     answer("The probability of getting a value of *t* at least as big as the value we have observed, if the value of *r* were, in fact, zero is less than 0.001. I'm going to assume, therefore, that the association between exam grade and revision is not zero.", correct = T),
     answer("The probability that *r* = 0.40 is a chance result is less than 0.001", message = "*p*-values do not tell us whether results occur by chance."),
     answer("The probability that exam grade and revision are not assciated is 0.001", message = "*p*-values do not tell us about the probability of the null hypothesis"),
-    answer("I got a different *p*-value to 0.0o1", message = "You may have done the analysis incorrectly. Try again!"),
+    answer("I got a different *p*-value to 0.001", message = "You may have done the analysis incorrectly. Try again!"),
     correct = "Correct - well done!",
     random_answer_order = TRUE,
     allow_retry = T
@@ -332,54 +251,42 @@ quiz(
 ```
 
 ```{r, echo = F}
-pearson <- exam_tib |> 
-  dplyr::select(exam_grade, revise, anxiety) |> 
-  correlation::correlation()
+pearson <- correlation(
+  data = exam_tib,
+  select = c("exam_grade", "revise", "anxiety")
+  )
 
-rrob <- exam_tib |> 
-  dplyr::select(exam_grade, revise, anxiety) |> 
-  correlation::correlation(method = "percentage")
+rrob <- correlation(
+  data = exam_tib,
+  select = c("exam_grade", "revise", "anxiety"),
+  method = "percentage"
+  )
 ```
 
-The resulting output tells us that exam grade has a correlation with revision of *r* = `r round(pearson$r[1], 2)`, and a similar strength relationship with exam anxiety, *r* = `r round(pearson$r[2], 2)` (but in the opposite direction). As revision increases so does exam performance, but as anxiety increase exam performance decreases. We also see that revision has a very strong negative relationship with exam anxiety, *r* = `r round(pearson$r[3], 2)`. The more you revise the less anxiety you have about the exam. All *p*-values are less than 0.001 (and, so also less than 0.05) and would be interpreted as the correlation coefficients being significantly different from zero. The significance values tell us the probability of getting correlation coefficients at least this big as these in a sample of 103 people if the null hypothesis were true (there was no relationship between these variables) is very low (close to zero in fact). If we're prepared to assume that the sample is one of the 95% of samples that will produce a confidence interval containing the population value, then the confidence intervals tell us about the uncertainty around the value of *r*. For example, under this assumption, the population value of the association between exam grade and revision falls between `r round(pearson$CI_low[1], 2)` and `r round(pearson$CI_high[1], 2)`.
+The resulting output tells us that exam grade has a correlation with revision of *r* = `r sprintf("%.2f", pearson$r[1])`, and a similar strength relationship with exam anxiety, *r* = `r sprintf("%.2f", pearson$r[2])` (but in the opposite direction). As revision increases so does exam performance, but as anxiety increase exam performance decreases. We also see that revision has a very strong negative relationship with exam anxiety, *r* = `r sprintf("%.2f", pearson$r[3])`. The more you revise the less anxiety you have about the exam. All *p*-values are less than 0.001 (and, so also less than 0.05) and would be interpreted as the correlation coefficients being significantly different from zero. The significance values tell us the probability of getting correlation coefficients at least this big as these in a sample of 103 people if the null hypothesis were true (there was no relationship between these variables) is very low (close to zero in fact). If we're prepared to assume that the sample is one of the 95% of samples that will produce a confidence interval containing the population value, then the confidence intervals tell us about the uncertainty around the value of *r*. For example, under this assumption, the population value of the association between exam grade and revision falls between `r sprintf("%.2f", pearson$CI_low[1])` and `r sprintf("%.2f", pearson$CI_high[1])`.
 
 <div class="tip">
   `r cat_space()` **Tip: Rounding**
   
-  Remember that we can use `knitr::kable()` to control the number of decimal places that are printed in our rendered document. For example, up to now we have printed to three decimal places using
+  Remember that we can use `display()` to control the number of decimal places that are printed in our rendered document. For example, up to now we have printed to three decimal places using [digits = 3]{.alt}:
   
 ```{r, eval = F, class.source = '.panel_alt'}
-exam_tib |> 
-  dplyr::select(exam_grade, revise, anxiety) |> 
-  correlation::correlation() |> 
-  knitr::kable(digits = 3)
+correlation(data = exam_tib,
+            select = c("exam_grade", "revise", "anxiety"),
+            rename = c("Exam grade (%)", "Time revising", "Exam anxiety")) |> 
+  display(digits = 3)
 ```
 
-If we want different columns to contain different numbers of decimal places we can provide a vector of values to [digits]{.alt} with each value corresponding to a column of the table. For example, the output from `correlation()` has 11 columns. The *p*-value is in column 9. Let's say we want everything rounded to a maximum of 2 decimal places except for the *p*-value, which we want rounded to a maximum of 8 decimal places. We can achieve this using
+However, what if we want a different number of decimal places for the confidence intervals or *p*-values? We can adjust these with the additional arguments [ci_digits]{.alt} and [p_digits]{.alt}. For example, if we wanted 2 decimal places for the correlation coefficient and *t*-statistics, but 3 for the confidence interval and 8 for the *p*-values, we'd use
 
 ```{r, eval = F, class.source = '.panel_alt'}
-exam_tib |> 
-  dplyr::select(exam_grade, revise, anxiety) |> 
-  correlation::correlation() |> 
-  knitr::kable(digits = c(2, 2, 2, 2, 2, 2, 2, 2, 8))
+correlation(data = exam_tib,
+            select = c("exam_grade", "revise", "anxiety"),
+            rename = c("Exam grade (%)", "Time revising", "Exam anxiety")) |> 
+  display(digits = 2, ci_digits = 3, p_digits = 8)
 ```
 
-Note that within `c()` we list the number of decimal places for each column, so we have a series of eight 2s, which sets the first eight columns to 2 decimal places, and then an 8, which sets the decimal places for column 9. We don't need to worry about columns 10 and 11 because we don't need to round them (column 10 contains text and column 11 a whole number). In fact, it's tiresome to type so many values of 2, so we could use the `rep()` function, which takes this form
-
-```{r, eval = F, class.source = '.panel_alt'}
-rep(x = thing_to_replicate, times = number_of_replications)
-```
-
-So, `rep(2, 8)` means *repeat the value 2 eight times* and returns `2, 2, 2, 2, 2, 2, 2`. We can use this function within `c()` as follows
-
-```{r, eval = F, class.source = '.panel_alt'}
-exam_tib |> 
-  dplyr::select(exam_grade, revise, anxiety) |> 
-  correlation::correlation() |> 
-  knitr::kable(digits = c(rep(2, 8), 8))
-```
-
-As before, `c()` will contain eight 2s followed by an 8. Try this code in the following section.
+Try this code in the following section.
 
 </div>
 
@@ -389,12 +296,12 @@ Given the skew in some of the variables, we are probably better off estimating a
 
 #### `r alien()` Alien coding challenge
 
-We can obtain the percentage bend correlation coefficient by setting [method = "percentage"]{.alt} within the `correlation()`. The code that we just used is reproduced below. Adapt it to obtain the percentage bend correlation coefficient.
+We can obtain the percentage bend correlation coefficient by setting [method = "percentage"]{.alt} within `correlation()`. The code that we just used is reproduced below. Adapt it to obtain the percentage bend correlation coefficient. Round the correlation coefficients and *t*-statistics to 2 decimal places, the confidence interval to 4 d.p. and the *p*-values to 6 d.p.
 
 ```{r pball, exercise = TRUE, exercise.lines = 5}
-exam_tib |> 
-  dplyr::select(exam_grade, revise, anxiety) |> 
-  correlation::correlation()
+correlation(data = exam_tib,
+            select = c("exam_grade", "revise", "anxiety"),
+            rename = c("Exam grade (%)", "Time revising", "Exam anxiety"))
 ```
 
 ```{r pball-hint-1}
@@ -402,33 +309,30 @@ exam_tib |>
 ```
 
 ```{r pball-hint-2}
-exam_tib |> 
-  dplyr::select(exam_grade, revise, anxiety) |> 
-  correlation::correlation(method = "percentage")
-# Use kable() to round the first 8 columns to 2 dp and the 9th column to 8 dp
+correlation(data = exam_tib,
+            select = c("exam_grade", "revise", "anxiety"),
+            rename = c("Exam grade (%)", "Time revising", "Exam anxiety"),
+            method = "percentage")
+# Use display() to round the correlation coefficients and *t*-statistics to 2 decimal places, the confidence interval to 4 d.p. and the *p*-values to 6 d.p.
 ```
 
 ```{r pball-solution}
-exam_tib |> 
-  dplyr::select(exam_grade, revise, anxiety) |> 
-  correlation::correlation(method = "percentage") |> 
-  knitr::kable(digits = c(rep(2, 8), 8))
+correlation(data = exam_tib,
+            select = c("exam_grade", "revise", "anxiety"),
+            rename = c("Exam grade (%)", "Time revising", "Exam anxiety"),
+            method = "percentage") |> 
+  display(digits = 2, ci_digits = 4, p_digits = 6)
 ```
 
-Compare the values of these robust correlations to the raw Pearson correlations you obtained earlier. Exam grade had a Pearson correlation with revision of *r* = `r round(pearson$r[1], 2)`, but the percentage bend correlation is smaller (*r* = `r round(rrob$r[1], 2)`). Similarly the robust versions of the other correlations are smaller than the raw Pearson correlations (although they all remain significant with *p*s < 0.05).
+Compare the values of these robust correlations to the raw Pearson correlations you obtained earlier. Exam grade had a Pearson correlation with revision of *r* = `r sprintf("%.2f", pearson$r[1])`, but the percentage bend correlation is smaller (*r* = `r sprintf("%.2f", rrob$r[1])`). Similarly the robust versions of the other correlations are smaller than the raw Pearson correlations (although they all remain significant with *p*s < 0.05).
 
 ## `r bmu()` Spearman's Correlation Coefficient [(A)]{.lbl}
 
-Spearman correlations are very easy once you've mastered `correlation()`. Let's switch example. Imagine I wanted to test a theory that more creative people will be better liars. I gathered together 68 past contestants from the World's Biggest Liar competition (held annually at the Santon Bridge Inn in Wasdale in case you're interested) and noted where they were placed in the competition (first, second, third, etc.); I also gave them a creativity questionnaire (maximum score 60). The position in the competition is an ordinal variable because the places are categories but have a meaningful order (first place is better than second place and so on). Therefore, Spearman's correlation coefficient should be used (Pearson's *r* requires interval or ratio data). The data for this study are preloaded in this tutorial in a tibble called [liar_tib]{.alt}. If you're working outside of this tutorial see the instructions at the beginning for loading the data. 
+Spearman correlations are very straightforward once you've mastered `correlation()`. Let's switch example. Imagine I wanted to test a theory that more creative people will be better liars. I gathered together 68 past contestants from the World's Biggest Liar competition (held annually at the Santon Bridge Inn in Wasdale in case you're interested) and noted where they were placed in the competition (first, second, third, etc.); I also gave them a creativity questionnaire (maximum score 60). The position in the competition is an ordinal variable because the places are categories but have a meaningful order (first place is better than second place and so on). Therefore, Spearman's correlation coefficient should be used (Pearson's *r* requires interval or ratio data). The data for this study are preloaded in this tutorial in a tibble called [liar_tib]{.alt}. If you're working outside of this tutorial see the instructions at the beginning for loading the data. 
 
 ```{r, echo = F}
-spear <- liar_tib |>
-  dplyr::select(position, creativity) |> 
-  correlation::correlation(method = "spearman")
-
-tau <- liar_tib |>
-  dplyr::select(position, creativity) |> 
-  correlation::correlation(method = "kendall")
+spear <- correlation(data = liar_tib, select = c("position", "creativity"), method = "spearman")
+tau <- correlation(data = liar_tib,select = c("position", "creativity"), method = "kendall") 
 ```
 
 
@@ -444,11 +348,11 @@ Look at the tibble by executing its name:
 liar_tib
 ```
 
-The main variables are in two columns: one labelled **creativity** and one labelled **position**, but there's also a variable **id** containing the participant's id and a categorical variable called **novice** that specifies whether the participant was entering the contest for the first time or was a previous entrant. Note that the variable **position** is numeric (the position in the competition is represented with numbers).
+The main variables are in two columns: one labelled `creativity` and one labelled `position`, but there's also a variable `id` containing the participant's id and a categorical variable called `novice` that specifies whether the participant was entering the contest for the first time or was a previous entrant. Note that the variable `position` is numeric (the position in the competition is represented with numbers).
 
 #### `r alien()` Alien coding challenge
 
-Plot **creativity** against **position** using `ggscatmat()`
+Plot `creativity` against `position` using `ggscatmat()`
 
 ```{r create_plot, exercise = TRUE, exercise.lines = 4}
 
@@ -474,85 +378,52 @@ GGally::ggscatmat(liar_tib, columns = c("creativity", "position")) +
   theme_minimal()
 ```
 
-To get the Spearman correlation between **creativity** and **position** we can basically use `correlation()` exactly as we did for the Pearson correlation, except we add [method = "spearman"]{.alt} to the function.
+To get the Spearman correlation between `creativity` and `position` we can basically use `correlation()` exactly as we did for the Pearson correlation, except we add [method = "spearman"]{.alt} to the function.
 
 #### `r robot()` Code example
 
-In general, we could execute this code to get the Spearman correlation between **variable_1** and **variable_2** from the tibble called [my_tib]{.alt} (compare it with the code we used for Pearson's *r*)
+In general, we could execute this code to get the Spearman correlation between `variable_1` and `variable_2` from the tibble called [my_tib]{.alt} (compare it with the code we used for Pearson's *r*)
 
 ```{r, eval = F}
-my_tib |>
-  dplyr::select(variable_1, variable_2) |> 
-  correlation::correlation(method = "spearman")
+correlation(data = my_tib, 
+            select = c("variable_1", "variable_2"),
+            method = "spearman") 
 ```
 
 #### `r alien()` Alien coding challenge
 
-Use the code example to obtain the Spearman correlation between the variables **position** and **creativity** from [liar_tib]{.alt}. Use `kable()` to round the *p*-value to 3 decimal places and everything else to 2.
+Use the code example to obtain the Spearman correlation between the variables `position` and `creativity` from [liar_tib]{.alt}. Use `display()` to round the *p*-value to 3 decimal places and everything else to 2.
 
-<div class="tip">
-  `r cat_space()` **Tip: More rounding**
-  
-For Spearman and Kendall's tau the output is slightly different to Pearson. The *p*-value is in column 8, rather than column 9. Therefore, to round the *p*-value to a different number of decimal places to other values we'd use
-
-```{r, eval = F, class.source = '.panel_alt'}
-knitr::kable(digits = c(rep(dp_general, 7), dp_for_p))
-```
-
-replacing [dp_general]{.alt} with the number of decimal places for the first 7 columns, and replacing [dp_for_p]{.alt} with the number of decimal places for the column of *p*-values. (Note within `rep()` we ask for 7 repetitions rather than 8.) For example, to round the *p*-value to 8 decimal places and everything else to 2 we'd use
-
-```{r, eval = F, class.source = '.panel_alt'}
-knitr::kable(digits = c(rep(2, 7), 8))
-```
-
-</div>
 
 ```{r liarr, exercise = TRUE, exercise.lines = 5}
 
 ```
 
 ```{r liarr-hint-1}
-#Start with the tibble containing the data
-liar_tib
+#Start by specifying the data (replace the xxx)
+correlation(data = xxx)
 ```
 
 ```{r liarr-hint-2}
-# Now pipe it into the select() function
-liar_tib |>
-  dplyr::select()
-# Now, put the variables names in select that you want to select
+# Now select the variables (replace the xxxs)
+correlation(data = liar_tib, select = c("xxx", "xxx"))
+
 ```
 
 ```{r liarr-hint-3}
-# Put the variables names in select that you want to select
-liar_tib |>
-  dplyr::select(position, creativity)
+# Now, specify the method as for the correlation
+correlation(data = liar_tib, select = c("position", "creativity"), method = "xxx")
 
-# Now pipe this into correlation()
-```
-
-```{r liarr-hint-4}
-liar_tib |>
-  dplyr::select(position, creativity) |> 
-  correlation::correlation()
-# set method to Spearman
-```
-
-```{r liarr-hint-5}
-liar_tib |>
-  dplyr::select(position, creativity) |> 
-  correlation::correlation(method = "spearman")
-# Use kable() to round the p-value to 3 decimal places and everything else to 2
+# Use display() to round the p-value to 3 decimal places and everything else to 2
 ```
 
 ```{r liarr-solution}
-liar_tib |>
-  dplyr::select(position, creativity) |> 
-  correlation::correlation(method = "spearman") |> 
-  knitr::kable(digits = c(rep(2, 7), 3))
+correlation(data = liar_tib, select = c("position", "creativity"), method = "spearman") |> 
+  display(ci_digits = 3)
+# note the default is 2 decimal places so we only need to specify ci_digit to vary from this default for the confidence intervals
 ```
 
-From the output we can see that the Spearman correlation coefficient between the two variables is $r_s$ = `r round(spear$r[1], 2)`, with an associated *p*-value of `r round(spear$p[1], 3)` and a sample size of `r spear$n_Obs`.  There was a significant negative relationship between creativity scores and how well someone did in the World's Biggest Liar competition: as creativity increased, position decreased. This might seem contrary to what we predicted until you remember that a low number means that you did well in the competition (a low number such as 1 means you came first, and a high number like 4 means you came fourth). Therefore, our hypothesis is supported: as creativity increased, so did success in the competition.
+From the output we can see that the Spearman correlation coefficient between the two variables is $r_s$ = `r sprintf("%.2f", spear$r[1])`, with an associated *p*-value of `r sprintf("%.3f", spear$p[1])` and a sample size of `r spear$n_Obs`.  There was a significant negative relationship between creativity scores and how well someone did in the World's Biggest Liar competition: as creativity increased, position decreased. This might seem contrary to what we predicted until you remember that a low number means that you did well in the competition (a low number such as 1 means you came first, and a high number like 4 means you came fourth). Therefore, our hypothesis is supported: as creativity increased, so did success in the competition.
 
 ##	`r bmu()` Kendall's tau [(A)]{.lbl}
 
@@ -560,21 +431,19 @@ Kendall's tau, denoted by $\tau$, is another non-parametric correlation and it s
 
 #### `r alien()` Alien coding challenge
 
-Repeat the previous exercise but replace [method = "spearman"]{.alt} with [method = "kendall"]{.alt}. Use `kable()` to round the *p*-value to 4 decimal places and everything else to 3.
+Repeat the previous exercise but replace [method = "spearman"]{.alt} with [method = "kendall"]{.alt}. Use `display()` to round the *p*-value to 4 decimal places and everything else to 3.
 
 ```{r tau, exercise = TRUE, exercise.lines = 5}
 
 ```
 
 ```{r tau-solution}
-liar_tib |> 
-  dplyr::select(position, creativity) |> 
-  correlation::correlation(method = "kendall") |> 
-  knitr::kable(digits = c(rep(3, 7), 4))
+correlation(data = liar_tib, select = c("position", "creativity"), method = "kendall") |> 
+  display(digits = 3, p_digits = 4)
 ```
 
 
-The output shows $\tau$ = `r round(tau$tau[1], 2)`, which is closer to zero than the Spearman correlation (it has decreased from `r round(spear$r[1], 2)` to `r round(tau$tau[1], 2)`). Kendall's value is likely a more accurate gauge of what the correlation in the population would be.
+The output shows $\tau$ = `r sprintf("%.2f", tau$tau[1])`, which is closer to zero than the Spearman correlation (it has decreased from `r sprintf("%.2f", spear$r[1])` to `r sprintf("%.2f", tau$tau[1])`). Kendall's value is likely a more accurate gauge of what the correlation in the population would be.
 
 <div class="infobox">
   <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">

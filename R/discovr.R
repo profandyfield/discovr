@@ -31,7 +31,7 @@
 #' * **discovr_04**: Summarizing data: mean, median, variance, standard deviation, interquartile range,  normal and bootstrap confidence intervals, tables of summary statistics. Includes an interactive app demonstrating what a confidence interval is.
 #' * **discovr_05**: Visualizing data. The \code{ggplot2} package, boxplots, plotting means, violin plots, scatterplots, grouping by colour, grouping using facets, adjusting scales, adjusting positions.
 #' * **discovr_06**: The beast of bias. Restructuring data from messy to tidy format (and back). Spotting outliers using histograms and boxplots. Calculating \emph{z}-scores (standardizing scores). Writing your own function. Using \emph{z}-scores to detect outliers. Q-Q plots. Calculating skewness, kurtosis and the number of valid cases. Grouping summary statistics by multiple categorical/grouping variables.
-#' * **discovr_07**: Associations. Plotting data with \code{GGally}. Pearson's \emph{r}, Spearman's Rho, Kendall's tau, robust correlations.
+#' * **discovr_07**: Associations. Plotting data with \code{GGally}. Pearson's \emph{r}, Spearman's Rho, Kendall's tau, robust correlations. Using \code{display()} to round output more flexibly.
 #' * **discovr_08**: The general linear model (GLM). Visualizing the data, fitting GLMs with one and two predictors. Viewing model parameters with \code{broom}, model parameters, standard errors, confidence intervals, fit statistics, significance, Bayes factors and Bayesian estimates (using default priors).
 #' * **discovr_09**: Categorical predictors with two categories (comparing two means). Comparing two independent means, comparing two related means, effect sizes, robust comparisons of means (independent and related), Bayes factors and estimation (independent and related means).
 #' * **discovr_10**: Moderation and mediation. Centring variables (grand mean centring), specifying interaction terms, moderation analysis, simple slopes analysis, Johnson-Neyman intervals, mediation with one predictor, direct and indirect effects, mediation using lavaan.
@@ -184,7 +184,7 @@
 #'
 #' ## Colour palettes
 #'
-#' A colour blind-friendly pallette based on [Okabe and Ito](https://jfly.uni-koeln.de/color/). Also colour themes based around the studio albums of my favourite band [Iron Maiden](https://www.ironmaiden.com).
+#'  Colour blind accessible pallettes based on [Okabe and Ito](https://jfly.uni-koeln.de/color/) and [Paul Tol's muted palette](https://sronpersonalpages.nl/~pault/data/colourschemes.pdf). Also colour themes based around the studio albums of my favourite band [Iron Maiden](https://www.ironmaiden.com).
 #'  If you're wondering why some albums are missing, here's the explanation: X Factor (would basically be 8 shades of grey), Fear of the Dark (terrible album), The Book of Souls (would be 8 shades of black).
 #'  The following palettes exist.
 #'

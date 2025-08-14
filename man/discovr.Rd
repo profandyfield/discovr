@@ -37,7 +37,7 @@ Replacing \code{name_of_tutorial} with the name in bold below. For example, to l
 \item \strong{discovr_04}: Summarizing data: mean, median, variance, standard deviation, interquartile range,  normal and bootstrap confidence intervals, tables of summary statistics. Includes an interactive app demonstrating what a confidence interval is.
 \item \strong{discovr_05}: Visualizing data. The \code{ggplot2} package, boxplots, plotting means, violin plots, scatterplots, grouping by colour, grouping using facets, adjusting scales, adjusting positions.
 \item \strong{discovr_06}: The beast of bias. Restructuring data from messy to tidy format (and back). Spotting outliers using histograms and boxplots. Calculating \emph{z}-scores (standardizing scores). Writing your own function. Using \emph{z}-scores to detect outliers. Q-Q plots. Calculating skewness, kurtosis and the number of valid cases. Grouping summary statistics by multiple categorical/grouping variables.
-\item \strong{discovr_07}: Associations. Plotting data with \code{GGally}. Pearson's \emph{r}, Spearman's Rho, Kendall's tau, robust correlations.
+\item \strong{discovr_07}: Associations. Plotting data with \code{GGally}. Pearson's \emph{r}, Spearman's Rho, Kendall's tau, robust correlations. Using \code{display()} to round output more flexibly.
 \item \strong{discovr_08}: The general linear model (GLM). Visualizing the data, fitting GLMs with one and two predictors. Viewing model parameters with \code{broom}, model parameters, standard errors, confidence intervals, fit statistics, significance, Bayes factors and Bayesian estimates (using default priors).
 \item \strong{discovr_09}: Categorical predictors with two categories (comparing two means). Comparing two independent means, comparing two related means, effect sizes, robust comparisons of means (independent and related), Bayes factors and estimation (independent and related means).
 \item \strong{discovr_10}: Moderation and mediation. Centring variables (grand mean centring), specifying interaction terms, moderation analysis, simple slopes analysis, Johnson-Neyman intervals, mediation with one predictor, direct and indirect effects, mediation using lavaan.
@@ -200,7 +200,7 @@ Although I recommend working through the interactive solutions, each book Chapte
 
 \subsection{Colour palettes}{
 
-A colour blind-friendly pallette based on \href{https://jfly.uni-koeln.de/color/}{Okabe and Ito}. Also colour themes based around the studio albums of my favourite band \href{https://www.ironmaiden.com}{Iron Maiden}.
+Colour blind accessible pallettes based on \href{https://jfly.uni-koeln.de/color/}{Okabe and Ito} and \href{https://sronpersonalpages.nl/~pault/data/colourschemes.pdf}{Paul Tol's muted palette}. Also colour themes based around the studio albums of my favourite band \href{https://www.ironmaiden.com}{Iron Maiden}.
 If you're wondering why some albums are missing, here's the explanation: X Factor (would basically be 8 shades of grey), Fear of the Dark (terrible album), The Book of Souls (would be 8 shades of black).
 The following palettes exist.
 \itemize{

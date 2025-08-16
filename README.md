@@ -107,8 +107,7 @@ starting the interactive tutorials.
 - `discovr_08`: The general linear model (GLM). Visualizing the data,
   fitting GLMs with one and two predictors. Viewing model parameters
   with broom, model parameters, standard errors, confidence intervals,
-  fit statistics, significance, Bayes factors and Bayesian estimates
-  (using default priors).
+  fit statistics, significance.
 - `discovr_09`: Categorical predictors with two categories (comparing
   two means). Comparing two independent means, comparing two related
   means, effect sizes, robust comparisons of means (independent and

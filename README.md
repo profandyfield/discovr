@@ -35,7 +35,7 @@ support tutors and students using my textbook who want to learn
 > and yet-to-be updated tutorials. For this reason, I recommend
 > installing the CRAN release and not the development version on GitHub.
 >
-> Updated tutorials: `discovr_01` to `discover_07`
+> Updated tutorials: `discovr_01` to `discover_08`
 
 ## Installing `discovr`
 

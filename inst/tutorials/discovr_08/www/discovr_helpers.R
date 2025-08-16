@@ -364,3 +364,70 @@ report_em <- function(em_obj, row = 1, digits = 2, p_digits = 3){
 
   paste0("$\\hat{b}$ = ", em_row$estimate, ", *t*(", em_row$df, ") = ", em_row$t.ratio, ", ", em_row$p)
 }
+
+# -----------------
+
+# Easystats helpers
+
+
+
+report_p <- function(p, p_digits = 3){
+  p_dp <- paste0("%.", p_digits, "f")
+
+  ifelse(p < 0.001,
+         "*p* < 0.001",
+         paste("*p* =", sprintf(fmt = p_dp, p)))
+}
+
+report_value <- function(x, digits = 2){
+  dp <- paste0("%.", digits, "f")
+  sprintf(fmt = dp, x)
+}
+
+
+value_from_ez <- function(ezobj, row = 1, value = "Coefficient", digits = 2, p_digits = 3){
+  val <- ezobj |>
+    pull({{value}})
+
+  val <- val[row]
+
+
+  if(value == "p"){
+    report_p(val, p_digits = p_digits)
+  } else {
+    report_value(val, digits = digits)
+  }
+}
+
+report_lrt <- function(lrt, row = 2, digits = 2, p_digits = 3, df_digits = 0){
+  dfm <- value_from_ez(lrt, row = row, value = "df_diff", digits = df_digits)
+  dfr <- value_from_ez(lrt, row = row, value = "df", digits = df_digits)
+  f <- value_from_ez(lrt, row = row, value = "F", digits = digits)
+  p <- value_from_ez(lrt, row = row, value = "p", p_digits = p_digits)
+
+  paste0("*F*(", dfm, ", ", dfr, ") = ", f, ", ", p)
+}
+
+
+report_pe <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0, glm = F, symbol = "$\\hat{b}$"){
+  b <- value_from_ez(ezobj, row = row, value = "Coefficient", digits = digits)
+  p <- value_from_ez(ezobj, row = row, value = "p", p_digits = p_digits)
+  df <- value_from_ez(ezobj, row = row, value = "df_error", digits = df_digits)
+  ci <- paste0("(", value_from_ez(ezobj, row = row, value = "CI_low", digits = digits), ", ", value_from_ez(ezobj, row = row, value = "CI_high", digits = digits), ")")
+
+  if(glm){
+    stat = "*z*"
+    test_stat <- value_from_ez(ezobj, row = row, value = "z", digits = digits)
+  } else {
+    stat = "*t*"
+    test_stat <- value_from_ez(ezobj, row = row, value = "t", digits = digits)
+  }
+
+  stat_text <- paste0(", ", stat, "(", df, ") = ", test_stat)
+
+
+  paste0(symbol, " = ", b, " ", ci, stat_text, ", ", p)
+
+}
+
+

@@ -61,13 +61,6 @@ album_full_lm <- lm(sales ~ adverts + airplay + image,
                     na.action = na.exclude)
 ```
 
-```{r, eval = F, echo = F}
-# Create bib file for R packages
-here::here("inst/tutorials/discovr_08/packages.bib") |>
-  knitr::write_bib(c('here', 'tidyverse', 'dplyr', 'readr', 'forcats', 'tibble', 'knitr', 'ggfortify', 'broom', 'GGally', 'parameters', 'robust', 'sandwich', 'BayesFactor'), file = _)
-```
-
-
 # discovr: the General Linear Model (GLM)
 
 ```{r, child = "intro.Rmd"}

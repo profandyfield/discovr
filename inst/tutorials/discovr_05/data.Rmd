@@ -35,7 +35,7 @@ For [notebook_tib]{.alt} execute the following code:
 ```{r, eval=FALSE}
 notebook_tib <- notebook_tib |>
   dplyr::mutate(
-    sex = as_factor(sex),
+    sex = as_factor(gender_identity),
     film = as_factor(film)
   )
 ```

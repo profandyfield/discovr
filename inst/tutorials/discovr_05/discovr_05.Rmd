@@ -1058,7 +1058,7 @@ We can also specifying different colours for those identifying as men and women 
 exam_plot <- ggplot(exam_tib, aes(anxiety, exam_grade, colour = sex))
 ```
 
-To colour the interval around the line by sex, we'd also need to include [fill = sex`:
+To colour the interval around the line by sex, we'd also need to include [fill = sex]{.alt}:
 
 ```{r, eval = FALSE}
 exam_plot <- ggplot(exam_tib, aes(anxiety, exam_grade, colour = sex, fill = sex))

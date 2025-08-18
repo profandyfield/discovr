@@ -379,23 +379,35 @@ report_p <- function(p, p_digits = 3){
          paste("*p* =", sprintf(fmt = p_dp, p)))
 }
 
-report_value <- function(x, digits = 2){
-  dp <- paste0("%.", digits, "f")
+report_value <- function(x, digits = 2, scientific = FALSE){
+  if(scientific){
+    dp <- paste0("%.", digits, "e")
+  } else {
+    dp <- paste0("%.", digits, "f")
+  }
+
   sprintf(fmt = dp, x)
 }
 
 
-value_from_ez <- function(ezobj, row = 1, value = "Coefficient", digits = 2, p_digits = 3){
+value_from_ez <- function(ezobj, row = 1, value = "Coefficient", digits = 2, p_digits = 3, scientific = FALSE, as_number = FALSE, exponentiate = FALSE){
   val <- ezobj |>
     pull({{value}})
 
   val <- val[row]
 
+  if(exponentiate){
+    val <- exp(val)
+  }
 
-  if(value == "p"){
-    report_p(val, p_digits = p_digits)
+  if(as_number){
+    val
   } else {
-    report_value(val, digits = digits)
+    if(value == "p"){
+      report_p(val, p_digits = p_digits)
+    } else {
+      report_value(val, digits = digits, scientific = scientific)
+    }
   }
 }
 

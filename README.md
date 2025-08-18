@@ -188,8 +188,12 @@ starting the interactive tutorials.
 - `discovr_20`: Categorical outcomes (logistic regression). This
   tutorial builds on previous ones to show how the general linear model
   model extends to situations where you want to predict a binary outcome
-  (logistic regression). We look at fitting the models and interpretting
+  (logistic regression). We look at fitting the models and interpreting
   the odds ratio.
+- `discovr_bayes`: Bayesian taster tutorial. This tutorial offers a
+  taster of Bayesian statistics by showing how to conduct various
+  analyses from other tutorials within a Bayesian framework (mainly
+  using default priors). We also look at Bayes factors”.
 
 ### Running a tutorial
 

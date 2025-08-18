@@ -1,0 +1,45 @@
+---
+title: "packages"
+author: "Andy Field"
+output: learnr::tutorial
+---
+
+
+```{r, eval = F, echo = F}
+# Create bib file for R packages
+
+tidylist <- c('tidyverse', 'dplyr', 'ggplot2', 'readr', 'tibble')
+easylist <- c("easystats", 'bayestestR', "insight", "performance", "parameters")
+otherlist <- c('here', 'rstanarm')
+
+here::here("inst/tutorials/discovr_bayes/packages.bib") |>
+  knitr::write_bib(c(easylist, tidylist, otherlist), file = _)
+```
+
+In this tutorial all packages are pre-loaded. If working outside of the tutorial, load the `easystats` and `tidyverse` packages (and any others if you're using a concise style - see previous section) at the beginning of your `r quarto()` document:
+
+```{r eval = FALSE}
+library(easystats)
+library(tidyverse)
+```
+
+This tutorial uses the following packages:
+
+- `here` [@R-here]
+- `rstanarm` [@R-rstanarm; @rstanarm2018]
+
+It also uses these packages from:
+
+### easystats
+
+- `bayesR` [@R-bayestestR; bayestestR2019]
+- `insight` [@R-insight]
+- `performance` [@R-performance]
+- `parameters` [@R-parameters; @parameters2020]
+ 
+### tidyverse 
+ 
+- `dplyr` [@R-dplyr]
+- `ggplot2` [@R-ggplot2; @wickham_ggplot2_2016]
+- `readr` [@R-readr]
+- `tibble` [@R-tibble]

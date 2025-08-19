@@ -1,5 +1,5 @@
 ---
-title: "discovr: Factorial designs (GLM 3)"
+title: "discovr factorial designs"
 author: "Andy Field"
 output:
   learnr::tutorial:
@@ -63,7 +63,7 @@ here::here("inst/tutorials/discovr_13/packages.bib") |>
   knitr::write_bib(c('here', 'tidyverse', 'dplyr', 'readr', 'forcats', 'tibble', 'knitr', 'afex', 'BayesFactor', 'broom', "car", 'effectsize', 'emmeans', "ggfortify", 'Hmisc', 'modelbased', 'parameters', 'sandwich'), file = _)
 ```
 
-# discovr: Factorial designs (GLM 3)
+# discovr factorial designs (GLM 3)
 
 ## Overview
 
@@ -1521,7 +1521,7 @@ quiz(caption = "Robust model quiz (level 3)",
 
 ## Resources/References {data-progressive=FALSE}
 
-```{r, child = "resources.Rmd"}
+```{r, child = "./docs/resources.Rmd"}
 
 ```
 

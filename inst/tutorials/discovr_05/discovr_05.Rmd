@@ -1,5 +1,5 @@
 ---
-title: "discovr: Visualizing data"
+title: "discovr data visualization"
 author: "Andy Field"
 output:
   learnr::tutorial:
@@ -40,22 +40,22 @@ notebook_tib <- discovr::notebook
 exam_tib <- discovr::exam_anxiety
 ```
 
-# discovr: Visualizing data
+# discovr data visualization
 
-```{r, child = "intro.Rmd"}
+```{r, child = "./docs/intro.Rmd"}
 
 ```
 
 ## Packages
 
-```{r, child = "packages.Rmd"}
+```{r, child = "./docs/packages.Rmd"}
 
 ```
 
 
 ## Data
 
-```{r, child = "data.Rmd"}
+```{r, child = "./docs/data.Rmd"}
 
 ```
 
@@ -1131,7 +1131,7 @@ exam_plot +
 
 ## Resources/References {data-progressive=FALSE}
 
-```{r, child = "resources.Rmd"}
+```{r, child = "./docs/resources.Rmd"}
 
 ```
 

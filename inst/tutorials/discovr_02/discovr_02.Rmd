@@ -1,5 +1,5 @@
 ---
-title: "discovr: Code fundamentals"
+title: "discovr code fundamentals"
 author: "Andy Field"
 output:
   learnr::tutorial:
@@ -10,7 +10,6 @@ output:
 runtime: shiny_prerendered
 description: "Code fundamentals. Functions and objects, packages and functions, style, data types."
 bibliography: [discovr_02.bib, packages.bib]
-
 ---
 <html lang="en">
 
@@ -36,17 +35,17 @@ source("./www/discovr_helpers.R")
 ```
 
 
-# discovr: Code fundamentals
+# discovr code fundamentals
 
 
-```{r, child = "intro.Rmd"}
+```{r, child = "./docs/intro.Rmd"}
 
 ```
 
 
 ## Packages
 
-```{r, child = "packages.Rmd"}
+```{r, child = "./docs/packages.Rmd"}
 
 ```
 
@@ -895,7 +894,7 @@ levels(instrument)
 
 ## Resources/References {data-progressive=FALSE}
 
-```{r, child = "resources.Rmd"}
+```{r, child = "./docs/resources.Rmd"}
 
 ```
 

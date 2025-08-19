@@ -1,5 +1,5 @@
 ---
-title: "discovr: Summarizing data"
+title: "discovr data summaries"
 author: "Andy Field"
 output:
   learnr::tutorial:
@@ -42,23 +42,23 @@ source("./www/discovr_helpers.R")
 ice_tib <- discovr::ice_bucket
 ```
 
-# discovr: Summarizing data
+# discovr data summaries
 
 
-```{r, child = "intro.Rmd"}
+```{r, child = "./docs/intro.Rmd"}
 
 ```
 
 
 ## Packages
 
-```{r, child = "packages.Rmd"}
+```{r, child = "./docs/packages.Rmd"}
 
 ```
 
 ## Data
 
-```{r, child = "data.Rmd"}
+```{r, child = "./docs/data.Rmd"}
 
 ```
 
@@ -947,7 +947,7 @@ Well done on completing phase 4 of your mission! You have learnt how to summariz
 
 ## Resources/References {data-progressive=FALSE}
 
-```{r, child = "resources.Rmd"}
+```{r, child = "./docs/resources.Rmd"}
 
 ```
 

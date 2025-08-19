@@ -1,5 +1,5 @@
 ---
-title: "discovr: the GLM"
+title: "discovr the GLM"
 author: "Andy Field"
 output:
   learnr::tutorial:
@@ -61,22 +61,22 @@ album_full_lm <- lm(sales ~ adverts + airplay + image,
                     na.action = na.exclude)
 ```
 
-# discovr: the General Linear Model (GLM)
+# discovr the General Linear Model (GLM)
 
-```{r, child = "intro.Rmd"}
+```{r, child = "./docs/intro.Rmd"}
 
 ```
 
 ## Packages
 
-```{r, child = "packages.Rmd"}
+```{r, child = "./docs/packages.Rmd"}
 
 ```
 
 
 ## Data
 
-```{r, child = "data.Rmd"}
+```{r, child = "./docs/data.Rmd"}
 
 ```
 
@@ -113,7 +113,7 @@ In this tutorial we will look at fitting two models in which we predict `sales`:
 - **Several predictors** we extent the first model to also include `airplay` and the 'look' of the band (`image`) as predictors.
 
 
-```{r, child = "fit_models.Rmd"}
+```{r, child = "./docs/fit_models.Rmd"}
 
 ```
 
@@ -1464,7 +1464,7 @@ quiz(
 
 ## Resources/References {data-progressive=FALSE}
 
-```{r, child = "resources.Rmd"}
+```{r, child = "./docs/resources.Rmd"}
 
 ```
 

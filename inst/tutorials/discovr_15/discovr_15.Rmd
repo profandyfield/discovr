@@ -1,5 +1,5 @@
 ---
-title: "discovr: Repeated measures designs (GLM 4)"
+title: "discovr repeated measures"
 author: "Andy Field"
 output:
   learnr::tutorial:
@@ -56,7 +56,7 @@ here::here("inst/tutorials/discovr_15/packages.bib") |>
   knitr::write_bib(c('here', 'tidyverse', 'dplyr', 'readr', 'forcats', 'tibble', 'knitr', 'afex', 'emmeans', 'Hmisc', 'WRS2', 'broom'), file = _)
 ```
 
-# discovr: Repeated measures designs (GLM 4)
+# discovr repeated measures designs (GLM 4)
 
 ## Overview
 
@@ -112,7 +112,7 @@ This tutorial uses the following packages:
 * `knitr` [@R-knitr]
 * `WRS2` [@R-WRS2; @WRS22020]
 
-It also uses these [tidyverse]{.pkg} packages [@R-tidyverse; @tidyverse2019]: [dplyr]{.pkg} [@R-dplyr], [forcats]{.pkg} [@R-forcats], [ggplot2]{.pkg} [@wickhamGgplot2ElegantGraphics2016], and [readr]{.pkg} [@R-readr].
+It also uses these [tidyverse]{.pkg} packages [@R-tidyverse; @tidyverse2019]: [dplyr]{.pkg} [@R-dplyr], [forcats]{.pkg} [@R-forcats], [ggplot2]{.pkg} [@wickham_ggplot2_2016], and [readr]{.pkg} [@R-readr].
 
 
 ### Coding style
@@ -1161,11 +1161,11 @@ The result is a bewildering 36 comparisons! Good luck making sense of those. Par
 scent_afx <- afex::aov_4(vocalizations ~ entity*scent_mask + (entity*scent_mask|dog_id), data = scent_tib)
 
 afex::afex_plot(scent_afx, "scent_mask", "entity", error = "within") +
-  scale_color_manual(values = c(ong, blu, red)) +
+  scale_color_manual(values = c(bwn, blu, byz)) +
   labs(x = "Scent used", y = "Number of vocalizations") +
-  annotate("rect", xmin = 0.5, xmax = 1.5, ymin = 0, ymax = 15, fill = ong, alpha = 0.2) +
+  annotate("rect", xmin = 0.5, xmax = 1.5, ymin = 0, ymax = 15, fill = bwn, alpha = 0.2) +
   annotate("rect", xmin = 1.5, xmax = 2.5, ymin = 0, ymax = 15, fill = blu, alpha = 0.2) +
-  annotate("rect", xmin = 2.5, xmax = 3.5, ymin = 0, ymax = 15, fill = red, alpha = 0.2) +
+  annotate("rect", xmin = 2.5, xmax = 3.5, ymin = 0, ymax = 15, fill = byz, alpha = 0.2) +
   theme_minimal()
 ```
 
@@ -1272,7 +1272,7 @@ Unfortunately there's also no easy way to fit a robust model (at least not if yo
 
 ## Resources/References {data-progressive=FALSE}
 
-```{r, child = "resources.Rmd"}
+```{r, child = "./docs/resources.Rmd"}
 
 ```
 

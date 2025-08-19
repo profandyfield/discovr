@@ -1,5 +1,5 @@
 ---
-title: "discovr: Associations"
+title: "discovr associations"
 author: "Andy Field"
 output:
   learnr::tutorial:
@@ -49,22 +49,22 @@ here::here("inst/tutorials/discovr_07/packages.bib") |>
   knitr::write_bib(c('here', 'tidyverse', 'dplyr', 'readr', 'forcats', 'tibble', 'ggplot2', 'knitr', "GGally", "correlation"), file = _)
 ```
 
-# discovr: Associations
+# discovr associations
 
-```{r, child = "intro.Rmd"}
+```{r, child = "./docs/intro.Rmd"}
 
 ```
 
 ## Packages
 
-```{r, child = "packages.Rmd"}
+```{r, child = "./docs/packages.Rmd"}
 
 ```
 
 
 ## Data
 
-```{r, child = "data.Rmd"}
+```{r, child = "./docs/data.Rmd"}
 
 ```
 
@@ -458,7 +458,7 @@ The output shows $\tau$ = `r sprintf("%.2f", tau$tau[1])`, which is closer to ze
 
 ## Resources/References {data-progressive=FALSE}
 
-```{r, child = "resources.Rmd"}
+```{r, child = "./docs/resources.Rmd"}
 
 ```
 

@@ -1,5 +1,5 @@
 ---
-title: "discovr: Comparing several means (GLM 1)"
+title: "discovr comparing several means"
 author: "Andy Field"
 output:
   learnr::tutorial:
@@ -56,7 +56,7 @@ here::here("inst/tutorials/discovr_11/packages.bib") |>
   knitr::write_bib(c('here', 'tidyverse', 'dplyr', 'readr', 'forcats', 'tibble', 'knitr', 'broom', 'effectsize', "ggfortify", 'Hmisc', 'modelbased', 'parameters', 'sandwich', 'emmeans', 'BayesFactor', 'emmeans'), file = _)
 ```
 
-# discovr: Comparing several means (GLM 1)
+# discovr comparing several means (GLM 1)
 
 ## Overview
 
@@ -1381,7 +1381,7 @@ quiz(caption = "The superhero quiz (level 2)",
 
 ## Resources/References {data-progressive=FALSE}
 
-```{r, child = "resources.Rmd"}
+```{r, child = "./docs/resources.Rmd"}
 
 ```
 

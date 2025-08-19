@@ -1,5 +1,5 @@
 ---
-title: "discovr: the beast of bias"
+title: "discovr the beast of bias"
 author: "Andy Field"
 output:
   learnr::tutorial:
@@ -50,22 +50,22 @@ here::here("inst/tutorials/discovr_06/packages.bib") |>
   knitr::write_bib(c('here', 'tidyverse', 'dplyr', 'forcats', 'readr', 'stringr', 'tibble', 'tidyr', 'knitr', 'datawizard', 'qqplotr'), file = _)
 ```
 
-# discovr: The beast of bias
+# discovr the beast of bias
 
-```{r, child = "intro.Rmd"}
+```{r, child = "./docs/intro.Rmd"}
 
 ```
 
 ## Packages
 
-```{r, child = "packages.Rmd"}
+```{r, child = "./docs/packages.Rmd"}
 
 ```
 
 
 ## Data
 
-```{r, child = "data.Rmd"}
+```{r, child = "./docs/data.Rmd"}
 
 ```
 
@@ -1001,7 +1001,7 @@ download_tidy |>
 
 ## Resources/References {data-progressive=FALSE}
 
-```{r, child = "resources.Rmd"}
+```{r, child = "./docs/resources.Rmd"}
 
 ```
 

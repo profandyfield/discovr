@@ -1,5 +1,5 @@
 ---
-title: "discovr: Introducing R, RStudio and Quarto"
+title: "discovr R, RStudio and Quarto"
 author: "Andy Field"
 output:
   learnr::tutorial:
@@ -8,9 +8,8 @@ output:
     highlight: "kate"
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
-description: "Introducing R, RStudio and Quarto: What is R, tour of RStudio and Quarto, getting help, installing packages, coding style and loading packages."
+description: "A tour of R, RStudio and Quarto, getting help, installing packages, coding style and loading packages."
 bibliography: [discovr_01.bib, packages.bib]
-
 ---
 <html lang="en">
 
@@ -36,14 +35,14 @@ tidylist <- c('tidyverse', 'dplyr', 'forcats', 'ggplot2', 'lubridate', 'purrr', 
 easylist <- c("easystats", "correlation", "datawizard", "effectsize", "insight", "modelbased", "performance", "parameters")
 otherlist <- c('base')
 
-here::here("inst/tutorials/discovr_00/packages.bib") |>
+here::here("inst/tutorials/discovr_01/packages.bib") |>
   knitr::write_bib(c(easylist, tidylist, otherlist), file = _)
 ```
 
-# discovr: Introducing R, RStudio and Quarto
+# discovr R, RStudio and Quarto
 
 
-```{r, child = "intro.Rmd"}
+```{r, child = "./docs/intro.Rmd"}
 
 ```
 
@@ -320,7 +319,7 @@ library(tidyverse)
 
 ## Resources/References {data-progressive=FALSE}
 
-```{r, child = "resources.Rmd"}
+```{r, child = "./docs/resources.Rmd"}
 
 ```
 

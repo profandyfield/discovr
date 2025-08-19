@@ -1,5 +1,5 @@
 ---
-title: "discovr: Comparing adjusted means (GLM 2)"
+title: "discovr comparing adjusted means"
 author: "Andy Field"
 output:
   learnr::tutorial:
@@ -58,7 +58,7 @@ here::here("inst/tutorials/discovr_12/packages.bib") |>
   knitr::write_bib(c('here', 'tidyverse', 'dplyr', 'readr', 'forcats', 'tibble', 'knitr', 'broom', 'effectsize', "ggfortify", 'Hmisc', 'modelbased', 'parameters', 'sandwich', 'BayesFactor', 'car', 'emmeans'), file = _)
 ```
 
-# discovr: Comparing adjusted means (GLM 2)
+# discovr comparing adjusted means (GLM 2)
 
 ## Overview
 
@@ -1620,7 +1620,7 @@ quiz(caption = "Robust model quiz (level 2)",
 
 ## Resources/References {data-progressive=FALSE}
 
-```{r, child = "resources.Rmd"}
+```{r, child = "./docs/resources.Rmd"}
 
 ```
 

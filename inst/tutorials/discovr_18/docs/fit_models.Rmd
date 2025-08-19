@@ -1,0 +1,29 @@
+---
+title: "fit models"
+author: "Andy Field"
+output: learnr::tutorial
+---
+
+Whatever statistical model we fit, we progress through a workflow that uses a consistent set of steps and `r rproj()` functions as highlighted in Figure 2.
+
+- [Step 1]{.alt}. Get your data into R and pre-process using [tidyverse]{.pkg} packages or the [datawizard]{.pkg} package from [easystats]{.pkg}.
+- [Step 2]{.alt}. Visualise the data using the [ggplot2]{.pkg} package from [tidyverse]{.pkg}. 
+- [Step 3]{.alt}. Fit a statistical model that will answer your research question.
+- [Step 4]{.alt}. Evaluate the model using a small number of functions from the [performance]{.pkg} package from [easystats]{.pkg}. Specially, we evaluate
+    - How well the model fits the data
+    - Whether the underlying assumptions of the model are met. If not, we refit the model using robust methods (see Figure 3).
+- [Step 5]{.alt}. Interpret the model
+    - Interpret the values that define the model (the [parameter estimates]{.alt}) using the [parameters]{.pkg} package from [easystats]{.pkg}.
+    - Make specific predictions from our model using the [modelbased]{.pkg} package from [easystats]{.pkg}.
+  
+
+<figure>
+<img src="./images/model_workflow.png" alt="A flowchart illustrating the 5 steps described in the text." width="100%" >
+<figcaption>Figure 2: Workflow for fitting statistical models.</figcaption>
+</figure>
+
+
+<figure>
+<img src="./images/robust_flow.svg" alt="A flowchart illustrating the 5 steps described in the text." width="100%" >
+<figcaption>Figure 3: What to do if the model assumptions are broken.</figcaption>
+</figure>

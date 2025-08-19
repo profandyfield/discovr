@@ -1,0 +1,27 @@
+---
+title: "data"
+author: "Andy Field"
+output: learnr::tutorial
+---
+
+To work *outside of this tutorial* you need to download the following data file:
+
+* [cat_dance.csv](https://www.discovr.rocks/csv/cat_dance.csv)
+
+Set up an `r rstudio()` project in the way that [I recommend in this tutorial](https://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your Quarto document:
+
+```{r, eval=FALSE}
+dance_tib <- here::here("data/cat_dance.csv") |> read_csv()
+```
+
+### Preparing data
+
+To work *outside of this tutorial* you need to turn categorical variables into factors and set an appropriate baseline category using `as_factor` and `fct_relevel` from the [forcats]{.pkg} package. There are two categorical variables here: **training** (the animal was trained using either food or affection, not both) and **dance** (the animal either learnt to dance or it did not). For each variable, think about which category you'd want as your baseline or reference.  For **training** it doesn't matter too much, but for **dance** it makes sense to have 'No' as the reference category. Therefore, you might convert these variables to factors using this code:
+
+```{r, eval= FALSE}
+dance_tib <- dance_tib |> 
+  dplyr::mutate(
+    dance = as_factor(dance) |> fct_relevel("No"),
+    training = as_factor(training) |> fct_relevel("Food")
+  )
+```

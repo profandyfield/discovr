@@ -170,7 +170,7 @@ starting the interactive tutorials.
   predictors, obtaining estimated marginal means, interaction plots,
   simple effects analysis, diagnostic plots, robust models and Bayes
   factors.
-- `discovr_18`: Exploratory Factor Analysis (EFA). Applying factor
+- `discovr_17`: Exploratory Factor Analysis (EFA). Applying factor
   analysis using the `psych` package. This tutorial uses a fictitious
   questionnaire (the <img src="./data-raw/images/r_logo.png" width="18">
   Anxiety Scale, RAQ) with 23 items to show how EFA can be used to
@@ -182,10 +182,10 @@ starting the interactive tutorials.
   to extract, extracting factors, rotating the solution nd
   interpretation of the factors. We also learn to obtain Cronbach’s
   alpha on each of the subscales.
-- `discovr_19`: Categorical variables. Entering categorical data,
+- `discovr_18`: Categorical variables. Entering categorical data,
   contingency tables, associations between categorical variables, the
   chi-square test, standardized residuals, Fisher’s exact test.
-- `discovr_20`: Categorical outcomes (logistic regression). This
+- `discovr_19`: Categorical outcomes (logistic regression). This
   tutorial builds on previous ones to show how the general linear model
   model extends to situations where you want to predict a binary outcome
   (logistic regression). We look at fitting the models and interpreting

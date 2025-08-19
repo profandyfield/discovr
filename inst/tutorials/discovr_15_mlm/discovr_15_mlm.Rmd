@@ -1,5 +1,5 @@
 ---
-title: "discovr: Repeated measures designs as multilevel models (GLM 4)"
+title: "discovr repeated measures designs as multilevel models"
 author: "Andy Field"
 output:
   learnr::tutorial:
@@ -58,7 +58,7 @@ here::here("inst/tutorials/discovr_15_mlm/packages.bib") |>
   knitr::write_bib(c('here', 'tidyverse', 'dplyr', 'readr', 'forcats', 'tibble', 'knitr', 'broom.mixed', 'modelbased', 'lme4', 'lmerTest', 'emmeans', 'Hmisc', 'WRS2', 'broom', 'robustlmm', 'performance'), file = _)
 ```
 
-# discovr: Repeated measures designs (GLM 4)
+# discovr repeated measures designs as multilevel models (GLM 4)
 
 ## Overview
 
@@ -117,7 +117,7 @@ This tutorial uses the following packages:
 * [modelbased]{.pkg} [@R-modelbased]
 * [performance]{.pkg} [@R-performance]
 
-It also uses these [tidyverse]{.pkg} packages [@R-tidyverse; @tidyverse2019]:  [dplyr]{.pkg} [@R-dplyr], [forcats]{.pkg} [@R-forcats],  [ggplot2]{.pkg} [@wickhamGgplot2ElegantGraphics2016], [readr]{.pkg} [@R-readr], and [tibble]{.pkg} [@R-tibble].
+It also uses these [tidyverse]{.pkg} packages [@R-tidyverse; @tidyverse2019]:  [dplyr]{.pkg} [@R-dplyr], [forcats]{.pkg} [@R-forcats],  [ggplot2]{.pkg} [@wickham_ggplot2_2016], [readr]{.pkg} [@R-readr], and [tibble]{.pkg} [@R-tibble].
 
 
 ### Coding style
@@ -586,7 +586,7 @@ Also note in the random effects that the variance for the intercept is `r get_pa
 <div class="reportbox">
   `r pencil()` **Report**`r rproj()`
 
-There was a significant effect of the type of entity on sniffer dog's vocalizations when approaching them, `r report_lrt(sniff_lrt)`. Contrasts revealed that vocalizations were significantly higher when sniffing aliens compared to non-aliens, $\hat{b}$ = `r report_pars(sniff_pars, row = 2)`), but vocalizations were not significantly different when sniffing different types of aliens, $\hat{b}$ = `r report_pars(sniff_pars, row = 3)` or when sniffing a human compared to a mannequin, $\hat{b}$ = `r report_pars(sniff_pars, row = 4)`).
+There was a significant effect of the type of entity on sniffer dog's vocalizations when approaching them, `r report_lrt(lrt = sniff_lrt, is_wald = F)`. Contrasts revealed that vocalizations were significantly higher when sniffing aliens compared to non-aliens, $\hat{b}$ = `r report_pars(sniff_pars, row = 2)`), but vocalizations were not significantly different when sniffing different types of aliens, $\hat{b}$ = `r report_pars(sniff_pars, row = 3)` or when sniffing a human compared to a mannequin, $\hat{b}$ = `r report_pars(sniff_pars, row = 4)`).
 
 
 </div>
@@ -954,7 +954,7 @@ scent_pars <- parameters::model_parameters(scent_int)
 <div class="reportbox">
   `r pencil()` **Report**`r rproj()`
 
-There were significant main effects of the type of entity `r report_lrt(model_lrt, row = 2)`, and the scent mask used, `r report_lrt(model_lrt, row = 3)`, on sniffer dog's vocalizations. Most important, the type of scent used significantly moderated the effect of entity on sniffer dog's vocalizations,  `r report_lrt(model_lrt, row = 4)`.
+There were significant main effects of the type of entity `r report_lrt(model_lrt, row = 2, is_wald = F)`, and the scent mask used, `r report_lrt(model_lrt, row = 3, is_wald = F)`, on sniffer dog's vocalizations. Most important, the type of scent used significantly moderated the effect of entity on sniffer dog's vocalizations,  `r report_lrt(model_lrt, row = 4, is_wald = F)`.
 
 </div>
 
@@ -1174,7 +1174,7 @@ scent_rob <- robustlmm::rlmer(vocalizations ~ entity*scent_mask (1|dog_name), da
 
 ## Resources/References {data-progressive=FALSE}
 
-```{r, child = "resources.Rmd"}
+```{r, child = "./docs/resources.Rmd"}
 
 ```
 

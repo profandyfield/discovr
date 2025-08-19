@@ -1,5 +1,5 @@
 ---
-title: "discovr: Mixed designs (GLM 5)"
+title: "discovr mixed designs"
 author: "Andy Field"
 output:
   learnr::tutorial:
@@ -52,7 +52,7 @@ profile_tib <- discovr::profile_pic
 
 # create main model
 
-date_afx <- afex::aov_4(date ~ strategy*looks*personality + (looks*personality|id), data = date_tib)
+date_afx <- afex::aov_4(date ~ strategy*looks*charisma + (looks*charisma|id), data = date_tib)
 date_tbl <- date_afx$anova_table
 ```
 
@@ -62,7 +62,7 @@ here::here("inst/tutorials/discovr_16/packages.bib") |>
   knitr::write_bib(c('here', 'tidyverse', 'dplyr', 'readr', 'forcats', 'tibble', 'knitr', 'afex', 'emmeans', 'Hmisc'), file = _)
 ```
 
-# discovr: Mixed designs (GLM 5)
+# discovr mixed designs (GLM 5)
 
 ## Overview
 
@@ -157,12 +157,12 @@ date_tib <- here::here("data/speed_date.csv") |>
       forcats::fct_relevel("Normal", "Hard to get"),
     looks = forcats::as_factor(looks) |>
       forcats::fct_relevel("Low", "Average", "High"),
-    personality = forcats::as_factor(personality) |>
+    charisma = forcats::as_factor(charisma) |>
       forcats::fct_relevel("Low", "Average", "High"),
   )
 ```
 
-This code reads in the data and converts the variables **strategy**, **looks** and **personality** to be factors (categorical variable). It also uses `fct_relevel()` to set the order of the levels of each factor.
+This code reads in the data and converts the variables **strategy**, **looks** and **charisma** to be factors (categorical variable). It also uses `fct_relevel()` to set the order of the levels of each factor.
 
 For the profile picture data use the code below. The variables **rel_status** and **profile_pic** are converted to factors and the reference category for each is set using `fct_relevel()`:
 
@@ -179,9 +179,9 @@ profile_tib <- here::here("data/profile_pic.csv") |>
 
 ## `r bmu()` A speed dating example [(B)]{.lbl}
 
-The main examples in this tutorial are from [@fielddsr22026]. A big discussion in magazines seems to be the factors that get you a relationship, for example, the relative importance of looks, personality, and dating strategies (whether you should 'treat them mean to keep them keen' and all that stuff). Scientists have looked at these issues too. For example, the top three most highly rated attributes of a partner in teenagers are reliability, honesty and kindness [@ha_effects_2010]. Beyond that, in the same study boys tended to rate attractiveness slightly higher than girls, and girls rate a sense of humour more highly than boys (although both are ranked in the top 10 by both sexes). With regard to dating strategies, @dai_when_2014 suggest that if someone is committed to pursuing a relationship with a person who plays hard to get, they will find that person more desirable but less likeable.
+The main examples in this tutorial are from [@fielddsr22026]. A big discussion in magazines seems to be the factors that get you a relationship, for example, the relative importance of looks, charisma, and dating strategies (whether you should 'treat them mean to keep them keen' and all that stuff). Scientists have looked at these issues too. For example, the top three most highly rated attributes of a partner in teenagers are reliability, honesty and kindness [@ha_effects_2010]. Beyond that, in the same study boys tended to rate attractiveness slightly higher than girls, and girls rate a sense of humour more highly than boys (although both are ranked in the top 10 by both sexes). With regard to dating strategies, @dai_when_2014 suggest that if someone is committed to pursuing a relationship with a person who plays hard to get, they will find that person more desirable but less likeable.
 
-Imagine a scientist designed a study to look at the interplay between looks, personality and dating strategies on evaluations of a date. She set up a speed-dating night with nine tables at which there sat a 'date'. All the dates were stooges selected to vary in their attractiveness (high, average, and low), you might remember from a previous lecture that this could perhaps be gauged with facial symmetry (symmetrical faces tend to be perceived as more attractive). The dates were trained to vary their charisma (high, average, low), and also the strategy they employ during the conversation (normal or playing hard to get). The stooge dates were trained before the study to act charismatically to varying degrees, and also how to act in a way that made them seem unobtainable (hard to get) or not. As such, across the nine dates/stooges there were three attractive dates, one of whom acted charismatically, one who acted normally (average) and another who acted like they write statistics books, and likewise for the three average-looking dates and the three low attractiveness dates.
+Imagine a scientist designed a study to look at the interplay between looks, charisma and dating strategies on evaluations of a date. She set up a speed-dating night with nine tables at which there sat a 'date'. All the dates were stooges selected to vary in their attractiveness (high, average, and low), you might remember from a previous lecture that this could perhaps be gauged with facial symmetry (symmetrical faces tend to be perceived as more attractive). The dates were trained to vary their charisma (high, average, low), and also the strategy they employ during the conversation (normal or playing hard to get). The stooge dates were trained before the study to act charismatically to varying degrees, and also how to act in a way that made them seem unobtainable (hard to get) or not. As such, across the nine dates/stooges there were three attractive dates, one of whom acted charismatically, one who acted normally (average) and another who acted like they write statistics books, and likewise for the three average-looking dates and the three low attractiveness dates.
 
 Therefore, each participant attending the speed-dating night was exposed to all combinations of attractiveness and charisma (these are repeated measures). (There were separate sets of nine male stooges and nine females so that those attending could meet 'dates' of whichever sex interested them.) Upon arrival participants were randomly assigned a green or red sticker. For the participants with the red sticker the stooges played hard to get (unobtainable) and for those with a green sticker they acted normally. Over the course of a few nights 20 people attended, spent 5 minutes with each of the nine 'dates' and then rated how much they'd like to have a proper date with each one as a percentage (100% = 'I'd pay a large sum of money for their phone number', 0% = 'I'd pay a large sum of money for a plane ticket to get me as far away from them as possible').
 
@@ -197,15 +197,15 @@ View the data in [date_tib]{.alt}.
 date_tib
 ```
 
-Note that there are four variables: the **id**, which is a character variable (note the <chr> under the name), **strategy** (normal or hard to get), **looks** (high, average, low) and **personality** (high, average or low charisma), which are all factor variables (note the <fct> under the name) and **date** (the rating of how much the participant would like a date with the stooge), which is numeric and has the data type 'double' (note the <dbl> under the name).
+Note that there are four variables: the **id**, which is a character variable (note the <chr> under the name), **strategy** (normal or hard to get), **looks** (high, average, low) and **charisma** (high, average or low charisma), which are all factor variables (note the <fct> under the name) and **date** (the rating of how much the participant would like a date with the stooge), which is numeric and has the data type 'double' (note the <dbl> under the name).
 
 The data are in tidy format, which means that each row represents an instance of the outcome variable and the columns code information about each instance, for example, which participant the instance is related to and the characteristics of each of the 9 'dates' they met. Consequently each participant occupies 9 rows of the tibble (because each participant contributes 9 instances of the outcome variable, **date**).
 
-The variables **strategy**, **looks** and **personality** are factors (categorical variable), so having read the data file and converted these variables to factors it's a good idea to check the order of the levels for each one.
+The variables **strategy**, **looks** and **charisma** are factors (categorical variable), so having read the data file and converted these variables to factors it's a good idea to check the order of the levels for each one.
 
 #### `r alien()` Alien coding challenge
 
-Using what you've learnt in previous tutorials check the order of the levels of the variables **strategy**, **looks** and **personality**.
+Using what you've learnt in previous tutorials check the order of the levels of the variables **strategy**, **looks** and **charisma**.
 
 ```{r chk_levels, exercise = TRUE, exercise.lines = 4}
 
@@ -227,13 +227,13 @@ name_of_tibble$name_of_variable
 
 levels(date_tib$strategy)
 levels(date_tib$looks)
-levels(date_tib$personality)
+levels(date_tib$charisma)
 ```
 
 You'll find that the factor levels are in a sensible order:
 
 -   For **strategy**, the baseline category is 'normal', which makes sense.
--   For **looks** and **personality**, the factor levels are ordered low, average, high. This makes sense because low is the baseline and the levels go in ascending order.
+-   For **looks** and **charisma**, the factor levels are ordered low, average, high. This makes sense because low is the baseline and the levels go in ascending order.
 
 These orders are because I set the data up within this tutorial. Working outside of the tutorial you might need to manually set the order of levels for each factor using `forcats::fct_relevel()` as described in [Data]{.alt} part of this tutorial.
 
@@ -245,7 +245,7 @@ We can create means, confidence intervals and plots in the usual way using [ggpl
 
 Before we fit the model we need to think about what contrasts would be sensible. The variable, **looks**, has three conditions: high, average and low attractiveness. It makes sense to compare the high and low conditions to the average because the average person represents the norm (although it wouldn't be wrong to, for example, compare high and average attractiveness to low attractiveness).
 
-Similarly, **personality** has a category, average charisma, that represents the norm. So, we could use this as the reference/control against which to compare our two extremes (when the date displays high and low charisma).
+Similarly, **charisma** has a category, average charisma, that represents the norm. So, we could use this as the reference/control against which to compare our two extremes (when the date displays high and low charisma).
 
 To implement contrasts we can use the `emmeans::contrast()` function, which we have used before to set our own bespoke contrasts. This function also has some built in methods, that will make our life easier. You might remember from [discovr_15]{.alt} that the function takes this general form:
 
@@ -267,11 +267,11 @@ Be default the method is set to [eff]{.alt}. Here are some of the different sett
 -   [trt.vs.ctrl]{.alt}: compares each level/category to a declared reference category (by default the first category). Use [ref = x]{.alt} to make [x]{.alt} the reference category. For example. [ref = 2]{.alt} will compare each level/category to the second level.
 -   [consec]{.alt}: compares each level/category (except the first) to the previous category.
 
-Given that we want to set contrasts for both **looks** and **personality** that compare each category to *average*, and we know from the previous exercise that 'average' is the second factor level for both variables, we could set contrasts for both variables using [trt.vs.ctrl]{.alt} and [ref = 2]{.alt}. Remember this as we work through the tutorial.
+Given that we want to set contrasts for both **looks** and **charisma** that compare each category to *average*, and we know from the previous exercise that 'average' is the second factor level for both variables, we could set contrasts for both variables using [trt.vs.ctrl]{.alt} and [ref = 2]{.alt}. Remember this as we work through the tutorial.
 
 ## `r user_visor()` Fitting a model to a mixed design [(B)]{.lbl}
 
-We can fit a model that predict the rating of the date from **strategy**, **looks** and **personality** using the `afex` package, which we met in **discovr_13** and **discovr_15**.
+We can fit a model that predict the rating of the date from **strategy**, **looks** and **charisma** using the `afex` package, which we met in **discovr_13** and **discovr_15**.
 
 We can use the `aov_4()` function in much the same way as in **discovr_15**. Remember that the `aov_4()` function has the following format:
 
@@ -282,17 +282,17 @@ afex::aov_4(outcome ~ predictors + (rm_predictors|id_variable), data = my_tib)
 <div class="tip">
 `r cat_space()` **Tip**
 
-Remember that we can specify all main effects and their interactions using `*`. For example, `strategy*looks*personality` will introduce the main effect of **strategy**, the main effect of **looks**, the main effect of **personality**, all of the two-way interaction terms ($\text{strategy} \times \text{looks}$, $\text{strategy} \times \text{personality}$, and $\text{looks} \times \text{personality}$), and the three-way interaction ($\text{strategy} \times \text{looks} \times \text{personality}$).
+Remember that we can specify all main effects and their interactions using `*`. For example, `strategy*looks*charisma` will introduce the main effect of **strategy**, the main effect of **looks**, the main effect of **charisma**, all of the two-way interaction terms ($\text{strategy} \times \text{looks}$, $\text{strategy} \times \text{charisma}$, and $\text{looks} \times \text{charisma}$), and the three-way interaction ($\text{strategy} \times \text{looks} \times \text{charisma}$).
 </div>
 
-In the current design, we can specify the predictors and their interaction using [strategy\*looks\*personality]{.alt}, therefore, we replace [predictors]{.alt} in the code above with [strategy\*looks\*personality]{.alt}. We also need to specify which predictors are repeated measures by specifying which variables are nested within the participant. Remembering that the variable that uniquely identifies the participants is [id]{.alt}, we'd replace [(rm_predictors\|id_variable)]{.alt} with [(looks\*personality\|id)]{.alt} to indicate that the variables **looks**, **personality** and their interaction are (repeated measures) nested within the variable **id**.
+In the current design, we can specify the predictors and their interaction using [strategy\*looks\*charisma]{.alt}, therefore, we replace [predictors]{.alt} in the code above with [strategy\*looks\*charisma]{.alt}. We also need to specify which predictors are repeated measures by specifying which variables are nested within the participant. Remembering that the variable that uniquely identifies the participants is [id]{.alt}, we'd replace [(rm_predictors\|id_variable)]{.alt} with [(looks\*charisma\|id)]{.alt} to indicate that the variables **looks**, **charisma** and their interaction are (repeated measures) nested within the variable **id**.
 
 #### `r robot()` Code example
 
 Remembering that the outcome variable is **date**, and the tibble containing the data is called [date_tib]{.alt}, we can put it all together to fit the model with this code:
 
 ```{r, eval = F}
-date_afx <- afex::aov_4(date ~ strategy*looks*personality + (looks*personality|id), data = date_tib)
+date_afx <- afex::aov_4(date ~ strategy*looks*charisma + (looks*charisma|id), data = date_tib)
 date_afx
 ```
 
@@ -311,11 +311,11 @@ date_afx <- afex::aov_4(xxxxxx ~ xxxx*xxxxx*xxxxx + (xxxxx*xxxxx|xxxxx), data = 
 
 ```{r date_aov_4-solution}
 # fit the model:
-date_afx <- afex::aov_4(date ~ strategy*looks*personality + (looks*personality|id), data = date_tib)
+date_afx <- afex::aov_4(date ~ strategy*looks*charisma + (looks*charisma|id), data = date_tib)
 date_afx #this shows us the model
 ```
 
-Working down from the top of the table, we find a non-significant effect of **strategy** but significant effects (the [p.value]{.alt} is less than 0.05) of **looks**, the **strategy × looks** interaction, **personality**, the **strategy × personality** interaction, the **looks × personality** interaction and the **strategy × looks × personality** interaction. Everything, basically. You wouldn't normally be interested in main effects when there are significant interactions. In fact, the only effect we're really interested in is the significant **strategy × looks × personality** interaction, but for completeness of your understanding we'll interpret each effect in turn, starting with the main effect of **strategy**.
+Working down from the top of the table, we find a non-significant effect of **strategy** but significant effects (the [p.value]{.alt} is less than 0.05) of **looks**, the **strategy × looks** interaction, **charisma**, the **strategy × charisma** interaction, the **looks × charisma** interaction and the **strategy × looks × charisma** interaction. Everything, basically. You wouldn't normally be interested in main effects when there are significant interactions. In fact, the only effect we're really interested in is the significant **strategy × looks × charisma** interaction, but for completeness of your understanding we'll interpret each effect in turn, starting with the main effect of **strategy**.
 
 ### `r user_visor()` The main effect of **strategy** [(B)]{.lbl}
 
@@ -417,7 +417,7 @@ looks_con <- emmeans::contrast(looks_emm, method = "trt.vs.ctrl", ref = 2, adjus
 
 These contrasts tell us (in combination with the means themselves that) highly attractive dates were rated significantly higher than average dates, `r report_em(looks_con)`, and averagely attractive dates were rated significantly higher than those low on attractiveness, `r report_em(looks_con, row = 2)`.
 
-### `r user_visor()` The main effect of **personality** [(B)]{.lbl}
+### `r user_visor()` The main effect of **charisma** [(B)]{.lbl}
 
 The main output from the `afex` model is reproduced below:
 
@@ -426,8 +426,8 @@ date_afx
 ```
 
 ```{r qu_charis, echo = F}
-quiz(caption = "The main effect of personality (level 2)",
-     question("How would you interpret the effect of **personality** in the output above?",
+quiz(caption = "The main effect of charisma (level 2)",
+     question("How would you interpret the effect of **charisma** in the output above?",
     answer("There was a significant main effect of charisma, *F*(1.87, 33.62) = 328.25, *p* < 0.001, which tells us that if we ignore all other variables, ratings for highly charismatic, a bit charismatic and dull dates differed.", correct = T),
     answer("There was a non-significant main effect of charisma, *F*(1.87, 33.62) = 328.25, *p* < 0.001, which tells us that if we ignore all other variables, ratings for highly charismatic, a bit charismatic and dull dates were equivalent.", message = "A *p* value *less* than 0.05 is typically interpretted as a *significant* effect."),
     correct = "Correct - well done!",
@@ -438,10 +438,10 @@ quiz(caption = "The main effect of personality (level 2)",
 )
 ```
 
-Again, we could pick the effect apart with the estimated marginal means and contrasts. Remember from earlier, that we want to set the same contrasts: that is compare the average category of **personality** against the low and high categories. Therefore, the code will be the same as we just used for the variable **looks** except that:
+Again, we could pick the effect apart with the estimated marginal means and contrasts. Remember from earlier, that we want to set the same contrasts: that is compare the average category of **charisma** against the low and high categories. Therefore, the code will be the same as we just used for the variable **looks** except that:
 
 -   We should give our estimated marginal means object a different name.
--   We replace the variable [looks]{.alt} with [personality]{.alt} in the code
+-   We replace the variable [looks]{.alt} with [charisma]{.alt} in the code
 
 #### `r alien()` Alien coding challenge
 
@@ -457,21 +457,21 @@ pers_emm <- emmeans::emmeans(xxxxxx, ~xxxxxx, model = "xxxxxx")
 ```
 
 ```{r pers_emm-hint-2}
-pers_emm <- emmeans::emmeans(date_afx, ~personality, model = "multivariate")
+pers_emm <- emmeans::emmeans(date_afx, ~charisma, model = "multivariate")
 pers_emm # shows us the means
 # now get the contrasts:
 emmeans::contrast(xxxxxxx, method = "xxxxxxx", ref = 2, adjust = "holm")
 ```
 
 ```{r pers_emm-solution}
-pers_emm <- emmeans::emmeans(date_afx, ~personality, model = "multivariate")
+pers_emm <- emmeans::emmeans(date_afx, ~charisma, model = "multivariate")
 pers_emm # shows us the means
 # now get the contrasts
 emmeans::contrast(pers_emm, method = "trt.vs.ctrl", ref = 2, adjust = "holm")
 ```
 
 ```{r, echo = F}
-pers_con <- emmeans::emmeans(date_afx, ~personality, model = "multivariate") |>
+pers_con <- emmeans::emmeans(date_afx, ~charisma, model = "multivariate") |>
   emmeans::contrast(method = "trt.vs.ctrl", ref = 2, adjust = "holm")
 ```
 
@@ -543,7 +543,7 @@ emmeans::contrast(
 
 In which we replaced [my_emm_object]{.alt} with an object that contains the estimated marginal means for the effect of interest, [interaction = c(variable_a = "contrast", variable_b = "contrast" ...)]{.alt} lists each variable and the contrast you want to apply to it and [ref = x]{.alt} is used to set the reference category for the contrasts (if relevant).
 
-In previous contrasts we have used [trt.vs.ctrl]{.alt} as the contrast for the variables **looks** and **personality**, so we should continue to do so. We may as well use [trt.vs.ctrl]{.alt} for **strategy** too, because it has only two categories, so [trt.vs.ctrl]{.alt} will compare these categories. Therefore, we can use [interaction = c(strategy = "trt.vs.ctrl", looks = "trt.vs.ctrl")]{.alt} to specify the contrast for the **strategy\*looks** interaction. We must also remember to feed the estimated marginal means into the function, which we craeted above and stored as [strat_looks_emm]{.alt}.
+In previous contrasts we have used [trt.vs.ctrl]{.alt} as the contrast for the variables **looks** and **charisma**, so we should continue to do so. We may as well use [trt.vs.ctrl]{.alt} for **strategy** too, because it has only two categories, so [trt.vs.ctrl]{.alt} will compare these categories. Therefore, we can use [interaction = c(strategy = "trt.vs.ctrl", looks = "trt.vs.ctrl")]{.alt} to specify the contrast for the **strategy\*looks** interaction. We must also remember to feed the estimated marginal means into the function, which we craeted above and stored as [strat_looks_emm]{.alt}.
 
 #### `r robot()` Code example
 
@@ -603,7 +603,7 @@ strat_looks_con <- emmeans::contrast(
 -   The first contrast for the interaction term shows the effect of unattractive dates compared to average dates, comparing playing hard to get to normal. This contrast is highly significant, `r report_em(strat_looks_con)`, suggesting that the increased interest in average-looking dates compared to unattractive dates is significantly greater when dates played hard to get than when they acted normally.
 -   The second contrast, which compares playing hard to get to normal in high attractive dates compared to average-looking dates is also highly significant, `r report_em(strat_looks_con, row = 2)`. This contrast tells us that the decreased interest in average-looking dates compared to attractive dates is significantly more when dates played hard to get than when they acted normally.
 
-### `r user_visor()` The interaction between **strategy** and **personality** [(B)]{.lbl}
+### `r user_visor()` The interaction between **strategy** and **charisma** [(B)]{.lbl}
 
 The main output from the `afex` model is reproduced below:
 
@@ -617,11 +617,11 @@ The output reproduced above reminds us that the dating strategy significantly in
 We can adapt the code from the previous section to get the estimated marginal means and contrasts for this interaction. The main changes will be:
 
 -   We should call the object storing the estimated marginal means something different to the previous section.
--   We need to replace [looks]{.alt} with [personality]{.alt} in the code.
+-   We need to replace [looks]{.alt} with [charisma]{.alt} in the code.
 
 #### `r alien()` Alien coding challenge
 
-Create an object called [strat_pers_emm]{.alt} containing the estimated marginal means for the **strategy\*personality** interaction. Also obtain the contrasts as in the previous section.
+Create an object called [strat_pers_emm]{.alt} containing the estimated marginal means for the **strategy\*charisma** interaction. Also obtain the contrasts as in the previous section.
 
 ```{r strat_pers_con, exercise = TRUE, exercise.lines = 5}
 
@@ -634,14 +634,14 @@ strat_pers_emm <- emmeans::emmeans(xxxx, c("xxxxx", "xxxx"), model = "xxxxxx")
 
 ```{r strat_pers_con-hint-2}
 # get the estimated marginal means:
-strat_pers_emm <- emmeans::emmeans(date_afx, c("strategy", "personality"), model = "multivariate")
+strat_pers_emm <- emmeans::emmeans(date_afx, c("strategy", "charisma"), model = "multivariate")
 # display the means
 xxxxx
 ```
 
 ```{r strat_pers_con-hint-3}
 # get the estimated marginal means:
-strat_pers_emm <- emmeans::emmeans(date_afx, c("strategy", "personality"), model = "multivariate")
+strat_pers_emm <- emmeans::emmeans(date_afx, c("strategy", "charisma"), model = "multivariate")
 # display the means
 strat_pers_emm
 
@@ -650,14 +650,14 @@ emmeans::contrast(xxxxxxx, interaction = c(xxxxxx = "xxxxxx", xxxx = "xxxxxxx"),
 ```
 
 ```{r strat_pers_con-solution}
-strat_pers_emm <- emmeans::emmeans(date_afx, c("strategy", "personality"), model = "multivariate")
+strat_pers_emm <- emmeans::emmeans(date_afx, c("strategy", "charisma"), model = "multivariate")
 strat_pers_emm # display the means
-emmeans::contrast(strat_pers_emm, interaction = c(strategy = "trt.vs.ctrl", personality = "trt.vs.ctrl"), ref = 2, adjust = "holm")
+emmeans::contrast(strat_pers_emm, interaction = c(strategy = "trt.vs.ctrl", charisma = "trt.vs.ctrl"), ref = 2, adjust = "holm")
 ```
 
 ```{r qu_char_strat, echo = F}
-quiz(caption = "The strategy × personality interaction (level 2)",
-     question("Using the means, which of these statements about the **strategy × personality** interaction are true? (Select ALL that apply)",
+quiz(caption = "The strategy × charisma interaction (level 2)",
+     question("Using the means, which of these statements about the **strategy × charisma** interaction are true? (Select ALL that apply)",
     answer("Playing hard to get led to lower ratings (than acting normally) for charismatic dates, made no difference for dates with average charisma and led to higher ratings in dates who behaved like dullards", correct = T),
     answer("The level of charisma had more impact when dates acted normally than when they played hard to get", correct = T),
     answer("The level of charisma had less impact when dates acted normally than when they played hard to get."),
@@ -672,8 +672,8 @@ quiz(caption = "The strategy × personality interaction (level 2)",
 ```
 
 ```{r, echo = F}
-strat_pers_emm <- emmeans::emmeans(date_afx, c("strategy", "personality"), model = "multivariate")
-strat_pers_con <- emmeans::contrast(strat_pers_emm, interaction = c(strategy = "trt.vs.ctrl", personality = "trt.vs.ctrl"), ref = 2, adjust = "holm")
+strat_pers_emm <- emmeans::emmeans(date_afx, c("strategy", "charisma"), model = "multivariate")
+strat_pers_con <- emmeans::contrast(strat_pers_emm, interaction = c(strategy = "trt.vs.ctrl", charisma = "trt.vs.ctrl"), ref = 2, adjust = "holm")
 ```
 
 
@@ -683,7 +683,7 @@ The contrasts show that:
 -   The increased interest in highly charismatic dates compared to averagely charismatic dates found when dates acted normally is significantly more than when the dates played hard to get, `r report_em(strat_pers_con, row = 2)`.
 
 
-### `r user_visor()` The interaction between **looks** and **personality** [(B)]{.lbl}
+### `r user_visor()` The interaction between **looks** and **charisma** [(B)]{.lbl}
 
 The main output from the `afex` model is reproduced below:
 
@@ -691,16 +691,16 @@ The main output from the `afex` model is reproduced below:
 date_afx
 ```
 
-The reproduced output reminds us that there was a significant looks × personality interaction, `r report_afx(date_tbl, row = 6)`. This effect tells us that the profile of ratings across dates of different levels of charisma was different for attractive, average and unattractive dates.
+The reproduced output reminds us that there was a significant looks × charisma interaction, `r report_afx(date_tbl, row = 6)`. This effect tells us that the profile of ratings across dates of different levels of charisma was different for attractive, average and unattractive dates.
 
 We can (again) adapt the code from the previous two sections to get the estimated marginal means and contrasts for this interaction. The main changes will be:
 
 -   We should call the object storing the estimated marginal means something different to the previous section.
--   We need to specify [looks]{.alt} and [personality]{.alt} as the variables in the interaction.
+-   We need to specify [looks]{.alt} and [charisma]{.alt} as the variables in the interaction.
 
 #### `r alien()` Alien coding challenge
 
-Create an object called [looks_pers_emm]{.alt} containing the estimated marginal means for the **looks\*personality** interaction. Also obtain the contrasts as in the previous section.
+Create an object called [looks_pers_emm]{.alt} containing the estimated marginal means for the **looks\*charisma** interaction. Also obtain the contrasts as in the previous section.
 
 ```{r looks_pers_con, exercise = TRUE, exercise.lines = 5}
 
@@ -713,14 +713,14 @@ looks_pers_emm <- emmeans::emmeans(xxxxxx, c("xxxxx", "xxxxx"), model = "xxxxxx"
 
 ```{r looks_pers_con-hint-2}
 # get the estimated marginal means:
-looks_pers_emm <- emmeans::emmeans(date_afx, c("looks", "personality"), model = "multivariate")
+looks_pers_emm <- emmeans::emmeans(date_afx, c("looks", "charisma"), model = "multivariate")
 # display the means
 xxxxx
 ```
 
 ```{r looks_pers_con-hint-3}
 # get the estimated marginal means:
-looks_pers_emm <- emmeans::emmeans(date_afx, c("looks", "personality"), model = "multivariate")
+looks_pers_emm <- emmeans::emmeans(date_afx, c("looks", "charisma"), model = "multivariate")
 # display the means
 looks_pers_emm
 
@@ -729,9 +729,9 @@ emmeans::contrast(xxxxxxx, interaction = c(xxxxxx = "xxxxxx", xxxx = "xxxxxxx"),
 ```
 
 ```{r looks_pers_con-solution}
-looks_pers_emm <- emmeans::emmeans(date_afx, c("looks", "personality"), model = "multivariate")
+looks_pers_emm <- emmeans::emmeans(date_afx, c("looks", "charisma"), model = "multivariate")
 looks_pers_emm # display the means
-emmeans::contrast(looks_pers_emm, interaction = c(looks = "trt.vs.ctrl", personality = "trt.vs.ctrl"), ref = 2, adjust = "holm")
+emmeans::contrast(looks_pers_emm, interaction = c(looks = "trt.vs.ctrl", charisma = "trt.vs.ctrl"), ref = 2, adjust = "holm")
 ```
 
 To answer the following questions you might it useful to plot the means (because there are a lot of them). Do this with the code below:
@@ -739,15 +739,15 @@ To answer the following questions you might it useful to plot the means (because
 ```{r looks_pers_plot, exercise = TRUE, exercise.lines = 6}
 afex::afex_plot(date_afx,
                 x = "looks",
-                trace = "personality",
+                trace = "charisma",
                 mapping = "colour"
                 ) +
   theme_minimal()
 ```
 
 ```{r qu_looks_char, echo = F}
-quiz(caption = "The looks × personality interaction (level 2)",
-     question("Using the means, which of these statements about the **looks × personality** interaction are true? (Select ALL that apply)",
+quiz(caption = "The looks × charisma interaction (level 2)",
+     question("Using the means, which of these statements about the **looks × charisma** interaction are true? (Select ALL that apply)",
     answer("For attractive dates, having high or average charisma resulted in similar (high) ratings, but being a dullard led to lower ratings", correct = T),
     answer("For average-looking dates ratings increased as charisma went from low to high", correct = T),
     answer("For unattractive dates being a dullard or having average charisma results in similar (low) ratings, but being highly charismatic led to higher ratings", correct = T),
@@ -765,8 +765,8 @@ quiz(caption = "The looks × personality interaction (level 2)",
 ```
 
 ```{r echo = F}
-looks_pers_emm <- emmeans::emmeans(date_afx, c("looks", "personality"), model = "multivariate")
-looks_pers_con <- emmeans::contrast(looks_pers_emm, interaction = c(looks = "trt.vs.ctrl", personality = "trt.vs.ctrl"), ref = 2, adjust = "holm")
+looks_pers_emm <- emmeans::emmeans(date_afx, c("looks", "charisma"), model = "multivariate")
+looks_pers_con <- emmeans::contrast(looks_pers_emm, interaction = c(looks = "trt.vs.ctrl", charisma = "trt.vs.ctrl"), ref = 2, adjust = "holm")
 ```
 
 
@@ -777,7 +777,7 @@ The contrasts help to pick apart this interaction.
 -   The third contrast asks 'is the difference between high charisma and average charisma the same for low attractive dates and average-looking dates?' Interest in dating decreases from average-looking dates to unattractive ones in dates with both high and average charisma dates; however, this fall is significantly greater in the low-charisma dates (the red line is slightly steeper than the blue), `r report_em(looks_pers_con, row = 3)`. As dates' attractiveness is reduced there is a significantly greater decline in interest when dates have average charisma compared to when they have a lot.
 -   The final contrast asks 'is the difference between high charisma and average charisma the same for attractive and average-looking dates?' The best way to understand this contrast is to focus on the relevant bit of the interaction graph. Interest (as indicated by high ratings) in attractive dates was the same regardless of whether they had high or average charisma; however, for average-looking dates, there was more interest when that person had high charisma rather than average charisma. This contrast is highly significant, `r report_em(looks_pers_con, row = 4)`, and tells us that as attractiveness is reduced there is a significantly greater decline in interest when charisma is average compared to when it is high.
 
-### `r user_visor()` The interaction between **strategy**, **looks** and **personality** [(B)]{.lbl}
+### `r user_visor()` The interaction between **strategy**, **looks** and **charisma** [(B)]{.lbl}
 
 The three-way interaction will blow your mind! The main output from the `afex` model is reproduced below:
 
@@ -785,18 +785,18 @@ The three-way interaction will blow your mind! The main output from the `afex` m
 date_afx
 ```
 
-The significant strategy × looks × personality interaction, `r report_afx(date_tbl, row = 7)`, tells us whether the looks × personality interaction described above is the same (statistically) when dates played hard to get compared to when they didn't.
+The significant strategy × looks × charisma interaction, `r report_afx(date_tbl, row = 7)`, tells us whether the looks × charisma interaction described above is the same (statistically) when dates played hard to get compared to when they didn't.
 
 To pick the effect apart we can, take a very deep breath and, inspect the estimated marginal means using `emmeans()`. We use the same approach as before, but adapt the code from the previous section to include the third predictor:
 
 ```{r, eval = F}
-three_way_emm <- emmeans::emmeans(date_afx, c("strategy", "looks", "personality"), model = "multivariate")
+three_way_emm <- emmeans::emmeans(date_afx, c("strategy", "looks", "charisma"), model = "multivariate")
 three_way_emm # shows us the means
 ```
 
 #### `r alien()` Alien coding challenge
 
-Obtain the estimated marginal means for the **strategy\*looks\*personality** interaction and store them as [three_way_emm]{.alt}
+Obtain the estimated marginal means for the **strategy\*looks\*charisma** interaction and store them as [three_way_emm]{.alt}
 
 ```{r three_way_emm, exercise = TRUE, exercise.lines = 4}
 
@@ -808,16 +808,16 @@ three_way_emm <- emmeans::emmeans(xxxxxx, c(xxxxxx, xxxxx, xxxxx), model = "xxxx
 ```
 
 ```{r three_way_emm-solution}
-three_way_emm <- emmeans::emmeans(date_afx, c("strategy", "looks", "personality"), model = "multivariate")
+three_way_emm <- emmeans::emmeans(date_afx, c("strategy", "looks", "charisma"), model = "multivariate")
 three_way_emm # shows us the means
 ```
 
-We now have 18 means to wrap our heads around, which is a lot, so lets plot them, using `afex_plot()`. The code below plots **looks** on the *x*-axis, *personality* as different coloured lines and **strategy** is split across two panels.
+We now have 18 means to wrap our heads around, which is a lot, so lets plot them, using `afex_plot()`. The code below plots **looks** on the *x*-axis, *charisma* as different coloured lines and **strategy** is split across two panels.
 
 ```{r three_way_plot, exercise = TRUE, exercise.lines = 6}
 afex::afex_plot(date_afx,
                 x = "looks",
-                trace = "personality",
+                trace = "charisma",
                 panel = "strategy",
                 mapping = "colour"
                 ) +
@@ -842,10 +842,10 @@ quiz(caption = "The three-way interaction (level 2)",
 )
 ```
 
-We can again get contrasts for this interaction term. For the two-way interactions we used code of this form (I'm using the example of the **looks\*personality** interaction):
+We can again get contrasts for this interaction term. For the two-way interactions we used code of this form (I'm using the example of the **looks\*charisma** interaction):
 
 ```{r, eval = F}
-emmeans::contrast(looks_pers_emm, interaction = c(looks = "trt.vs.ctrl", personality = "trt.vs.ctrl"), ref = 2, adjust = "holm")
+emmeans::contrast(looks_pers_emm, interaction = c(looks = "trt.vs.ctrl", charisma = "trt.vs.ctrl"), ref = 2, adjust = "holm")
 ```
 
 For the three-way interaction we need to add **strategy** to the list of variables and assign it a contrast type. Like we did in previous interactions, we may as well use [trt.vs.ctrl]{.alt} as a contrast for **strategy** has only two categories, so [trt.vs.ctrl]{.alt} will compare these categories. We also need to replace [looks_pers_emm]{.alt} with the estimated means object for the three-way interaction that we just created [three_way_emm]{.alt}.
@@ -857,7 +857,7 @@ The resulting code will be:
 ```{r, eval = F}
 emmeans::contrast(
   three_way_emm,
-  interaction = c(strategy = "trt.vs.ctrl", looks = "trt.vs.ctrl", personality = "trt.vs.ctrl"),
+  interaction = c(strategy = "trt.vs.ctrl", looks = "trt.vs.ctrl", charisma = "trt.vs.ctrl"),
   ref = 2,
   adjust = "holm"
   )
@@ -868,7 +868,7 @@ emmeans::contrast(
 Obtain the contrasts just described using the code box.
 
 ```{r, three_way_setup}
-three_way_emm <- emmeans::emmeans(date_afx, c("strategy", "looks", "personality"), model = "multivariate")
+three_way_emm <- emmeans::emmeans(date_afx, c("strategy", "looks", "charisma"), model = "multivariate")
 ```
 
 ```{r three_way_con, exercise = TRUE, exercise.lines = 7, exercise.setup = "three_way_setup"}
@@ -887,7 +887,7 @@ emmeans::contrast(
 ```{r three_way_con-solution}
 emmeans::contrast(
   three_way_emm,
-  interaction = c(strategy = "trt.vs.ctrl", looks = "trt.vs.ctrl", personality = "trt.vs.ctrl"),
+  interaction = c(strategy = "trt.vs.ctrl", looks = "trt.vs.ctrl", charisma = "trt.vs.ctrl"),
   ref = 2,
   adjust = "holm"
   )
@@ -895,10 +895,10 @@ emmeans::contrast(
 
 
 ```{r, echo = F}
-three_way_emm <- emmeans::emmeans(date_afx, c("strategy", "looks", "personality"), model = "multivariate")
+three_way_emm <- emmeans::emmeans(date_afx, c("strategy", "looks", "charisma"), model = "multivariate")
 three_way_con <- emmeans::contrast(
   three_way_emm,
-  interaction = c(strategy = "trt.vs.ctrl", looks = "trt.vs.ctrl", personality = "trt.vs.ctrl"),
+  interaction = c(strategy = "trt.vs.ctrl", looks = "trt.vs.ctrl", charisma = "trt.vs.ctrl"),
   ref = 2,
   adjust = "holm"
   )
@@ -913,7 +913,7 @@ three_way_con <- emmeans::contrast(
 <div class="reportbox">
   `r pencil()` **Report**`r rproj()`
 
-Greenhouse-Geisser corrected degrees of freedom are reported throughout. The main effect of strategy was not significant, `r report_afx(date_tbl, row = 1)`, but the main effects of looks, `r report_afx(date_tbl, row = 2)`, and personality, `r report_afx(date_tbl, row = 4)`, were. These effects were superseded by the following significant interactions: strategy $\times$ looks, `r report_afx(date_tbl, row = 3)`, strategy $\times$ personality, `r report_afx(date_tbl, row = 5)`, and personality $\times$ looks, `r report_afx(date_tbl, row = 6)`. These interactions were also superseded by the significant strategy $\times$ personality $\times$ looks interaction, `r report_afx(date_tbl, row = 7)`. Contrasts were used to break down this interaction.
+Greenhouse-Geisser corrected degrees of freedom are reported throughout. The main effect of strategy was not significant, `r report_afx(date_tbl, row = 1)`, but the main effects of looks, `r report_afx(date_tbl, row = 2)`, and charisma, `r report_afx(date_tbl, row = 4)`, were. These effects were superseded by the following significant interactions: strategy $\times$ looks, `r report_afx(date_tbl, row = 3)`, strategy $\times$ charisma, `r report_afx(date_tbl, row = 5)`, and charisma $\times$ looks, `r report_afx(date_tbl, row = 6)`. These interactions were also superseded by the significant strategy $\times$ charisma $\times$ looks interaction, `r report_afx(date_tbl, row = 7)`. Contrasts were used to break down this interaction.
 
 The first contrast looked at the effect of strategy when comparing low attractive dates to average-looking dates, when displaying low charisma relative average charisma. The contrast was not significant, `r report_em(three_way_con)`, suggesting that interest in unattractive dates was the same regardless of whether they had average charisma or low (the green and red dots are in the same place) and that this pattern was similar for the two dating strategies.
 
@@ -939,7 +939,7 @@ I need sleep sooooo badly.
 
 ## Resources/References {data-progressive=FALSE}
 
-```{r, child = "resources.Rmd"}
+```{r, child = "./docs/resources.Rmd"}
 
 ```
 

@@ -1,5 +1,5 @@
 ---
-title: "discovr: Growth models"
+title: "discovr growth models"
 author: "Andy Field"
 output:
   learnr::tutorial:
@@ -85,7 +85,7 @@ here::here("inst/tutorials/discovr_15_growth/packages.bib") |>
   knitr::write_bib(c('here', 'tidyverse', 'dplyr', 'readr', 'forcats', 'tibble', 'knitr', 'nlme', 'broom.mixed', 'Hmisc', 'emmeans'), file = _)
 ```
 
-# discovr: Growth models
+# discovr growth models
 
 ## Overview
 
@@ -141,7 +141,7 @@ This tutorial uses the following packages:
 * `knitr` [@R-knitr]
 * `nlme` [@R-nlme]
 
-It also uses these [tidyverse]{.pkg} packages [@R-tidyverse; @tidyverse2019]: [dplyr]{.pkg} [@R-dplyr], [forcats]{.pkg} [@R-forcats], [ggplot2]{.pkg} [@wickhamGgplot2ElegantGraphics2016], [readr]{.pkg} [@R-readr] and [tibble]{.pkg} [@R-tibble].
+It also uses these [tidyverse]{.pkg} packages [@R-tidyverse; @tidyverse2019]: [dplyr]{.pkg} [@R-dplyr], [forcats]{.pkg} [@R-forcats], [ggplot2]{.pkg} [@wickham_ggplot2_2016], [readr]{.pkg} [@R-readr] and [tibble]{.pkg} [@R-tibble].
 
 
 ### Coding style
@@ -184,7 +184,7 @@ This code reads in the data and converts the variables **intervention** and **ti
 
 ## `r bmu()` Zombie rehabilitation [(A)]{.lbl}
 
-My book *An Adventure in Statistics* [@fieldAdventureStatisticsReality2016] as well as teaching statistics, has a narrative flowing through it about a brilliant geneticist (Alice) who vanishes much to the dismay of her Musician boyfriend (Zach). Zach is compelled to find her, but his only clue is some of Alice's research, which he doesn't understand. To find her, he has to learn statistics which, from his perspective, is an unfortunate turn of events. Anyway, along the way he meets a lot of people who have been recruited by a company called JIG:SAW to take part in their genetic enhancement programme, which unfortunately turns them into zombies.
+My book *An Adventure in Statistics* [@field_adventure_2022] as well as teaching statistics, has a narrative flowing through it about a brilliant geneticist (Alice) who vanishes much to the dismay of her Musician boyfriend (Zach). Zach is compelled to find her, but his only clue is some of Alice's research, which he doesn't understand. To find her, he has to learn statistics which, from his perspective, is an unfortunate turn of events. Anyway, along the way he meets a lot of people who have been recruited by a company called JIG:SAW to take part in their genetic enhancement programme, which unfortunately turns them into zombies.
 
 At the end of the story it is revealed that Alice develops a gene therapy that restores the zombies to a human state. The example in this tutorial relates to her second clinical trial to test this genetic therapy. 141 zombies were randomly assigned to two arms of the trial (wait list vs. gene therapy) and the outcome of the trial was how much they resembled their pre-zombie state (as a percentage). Each zombie had their resemblance score at four time points: baseline and 1, 6, and 12 months later. Alice predicted that resemblance scores would increase over time in the gene therapy group relative to those on the wait list (because an increase in resemblance indicates that the appearances of those in the treatment group more closely resemble their pre-zombification state). The data are in the tibble [rehab_growth_tib]{.alt} which has 564 rows (141 participants measured at each of 4 time points) and 5 variables:
 
@@ -992,7 +992,7 @@ Growth models are a really useful way to model the rate of change of something o
 
 ## Resources/References {data-progressive=FALSE}
 
-```{r, child = "resources.Rmd"}
+```{r, child = "./docs/resources.Rmd"}
 
 ```
 

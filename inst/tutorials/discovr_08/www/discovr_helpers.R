@@ -111,6 +111,10 @@ warning <- function(height = 1, fill = bwn_dk){
   set_svg_props(code, fill, height)
 }
 
+step <- function(height = 1, fill = byz){
+  code <- "<svg style=\"height: 1em; top:.04em; position: relative; fill: fill;\" viewBox=\"0 0 640 640\"><!--!Font Awesome Free v7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d=\"M328 256C306.9 243.9 285.7 231.8 256 226.7L256 86.4C289.7 77 343.4 64 384 64C480 64 608 112 608 192C608 272 488.4 288 432 288C384 288 356 272 328 256zM160 96L208 96L208 224L160 224C124.7 224 96 195.3 96 160C96 124.7 124.7 96 160 96zM264 384C292 368 320 352 368 352C424.4 352 544 368 544 448C544 528 416 576 320 576C279.5 576 225.7 563 192 553.6L192 413.3C221.7 408.1 242.9 396 264 383.9zM96 544C60.7 544 32 515.3 32 480C32 444.7 60.7 416 96 416L144 416L144 544L96 544z\"/></svg>"
+  set_svg_props(code, fill, height)
+}
 
 redundant_decimals <- function(digits = 2){
   paste0(".", paste0(rep(0, digits), collapse = ""), collapse = "")
@@ -365,9 +369,12 @@ report_em <- function(em_obj, row = 1, digits = 2, p_digits = 3){
   paste0("$\\hat{b}$ = ", em_row$estimate, ", *t*(", em_row$df, ") = ", em_row$t.ratio, ", ", em_row$p)
 }
 
+
 # -----------------
 
 # Easystats helpers
+
+
 
 
 
@@ -411,6 +418,7 @@ value_from_ez <- function(ezobj, row = 1, value = "Coefficient", digits = 2, p_d
   }
 }
 
+
 report_lrt <- function(lrt, row = 2, digits = 2, p_digits = 3, df_digits = 0){
   dfm <- value_from_ez(lrt, row = row, value = "df_diff", digits = df_digits)
   dfr <- value_from_ez(lrt, row = row, value = "df", digits = df_digits)
@@ -421,10 +429,30 @@ report_lrt <- function(lrt, row = 2, digits = 2, p_digits = 3, df_digits = 0){
 }
 
 
-report_pe <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0, glm = F, symbol = "$\\hat{b}$"){
+report_pe <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0, z = F, symbol = "$\\hat{b}$"){
   b <- value_from_ez(ezobj, row = row, value = "Coefficient", digits = digits)
   p <- value_from_ez(ezobj, row = row, value = "p", p_digits = p_digits)
-  df <- value_from_ez(ezobj, row = row, value = "df_error", digits = df_digits)
+  if(!z){
+    df <- value_from_ez(ezobj, row = row, value = "df_error", digits = df_digits)
+  }
+
+  ci <- paste0("(", value_from_ez(ezobj, row = row, value = "CI_low", digits = digits), ", ", value_from_ez(ezobj, row = row, value = "CI_high", digits = digits), ")")
+
+  if(z){
+    test_stat <- value_from_ez(ezobj, row = row, value = "z", digits = digits)
+    stat_text <- paste0(", ", "*z* = ", test_stat)
+  } else {
+    test_stat <- value_from_ez(ezobj, row = row, value = "t", digits = digits)
+    stat_text <- paste0(", ", "*t*(", df, ") = ", test_stat)
+  }
+
+  paste0(symbol, " = ", b, " ", ci, stat_text, ", ", p)
+}
+
+report_ss <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0, glm = F, symbol = "$\\hat{b}$"){
+  b <- value_from_ez(ezobj, row = row, value = "Slope", digits = digits)
+  p <- value_from_ez(ezobj, row = row, value = "p", p_digits = p_digits)
+  df <- value_from_ez(ezobj, row = row, value = "df", digits = df_digits)
   ci <- paste0("(", value_from_ez(ezobj, row = row, value = "CI_low", digits = digits), ", ", value_from_ez(ezobj, row = row, value = "CI_high", digits = digits), ")")
 
   if(glm){
@@ -439,7 +467,28 @@ report_pe <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0, g
 
 
   paste0(symbol, " = ", b, " ", ci, stat_text, ", ", p)
-
 }
 
+
+report_es <- function(es_obj, col, row = 1, digits = 2){
+  nrow <- nrow(es_obj)
+  dp <- paste0("%.", digits, "f")
+
+  par <- ifelse(grepl("_d", col) | grepl("_rm", col), "$\\hat{d}$",
+                ifelse(grepl("_g", col), "$\\hat{g}$",
+                       ifelse(grepl("Omega", col), "$\\hat{\\omega}_p$", "$\\hat{\\eta}_p$")))
+
+  es_row  <- es_obj |>
+    tibble::as_tibble() |>
+    dplyr::rename(
+      es = !!{col}
+    ) |>
+    dplyr::mutate(
+      dplyr::across(
+        where(is.double), \(x) sprintf(dp, x)),
+      row_no = 1:nrow
+    )
+
+  paste0(par, " = ", es_row$es[row], " [", es_row$CI_low[row], ", ", es_row$CI_high[row], "]")
+}
 

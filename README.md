@@ -35,7 +35,7 @@ support tutors and students using my textbook who want to learn
 > and yet-to-be updated tutorials. For this reason, I recommend
 > installing the CRAN release and not the development version on GitHub.
 >
-> Updated tutorials: `discovr_01` to `discover_08`
+> Updated tutorials: `discovr_01` to `discover_11`
 
 ## Installing `discovr`
 
@@ -123,7 +123,7 @@ starting the interactive tutorials.
   and quadratic trends), the *F*-statistic and Welch’s robust *F*,
   robust parameter estimation, heteroscedasticity-consistent tests of
   parameters, robust tests of means based on trimmed data, *post hoc*
-  tests, Bayes factors.
+  tests.
 - `discovr_12`: Comparing means adjusted for other variables.
   Essentially ‘Analysis of Covariance (ANCOVA)’ designs but taught using
   a general linear model framework. Covers setting contrasts, Type III

@@ -30,7 +30,7 @@ The `discovr` package contains resources for my 2026 textbook [Discovering Stati
 > **NOTE**
 > Over summer 2025 the tutorials within this package are undergoing a major overhaul. While this update is in progress there will be inconsistencies in the look, feel, and code between updated and yet-to-be updated tutorials. For this reason, I recommend installing the CRAN release and not the development version on GitHub. 
 >
-> Updated tutorials: `discovr_01` to `discover_08`
+> Updated tutorials: `discovr_01` to `discover_11`
 
 ## Installing `discovr`
 
@@ -68,7 +68,7 @@ I recommend working through [this playlist of tutorials](https://www.youtube.com
 - `discovr_08`: The general linear model (GLM). Visualizing the data, fitting GLMs with one and two predictors. Viewing model parameters with broom, model parameters, standard errors, confidence intervals, fit statistics, significance.
 - `discovr_09`: Categorical predictors with two categories (comparing two means). Comparing two independent means, comparing two related means, effect sizes, robust comparisons of means (independent and related), Bayes factors and estimation (independent and related means).
 - `discovr_10`: Moderation and mediation. Centring variables (grand mean centring), specifying interaction terms, moderation analysis, simple slopes analysis, Johnson-Neyman intervals, mediation with one predictor, direct and indirect effects, mediation using `lavaan`.
-- `discovr_11`: Comparing several means. Essentially 'One-way independent ANOVA' but taught using a general linear model framework. Covers setting contrasts (dummy coding, contrast coding, and linear and quadratic trends), the *F*-statistic and Welch's robust *F*, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of means based on trimmed data, *post hoc* tests, Bayes factors.
+- `discovr_11`: Comparing several means. Essentially 'One-way independent ANOVA' but taught using a general linear model framework. Covers setting contrasts (dummy coding, contrast coding, and linear and quadratic trends), the *F*-statistic and Welch's robust *F*, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of means based on trimmed data, *post hoc* tests.
 - `discovr_12`: Comparing means adjusted for other variables. Essentially 'Analysis of Covariance (ANCOVA)' designs but taught using a general linear model framework. Covers setting contrasts, Type III sums of squares, the *F*-statistic, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of adjusted means, *post hoc* tests, Bayes factors.
 - `discovr_13`: Factorial designs. Fitting models for two-way factorial designs (independent measures) using both `lm()` and the `afex` package. This tutorial builds on previous ones to show how models can be fit with two categorical predictors to look at the interaction between them. We look at fitting the models, setting contrasts for the two categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, partial eta-squared and partial omega-squared, robust models and Bayes factors.
 - `discovr_14`: Multilevel models. This tutorial looks at fitting multilevel models using the `lme4` package. It begins with an optional section on checking and coding categorical variables before moving on to show you how to fit and interpret a multilevel model. We also briefly look at the `purrr` package.

@@ -9,14 +9,13 @@
 
 ### General changes
 
-* More reliance on `easystats` and an emphasis on a consistent workflow for all statistical models.
+* More reliance on `easystats` and an emphasis on a consistent workflow for all statistical models. I've incorporated a general 5-step process to model fitting throughout. This process is introduced in `discovr_08` and referred to in subsequent tutorials.
 * Use of `datawizard::describe_distribution()` in place of lengthy bespoke summary tables using `dplyr::summarize()`.
 * The functions `performance::model_performance()`, `performance::test_lrt()` and `parameters::model_parameters()` replace `broom::glance()`, `anova()` and `broom::tidy()` respectively.
 * Use `display()` rather than `kable()` to control rendered tables.
 * Reduced length of most tutorials (by, typically around 20%).
 * Material on Bayesian methods has been moved from individual tutorials into a self contained tutorial called `discovr_bayes`
-* Re-styled tutorials
-* I've incorporated a general 5-step process to model fitting throughout. This process is introduced in `discovr_08` and referred to in subsequent tutorials.
+* Re-styled tutorials to match the book
 
 
 ### Specific changes

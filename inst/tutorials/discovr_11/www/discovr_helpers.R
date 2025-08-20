@@ -116,9 +116,7 @@ step <- function(height = 1, fill = byz){
   set_svg_props(code, fill, height)
 }
 
-redundant_decimals <- function(digits = 2){
-  paste0(".", paste0(rep(0, digits), collapse = ""), collapse = "")
-}
+
 
 
 get_row <- function(tidyobject, row, digits = 2, p_digits = 3){
@@ -375,7 +373,9 @@ report_em <- function(em_obj, row = 1, digits = 2, p_digits = 3){
 # Easystats helpers
 
 
-
+redundant_decimals <- function(digits = 2){
+  paste0(".", paste0(rep(0, digits), collapse = ""), collapse = "")
+}
 
 
 report_p <- function(p, p_digits = 3){
@@ -467,6 +467,40 @@ report_ss <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0, g
 
 
   paste0(symbol, " = ", b, " ", ci, stat_text, ", ", p)
+}
+
+report_ez_aov <- function(ez_aov, row = 1, digits = 2, p_digits = 3, df_digits = 0, es_type = "Omega2"){
+  f <- value_from_ez(ez_aov, row = row, value = "F", digits = digits)
+  p <- value_from_ez(ez_aov, row = row, value = "p", p_digits = p_digits)
+  dfm <- value_from_ez(ez_aov, row = row, value = "df", digits = df_digits)
+  dfr <- value_from_ez(ez_aov, row = length(ez_aov$df), value = "df", digits = df_digits)
+  es <- value_from_ez(ez_aov, row = row, value = es_type, digits = digits)
+  es_ci <- paste0("(", value_from_ez(ez_aov, row = row, value = paste0(es_type, "_CI_low"), digits = digits), ", ", value_from_ez(ez_aov, row = row, value = paste0(es_type, "_CI_high"), digits = digits), ")")
+
+  if(length(ez_aov$Parameter) > 2){
+    es_ext <- "_p"
+    } else {
+    es_ext <- ""
+    }
+
+
+  if(grepl("omega", es_type, ignore.case = TRUE)){
+    symboltxt = "omega"
+  } else {
+    symboltxt = "eta"
+  }
+
+  paste0("F(", dfm, ", ", dfr,  ") = ", f, ", ", p, ", ", paste0("$\\hat{\\", symboltxt, "}^2", es_ext, "$"), " = ", es, " ", es_ci)
+}
+
+
+report_f <- function(ez_f, row = 1, digits = 2, p_digits = 3, df_digits = 0, symbol = "$F$"){
+  f <- value_from_ez(ez_f, row = row, value = "F", digits = digits)
+  p <- value_from_ez(ez_f, row = row, value = "p", p_digits = p_digits)
+  dfm <- value_from_ez(ez_f, row = row, value = "df", digits = df_digits) |> gsub(redundant_decimals(digits), "", x = _)
+  dfr <- value_from_ez(ez_f, row = row, value = "df_error", digits = df_digits) |> gsub(redundant_decimals(digits), "", x = _)
+
+  paste0(symbol, "(", dfm, ", ", dfr,  ") = ", f, ", ", p)
 }
 
 

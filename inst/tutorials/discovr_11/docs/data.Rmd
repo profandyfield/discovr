@@ -1,0 +1,37 @@
+---
+title: "data"
+author: "Andy Field"
+output: learnr::tutorial
+---
+
+To work *outside of this tutorial* you need to download the following data file:
+
+* [puppies.csv](https://www.discovr.rocks/csv/puppies.csv)
+* [superhero.csv](https://www.discovr.rocks/csv/superhero.csv)
+
+Set up an `r rstudio()` project in the way that [I recommend in this video](https://youtu.be/mqT7c17tofE?si=R0aSApz66fGQKESl), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r quarto()` document:
+
+```{r, eval=FALSE}
+puppy_tib <- here::here("data/puppies.csv") |> read_csv()
+hero_tib <- here::here("data/superhero.csv") |> read_csv()
+```
+
+### Preparing data
+
+To work *outside of this tutorial* you need to turn categorical variables into factors and set an appropriate baseline category using `as_factor` and `fct_relevel` from the `forcats` package. There is one categorical variables here: `dose`. The category we want as a baseline or reference is the [No puppies]{.alt} category; therefore, we can convert this variable to a factor using this code:
+
+```{r, eval= FALSE}
+puppy_tib <- puppy_tib |> 
+  dplyr::mutate(
+    dose = as_factor(dose) |> fct_relevel("No puppies")
+  )
+```
+
+Similarly, the superhero contains one categorical variable (`hero`) and there isn't an obvious reference category so we'd execute
+
+```{r, eval= FALSE}
+hero_tib <- hero_tib |> 
+  dplyr::mutate(
+    hero = as_factor(hero)
+  )
+```

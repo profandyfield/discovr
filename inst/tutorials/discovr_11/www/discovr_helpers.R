@@ -397,7 +397,7 @@ report_value <- function(x, digits = 2, scientific = FALSE){
 }
 
 
-value_from_ez <- function(ezobj, row = 1, value = "Coefficient", digits = 2, p_digits = 3, scientific = FALSE, as_number = FALSE, exponentiate = FALSE){
+value_from_ez <- function(ezobj, row = 1, value = "Coefficient", digits = 2, p_digits = 3, scientific = FALSE, as_is = FALSE, exponentiate = FALSE){
   val <- ezobj |>
     pull({{value}})
 
@@ -407,7 +407,7 @@ value_from_ez <- function(ezobj, row = 1, value = "Coefficient", digits = 2, p_d
     val <- exp(val)
   }
 
-  if(as_number){
+  if(as_is){
     val
   } else {
     if(value == "p"){
@@ -475,13 +475,13 @@ report_ez_aov <- function(ez_aov, row = 1, digits = 2, p_digits = 3, df_digits =
   dfm <- value_from_ez(ez_aov, row = row, value = "df", digits = df_digits)
   dfr <- value_from_ez(ez_aov, row = length(ez_aov$df), value = "df", digits = df_digits)
   es <- value_from_ez(ez_aov, row = row, value = es_type, digits = digits)
-  es_ci <- paste0("(", value_from_ez(ez_aov, row = row, value = paste0(es_type, "_CI_low"), digits = digits), ", ", value_from_ez(ez_aov, row = row, value = paste0(es_type, "_CI_high"), digits = digits), ")")
+  es_ci <- paste0("(", value_from_ez(ez_aov, row = row, value = paste0(sub("_partial", "", x = es_type), "_CI_low"), digits = digits), ", ", value_from_ez(ez_aov, row = row, value = paste0(sub("_partial", "", x = es_type), "_CI_high"), digits = digits), ")")
 
   if(length(ez_aov$Parameter) > 2){
     es_ext <- "_p"
-    } else {
+  } else {
     es_ext <- ""
-    }
+  }
 
 
   if(grepl("omega", es_type, ignore.case = TRUE)){

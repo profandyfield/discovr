@@ -397,7 +397,7 @@ report_value <- function(x, digits = 2, scientific = FALSE){
 }
 
 
-value_from_ez <- function(ezobj, row = 1, value = "Coefficient", digits = 2, p_digits = 3, scientific = FALSE, as_number = FALSE, exponentiate = FALSE){
+value_from_ez <- function(ezobj, row = 1, value = "Coefficient", digits = 2, p_digits = 3, scientific = FALSE, as_is = FALSE, exponentiate = FALSE){
   val <- ezobj |>
     pull({{value}})
 
@@ -407,7 +407,7 @@ value_from_ez <- function(ezobj, row = 1, value = "Coefficient", digits = 2, p_d
     val <- exp(val)
   }
 
-  if(as_number){
+  if(as_is){
     val
   } else {
     if(value == "p"){

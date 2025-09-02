@@ -397,7 +397,7 @@ report_value <- function(x, digits = 2, scientific = FALSE){
 }
 
 
-value_from_ez <- function(ezobj, row = 1, value = "Coefficient", digits = 2, p_digits = 3, scientific = FALSE, as_number = FALSE, exponentiate = FALSE){
+value_from_ez <- function(ezobj, row = 1, value = "Coefficient", digits = 2, p_digits = 3, scientific = FALSE, as_is = FALSE, exponentiate = FALSE){
   val <- ezobj |>
     pull({{value}})
 
@@ -407,7 +407,7 @@ value_from_ez <- function(ezobj, row = 1, value = "Coefficient", digits = 2, p_d
     val <- exp(val)
   }
 
-  if(as_number){
+  if(as_is){
     val
   } else {
     if(value == "p"){
@@ -467,6 +467,16 @@ report_ss <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0, g
 
 
   paste0(symbol, " = ", b, " ", ci, stat_text, ", ", p)
+}
+
+
+report_con <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0){
+  df1 <- value_from_ez(ezobj, row = row, value = "df1", digits = df_digits, as_is = T)
+  df2 <- value_from_ez(ezobj, row = row, value = "df2", digits = df_digits, as_is = T)
+  f <- value_from_ez(ezobj, row = row, value = "F", digits = digits)
+  p <- value_from_ez(ezobj, row = row, value = "p", p_digits = p_digits)
+
+  paste0("*F*(", df1, ", ", df2, ") = ", f, ", ", p)
 }
 
 

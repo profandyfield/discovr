@@ -162,7 +162,7 @@ puppy_tib |>
 ```
 
 ```{r pup_sum-hint-2}
-# Pipe the results into the summarize() function
+# Pipe the results into the describe_distribution() function
 puppy_tib |> 
   group_by(dose) |> 
   describe_distribution()

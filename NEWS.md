@@ -23,6 +23,7 @@
 * `discovr_01` now covers orientation to R and Quarto and links to various videos.
 * The former `discovr_01` has been split across two tutorials. `discovr_02` covers basic code fundamentals and data types whereas `discovr_03` contains the material about tibbles and `dplyr` functions.
 * `discovr_04` (which didn't previously exist) covers summarizing data and confidence intervals (formerly in `discovr_03`). It basically combines material from the old `discovr_02` and `discovr_03` but in more condensed form. Uses `display()` instead of `kable()`.
+* `discovr_13` has been split across two tutorials, one sticks with the model fitting approach of other tutorials (`discovr_13`), whereas the other focusses on an ANOVA style approach using the `afex` package (`discovr_13_afex`)
 * `discovr_18` (Exploratory factor analysis) is now `discovr_17`
 * `discovr_19` (Categorical variables) is now `discovr_18`
 * `discovr_20` (Categorical outcome/logistic regression) is now `discovr_19`

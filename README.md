@@ -131,14 +131,17 @@ starting the interactive tutorials.
   heteroscedasticity-consistent tests of parameters, robust tests of
   adjusted means, *post hoc* tests, Bayes factors.
 - `discovr_13`: Factorial designs. Fitting models for two-way factorial
-  designs (independent measures) using both `lm()` and the `afex`
-  package. This tutorial builds on previous ones to show how models can
-  be fit with two categorical predictors to look at the interaction
-  between them. We look at fitting the models, setting contrasts for the
-  two categorical predictors, obtaining estimated marginal means,
-  interaction plots, simple effects analysis, diagnostic plots, partial
-  eta-squared and partial omega-squared, robust models and Bayes
-  factors.
+  designs (independent measures) using `lm()`. This tutorial builds on
+  previous ones to show how models can be fit with two categorical
+  predictors to look at the interaction between them. We look at fitting
+  the models, setting contrasts for the two categorical predictors,
+  interaction plots, simple effects analysis, diagnostic plots and
+  robust models.
+- `discovr_13_afex`: Factorial designs. Fitting models for two-way
+  factorial designs (independent measures) using the `afex` package.
+  This tutorial takes an ANOVA approach to factorical designs. We look
+  at fitting the models, interaction plots, simple effects analysis,
+  diagnostic plots, partial omega-squared and robust models.
 - `discovr_14`: Multilevel models. This tutorial looks at fitting
   multilevel models using the `lme4` package. It begins with an optional
   section on checking and coding categorical variables before moving on

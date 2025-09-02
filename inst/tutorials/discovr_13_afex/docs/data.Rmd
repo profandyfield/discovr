@@ -1,0 +1,34 @@
+---
+title: "data"
+author: "Andy Field"
+output: learnr::tutorial
+---
+
+To work *outside of this tutorial* you need to download the following data file:
+
+* [goggles.csv](https://www.discovr.rocks/csv/goggles.csv)
+* [xbox.csv](https://www.discovr.rocks/csv/xbox.csv)
+
+Set up an `r rstudio()` project in the way that [I recommend in this video](https://youtu.be/mqT7c17tofE?si=R0aSApz66fGQKESl), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r quarto()` document:
+
+```{r, eval=FALSE}
+goggles_tib <- here::here("data/goggles.csv") |>
+  readr::read_csv() |>
+  dplyr::mutate(
+    facetype = as_factor(facetype),
+    alcohol = as_factor(alcohol)
+  )
+```
+
+This code reads in the data and converts the variables `alcohol` and `facetype` to factors (categorical variable). 
+
+For the xbox data use this code (in which I have been explicit in setting certain categories as the first level of the factor using `fct_relevel()`):
+
+```{r, eval=FALSE}
+xbox_tib <- here::here("data/xbox.csv") |>
+  read_csv() |>
+  mutate(
+    game = as_factor(game) |> fct_relevel("Static"),
+    console = as_factor(console) |> fct_relevel("Xbox One")
+  )
+```

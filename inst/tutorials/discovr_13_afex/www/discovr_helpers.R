@@ -502,7 +502,6 @@ report_es <- function(es_obj, col, row = 1, digits = 2){
   paste0(par, " = ", es_row$es[row], " [", es_row$CI_low[row], ", ", es_row$CI_high[row], "]")
 }
 
-
 report_ez_aov <- function(ez_aov, row = 1, digits = 2, p_digits = 3, df_digits = 0, es_type = "Omega2"){
   f <- value_from_ez(ez_aov, row = row, value = "F", digits = digits)
   p <- value_from_ez(ez_aov, row = row, value = "p", p_digits = p_digits)
@@ -526,6 +525,3 @@ report_ez_aov <- function(ez_aov, row = 1, digits = 2, p_digits = 3, df_digits =
 
   paste0("F(", dfm, ", ", dfr,  ") = ", f, ", ", p, ", ", paste0("$\\hat{\\", symboltxt, "}^2", es_ext, "$"), " = ", es, " ", es_ci)
 }
-
-
-

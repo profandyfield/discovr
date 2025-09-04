@@ -427,7 +427,7 @@ Yep, you just place the name of your model into the function and marvel at the e
 
 Use the code box to obtain diagnostic plots from our model ([album_lm]{.alt}).
 
-```{r album_lm_diag, exercise = TRUE, exercise.lines = 4}
+```{r album_lm_diag, exercise = TRUE, exercise.lines = 4, fig.height = 10}
 
 ```
 
@@ -764,7 +764,7 @@ We also need to check whether the underlying model assumptions are reasonable. W
 
 Use the code box to obtain diagnostic plots from our model ([album_lm]{.alt}).
 
-```{r album_full_diag, exercise = TRUE, exercise.lines = 4}
+```{r album_full_diag, exercise = TRUE, exercise.lines = 4, fig.height = 10}
 
 ```
 
@@ -1113,7 +1113,7 @@ Data are in the tibble [metal_tib]{.alt} are from a fictitious replication. Ther
 
 Use the code box below to fit a model (call it [metal_lm]{.alt}) to predict suicide risk from love of heavy metal and to answer the questions below.
 
-```{r metal_health, exercise = TRUE, exercise.lines = 10}
+```{r metal_health, exercise = TRUE, exercise.lines = 10, fig.height = 10}
 
 ```
 
@@ -1233,7 +1233,7 @@ Each of 134 people was administered all questionnaires. Fit a hierarchical linea
 
 Use the code box to fit these models and compare using `anova()`.
 
-```{r soc_anx, exercise = TRUE, exercise.lines = 15}
+```{r soc_anx, exercise = TRUE, exercise.lines = 15, fig.height = 10}
 
 ```
 

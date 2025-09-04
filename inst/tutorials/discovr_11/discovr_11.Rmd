@@ -37,6 +37,7 @@ library(ggplot2)
 #non tidyverse/easystats
 library(WRS2)
 #students don't use
+library(marginaleffects)
 library(sandwich)
 library(knitr)
 
@@ -362,7 +363,7 @@ puppy_dummy_lm <- lm(happiness ~ dose, data = puppy_tib)
 ```
 
 
-```{r lm1, exercise = TRUE, exercise.setup = "pup_dummy_model"}
+```{r lm1, exercise = TRUE, exercise.setup = "pup_dummy_model", fig.height = 10}
      
                
 ```

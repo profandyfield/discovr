@@ -40,6 +40,7 @@ library(afex)
 library(car)
 #students don't use
 library(knitr)
+library(marginaleffects)
 library(sandwich)
 
 source("./www/discovr_helpers.R")
@@ -428,7 +429,7 @@ goggles_afx <- afex::aov_4(attractiveness ~ facetype*alcohol + (1|id), data = go
 
 We can evaluate the model ([goggles_lm]{.alt}) in the usual way using `check_model()`. try this in the code box.
 
-```{r goggles_zpred_resid, exercise = TRUE, exercise.lines = 3, exercise.setup = "goggles_afx_setup"}
+```{r goggles_zpred_resid, exercise = TRUE, exercise.lines = 3, exercise.setup = "goggles_afx_setup", fig.height = 10}
 
 ```
 
@@ -783,7 +784,7 @@ xbox_afx <- afex::aov_4(injury ~ game*console + (1|id), data = xbox_tib)
 
 Use the code box to get diagnostic plots for [xbox_lm]{.alt}.
 
-```{r xbox_diag, exercise = TRUE, exercise.lines = 6, exercise.setup = "xbox_models"}
+```{r xbox_diag, exercise = TRUE, exercise.lines = 6, exercise.setup = "xbox_models", fig.height = 10}
 
 ```
 

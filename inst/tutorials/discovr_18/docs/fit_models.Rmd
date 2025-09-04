@@ -6,7 +6,7 @@ output: learnr::tutorial
 
 Whatever statistical model we fit, we progress through a workflow that uses a consistent set of steps and `r rproj()` functions as highlighted in Figure 2.
 
-- [Step 1]{.alt}. Get your data into R and pre-process using [tidyverse]{.pkg} packages or the [datawizard]{.pkg} package from [easystats]{.pkg}.
+- [Step 1]{.alt}. Get your data into `r rproj()` and pre-process using [tidyverse]{.pkg} packages or the [datawizard]{.pkg} package from [easystats]{.pkg}.
 - [Step 2]{.alt}. Visualise the data using the [ggplot2]{.pkg} package from [tidyverse]{.pkg}. 
 - [Step 3]{.alt}. Fit a statistical model that will answer your research question.
 - [Step 4]{.alt}. Evaluate the model using a small number of functions from the [performance]{.pkg} package from [easystats]{.pkg}. Specially, we evaluate
@@ -24,6 +24,6 @@ Whatever statistical model we fit, we progress through a workflow that uses a co
 
 
 <figure>
-<img src="./images/robust_flow.svg" alt="A flowchart illustrating the 5 steps described in the text." width="100%" >
+<img src="./images/robust_flow.svg" alt="A flowchart illustrating the steps to take when model assumptions are broken." width="100%" >
 <figcaption>Figure 3: What to do if the model assumptions are broken.</figcaption>
 </figure>

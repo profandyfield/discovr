@@ -3,7 +3,7 @@
 \docType{data}
 \name{puppy_love}
 \alias{puppy_love}
-\title{More puppy therapy data}
+\title{Even more puppy therapy data}
 \format{
 A tibble with 30 rows and 4 variables.
 }
@@ -18,7 +18,7 @@ A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (
 }
 \details{
 The researchers who conducted the puppy therapy study in \link{puppies} suddenly realized that a
-participant's love of dogs would affect whether puppy therapy would affect happiness. Therefore,
+participant's love of dogs would moderate whether puppy therapy would affect happiness. Therefore,
 they repeated the study on different participants, but included a self-report measure of love of puppies from 0 (I am a weird person who hates puppies, please be deeply suspicious of me) to 7 (puppies are the best thing ever, one day I might marry one).  The tibble contains the following variables:
 \itemize{
 \item \strong{id}: Participant id

@@ -131,6 +131,7 @@
 #' * [profile_pic]: Fictitious data related to whether the number of friend requests from random people on social media is affected by whether your profile picture depicts you as single or part of a romantic couple.
 #' * [pubs]: Data illustrating the difference between an outlier and an influential case.
 #' * [puppies]: Fictitious data related to whether puppy therapy works.
+#' * [puppy_ancova]: Fictitious data related to whether puppy therapy works when you adjust for a person's baseline happiness.
 #' * [puppy_love]: Fictitious data related to whether puppy therapy works when you adjust for a person's love of puppies.
 #' * [raq]: Fictitious data relating to a fictional questionnaire about R anxiety that is not an actual questionnaire.
 #' * [r_exam]: Fictitious data relating to an R exam at two universities.

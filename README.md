@@ -35,7 +35,7 @@ support tutors and students using my textbook who want to learn
 > and yet-to-be updated tutorials. For this reason, I recommend
 > installing the CRAN release and not the development version on GitHub.
 >
-> Updated tutorials: `discovr_01` to `discover_11`
+> Updated tutorials: `discovr_01` to `discover_13_afex`
 
 ## Installing `discovr`
 
@@ -124,12 +124,15 @@ starting the interactive tutorials.
   robust parameter estimation, heteroscedasticity-consistent tests of
   parameters, robust tests of means based on trimmed data, *post hoc*
   tests.
-- `discovr_12`: Comparing means adjusted for other variables.
-  Essentially ‘Analysis of Covariance (ANCOVA)’ designs but taught using
-  a general linear model framework. Covers setting contrasts, Type III
-  sums of squares, the *F*-statistic, robust parameter estimation,
-  heteroscedasticity-consistent tests of parameters, robust tests of
-  adjusted means, *post hoc* tests, Bayes factors.
+- `discovr_12`: Linear models involving continuous and categorical
+  predictors. The first example looks at the case o moderation
+  (non-paralell slopes models), whereas the second explores comparing
+  means adjusted for other variables (a parallel slopes model or
+  ‘Analysis of Covariance (ANCOVA)’). The tutorial covers setting
+  contrasts, fitting the models, evaluating effects using *F*-statistics
+  based on Type III sums of squares and diagnostic plots, and
+  interpretting the model using heteroscedasticity-consistent tests of
+  parameters and *post hoc* tests.
 - `discovr_13`: Factorial designs. Fitting models for two-way factorial
   designs (independent measures) using `lm()`. This tutorial builds on
   previous ones to show how models can be fit with two categorical
@@ -557,6 +560,9 @@ the book’s website.
   influencial case. For details execute `?pubs`.
 - **puppies**: Fictitious data related to whether puppy therapy works.
   For details execute `?puppies`.
+- **puppy_ancova**: Fictitious data related to whether puppy therapy
+  works when you adjust for a person’s baseline happiness. For details
+  execute `?puppy_ancova`.
 - **puppy_love**: Fictitious data related to whether puppy therapy works
   when you adjust for a person’s love of puppies. For details execute
   `?puppy_love`.

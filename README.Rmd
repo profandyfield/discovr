@@ -30,7 +30,7 @@ The `discovr` package contains resources for my 2026 textbook [Discovering Stati
 > **NOTE**
 > Over summer 2025 the tutorials within this package are undergoing a major overhaul. While this update is in progress there will be inconsistencies in the look, feel, and code between updated and yet-to-be updated tutorials. For this reason, I recommend installing the CRAN release and not the development version on GitHub. 
 >
-> Updated tutorials: `discovr_01` to `discover_11`
+> Updated tutorials: `discovr_01` to `discover_13_afex`
 
 ## Installing `discovr`
 
@@ -69,7 +69,7 @@ I recommend working through [this playlist of tutorials](https://www.youtube.com
 - `discovr_09`: Categorical predictors with two categories (comparing two means). Comparing two independent means, comparing two related means, effect sizes, robust comparisons of means (independent and related), Bayes factors and estimation (independent and related means).
 - `discovr_10`: Moderation and mediation. Centring variables (grand mean centring), specifying interaction terms, moderation analysis, simple slopes analysis, Johnson-Neyman intervals, mediation with one predictor, direct and indirect effects, mediation using `lavaan`.
 - `discovr_11`: Comparing several means. Essentially 'One-way independent ANOVA' but taught using a general linear model framework. Covers setting contrasts (dummy coding, contrast coding, and linear and quadratic trends), the *F*-statistic and Welch's robust *F*, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of means based on trimmed data, *post hoc* tests.
-- `discovr_12`: Comparing means adjusted for other variables. Essentially 'Analysis of Covariance (ANCOVA)' designs but taught using a general linear model framework. Covers setting contrasts, Type III sums of squares, the *F*-statistic, robust parameter estimation, heteroscedasticity-consistent tests of parameters, robust tests of adjusted means, *post hoc* tests, Bayes factors.
+- `discovr_12`: Linear models involving continuous and categorical predictors. The first example looks at the case o moderation (non-paralell slopes models), whereas the second explores comparing means adjusted for other variables (a parallel slopes model or 'Analysis of Covariance (ANCOVA)'). The tutorial covers setting contrasts, fitting the models, evaluating effects using *F*-statistics based on Type III sums of squares and diagnostic plots, and interpretting the model using heteroscedasticity-consistent tests of parameters and *post hoc* tests.
 - `discovr_13`: Factorial designs. Fitting models for two-way factorial designs (independent measures) using `lm()`. This tutorial builds on previous ones to show how models can be fit with two categorical predictors to look at the interaction between them. We look at fitting the models, setting contrasts for the two categorical predictors, interaction plots, simple effects analysis, diagnostic plots and robust models.
 - `discovr_13_afex`: Factorial designs. Fitting models for two-way factorial designs (independent measures) using the `afex` package. This tutorial takes an ANOVA approach to factorical designs. We look at fitting the models, interaction plots, simple effects analysis, diagnostic plots, partial omega-squared and robust models.
 - `discovr_14`: Multilevel models. This tutorial looks at fitting multilevel models using the `lme4` package. It begins with an optional section on checking and coding categorical variables before moving on to show you how to fit and interpret a multilevel model. We also briefly look at the `purrr` package.
@@ -256,6 +256,7 @@ See the book or data descriptions for more details. This is a list of available 
 * **profile_pic**: Fictitious data related to whether the number of friend requests from random people on social media is affected by whether your profile picture depicts you as single or part of a romantic couple. For details execute `?profile_pic`.
 * **pubs**: Data illustrating the difference between an outlier and an influencial case. For details execute `?pubs`.
 * **puppies**: Fictitious data related to whether puppy therapy works. For details execute `?puppies`.
+* **puppy_ancova**: Fictitious data related to whether puppy therapy works when you adjust for a person's baseline happiness. For details execute `?puppy_ancova`.
 * **puppy_love**: Fictitious data related to whether puppy therapy works when you adjust for a person's love of puppies. For details execute `?puppy_love`.
 * **r_exam**: Fictitious data relating to an R exam at two universities. For details execute `?r_exam`.
 * **reality_tv**: Fictitious data relating to whether being on a reality TV show exacerbates personality disorder traits. For details execute `?reality_tv`.

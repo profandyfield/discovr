@@ -1728,7 +1728,26 @@
 #' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' The researchers who conducted the puppy therapy study in [puppies] suddenly realized that a
-#' participant's love of dogs would affect whether puppy therapy would affect happiness. Therefore,
+#' participant's baseline happiness would affect their happiness scores after puppy therapy and wanted to adjust for this revelation. Therefore,
+#' they repeated the study on different participants, but measured happiness at baseline (pre-treatment) as well as post-therapy. The tibble contains the following variables:
+#'
+#' * **id**: Participant id
+#' * **dose**: Treatment group to which the participant was randomly assigned (No puppies (control), 15 minutes of puppy therapy, 30 minutes of puppy therapy)
+#' * **pre_happy**: Self-reported happiness from 0 (as unhappy as I can possibly imagine being) to 10 (as happy as I can possibly imagine being) before puppy therapy began.
+#' * **post_happy**: Self-reported happiness from 0 (as unhappy as I can possibly imagine being) to 10 (as happy as I can possibly imagine being) after puppy therapy concluded.
+#'
+#' @format A tibble with 30 rows and 4 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/puppy_ancova.csv](https://www.discovr.rocks/csv/puppy_ancova.csv)
+
+"puppy_ancova"
+
+#' Even more puppy therapy data
+#'
+#' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' The researchers who conducted the puppy therapy study in [puppies] suddenly realized that a
+#' participant's love of dogs would moderate whether puppy therapy would affect happiness. Therefore,
 #' they repeated the study on different participants, but included a self-report measure of love of puppies from 0 (I am a weird person who hates puppies, please be deeply suspicious of me) to 7 (puppies are the best thing ever, one day I might marry one).  The tibble contains the following variables:
 #'
 #' * **id**: Participant id

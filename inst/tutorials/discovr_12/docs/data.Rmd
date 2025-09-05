@@ -6,14 +6,14 @@ output: learnr::tutorial
 
 To work *outside of this tutorial* you need to download the following data files:
 
-* [puppy_ancova.csv](https://www.discovr.rocks/csv/puppy_ancova.csv)
+* [puppy_rct.csv](https://www.discovr.rocks/csv/puppy_rct.csv)
 * [puppy_love.csv](https://www.discovr.rocks/csv/puppy_love.csv)
 * [hangover.csv](https://www.discovr.rocks/csv/hangover.csv)
 
 Set up an `r rstudio()` project in the way that [I recommend in this video](https://youtu.be/mqT7c17tofE?si=R0aSApz66fGQKESl), and save the data files to the folder within your project called [data]{.alt}. To read in the first datafile place this code in the first code chunk in your `r quarto()` document:
 
 ```{r, eval=FALSE}
-puptreat_tib <- here::here("data/puppy_ancova.csv") |>
+puptreat_tib <- here::here("data/puppy_rct.csv") |>
   read_csv() |>
   mutate(
     dose = as_factor(dose) |> fct_relevel("No puppies", "15 mins", "30 mins")

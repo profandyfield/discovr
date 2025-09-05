@@ -1738,9 +1738,9 @@
 #'
 #' @format A tibble with 30 rows and 4 variables.
 #' @docType data
-#' @source [www.discovr.rocks/csv/puppy_ancova.csv](https://www.discovr.rocks/csv/puppy_ancova.csv)
+#' @source [www.discovr.rocks/csv/puppy_rct.csv](https://www.discovr.rocks/csv/puppy_rct.csv)
 
-"puppy_ancova"
+"puppy_rct"
 
 #' Even more puppy therapy data
 #'

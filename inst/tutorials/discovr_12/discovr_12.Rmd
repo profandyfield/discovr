@@ -47,7 +47,7 @@ source("./www/discovr_helpers.R")
 #Read data files needed for the tutorial
 
 pupluv_tib <- discovr::puppy_love
-puptreat_tib <- discovr::puppy_ancova
+puptreat_tib <- discovr::puppy_rct
 cure_tib <- discovr::hangover
 ```
 
@@ -783,7 +783,7 @@ Visualise the data using the [ggplot2]{.pkg} package from [tidyverse]{.pkg}.
 
 #### `r alien()` Alien coding challenge
 
-Plot a violin plot of happiness scores in the three puppy therapy groups. Plot the raw data and display each group in a different colour.
+Plot a violin plot of happiness scores in the three puppy therapy groups. Plot the raw data and display each group in a different colour. Include `scale_colour_viridis_d(begin = 0.3, end = 0.8)` so that the plot uses accessible colours.
 
 ```{r pup2_violin, exercise = TRUE, exercise.lines = 10}
 
@@ -796,6 +796,7 @@ ggplot2::ggplot(puptreat_tib, aes(x = dose, y = post_happy, colour = dose)) +
   stat_summary(fun.data = "mean_cl_normal", geom = "pointrange", position = position_dodge(width = 0.9)) +
   coord_cartesian(ylim = c(0, 10)) +
   scale_y_continuous(breaks = 0:10) +
+  scale_colour_viridis_d(begin = 0.3, end = 0.8) +
   labs(x = "Puppy therapy group", y = "Post-therapy happiness (0-10)", colour = "Puppy therapy group") +
   theme_minimal()
 ```
@@ -817,7 +818,8 @@ ggplot2::ggplot(puptreat_tib, aes(x = dose, y = pre_happy, colour = dose)) +
   stat_summary(fun.data = "mean_cl_normal", geom = "pointrange", position = position_dodge(width = 0.9)) +
   coord_cartesian(ylim = c(0, 10)) +
   scale_y_continuous(breaks = 0:10) +
-  labs(x = "Puppy therapy group", y = "Pre-therapy happiness (0-10)", colour = "Puppy therapy group") +
+  scale_colour_viridis_d(begin = 0.3, end = 0.8) +
+  labs(x = "Puppy therapy group", y = "Post-therapy happiness (0-10)", colour = "Puppy therapy group") +
   theme_minimal()
 ```
 
@@ -833,13 +835,14 @@ Use what you already know to plot a scatterplot and linear model of the relation
 ```
 
 ```{r pup_scatter2-solution}
-ggplot2::ggplot(puptreat_tib, aes(x = pre_happy, y = post_happy, colour = dose, fill = dose)) +
-  geom_point() + 
-  geom_smooth(method = "lm") +
+ggplot2::ggplot(puptreat_tib, aes(x = pre_happy, y = post_happy)) +
+  geom_smooth(method = "lm", colour = "#CC6677", fill = "#CC6677", alpha = 0.2) +
+  geom_point(colour = "#882255") +
   coord_cartesian(ylim = c(0, 10), xlim = c(0, 10)) +
   scale_x_continuous(breaks = 0:10) +
   scale_y_continuous(breaks = 0:10) +
   labs(x = "Pre-treatment happiness (0-10)", y = "Post-treatment happiness (0-10)", colour = "Treatment", fill = "Treatment") +
+ facet_wrap(~dose) + 
   theme_minimal()
 ```
 

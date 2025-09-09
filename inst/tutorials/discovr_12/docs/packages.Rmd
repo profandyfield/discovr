@@ -7,7 +7,7 @@ output: learnr::tutorial
 ```{r, eval = F, echo = F}
 # Create bib file for R packages
 
-tidylist <- c('tidyverse', 'dplyr', 'forcats', 'ggplot2', 'readr', 'tibble')
+tidylist <- c('tidyverse', 'dplyr', 'forcats', 'ggplot2', 'readr', 'tidyr', 'tibble')
 easylist <- c("easystats", "datawizard", "effectsize", "insight", "modelbased", "performance", "parameters")
 otherlist <- c('here', 'car', 'marginaleffects', 'sandwich')
 
@@ -47,3 +47,4 @@ It also uses these packages from:
 - `ggplot2` [@R-ggplot2; @wickham_ggplot2_2016]
 - `readr` [@R-readr]
 - `tibble` [@R-tibble]
+- `tidyr` [@R-tidyr]

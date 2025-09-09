@@ -9,7 +9,7 @@ output:
     highlight: "kate"
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
-description: "Linear models involving continuous and categorical predictors. The first example looks at the case o moderation (non-paralell slopes models), whereas the second explores comparing means adjusted for other variables (a parallel slopes model or 'Analysis of Covariance (ANCOVA)'). The tutorial covers setting contrasts, fitting the models, evaluating effects using *F*-statistics based on Type III sums of squares and diagnostic plots, and interpretting the model using heteroscedasticity-consistent tests of parameters and *post hoc* tests."
+description: "Linear models involving continuous and categorical predictors. The example explores comparing means adjusted for other variables (a parallel slopes model or 'Analysis of Covariance (ANCOVA)'). The tutorial covers setting contrasts, fitting the models, evaluating effects using *F*-statistics based on Type III sums of squares and diagnostic plots, and interpretting the model using heteroscedasticity-consistent tests of parameters and *post hoc* tests."
 bibliography: [discovr_12.bib, packages.bib]
 ---
 <html lang="en">
@@ -34,6 +34,7 @@ library(performance)
 library(dplyr)
 library(ggplot2)
 library(tibble)
+library(tidyr)
 #non tidyverse/easystats
 library(car)
 #students don't use
@@ -46,7 +47,6 @@ source("./www/discovr_helpers.R")
 
 #Read data files needed for the tutorial
 
-pupluv_tib <- discovr::puppy_love
 puptreat_tib <- discovr::puppy_rct
 cure_tib <- discovr::hangover
 ```
@@ -80,23 +80,71 @@ cure_tib <- discovr::hangover
 ```
 
 
-## `r user_visor()` Puppy love! [(B)]{.lbl}
+## `r user_visor()` Puppies = happiness! [(B)]{.lbl}
 
-The examples in this tutorial extend the example about puppy therapy from `discovr_11`. On the assumption that you can't have enough puppies in your life, here's another picture of my dog looking cute to help you to deal with the psychological trauma of this statistics tutorial.
+The example in this tutorial extends the example about puppy therapy from `discovr_11`. On the assumption that you can't have enough puppies in your life, here's another picture of my dog looking cute to help you to deal with the psychological trauma of this statistics tutorial.
 
 <figure>
 <img src="./images/discovr_12_milton.jpg" alt="My golden cocker spaniel, Milton, looking up at me with his tongue sticking out." style="width:100%">
 <figcaption>Figure 4: Milton the spaniel says 'there's no need to be afraid, just tickle the belly of statistics and it will love you forever.</figcaption>
 </figure> 
 
-The previous tutorial focussed on an example in which a researcher tested the efficacy of puppy therapy by exposing different groups of randomly-assigned people to (1) a no puppies control group; (2) 15 minutes of puppy therapy; and (3) 30 minutes of puppy contact. The dependent variable was a measure of happiness ranging from 0 (as unhappy as I can possibly imagine being) to 10 (as happy as I can possibly imagine being). We develop this example in two ways, in both cases we have a model in which there is both a categorical and continuous predictor.
+The previous tutorial focussed on an example in which a researcher tested the efficacy of puppy therapy by exposing different groups of randomly-assigned people to (1) a no puppies control group; (2) 15 minutes of puppy therapy; and (3) 30 minutes of puppy contact. The dependent variable was a measure of happiness ranging from 0 (as unhappy as I can possibly imagine being) to 10 (as happy as I can possibly imagine being).
 
-1. Non-parallel slopes model: we look at a model in which we predict an interaction between the categorical and continuous predictor.
-2. Parallel slopes model: we look at a model in which we *don't* predict an interaction between the categorical and continuous predictor. 
+Imagine our puppy-therapy researcher, in a moment of clarity, realised that happiness scores after therapy would depend upon happiness scores *before* therapy. People who are really unhappy before treatment, even if they become more happy, will have lower scores after therapy than those who went into therapy feeling happier. Some data reflecting this design are in [puptreat_tib]{.alt}. The data are very similar to the previous tutorial (`discovr_11`), in that we have the variables `id` (the participants id code), `dose` (1 = No puppies, 2 = 15 minutes, 3 = 30 minutes), and `post_happy` (the person's happiness on a scale from 0-10 *after* therapy). However, we have an additional variable `pre_happy` that is each person's happiness on a scale from 0-10 *before* therapy.
 
-We first look at an example of a model containing both a categorical and continuous variable and fit a model following our usual 5-step process. We then move on to a special case of this kind of model, historically called 
+We can approach this situation in one of two ways (Figure 5). The first is to use the 5-step modelling process we've used in previous tutorials (Figure 3). Taking this approach, we sequentially build our model, including interaction terms that make theoretical sense and test whether the fit improves at each stage. For example, we might sequentially build up to this model:
 
-The first model lends itself to the 5-step modelling process we've used in previous tutorials (Figure 5) whereas the second is a special case that in experimental research is used to adjust the outcome means across the categorical predictor by the continuous predictor. Historically, this approach equates to analysis of covariance (ANCOVA).
+$$
+\begin{aligned}
+\text{happy (post)}_i = \ &\hat{b}_0 + \hat{b}_1\text{happy (pre)}_i + \hat{b}_2\text{dose}_i \\
+\quad &+ \hat{b}_3[\text{dose} \times \text{happy (pre)}]_i  + e_i
+\end{aligned}
+$$
+
+Remembering that dose will be split into two dummy variables reflecting contrasts that we want to make, this model expands to
+
+$$
+\begin{aligned}
+\text{happy (post)}_i = \ &\hat{b}_0 + \hat{b}_1\text{happy (pre)}_i + \hat{b}_2\text{contrast 1}_i+ \hat{b}_3\text{contrast 2}_i \\
+\quad &+ \hat{b}_4[\text{contrast 1} \times \text{happy (pre)}]_i + \\
+\quad &+ \hat{b}_5[\text{contrast 2} \times \text{happy (pre)}]_i + e_i
+\end{aligned}
+$$
+
+This is known as a [non-parallel slopes model]{.kt} because by including the interaction term(s) we are open to the possibility that the relationship (or slope) between pre- and post-treatment happiness might vary across the therapy groups.
+
+A different approach is to compare means adjusting for levels of a continuous variable. In this application, the continuous predictors are sometimes referred to as [covariates]{.kt}. Let's be clear that covariates are predictors by a different name, there's nothing special about them (statistically speaking). Historically, the linear model used in this specific context is referred to as [an]{.kt}alysis of [cova]{.kt}riance (or ANCOVA for short). In our puppy therapy trial, we know that happiness after treatment should be associated with happiness before treatment, so we want to make sure that the effect of our puppy therapy dose on happiness scores is adjusted for baseline levels of happiness. Specifically, in this model we will see the effect of our treatment at average levels of the covariate(s):
+
+
+$$
+\begin{aligned}
+\text{happy (post)}_i = \ &\hat{b}_0 + \hat{b}_1\text{happy (pre)}_i + \hat{b}_2\text{dose}_i  + e_i
+\end{aligned}
+$$
+
+Or if we are explicit about the dummy variables for `dose`:
+
+$$
+\begin{aligned}
+\text{happy (post)}_i = \ &\hat{b}_0 + \hat{b}_1\text{happy (pre)}_i + \hat{b}_2\text{contrast 1}_i+ \hat{b}_3\text{contrast 2}_i + e_i
+\end{aligned}
+$$
+
+This model is known as a [parallel slopes model]{.kt} because by excluding the interaction term we assume that the relationship (or slope) between pre- and post-treatment happiness is the same across the therapy groups.
+
+Whichever approach we take we follow the usual 5-steps, except that for the ANCOVA (parallal slopes) approach we have two additional constraints, we assume 
+
+1. No interaction between the covariate and treatment effect (a.k.a. we assume [homogeneity of regression slopes]{.kt})
+2. Independence of the covariate and treatment effect
+
+Therefore, the five steps become:
+
+- Step 1: as always explore the data. However, in addition, we want to assess the [independence of the covariate]{.kt} (not a statistical requirement but helps with interpretation), and check for [homogeneity of regression slopes]{.kt} to see whether the assumption of parallel slopes is reasonable.
+- Step 2: visualise the data as usual.
+- Step 3: Fit the model. This stage differs a little in that people typically use *F*-statistics that evaluate all effects simultaneously, which requires using Type III sums of squares. To use Type III sums of squares we *must* set orthogonal contrasts.
+- Step 4: evaluate the model in the usual way
+- Step 5: interpret the model
 
 
 <figure>
@@ -104,10 +152,6 @@ The first model lends itself to the 5-step modelling process we've used in previ
 <figcaption>Figure 5: General procedure for fitting models that mix categorical and continuous predictors.</figcaption>
 </figure>
 
-
-To begin with, imagine the researchers who conducted the puppy therapy study realized that a participants love of dogs could moderate whether puppy therapy affected happiness. They replicated the study on different participants, but included a self-report measure of love of puppies from 0 (I am a weird person who hates puppies, please be deeply suspicious of me) to 7 (puppies are the best thing ever, one day I might marry one).
-
-The data are in [pupluv_tib]{.alt}, which contains the variables `id` (the participants id code), `dose` (1 = control, 2 = 15 minutes, 3 = 30 minutes), `happiness` (the persons happiness on a scale from 0-10), and `puppy_love` (the love of puppies from 0 to 7). They predict an interaction between `dose` and `puppy_love`.
 
 ## `r bmu()` Step 1: summarize the data [(A)]{.lbl}
 
@@ -120,17 +164,17 @@ Get your data into `r rproj()` and pre-process using [tidyverse]{.pkg} packages 
 
 #### `r alien()` Alien coding challenge
 
-View the data in [pupluv_tib]{.alt}.
+View the data in [puptreat_tib]{.alt}.
 
-```{r pupluv_tib, exercise = TRUE, exercise.lines = 2}
+```{r puptreat_tib, exercise = TRUE, exercise.lines = 2}
 
 ```
 
-```{r pupluv_tib-solution}
-pupluv_tib
+```{r puptreat_tib-solution}
+puptreat_tib
 ```
 
-Note that there are four variables: the participant's `id`, which is a character variable (note the `<chr>` under the name), the `dose` of puppy therapy, which is a factor (note the `<fct>` under the name), and the happiness score which is numeric and has the data type 'double' (note the `<dbl>` under the name) and their love of puppies (`puppy_love`), which also has the data type 'double'.
+Note that there are four variables: the participant's `id`, which is a character variable (note the `<chr>` under the name), the `dose` of puppy therapy, which is a factor (note the `<fct>` under the name), and the happiness scores pre- (`pre_happy`) and post-therapy (`post_happy`) which are numeric and have the data type 'double' (note the `<dbl>` under the name).
 
 The variable `dose` is a factor (categorical variable), so having read the data file and converted it to a factor it's a good idea to check that the levels of `dose` are in the order that we want: Control, 15 minutes, 30 minutes.
 
@@ -157,7 +201,7 @@ name_of_tibble$name_of_variable
 ```{r chk_levels-hint-3}
 # solution:
 
-levels(pupluv_tib$dose)
+levels(puptreat_tib$dose)
 ```
 
 Because I have set up the data within this tutorial you should see that the levels are listed in the order that we want them (No puppies, 15 minutes, 30 minutes) when you execute the code.
@@ -186,484 +230,73 @@ Use what you already know to compute descriptive statistics of happiness scores 
 
 ```{r pup_sum-hint-1}
 # Start by piping the tibble into the group_by function to group output by dose:
-pupluv_tib |> 
+puptreat_tib |> 
   group_by(dose)
 # Now pipe the results into the describe_distribution() function
 ```
 
 ```{r pup_sum-hint-2}
 # Pipe the results into the describe_distribution() function
-puppy_tib |> 
+puptreat_tib |> 
   group_by(dose) |> 
-  describe_distribution(select = xxxx, ci = xxxx)
+  describe_distribution()
 # use a function to display the table nicely
 ```
 
 
 ```{r pup_sum-solution}
 # Solution
-pupluv_tib |> 
+puptreat_tib |> 
   group_by(dose) |> 
-  describe_distribution(select = happiness, ci = 0.95) |> 
+  describe_distribution() |> 
   display()
 ```
 
-Note that the mean happiness is very similar in the 15- and 30-minute groups and higher in these groups than the no puppies control.
-
-## `r bmu()` Step 2: Visualize [(A)]{.lbl}
-
-<div class="stepbox">
-  `r step()` **Step 2**
-
-Visualise the data using the [ggplot2]{.pkg} package from [tidyverse]{.pkg}.
-</div>
-
-#### `r alien()` Alien coding challenge
-
-Use what you already know to plot a violin plot of happiness scores in the three puppy therapy groups. Plot the raw data and display each group in a different colour.
-
-```{r pup_violin, exercise = TRUE, exercise.lines = 10}
-
-```
-
-```{r pup_violin-solution}
-ggplot2::ggplot(pupluv_tib, aes(x = dose, y = happiness, colour = dose)) +
-  geom_point(position = position_jitter(width = 0.1), alpha = 0.6) +
-  geom_violin(alpha = 0.2) + 
-  stat_summary(fun.data = "mean_cl_normal", geom = "pointrange", position = position_dodge(width = 0.9)) +
-  coord_cartesian(ylim = c(0, 10)) +
-  scale_y_continuous(breaks = 0:10) +
-  labs(x = "Puppy therapy group", y = "Happiness (0-10)", colour = "Puppy therapy group") +
-  theme_minimal()
-```
-
-Note (as we did before) that the mean happiness is very similar in the 15- and 30-minute groups and higher in these groups than the no puppies control.
-
-#### `r alien()` Alien coding challenge
-
-Now let's look at the relationship between puppy love and happiness in the three therapy groups. Use what you already know to plot a scatterplot and linear model of the relationship between puppy love and happiness scores. Plot the three puppy therapy groups in a different colour.
-
-```{r pup_scatter, exercise = TRUE, exercise.lines = 10}
-
-```
-
-```{r pup_scatter-solution}
-ggplot2::ggplot(pupluv_tib, aes(x = puppy_love, y = happiness, colour = dose, fill = dose)) +
-  geom_point() + 
-  geom_smooth(method = "lm") +
-  coord_cartesian(ylim = c(0, 10)) +
-  scale_x_continuous(breaks = 0:7) +
-  scale_y_continuous(breaks = 0:10) +
-  labs(x = "Puppy love (0-7)", y = "Happiness (0-10)", colour = "Treatment", fill = "Treatment") +
-  theme_minimal()
-```
-
-It looks like puppy love has a positive relationship to happiness in the no puppy and 15-minute groups, but a negative relationship in the 30-minute group. This suggests that the researcher is correct that happiness scores depend on a combination of treatment and their love of puppies, we'll return to this plot later.
-
-## `r user_visor()` Step 3: Fit the model  [(B)]{.lbl}
-
-A simplified representation of our model is
-
-$$
-\text{happiness}_i = \hat{b}_0 + \hat{b}_1\text{dose}_i+ \hat{b}_2\text{puppy love}_i + \hat{b}_3[\text{dose} \times \text{ puppy love}]_i + e_i
-$$
-
-That is, the happiness score for an individual is predicted from the puppy therapy group to which they were assigned, their love of puppies, and the combined effect of these predictors.
-
-However, the situation is more complicated because to include categorical predictors we must split the categories into dummy variables that represent comparison between the categories. One way to do this uses [dummy]{.kt} or [indicator]{.kt} coding in which each category is compared to a single reference category. Group membership is expressed in terms of 0s and 1s, and, in this example we might choose to compare each therapy condition to the no puppies group (Table 1). These are [non-orthogonal contrasts]{.alt}, which means they are not independent (because they both use the no puppies group scores).
-
-```{r dummy_tbl, echo = FALSE, results = 'asis'}
-dummy_tbl <- tibble(
-  `Group` = c("No puppies (control)", "15 minutes", "30 minutes"),
-  `Contrast 1 (long vs. none)` = c(0, 0, 1),
-  `Contrast 2 (short vs. none)` = c(0, 1, 0)
-  )
-
-knitr::kable(dummy_tbl, caption = "Table 1: Dummy coding for the three-group puppy therapy study")
-```
-
-
-Alternatively, we can use contrast coding, where we define a set of [orthogonal contrasts]{.kt} which means that they are independent. For example, in `discovr_11` we used the contrast coding in Table 2.
-
-```{r con_tbl, echo = FALSE, results = 'asis'}
-con_tbl <- tibble(
-  `Group` = c("No puppies (control)", "15 minutes", "30 minutes"),
-  `Contrast 1 (No puppies vs. puppies)` = c("-2/3", "1/3", "1/3"),
-  `Contrast 2 (15 mins vs 30 mins)` = c("0", "-1/2", "1/2")
-  )
-
-knitr::kable(con_tbl, caption = "Table 2: Contrast coding for the puppy example")
-```
-
-As revision from the chapter, when using this coding scheme the model we're fitting is:
-
-$$
-\text{happiness}_i = \hat{b}_0 + \hat{b}_1\text{contrast 1}_i+ \hat{b}_2\text{contrast 2}_i + e_i
-$$
-
-In which the variables `contrast 1` and `contrast 2` are the dummy variables that represents the no puppies group compared to all other groups (`contrast 1`), and the difference between the 15-minute group and the 30-minute group (`contrast 2`). These contrasts work for the current example, because it extends the example from `discovr_11` so let's roll with these contrasts.
-
-To add the interaction we multiply each contrast by the continuous predictor to get the following model
-
-$$
-\begin{aligned}
-\text{happiness}_i = \ &\hat{b}_0 + \hat{b}_1\text{contrast 1}_i+ \hat{b}_2\text{contrast 2}_i \\
-\quad &+ \hat{b}_3\text{puppy love}_i  + \hat{b}_4[\text{contrast 1} \times \text{puppy love}]_i \\
-\quad &+ \hat{b}_5[\text{contrast 2} \times \text{puppy love}]_i + e_i
-\end{aligned}
-$$
-
-Note our interaction term is split into two: each contrast variable multiplied by the continuous predictor (`puppy_love`).
-
-
-#### `r robot()` Code example
-
-We set these contrasts for `dose` using the `contrasts()` function (go back over `discovr_11` if this code doesn't make sense to you):
-
-```{r, eval = F}
-puppy_vs_none <- c(-2/3, 1/3, 1/3)
-short_vs_long <- c(0, -1/2, 1/2)
-contrasts(pupluv_tib$dose) <- cbind(puppy_vs_none, short_vs_long)
-```
-
-#### `r alien()` Alien coding challenge
-
-Use the code from the example to set the contrasts in Table 2 for `dose`.
-
-```{r set_contrast, exercise = TRUE, exercise.lines = 5}
-     
-               
-```
-
-```{r set_contrast-hint-1}
-# Set the weights for the first contrast using the example code:
-puppy_vs_none <- c(-2/3, 1/3, 1/3)
-# Now set the weights for the second contrast
-```
-
-```{r set_contrast-hint-2}
-# Set the weights for the second contrast:
-long_vs_short  <- c(0, -1/2, 1/2)
-# Next, set the two contrasts to the dose variable
-```
-
-```{r set_contrast-hint-3}
-# Set the two contrasts to the dose variable:
-contrasts(pupluv_tib$dose) <- cbind(puppy_vs_none, long_vs_short )
-# Finally, view the weights to check they are set correctly
-```
-
-```{r set_contrast-solution}
-puppy_vs_none <- c(-2/3, 1/3, 1/3)
-long_vs_short <- c(0, -1/2, 1/2)
-contrasts(pupluv_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
-contrasts(pupluv_tib$dose) # This line prints the contrast weights so we can check them
-```
-
-
-Having set the contrasts we can build up the model starting with the intercept, then creating models that add each predictor and then the interaction.
-
-#### `r alien()` Alien coding challenge
-
-Use the code box to fit four models:
-
-1. [intcpt_lm]{.alt}: `happiness` predicted from the intercept only
-2. [pupluv_lm]{.alt}: `happiness` predicted from `puppy_luv`
-3. [dose_lm]{.alt}: `happiness` predicted from `puppy_luv` and `dose`
-4. [interact_lm]{.alt}: `happiness` predicted from `puppy_luv`, `dose` and their interaction.
+Note that the mean happiness after treatment is very similar in the 15- and 30-minute groups and higher in these groups than the no puppies control.
 
 <div class="tip">
   `r cat_space()` **Tip**
-  
-  Remember that `r rproj()` will create dummy variables for `dose` based on the contrasts you set, so you don't need to create the variables `contrast 1` and `contrast 2` in the equation; you need only enter `dose` as a predictor. Similarly, to get the interaction terms you need only specify `dose:puppy_love`.
-</div>
 
-```{r pupluv_mods, exercise = TRUE, exercise.lines = 5}
+We can use what we have learnt previously to select only the mean and standard deviation, and re-organise the table. For example, the code below pipes the table into `select()` to retain only the first four columns of the table (from `dose` to `SD`), and then uses `pivot_wider()` to spread the rows in the column called `Variable` (this column labels whether the information is about `post_happy` or `pre_happy`) across columns. Within `display()` I override the column names (note that anything enclosed in asterisks will be rendered as italic).=
 
-```
-
-```{r pupluv_mods-hint-1}
-# fit the first model (replace the xs):
-lm(xxx ~ xxxx + xxxx, data = xxxx)
-```
-
-```{r pupluv_mods-hint-2}
-intcpt_lm <- lm(happiness ~ 1, data = pupluv_tib)
-# fit the second model (replace the xs):
-pupluv_lm <- lm(happiness ~ xxxx, data = pupluv_tib)
-```
-
-```{r pupluv_mods-hint-3}
-intcpt_lm <- lm(happiness ~ 1, data = pupluv_tib)=
-pupluv_lm <- lm(happiness ~ puppy_love, data = pupluv_tib)
-# fit the third model (replace the xs):
-dose_lm <- lm(happiness ~ xxxx + xxxx, data = pupluv_tib)
-```
-
-```{r pupluv_mods-hint-4}
-intcpt_lm <- lm(happiness ~ 1, data = pupluv_tib)=
-pupluv_lm <- lm(happiness ~ puppy_love, data = pupluv_tib)
-dose_lm <- lm(happiness ~ puppy_love + dose, data = pupluv_tib)
-# fit the final model (replace the xs):
-lm(happiness ~ puppy_love + dose + xxxx, data = pupluv_tib)
-```
-
-
-```{r pupluv_mods-solution}
-intcpt_lm <- lm(happiness ~ 1, data = pupluv_tib)
-pupluv_lm <- lm(happiness ~ puppy_love, data = pupluv_tib)
-dose_lm <- lm(happiness ~ puppy_love + dose, data = pupluv_tib)
-interact_lm <- lm(happiness ~ puppy_love + dose + dose:puppy_love, data = pupluv_tib)
-```
-
-Executing this code will appear to do nothing but the models are created and stored so now we can evaluate them.
-
-## `r bmu()` Step 4: Evaluate the model [(A)]{.lbl}
-
-<div class="stepbox">
-  `r step()` **Step 4**
-
-Evaluate the model using a small number of functions from the [performance]{.pkg} package from [easystats]{.pkg}. Specially, we evaluate
-
-- How well the model fits the data
-- Whether the underlying assumptions of the model are met. If not, we refit the model using robust methods (see Figure 3).
- 
-</div>
-
-```{r pupluv_lm_setup}
-# contrasts for dose
-puppy_vs_none <- c(-2/3, 1/3, 1/3)
-long_vs_short <- c(0, -1/2, 1/2)
-contrasts(pupluv_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
-# fit models
-intcpt_lm <- lm(happiness ~ 1, data = pupluv_tib)
-pupluv_lm <- lm(happiness ~ puppy_love, data = pupluv_tib)
-dose_lm <- lm(happiness ~ puppy_love + dose, data = pupluv_tib)
-interact_lm <- lm(happiness ~ puppy_love + dose + dose:puppy_love, data = pupluv_tib)
-```
-
-#### `r alien()` Alien coding challenge
-
-Use `test_wald()` to compare the models you just fitted.
-
-```{r pupluv_fit, exercise = TRUE, exercise.lines = 4, exercise.setup = "pupluv_lm_setup"}
-
-```
-
-```{r pupluv_fit-solution}
-test_wald(intcpt_lm, pupluv_lm, dose_lm, interact_lm) |> 
-  display()
-```
-
-
-
-```{r, echo = F}
-# contrasts for dose
-puppy_vs_none <- c(-2/3, 1/3, 1/3)
-long_vs_short <- c(0, -1/2, 1/2)
-contrasts(pupluv_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
-# fit models
-intcpt_lm <- lm(happiness ~ 1, data = pupluv_tib)
-pupluv_lm <- lm(happiness ~ puppy_love, data = pupluv_tib)
-dose_lm <- lm(happiness ~ puppy_love + dose, data = pupluv_tib)
-interact_lm <- lm(happiness ~ puppy_love + dose + dose:puppy_love, data = pupluv_tib)
-
-pupluv_lrt <- test_wald(intcpt_lm, pupluv_lm, dose_lm, interact_lm)
-```
-
-
-Crucially, adding the interaction term improves the fit significantly meaning that the `dose:puppy_love` interaction is significant, `r report_lrt(pupluv_lrt, row = 4)`. We should retain the final model ([interact_lm]{.alt})
-
-#### `r alien()` Alien coding challenge
-
-We can evaluate the model assumptions in the usual way using `check_model()`. try this in the code box.
-
-```{r interact_lm_check, exercise = TRUE, exercise.lines = 3, exercise.setup = "pupluv_lm_setup", fig.height = 10}
-
-```
-
-```{r interact_lm_check-solution}
-check_model(interact_lm)
-```
-
-
-```{r interact_lm_check_qz, echo = FALSE}
-quiz(caption = "Diagnostic plot quiz (level 2)",
-  question("How would you interpret the *Residual vs. fitted* and *Scale-location* plots?",
-    answer("Were in trouble: I see heteroscedasticity and nonlinearity.", correct = TRUE, message = "The green line is decidedly not flat and the cloud of dots seems to fan out on both plots. We can't assume homoscedasticity and even linearity is questionable."),
-    answer("I'm not sure, give me a hint.", message = "Heteroscedasticity and nonlinearity is shown up by a green line that isn't flat. A vertical spread of dots that changes as you move along the *x*-axis also indicates heteroscedasticity."),
-    answer("Everything is fine - residuals show homogeneity and linerarity.", message = "Look again at the green line and spread of dots."),
-    correct = "Correct - well done!",
-    random_answer_order = TRUE,
-    allow_retry = T
-  ),
-  question("Based on the Q-Q plot, can we assume normality of the residuals?",
-    answer("Yes", message = "When we can assume normality, the dots on the Q-Q plot hug the line. There's not much hugging going on at the extremes."),
-    answer("No", correct = TRUE, message = "The dots on the Q-Q plot deviate from the line at the extremes, which probably indicates a non-normal distribution."),
-    answer("Give me a clue", message = "If residuals are normally distributed then the dots on the Q-Q plot should hug the line."),
-    correct = "Correct - Well done!",
-    random_answer_order = TRUE,
-    allow_retry = T
-  ),
-  question("Based on the influence plot, are there any influential cases?",
-    answer("Yes", message = "Influential cases should fall outside of the contour lines, can you see any that do?"),
-    answer("No", correct = TRUE),
-    answer("Maybe", message = "Sorry, you're not allowed to sit on the fence!"),
-    correct = "Correct - all the dots fall within the contour lines, which tells us that all cases are within the desired bounds and not influential. Well done!",
-    random_answer_order = TRUE,
-    allow_retry = T
-  )
-)
-```
-
-
-<div class="infobox">
-  `r info()` **Information**
-
-Although the bottom-left plot seems to indicate multicollinearity between `dose` and the interaction, this is to be expected because the interaction is literally the values of dose multiplied by the values of puppy love.
-</div>
-
-
-## `r bmu()` Step 5: Interpret the model [(A)]{.lbl}
-
-<div class="stepbox">
-  `r step()` **Step 5**
-
-Interpret the model
-
-- Interpret the values that define the model (the [parameter estimates]{.alt}) using the [parameters]{.pkg} package from [easystats]{.pkg}.
-- Make specific predictions from our model using the [modelbased]{.pkg} package from [easystats]{.pkg}.
- 
-</div>
-
-
-#### `r alien()` Alien coding challenge
-
-The diagnostic plots suggest we should adjust the model using robust methods because of heteroscedasticity. Figure 3 tells us the action to take is to uise heteroscedasticity consistent standard errors. Use what you know already about `model_parameters()` to inspect the parameter estimates of the model [interact_lm]{.alt} using HC4 robust standard errors.
-
-```{r interact_rob, exercise = TRUE, exercise.lines = 3, exercise.setup = "pupluv_lm_setup"}
-
-```
-
-```{r interact_rob-hint-1}
-# Place the model name into model_parameters() from the parameters package
-model_parameters(xxxx, vcov = "xxxx") |> 
-  display()
-```
- 
-```{r interact_rob-solution}
-model_parameters(interact_lm, vcov = "HC4")|> 
-  display()
-```
-
-
-```{r, echo = F}
-interact_lm_par <- model_parameters(interact_lm, vcov = "HC4")
-```
-
-
-The interaction supersedes everything else, so let's focus on those two parameter estimates. The first tells us that the relationship between puppy love and happiness was not significantly different in those that had therapy and those that did not, `r report_pe(interact_lm_par, row = 5)`. The second tells us that the relationship between puppy love and happiness was significantly different in those that 30 minutes of therapy compared to those that had 15, `r report_pe(interact_lm_par, row = 6)`. The fact the parameter estimate is negative means that the slope for the relationship between puppy love and happiness was smaller in the 30 minute group than the 15 minute group, which we can see in our earlier plot where there was (a frankly weird and unpredicted) negative relationship in the 30 minute group where happiness declined as puppy love increased.
-
-We might also want to break the interaction down and look at the simple slopes (that is, the relationship between `puppy_love` and `happiness` within each treatment group). We can do this using what we learnt in `discovr_10` about the `estimate_slopes()` function from [modelbased]{.pkg}. It takes the form
-
-```{r, eval = F}
-estimate_slopes(
-  model = my_model,
-  trend = predictor_variable,
-  by = moderator_variable,
-  ci = 0.95,
-  p_adjust = "none")
-```
-
-Within the function we replace [my_model]{.alt} with the model we have created ([interact_lm]{.alt}), replace [continuous_variable]{.alt} with the continuous predictor (`puppy_love`) and [categorical_variable]{.alt} with the grouping variable (`dose`). By default it will return 95% confidence intervals so we can omit this argument unless we want to use a different level. 
-
-#### `r robot()` Code example
-
-We can view the simple slopes for the current model by executing:
-
-```{r, eval = F}
-estimate_slopes(interact_lm,
-                trend = "puppy_love",
-                by = "dose",
-                ci = 0.95) |> 
-  display()
-```
-
-
-#### `r alien()` Alien coding challenge
-
-Use the code box below to obtain the simple slopes of `puppy_love` for each `dose`.
-
-```{r pup_slope, exercise = TRUE, exercise.lines = 6, exercise.setup = "pupluv_lm_setup"}
-          
-```
-
-
-```{r pup_slope-solution}
-estimate_slopes(interact_lm,
-                trend = "puppy_love",
-                by = "dose",
-                ci = 0.95) |> 
-  display()
-```
-
-```{r, echo = F}
-pup_slopes <- estimate_slopes(interact_lm,
-                trend = "puppy_love",
-                by = "dose",
-                ci = 0.95)
-```
-
-In the no puppy group, `r report_ss(pup_slopes, row = 1)`, and the 15-minute group, `r report_ss(pup_slopes, row = 2)`, there were significant and strong positive relationships between loving puppies and happiness. However, in the 30-minute group there was a non-significant negative relationship between loving puppies and happiness, `r report_ss(pup_slopes, row = 3)`. The significant interaction seems to reflect that the positive relationship between loving puppies and happiness is 'wiped out' by 30 minutes of puppy therapy. One interpretation of this effect might be that the 30-minutes of puppy therapy raises everyone's happiness, which attenuates the relationship between loving puppies and happiness.
-
-## `r user_visor()` Analysis of covariance [(B)]{.lbl}
-
-The second type of model we'll look at that has both categorical and continuous predictors assumes that predictors do not interact. It is known as a [parallel-slopes model]{.kt} because the lack of interaction implies that the relationship between the covariate (continuous and predictor) and outcome is the same across all levels of the categorical predictor. This being so allows us to think of interpreting the effect of the categorical variable [adjusted for]{.kt} (or at average levels of) the effect of the covariate. In this situation we often follow the so-called ANOVA route in Figure 5.
-
-Imagine our puppy-therapy researcher, in a moment of clarity, realised that happiness scores after therapy would depend upon happiness scores *before* therapy. People who are really unhappy before treatment, even if they become more happy, will have lower scores after therapy than those who went into therapy feeling happier. Some data reflecting this design are in [puptreat_tib]{.alt}. The data are very similar to the previous example (and that of `discovr_11`), in that we have the variables `id` (the participants id code), `dose` (1 = No puppies, 2 = 15 minutes, 3 = 30 minutes), and `post_happy` (the person's happiness on a scale from 0-10 *after* therapy). However, we have an additional variable `pre_happy` that is each person's happiness on a scale from 0-10 *before* therapy.
-
-The process for fitting a model that compares means while adjusting for a continuous variable (covariate) differs a little from out usual process, but only a little:
-
-- Step 1: as always explore the data. However, in addition, we want to assess the independence of the covariate (not a statistical requirement but helps with interpretation), and check for [homogeneity of regression slopes]{.kt} to see whether the assumption of parallel slopes is reasonable.
-- Step 2: visualise the data as usual.
-- Step 3: Fit the model. This stage differs a little in that people typically use *F*-statistics that evaluate all effects simultaneously, which requires using Type III sums of squares. To use Type III sums of squares we *must* set orthogonal contrasts.
-- Step 4: evaluate the model in the usual way
-- Step 5: interpret the model
-
-## `r bmu()` Step 1: summarize the data [(A)]{.lbl}
-
-<div class="stepbox">
-  `r step()` **Step 1**
-
-Get your data into `r rproj()` and pre-process using [tidyverse]{.pkg} packages or the [datawizard]{.pkg} package from [easystats]{.pkg}.
-</div>
-
-These steps will be really similar to the previous example, so we'll blitz them in a single exercise.
-
-#### `r alien()` Alien coding challenge
-
-View the data in [puptreat_explore]{.alt}, check the order of the levels of the variable `dose`, and create a table of summary statistics (with CIs) for both pre- and post-therapy happiness.
-
-```{r puptreat_explore, exercise = TRUE, exercise.lines = 10}
-
-```
-
-```{r puptreat_explore-solution}
-# view the data
-puptreat_tib
-# check the levels of dose
-levels(puptreat_tib$dose)
-# create a table of summary stats
+```{r, eval = F, class.source = '.panel_alt'}
 puptreat_tib |> 
   group_by(dose) |> 
-  describe_distribution(ci = 0.95) |> 
-  display()
+  describe_distribution() |> 
+  select(dose:SD) |> 
+  pivot_wider(
+    names_from = "Variable",
+    values_from = c("Mean", "SD")
+  ) |> 
+  display(column_names = c("Treatment", "*M* (Pre)", "*M* (Post)", "*SD* (Pre)", "*SD* (Post)"))
+```
+</div>
+
+#### `r alien()` Alien coding challenge
+
+Try out the code in the tip below
+
+```{r pup_sum_jazzy, exercise = TRUE, exercise.lines = 15}
+
+```
+
+```{r pup_sum_jazzy-solution}
+# Solution
+puptreat_tib |> 
+  group_by(dose) |> 
+  describe_distribution() |> 
+  select(dose:SD) |> 
+  pivot_wider(
+    names_from = "Variable",
+    values_from = c("Mean", "SD")
+  ) |> 
+  display(column_names = c("Treatment", "*M* (Pre)", "*M* (Post)", "*SD* (Pre)", "*SD* (Post)"))
 ```
 
 
 In this design, we have two additional steps:
 
-- Test for independence of the covariate
+- Test for [independence of the covariate]{.kt}
 - Check for [homogeneity of regression slopes]{.kt} to see whether the assumption of parallel slopes is reasonable.
 
 Although independence is not a statistical condition, it is easier to interpret the categorical predictor if we know that levels of the covariate are similar across the categories. We can test this by fitting a model, using `lm()` that predicts the covariate from the categorical predictor. If the categorical predictor does not significantly predict the covariate then they can be thought of as relatively independent (notwithstanding that significance will depend on sample size).
@@ -773,6 +406,7 @@ hrs <- test_wald(main_effects_lm, full_lm)
 
 The interaction is not significant, `r report_lrt(hrs)`, which shows that the relationship between pre- and post-therapy happiness scores is (statistically speaking) roughly the same in the three puppy therapy groups. A parallel slopes model is, therefore, reasonable.
 
+
 ## `r bmu()` Step 2: Visualize [(A)]{.lbl}
 
 <div class="stepbox">
@@ -783,14 +417,14 @@ Visualise the data using the [ggplot2]{.pkg} package from [tidyverse]{.pkg}.
 
 #### `r alien()` Alien coding challenge
 
-Plot a violin plot of happiness scores in the three puppy therapy groups. Plot the raw data and display each group in a different colour. Include `scale_colour_viridis_d(begin = 0.3, end = 0.8)` so that the plot uses accessible colours.
+Plot a violin plot of happiness scores in the three puppy therapy groups. Plot the raw data and display each group in a different colour. For bonus points, include `scale_colour_viridis_d(begin = 0.3, end = 0.8)` so that the plot uses accessible colours and `theme(legend.position = "none")` to hide the colour legend.
 
 ```{r pup2_violin, exercise = TRUE, exercise.lines = 10}
 
 ```
 
 ```{r pup2_violin-solution}
-ggplot2::ggplot(puptreat_tib, aes(x = dose, y = post_happy, colour = dose)) +
+ggplot(puptreat_tib, aes(x = dose, y = post_happy, colour = dose)) +
   geom_point(position = position_jitter(width = 0.1), alpha = 0.6) +
   geom_violin(alpha = 0.2) + 
   stat_summary(fun.data = "mean_cl_normal", geom = "pointrange", position = position_dodge(width = 0.9)) +
@@ -798,10 +432,11 @@ ggplot2::ggplot(puptreat_tib, aes(x = dose, y = post_happy, colour = dose)) +
   scale_y_continuous(breaks = 0:10) +
   scale_colour_viridis_d(begin = 0.3, end = 0.8) +
   labs(x = "Puppy therapy group", y = "Post-therapy happiness (0-10)", colour = "Puppy therapy group") +
-  theme_minimal()
+  theme_minimal() +
+  theme(legend.position = "none")
 ```
 
-Note (as we did before) that the mean happiness is very similar in the 15- and 30-minute groups and higher in these groups than the no puppies control.
+Note that the mean happiness is very similar in the 15- and 30-minute groups and higher in these groups than the no puppies control.
 
 #### `r alien()` Alien coding challenge
 
@@ -820,7 +455,8 @@ ggplot2::ggplot(puptreat_tib, aes(x = dose, y = pre_happy, colour = dose)) +
   scale_y_continuous(breaks = 0:10) +
   scale_colour_viridis_d(begin = 0.3, end = 0.8) +
   labs(x = "Puppy therapy group", y = "Post-therapy happiness (0-10)", colour = "Puppy therapy group") +
-  theme_minimal()
+  theme_minimal() +
+  theme(legend.position = "none")
 ```
 
 The plot shows that the distributions are similar across the treatment groups adding support to our earlier test of independence.
@@ -846,22 +482,35 @@ ggplot2::ggplot(puptreat_tib, aes(x = pre_happy, y = post_happy)) +
   theme_minimal()
 ```
 
-The relationship between pre- and post-treatment happiness is positive (and similar in strength) in all three groups adding support to our test of homogeneity of regression slopes.
+The relationship between pre- and post-treatment happiness is positive (and similar in strength) in all three groups agreeing with our test of homogeneity of regression slopes.
+
 
 ## `r user_visor()` Step 3: Fit the model  [(B)]{.lbl}
 
-Our model is very similar to the previous example except that we exclude the interaction terms:
+As mentioned, the model we're fitting is 
 
 $$
 \begin{aligned}
-\text{happiness}_i = \ &\hat{b}_0 + \hat{b}_1\text{contrast 1}_i+ \hat{b}_2\text{contrast 2}_i \\
-\quad &+ \hat{b}_3\text{pre-therapy happiness}_i + e_i
+\text{happy (post)}_i = \ &\hat{b}_0 + \hat{b}_1\text{happy (pre)}_i + \hat{b}_2\text{contrast 1}_i+ \hat{b}_3\text{contrast 2}_i + e_i
 \end{aligned}
 $$
 
-That is, the happiness score for an individual is predicted from the puppy therapy group to which they were assigned,  and their pre-therapy happiness.
+That is, the happiness score for an individual after treatment is predicted from their happiness before treatment plus information about which treatment their received which is coded in our two contrast variables. The question is, what do we want these contrasts to represent?.
 
-As mentioned earlier, typically when evaluating this sort of model we want to use *F*-statistics to evaluate all effects *simultaneously* and not *sequentially* like we do when we use `test_wald()`. To do this, we must use Type III sums of squares. Type III sums of squares differ from Type I in that all effects are evaluated taking into consideration all other effects in the model (not just the ones entered before). As such, the order that you specify predictors doesn't affect the results. (There's a more nuanced discussion of sums of squares in the book.)
+The default method is [dummy]{.kt} or [indicator]{.kt} coding in which each category is compared to a single reference category. Group membership is expressed in terms of 0s and 1s, and, in this example we might choose to compare each therapy condition to the no puppies group (Table 1). 
+
+```{r dummy_tbl, echo = FALSE, results = 'asis'}
+dummy_tbl <- tibble(
+  `Group` = c("No puppies (control)", "15 minutes", "30 minutes"),
+  `Contrast 1 (30 mins vs. none)` = c(0, 0, 1),
+  `Contrast 2 (15 mins vs. none)` = c(0, 1, 0)
+  )
+
+knitr::kable(dummy_tbl, caption = "Table 1: Dummy coding for the three-group puppy therapy study")
+```
+
+
+These are [non-orthogonal contrasts]{.kt}, which means they are not independent (because they both use the no puppies group scores). This codingh scheme is problematic when we take an AMNCOVA approach because we want to use *F*-statistics to evaluate all effects *simultaneously* and not *sequentially* like we do when we use `test_wald()`. To evaluate *F*-statistics simultaneously, we must use Type III sums of squares. Type III sums of squares differ from Type I in that all effects are evaluated taking into consideration all other effects in the model (not just the ones entered before). As such, the order that you specify predictors doesn't affect the results. (There's a more nuanced discussion of sums of squares in the book.)
 
 ```{r ssl_quiz, echo = F}
 question("What's the pragmatic difference between Type I and Type III sums of squares",
@@ -872,7 +521,7 @@ question("What's the pragmatic difference between Type I and Type III sums of sq
 )
 ```
 
-For Type III sums of squares to be correctly calculated you must specify an orthogonal contrast for any categorical predictors. Orthogonal is just a posh word for independent. If you follow the rules for contrast coding in `discovr_11` and the book, you will get orthogonal contrasts. Also,  Helmert contrasts obtained using `contr.helmert()` are orthogonal (but might not compare the groups that interest you).
+For Type III sums of squares to be correctly calculated you must specify an orthogonal contrast for categorical predictors. Orthogonal is just a posh word for independent. If you follow the rules for contrast coding in `discovr_11` and the book, you will get orthogonal contrasts.
 
 <div class="infobox">
   `r info()` **Type III sums of squares**
@@ -881,10 +530,22 @@ If you want to use Type III sums of squares then you **must** set orthogonal con
 
 </div>
 
-The contrasts we used in the previous example are orthogonal, and the hypotheses haven't changed so we can use the same contrast coding as the previous example to get two contrasts:
+The contrasts we used in `discovr_11` are orthogonal, and the hypotheses haven't changed so we can use the same contrast coding as the previous example to get two contrasts:
 
 1. Contrast 1: compares post-therapy happiness in anyone having puppy therapy to those that had none
 2. Contrast 2: compares post-therapy happiness in anyone having 30 minutes of puppy therapy to those that had 15 minutes.
+
+The contrasts we used in `discovr_11` are in Table 2.
+
+```{r con_tbl, echo = FALSE, results = 'asis'}
+con_tbl <- tibble(
+  `Group` = c("No puppies (control)", "15 minutes", "30 minutes"),
+  `Contrast 1 (No puppies vs. puppies)` = c("-2/3", "1/3", "1/3"),
+  `Contrast 2 (15 mins vs 30 mins)` = c("0", "-1/2", "1/2")
+  )
+
+knitr::kable(con_tbl, caption = "Table 2: Contrast coding for the puppy example")
+```
 
 <div class="tip">
   `r cat_space()` **Tip**
@@ -903,39 +564,58 @@ contrasts(puptreat_tib$dose) <- contr.helmert(3)
 
 </div>
 
+
+#### `r robot()` Code example
+
+Set the orthogonal contrasts in Table 2 for `dose` using the `contrasts()` function using (go back over `discovr_11` if this code doesn't make sense to you):
+
+```{r, eval = F}
+puppy_vs_none <- c(-2/3, 1/3, 1/3)
+long_vs_short <- c(0, -1/2, 1/2)
+contrasts(puptreat_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+```
+
 #### `r alien()` Alien coding challenge
 
-Use the code from the earlier example to set the contrasts in Table 2 for `dose`.
+Use the code from the example to set the contrasts in Table 2 for `dose`.
 
-```{r set_contrast2, exercise = TRUE, exercise.lines = 5}
+```{r set_contrast, exercise = TRUE, exercise.lines = 5}
      
                
 ```
 
-```{r set_contrast2-hint-1}
+```{r set_contrast-hint-1}
 # Set the weights for the first contrast using the example code:
 puppy_vs_none <- c(-2/3, 1/3, 1/3)
 # Now set the weights for the second contrast
 ```
 
-```{r set_contrast2-hint-2}
+```{r set_contrast-hint-2}
 # Set the weights for the second contrast:
-long_vs_short <- c(0, -1/2, 1/2)
+long_vs_short  <- c(0, -1/2, 1/2)
 # Next, set the two contrasts to the dose variable
 ```
 
-```{r set_contrast2-hint-3}
+```{r set_contrast-hint-3}
 # Set the two contrasts to the dose variable:
-contrasts(pupluv_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+contrasts(puptreat_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
 # Finally, view the weights to check they are set correctly
 ```
 
-```{r set_contrast2-solution}
+```{r set_contrast-solution}
 puppy_vs_none <- c(-2/3, 1/3, 1/3)
 long_vs_short <- c(0, -1/2, 1/2)
 contrasts(puptreat_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
 contrasts(puptreat_tib$dose) # This line prints the contrast weights so we can check them
 ```
+
+
+<div class="tip">
+  `r cat_space()` **Tip**
+  
+  Remember that `r rproj()` will create dummy variables for `dose` based on the contrasts you set, so you don't need to create the variables `contrast 1` and `contrast 2` in the equation; you need only enter `dose` as a predictor. Similarly, to get the interaction terms you need only specify `dose:puppy_love`.
+</div>
+
 
 ```{r, echo = F}
 puppy_vs_none <- c(-2/3, 1/3, 1/3)
@@ -1048,7 +728,38 @@ Evaluate the model assumptions in the usual way using `check_model()`.
 check_model(puptreat_lm)
 ```
 
-The conclusions are the same as the earlier example so check back to remind yourself.
+
+
+
+```{r interact_lm_check_qz, echo = FALSE}
+quiz(caption = "Diagnostic plot quiz (level 2)",
+  question("How would you interpret the *Residual vs. fitted* and *Scale-location* plots?",
+    answer("Were in trouble: I see heteroscedasticity and nonlinearity.", correct = TRUE, message = "The green line is decidedly not flat and the cloud of dots seems to fan out on both plots. We can't assume homoscedasticity and even linearity is questionable."),
+    answer("I'm not sure, give me a hint.", message = "Heteroscedasticity and nonlinearity is shown up by a green line that isn't flat. A vertical spread of dots that changes as you move along the *x*-axis also indicates heteroscedasticity."),
+    answer("Everything is fine - residuals show homogeneity and linerarity.", message = "Look again at the green line and spread of dots."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  ),
+  question("Based on the Q-Q plot, can we assume normality of the residuals?",
+    answer("Yes", message = "When we can assume normality, the dots on the Q-Q plot hug the line. There's not much hugging going on at the extremes."),
+    answer("No", correct = TRUE, message = "The dots on the Q-Q plot deviate from the line at the extremes, which probably indicates a non-normal distribution."),
+    answer("Give me a clue", message = "If residuals are normally distributed then the dots on the Q-Q plot should hug the line."),
+    correct = "Correct - Well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  ),
+  question("Based on the influence plot, are there any influential cases?",
+    answer("Yes", message = "Influential cases should fall outside of the contour lines, can you see any that do?"),
+    answer("No", correct = TRUE),
+    answer("Maybe", message = "Sorry, you're not allowed to sit on the fence!"),
+    correct = "Correct - all the dots fall within the contour lines, which tells us that all cases are within the desired bounds and not influential. Well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  )
+)
+```
+
 
 ## `r bmu()` Step 5: Interpret the model [(A)]{.lbl}
 
@@ -1141,8 +852,8 @@ quiz(caption = "Interpreting the covariate (level 2)",
 ```
 
 
-Moving onto the dummy variables, the first one ([dose (puppy_vs_none)]{.opt}) compares the control group with the 15- and 30-minute groups combined. Using the contrast codes that we have used, the *b*-value is the difference between the adjusted mean of the control group and the average of the adjusted means for the 15- and 30-minute groups. The effect is significant, `r report_pe(puptreat_par, row = 3)`, indicating that the control group was significantly different from the combined adjusted mean of the puppy therapy groups. The *b*-value for the second dummy variable ([dose (long_vs_short)]{.opt}) is the difference between the adjusted means of the 15- and 30-minute groups. This effect is not significant, 
-`r report_pe(puptreat_par, row = 4)`, indicating that the 30-minute group did not produce significantly different happiness than the 15-minute group after adjusting for love of puppies.
+Moving onto the dummy variables, the first one ([dose (puppy_vs_none)]{.opt}) compares the control group with the 15- and 30-minute groups combined. Using the contrast codes that we have used, the *b*-value is the difference between the adjusted mean of the control group and the average of the adjusted means for the 15- and 30-minute groups. The effect is significant, `r report_pe(puptreat_par, row = 3)`, indicating that the control group was significantly different from the combined adjusted mean of the puppy therapy groups. The *b*-value for the second dummy variable ([dose (long_vs_short)]{.opt}) is the difference between the adjusted means of the 15- and 30-minute groups. This effect is significant, 
+`r report_pe(puptreat_par, row = 4)`, indicating that the 30-minute group produced significantly different happiness to the 15-minute group at average levels of pre-treatment happiness.
 
 <div class="tip">
   `r cat_space()` **Tip: Raw effect sizes**
@@ -1155,12 +866,11 @@ The *b*s in this output are raw effect sizes. I can't stress enough how useful i
 
 ## `r user_visor()` *Post hoc* tests [(B)]{.lbl}
 
-We can obtain *post hoc* tests in the same way that we did in `discovr_11` when we fitted the same model but without the covariate. Basically, we use the `estimate_contrasts()` function.
+If, and only if, we hadn't had specific comparisons to test with contrasts we would instead obtain *post hoc* tests. We do this using the `estimate_contrasts()` function as we did in `discovr_11`.
 
 #### `r alien()` Alien coding challenge
 
 View *post hoc* for the model [puptreat_lm]{.alt} using a Holm adjustment.
-
 
 ```{r pupluv_ph, exercise = TRUE, exercise.lines = 6, exercise.setup = "puptreat_lm"}
 

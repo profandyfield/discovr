@@ -1,0 +1,40 @@
+---
+title: "data"
+author: "Andy Field"
+output: learnr::tutorial
+---
+
+
+### Data
+
+To work *outside of this tutorial* you need to download the following data file:
+
+- [speed_date.csv](https://www.discovr.rocks/csv/speed_date.csv)
+- [profile_pic.csv](https://www.discovr.rocks/csv/profile_pic.csv)
+
+Set up an `r rstudio()` project in the way that [I recommend in this video](https://youtu.be/mqT7c17tofE?si=R0aSApz66fGQKESl), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r quarto()` document:
+
+```{r, eval=FALSE}
+date_tib <- here::here("data/speed_date.csv") |>
+  read_csv() |>
+  mutate(
+    strategy = as_factor(strategy) |> fct_relevel("Normal", "Hard to get"),
+    looks = as_factor(looks) |> fct_relevel("Low", "Average", "High"),
+    charisma = as_factor(charisma) |> fct_relevel("Low", "Average", "High"),
+  )
+```
+
+This code reads in the data and converts the variables **strategy**, **looks** and **charisma** to be factors (categorical variable). It also uses `fct_relevel()` to set the order of the levels of each factor.
+
+For the profile picture data use the code below. The variables **rel_status** and **profile_pic** are converted to factors and the reference category for each is set using `fct_relevel()`:
+
+```{r, eval=FALSE}
+profile_tib <- here::here("data/profile_pic.csv") |>
+  read_csv() |>
+  mutate(
+    rel_status = as_factor(rel_status) |> fct_relevel("Single"),
+    profile_pic = as_factor(profile_pic) |> fct_relevel("Alone")
+  )
+```
+
+

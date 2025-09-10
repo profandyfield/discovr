@@ -35,7 +35,8 @@ support tutors and students using my textbook who want to learn
 > and yet-to-be updated tutorials. For this reason, I recommend
 > installing the CRAN release and not the development version on GitHub.
 >
-> Updated tutorials: `discovr_01` to `discover_13_afex`
+> Updated tutorials: `discovr_01` to `discover_13_afex`, `discover_15`
+> and `discovr_16`.
 
 ## Installing `discovr`
 
@@ -168,14 +169,12 @@ starting the interactive tutorials.
 - `discovr_15_growth`: Modelling change over time. Growth models using
   multilevel modelling.
 - `discovr_16`: Mixed designs. Fitting models for mixed designs using
-  the `afex` package. This tutorial builds on previous ones to show how
+  the afex package. This tutorial builds on previous ones to show how
   models can be fit with one or two categorical predictors when at least
   one of these variables has been manipulated within the same entities
   and at least one other has been manipulated using different entities.
   We look at fitting the models, setting contrasts for the categorical
-  predictors, obtaining estimated marginal means, interaction plots,
-  simple effects analysis, diagnostic plots, robust models and Bayes
-  factors.
+  predictors, obtaining estimated marginal means, and interaction plots.
 - `discovr_17`: Exploratory Factor Analysis (EFA). Applying factor
   analysis using the `psych` package. This tutorial uses a fictitious
   questionnaire (the <img src="./data-raw/images/r_logo.png" width="18">

@@ -241,7 +241,7 @@ data_tabulate(x = my_tibble,
               proportions = NULL)
 ```
 
-In its simplest form, you put your data in (or pipe it in) and then replace ["row_variable"]{.alt} with the name of the variable you want to spread across the rows of the table, and ["column_variable"]{.alt} with the name of the variable you want to spread across the columns of the table. If you have a dataset with no missing values you’d include `remove_na = TRUE` so that counts of missing values are not included in the table..
+In its simplest form, you put your data in (or pipe it in) and then replace ["row_variable"]{.alt} with the name of the variable you want to spread across the rows of the table, and ["column_variable"]{.alt} with the name of the variable you want to spread across the columns of the table. If you have a dataset with no missing values you'd include `remove_na = TRUE` so that counts of missing values are not included in the table..
 
 #### `r robot()` Code example
 

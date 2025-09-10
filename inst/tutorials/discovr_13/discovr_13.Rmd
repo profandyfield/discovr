@@ -512,7 +512,7 @@ quiz(caption = "Diagnostic plot quiz (level 2)",
     allow_retry = T
   ),
   question("Based on the influence plot, are there any influential cases?",
-    answer("Where have the countour lines gone?", message = "The contour lines that usually show Cook’s distance are absent because they fall outside of the plotted area."),
+    answer("Where have the countour lines gone?", message = "The contour lines that usually show Cook's distance are absent because they fall outside of the plotted area."),
     answer("No", correct = TRUE),
     answer("Maybe", message = "Sorry, you're not allowed to sit on the fence!"),
     correct = "Correct - The contour lines that usually show Cook's distance are absent because they fall outside of the plotted area. This tells us that all cases are within the desired bounds. Well done!",
@@ -577,7 +577,7 @@ A particularly effective way to break down interactions is [simple effects analy
 
 An alternative is to quantify the effect of `alcohol` (the pattern of means across the placebo, low dose and high dose) separately for unattractive and attractive faces.
 
-We can do this analysis using the `estimate_contrasts()` function from [modelbased]{.pkg}, which we've used before. However, we need to add some arguments that we haven’t used before. In general, for simple effects the function takes the form:
+We can do this analysis using the `estimate_contrasts()` function from [modelbased]{.pkg}, which we've used before. However, we need to add some arguments that we haven't used before. In general, for simple effects the function takes the form:
 
 ```{r, eval = F}
 estimate_contrasts(model = my_model,

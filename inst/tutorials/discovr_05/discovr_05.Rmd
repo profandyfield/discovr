@@ -75,7 +75,7 @@ There are things that we might think of as creating layers on a plot:
     - `geom_smooth()` plots summary lines (e.g., linear models and splines)
 -	Objects or [stats]{.kt}: we can use geoms to display summaries of the data that we have already calculated, but sometimes we'd like [ggplot2}{.pkg} to compute these summaries from the raw data and map them to a geom for us. We do this using 'stat' functions.
 
-There are other ‘things’ that we might think of as adjusting the appearance of a layer
+There are other 'things' that we might think of as adjusting the appearance of a layer
 
 -	Aesthetics: aesthetics control what the things on a layer look like (in other words, their the visual aesthetics). Examples of aesthetics are the fill colour of points and bars, line colours (of linear models, error bars, lines around bars etc.), the shape of data points, the size of data points, the type of line (full, dashed, dotted etc.). Aesthetics can be set directly for an object (e.g., making all data points red) or using a variable (e.g., colouring data points based on whether it came from an experimental or control group).
 -	Scales and coordinate systems: [ggplot2}{.pkg} uses scales and coordinate systems to control the details of how the data are mapped to their visual objects. 
@@ -324,7 +324,7 @@ wish_plot +
 
 ## `r bmu()` Plotting means  [(A)]{.lbl}
 
-The mean in the sample is an estimate of the population value, which may or may not be representative of the true value. Put another way, estimates have uncertainty attached to them. It’s a really good idea to include an indicator of this uncertainty on your plot. For means, this is typically done by including an error bar showing the 95% confidence interval. 
+The mean in the sample is an estimate of the population value, which may or may not be representative of the true value. Put another way, estimates have uncertainty attached to them. It's a really good idea to include an indicator of this uncertainty on your plot. For means, this is typically done by including an error bar showing the 95% confidence interval. 
 
 If you want to plot from the raw data then your best bet is to use the `stat_summary()` function and then specify the geom to use within it. Let's begin by plotting the mean **success** split by **time**. We can do this by setting up the plot exactly as we did for the boxplot, but instead of using `geom_boxplot()` we use:
 

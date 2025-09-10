@@ -865,7 +865,7 @@ question("The 95% confidence interval for the upload days ranges from 39.57 to 3
 
 ## `r bmu()` Nicer tables with insight [(A)]{.lbl}
 
-If you've tried out any of the code above in a `r quarto()` document and rendered it you’ll see that the output is plain text. It doesn't look great. A straightforward way to turn this output into beautifully rendered tables, is to put it into the `display()` function from [insight]{.pkg}, which is part of [easystats]{.pkg}. It takes this general form
+If you've tried out any of the code above in a `r quarto()` document and rendered it you'll see that the output is plain text. It doesn't look great. A straightforward way to turn this output into beautifully rendered tables, is to put it into the `display()` function from [insight]{.pkg}, which is part of [easystats]{.pkg}. It takes this general form
 
 ```{r, eval = F}
 display(x = my_output,

@@ -855,7 +855,7 @@ The main output is reproduced below. It shows us the three effects. Let's look a
 
 ```{r, echo = F}
 display(scent_aov,
-        column_names = c("Paramneter", "SS", "SS~R~", "df", "df~e~", "MS", "*F*", "*p*", "$\\omega^2_p$"))
+        column_names = c("Parameter", "SS", "SS~R~", "df", "df~e~", "MS", "*F*", "*p*", "$\\omega^2_p$"))
 ```
 
 ### `r user_visor()` The main effect of `entity` [(B)]{.lbl}
@@ -898,7 +898,7 @@ The main output from the model is reproduced below (to save you scrolling).
 
 ```{r, echo = F}
 display(scent_aov,
-        column_names = c("Paramneter", "SS", "SS~R~", "df", "df~e~", "MS", "*F*", "*p*", "$\\omega^2_p$"))
+        column_names = c("Parameter", "SS", "SS~R~", "df", "df~e~", "MS", "*F*", "*p*", "$\\omega^2_p$"))
 ```
 
 
@@ -940,7 +940,7 @@ The effect we really care about is the interaction term. The main output from th
 
 ```{r, echo = F}
 display(scent_aov,
-        column_names = c("Paramneter", "SS", "SS~R~", "df", "df~e~", "MS", "*F*", "*p*", "$\\omega^2_p$"))
+        column_names = c("Parameter", "SS", "SS~R~", "df", "df~e~", "MS", "*F*", "*p*", "$\\omega^2_p$"))
 ```
 
 ```{r quiz_int_ex2, echo = F}

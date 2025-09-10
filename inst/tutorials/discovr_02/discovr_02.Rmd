@@ -305,9 +305,9 @@ install.packages('here')
 
 </div>
 
-The here package essentially has one function that you’ll use sporadically in a given project so this is an example of a function where it makes sense to use `here::here()` rather than loading the entire package.
+The here package essentially has one function that you'll use sporadically in a given project so this is an example of a function where it makes sense to use `here::here()` rather than loading the entire package.
 
-Let’s assume that the location of your project on your computer is `C:/Users/andyfield/Documents/discovr_stats/`, executing the function will return that location:
+Let's assume that the location of your project on your computer is `C:/Users/andyfield/Documents/discovr_stats/`, executing the function will return that location:
 
 ```{r, eval = F}
 here::here()

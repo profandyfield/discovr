@@ -374,10 +374,7 @@ report_em <- function(em_obj, row = 1, digits = 2, p_digits = 3){
 
 # Easystats helpers
 
-
-
-
-
+# format p-values
 report_p <- function(p, p_digits = 3){
   p_dp <- paste0("%.", p_digits, "f")
 
@@ -385,6 +382,8 @@ report_p <- function(p, p_digits = 3){
          "*p* < 0.001",
          paste("*p* =", sprintf(fmt = p_dp, p)))
 }
+
+# format numeric values
 
 report_value <- function(x, digits = 2, scientific = FALSE){
   if(scientific){
@@ -396,6 +395,7 @@ report_value <- function(x, digits = 2, scientific = FALSE){
   sprintf(fmt = dp, x)
 }
 
+# extract a value from an ez object
 
 value_from_ez <- function(ezobj, row = 1, value = "Coefficient", digits = 2, p_digits = 3, scientific = FALSE, as_is = FALSE, exponentiate = FALSE){
   val <- ezobj |>
@@ -418,6 +418,7 @@ value_from_ez <- function(ezobj, row = 1, value = "Coefficient", digits = 2, p_d
   }
 }
 
+# report likelihood ratio and wald tests
 
 report_lrt <- function(lrt, row = 2, digits = 2, p_digits = 3, df_digits = 0){
   dfm <- value_from_ez(lrt, row = row, value = "df_diff", digits = df_digits)
@@ -428,6 +429,7 @@ report_lrt <- function(lrt, row = 2, digits = 2, p_digits = 3, df_digits = 0){
   paste0("*F*(", dfm, ", ", dfr, ") = ", f, ", ", p)
 }
 
+# repoort parameter estimates
 
 report_pe <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0, z = F, symbol = "$\\hat{b}$"){
   b <- value_from_ez(ezobj, row = row, value = "Coefficient", digits = digits)
@@ -449,6 +451,8 @@ report_pe <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0, z
   paste0(symbol, " = ", b, " ", ci, stat_text, ", ", p)
 }
 
+# report simple slopes
+
 report_ss <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0, glm = F, symbol = "$\\hat{b}$"){
   b <- value_from_ez(ezobj, row = row, value = "Slope", digits = digits)
   p <- value_from_ez(ezobj, row = row, value = "p", p_digits = p_digits)
@@ -469,6 +473,18 @@ report_ss <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0, g
   paste0(symbol, " = ", b, " ", ci, stat_text, ", ", p)
 }
 
+# report contrasts
+
+report_con <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0){
+  df1 <- value_from_ez(ezobj, row = row, value = "df1", digits = df_digits, as_is = T)
+  df2 <- value_from_ez(ezobj, row = row, value = "df2", digits = df_digits, as_is = T)
+  f <- value_from_ez(ezobj, row = row, value = "F", digits = digits)
+  p <- value_from_ez(ezobj, row = row, value = "p", p_digits = p_digits)
+
+  paste0("*F*(", df1, ", ", df2, ") = ", f, ", ", p)
+}
+
+# Report effect sizes
 
 report_es <- function(es_obj, col, row = 1, digits = 2){
   nrow <- nrow(es_obj)
@@ -492,3 +508,47 @@ report_es <- function(es_obj, col, row = 1, digits = 2){
   paste0(par, " = ", es_row$es[row], " [", es_row$CI_low[row], ", ", es_row$CI_high[row], "]")
 }
 
+## report ANOVA models
+
+report_ez_aov <- function(ez_aov, row = 1, digits = 2, p_digits = 3, df_digits = 0, es_type = "Omega2"){
+  f <- value_from_ez(ez_aov, row = row, value = "F", digits = digits)
+  p <- value_from_ez(ez_aov, row = row, value = "p", p_digits = p_digits)
+  dfm <- value_from_ez(ez_aov, row = row, value = "df", digits = df_digits)
+  dfr <- value_from_ez(ez_aov, row = length(ez_aov$df), value = "df", digits = df_digits)
+  es <- value_from_ez(ez_aov, row = row, value = es_type, digits = digits)
+
+  if(length(ez_aov$Parameter) > 2){
+    es_ext <- "_p"
+  } else {
+    es_ext <- ""
+  }
+
+
+  if(grepl("omega", es_type, ignore.case = TRUE)){
+    symboltxt = "omega"
+  } else {
+    symboltxt = "eta"
+  }
+
+  ci_low_label <- paste0(sub("_partial", "", x = es_type), "_CI_low")
+  if(exists(ci_low_label, where = ez_aov)){
+    es_ci <- paste0("(", value_from_ez(ez_aov, row = row, value = paste0(sub("_partial", "", x = es_type), "_CI_low"), digits = digits), ", ", value_from_ez(ez_aov, row = row, value = paste0(sub("_partial", "", x = es_type), "_CI_high"), digits = digits), ")")
+    paste0("F(", dfm, ", ", dfr,  ") = ", f, ", ", p, ", ", paste0("$\\hat{\\", symboltxt, "}^2", es_ext, "$"), " = ", es, " ", es_ci)
+  } else {
+    paste0("F(", dfm, ", ", dfr,  ") = ", f, ", ", p, ", ", paste0("$\\hat{\\", symboltxt, "}^2", es_ext, "$"), " = ", es)
+  }
+}
+
+## report post hoc tests
+
+report_ph <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0, symbol = "$\\bar{X}_\\text{Diff}$"){
+  b <- value_from_ez(ezobj, row = row, value = "Difference", digits = digits)
+  p <- value_from_ez(ezobj, row = row, value = "p", p_digits = p_digits)
+  df <- value_from_ez(ezobj, row = row, value = "df", digits = df_digits)
+  ci <- paste0("(", value_from_ez(ezobj, row = row, value = "CI_low", digits = digits), ", ", value_from_ez(ezobj, row = row, value = "CI_high", digits = digits), ")")
+  test_stat <- value_from_ez(ezobj, row = row, value = "t", digits = digits)
+  stat_text <- paste0(", *t*(", df, ") = ", test_stat)
+
+
+  paste0(symbol, " = ", b, " ", ci, stat_text, ", ", p)
+}

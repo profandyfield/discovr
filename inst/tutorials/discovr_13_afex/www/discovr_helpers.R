@@ -508,9 +508,8 @@ report_ez_aov <- function(ez_aov, row = 1, digits = 2, p_digits = 3, df_digits =
   dfm <- value_from_ez(ez_aov, row = row, value = "df", digits = df_digits)
   dfr <- value_from_ez(ez_aov, row = length(ez_aov$df), value = "df", digits = df_digits)
   es <- value_from_ez(ez_aov, row = row, value = es_type, digits = digits)
-  es_ci <- paste0("(", value_from_ez(ez_aov, row = row, value = paste0(sub("_partial", "", x = es_type), "_CI_low"), digits = digits), ", ", value_from_ez(ez_aov, row = row, value = paste0(sub("_partial", "", x = es_type), "_CI_high"), digits = digits), ")")
 
-  if(length(ez_aov$Parameter) > 2){
+   if(length(ez_aov$Parameter) > 2){
     es_ext <- "_p"
   } else {
     es_ext <- ""
@@ -523,5 +522,25 @@ report_ez_aov <- function(ez_aov, row = 1, digits = 2, p_digits = 3, df_digits =
     symboltxt = "eta"
   }
 
-  paste0("F(", dfm, ", ", dfr,  ") = ", f, ", ", p, ", ", paste0("$\\hat{\\", symboltxt, "}^2", es_ext, "$"), " = ", es, " ", es_ci)
+  ci_low_label <- paste0(sub("_partial", "", x = es_type), "_CI_low")
+  if(exists(ci_low_label, where = ez_aov)){
+    es_ci <- paste0("(", value_from_ez(ez_aov, row = row, value = paste0(sub("_partial", "", x = es_type), "_CI_low"), digits = digits), ", ", value_from_ez(ez_aov, row = row, value = paste0(sub("_partial", "", x = es_type), "_CI_high"), digits = digits), ")")
+    paste0("F(", dfm, ", ", dfr,  ") = ", f, ", ", p, ", ", paste0("$\\hat{\\", symboltxt, "}^2", es_ext, "$"), " = ", es, " ", es_ci)
+  } else {
+    paste0("F(", dfm, ", ", dfr,  ") = ", f, ", ", p, ", ", paste0("$\\hat{\\", symboltxt, "}^2", es_ext, "$"), " = ", es)
+  }
+}
+
+## report post hoc tests
+
+report_ph <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0, symbol = "$\\bar{X}_\\text{Diff}$"){
+  b <- value_from_ez(ezobj, row = row, value = "Difference", digits = digits)
+  p <- value_from_ez(ezobj, row = row, value = "p", p_digits = p_digits)
+  df <- value_from_ez(ezobj, row = row, value = "df", digits = df_digits)
+  ci <- paste0("(", value_from_ez(ezobj, row = row, value = "CI_low", digits = digits), ", ", value_from_ez(ezobj, row = row, value = "CI_high", digits = digits), ")")
+  test_stat <- value_from_ez(ezobj, row = row, value = "t", digits = digits)
+  stat_text <- paste0(", *t*(", df, ") = ", test_stat)
+
+
+  paste0(symbol, " = ", b, " ", ci, stat_text, ", ", p)
 }

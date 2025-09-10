@@ -427,7 +427,7 @@ goggles_afx <- afex::aov_4(attractiveness ~ facetype*alcohol + (1|id), data = go
 
 #### `r alien()` Alien coding challenge
 
-We can evaluate the model ([goggles_lm]{.alt}) in the usual way using `check_model()`. try this in the code box.
+We can evaluate the model ([goggles_lm]{.alt}) in the usual way using `check_model()`. Try this in the code box.
 
 ```{r goggles_zpred_resid, exercise = TRUE, exercise.lines = 3, exercise.setup = "goggles_afx_setup", fig.height = 10}
 

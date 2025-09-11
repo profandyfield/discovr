@@ -25,6 +25,7 @@
 * `discovr_04` (which didn't previously exist) covers summarizing data and confidence intervals (formerly in `discovr_03`). It basically combines material from the old `discovr_02` and `discovr_03` but in more condensed form. Uses `display()` instead of `kable()`.
 * `discovr_12` has changed fairly substantially. I removed a lot of the optional material on showing the difference between Type I and Type III sums of squares because my students find it confusing! Also, approach the topic very differently by talking in terms of when we do/do not expect an interaction between categorical and continuous predictors. As such, things like testing homogeneity of regressions slops is done *before* the model is fitted not as the final step.
 * `discovr_13` has been split across two tutorials, one sticks with the model fitting approach of other tutorials (`discovr_13`), whereas the other focusses on an ANOVA style approach using the `afex` package (`discovr_13_afex`)
+* `discovr_14` uses the `glmmTMB` package rather than `lme4` (although all code will work with `lme4`)
 * `discovr_18` (Exploratory factor analysis) is now `discovr_17`
 * `discovr_19` (Categorical variables) is now `discovr_18`
 * `discovr_20` (Categorical outcome/logistic regression) is now `discovr_19`

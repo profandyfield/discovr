@@ -35,8 +35,8 @@ support tutors and students using my textbook who want to learn
 > and yet-to-be updated tutorials. For this reason, I recommend
 > installing the CRAN release and not the development version on GitHub.
 >
-> Updated tutorials: `discovr_01` to `discover_13_afex`, `discover_15`
-> and `discovr_16`.
+> Updated tutorials: `discovr_01` to `discover_14`, `discover_15` and
+> `discovr_16`.
 
 ## Installing `discovr`
 
@@ -147,10 +147,11 @@ starting the interactive tutorials.
   at fitting the models, interaction plots, simple effects analysis,
   diagnostic plots, partial omega-squared and robust models.
 - `discovr_14`: Multilevel models. This tutorial looks at fitting
-  multilevel models using the `lme4` package. It begins with an optional
-  section on checking and coding categorical variables before moving on
-  to show you how to fit and interpret a multilevel model. We also
-  briefly look at the `purrr` package.
+  multilevel models using the `glmmTMB` package (all code will also work
+  with `lme4`). It begins with an optional section on checking and
+  coding categorical variables before moving on to show you how to fit
+  and interpret a multilevel model. We also look briefly at the `purrr`
+  package.
 - `discovr_15`: Repeated measures designs. Fitting models for one- and
   two-way repeated measures designs using the `afex` package. This
   tutorial builds on previous ones to show how models can be fit with

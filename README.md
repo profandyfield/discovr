@@ -13,7 +13,7 @@ status](https://www.r-pkg.org/badges/version/discovr)](https://CRAN.R-project.or
 
 <div style="float: right">
 
-<img src="./data-raw/images/discovr_hex_sage.png" width="150">
+<img src="./data-raw/images/discovr_hex.png" width="150">
 
 </div>
 

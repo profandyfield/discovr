@@ -66,7 +66,7 @@ cosmetic_evil_tib <- cosmetic_tib |>
 
 ```
 
-## Packages
+## Packages {data-progressive=FALSE}
 
 ```{r, child = "./docs/packages.Rmd"}
 
@@ -949,7 +949,7 @@ cosmetic_mlm <- update(qol_mlm, .~.  + months:reason)
 
 #### `r alien()` Alien coding challenge
 
-Use the code box below to create [intcpt_mlm]{.alt}.
+Use the code box below to create all of the models just described.
 
 ```{r build_mods_ex, exercise = TRUE, exercise.lines = 8}
           

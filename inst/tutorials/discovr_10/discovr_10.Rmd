@@ -310,7 +310,7 @@ agg_par <- model_parameters(aggress_lm)
 ```
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
 
 The model explains `r report_value(100*value_from_ez(agg_perf, value = "R2", as_is = TRUE), digits = 0)`% of the variance in aggression and is a significant fit of the data, `r report_lrt(agg_wald)`.
 </div>

@@ -359,7 +359,7 @@ The output compares the model (labelled [Full model]{.opt}) to the model with on
 
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
 
 The degrees of freedom for the *F* are `r value_from_ez(album_lm_lrt, row = 2, value = "df_diff")` (as shown in the column [df_diff]{.opt}) and `r value_from_ez(album_lm_lrt, row = 2, value = "df")` (as shown in the column [df]{.opt}). Therefore, we can report:
 
@@ -751,7 +751,7 @@ test_wald(album_lm, album_full_lm) |>
 The value of *F* is `r value_from_ez(album_wald, row = 2, value = "F")` and the corresponding *p*-value is [`r value_from_ez(album_wald, row = 2, value = "p")`]{.alt}. The degrees of freedom for this *F* are the difference in the degrees of freedom between the two models (in this case `r value_from_ez(album_wald, row = 2, value = "df_diff", digits = 0)` as shown in the column [df_diff]{.opt}) and the degrees of freedom for the newer model (in this case `r value_from_ez(album_wald, row = 2, value = "df", digits = 0)` as shown in the variable [df]{.opt}).
 
 <div class="reportbox">
-  `r pencil()` **Report it!**
+  `r pencil()` **Report**`r rproj()`
 
 
 Therefore, we can say that adding the predictors of image and airplay significantly improved the fit of the model to the data compared to having only advertising as a predictor, `r report_lrt(album_wald, row = 2)`. In other words, adding airplay and image as predictors significantly improved the model fit.

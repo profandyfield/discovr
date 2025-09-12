@@ -965,7 +965,14 @@ qol_mlm <- update(reason_mlm, .~.  + base_qol)
 cosmetic_mlm <- update(qol_mlm, .~.  + months:reason)
 ```
 
+
+<div class="bug">
+  `r bug()` **De-bug**
+
 This code creates the models but doesn't display them so it will appear as though nothing has happened, but it has.
+
+</div>
+
 
 We can use the `test_lrt()` function from [performance]{.pkg} to compare these models. This function works like the `test_wald()` function that we have used throughout the tutorials except it uses a likelihood ratio test rather than an *F*-statistic.
 

@@ -160,6 +160,14 @@ starting the interactive tutorials.
   setting contrasts for the categorical predictors, obtaining estimated
   marginal means, interaction plots, simple effects analysis, diagnostic
   plots and robust models.
+- `discovr_15_growth`: Modelling change over time. Growth models using
+  multilevel modelling and the `glmmTMB` package. (All code will also
+  work with `lme4`.) First we explore growth over time by building up a
+  model to include a random intercept and slope for time. We then model
+  non-linear change using both an exponential effect of time and a
+  polynomials. We then extend the model to an example based on a
+  clinical trial in which a fixed effect of an intervention moderates
+  change over time.
 - `discovr_15_mlm`: Repeated measures designs as multilevel models.
   Fitting models for one- and two-way repeated measures designs using a
   multilevel model framework. This tutorial builds on previous ones to
@@ -167,10 +175,8 @@ starting the interactive tutorials.
   these variables have been manipulated within the same entities. We
   look at fitting the models, setting contrasts for the categorical
   predictors and diagnostic plots.
-- `discovr_15_growth`: Modelling change over time. Growth models using
-  multilevel modelling.
 - `discovr_16`: Mixed designs. Fitting models for mixed designs using
-  the afex package. This tutorial builds on previous ones to show how
+  the `afex` package. This tutorial builds on previous ones to show how
   models can be fit with one or two categorical predictors when at least
   one of these variables has been manipulated within the same entities
   and at least one other has been manipulated using different entities.

@@ -1,0 +1,31 @@
+---
+title: "data"
+author: "Andy Field"
+output: learnr::tutorial
+---
+
+To work *outside of this tutorial* you need to download the following data file:
+
+* [dog_training.csv](https://www.discovr.rocks/csv/dog_training.csv)
+* [exercise.csv](https://www.discovr.rocks/csv/exercise.csv)
+
+Set up an `r rstudio()` project in the way that [I recommend in this video](https://youtu.be/mqT7c17tofE?si=R0aSApz66fGQKESl), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r quarto()` document:
+
+```{r, eval=FALSE}
+train_tib <- here::here("data/dog_training.csv") |> 
+  read_csv() |> 
+```
+
+For the exercise data, import using this code:
+
+```{r, eval=FALSE}
+exercise_tib <-  here::here("data/exercise.csv") |> 
+  read_csv() |>
+  dplyr::mutate(
+    id = as_factor(id),
+    intervention = as_factor(intervention) |>  fct_relevel("Wait list"),
+    time = as_factor(time) |> fct_relevel("Baseline", "1 month", "6 months", "12 months")
+  )
+```
+
+This code reads in the data and converts the variables `intervention` and `time` to factors (categorical variable). It uses `fct_relevel` to set the order of the levels of the factor `intervention` to be wait list and intervention. Similarly, the order of the levels of the factor `time` are set as baseline, 1 month, 6 months, 12 months.

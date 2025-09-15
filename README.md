@@ -36,7 +36,8 @@ support tutors and students using my textbook who want to learn
 > installing the CRAN release and not the development version on GitHub.
 >
 > Updated tutorials: `discovr_01` to `discover_14`, `discover_15`,
-> `discover_15_growth` and `discovr_16`.
+> `discover_15_growth`, `discovr_16`, `discovr_19` and
+> `discovr_16_xmas`.
 
 ## Installing `discovr`
 
@@ -202,6 +203,8 @@ starting the interactive tutorials.
   model extends to situations where you want to predict a binary outcome
   (logistic regression). We look at fitting the models and interpreting
   the odds ratio.
+- `discovr_19_xmas`: Christmas edition of `discovr_19` to match the
+  lecture I give <https://youtu.be/yniFrp8vQLQ?si=DaUVAmAL6sZQ2tkT>.
 - `discovr_bayes`: Bayesian taster tutorial. This tutorial offers a
   taster of Bayesian statistics by showing how to conduct various
   analyses from other tutorials within a Bayesian framework (mainly

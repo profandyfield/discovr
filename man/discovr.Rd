@@ -53,6 +53,7 @@ Replacing \code{name_of_tutorial} with the name in bold below. For example, to l
 \item \strong{discovr_17}: Exploratory Factor Analysis (EFA). Applying factor analysis using the \code{psych} package.
 \item \strong{discovr_18}: Categorical variables. Entering categorical data, contingency tables, associations between categorical variables, the chi-square test, standardized residuals, Fisher's exact test.
 \item \strong{discovr_19}: Categorical outcomes (logistic regression). This tutorial builds on previous ones to show how the general linear model model extends to situations where you want to predict a binary outcome (logistic regression). We look at fitting the models and interpreting the odds ratio.
+\item \strong{discovr_19_xmas}:: Christmas edition of \code{discovr_19} to match the lecture I give \url{https://youtu.be/yniFrp8vQLQ?si=DaUVAmAL6sZQ2tkT}.
 \item \strong{discovr_bayes}: Bayesian taster tutorial. This tutorial offers a taster of Bayesian statistics by showing how to conduct various analyses from other tutorials within a Bayesian framework (mainly using default priors). We also look at Bayes factors".
 }
 

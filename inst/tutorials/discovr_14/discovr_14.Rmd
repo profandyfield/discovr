@@ -1033,7 +1033,17 @@ Adding months to the intercept only model significantly improved the fit, `r rep
 
 </div>
 
-## `r bmu()` Step 4: Evaluate the model [(A)]{.lbl}
+`r user_visor()` Step 4: Evaluate the model [(B)]{.lbl}
+
+<div class="stepbox">
+  `r step()` **Step 4**
+
+Evaluate the model using a small number of functions from the [performance]{.pkg} package from [easystats]{.pkg}. Specially, we evaluate
+
+- How well the model fits the data
+- Whether the underlying assumptions of the model are met. If not, we refit the model using robust methods (see Figure 3).
+ 
+</div>
 
 As with previous models we can get fit statistics for our final model by placing it within `model_performance()`.
 

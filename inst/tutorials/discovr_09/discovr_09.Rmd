@@ -82,7 +82,9 @@ cloak_messy_tib <- cloak_rm_tib |>
 
 ## `r bmu()` Comparing two means: process [(A)]{.lbl}
 
-I imagine a future in which we have some cloaks of invisibility to test out. Given my slightly mischievous streak, the future me is interested in the effect that wearing a cloak of invisibility has on the tendency for mischief. I take 24 participants and placed them in an enclosed community. The community is riddled with hidden cameras so that we can record mischievous acts. Half of the participants are given cloaks of invisibility; they are told not to tell anyone else about their cloak and that they can wear it whenever they liked. I measure how many mischievous acts they performed in a week. We predict more mischievous acts, on average, when a cloak is worn than when not.
+I imagine a future in which we have some cloaks of invisibility to test out. Given my slightly mischievous streak, the future me is interested in the effect that wearing a cloak of invisibility has on the tendency for mischief. I take 24 participants and placed them in an enclosed community. The community is riddled with hidden cameras so that we can record mischievous acts. Half of the participants are given cloaks of invisibility; they are told not to tell anyone else about their cloak and that they can wear it whenever they liked. I measure how many mischievous acts they performed in a week. We hypothesise:
+
+> H~1~: There will be more mischievous acts, on average, when a cloak is worn than when not.
 
 We can follow our general model fitting process to compare two means by predicting the outcome from the categorical variable that defines the two groups we wish to compare. We will look at this method in detail in `discovr_11`. This tutorial focusses on the historical approach of using a so-called *t*-test, although when the means being compared are independent the results are identical to fitting a model using `lm()`. Figure 4 shows this simplified process, although broadly speaking we can still follow our 5-step process.
 

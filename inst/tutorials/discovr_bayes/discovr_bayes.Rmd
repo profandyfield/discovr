@@ -46,6 +46,7 @@ source("./www/discovr_helpers.R")
 
 album_tib <- discovr::album_sales
 cloak_tib <- discovr::invisibility_cloak
+puppy_tib <- discovr::puppies
 #puptreat_tib <- discovr::puptreat_tib
 
 # get plot aesthetics
@@ -78,7 +79,7 @@ tol_rose <- tol_palette[1]
 
 ## `r user_astronaut()` General linear models [(C)]{.lbl}
 
-To start with, we'll look back at the example from Chapter 8 [@fielddsr22026] that looks at predicting physical, downloaded and streamed album sales (outcome variable) from various predictor variables (we encountered this exam ple in `discovr_08`). The data file has 200 rows, each one representing a different album. There are also several columns, one of which contains the sales (in thousands) of each album in the week after release (`sales`) and one containing the amount (in thousands of pounds/dollars/euro/whatever currency you use) spent promoting the album before release (`adverts`). The other columns represent how many times songs from the album were played on a prominent national radio station in the week before release (`airplay`), and the 'look' of the band out of 10 (`image`). The data are in a tibble called [album_tib]{.alt}.
+To start with, we'll look back at the example from Chapter 8 [@fielddsr22026] that looks at predicting physical, downloaded and streamed album sales (outcome variable) from various predictor variables (we encountered this example in `discovr_08`). The data file has 200 rows, each one representing a different album. There are also several columns, one of which contains the sales (in thousands) of each album in the week after release (`sales`) and one containing the amount (in thousands of pounds/dollars/euro/whatever currency you use) spent promoting the album before release (`adverts`). The other columns represent how many times songs from the album were played on a prominent national radio station in the week before release (`airplay`), and the 'look' of the band out of 10 (`image`). The data are in a tibble called [album_tib]{.alt}.
 
 #### `r alien()` Alien coding challenge
 
@@ -118,7 +119,7 @@ library(rstanarm)
 ```
 
 
-### `r bmu()` Uninformative (default) priors [(C)]{.lbl}
+### `r user_astronaut()` Uninformative (default) priors [(C)]{.lbl}
 
 
 The function we'll use from [rstanarm]{.pkg} is `stan_glm()` which is fairly similar to `lm()`. For a model that uses default priors it takes the general form:
@@ -193,7 +194,7 @@ model_parameters(model = album_dp, test = c("pd", "bf"), null = 0) |>
 ```
 
 
-The Bayesian parameter estimates based on default priors are in the column labelled [median]{.opt} (these values are the median of the posterior distribution), which are basically the same as the frequentist ones from `discovr_08`. This is because the default priors are very weak and uninformative so the estimates will be based mainly on the data (and for Frequentist models estimation is based entirely on the data). In fact, we can see the priors used in the final column. Each predictor had a prior centred at zero (no effect) with a standard deviation that varies according to the scale of measurement but is always large. For example, for image the distribution is so wide that almost any value of $b$ is plausible prior to fitting the model.
+The Bayesian parameter estimates based on default priors are in the column labelled [median]{.opt} (these values are the median of the posterior distribution), which are basically the same as the frequentest ones from `discovr_08`. This is because the default priors are very weak and uninformative so the estimates will be based mainly on the data (and for Frequentest models estimation is based entirely on the data). In fact, we can see the priors used in the final column. Each predictor had a prior centred at zero (no effect) with a standard deviation that varies according to the scale of measurement but is always large. For example, for image the distribution is so wide that almost any value of $b$ is plausible prior to fitting the model.
 
 <div class="infobox">
   `r info()` **Bayesian models are based on sampling**
@@ -223,19 +224,19 @@ bf_im <- value_from_ez(album_dp_par, row = 4, value = "log_BF", exponentiate = T
 ```
 
 
-Unlike our frequentist model, the 95% credible intervals (unlike confidence intervals) contain the true estimate with 0.95 probability. That is, with 0.95 probability, the true effect of advertising lies between a `r value_from_ez(album_dp_par, row = 2, value = "CI_low")` increase in sales for every pound spent, and a `r value_from_ez(album_dp_par, row = 2, value = "CI_high")` increase in sales for every pound spent (remember that both advertising and sales are measured in thousands of units). In other words, the true effect is weak.
+Unlike our frequentest model, the 95% credible intervals (unlike confidence intervals) contain the true estimate with 0.95 probability. That is, with 0.95 probability, the true effect of advertising lies between a `r value_from_ez(album_dp_par, row = 2, value = "CI_low")` increase in sales for every pound spent, and a `r value_from_ez(album_dp_par, row = 2, value = "CI_high")` increase in sales for every pound spent (remember that both advertising and sales are measured in thousands of units). In other words, the true effect is weak.
 
 The column labelled [BF]{.opt} contains the Bayes factors. For advertising the Bayes Factor is `r bf_ad`, which means that the data are `r bf_ad_num` times more likely under the alternative hypothesis (the $b$ for advertising is not zero) than under the null (the $b$ for advertising is zero). We should shift our belief about advertising being related to sales by a factor of `r bf_ad_num`! The Bayes factor for airplay is similarly huge (`r bf_air` or `r bf_air_num`). These values represent extreme evidence. The Bayes factor for image is a more modest `r bf_im` that is nevertheless strong evidence in favour of the alternative hypotheses.
 
-### `r bmu()` Informative (subjective) priors [(D)]{.lbl}
+### `r user_astronaut()` Informative (subjective) priors [(C)]{.lbl}
 
 This is great, but the real power of Bayesian models comes with setting informative priors. We have four parameters to think about: one for each of the three predictors and the intercept. [Technically we should set a prior for the error variance, but we'll use the default.] To set informative priors we would need to consider our expectations about the $b$s before we collected the data. To keep things as simple as we can we will consider only normally-distributed priors, but there are a wide range of other distributions you could use.
 
-- `Intercept`: the intercept represents mean album sales when nothing is spent on advertising, there is no airplay and the band's image is rated at zero. It's like asking 'how many sales would we expect for a really uncool-looking band, if we did nothing'. Probably the record company has historic data on this. Let's assume that they know that you can expect 20,000 sales on average, but that it varies for different artists. They also know from historic data that the standard deviation is large, around 7,000. A reasonable prior might be a normal distribution centred on 20 (remember sales are expressed as 1000s) with a standard deviation of 7. This prior (, top-left) represents a belief that the mean number of sales for uncool bands with no promotion cannot be less than 0 (end of the left tail) or more than about 40 (end of the right tail) and will most likely be around 20 thousand. These beliefs seem reasonable, it would be odd, for example to have a prior in which negative sales (an impossibility) were likely.
-- `advertising`: remember that this predictor was one about which there was prior information. Let's assume that based on past data the record company knew that historically, for every £1000 pounds they spend on advertising they can expect 1000 album sales. This equates to a b of 1. They also know that although spending money on advertising typically increases sales, they have been known to go down.  (top right) shows a prior distribution that reflects these prior beliefs: it is centred at 1 and ranges from about −0.5 to 2.5. Most of the distribution lies above zero, so we believe that advertising will most likely equate to more sales; however, because a small part of it lies below zero we are acknowledging the possibility that increased advertising might reduce sales.
-- `airplay` and `image`: the 'new' features of our study were to measure airplay and quantify the band's image. In focus groups people tended to acknowledge that they would buy music if they were exposed to it and liked it, but some said that sometimes hearing a song made them less likely to buy it because they had heard it for free. Similarly, many of the group acknowledged that a cool image influenced whether they bought music but there was a lot of disagreement about this. Therefore, we're expecting these bs to be above zero but we're not too sure how big they might be. In particular, the focus group showed a wider variety of views about the importance of image. We want to set a weak priors for both to let the data do the work, but a weaker prior for image than airplay. Figure 4 shows some possible priors for the $b$s for `airplay` (bottom-left) and `image` (bottom-right). For airplay our prior says that we believe that the most likely value is $b$ = 5, meaning that for every addition airplay 5000 additional units would be sold, and that we think it highly unlikely (but possible) that sales could be negative. We also think there's a slim possibility that $b$ could be as much as 10. Similarly for image our prior says  that we believe that the most likely value is $b$ = 8, meaning that for every increase on the image scale 8000 additional units would be sold. This distribution is wider (and, therefore weaker) than for airplay though because we think that a fall in sales more likely (more of the distribution falls below 0) and we are more uncertain about the value in general (the distribution ranges from about -8 to 25).
+- `Intercept`: the intercept represents mean album sales when nothing is spent on advertising, there is no airplay and the band's image is rated at zero. It's like asking 'how many sales would we expect for a really uncool-looking band, if we did nothing'. Probably the record company has historic data on this. Let's assume that they know that you can expect 20,000 sales on average, but that it varies for different artists. They also know from historic data that the standard deviation is large, around 7,000. A reasonable prior might be a normal distribution centred on 20 (remember sales are expressed as 1000s) with a standard deviation of 7. This prior (Figure 1, top-left) represents a belief that the mean number of sales for uncool bands with no promotion cannot be less than 0 (end of the left tail) or more than about 40 (end of the right tail) and will most likely be around 20 thousand. These beliefs seem reasonable, it would be odd, for example to have a prior in which negative sales (an impossibility) were likely.
+- `advertising`: remember that this predictor was one about which there was prior information. Let's assume that based on past data the record company knew that historically, for every £1000 pounds they spend on advertising they can expect 1000 album sales. This equates to a b of 1. They also know that although spending money on advertising typically increases sales, they have been known to go down. Figure 1 (top right) shows a prior distribution that reflects these prior beliefs: it is centred at 1 and ranges from about −0.5 to 2.5. Most of the distribution lies above zero, so we believe that advertising will most likely equate to more sales; however, because a small part of it lies below zero we are acknowledging the possibility that increased advertising might reduce sales.
+- `airplay` and `image`: the 'new' features of our study were to measure airplay and quantify the band's image. In focus groups people tended to acknowledge that they would buy music if they were exposed to it and liked it, but some said that sometimes hearing a song made them less likely to buy it because they had heard it for free. Similarly, many of the group acknowledged that a cool image influenced whether they bought music but there was a lot of disagreement about this. Therefore, we're expecting these bs to be above zero but we're not too sure how big they might be. In particular, the focus group showed a wider variety of views about the importance of image. We want to set a weak priors for both to let the data do the work, but a weaker prior for image than airplay. Figure 1 shows some possible priors for the $b$s for `airplay` (bottom-left) and `image` (bottom-right). For airplay our prior says that we believe that the most likely value is $b$ = 5, meaning that for every addition airplay 5000 additional units would be sold, and that we think it highly unlikely (but possible) that sales could be negative. We also think there's a slim possibility that $b$ could be as much as 10. Similarly for image our prior says  that we believe that the most likely value is $b$ = 8, meaning that for every increase on the image scale 8000 additional units would be sold. This distribution is wider (and, therefore weaker) than for airplay though because we think that a fall in sales more likely (more of the distribution falls below 0) and we are more uncertain about the value in general (the distribution ranges from about -8 to 25).
 
-```{r priorplots, echo = F, fig.cap = "Playing with priors", fig.width=8, fig.height=6}
+```{r priorplots, echo = F, fig.cap = "Figure 1: Playing with priors", fig.width=8, fig.height=6}
 # prior for advertising
 b1_gg <- ggplot(tibble(x = c(-1, 5)), aes(x=x)) +
   geom_function(fun = dnorm, args = list(mean = 1, sd = 0.5), colour = tol_blue, linewidth = line_width) +
@@ -292,7 +293,14 @@ my_rstn <- stan_glm(outcome ~ predictor_1 + predictor_2 + … + predictor_n,
 ```
 
 
-As with the previous model, we give it a name, define it using the standard formula notation and specify the data. The prior argument is for specifying the priors for any predictors. In [rstanarm]{.pkg} the priors must have the same distribution, which is why all our priors are normally distributed. To define the priors we use a function for the distribution we want, in this case `normal()`. There are other functions we could use, but we won't cover them. Within `normal()` we supply the means of each prior distribution as the location, and the standard deviations as the scale. Our priors for advertising, airplay and image respectively were 1, 5, and 8, with the corresponding standard deviations of 0.5, 2 and 5. Therefore, we'd specify these as
+As with the previous model, we give it a name, define it using the standard formula notation and specify the data. The prior argument is for specifying the priors for any predictors. In [rstanarm]{.pkg} the priors must have the same distribution, which is why all our priors are normally distributed. To define the priors we use a function for the distribution we want, in this case `normal()`. There are other functions we could use, but we won't cover them. Within `normal()` we supply the means of each prior distribution as the location, and the standard deviations as the scale. Our priors for advertising, airplay and image respectively were 1, 5, and 8, with the corresponding standard deviations of 0.5, 2 and 5. We can write this formally as:
+
+- $b_0 \sim N(\mu = 20, \sigma = 7)$
+- $b_\text{adverts} \sim N(\mu = 1, \sigma = 0.5)$
+- $b_\text{airplay} \sim N(\mu = 5, \sigma = 2)$
+- $b_\text{image} \sim N(\mu = 8, \sigma = 5)$
+
+We'd specify these as
 
 ```{r eval = F}
 prior = normal(location = c(1, 5, 8), scale = c(0.5, 2, 5))
@@ -350,13 +358,20 @@ Chapter 9 (`discovr_09`) of @fielddsr22026 shows that we can compare two means u
 
 > H~1~: There will be more mischievous acts, on average, when a cloak is worn than when not. 
 
+### `r user_astronaut()` Priors [(C)]{.lbl}
+
 We have two parameters to think about: the $b$ for the effect of cloak, which represents the difference in group means, and the intercept ($b_0$), which is the amount of mischief in the no cloak group.  What were our expectations before we collected the data?
 
-- `Intercept`: the intercept represents mean mischief in the no cloak group. Imagine that before the study we anticipate that most people don't get up to mischief. A reasonable prior might be a normal distribution centred on 2 with a standard deviation of 0.7. Figure 5 (left) shows this distribution. It represents a belief that the mean number of mischievous acts in the no cloak group cannot be less than about 0 (end of the left tail) or more than 4 (end of the right tail) and will most likely be around 2. Basically, we expect people to commit between 0 and 4 mischievous acts when they don't have a cloak. These beliefs seem reasonable given that it's impossible to have a negative number of actions and in general people are not rabidly mischievous.
-- `cloak`: what effect do we expect from giving people an invisibility cloak? By how much do we expect mischief to increase? First off, we probably don't expect it to decrease. Therefore, we'd want the bulk of the distribution to represent positive values; that is, we believe that b – the difference between means –  is most likely to be greater than 0. However, we'd probably entertain the possibility that we're wrong and that there's some chance that the effect is zero or negative. So, we want a distribution that includes zero, but that mostly contains positive values. On average what are we expecting the difference to be? Usually we'd have other research to inform this decision, but let's say we were expecting the cloak to lead to two additional acts of mischief. Figure 11.16 (right) shows a normal distribution centred at 2 with a standard deviation of 1.2. It seems to fit the bill: most of the distribution lies above zero, so we believe that an invisibility cloak will most likely have a positive effect; however, because some of it lies below zero we are also open to the possibility that the cloak might reduce mischief. This prior is quite weak: we are prepared to believe that mischievous acts might go down by as much as about 2 or go up by as much as about 6.
+- `Intercept`: the intercept represents mean mischief in the no cloak group. Imagine that before the study we anticipate that most people don't get up to mischief. A reasonable prior might be a normal distribution centred on 2 with a standard deviation of 0.7. Figure 2 (left) shows this distribution. It represents a belief that the mean number of mischievous acts in the no cloak group cannot be less than about 0 (end of the left tail) or more than 4 (end of the right tail) and will most likely be around 2. Basically, we expect people to commit between 0 and 4 mischievous acts when they don't have a cloak. These beliefs seem reasonable given that it's impossible to have a negative number of actions and in general people are not rabidly mischievous.
+- `cloak`: what effect do we expect from giving people an invisibility cloak? By how much do we expect mischief to increase? First off, we probably don't expect it to decrease. Therefore, we'd want the bulk of the distribution to represent positive values; that is, we believe that *b* – the difference between means –  is most likely to be greater than 0. However, we'd probably entertain the possibility that we're wrong and that there's some chance that the effect is zero or negative. So, we want a distribution that includes zero, but that mostly contains positive values. On average what are we expecting the difference to be? Usually we'd have other research to inform this decision, but let's say we were expecting the cloak to lead to two additional acts of mischief. Figure 2 (right) shows a normal distribution centred at 2 with a standard deviation of 1.2. It seems to fit the bill: most of the distribution lies above zero, so we believe that an invisibility cloak will most likely have a positive effect; however, because some of it lies below zero we are also open to the possibility that the cloak might reduce mischief. This prior is quite weak: we are prepared to believe that mischievous acts might go down by as much as about 2 or go up by as much as about 6.
+
+Formally, we can express these priors as:
+
+- $b_0 \sim N(\mu = 2, \sigma = 0.7)$
+- $b_\text{cloak} \sim N(\mu = 2, \sigma = 1.2)$
 
 
-```{r priorplots2, echo = F, fig.cap = "Playing with priors", fig.width=8, fig.height=3}
+```{r priorplots2, echo = F, fig.cap = "Figure 2: Playing with priors", fig.width=8, fig.height=3}
 # prior for intercept 
 b0_gg <- ggplot(tibble(x = c(-1, 5)), aes(x=x)) +
   geom_function(fun = dnorm, args = list(mean = 2, sd = 0.7), colour = "#88CCEE", linewidth = 1) +
@@ -431,6 +446,9 @@ cloak_tib |>
   describe_distribution() |> 
   display()
 ```
+
+
+### `r user_astronaut()` Fit the model [(C)]{.lbl}
 
 #### `r robot()` Code example
 
@@ -516,6 +534,273 @@ display(cloak_rstn_par)
 The Bayes factor is `r report_bf(cloak_rstn_par)`. This value means that the data are `r report_value(report_bf(cloak_rstn_par, as_is = T))` times as probable under the alternative hypothesis as under the null. In other words, we should shift our belief towards the alternative hypothesis by a factor of `r report_value(report_bf(cloak_rstn_par, as_is = T))`. Remembering that a Bayes factor of 1 means that the data are equally probable under the alternative hypothesis as under the null, the value here suggests that we should not change our prior beliefs by any meaningful amount. There is no evidence for the hypothesis that invisibility cloaks lead to mischief. Also, remember to check the column labelled Prior to make sure that the distributions match what you wanted to specify!
  	
 The Bayesian estimate, assuming that the alternative hypothesis is true, of the difference between means is `r value_from_ez(cloak_rstn_par, value = "Median", row = 2)` with a Bayesian 95% credible interval ranging from `r value_from_ez(cloak_rstn_par, value = "CI_low", row = 2)` to `r value_from_ez(cloak_rstn_par, value = "CI_high", row = 2)`. This difference reflects the cloak group relative to the no cloak group. That is, there are typically `r value_from_ez(cloak_rstn_par, value = "Median", row = 2)` more mischievous acts when an invisibility cloak is worn. The credible interval suggests that, assuming that the effect exists, the population value of this difference will be between `r value_from_ez(cloak_rstn_par, value = "CI_low", row = 2)` and `r value_from_ez(cloak_rstn_par, value = "CI_high", row = 2)` with 95% probability. This interval tells us nothing about the null hypothesis (because we assume the effect exists) but helps us to ascertain the likely population value if we're prepared to accept that the effect exists. We can say with 95% probability the number of mischievous acts in those with a cloak will be between `r value_from_ez(cloak_rstn_par, value = "CI_low", row = 2)` more acts (i.e. no effect) and `r value_from_ez(cloak_rstn_par, value = "CI_high", row = 2)` more acts than for those without cloaks.
+
+
+## `r user_astronaut()` Comparing several means [(C)]{.lbl}
+
+Chapter 11 (`discovr_11`) of @fielddsr22026 shows that we can compare several means using a linear model, so we can adapt the code from the previous sections to fit a Bayesian variant using `stan_glm()` from [rstanarm]{.pkg} and extract information about the posterior distribution using `model_parameters()`. In the example from the book we look at puppy therapy. Puppy therapy is a form of animal-assisted therapy, in which puppy contact is introduced into the therapeutic process. Imagine we ran a study in which we randomized people into three groups: (1) a control group in which people had no puppy contact; (2) 15 minutes of puppy therapy (a low-dose group); and (3) 30 minutes of puppy contact (a high-dose group). The dependent variable was a measure of happiness ranging from 0 (as unhappy as I can possibly imagine being) to 10 (as happy as I can possibly imagine being). Our hypotheses are:
+
+> - H~1~: Any form of puppy therapy should lead to greater happiness scores than the control
+> - H~2~: Happiness will be greater after 30 minutes of puppy therapy compared to 15 minutes.
+
+
+### `r user_visor()` Explore the data [(B)]{.lbl}
+
+
+Let's re-acquaint ourselves with the data.
+
+#### `r alien()` Alien coding challenge
+
+View the data in [puppy_tib]{.alt}.
+
+```{r puppy_tib, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r puppy_tib-solution}
+puppy_tib
+```
+
+Note that there are three variables:
+
+- `id`: Participant id
+- `dose`: Treatment group to which the participant was randomly assigned (No puppies (control), 15 minutes of puppy therapy, 30 minutes of puppy therapy)
+- `happiness`: Self-reported happiness from 0 (as unhappy as I can possibly imagine being) to 10 (as happy as I can possibly imagine being)
+
+The variable `dose` is a factor (categorical variable), so having read the data file and converted it to a factor it's a good idea to check that the levels of `dose` are in the order that we want: No puppies (control), 15 minutes, 30 minutes.
+
+#### `r robot()` Code example
+
+Check the levels of the variable `dose` within the tibble [puppy_tib]{.alt} we'd execute
+
+```{r chk_levels, exercise = TRUE, exercise.lines = 2}
+levels(puppy_tib$dose)
+```
+
+Because I have set up the data within this tutorial the levels are ordered as we want them: "No puppies", "15 mins", and "30 mins". 
+
+#### `r alien()` Alien coding challenge
+
+Let's remind ourselves of the group means. Compute descriptive statistics of happiness scores split by the therapy group to which a person belonged.
+
+```{r pup_sum, exercise = TRUE, exercise.lines = 7}
+
+```
+
+```{r pup_sum-hint-1}
+# Start by piping the tibble into the group_by function to group output by dose:
+puppy_tib |> 
+  group_by(dose)
+# Now pipe the results into the describe_distribution() function
+```
+
+```{r pup_sum-hint-2}
+# Pipe the results into the describe_distribution() function
+puppy_tib |> 
+  group_by(dose) |> 
+  describe_distribution()
+# use a function to display the table nicely
+```
+
+
+```{r pup_sum-solution}
+# Solution
+puppy_tib |> 
+  group_by(dose) |> 
+  describe_distribution() |> 
+  display()
+```
+
+
+### `r user_visor()` Set contrasts [(B)]{.lbl}
+
+#### `r robot()` Code example
+
+In `discovr_11`, we also set contrasts to test our two hypotheses using this code:
+
+```{r eval = FALSE}
+puppy_vs_none <- c(-2/3, 1/3, 1/3)
+long_vs_short <- c(0, -1/2, 1/2)
+contrasts(puppy_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+contrasts(puppy_tib$dose) # This line prints the contrast weights so we can check them
+```
+
+#### `r alien()` Alien coding challenge
+
+Use the code from the example to set the contrasts for `dose`.
+
+```{r set_contrast, exercise = TRUE}
+     
+               
+```
+
+```{r set_contrast-hint-1}
+# Set the weights for the first contrast using the example code:
+puppy_vs_none <- c(-2/3, 1/3, 1/3)
+# Now set the weights for the second contrast
+```
+
+```{r set_contrast-hint-2}
+# Set the weights for the second contrast:
+long_vs_short <- c(0, -1/2, 1/2)
+# Next, set the two contrasts to the dose variable
+```
+
+```{r set_contrast-hint-3}
+# Set the two contrasts to the dose variable:
+contrasts(puppy_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+# Finally, view the weights to check they are set correctly
+```
+
+```{r set_contrast-hint-4}
+# Put it all together:
+puppy_vs_none <- c(-2/3, 1/3, 1/3)
+long_vs_short <- c(0, -1/2, 1/2)
+contrasts(puppy_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+contrasts(puppy_tib$dose) # This line prints the contrast weights so we can check them
+```
+
+### `r user_astronaut()` Priors [(C)]{.lbl}
+
+We have fitted a linear model to compare means so we can fit a Bayesian variant with default priors using `stan_glm()` from [rstanarm]{.pkg} and extract information about the posterior distribution using `model_parameters()`, which for a Bayesian model uses the [bayestestR}{.pkg} package to get the information from the posterior distribution.
+
+#### `r robot()` Code example
+
+If we wanted a model with uninformative priors we could use this code:
+
+```{r, eval = F}
+puppy_dp <- stan_glm(happiness ~ dose, data = puppy_tib)
+model_parameters(puppy_dp, test = c("pd", "bf"), null = 0) |> 
+  display()
+```
+
+Just to remind you, the [null = 0]{.alt} will give us the Bayes factors for each parameter against the null hypothesis that the parameter is equal to zero. This is great, but the real power of Bayesian models comes with setting informative priors, so that's what we'll do. Am I evil? Yes I am.
+
+We have three parameters to think about , what were our expectations before we collected the data?
+
+- `Intercept`: the intercept represents mean happiness in the no puppy groups. Let’s say we know that our happiness scale typically has a mean of about 4 and a standard deviation of about 1. A reasonable prior might be a normal distribution centred on 4 with a standard deviation of 1. This prior (Figure 3, bottom) represents a belief that the mean in the no puppy group cannot be less than about 1 (end of the left tail) or more than 7 (end of the right tail) and will most likely be around 4. These beliefs seem reasonable given happiness is measured on a 10-point scale and you would not expect the mean value to be close to either extreme.
+- `Therapy vs no puppies`: imagine that previous work suggests that puppy therapy typically increases happiness by 2 points on this 10-point scale then it’s reasonable to centre the prior on this value, but how wide should the distribution be? Let’s assume that we again will use a normal distribution as the prior, then plotting different curves is a good way land on values that make sense. Figure 3 (top left) shows a prior distribution that is centred at 2 and ranges from about -4 to 8. Most of the distribution lies above zero, so we believe that puppy therapy will most likely have a positive effect; however, because some of it lies below zero we are also open to the possibility that puppy therapy might reduce happiness. In this sense, this prior is quite weak: we are prepared to believe puppy therapy might reduce happiness by as much as 4 on our 10-point scale, or increase it by as much as 8, although most of the mass of the distribution lies between about −1 and 5 (we think values outside of this are very unlikely). This ‘weakness’ is reflected in a relatively wide distribution.
+•	`30 minutes vs 15 minutes`: the ‘new’ feature of our study was to vary the dose of puppy therapy. Let’s again use a normal distribution as the prior. Imagine we have no past information about whether longer therapy sessions improve happiness, but we planned the study because we think they will. Given that therapy seems to work, we are confident that a longer dose will, at the very least be as effective as a short dose. Therefore, we’re expecting the difference between the long and short dose to be at least 0. However, we don’t expect the effect to be massive: perhaps a 1-point increase on our 10-point scale. Figure 3 (top right) shows a prior distribution that is centred at 1 with a standard deviation of 0.5. The bulk of the distribution falls between 0 and 2. Almost all the distribution lies above zero, reflecting our belief that in increased dose will almost certainly have a positive effect on happiness. Also, almost all the distribution lies below 2, reflecting our belief that a long dose is unlikely to improve happiness (compared to a short dose) by more than 2 points on our 10-point scale. This prior is quite strong: we are only prepared to believe that a long dose will improve happiness by between 1 and 2 points on the scale. This ‘strength’ is reflected in a narrow distribution.
+
+Formally, our priors are:
+
+- $b_0 \sim N(\mu = 4, \sigma = 1)$
+- $b_\text{therapy vs. none} \sim N(\mu = 2, \sigma = 2)$
+- $b_\text{30 vs 15 mins} \sim N(\mu = 1, \sigma = 0.5)$
+
+
+```{r priorplots3, echo = F, fig.cap = "Figure 3: Playing with priors", fig.width=8, fig.height=6}
+x_tib <- tibble(x = c(-5, 10))
+
+# prior for therapy vs no puppies
+b1_gg <- ggplot(x_tib, aes(x=x)) +
+  geom_function(fun = dnorm, args = list(mean = 2, sd = 2), colour = tol_blue, linewidth = line_width) +
+  scale_x_continuous(breaks = seq(-10, 10, 1)) +
+  geom_vline(xintercept = 0, colour = tol_bile, linetype = 2, linewidth = line_width) +
+  geom_vline(xintercept = 2, colour = tol_rose, linewidth = line_width) +
+  ggtitle('Prior for therapy vs no puppies') +
+  theme_minimal()
+
+# prior for therapy vs no puppies
+b2_gg <- ggplot(x_tib, aes(x=x)) +
+  geom_function(fun = dnorm, args = list(mean = 1, sd = 0.5), colour = tol_blue, linewidth = line_width) +
+  scale_x_continuous(breaks = seq(-10, 10, 1)) +
+  geom_vline(xintercept = 0, colour = tol_bile, linetype = 2, linewidth = line_width) +
+  geom_vline(xintercept = 1, colour = tol_rose, linewidth = line_width) +
+  ggtitle('Prior for 30 mins vs 15 mins') +
+  theme_minimal()
+
+# prior for intercept
+b0_gg <- ggplot(tibble(x = c(-2, 10)), aes(x=x)) +
+  geom_function(fun = dnorm, args = list(mean = 4, sd = 1), colour = tol_blue, linewidth = line_width) +
+  scale_x_continuous(breaks = seq(-10, 10, 1)) +
+  geom_vline(xintercept = 0, colour = tol_bile, linetype = 2, linewidth = line_width) +
+  geom_vline(xintercept = 4, colour = tol_rose, linewidth = line_width) +
+  ggtitle('Prior for intercept') +
+  theme_minimal()
+
+b1_gg + b2_gg + b0_gg + plot_layout(nrow = 2)
+```
+
+
+### `r user_astronaut()` Fit the model [(C)]{.lbl}
+
+#### `r robot()` Code example
+
+To fit this model with the priors described above we'd use this code (see the first section for more detail)"
+
+```{r eval = FALSE}
+puppy_rtb <- stan_glm(happiness ~ dose,
+                      data = puppy_tib,
+                      prior = normal(location = c(2, 1), scale = c(2, 0.5)),
+                      prior_intercept = normal(location = 4, scale = 1))
+model_parameters(puppy_rtb, test = c("pd", "bf"), null = 0) |> 
+  display()
+```
+
+#### `r alien()` Alien coding challenge
+
+Use the code box to fit the model.
+
+```{r set_dose_contrast}
+puppy_vs_none <- c(-2/3, 1/3, 1/3)
+long_vs_short <- c(0, -1/2, 1/2)
+contrasts(puppy_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+```
+
+```{r puppy_bayes, exercise = TRUE, exercise.lines = 10, exercise.setup = "set_dose_contrast"}
+
+```
+
+```{r puppy_bayes-solution}
+puppy_rtb <- stan_glm(happiness ~ dose,
+                      data = puppy_tib,
+                      prior = normal(location = c(2, 1), scale = c(2, 0.5)),
+                      prior_intercept = normal(location = 4, scale = 1))
+model_parameters(puppy_rtb, test = c("pd", "bf"), null = 0) |> 
+  display()
+```
+
+
+<div class="infobox">
+  `r info()` **Bayesian models are based on sampling**
+
+Bayesian estimation relies on sampling from the posterior distribution so your results will differ from mine. Therefore, the interpretation below is based on these model parameters:
+
+```{r echo = F, results = "hide"}
+pup_sum <- puppy_tib |> 
+  group_by(dose) |> 
+  describe_distribution()
+
+puppy_vs_none <- c(-2/3, 1/3, 1/3)
+long_vs_short <- c(0, -1/2, 1/2)
+contrasts(puppy_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+puppy_rtb <- stan_glm(happiness ~ dose,
+                      data = puppy_tib,
+                      prior = normal(location = c(2, 1), scale = c(2, 0.5)),
+                      prior_intercept = normal(location = 4, scale = 1))
+puppy_par <- model_parameters(puppy_rtb, test = c("pd", "bf"), null = 0)
+puppy_par_rf <- lm(happiness ~ dose, data = puppy_tib) |> model_parameters()
+```
+
+```{r echo = F}
+display(puppy_par)
+```
+
+
+</div>
+
+By comparing your output to the frequentest model in `discovr_11`, which is reproduced below, we can see the effect of the priors on the parameter estimates. The estimates for the intercept and effect of puppy therapy don't change a lot because our priors were fairly weak so the data estimates are driven by the data. However, the estimate for the effect of a long vs. short dose has decreased from `r value_from_ez(puppy_par_rf, row = 3)` to `r value_from_ez(puppy_par, row = 3, value = "Median")` and the credibility is quite narrow. This reflects the strong prior (especially because our sample is small so there is not a lot of data to throw in the mix). Our prior was centred on 1, but the data showed a mean difference of  `r value_from_ez(puppy_par_rf, row = 3)`, so the prior has dragged the estimate from the data down. The credible interval is narrow because the prior has narrowed the posterior distribution. With huge datasets a strong prior wouldn’t have such a dramatic effect, but this illustrates how Bayesian estimates contain information about both the prior and the data.
+
+For any dose of puppies compared to none the Bayes Factor is `r report_bf(puppy_par, row = 2)`, which means that the data are `r report_bf(puppy_par, row = 2, as_is = T) |>  report_value()` times more likely under the alternative hypothesis than under the null. We should shift our belief about puppy therapy being effective (relative to not) by a factor of about `r report_bf(puppy_par, row = 2, as_is = T) |>  report_value()`. This is moderate evidence for our first hypothesis. For a long verses short dose of puppies the Bayes factor is `r report_bf(puppy_par, row = 3)`, which means that the data are `r report_bf(puppy_par, row = 3, as_is = T) |>  report_value()` times more likely under the alternative hypothesis than under the null. We should shift our belief about a longer the duration of therapy being better than a shorter dose by a factor of about `r report_bf(puppy_par, row = 3, as_is = T) |>  report_value()`. Again, it is moderate evidence for our second hypothesis.
+
+
+```{r echo = F}
+display(puppy_par_rf)
+```
+
+
+
 
 
 

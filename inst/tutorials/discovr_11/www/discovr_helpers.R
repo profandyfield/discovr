@@ -117,267 +117,9 @@ step <- function(height = 1, fill = byz){
 }
 
 
-
-
-get_row <- function(tidyobject, row, digits = 2, p_digits = 3){
-  n <- nrow(tidyobject)
-  dp <- paste0("%.", digits, "f")
-  p_dp <- paste0("%.", p_digits, "f")
-
-
-  tidyobject |>
-    dplyr::rename(
-      df = contains("df"),
-      p.value = contains("p.value")
-    ) |>
-    insight::standardize_names(style = "broom") |>
-    dplyr::mutate(
-      row_number = 1:n,
-      p.value = ifelse(p.value < 0.001, "*p* < 0.001", paste("*p* =", sprintf(p_dp, p.value))),
-      ci = paste0("[", sprintf(dp, conf.low), ", ", sprintf(dp, conf.high), "]"),
-      across(.cols = where(is.double), \(x) sprintf(dp, x))
-    ) |>
-    dplyr::filter(row_number == row)
-}
-
-
-report_pars <- function(tidyobject, row, digits = 2, p_digits = 3, fixed = TRUE, df_r = NULL, glm = F){
-  row <- get_row(tidyobject, row, digits, p_digits)
-
-  if(glm){
-    stat = "*z*"
-  } else {
-    stat = "*t*"
-  }
-
-  if(!is.null(df_r)){
-    t_text <- paste0(", ", stat, "(", df_r, ") = ")
-  } else {
-    t_text <- paste(",", stat, "= ")
-  }
-
-  if(fixed){
-    paste0(row$estimate, " ", row$ci, t_text, row$statistic, ", ", row$p.value)
-  } else {
-    if(is.na(row$conf.low) | is.na(row$conf.high)){
-      row$estimate
-    } else {
-      paste(row$estimate, row$ci)
-    }
-
-  }
-}
-
-
-report_aov <- function(aov_obj, row = 1, digits = 2, p_digits = 3){
-  nrow <- nrow(aov_obj)
-  dp <- paste0("%.", digits, "f")
-  p_dp <- paste0("%.", p_digits, "f")
-
-
-  aov_row <- aov_obj |>
-    dplyr::mutate(
-      p = ifelse(`Pr(>F)` < 0.001, "*p* < 0.001", paste("*p* =", sprintf(p_dp,`Pr(>F)`))),
-      dplyr::across(
-        where(is.double), \(x) sprintf(dp, x)
-      ),
-      row_no = 1:nrow
-    ) |>
-    dplyr::filter(row_no == row)
-
-  paste0("*F*(", aov_row$NumDF, ", ", aov_row$DenDF, ") = ", aov_row$`F value`, ", ", aov_row$p)
-}
-
-
-report_glancef <- function(glance_obj, digits = 2, p_digits = 3){
-  dp <- paste0("%.", digits, "f")
-  p_dp <- paste0("%.", p_digits, "f")
-
-  row <- glance_obj |>
-    dplyr::mutate(
-      p.value = ifelse(p.value < 0.001, "*p* < 0.001", paste("*p* =", sprintf(p_dp, p.value))),
-      across(.cols = where(is.double), \(x) sprintf(dp, x)),
-      dplyr::across(
-        contains("df"), \(x) gsub(redundant_decimals(digits), "", x)
-      )
-    )
-
-  paste0("*F*(", row$df, ", ", row$df.residual, ") = ", row$statistic, ", ", row$`p.value`)
-
-}
-
-report_aov_compare <- function(aov_obj, row = 2, digits = 2, p_digits = 3){
-  nrow <- nrow(aov_obj)
-  dp <- paste0("%.", digits, "f")
-  p_dp <- paste0("%.", p_digits, "f")
-
-  aov_row <- aov_obj |>
-    dplyr::mutate(
-      p = ifelse(`p.value` < 0.001, "*p* < 0.001", paste("*p* =", sprintf(p_dp,`Pr(>F)`))),
-      dplyr::across(
-        where(is.double), \(x) sprintf(dp, x)
-      ),
-      dplyr::across(
-        contains("df"), \(x) gsub(redundant_decimals(digits), "", x)
-      ),
-      row_no = 1:nrow
-    ) |>
-    dplyr::filter(row_no == row)
-
-  paste0("*F*(", aov_row$df, ", ", aov_row$df.residual, ") = ", aov_row$statistic, ", ", aov_row$p)
-}
-
-report_aovf <- function(aov_obj, row = 1, digits = 2, p_digits = 3){
-  nrow <- nrow(aov_obj)
-  dp <- paste0("%.", digits, "f")
-  p_dp <- paste0("%.", p_digits, "f")
-
-
-  aov_row <- aov_obj |>
-    tibble::as_tibble() |>
-    dplyr::mutate(
-      p = ifelse(`Pr(>F)` < 0.001, "*p* < 0.001", paste("*p* =", sprintf(p_dp,`Pr(>F)`))),
-      dplyr::across(
-        where(is.double), \(x) sprintf(dp, x)
-      ),
-      dplyr::across(
-        contains("df"), \(x) gsub(redundant_decimals(digits), "", x)
-      ),
-      row_no = 1:nrow
-    )
-
-  paste0("*F*(", aov_row$Df[row], ", ", aov_row$Df[nrow], ") = ", aov_row$`F value`[row], ", ", aov_row$p[row])
-}
-
-report_es <- function(es_obj, col, row = 1, digits = 2){
-  nrow <- nrow(es_obj)
-  dp <- paste0("%.", digits, "f")
-
-  par <- ifelse(grepl("Cohen", col), "$\\hat{d}$",
-                ifelse(grepl("Hedges", col), "$\\hat{g}$",
-                       ifelse(grepl("Omega", col), "$\\hat{\\omega}_p$", "$\\hat{\\eta}_p$")))
-
-  es_row  <- es_obj |>
-    tibble::as_tibble() |>
-    dplyr::rename(
-      es = !!{col}
-    ) |>
-    dplyr::mutate(
-      dplyr::across(
-        where(is.double), \(x) sprintf(dp, x)),
-      row_no = 1:nrow
-    )
-
-  paste0(par, " = ", es_row$es[row], " [", es_row$CI_low[row], ", ", es_row$CI_high[row], "]")
-}
-
-get_par <- function(tidyob, row, col = "estimate", digits = 2){
-  val <- tidyob |>
-    dplyr::select(!!col) |>
-    dplyr::pull()
-
-  dp <- paste0("%.", digits, "f")
-  sprintf(dp, val[row])
-}
-
-report_afx <- function(afx_obj, row = 1, digits = 2, p_digits = 3){
-  nrow <- nrow(afx_obj)
-  dp <- paste0("%.", digits, "f")
-  p_dp <- paste0("%.", p_digits, "f")
-
-
-  afx_row <- afx_obj |>
-    tibble::as_tibble() |>
-    dplyr::rename_with(.fn = \(x) tolower(gsub(" ", "_", x = x))) |>
-    dplyr::mutate(
-      p = ifelse(`pr(>f)` < 0.001, "*p* < 0.001", paste("*p* =", sprintf(p_dp,`pr(>f)`))),
-      dplyr::across(
-        contains("df"), \(x) ifelse(grepl("\\.", x), sprintf(dp, x), x)
-      ),
-      f = sprintf(dp, f),
-      row_no = 1:nrow
-    ) |>
-    dplyr::filter(row_no == row)
-
-  paste0("*F*(", afx_row$num_df, ", ", afx_row$den_df, ") = ", afx_row$f, ", ", afx_row$p)
-}
-
-report_se <- function(se_obj, row = 1, digits = 2, p_digits = 3){
-  nrow <- nrow(se_obj)
-  dp <- paste0("%.", digits, "f")
-  p_dp <- paste0("%.", p_digits, "f")
-
-
-  se_row <- se_obj |>
-    dplyr::mutate(
-      p = ifelse(p.value < 0.001, "*p* < 0.001", paste("*p* =", sprintf(p_dp, p.value))),
-      dplyr::across(
-        contains("df"), \(x) ifelse(grepl("\\.", x), sprintf(dp, x), x)
-      ),
-      f = sprintf(dp, F.ratio),
-      row_no = 1:nrow
-    ) |>
-    dplyr::filter(row_no == row)
-
-  paste0("*F*(", se_row$df1, ", ", se_row$df2, ") = ", se_row$f, ", ", se_row$p)
-}
-
-get_bf <- function(bf = m1, digits = 2){
-  dp <- paste0("%.", digits, "f")
-
-  bf_val <- BayesFactor::extractBF(bf,  onlybf = T)
-  sprintf(dp, bf_val)
-}
-
-
-report_aov_nlme <- function(aov_obj, row = 1, digits = 2, p_digits = 3){
-  nrow <- nrow(aov_obj)
-  dp <- paste0("%.", digits, "f")
-  p_dp <- paste0("%.", p_digits, "f")
-
-
-  aov_row <- aov_obj |>
-    dplyr::mutate(
-      p = ifelse(`p-value` < 0.001, "*p* < 0.001", paste("*p* =", sprintf(p_dp,`p-value`))),
-      f = sprintf(dp, `F-value`),
-      row_no = 1:nrow
-    ) |>
-    dplyr::filter(row_no == row)
-
-  paste0("*F*(", aov_row$numDF, ", ", aov_row$denDF, ") = ", aov_row$f, ", ", aov_row$p)
-}
-
-report_em <- function(em_obj, row = 1, digits = 2, p_digits = 3){
-  em_obj <- tibble::as_tibble(em_obj)
-  nrow <- nrow(em_obj)
-  dp <- paste0("%.", digits, "f")
-  p_dp <- paste0("%.", p_digits, "f")
-
-
-  em_row <- em_obj |>
-    dplyr::mutate(
-      p = ifelse(p.value < 0.001, "*p* < 0.001", paste("*p* =", sprintf(p_dp, p.value))),
-      dplyr::across(
-        where(is.numeric), \(x) ifelse(grepl("\\.", x), sprintf(dp, x), x)
-      ),
-      row_no = 1:nrow
-    ) |>
-    dplyr::filter(row_no == row)
-
-  paste0("$\\hat{b}$ = ", em_row$estimate, ", *t*(", em_row$df, ") = ", em_row$t.ratio, ", ", em_row$p)
-}
-
-
-# -----------------
-
 # Easystats helpers
 
-
-redundant_decimals <- function(digits = 2){
-  paste0(".", paste0(rep(0, digits), collapse = ""), collapse = "")
-}
-
-
+# format p-values
 report_p <- function(p, p_digits = 3){
   p_dp <- paste0("%.", p_digits, "f")
 
@@ -385,6 +127,8 @@ report_p <- function(p, p_digits = 3){
          "*p* < 0.001",
          paste("*p* =", sprintf(fmt = p_dp, p)))
 }
+
+# format numeric values
 
 report_value <- function(x, digits = 2, scientific = FALSE){
   if(scientific){
@@ -396,6 +140,7 @@ report_value <- function(x, digits = 2, scientific = FALSE){
   sprintf(fmt = dp, x)
 }
 
+# extract a value from an ez object
 
 value_from_ez <- function(ezobj, row = 1, value = "Coefficient", digits = 2, p_digits = 3, scientific = FALSE, as_is = FALSE, exponentiate = FALSE){
   val <- ezobj |>
@@ -418,91 +163,83 @@ value_from_ez <- function(ezobj, row = 1, value = "Coefficient", digits = 2, p_d
   }
 }
 
+# extract values as percentages
+
+percent_from_ez <- function(ezobj, row = 1, value = "Coefficient", digits = 0){
+  val  = value_from_ez(ezobj = ezobj,
+                       row = row,
+                       value = value,
+                       as_is = TRUE)
+  if(val > 1 | val < 0){
+    print("Input to percent_from_ez() must be a proportion")
+  } else {
+    paste0(report_value(100*val, digits = digits), "%")
+  }
+}
+
+
+# report likelihood ratio and wald tests
 
 report_lrt <- function(lrt, row = 2, digits = 2, p_digits = 3, df_digits = 0){
   dfm <- value_from_ez(lrt, row = row, value = "df_diff", digits = df_digits)
   dfr <- value_from_ez(lrt, row = row, value = "df", digits = df_digits)
-  f <- value_from_ez(lrt, row = row, value = "F", digits = digits)
   p <- value_from_ez(lrt, row = row, value = "p", p_digits = p_digits)
 
-  paste0("*F*(", dfm, ", ", dfr, ") = ", f, ", ", p)
+  if(exists("F", where = lrt)){
+    f <- value_from_ez(lrt, row = row, value = "F", digits = digits)
+    paste0("*F*(", dfm, ", ", dfr, ") = ", f, ", ", p)
+  } else {
+    chi <- value_from_ez(lrt, row = row, value = "Chi2", digits = digits)
+    paste0("$\\chi^2$(", dfm, ") = ", chi, ", ", p)
+  }
 }
 
+# report parameter estimates
 
-report_pe <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0, z = F, symbol = "$\\hat{b}$"){
+report_pe <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0, symbol = "$\\hat{b}$"){
   b <- value_from_ez(ezobj, row = row, value = "Coefficient", digits = digits)
   p <- value_from_ez(ezobj, row = row, value = "p", p_digits = p_digits)
-  if(!z){
-    df <- value_from_ez(ezobj, row = row, value = "df_error", digits = df_digits)
-  }
-
   ci <- paste0("(", value_from_ez(ezobj, row = row, value = "CI_low", digits = digits), ", ", value_from_ez(ezobj, row = row, value = "CI_high", digits = digits), ")")
 
-  if(z){
-    test_stat <- value_from_ez(ezobj, row = row, value = "z", digits = digits)
-    stat_text <- paste0(", ", "*z* = ", test_stat)
+  if(exists("t", where = ezobj)){
+    df <- value_from_ez(ezobj, row = row, value = "df_error", digits = df_digits)
+    t <- value_from_ez(ezobj, row = row, value = "t", digits = digits)
+    paste0(symbol, " = ", b, " ", ci, ", *t*(", df, ") = ", t, ", ", p)
   } else {
-    test_stat <- value_from_ez(ezobj, row = row, value = "t", digits = digits)
-    stat_text <- paste0(", ", "*t*(", df, ") = ", test_stat)
+    z <- value_from_ez(ezobj, row = row, value = "z", digits = digits)
+    paste0(symbol, " = ", b, " ", ci, ", *z* = ", z, ", ", p)
   }
-
-  paste0(symbol, " = ", b, " ", ci, stat_text, ", ", p)
 }
 
-report_ss <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0, glm = F, symbol = "$\\hat{b}$"){
+# report simple slopes
+
+report_ss <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0, symbol = "$\\hat{b}$"){
   b <- value_from_ez(ezobj, row = row, value = "Slope", digits = digits)
   p <- value_from_ez(ezobj, row = row, value = "p", p_digits = p_digits)
-  df <- value_from_ez(ezobj, row = row, value = "df", digits = df_digits)
   ci <- paste0("(", value_from_ez(ezobj, row = row, value = "CI_low", digits = digits), ", ", value_from_ez(ezobj, row = row, value = "CI_high", digits = digits), ")")
 
-  if(glm){
-    stat = "*z*"
-    test_stat <- value_from_ez(ezobj, row = row, value = "z", digits = digits)
+  if(exists("t", where = ezobj)){
+    df <- value_from_ez(ezobj, row = row, value = "df", digits = df_digits)
+    t <- value_from_ez(ezobj, row = row, value = "t", digits = digits)
+    paste0(symbol, " = ", b, " ", ci, ", *t*(", df, ") = ", t, ", ", p)
   } else {
-    stat = "*t*"
-    test_stat <- value_from_ez(ezobj, row = row, value = "t", digits = digits)
+    z <- value_from_ez(ezobj, row = row, value = "z", digits = digits)
+    paste0(symbol, " = ", b, " ", ci, ", *z* = ", z, ", ", p)
   }
-
-  stat_text <- paste0(", ", stat, "(", df, ") = ", test_stat)
-
-
-  paste0(symbol, " = ", b, " ", ci, stat_text, ", ", p)
 }
 
-report_ez_aov <- function(ez_aov, row = 1, digits = 2, p_digits = 3, df_digits = 0, es_type = "Omega2"){
-  f <- value_from_ez(ez_aov, row = row, value = "F", digits = digits)
-  p <- value_from_ez(ez_aov, row = row, value = "p", p_digits = p_digits)
-  dfm <- value_from_ez(ez_aov, row = row, value = "df", digits = df_digits)
-  dfr <- value_from_ez(ez_aov, row = length(ez_aov$df), value = "df", digits = df_digits)
-  es <- value_from_ez(ez_aov, row = row, value = es_type, digits = digits)
-  es_ci <- paste0("(", value_from_ez(ez_aov, row = row, value = paste0(sub("_partial", "", x = es_type), "_CI_low"), digits = digits), ", ", value_from_ez(ez_aov, row = row, value = paste0(sub("_partial", "", x = es_type), "_CI_high"), digits = digits), ")")
+# report contrasts
 
-  if(length(ez_aov$Parameter) > 2){
-    es_ext <- "_p"
-  } else {
-    es_ext <- ""
-  }
+report_con <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0){
+  df1 <- value_from_ez(ezobj, row = row, value = "df1", digits = df_digits, as_is = T)
+  df2 <- value_from_ez(ezobj, row = row, value = "df2", digits = df_digits, as_is = T)
+  f <- value_from_ez(ezobj, row = row, value = "F", digits = digits)
+  p <- value_from_ez(ezobj, row = row, value = "p", p_digits = p_digits)
 
-
-  if(grepl("omega", es_type, ignore.case = TRUE)){
-    symboltxt = "omega"
-  } else {
-    symboltxt = "eta"
-  }
-
-  paste0("F(", dfm, ", ", dfr,  ") = ", f, ", ", p, ", ", paste0("$\\hat{\\", symboltxt, "}^2", es_ext, "$"), " = ", es, " ", es_ci)
+  paste0("*F*(", df1, ", ", df2, ") = ", f, ", ", p)
 }
 
-
-report_f <- function(ez_f, row = 1, digits = 2, p_digits = 3, df_digits = 0, symbol = "$F$"){
-  f <- value_from_ez(ez_f, row = row, value = "F", digits = digits)
-  p <- value_from_ez(ez_f, row = row, value = "p", p_digits = p_digits)
-  dfm <- value_from_ez(ez_f, row = row, value = "df", digits = df_digits) |> gsub(redundant_decimals(digits), "", x = _)
-  dfr <- value_from_ez(ez_f, row = row, value = "df_error", digits = df_digits) |> gsub(redundant_decimals(digits), "", x = _)
-
-  paste0(symbol, "(", dfm, ", ", dfr,  ") = ", f, ", ", p)
-}
-
+# Report effect sizes
 
 report_es <- function(es_obj, col, row = 1, digits = 2){
   nrow <- nrow(es_obj)
@@ -526,3 +263,67 @@ report_es <- function(es_obj, col, row = 1, digits = 2){
   paste0(par, " = ", es_row$es[row], " [", es_row$CI_low[row], ", ", es_row$CI_high[row], "]")
 }
 
+## report ANOVA models
+
+report_ez_aov <- function(ez_aov, row = 1, digits = 2, p_digits = 3, df_digits = 0, es_type = "Omega2"){
+  f <- value_from_ez(ez_aov, row = row, value = "F", digits = digits)
+  p <- value_from_ez(ez_aov, row = row, value = "p", p_digits = p_digits)
+  dfm <- value_from_ez(ez_aov, row = row, value = "df", digits = df_digits)
+  if(exists("df_error", where = ez_aov)){
+    dfr <- value_from_ez(ez_aov, row = row, value = "df_error", digits = df_digits)
+  } else {
+    dfr <- value_from_ez(ez_aov, row = length(ez_aov$df), value = "df", digits = df_digits)
+  }
+
+  out <- paste0("F(", dfm, ", ", dfr,  ") = ", f, ", ", p)
+
+  if(exists(es_type, where = ez_aov)){
+    es <- value_from_ez(ez_aov, row = row, value = es_type, digits = digits)
+    if(grepl("omega", es_type, ignore.case = TRUE)){
+      symboltxt = "omega"
+    } else {
+      symboltxt = "eta"
+    }
+
+    if(length(ez_aov$Parameter) > 2){
+      es_ext <- "_p"
+    } else {
+      es_ext <- ""
+    }
+    es_txt <- paste0("$\\hat{\\", symboltxt, "}^2", es_ext, "$ = ", es)
+    ci_low_label <- paste0(sub("_partial", "", x = es_type), "_CI_low")
+    if(exists(ci_low_label, where = ez_aov)){
+      es_ci <- paste0("(", value_from_ez(ez_aov, row = row, value = paste0(sub("_partial", "", x = es_type), "_CI_low"), digits = digits), ", ", value_from_ez(ez_aov, row = row, value = paste0(sub("_partial", "", x = es_type), "_CI_high"), digits = digits), ")")
+      es_txt <- paste0(es_txt, " ", es_ci)
+      }
+    out <- paste0(out, ", ", es_txt)
+  }
+
+out
+}
+
+## report post hoc tests
+
+report_ph <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0, symbol = "$\\bar{X}_\\text{Diff}$"){
+  b <- value_from_ez(ezobj, row = row, value = "Difference", digits = digits)
+  p <- value_from_ez(ezobj, row = row, value = "p", p_digits = p_digits)
+  df <- value_from_ez(ezobj, row = row, value = "df", digits = df_digits)
+  ci <- paste0("(", value_from_ez(ezobj, row = row, value = "CI_low", digits = digits), ", ", value_from_ez(ezobj, row = row, value = "CI_high", digits = digits), ")")
+  test_stat <- value_from_ez(ezobj, row = row, value = "t", digits = digits)
+  stat_text <- paste0(", *t*(", df, ") = ", test_stat)
+
+
+  paste0(symbol, " = ", b, " ", ci, stat_text, ", ", p)
+}
+
+## report bayes factors
+
+report_bf <- function(ezobj, row = 2, digits = 2, symbol = "BF~10~", as_is = FALSE){
+  bf <- value_from_ez(ezobj, row = row, value = "log_BF", digits = digits, as_is = TRUE) |>  exp()
+
+  if(as_is){
+    bf
+  } else {
+    paste0(symbol, " = ", report_value(bf))
+  }
+}

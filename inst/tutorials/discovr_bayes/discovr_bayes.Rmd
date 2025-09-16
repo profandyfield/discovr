@@ -1,5 +1,5 @@
 ---
-title: "discovr: Bayes"
+title: "discovr Bayesian statistics"
 author: "Andy Field"
 output:
   learnr::tutorial:
@@ -45,6 +45,8 @@ source("./www/discovr_helpers.R")
 #Read dat files needed for the tutorial
 
 album_tib <- discovr::album_sales
+cloak_tib <- discovr::invisibility_cloak
+#puptreat_tib <- discovr::puptreat_tib
 
 # get plot aesthetics
 line_width <- 1
@@ -55,26 +57,26 @@ tol_rose <- tol_palette[1]
 ```
 
 
-# discovr: Bayesian statistics
+# discovr Bayesian statistics
 
-```{r, child = "intro.Rmd"}
+```{r, child = "./docs/intro.Rmd"}
 
 ```
 
-## Packages
+## Packages {data-progressive=FALSE}
 
-```{r, child = "packages.Rmd"}
+```{r, child = "./docs/packages.Rmd"}
 
 ```
 
 
 ## Data
 
-```{r, child = "data.Rmd"}
+```{r, child = "./docs/data.Rmd"}
 
 ```
 
-## `r bmu()` General linear models [(D)]{.lbl}
+## `r user_astronaut()` General linear models [(C)]{.lbl}
 
 To start with, we'll look back at the example from Chapter 8 [@fielddsr22026] that looks at predicting physical, downloaded and streamed album sales (outcome variable) from various predictor variables (we encountered this exam ple in `discovr_08`). The data file has 200 rows, each one representing a different album. There are also several columns, one of which contains the sales (in thousands) of each album in the week after release (`sales`) and one containing the amount (in thousands of pounds/dollars/euro/whatever currency you use) spent promoting the album before release (`adverts`). The other columns represent how many times songs from the album were played on a prominent national radio station in the week before release (`airplay`), and the 'look' of the band out of 10 (`image`). The data are in a tibble called [album_tib]{.alt}.
 
@@ -116,7 +118,7 @@ library(rstanarm)
 ```
 
 
-### `r bmu()` Uninformatiove (default) priors [(C)]{.lbl}
+### `r bmu()` Uninformative (default) priors [(C)]{.lbl}
 
 
 The function we'll use from [rstanarm]{.pkg} is `stan_glm()` which is fairly similar to `lm()`. For a model that uses default priors it takes the general form:
@@ -213,8 +215,8 @@ display(album_dp_par)
 
 
 ```{r, echo = F}
-bf_ad_num <- value_from_ez(album_dp_par, row = 2, value = "log_BF", exponentiate = T, as_number = T, digits = 2) |> format(big.mark = ",")
-bf_air_num <- value_from_ez(album_dp_par, row = 3, value = "log_BF", exponentiate = T, as_number = T, digits = 2) |> format(big.mark = ",")
+bf_ad_num <- value_from_ez(album_dp_par, row = 2, value = "log_BF", exponentiate = T, as_is = T, digits = 2) |> format(big.mark = ",")
+bf_air_num <- value_from_ez(album_dp_par, row = 3, value = "log_BF", exponentiate = T, as_is = T, digits = 2) |> format(big.mark = ",")
 bf_ad <- value_from_ez(album_dp_par, row = 2, value = "log_BF", exponentiate = T, digits = 2, scientific = T)
 bf_air <- value_from_ez(album_dp_par, row = 3, value = "log_BF", exponentiate = T, digits = 2, scientific = T)
 bf_im <- value_from_ez(album_dp_par, row = 4, value = "log_BF", exponentiate = T, digits = 2)
@@ -227,13 +229,13 @@ The column labelled [BF]{.opt} contains the Bayes factors. For advertising the B
 
 ### `r bmu()` Informative (subjective) priors [(D)]{.lbl}
 
-This is great, but the real power of Bayesian models comes with setting informative priors. We have four parameters to think about: one for each of the three predictors and the intercept. [Technically we should set a prior for the error variance, but we’ll use the default.] To set informative priors we would need to consider our expectations about the $b$s before we collected the data. To keep things as simple as we can we will consider only normally-distributed priors, but there are a wide range of other distributions you could use.
+This is great, but the real power of Bayesian models comes with setting informative priors. We have four parameters to think about: one for each of the three predictors and the intercept. [Technically we should set a prior for the error variance, but we'll use the default.] To set informative priors we would need to consider our expectations about the $b$s before we collected the data. To keep things as simple as we can we will consider only normally-distributed priors, but there are a wide range of other distributions you could use.
 
 - `Intercept`: the intercept represents mean album sales when nothing is spent on advertising, there is no airplay and the band's image is rated at zero. It's like asking 'how many sales would we expect for a really uncool-looking band, if we did nothing'. Probably the record company has historic data on this. Let's assume that they know that you can expect 20,000 sales on average, but that it varies for different artists. They also know from historic data that the standard deviation is large, around 7,000. A reasonable prior might be a normal distribution centred on 20 (remember sales are expressed as 1000s) with a standard deviation of 7. This prior (, top-left) represents a belief that the mean number of sales for uncool bands with no promotion cannot be less than 0 (end of the left tail) or more than about 40 (end of the right tail) and will most likely be around 20 thousand. These beliefs seem reasonable, it would be odd, for example to have a prior in which negative sales (an impossibility) were likely.
 - `advertising`: remember that this predictor was one about which there was prior information. Let's assume that based on past data the record company knew that historically, for every £1000 pounds they spend on advertising they can expect 1000 album sales. This equates to a b of 1. They also know that although spending money on advertising typically increases sales, they have been known to go down.  (top right) shows a prior distribution that reflects these prior beliefs: it is centred at 1 and ranges from about −0.5 to 2.5. Most of the distribution lies above zero, so we believe that advertising will most likely equate to more sales; however, because a small part of it lies below zero we are acknowledging the possibility that increased advertising might reduce sales.
-- `airplay` and `image`: the 'new' features of our study were to measure airplay and quantify the band's image. In focus groups people tended to acknowledge that they would buy music if they were exposed to it and liked it, but some said that sometimes hearing a song made them less likely to buy it because they had heard it for free. Similarly, many of the group acknowledged that a cool image influenced whether they bought music but there was a lot of disagreement about this. Therefore, we're expecting these bs to be above zero but we're not too sure how big they might be. In particular, the focus group showed a wider variety of views about the importance of image. We want to set a weak priors for both to let the data do the work, but a weaker prior for image than airplay. Figure 4 shows some possible priors for the $b$s for `airplay` (bottom-left) and `image` (bottom-right). For airplay our prior says that we believe that the most likely value is $b$ = 5, meaning that for every addition airplay 5000 additional units would be sold, and that we think it highly unlikely (but possible) that sales could be negative. We also think there's a slim possibility that $b$ could be as much as 10. Similarly for image our prior says  that we believe that the most likely value is $b$ = 8, meaning that for every increase on the image scale 8000 additional units would be sold. This distribution is wider (and, therefore weaker) than for airplay though because we think that a fall in sales more likely (more of the distribution falls below 0) and we are more uncertain about the value in general (the distribution ranges from about -8 to 25.
+- `airplay` and `image`: the 'new' features of our study were to measure airplay and quantify the band's image. In focus groups people tended to acknowledge that they would buy music if they were exposed to it and liked it, but some said that sometimes hearing a song made them less likely to buy it because they had heard it for free. Similarly, many of the group acknowledged that a cool image influenced whether they bought music but there was a lot of disagreement about this. Therefore, we're expecting these bs to be above zero but we're not too sure how big they might be. In particular, the focus group showed a wider variety of views about the importance of image. We want to set a weak priors for both to let the data do the work, but a weaker prior for image than airplay. Figure 4 shows some possible priors for the $b$s for `airplay` (bottom-left) and `image` (bottom-right). For airplay our prior says that we believe that the most likely value is $b$ = 5, meaning that for every addition airplay 5000 additional units would be sold, and that we think it highly unlikely (but possible) that sales could be negative. We also think there's a slim possibility that $b$ could be as much as 10. Similarly for image our prior says  that we believe that the most likely value is $b$ = 8, meaning that for every increase on the image scale 8000 additional units would be sold. This distribution is wider (and, therefore weaker) than for airplay though because we think that a fall in sales more likely (more of the distribution falls below 0) and we are more uncertain about the value in general (the distribution ranges from about -8 to 25).
 
-```{r priorplots, echo = F, fig.cap = "Playing with priors"}
+```{r priorplots, echo = F, fig.cap = "Playing with priors", fig.width=8, fig.height=6}
 # prior for advertising
 b1_gg <- ggplot(tibble(x = c(-1, 5)), aes(x=x)) +
   geom_function(fun = dnorm, args = list(mean = 1, sd = 0.5), colour = tol_blue, linewidth = line_width) +
@@ -342,6 +344,184 @@ model_parameters(model = album_rstn, test = c("pd", "bf"), null = 0) |>
 Comparing the output to that of the previous model reveals the effect of the priors on the parameter estimates (and note the [Prior]{.opt} column has changed to reflect the priors we set). The estimates for the intercept has changed a lot because our prior was a lot narrower and located much closer to zero resulting in a more negative estimate. The prior has dragged the estimate down. The credibility interval has got wider because the prior is a little at odds with the data. The estimates of the other $b$s haven't changed a lot because the priors were broadly in line with the data (and for `airplay` and `image` were quite weak anyway). We can also see the effect of the priors on the Bayes factors. They have all decreased substantially but are nevertheless very large! Remember, you wouldn't fit both models and compare, you'd generally fit the model with informative priors and interpret it.
 
 
+## `r user_astronaut()` Comparing two means [(C)]{.lbl}
+
+Chapter 9 (`discovr_09`) of @fielddsr22026 shows that we can compare two means using a linear model, so we can adapt the code from the previous section to fit a Bayesian variant using `stan_glm()` from [rstanarm]{.pkg} and extract information about the posterior distribution using `model_parameters()`. In the example from the book we imagined a future in which we had cloaks of invisibility. The future me is interested in the effect that wearing a cloak of invisibility has on the tendency for mischief. I take 24 participants and placed them in an enclosed community. The community is riddled with hidden cameras so that we can record mischievous acts. Half of the participants are given cloaks of invisibility; they are told not to tell anyone else about their cloak and that they can wear it whenever they liked. I measure how many mischievous acts they performed in a week. We hypothesise:
+
+> H~1~: There will be more mischievous acts, on average, when a cloak is worn than when not. 
+
+We have two parameters to think about: the $b$ for the effect of cloak, which represents the difference in group means, and the intercept ($b_0$), which is the amount of mischief in the no cloak group.  What were our expectations before we collected the data?
+
+- `Intercept`: the intercept represents mean mischief in the no cloak group. Imagine that before the study we anticipate that most people don't get up to mischief. A reasonable prior might be a normal distribution centred on 2 with a standard deviation of 0.7. Figure 5 (left) shows this distribution. It represents a belief that the mean number of mischievous acts in the no cloak group cannot be less than about 0 (end of the left tail) or more than 4 (end of the right tail) and will most likely be around 2. Basically, we expect people to commit between 0 and 4 mischievous acts when they don't have a cloak. These beliefs seem reasonable given that it's impossible to have a negative number of actions and in general people are not rabidly mischievous.
+- `cloak`: what effect do we expect from giving people an invisibility cloak? By how much do we expect mischief to increase? First off, we probably don't expect it to decrease. Therefore, we'd want the bulk of the distribution to represent positive values; that is, we believe that b – the difference between means –  is most likely to be greater than 0. However, we'd probably entertain the possibility that we're wrong and that there's some chance that the effect is zero or negative. So, we want a distribution that includes zero, but that mostly contains positive values. On average what are we expecting the difference to be? Usually we'd have other research to inform this decision, but let's say we were expecting the cloak to lead to two additional acts of mischief. Figure 11.16 (right) shows a normal distribution centred at 2 with a standard deviation of 1.2. It seems to fit the bill: most of the distribution lies above zero, so we believe that an invisibility cloak will most likely have a positive effect; however, because some of it lies below zero we are also open to the possibility that the cloak might reduce mischief. This prior is quite weak: we are prepared to believe that mischievous acts might go down by as much as about 2 or go up by as much as about 6.
+
+
+```{r priorplots2, echo = F, fig.cap = "Playing with priors", fig.width=8, fig.height=3}
+# prior for intercept 
+b0_gg <- ggplot(tibble(x = c(-1, 5)), aes(x=x)) +
+  geom_function(fun = dnorm, args = list(mean = 2, sd = 0.7), colour = "#88CCEE", linewidth = 1) +
+  scale_x_continuous(breaks = seq(-1, 5, 1)) +
+  geom_vline(xintercept = 0, colour = "#999933", linetype = 2, linewidth = 1) +
+  geom_vline(xintercept = 2, colour = "#CC6677", linewidth = 1) +
+  ggtitle('Prior for intercept') +
+  theme_minimal()
+
+# prior for cloak 
+b1_gg <- ggplot(tibble(x = c(-3, 7)), aes(x=x)) +
+  geom_function(fun = dnorm, args = list(mean = 2, sd = 1.2), colour = "#88CCEE", linewidth = 1) +
+  scale_x_continuous(breaks = seq(-3, 7, 1)) +
+  geom_vline(xintercept = 0, colour = "#999933", linetype = 2, linewidth = 1) +
+  geom_vline(xintercept = 2, colour = "#CC6677", linewidth = 1) +
+  ggtitle('Prior for cloak') +
+  theme_minimal()
+
+b0_gg + b1_gg + plot_layout(ncol = 2)
+```
+ 
+### `r bmu()` Summarize the data [(A)]{.lbl}
+
+These data are preloaded in this tutorial in a tibble called [cloak_tib]{.alt}.
+
+#### `r alien()` Alien coding challenge
+
+Use the code box to view these data.
+
+```{r cloak_data, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r cloak_data-solution}
+cloak_tib
+```
+
+Note there are three variables:
+
+- `id`: participant id
+- `cloak`: whether the participant was assigned a cloak of invisibility
+- `mischief`: the number of mischievous acts committed during the week of the study
+
+We can use `describe_distribution()` from [datawizard]{.pkg} to get summary statistics for the variables in the data.
+
+#### `r alien()` Alien coding challenge
+
+Get a table of descriptive statistics for `mischief` for the two cloak groups.
+
+```{r album_whiz, exercise = TRUE, exercise.lines = 5}
+
+```
+
+```{r album_whiz-hint-1}
+# pipe the data into group_by() to split the descriptives by group. Replace the xxx
+cloak_tib |>
+  group_by(xxx)
+# now use describe_distribution()
+```
+
+```{r album_whiz-hint-2}
+#  Use describe_distribution(). Replace the xxx
+cloak_tib |>
+  group_by(cloak) |> 
+  describe_distribution()
+# now get the table to render nicely
+```
+
+```{r album_whiz-solution}
+cloak_tib |> 
+  group_by(cloak) |> 
+  describe_distribution() |> 
+  display()
+```
+
+#### `r robot()` Code example
+
+Let's use what we learnt about `stan_glm()` to fit the model with these priors and get Bayes factors.
+
+```{r, eval = F}
+cloak_rstn <- stan_glm(mischief ~ cloak,
+                      data = cloak_tib,                      
+                      prior = normal(location = 2, scale = 1.2),
+                      prior_intercept = normal(location = 2, scale = 0.7))
+
+model_parameters(cloak_rstn, test = c("pd", "bf"), null = 0) |> 
+  display()
+```
+
+
+#### `r alien()` Alien coding challenge
+
+Try fitting the model described above.
+
+```{r rstan_cloak, exercise = TRUE, exercise.lines = 10}
+
+```
+
+```{r rstan_cloak-hint-1}
+# first, fit the model (replace the xxxs)
+cloak_rstn <- stan_glm(xxxx ~ xxxx, data = xxxx)
+# now add the priors
+```
+
+```{r rstan_cloak-hint-2}
+# add the priors (replace the xxxxs)
+cloak_rstn <- stan_glm(mischief ~ cloak, ddata = cloak_tib, prior = xxxx(xxxx = x, xxxx = x.x), prior_intercept = xxxx(xxxx = x, xxxx = x.x))
+# extract the model parameters
+```
+
+```{r rstan_cloak-hint-3}
+# fit the model
+cloak_rstn <- stan_glm(mischief ~ cloak,
+                      data = cloak_tib,                      
+                      prior = normal(location = 2, scale = 1.2),
+                      prior_intercept = normal(location = 2, scale = 0.7))
+# extract the model parameters (replace the xxxxs)
+model_parameters(model = xxxx, test = c("xx", "xx"), null = x) |> 
+  display()
+```
+
+```{r rstan_cloak-solution}
+# fit the model
+cloak_rstn <- stan_glm(mischief ~ cloak,
+                      data = cloak_tib,                      
+                      prior = normal(location = 2, scale = 1.2),
+                      prior_intercept = normal(location = 2, scale = 0.7))
+# extract the model parameters
+model_parameters(model = cloak_rstn, test = c("pd", "bf"), null = 0) |> 
+  display()
+```
+
+
+
+
+<div class="infobox">
+  `r info()` **Bayesian models are based on sampling**
+
+Bayesian estimation relies on sampling from the posterior distribution so your results will differ from mine. Therefore, the interpretation below is based on these model parameters:
+
+```{r echo = F, results = "hide"}
+cloak_rstn <- stan_glm(mischief ~ cloak,
+                      data = cloak_tib,                      
+                      prior = normal(location = 2, scale = 1.2),
+                      prior_intercept = normal(location = 2, scale = 0.7))
+cloak_rstn_par <- model_parameters(model = cloak_rstn, test = c("pd", "bf"), null = 0)
+```
+
+```{r echo = F}
+display(cloak_rstn_par)
+```
+
+
+</div>
+
+
+The Bayes factor is `r report_bf(cloak_rstn_par)`. This value means that the data are `r report_value(report_bf(cloak_rstn_par, as_is = T))` times as probable under the alternative hypothesis as under the null. In other words, we should shift our belief towards the alternative hypothesis by a factor of `r report_value(report_bf(cloak_rstn_par, as_is = T))`. Remembering that a Bayes factor of 1 means that the data are equally probable under the alternative hypothesis as under the null, the value here suggests that we should not change our prior beliefs by any meaningful amount. There is no evidence for the hypothesis that invisibility cloaks lead to mischief. Also, remember to check the column labelled Prior to make sure that the distributions match what you wanted to specify!
+ 	
+The Bayesian estimate, assuming that the alternative hypothesis is true, of the difference between means is `r value_from_ez(cloak_rstn_par, value = "Median", row = 2)` with a Bayesian 95% credible interval ranging from `r value_from_ez(cloak_rstn_par, value = "CI_low", row = 2)` to `r value_from_ez(cloak_rstn_par, value = "CI_high", row = 2)`. This difference reflects the cloak group relative to the no cloak group. That is, there are typically `r value_from_ez(cloak_rstn_par, value = "Median", row = 2)` more mischievous acts when an invisibility cloak is worn. The credible interval suggests that, assuming that the effect exists, the population value of this difference will be between `r value_from_ez(cloak_rstn_par, value = "CI_low", row = 2)` and `r value_from_ez(cloak_rstn_par, value = "CI_high", row = 2)` with 95% probability. This interval tells us nothing about the null hypothesis (because we assume the effect exists) but helps us to ascertain the likely population value if we're prepared to accept that the effect exists. We can say with 95% probability the number of mischievous acts in those with a cloak will be between `r value_from_ez(cloak_rstn_par, value = "CI_low", row = 2)` more acts (i.e. no effect) and `r value_from_ez(cloak_rstn_par, value = "CI_high", row = 2)` more acts than for those without cloaks.
+
+
+
+
+
+
 <div class="infobox">
   <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
   
@@ -353,7 +533,7 @@ Comparing the output to that of the previous model reveals the effect of the pri
 
 ## Resources/References {data-progressive=FALSE}
 
-```{r, child = "resources.Rmd"}
+```{r, child = "./docs/resources.Rmd"}
 
 ```
 

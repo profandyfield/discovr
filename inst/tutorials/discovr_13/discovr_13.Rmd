@@ -87,7 +87,12 @@ xbox_tib <- discovr::xbox |>
 
 The main example in this tutorial is from [@fielddsr22026], who uses an example of an experimental design with two independent variables (a two-way independent design). The study tested the prediction that subjective perceptions of physical attractiveness become inaccurate after drinking alcohol (the well-known beer-goggles effect). The example is based on research that looked at whether the beer-goggles effect was influenced by the attractiveness of the faces being rated [@chen_moderating_2014]. The logic is that alcohol consumption has been shown to reduce accuracy in symmetry judgements, and symmetric faces have been shown to be rated as more attractive. If the beer-goggles effect is driven by alcohol impairing symmetry judgements then you'd expect a stronger effect for unattractive (asymmetric) faces (because alcohol will affect the perception of asymmetry) than attractive (symmetric) ones. The data well analyse are fictional, but the results mimic the findings of this research paper.
 
-An anthropologist was interested in the effects of facial attractiveness on the beer-goggles effect. She selected 48 participants who were randomly subdivided into three groups of 16: (1) a placebo group drank 500 ml of alcohol-free beer; (2) a low-dose group drank 500 ml of average strength beer (4% ABV); and (3) a high-dose group drank 500 ml of strong beer (7% ABV). Within each group, half (n = 8) rated the attractiveness of 50 photos of unattractive faces on a scale from 0 (pass me a paper bag) to 10 (pass me their phone number) and the remaining half rated 50 photos of attractive faces. The outcome for each participant was their median rating across the 50 photos (These photographs were from a larger pool of 500 that had been pre-rated by a different sample. The 50 photos with the highest and lowest ratings were used.). The data are in [goggles_tib]{.alt}, which contains the variables `facetype` (unattractive vs attractive), `alcohol` (placebo, low dose, high dose) and `attractiveness` (the median rating of each participant out of 10).
+An anthropologist was interested in the effects of facial attractiveness on the beer-goggles effect. She selected 48 participants who were randomly subdivided into three groups of 16: (1) a placebo group drank 500 ml of alcohol-free beer; (2) a low-dose group drank 500 ml of average strength beer (4% ABV); and (3) a high-dose group drank 500 ml of strong beer (7% ABV). Within each group, half (n = 8) rated the attractiveness of 50 photos of unattractive faces on a scale from 0 (pass me a paper bag) to 10 (pass me their phone number) and the remaining half rated 50 photos of attractive faces. The outcome for each participant was their median rating across the 50 photos (These photographs were from a larger pool of 500 that had been pre-rated by a different sample). The 50 photos with the highest and lowest ratings were used.). The data are in [goggles_tib]{.alt}, which contains the variables `facetype` (unattractive vs attractive), `alcohol` (placebo, low dose, high dose) and `attractiveness` (the median rating of each participant out of 10). Her hypotheses about attractiveness ratings were:
+
+> - H~1~: Ratings will be higher for attractive compared to unattractive faces
+> - H~2~: Ratings will be higher after alcohol compared to no alcohol
+> - H~3~: Ratings will be higher after a high dose of alcohol compared to a low dose
+> - H~4~: The effect of alcohol on ratings will depend on the type of face being rated (i.e. moderation)
 
 The model we're fitting is described by the following equation:
 
@@ -95,6 +100,17 @@ $$
 \begin{aligned}
 Y_i & = \hat{b}_0 + \hat{b}_1X_i+ e_i\\
 \text{attractiveness}_i & = \hat{b}_0 + \hat{b}_1\text{facetype}_i + \hat{b}_2\text{alcohol}_i + \hat{b}_3[\text{facetype} \times \text{alcohol}]_i + e_i
+\end{aligned}
+$$
+
+In reality though `alcohol` would be split into two dummy variables that use contrast codes to compare groups. Specifically one contrast would look at all alcohol conditions compared top a placebo, and the second that compared the high alcohol content to the low.
+
+$$
+\begin{aligned}
+Y_i & = \hat{b}_0 + \hat{b}_1X_i+ e_i\\
+\text{attractiveness}_i & = \hat{b}_0 + \hat{b}_1\text{facetype}_i + \hat{b}_2\text{alcohol vs. none}_i +\hat{b}_3\text{high vs. low}_i + \\
+&\quad  \hat{b}_4[\text{facetype} \times \text{alcohol vs. none}]_i + \\
+&\quad \hat{b}_5[\text{facetype} \times \text{high vs. low}]_i + e_i
 \end{aligned}
 $$
 
@@ -146,7 +162,6 @@ levels()
 
 ```{r chk_levels-hint-2}
 # Remember that to access a variable you use:
-
 name_of_tibble$name_of_variable
 ```
 
@@ -275,15 +290,14 @@ Note again that the mean attractiveness is very similar across the doses of alco
 
 ## `r user_visor()` Step 3: Fit the model  [(B)]{.lbl}
 
-Given we have run an experiment with specific hypotheses, our first job is to think about contrasts, or, put another way, enter a gateway to hell. Using a modelling approach we don't *have to* set orthogonal contrasts, but they will help us to test out substantive hypotheses. Let's assume our predictions about attractiveness ratings are:
+Given we have run an experiment with specific hypotheses, our first job is to think about contrasts, or, put another way, enter a gateway to hell. Using a modelling approach we don't *have to* set orthogonal contrasts, but they will help us to test out substantive hypotheses. Let's assume the hypotheses about attractiveness ratings are:
 
-- Ratings will be higher for attractive compared to unattractive faces
-- Ratings will be higher after alcohol compared to no alcohol
-- Ratings will be higher after a high dose of alcohol compared to a low dose
-- The effect of alcohol on ratings will depend on the type of face being rated (i.e. moderation)
+> - H~1~: Ratings will be higher for attractive compared to unattractive faces
+> - H~2~: Ratings will be higher after alcohol compared to no alcohol
+> - H~3~: Ratings will be higher after a high dose of alcohol compared to a low dose
+> - H~4~: The effect of alcohol on ratings will depend on the type of face being rated (i.e. moderation)
 
 For the `alcohol` variable, we might set contrasts similar to the ones in `discovr_12`, by creating two dummy variables using the contrast coding in Table 1. Contrast 1 compares the placebo group to the two alcohol groups combined, and the second contrast compares the low and high alcohol groups. Check back to `discovr_12` to understand these codes.
-
 
 ```{r con_tbl, echo = FALSE, results = 'asis'}
 con_tbl <- tibble(
@@ -357,7 +371,6 @@ contrasts(goggles_tib$alcohol)
 contrasts(goggles_tib$facetype)
 ```
 
-Now check these contrasts
 
 ```{r set_goggle_cons}
 # contrasts for alcohol

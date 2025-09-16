@@ -92,6 +92,8 @@ The main example in this tutorial is about puppies. Here's my dog, Milton, when 
 If that doesn't make you feel better about this tutorial then nothing will because lots of people believe that puppy therapy is good for stress, and that's what this example is all about. Puppy therapy is a form of animal-assisted therapy, in which puppy contact is introduced into the therapeutic process. Despite a common belief that puppy therapy is effective in reducing stress, the evidence base is pretty mixed.
 Imagine we ran a study in which we randomized people into three groups: (1) a control group in which people had no puppy contact; (2) 15 minutes of puppy therapy (a low-dose group); and (3) 30 minutes of puppy contact (a high-dose group). The dependent variable was a measure of happiness ranging from 0 (as unhappy as I can possibly imagine being) to 10 (as happy as I can possibly imagine being).
 
+> - H~1~: Any form of puppy therapy should lead to greater happiness scores than the control
+> - H~2~: Happiness will be greater after 30 minutes of puppy therapy compared to 15 minutes.
 
 
 ## `r bmu()` Step 1: summarize [(A)]{.lbl}
@@ -567,6 +569,10 @@ Now were all in a state of peaceful, inner, puppy calm and tranquillity, let's d
 
 The design of this study mimics a very simple randomized controlled trial (as used in pharmacological, medical and psychological intervention trials) because people are randomized into a control group or groups containing the active intervention (in this case puppies, but in other cases a drug or a surgical procedure). We'd predict that any form of puppy therapy should be better than the control (i.e. higher happiness scores) but also formulate a dose-response hypothesis that as exposure time increases (from 0 minutes to 15 and 30) happiness will increase too.
 
+> - H~1~: Any form of puppy therapy should lead to greater happiness scores than the control
+> - H~2~: Happiness will be greater after 30 minutes of puppy therapy compared to 15 minutes.
+
+
 Remember that we predicted that any form of puppy therapy should be better (i.e. higher happiness scores) than the no puppies condition and that as exposure time increases happiness will increase too (a dose-response hypothesis).
 
 In the chapter, we discovered that we can operationalize these hypotheses as two dummy variables using the contrast coding in Table 2.
@@ -731,7 +737,7 @@ contrasts(puppy_tib$dose) <- contr.helmert(3)
 
 #### `r alien()` Alien coding challenge
 
-Having set the contrasts for `dose` we can fit the model using *exactly* the same code as before. Use the code box to fir the model, get the overall fit using `model_parameters()` and get the model parameters using `model_parameters()`.
+Having set the contrasts for `dose` we can fit the model using *exactly* the same code as before. Use the code box to for the model, get the overall fit using `model_parameters()` and get the model parameters using `model_parameters()`.
 
 ```{r set_dose_contrast}
 puppy_vs_none <- c(-2/3, 1/3, 1/3)
@@ -894,7 +900,7 @@ welch_par <- oneway.test(happiness ~ dose, data = puppy_tib) |>
 ```
 
 
-Note that the error degrees of freedom have been adjusted—you should remember this when you report the values. For these data, Welch's `r report_f(welch_par, df_digits = 2)`, which is non-significant (assuming our $\alpha$ is 0.05). If we were using this test it would imply that the mean happiness did not differ significantly across different puppy therapy groups.
+Note that the error degrees of freedom have been adjusted—you should remember this when you report the values. For these data, Welch's `r report_ez_aov(welch_par, df_digits = 2)`, which is non-significant (assuming our $\alpha$ is 0.05). If we were using this test it would imply that the mean happiness did not differ significantly across different puppy therapy groups.
 
 #### `r alien()` Alien coding challenge
 
@@ -1003,7 +1009,7 @@ puppy_t1way <- WRS2::t1way(happiness ~ dose, data = puppy_tib, nboot = 1000) |>
 ```
 
 
-The overall test suggests a non-significant difference between trimmed means across the therapy groups, `r report_f(puppy_t1way)`. The *post hoc* tests (which we should ignore anyway because the overall effect is not significant) show no significant differences between pairs of trimmed means. The value of psyhat ($\hat{\psi}$) and its confidence intervals reflect the difference between trimmed means. Note that the confidence intervals are corrected for the number of tests, but the *p*-values are not. As such, we should ascertain significance from whether or not the confidence intervals cross zero. In this case they all do, which implies that none of the groups are significantly different. This is different to what we found when we did not trim the means (see the earlier model).
+The overall test suggests a non-significant difference between trimmed means across the therapy groups, `r report_ez_aov(puppy_t1way)`. The *post hoc* tests (which we should ignore anyway because the overall effect is not significant) show no significant differences between pairs of trimmed means. The value of psyhat ($\hat{\psi}$) and its confidence intervals reflect the difference between trimmed means. Note that the confidence intervals are corrected for the number of tests, but the *p*-values are not. As such, we should ascertain significance from whether or not the confidence intervals cross zero. In this case they all do, which implies that none of the groups are significantly different. This is different to what we found when we did not trim the means (see the earlier model).
 
 
 

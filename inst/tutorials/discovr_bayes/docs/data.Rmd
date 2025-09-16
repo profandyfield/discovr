@@ -7,13 +7,58 @@ output: learnr::tutorial
 To work *outside of this tutorial* you need to download the following data file:
 
 * [album_sales.csv](https://www.discovr.rocks/csv/album_sales.csv)
+* [invisibility.csv](https://www.discovr.rocks/csv/invisibility.csv)
+* [goggles.csv](https://www.discovr.rocks/csv/goggles.csv)
+* [puppies.csv](https://www.discovr.rocks/csv/puppies.csv)
+* [puppy_rct.csv](https://www.discovr.rocks/csv/puppy_rct.csv)
 
-Set up an `r rstudio()` project in the way that [I recommend in this video](https://youtu.be/mqT7c17tofE?si=R0aSApz66fGQKESl), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r quarto()` document:
+Set up an `r rstudio()` project in the way that [I recommend in this video](https://youtu.be/mqT7c17tofE?si=R0aSApz66fGQKESl), and save the data files to the folder within your project called [data]{.alt}. To load the first datasetpPlace this code in the first code chunk in your `r quarto()` document:
 
 ```{r, eval=FALSE}
 album_tib <- here::here("data/album_sales.csv") |> read_csv()
 ```
 
+To load the invisibility data use this code:
 
+```{r, eval=FALSE}
+cloak_tib <- cloak_tib |> 
+  mutate(
+    cloak = as_factor(cloak)
+  )
+```
 
+To load the beer goggles data use this code:
+
+```{r, eval=FALSE}
+goggles_tib <- here::here("data/goggles.csv") |>
+  readr::read_csv() |>
+  dplyr::mutate(
+    facetype = as_factor(facetype),
+    alcohol = as_factor(alcohol)
+  )
+```
+
+This code reads in the data and converts the variables `alcohol` and `facetype` to factors (categorical variable). 
+
+To load the puppy therapy data use this code:
+
+```{r, eval=FALSE}
+puppy_tib <- here::here("data/puppies.csv") |> 
+  read_csv() |> 
+  dplyr::mutate(
+    dose = as_factor(dose) |> fct_relevel("No puppies", "15 mins", "30 mins")
+  )
+```
+
+To load the puppy therapy data that also measures pre-treatment happiness use this code:
+
+```{r, eval=FALSE}
+puptreat_tib <- here::here("data/puppy_rct.csv") |>
+  read_csv() |>
+  mutate(
+    dose = as_factor(dose) |> fct_relevel("No puppies", "15 mins", "30 mins")
+  )
+```
+
+For both puppy therapy datasets, the code reads in the data and converts the variable `dose` to a factor (categorical variable) and manually sets the order of the levels to be "No puppies", "15 mins", and "30 mins".
 

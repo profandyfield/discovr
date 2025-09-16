@@ -9,7 +9,7 @@ output: learnr::tutorial
 # Create bib file for R packages
 
 tidylist <- c('tidyverse', 'dplyr', 'ggplot2', 'readr', 'tibble')
-easylist <- c("easystats", 'bayestestR', "insight", "performance", "parameters")
+easylist <- c("easystats", 'bayestestR', "datawizard", "insight", "parameters")
 otherlist <- c('here', 'rstanarm')
 
 here::here("inst/tutorials/discovr_bayes/packages.bib") |>
@@ -33,8 +33,8 @@ It also uses these packages from:
 ### easystats
 
 - `bayesR` [@R-bayestestR; bayestestR2019]
+- `datawizard` [@R-datawizard; @datawizard2022]
 - `insight` [@R-insight]
-- `performance` [@R-performance]
 - `parameters` [@R-parameters; @parameters2020]
  
 ### tidyverse 

@@ -9,7 +9,7 @@ output:
     highlight: "kate"
     css: ./css/discovr_style_future.css
 runtime: shiny_prerendered
-description: "Bayesian taster tutorial. This tutorial offers a taster of Bayesian statistics by showing how to conduct various analyses from other tutorials within a Bayesian framework (mainly using default priors). We also look at Bayes factors."
+description: "Bayesian taster tutorial. This tutorial offers a taster of Bayesian statistics by showing how to estimate models from other tutorials within a Bayesian framework using `rstanarm`. We also look at Bayes factors. The tutorial includes five examples of linear models: (1) predicting a continuous outcome from several continuous predictors; (2) comparing two means; (3) comparing multiple means; (4) comparing means adjusted for a covariate (ANCOVA); and (5) predicting a continuous outcome from two continuous predictors (a factorial design)."
 bibliography: [discovr_bayes.bib, packages.bib]
 ---
 
@@ -27,9 +27,9 @@ library(learnr)
 library(htmltools)
 #easystats
 library(bayestestR)
+library(datawizard)
 library(insight)
 library(parameters)
-library(performance)
 #tidyverse
 library(dplyr)
 library(ggplot2)
@@ -47,7 +47,8 @@ source("./www/discovr_helpers.R")
 album_tib <- discovr::album_sales
 cloak_tib <- discovr::invisibility_cloak
 puppy_tib <- discovr::puppies
-#puptreat_tib <- discovr::puptreat_tib
+puptreat_tib <- discovr::puppy_rct
+goggles_tib <- discovr::goggles
 
 # get plot aesthetics
 line_width <- 1
@@ -678,9 +679,9 @@ Just to remind you, the [null = 0]{.alt} will give us the Bayes factors for each
 
 We have three parameters to think about , what were our expectations before we collected the data?
 
-- `Intercept`: the intercept represents mean happiness in the no puppy groups. Let’s say we know that our happiness scale typically has a mean of about 4 and a standard deviation of about 1. A reasonable prior might be a normal distribution centred on 4 with a standard deviation of 1. This prior (Figure 3, bottom) represents a belief that the mean in the no puppy group cannot be less than about 1 (end of the left tail) or more than 7 (end of the right tail) and will most likely be around 4. These beliefs seem reasonable given happiness is measured on a 10-point scale and you would not expect the mean value to be close to either extreme.
-- `Therapy vs no puppies`: imagine that previous work suggests that puppy therapy typically increases happiness by 2 points on this 10-point scale then it’s reasonable to centre the prior on this value, but how wide should the distribution be? Let’s assume that we again will use a normal distribution as the prior, then plotting different curves is a good way land on values that make sense. Figure 3 (top left) shows a prior distribution that is centred at 2 and ranges from about -4 to 8. Most of the distribution lies above zero, so we believe that puppy therapy will most likely have a positive effect; however, because some of it lies below zero we are also open to the possibility that puppy therapy might reduce happiness. In this sense, this prior is quite weak: we are prepared to believe puppy therapy might reduce happiness by as much as 4 on our 10-point scale, or increase it by as much as 8, although most of the mass of the distribution lies between about −1 and 5 (we think values outside of this are very unlikely). This ‘weakness’ is reflected in a relatively wide distribution.
-•	`30 minutes vs 15 minutes`: the ‘new’ feature of our study was to vary the dose of puppy therapy. Let’s again use a normal distribution as the prior. Imagine we have no past information about whether longer therapy sessions improve happiness, but we planned the study because we think they will. Given that therapy seems to work, we are confident that a longer dose will, at the very least be as effective as a short dose. Therefore, we’re expecting the difference between the long and short dose to be at least 0. However, we don’t expect the effect to be massive: perhaps a 1-point increase on our 10-point scale. Figure 3 (top right) shows a prior distribution that is centred at 1 with a standard deviation of 0.5. The bulk of the distribution falls between 0 and 2. Almost all the distribution lies above zero, reflecting our belief that in increased dose will almost certainly have a positive effect on happiness. Also, almost all the distribution lies below 2, reflecting our belief that a long dose is unlikely to improve happiness (compared to a short dose) by more than 2 points on our 10-point scale. This prior is quite strong: we are only prepared to believe that a long dose will improve happiness by between 1 and 2 points on the scale. This ‘strength’ is reflected in a narrow distribution.
+- `Intercept`: the intercept represents mean happiness in the no puppy groups. Let's say we know that our happiness scale typically has a mean of about 4 and a standard deviation of about 1. A reasonable prior might be a normal distribution centred on 4 with a standard deviation of 1. This prior (Figure 3, bottom) represents a belief that the mean in the no puppy group cannot be less than about 1 (end of the left tail) or more than 7 (end of the right tail) and will most likely be around 4. These beliefs seem reasonable given happiness is measured on a 10-point scale and you would not expect the mean value to be close to either extreme.
+- `Therapy vs no puppies`: imagine that previous work suggests that puppy therapy typically increases happiness by 2 points on this 10-point scale then it's reasonable to centre the prior on this value, but how wide should the distribution be? Let's assume that we again will use a normal distribution as the prior, then plotting different curves is a good way land on values that make sense. Figure 3 (top left) shows a prior distribution that is centred at 2 and ranges from about -4 to 8. Most of the distribution lies above zero, so we believe that puppy therapy will most likely have a positive effect; however, because some of it lies below zero we are also open to the possibility that puppy therapy might reduce happiness. In this sense, this prior is quite weak: we are prepared to believe puppy therapy might reduce happiness by as much as 4 on our 10-point scale, or increase it by as much as 8, although most of the mass of the distribution lies between about −1 and 5 (we think values outside of this are very unlikely). This 'weakness' is reflected in a relatively wide distribution.
+•	`30 minutes vs 15 minutes`: the 'new' feature of our study was to vary the dose of puppy therapy. Let's again use a normal distribution as the prior. Imagine we have no past information about whether longer therapy sessions improve happiness, but we planned the study because we think they will. Given that therapy seems to work, we are confident that a longer dose will, at the very least be as effective as a short dose. Therefore, we're expecting the difference between the long and short dose to be at least 0. However, we don't expect the effect to be massive: perhaps a 1-point increase on our 10-point scale. Figure 3 (top right) shows a prior distribution that is centred at 1 with a standard deviation of 0.5. The bulk of the distribution falls between 0 and 2. Almost all the distribution lies above zero, reflecting our belief that in increased dose will almost certainly have a positive effect on happiness. Also, almost all the distribution lies below 2, reflecting our belief that a long dose is unlikely to improve happiness (compared to a short dose) by more than 2 points on our 10-point scale. This prior is quite strong: we are only prepared to believe that a long dose will improve happiness by between 1 and 2 points on the scale. This 'strength' is reflected in a narrow distribution.
 
 Formally, our priors are:
 
@@ -727,7 +728,7 @@ b1_gg + b2_gg + b0_gg + plot_layout(nrow = 2)
 
 #### `r robot()` Code example
 
-To fit this model with the priors described above we'd use this code (see the first section for more detail)"
+To fit this model with the priors described above we'd use this code (see the first section for more detail).
 
 ```{r eval = FALSE}
 puppy_rtb <- stan_glm(happiness ~ dose,
@@ -746,6 +747,7 @@ Use the code box to fit the model.
 puppy_vs_none <- c(-2/3, 1/3, 1/3)
 long_vs_short <- c(0, -1/2, 1/2)
 contrasts(puppy_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+contrasts(puptreat_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
 ```
 
 ```{r puppy_bayes, exercise = TRUE, exercise.lines = 10, exercise.setup = "set_dose_contrast"}
@@ -790,7 +792,7 @@ display(puppy_par)
 
 </div>
 
-By comparing your output to the frequentest model in `discovr_11`, which is reproduced below, we can see the effect of the priors on the parameter estimates. The estimates for the intercept and effect of puppy therapy don't change a lot because our priors were fairly weak so the data estimates are driven by the data. However, the estimate for the effect of a long vs. short dose has decreased from `r value_from_ez(puppy_par_rf, row = 3)` to `r value_from_ez(puppy_par, row = 3, value = "Median")` and the credibility is quite narrow. This reflects the strong prior (especially because our sample is small so there is not a lot of data to throw in the mix). Our prior was centred on 1, but the data showed a mean difference of  `r value_from_ez(puppy_par_rf, row = 3)`, so the prior has dragged the estimate from the data down. The credible interval is narrow because the prior has narrowed the posterior distribution. With huge datasets a strong prior wouldn’t have such a dramatic effect, but this illustrates how Bayesian estimates contain information about both the prior and the data.
+By comparing your output to the frequentest model in `discovr_11`, which is reproduced below, we can see the effect of the priors on the parameter estimates. The estimates for the intercept and effect of puppy therapy don't change a lot because our priors were fairly weak so the data estimates are driven by the data. However, the estimate for the effect of a long vs. short dose has decreased from `r value_from_ez(puppy_par_rf, row = 3)` to `r value_from_ez(puppy_par, row = 3, value = "Median")` and the credibility is quite narrow. This reflects the strong prior (especially because our sample is small so there is not a lot of data to throw in the mix). Our prior was centred on 1, but the data showed a mean difference of  `r value_from_ez(puppy_par_rf, row = 3)`, so the prior has dragged the estimate from the data down. The credible interval is narrow because the prior has narrowed the posterior distribution. With huge datasets a strong prior wouldn't have such a dramatic effect, but this illustrates how Bayesian estimates contain information about both the prior and the data.
 
 For any dose of puppies compared to none the Bayes Factor is `r report_bf(puppy_par, row = 2)`, which means that the data are `r report_bf(puppy_par, row = 2, as_is = T) |>  report_value()` times more likely under the alternative hypothesis than under the null. We should shift our belief about puppy therapy being effective (relative to not) by a factor of about `r report_bf(puppy_par, row = 2, as_is = T) |>  report_value()`. This is moderate evidence for our first hypothesis. For a long verses short dose of puppies the Bayes factor is `r report_bf(puppy_par, row = 3)`, which means that the data are `r report_bf(puppy_par, row = 3, as_is = T) |>  report_value()` times more likely under the alternative hypothesis than under the null. We should shift our belief about a longer the duration of therapy being better than a shorter dose by a factor of about `r report_bf(puppy_par, row = 3, as_is = T) |>  report_value()`. Again, it is moderate evidence for our second hypothesis.
 
@@ -800,11 +802,465 @@ display(puppy_par_rf)
 ```
 
 
+## `r user_astronaut()` Adjusting means for a covariate [(C)]{.lbl}
+
+Chapter 12 (`discovr_12`) of @fielddsr22026 shows that sometimes people include a mix of continuous and categorical predictors in a linear model hoping to compare the means while adjusting for the covariate. Specifically, we developed the example of the efficacy of puppy therapy by including a baseline measure of happiness. The hypothesis is:
+
+> - H~1~: Any form of puppy therapy should lead to greater post-treatment happiness scores than the control at average levels of pre-therapy happiness
+> - H~2~: Post-treatment happiness scores will be greater after 30 minutes of puppy therapy compared to 15 minutes at average levels of pre-therapy happiness.
+
+The model we want to fit quantifies the effect of our treatment (`dose`) at average levels of pre-treatment happiness:
+
+$$
+\begin{aligned}
+\text{happy (post)}_i = \ &\hat{b}_0 + \hat{b}_1\text{happy (pre)}_i + \hat{b}_2\text{dose}_i  + e_i
+\end{aligned}
+$$
+
+This is a linear model, so as ever we we can adapt the code from the previous sections to fit a Bayesian variant using `stan_glm()` from [rstanarm]{.pkg} and extract information about the posterior distribution using `model_parameters()`. 
+
+### `r user_visor()` Explore the data [(B)]{.lbl}
+
+Let's re-acquaint ourselves with the data.
+
+#### `r alien()` Alien coding challenge
+
+View the data in [puptreat_tib]{.alt}.
+
+```{r rct_tib, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r rct_tib-solution}
+puptreat_tib
+```
+
+Note that there are four variables:
+
+The data are in [puptreat_tib]{.alt} and contain these variables
+
+- `id`: the participant's id code
+- `dose`: No puppies, 15 minutes, or 30 minutes
+- `pre_happy` each person's happiness on a scale from 0-10 *before* therapy
+- `post_happy`: the person's happiness on a scale from 0-10 *after* therapy
+
+The variable `dose` is a factor (categorical variable), so having read the data file and converted it to a factor it's a good idea to check that the levels of `dose` are in the order that we want: No puppies (control), 15 minutes, 30 minutes.
+
+#### `r robot()` Code example
+
+Check the levels of the variable `dose` within the tibble [puppy_tib]{.alt} we'd execute
+
+```{r chk_levels2, exercise = TRUE, exercise.lines = 2}
+levels(puptreat_tib$dose)
+```
+
+Because I have set up the data within this tutorial the levels are ordered as we want them: "No puppies", "15 mins", and "30 mins". 
+
+#### `r alien()` Alien coding challenge
+
+Let's remind ourselves of the group means. Compute descriptive statistics of post-treatment happiness scores split by the therapy group to which a person belonged.
+
+```{r rct_sum, exercise = TRUE, exercise.lines = 7}
+
+```
+
+```{r rct_sum-hint-1}
+# Start by piping the tibble into the group_by function to group output by dose:
+puptreat_tib |> 
+  group_by(dose)
+# Now pipe the results into the describe_distribution() function
+```
+
+```{r rct_sum-hint-2}
+# Pipe the results into the describe_distribution() function
+puptreat_tib |> 
+  group_by(dose) |> 
+  describe_distribution(select = "post_happy")
+# use a function to display the table nicely
+```
 
 
+```{r rct_sum-solution}
+# Solution
+puptreat_tib |> 
+  group_by(dose) |> 
+  describe_distribution(select = "post_happy") |> 
+  display()
+```
 
 
+#### `r alien()` Alien coding challenge
 
+Let's remind ourselves of the overall mean happiness before treatment. Compute descriptive statistics of pre-treatment happiness (do not split by treatment group).
+
+```{r pre_sum, exercise = TRUE, exercise.lines = 7}
+
+```
+
+
+```{r pre_sum-solution}
+# Solution
+puptreat_tib |> 
+  describe_distribution(select = "pre_happy") |> 
+  display()
+```
+
+
+### `r user_visor()` Set contrasts [(B)]{.lbl}
+
+#### `r robot()` Code example
+
+In `discovr_12`, we also set contrasts to test our two hypotheses using this code (which is the same as in the previous section except for the name of the tibble):
+
+```{r eval = FALSE}
+puppy_vs_none <- c(-2/3, 1/3, 1/3)
+long_vs_short <- c(0, -1/2, 1/2)
+contrasts(puptreat_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+contrasts(puptreat_tib$dose) # This line prints the contrast weights so we can check them
+```
+
+#### `r alien()` Alien coding challenge
+
+Use the code from the example to set the contrasts for `dose`.
+
+```{r set_contrast2, exercise = TRUE}
+     
+               
+```
+
+```{r set_contrast2-hint-1}
+# Set the weights for the first contrast using the example code:
+puppy_vs_none <- c(-2/3, 1/3, 1/3)
+# Now set the weights for the second contrast
+```
+
+```{r set_contrast2-hint-2}
+# Set the weights for the second contrast:
+long_vs_short <- c(0, -1/2, 1/2)
+# Next, set the two contrasts to the dose variable
+```
+
+```{r set_contrast2-hint-3}
+# Set the two contrasts to the dose variable:
+contrasts(puptreat_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+# Finally, view the weights to check they are set correctly
+```
+
+```{r set_contrast2-hint-4}
+# Put it all together:
+puppy_vs_none <- c(-2/3, 1/3, 1/3)
+long_vs_short <- c(0, -1/2, 1/2)
+contrasts(puptreat_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+contrasts(puptreat_tib$dose) # This line prints the contrast weights so we can check them
+```
+
+### `r user_astronaut()` Fit the model [(C)]{.lbl}
+
+Ordinarily it's a good idea to set your own priors; however, for this example let's stick with the defaults and let the data do the work.
+
+#### `r robot()` Code example
+
+To fit this model with default priors use this code (see the first section for more detail).
+
+```{r eval = FALSE}
+puptreat_rtb <- stan_glm(post_happy ~ pre_happy + dose, data = puptreat_tib)
+model_parameters(puptreat_rtb, test = c("pd", "bf"), null = 0) |> 
+  display()
+```
+
+#### `r alien()` Alien coding challenge
+
+Use the code box to fit the model.
+
+```{r rct_bayes, exercise = TRUE, exercise.lines = 10, exercise.setup = "set_dose_contrast"}
+
+```
+
+```{r rct_bayes-solution}
+puptreat_rtb <- stan_glm(post_happy ~ pre_happy + dose, data = puptreat_tib)
+model_parameters(puptreat_rtb, test = c("pd", "bf"), null = 0) |> 
+  display()
+```
+
+
+<div class="infobox">
+  `r info()` **Bayesian models are based on sampling**
+
+Bayesian estimation relies on sampling from the posterior distribution so your results will differ from mine. Therefore, the interpretation below is based on these model parameters:
+
+```{r echo = F, results = "hide"}
+contrasts(puptreat_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+puptreat_rtb <- stan_glm(post_happy ~ pre_happy + dose, data = puptreat_tib)
+rct_par <- model_parameters(puptreat_rtb, test = c("pd", "bf"), null = 0)
+rct_par_rf <- lm(post_happy ~ pre_happy + dose, data = puptreat_tib) |> model_parameters()
+```
+
+```{r echo = F}
+display(rct_par)
+```
+
+
+</div>
+
+By comparing your output to the frequentest model in `discovr_12`, which is reproduced below, we can see the effect of the priors on the parameter estimates. The Bayesian parameter estimates are basically identical to the frequentest ones because the default priors are very weak and so the data drives estimation (in frequentest models estimation is based entirely on the data). The big difference is that the 95% credible intervals have a different (and more useful) interpretation to frequentest confidence intervals; that is, they contain the true estimate with 0.95 probability. For example, with 0.95 probability, the true relationship between pre- and post-treatment happiness is between `r value_from_ez(rct_par, row = 2, value = "CI_low")` (i.e. a strong relationship) and `r value_from_ez(rct_par, row = 2, value = "CI_high")` (any shift along the 10-point happiness scale pre-treatment is matched by a very similar shift in post-treatment happiness) with 95% probability. Similarly, the increase in happiness associated with therapy (compared to none) lies between `r value_from_ez(rct_par, row = 3, value = "CI_low")` (not much change at all) and `r value_from_ez(rct_par, row = 3, value = "CI_high")` (quite a jump up the 10-point happiness scale) with 95% probability.
+
+The Bayes Factor for puppy therapy compared to none is `r report_bf(rct_par, row = 3)` suggesting that we shift our belief about puppy therapy affecting happiness away from the null by a factor of `r report_bf(rct_par, row = 3, as_is = T) |>  report_value()`. This is very weak evidence. For the contrast comparing long to short durations of puppy therapy the Bayes factor is `r report_bf(rct_par, row = 4)`; because this value is less than 1 it suggests we shift our belief towards the null; that is, believe more strongly that the duration of puppy exposure makes no difference to post-treatment happiness at average levels of pre-treatment happiness.
+
+
+```{r echo = F}
+display(rct_par_rf)
+```
+
+## `r user_astronaut()` Factorial designs [(C)]{.lbl}
+
+The final example uses a factorial design, which was discussed in Chapter 13 (`discovr_13`) of @fielddsr22026. In that chapter/tutorial we used an example of an experimental design with two independent variables (a two-way independent design). The study tested the prediction that subjective perceptions of physical attractiveness become inaccurate after drinking alcohol (the well-known beer-goggles effect). An anthropologist was interested in the effects of facial attractiveness on the beer-goggles effect. She selected 48 participants who were randomly subdivided into three groups of 16: (1) a placebo group drank 500 ml of alcohol-free beer; (2) a low-dose group drank 500 ml of average strength beer (4% ABV); and (3) a high-dose group drank 500 ml of strong beer (7% ABV). Within each group, half (n = 8) rated the attractiveness of 50 photos of unattractive faces on a scale from 0 (pass me a paper bag) to 10 (pass me their phone number) and the remaining half rated 50 photos of attractive faces. The outcome for each participant was their median rating across the 50 photos (These photographs were from a larger pool of 500 that had been pre-rated by a different sample). The 50 photos with the highest and lowest ratings were used.).
+
+ The hypotheses  are:
+
+> - H~1~: Ratings will be higher for attractive compared to unattractive faces
+> - H~2~: Ratings will be higher after alcohol compared to no alcohol
+> - H~3~: Ratings will be higher after a high dose of alcohol compared to a low dose
+> - H~4~: The effect of alcohol on ratings will depend on the type of face being rated (i.e. moderation)
+
+A simplified version of the model we're fitting is described by the following equation:
+
+$$
+\begin{aligned}
+Y_i & = \hat{b}_0 + \hat{b}_1X_i+ e_i\\
+\text{attractiveness}_i & = \hat{b}_0 + \hat{b}_1\text{facetype}_i + \hat{b}_2\text{alcohol}_i + \hat{b}_3[\text{facetype} \times \text{alcohol}]_i + e_i
+\end{aligned}
+$$
+
+In reality though `alcohol` would be split into two dummy variables that use contrast codes to compare groups. Specifically one contrast would look at all alcohol conditions compared top a placebo, and the second that compared the high alcohol content to the low.
+
+$$
+\begin{aligned}
+Y_i & = \hat{b}_0 + \hat{b}_1X_i+ e_i\\
+\text{attractiveness}_i & = \hat{b}_0 + \hat{b}_1\text{facetype}_i + \hat{b}_2\text{alcohol vs. none}_i +\hat{b}_3\text{high vs. low}_i + \\
+&\quad  \hat{b}_4[\text{facetype} \times \text{alcohol vs. none}]_i + \\
+&\quad \hat{b}_5[\text{facetype} \times \text{high vs. low}]_i + e_i
+\end{aligned}
+$$
+This is a linear model, so as ever we we can adapt the code from the previous sections to fit a Bayesian variant using `stan_glm()` from [rstanarm]{.pkg} and extract information about the posterior distribution using `model_parameters()`. 
+
+### `r user_visor()` Explore the data [(B)]{.lbl}
+
+Let's re-acquaint ourselves with the data.
+
+
+#### `r alien()` Alien coding challenge
+
+View the data in [goggles_tib]{.alt}.
+
+```{r goggles_tib, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r goggles_tib-solution}
+goggles_tib
+```
+
+Note that there are four variables: 
+
+- `id`: Participant's id
+- `facetype`: Whether the participant rated photos of 'attractive' or 'unattractive' faces
+- `alcohol`: The alcohol group to which the participant was assigned. Either a placebo group (who drank 500 ml of alcohol-free beer), a low-dose group (who drank 500 ml of 4% ABV beer), or a high-dose group (who drank 500 ml of 7% ABV beer)
+- `attractiveness`: the median rating of the attractiveness of 50 photos from 0 (pass me a paper bag) to 10 (pass me their phone number)
+
+#### `r alien()` Alien coding challenge
+
+Using what you've learnt in previous tutorials check the order of the levels of the variables `facetype` and `alcohol`.
+
+```{r chk_levels_gog, exercise = TRUE, exercise.lines = 3}
+
+```
+
+```{r chk_levels_gog-hint-1}
+# use this function:
+levels()
+```
+
+```{r chk_levels_gog-hint-2}
+# Remember that to access a variable you use:
+name_of_tibble$name_of_variable
+```
+
+```{r chk_levels_gog-solution}
+levels(goggles_tib$facetype)
+levels(goggles_tib$alcohol)
+```
+
+Because I have set up the data within this tutorial you should see that the levels are listed in the order that we want them when you execute the code.
+
+
+#### `r alien()` Alien coding challenge
+
+Use what you already know to create a table of descriptive statistics (including 95% confidence intervals) of attractiveness scores split by the type of face in the stimulus and the alcohol consumption. Print this object rounding to 2 decimal places.
+
+```{r goggles_sum, exercise = TRUE, exercise.lines = 7}
+
+```
+
+```{r goggles_sum-hint-1}
+# Start by piping the tibble into the group_by function to group output by facetype and alcohol:
+goggles_tib |> 
+  group_by(dose)
+# Now pipe the results into the describe_distribution() function
+```
+
+```{r goggles_sum-hint-2}
+# Pipe the results into the describe_distribution() function
+goggles_tib |> 
+  group_by(facetype, alcohol) |> 
+  describe_distribution()
+# use a function to display the table to 2dp
+```
+
+
+```{r goggles_sum-solution}
+# Solution
+goggles_tib |> 
+  group_by(facetype, alcohol) |> 
+  describe_distribution() |> 
+  data_remove("Variable") |> 
+  display()
+```
+
+
+Note that the mean attractiveness is very similar across the doses of alcohol for the attractive faces, but varies in the unattractive faces.
+
+
+### `r user_visor()` Set contrasts [(B)]{.lbl}
+
+In `discovr_12`, we set contrasts to test our two hypotheses using this code (which is the same as in the previous section except for the name of the tibble):
+
+#### `r robot()` Code example
+
+In `discovr_13`, we  set contrasts to test our hypotheses using this code:
+
+```{r, eval = F}
+# contrasts for alcohol
+alcohol_vs_none <- c(-2/3, 1/3, 1/3)
+high_vs_low <- c(0, -1/2, 1/2)
+contrasts(goggles_tib$alcohol) <- cbind(alcohol_vs_none, high_vs_low)
+
+# contrasts for facetype
+att_vs_unatt <- c(-1/2, 1/2)
+contrasts(goggles_tib$facetype) <- att_vs_unatt
+```
+
+The first three lines set the contrasts for the variable `alcohol` and the last two set the contrast for `facetype`.
+
+#### `r alien()` Alien coding challenge
+
+Try setting the contrasts described above and check that they have been set correctly.
+
+
+```{r goggles_con, exercise = TRUE, exercise.lines = 12}
+
+```
+
+```{r goggles_con-hint-1}
+# contrasts for alcohol
+alcohol_vs_none <- c(-2/3, 1/3, 1/3)
+high_vs_low <- c(0, -1/2, 1/2)
+contrasts(goggles_tib$alcohol) <- cbind(alcohol_vs_none, high_vs_low)
+
+# contrasts for facetype
+att_vs_unatt <- c(-1/2, 1/2)
+contrasts(goggles_tib$facetype) <- att_vs_unatt
+# now use contrasts() to check the contrasts for each variable
+```
+
+
+```{r goggles_con-solution}
+# contrasts for alcohol
+alcohol_vs_none <- c(-2/3, 1/3, 1/3)
+high_vs_low <- c(0, -1/2, 1/2)
+contrasts(goggles_tib$alcohol) <- cbind(alcohol_vs_none, high_vs_low)
+
+# contrasts for facetype
+att_vs_unatt <- c(-1/2, 1/2)
+contrasts(goggles_tib$facetype) <- att_vs_unatt
+
+# check contrasts
+contrasts(goggles_tib$alcohol) 
+contrasts(goggles_tib$facetype)
+```
+
+```{r set_goggle_cons, echo = F}
+# contrasts for alcohol
+alcohol_vs_none <- c(-2/3, 1/3, 1/3)
+high_vs_low <- c(0, -1/2, 1/2)
+contrasts(goggles_tib$alcohol) <- cbind(alcohol_vs_none, high_vs_low)
+
+# contrasts for facetype
+att_vs_unatt <- c(-1/2, 1/2)
+contrasts(goggles_tib$facetype) <- att_vs_unatt
+```
+
+### `r user_astronaut()` Fit the model [(C)]{.lbl}
+
+Again, I'd stress to use this section as a way to ease into proper Bayesian analysis with a view to fitting models using informative priors like we did in earlier sections, but for now we'll use uninformative priors.
+
+#### `r robot()` Code example
+
+To fit this model with default priors use this code (see the first section for more detail).
+
+```{r eval = FALSE}
+goggles_rtb <- stan_glm(attractiveness ~ alcohol*facetype, data = goggles_tib)
+model_parameters(goggles_rtb, test = c("pd", "bf"), null = 0) |> 
+  display()
+```
+
+#### `r alien()` Alien coding challenge
+
+Use the code box to fit the model.
+
+```{r goggle_bayes, exercise = TRUE, exercise.lines = 10, exercise.setup = "set_goggle_cons"}
+
+```
+
+```{r goggle_bayes-solution}
+goggles_rtb <- stan_glm(attractiveness ~ alcohol*facetype, data = goggles_tib)
+model_parameters(goggles_rtb, test = c("pd", "bf"), null = 0) |> 
+  display()
+```
+
+<div class="infobox">
+  `r info()` **Bayesian models are based on sampling**
+
+Bayesian estimation relies on sampling from the posterior distribution so your results will differ from mine. Therefore, the interpretation below is based on these model parameters:
+
+```{r echo = F, results = "hide"}
+# contrasts for alcohol
+alcohol_vs_none <- c(-2/3, 1/3, 1/3)
+high_vs_low <- c(0, -1/2, 1/2)
+contrasts(goggles_tib$alcohol) <- cbind(alcohol_vs_none, high_vs_low)
+
+# contrasts for facetype
+att_vs_unatt <- c(-1/2, 1/2)
+contrasts(goggles_tib$facetype) <- att_vs_unatt
+
+goggles_rtb <- stan_glm(attractiveness ~ alcohol*facetype, data = goggles_tib)
+gogg_par <- model_parameters(goggles_rtb, test = c("pd", "bf"), null = 0)
+gogg_par_rf <- lm(attractiveness ~ alcohol*facetype, data = goggles_tib) |> model_parameters()
+```
+
+```{r echo = F}
+display(gogg_par)
+```
+
+
+</div>
+
+The frequentest model from `discovr_13` is reproduced below. The Bayesian parameter estimates based on default priors are almost identical to the frequentest ones because with weak default priors, the data drives estimation. The 95% credible intervals (unlike confidence intervals) contain the true estimate with 0.95 probability. That is, with 0.95 probability, the difference in ratings between attractive and unattractive faces is between `r value_from_ez(gogg_par, row = 4, value = "CI_low")` and `r value_from_ez(gogg_par, row = 4, value = "CI_high")` with 95% probability.
+
+The Bayes Factor for the first interaction contrast is `r report_bf(gogg_par, row = 5)` suggesting that we shift our belief about alcohol compared to none moderating the effect of `facetype` away from the null by a factor of about `r report_bf(gogg_par, row = 5, as_is = T) |>  report_value()`. For the second contrast it is `r report_bf(gogg_par, row = 6)`, which is close to 1 suggesting that we don't change our beliefs about the null at all.  
+
+```{r echo = F}
+display(gogg_par_rf)
+```
 
 
 <div class="infobox">

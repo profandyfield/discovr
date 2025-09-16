@@ -206,9 +206,14 @@ starting the interactive tutorials.
 - `discovr_19_xmas`: Christmas edition of `discovr_19` to match the
   lecture I give <https://youtu.be/yniFrp8vQLQ?si=DaUVAmAL6sZQ2tkT>.
 - `discovr_bayes`: Bayesian taster tutorial. This tutorial offers a
-  taster of Bayesian statistics by showing how to conduct various
-  analyses from other tutorials within a Bayesian framework (mainly
-  using default priors). We also look at Bayes factors”.
+  taster of Bayesian statistics by showing how to estimate models from
+  other tutorials within a Bayesian framework using `rstanarm`. We also
+  look at Bayes factors. The tutorial includes five examples of linear
+  models: (1) predicting a continuous outcome from several continuous
+  predictors; (2) comparing two means; (3) comparing multiple means; (4)
+  comparing means adjusted for a covariate (ANCOVA); and (5) predicting
+  a continuous outcome from two continuous predictors (a factorial
+  design).
 
 ### Running a tutorial
 

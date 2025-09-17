@@ -1033,7 +1033,7 @@ Adding months to the intercept only model significantly improved the fit, `r rep
 
 </div>
 
-`r user_visor()` Step 4: Evaluate the model [(B)]{.lbl}
+## `r user_visor()` Step 4: Evaluate the model [(B)]{.lbl}
 
 <div class="stepbox">
   `r step()` **Step 4**
@@ -1063,6 +1063,7 @@ model_performance(cosmetic_mlm) |>
 
 
 The intraclass correlation, ICC, is very large indicating that `r value_from_ez(mlm_fit, value = "ICC")` (or `r percent_from_ez(mlm_fit, value = "ICC")`) of the variance in post treatment quality of life is attributable to the clinic at which surgery was conducted. In short, the clinic had a massive effect on post-surgery quality of life. The conditional $R^2$ tells us the proportion of variance attributable to both the fixed and random effects (`r value_from_ez(mlm_fit, value = "R2_conditional")` or `r percent_from_ez(mlm_fit, value = "R2_conditional")`) whereas the marginal $R^2$ tells us the proportion of variance attributable to only the fixed effects `r value_from_ez(mlm_fit, value = "R2_marginal")` or `r percent_from_ez(mlm_fit, value = "R2_marginal")`). The ICC strongly indicates that including clinic as a contextual variable was worthwhile.
+
 
 
 #### `r alien()` Alien coding challenge

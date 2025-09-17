@@ -2,7 +2,7 @@ Type: Package
 Package: discovr
 Title: Interactive Tutorials and Data for "Discovering Statistics Using R
     and RStudio"
-Version: 0.2.2.9023
+Version: 1.0.0
 Language: en-GB
 Authors@R: 
     person("Andy", "Field", , "andyf@sussex.ac.uk", role = c("aut", "cre", "cph"))
@@ -21,7 +21,7 @@ URL: https://www.discovr.rocks, https://github.com/profandyfield/discovr
 BugReports: https://github.com/profandyfield/discovr/issues
 Depends:
     learnr (>= 0.11.4),
-    R (>= 4.2.0)
+    R (>= 4.4.0)
 Imports:
     ggplot2,
     glue,
@@ -30,7 +30,7 @@ Imports:
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

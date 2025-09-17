@@ -29,14 +29,8 @@ have just been taught. The `discovr` package is free and offered to
 support tutors and students using my textbook who want to learn
 <img src="./data-raw/images/r_logo.png" width="18">.
 
-> **NOTE** Over summer 2025 the tutorials within this package are
-> undergoing a major overhaul. While this update is in progress there
-> will be inconsistencies in the look, feel, and code between updated
-> and yet-to-be updated tutorials. For this reason, I recommend
-> installing the CRAN release and not the development version on GitHub.
->
-> Updated tutorials: `discovr_01` to `discover_16`, `discovr_18` and
-> `discovr_19`.
+> **NOTE** Over summer 2025 the tutorials within this package were fully
+> updated (see News).
 
 ## Installing `discovr`
 
@@ -183,18 +177,10 @@ starting the interactive tutorials.
   and at least one other has been manipulated using different entities.
   We look at fitting the models, setting contrasts for the categorical
   predictors, obtaining estimated marginal means, and interaction plots.
-- `discovr_17`: Exploratory Factor Analysis (EFA). Applying factor
-  analysis using the `psych` package. This tutorial uses a fictitious
-  questionnaire (the <img src="./data-raw/images/r_logo.png" width="18">
-  Anxiety Scale, RAQ) with 23 items to show how EFA can be used to
-  identify clusters of items that may, or may not, represent constructs
-  associated with anxiety about using
-  <img src="./data-raw/images/r_logo.png" width="18">. We look at
-  inspecting the correlation matrix, obtaining the Bartlett test and KMO
-  statistics, using parallel analysis to determine the number of factors
-  to extract, extracting factors, rotating the solution nd
-  interpretation of the factors. We also learn to obtain Cronbach’s
-  alpha on each of the subscales.
+- `discovr_17`: Exploratory factor analysis (EFA). This tutorial looks
+  at using exploratory factor analysis in the context of questionnaire
+  design. It covers factor analysis, parallel analysis and reliability
+  analysis using MacDonald’s Omega.”.
 - `discovr_18`: Categorical variables. Entering categorical data,
   contingency tables, associations between categorical variables, the
   chi-square test, standardized residuals, Fisher’s exact test.
@@ -574,9 +560,9 @@ the book’s website.
   influencial case. For details execute `?pubs`.
 - **puppies**: Fictitious data related to whether puppy therapy works.
   For details execute `?puppies`.
-- **puppy_ancova**: Fictitious data related to whether puppy therapy
-  works when you adjust for a person’s baseline happiness. For details
-  execute `?puppy_ancova`.
+- **puppy_rct**: Fictitious data related to whether puppy therapy works
+  when you adjust for a person’s baseline happiness. For details execute
+  `?puppy_rct`.
 - **puppy_love**: Fictitious data related to whether puppy therapy works
   when you adjust for a person’s love of puppies. For details execute
   `?puppy_love`.

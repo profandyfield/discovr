@@ -1,4 +1,4 @@
-# discovr (development version)
+# discovr 1.0.0
 
 ## General
 

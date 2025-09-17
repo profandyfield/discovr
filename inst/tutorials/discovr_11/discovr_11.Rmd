@@ -327,7 +327,16 @@ puppy_dummy_lm <- lm(xxx ~ xxx, data = xxxx)
 puppy_dummy_lm <- lm(happiness ~ dose, data = puppy_tib)
 ```
 
+
+
+<div class="bug">
+  `r bug()` **De-bug**
+
 This code won't appear to have done anything but it has created the model and stored it as [puppy_dummy_lm]{.alt}, meaning we can move onto ...
+
+</div>
+
+
 
 ## `r bmu()` Step 4: Evaluate the model [(A)]{.lbl}
 

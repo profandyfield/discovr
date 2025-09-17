@@ -806,10 +806,10 @@ You need to interpret these plots within the context of scale of measurement. Fo
 
 ###  `r user_astronaut()` Adding random effects to the model  [(C)]{.lbl}
 
-Having got a feel for the data we can finally fit the model. We're going to use the `glmTMB()` function from the [glmTMB package]{.pkg} [@R-glmmTMB; @glmmTMB2017; @glmmTMB2025].^[All of the code will also work with the `lmer()` function from [lme4]{.pkg}]  The `glmTMB()` function takes the following form
+Having got a feel for the data we can finally fit the model. We're going to use the `glmmTMB()` function from the [glmmTMB package]{.pkg} [@R-glmmTMB; @glmmTMB2017; @glmmTMB2025]. (All of the code will also work with the `lmer()` function from [lme4]{.pkg}.)  The `glmmTMB()` function takes the following form:
 
 ```{r, eval = F}
-my_model <- glmTMB:glmTMB(outcome ~ predictor(s) + (random effects), 
+my_model <- glmmTMB:glmmTMB(outcome ~ predictor(s) + (random effects), 
                           data = tibble,
                           family = gaussian()
                           na.action = an action,
@@ -1029,7 +1029,7 @@ mlm_slopes <- estimate_slopes(cosmetic_mlm, trend = "months", by = "reason", ci 
 <div class="reportbox">
   `r pencil()` **Report**`r rproj()`
 
-Adding months to the intercept only model significantly improved the fit, `r report_lrt(mlm_lrt, row = 2)`, adding the variability in slopes (and its covariance with intercepts) significantly improved the fit, `r report_lrt(mlm_lrt, row = 3)`, adding reason did not significantly improve the fit, `r report_lrt(mlm_lrt, row = 4)`, but adding baseline quality of life, `r report_lrt(mlm_lrt, row = 5)`, and the interaction of months and reason did, `r report_lrt(mlm_lrt, row = 6)`.
+Adding `months` to the intercept only model significantly improved the fit, `r report_lrt(mlm_lrt, row = 2)`, adding the variability in slopes (and its covariance with intercepts) significantly improved the fit, `r report_lrt(mlm_lrt, row = 3)`, adding reason did not significantly improve the fit, `r report_lrt(mlm_lrt, row = 4)`, but adding baseline quality of life, `r report_lrt(mlm_lrt, row = 5)`, and the interaction of months and reason did, `r report_lrt(mlm_lrt, row = 6)`.
 
 </div>
 
@@ -1062,7 +1062,7 @@ model_performance(cosmetic_mlm) |>
 ```
 
 
-The intraclass correlation, ICC, is very large indicating that `r value_from_ez(mlm_fit, value = "ICC")` (or `r percent_from_ez(mlm_fit, value = "ICC")`) of the variance in post treatment quality of life is attributable to the clinic at which surgery was conducted. In short, the clinic had a massive effect on post-surgery quality of life. The conditional $R^2$ tells us the proportion of variance attributable to both the fixed and random effects (`r value_from_ez(mlm_fit, value = "R2_conditional")` or `r percent_from_ez(mlm_fit, value = "R2_conditional")`) whereas the marginal $R^2$ tells us the proportion of variance attributable to only the fixed effects `r value_from_ez(mlm_fit, value = "R2_marginal")` or `r percent_from_ez(mlm_fit, value = "R2_marginal")`). The ICC strongly indicates that including clinic as a contextual variable was worthwhile.
+The intraclass correlation, ICC, is very large indicating that `r value_from_ez(mlm_fit, value = "ICC")` (or `r percent_from_ez(mlm_fit, value = "ICC")`) of the variance in post treatment quality of life is attributable to the clinic at which surgery was conducted. In short, the clinic had a massive effect on post-surgery quality of life. The conditional $R^2$ tells us the proportion of variance attributable to both the fixed and random effects (`r value_from_ez(mlm_fit, value = "R2_conditional")`or `r percent_from_ez(mlm_fit, value = "R2_conditional")`) whereas the marginal $R^2$ tells us the proportion of variance attributable to only the fixed effects (`r value_from_ez(mlm_fit, value = "R2_marginal")` or `r percent_from_ez(mlm_fit, value = "R2_marginal")`). The ICC strongly indicates that including clinic as a contextual variable was worthwhile.
 
 
 
@@ -1109,6 +1109,26 @@ model_parameters(cosmetic_mlm) |>
 
 
 We will come back to this table of parameter estimates in the Report Box, but the key finding is the significant interaction between the months since surgery and the reason for surgery. We can tease this interaction apart like we did when we looked at moderation effects by looking at simple slopes; that is, estimate the slope of `months` separately for physical and cosmetic reasons for surgery. We can do this using the `estimate_slopes()` and `estimate_means()` functions from the [modelbased]{.pkg} package.
+
+
+<div class="tip">
+  `r cat_space()` **Tip**
+
+With multilevel models, `model_parameters()` extracts both the fixed nad random effects. However, we can extract *only* the fixed effects by including [effects = "fixed"]{.alt}. For example:
+
+```{r, eval = F, class.source = '.panel_alt'}
+model_parameters(cosmetic_mlm, effects = "fixed") |> 
+  display()
+```
+
+Similarly, we can extract *only* the random effects by including [effects = "random"]{.alt}. For example:
+
+```{r, eval = F, class.source = '.panel_alt'}
+model_parameters(cosmetic_mlm, effects = "random") |> 
+  display()
+```
+
+</div>
 
 #### `r robot()` Code example
 

@@ -35,9 +35,8 @@ support tutors and students using my textbook who want to learn
 > and yet-to-be updated tutorials. For this reason, I recommend
 > installing the CRAN release and not the development version on GitHub.
 >
-> Updated tutorials: `discovr_01` to `discover_14`, `discover_15`,
-> `discover_15_growth`, `discovr_16`, `discovr_19` and
-> `discovr_16_xmas`.
+> Updated tutorials: `discovr_01` to `discover_16`, `discovr_18` and
+> `discovr_19`.
 
 ## Installing `discovr`
 
@@ -169,13 +168,14 @@ starting the interactive tutorials.
   polynomials. We then extend the model to an example based on a
   clinical trial in which a fixed effect of an intervention moderates
   change over time.
-- `discovr_15_mlm`: Repeated measures designs as multilevel models.
-  Fitting models for one- and two-way repeated measures designs using a
-  multilevel model framework. This tutorial builds on previous ones to
-  show how models can be fit with one or two categorical predictors when
-  these variables have been manipulated within the same entities. We
-  look at fitting the models, setting contrasts for the categorical
-  predictors and diagnostic plots.
+- `discovr_15_mlm`: Repeated measures designs. Fitting models for one-
+  and two-way repeated measures designs using a multilevel model
+  framework using `glmmTMB`. (All code will also work with `lme4`.) The
+  examples match `discovr_15` but the modelling approach differs. This
+  tutorial builds on previous ones to show how models can be fit with
+  one or two categorical predictors when these variables have been
+  manipulated within the same entities. We look at fitting the models,
+  setting contrasts for the categorical predictors and diagnostic plots.
 - `discovr_16`: Mixed designs. Fitting models for mixed designs using
   the `afex` package. This tutorial builds on previous ones to show how
   models can be fit with one or two categorical predictors when at least

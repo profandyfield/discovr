@@ -176,6 +176,7 @@ percent_from_ez <- function(ezobj, row = 1, value = "Coefficient", digits = 0){
   }
 }
 
+
 # report likelihood ratio and wald tests
 
 report_lrt <- function(lrt, row = 2, digits = 2, p_digits = 3, df_digits = 0){
@@ -192,7 +193,7 @@ report_lrt <- function(lrt, row = 2, digits = 2, p_digits = 3, df_digits = 0){
   }
 }
 
-# repoort parameter estimates
+# report parameter estimates
 
 report_pe <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0, symbol = "$\\hat{b}$"){
   b <- value_from_ez(ezobj, row = row, value = "Coefficient", digits = digits)
@@ -245,7 +246,8 @@ report_es <- function(es_obj, col, row = 1, digits = 2){
 
   par <- ifelse(grepl("_d", col) | grepl("_rm", col), "$\\hat{d}$",
                 ifelse(grepl("_g", col), "$\\hat{g}$",
-                       ifelse(grepl("Omega", col), "$\\hat{\\omega}_p$", "$\\hat{\\eta}_p$")))
+                       ifelse(grepl("Omega", col), "$\\hat{\\omega}_p$",
+                              ifelse(grepl("Odds", col), "$\\hat{OR}$", "$\\hat{\\eta}_p$"))))
 
   es_row  <- es_obj |>
     tibble::as_tibble() |>
@@ -273,31 +275,33 @@ report_ez_aov <- function(ez_aov, row = 1, digits = 2, p_digits = 3, df_digits =
     dfr <- value_from_ez(ez_aov, row = length(ez_aov$df), value = "df", digits = df_digits)
   }
 
-  es <- value_from_ez(ez_aov, row = row, value = es_type, digits = digits)
+  out <- paste0("F(", dfm, ", ", dfr,  ") = ", f, ", ", p)
 
-  if(length(ez_aov$Parameter) > 2){
-    es_ext <- "_p"
-  } else {
-    es_ext <- ""
+  if(exists(es_type, where = ez_aov)){
+    es <- value_from_ez(ez_aov, row = row, value = es_type, digits = digits)
+    if(grepl("omega", es_type, ignore.case = TRUE)){
+      symboltxt = "omega"
+    } else {
+      symboltxt = "eta"
+    }
+
+    if(length(ez_aov$Parameter) > 2){
+      es_ext <- "_p"
+    } else {
+      es_ext <- ""
+    }
+    es_txt <- paste0("$\\hat{\\", symboltxt, "}^2", es_ext, "$ = ", es)
+    ci_low_label <- paste0(sub("_partial", "", x = es_type), "_CI_low")
+    if(exists(ci_low_label, where = ez_aov)){
+      es_ci <- paste0("(", value_from_ez(ez_aov, row = row, value = paste0(sub("_partial", "", x = es_type), "_CI_low"), digits = digits), ", ", value_from_ez(ez_aov, row = row, value = paste0(sub("_partial", "", x = es_type), "_CI_high"), digits = digits), ")")
+      es_txt <- paste0(es_txt, " ", es_ci)
+    }
+    out <- paste0(out, ", ", es_txt)
   }
-
-
-  if(grepl("omega", es_type, ignore.case = TRUE)){
-    symboltxt = "omega"
-  } else {
-    symboltxt = "eta"
-  }
-
-  ci_low_label <- paste0(sub("_partial", "", x = es_type), "_CI_low")
-  if(exists(ci_low_label, where = ez_aov)){
-    es_ci <- paste0("(", value_from_ez(ez_aov, row = row, value = paste0(sub("_partial", "", x = es_type), "_CI_low"), digits = digits), ", ", value_from_ez(ez_aov, row = row, value = paste0(sub("_partial", "", x = es_type), "_CI_high"), digits = digits), ")")
-    paste0("F(", dfm, ", ", dfr,  ") = ", f, ", ", p, ", ", paste0("$\\hat{\\", symboltxt, "}^2", es_ext, "$"), " = ", es, " ", es_ci)
-  } else {
-    paste0("F(", dfm, ", ", dfr,  ") = ", f, ", ", p, ", ", paste0("$\\hat{\\", symboltxt, "}^2", es_ext, "$"), " = ", es)
-  }
+  out
 }
 
-## report post hoc/contrast tests
+## report post hoc tests
 
 report_ph <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0, symbol = "$\\bar{X}_\\text{Diff}$"){
   b <- value_from_ez(ezobj, row = row, value = "Difference", digits = digits)
@@ -310,3 +314,16 @@ report_ph <- function(ezobj, row = 2, digits = 2, p_digits = 3, df_digits = 0, s
 
   paste0(symbol, " = ", b, " ", ci, stat_text, ", ", p)
 }
+
+## report bayes factors
+
+report_bf <- function(ezobj, row = 2, digits = 2, symbol = "BF~10~", as_is = FALSE){
+  bf <- value_from_ez(ezobj, row = row, value = "log_BF", digits = digits, as_is = TRUE) |>  exp()
+
+  if(as_is){
+    bf
+  } else {
+    paste0(symbol, " = ", report_value(bf))
+  }
+}
+

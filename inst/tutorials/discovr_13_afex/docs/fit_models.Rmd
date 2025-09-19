@@ -4,17 +4,25 @@ author: "Andy Field"
 output: learnr::tutorial
 ---
 
-Whatever statistical model we fit, we progress through a workflow that uses a consistent set of steps and `r rproj()` functions as highlighted in Figure 2.
+Whatever statistical model we fit, we progress through a workflow that can be remembered by knowing that model fitting is E.V.I.L.:
 
-- [Step 1]{.alt}. Get your data into `r rproj()` and pre-process using [tidyverse]{.pkg} packages or the [datawizard]{.pkg} package from [easystats]{.pkg}.
-- [Step 2]{.alt}. Visualise the data using the [ggplot2]{.pkg} package from [tidyverse]{.pkg}. 
+1. [E]{.pkg}valuate the model
+2. [V]{.pkg}isualise the data/hypotheses
+3. [I]{.pkg}nterpret the model
+4. [L]{.pkg}oad the data and [L]{.pkg}ook at descriptive summaries
+
+We can can use a consistent set of steps and `r rproj()` functions as highlighted in Figure 2, although the order of steps is a bit more fluid than this list implies. For example, [V]{.alt}isualise is often done *after* [E]{.alt}valuating the model.
+
+- [Step 1]{.alt}. [L]{.pkg}oad the data into `r rproj()`, pre-process and summarize using [tidyverse]{.pkg} packages or the [datawizard]{.pkg} package from [easystats]{.pkg}.
+- [Step 2]{.alt}. [V]{.pkg}isualise the data using the [ggplot2]{.pkg} package from [tidyverse]{.pkg}. 
 - [Step 3]{.alt}. Fit a statistical model that will answer your research question.
-- [Step 4]{.alt}. Evaluate the model using a small number of functions from the [performance]{.pkg} package from [easystats]{.pkg}. Specially, we evaluate
+- [Step 4]{.alt}. [E]{.pkg}valuate the model using a small number of functions from the [performance]{.pkg} package from [easystats]{.pkg}. Specially, we evaluate
     - How well the model fits the data
-    - Whether the underlying assumptions of the model are met. If not, we refit the model using robust methods (see Figure 3).
-- [Step 5]{.alt}. Interpret the model
+    - Whether the underlying assumptions of the model are met.
+- [Step 5]{.alt}. [I]{.pkg}nterpret the model
     - Interpret the values that define the model (the [parameter estimates]{.alt}) using the [parameters]{.pkg} package from [easystats]{.pkg}.
     - Make specific predictions from our model using the [modelbased]{.pkg} package from [easystats]{.pkg}.
+  
   
 
 <figure>

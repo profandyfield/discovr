@@ -92,7 +92,7 @@ This is a lot to take in, so consider this a reference point (rather than expect
 
 ## `r bmu()` Boxplots (aka Box-Whisker plots) [(A)]{.lbl}
 
-Dreams are good, but a completely blinkered view that they'll come true without any work on your part is not. Imagine I collected some data from 250 people on their level of success using a composite measure involving their salary, quality of life and how closely their life matches their aspirations. This gave me a score from 0 (complete failure) to 100 (complete success). I then implemented an intervention: I told people that for the next 5 years they should either wish upon a star for their dreams to come true or work as hard as they could to make their dreams come true. I measured their success again 5 years later. People were randomly allocated to these two instructions. The data are in [wish_tib]{.alt}. The variables are **id** (the person's id), **strategy** (hard work or wishing upon a star), **time** (baseline or 5 years), and **success** (the rating on my dodgy scale).
+Dreams are good, but a completely blinkered view that they'll come true without any work on your part is not. Imagine I collected some data from 250 people on their level of success using a composite measure involving their salary, quality of life and how closely their life matches their aspirations. This gave me a score from 0 (complete failure) to 100 (complete success). I then implemented an intervention: I told people that for the next 5 years they should either wish upon a star for their dreams to come true or work as hard as they could to make their dreams come true. I measured their success again 5 years later. People were randomly allocated to these two instructions. The data are in [wish_tib]{.alt}. The variables are `id` (the person's id), `strategy` (hard work or wishing upon a star), `time` (baseline or 5 years), and `success` (the rating on my dodgy scale).
 
 First, we're going to create a boxplot of the success scores at baseline and after 5 years. To create a boxplot in `ggplot` we use the `geom_boxplot()` function. We've seen that the general setup of a plot uses this command:
 
@@ -114,7 +114,7 @@ wish_plot +
 
 Let's break down this command:
 
-* `wish_plot <- ggplot(wish_tib, aes(x = time, y = success))` creates an object called [wish_plot]{.alt} that contains the plot. The `ggplot()` function is then used to specify that the plot uses the data in the [wish_tib]{.alt} tibble and plots the variable **time** on the *x*-axis and the variable **success** on the *y*-axis.
+* `wish_plot <- ggplot(wish_tib, aes(x = time, y = success))` creates an object called [wish_plot]{.alt} that contains the plot. The `ggplot()` function is then used to specify that the plot uses the data in the [wish_tib]{.alt} tibble and plots the variable `time` on the *x*-axis and the variable `success` on the *y*-axis.
 * `wish_plot + geom_boxplot()` takes the object [wish_plot]{.alt} and adds a boxplot geom to it.
 
 Job done. 
@@ -154,7 +154,7 @@ The boxplot shows that success increased (very slightly) after 5 years (the medi
 
 ### `r bmu()` Grouping by colour [(A)]{.lbl}
 
-The boxplot we have created shows how success changed over time, but it doesn't show us what effect wishing on a star had compared to hard work. We can see this by splitting the data by the variable **strategy**. We can do this in several ways. First, we can ask `ggplot` to vary the [fill]{.alt} of the boxes or the [colour]{.alt} of the lines around the boxes by the variable **strategy** by adding it to the `aes()` function in the original command to set up the plot For example, to vary the fill of the boxplots by **strategy**, we'd change the first line of our command to be:
+The boxplot we have created shows how success changed over time, but it doesn't show us what effect wishing on a star had compared to hard work. We can see this by splitting the data by the variable `strategy`. We can do this in several ways. First, we can ask `ggplot` to vary the [fill]{.alt} of the boxes or the [colour]{.alt} of the lines around the boxes by the variable `strategy` by adding it to the `aes()` function in the original command to set up the plot For example, to vary the fill of the boxplots by `strategy`, we'd change the first line of our command to be:
 
 #### `r robot()` Code example
 
@@ -166,7 +166,7 @@ Note that all I have done is to add [fill = strategy]{.alt} to the initial aesth
 
 #### `r alien()` Alien coding challenge
 
-Your original code is reproduced below, adapt it to include [fill = strategy]{.alt} and run it. Compare the plot to the previous version. Note that the plot still splits the data by **time** along the *x*-axis, but within each category the data from the wishing on a star group is shown in a different colour to the data from the hard work group.
+Your original code is reproduced below, adapt it to include [fill = strategy]{.alt} and run it. Compare the plot to the previous version. Note that the plot still splits the data by `time` along the *x*-axis, but within each category the data from the wishing on a star group is shown in a different colour to the data from the hard work group.
 
 ```{r wish_fill, exercise = TRUE, exercise.lines = 5}
 wish_plot <- ggplot(wish_tib, aes(x = time, y = success))
@@ -186,7 +186,7 @@ wish_plot +
 
 We can see that success only increases after 5 years in the hard work group (but the spread of success scores is huge too at 5 years in that group).
 
-Instead of using [fill]{.alt} to differentiate the two **strategy** groups, we can use [colour]{.alt}. This leaves the boxes white for all groups, but uses different colours for the lines around the boxes.
+Instead of using [fill]{.alt} to differentiate the two `strategy` groups, we can use [colour]{.alt}. This leaves the boxes white for all groups, but uses different colours for the lines around the boxes.
 
 #### `r robot()` Code example
 
@@ -216,13 +216,13 @@ wish_plot +
   theme_minimal()
 ```
 
-This is great but the legend for the variable **strategy** has a lower case 's' and isn't very informative. It'd be nice if it said 'Success strategy'. Currently we have specified labels for the *x*- and *y*-axis by including:
+This is great but the legend for the variable `strategy` has a lower case 's' and isn't very informative. It'd be nice if it said 'Success strategy'. Currently we have specified labels for the *x*- and *y*-axis by including:
 
 ```{r, eval = FALSE}
 labs(x = "Time", y = "Success (%)")
 ```
 
-To specify the label for the variable that is used to determine the fill or colour of the plot, we add it to the `labs()` function. For example, if we used **strategy** to determine the fill of the plot then we'd add [fill = "label"]{.alt}, where *label* is the text we want to use:
+To specify the label for the variable that is used to determine the fill or colour of the plot, we add it to the `labs()` function. For example, if we used `strategy` to determine the fill of the plot then we'd add [fill = "label"]{.alt}, where *label* is the text we want to use:
 
 #### `r robot()` Code example
 
@@ -230,7 +230,7 @@ To specify the label for the variable that is used to determine the fill or colo
 labs(x = "Time", y = "Success (%)", fill = "Success strategy")
 ```
 
-Similarly, if we had used **strategy** to determine the colour of the plot then we'd add [colour = "label"]{.alt} to the function
+Similarly, if we had used `strategy` to determine the colour of the plot then we'd add [colour = "label"]{.alt} to the function
 
 ```{r, eval = FALSE}
 labs(x = "Time", y = "Success (%)", colour = "Success strategy")
@@ -326,7 +326,7 @@ wish_plot +
 
 The mean in the sample is an estimate of the population value, which may or may not be representative of the true value. Put another way, estimates have uncertainty attached to them. It's a really good idea to include an indicator of this uncertainty on your plot. For means, this is typically done by including an error bar showing the 95% confidence interval. 
 
-If you want to plot from the raw data then your best bet is to use the `stat_summary()` function and then specify the geom to use within it. Let's begin by plotting the mean **success** split by **time**. We can do this by setting up the plot exactly as we did for the boxplot, but instead of using `geom_boxplot()` we use:
+If you want to plot from the raw data then your best bet is to use the `stat_summary()` function and then specify the geom to use within it. Let's begin by plotting the mean `success` split by `time`. We can do this by setting up the plot exactly as we did for the boxplot, but instead of using `geom_boxplot()` we use:
 
 ```{r, eval = FALSE}
 stat_summary(fun.data = "mean_cl_normal", geom = "pointrange")
@@ -501,7 +501,7 @@ wish_plot +
 Instead of using facets, we can display the two strategies in different colours, like we did for boxplots. To do this we need to make the same two adjustments to our code to earlier on:
 
 * Add [colour = strategy]{.alt} to the first line, within `aes()`.
-* Add [colour = "Success strategy"]{.alt} to the `labs()` function to apply a meaningful label to the variable **strategy**.
+* Add [colour = "Success strategy"]{.alt} to the `labs()` function to apply a meaningful label to the variable `strategy`.
 
 #### `r alien()` Alien coding challenge
 
@@ -526,7 +526,7 @@ wish_plot <- ggplot(wish_tib, aes(x = time, y = success, colour = strategy))
 
 ```{r wish_point_group-hint-2}
 # Add colour = "Success strategy"` to the `labs()` function to apply 
-# a meaningful label to the variable **strategy**. This line will read:
+# a meaningful label to the variable `strategy`. This line will read:
 
 labs(x = "Time", y = "Success (%)", colour = "Success strategy") +
 ```
@@ -877,11 +877,11 @@ note_plot +
 
 A psychologist was interested in the effects of exam stress on exam performance. She devised and validated a questionnaire to assess state anxiety relating to exams (called the Exam Anxiety Questionnaire, or EAQ). This scale produced a measure of anxiety scored out of 100. Anxiety was measured before an exam, and the percentage mark of each student on the exam was used to assess the exam performance. The first thing that the psychologist should do is draw a scatterplot of the two variables. The data are in `exam_tib`, which contains 5 variables:
 
-* **id**: participant id
+* `id`: participant id
 * **revise**: the time spent revising for the exam (hours)
 * **exam_grade**: the percentage score of each student on the exam
 * **anxiety**: anxiety score on the EAQ out of 100
-* **sex**: whether the participant self-identified as male or female (no-one in the study identified as non-binary)
+* `sex`: the sex at birth  of the participant
 
 A scatterplot is the values of one variable plotted on the *x*-axis, against the corresponding values of another on the *y*-axis. 
 
@@ -893,7 +893,7 @@ If we wanted to plot **anxiety** on the *x*-axis and **exam_grade** on the *y* w
 exam_plot <- ggplot(exam_tib, aes(x = anxiety, y = exam_grade))
 ```
 
-This command creates an object called [exam_plot]{.alt} using the data in [exam_tib]{.alt}, and uses the `aes()` function to specify that **anxiety** is plotted on the *x*-axis and **exam_grade** on the *y*. We'd then need to simply add `geom_point()` to represent the data points:
+This command creates an object called [exam_plot]{.alt} using the data in [exam_tib]{.alt}, and uses the `aes()` function to specify that **anxiety** is plotted on the *x*-axis and **exam_grade** on the *y*. We'd then need to add `geom_point()` to represent the data points:
 
 ```{r, eval = F}
 exam_plot <- ggplot(exam_tib, aes(x = anxiety, y = exam_grade))
@@ -942,10 +942,10 @@ We can use the options of `geom_point()` to change the colour of the points, the
 * [shape =]{.alt}: use this argument to specify a shape for the points
 * [alpha =]{.alt}: use this argument to specify transparency from 0 (fully transparent) to 1 (fully opaque)
 
-For colours it is useful to use hex codes. These are codes that specify exact colours and you can find lists of these codes on websites such as [color hex](https://www.color-hex.com/) which also contains various [palettes of colours](https://www.color-hex.com/color-palettes/popular.php).
+For colours it is useful to use HEX codes. These are codes that specify exact colours and you can find lists of these codes on websites such as [color hex](https://www.color-hex.com/) which also contains various [palettes of colours](https://www.color-hex.com/color-palettes/popular.php).
 
 #### `r robot()` Code example
-To make the points the colour of bile using hex code `#999933`, we could specify:
+To make the points the colour of bile using HEX code `#999933`, we could specify:
 
 ```{r, eval = FALSE}
 geom_point(colour = "#999933")
@@ -993,7 +993,7 @@ exam_plot +
 
 ### `r user_visor()` Summarizing the trend [(B)]{.lbl}
 
-We can add a line summarizing the trend in the data using `geom_smooth()`. To fit a straight line we can set a method of "lm" (stands for linear model, more on that in later tutorials) and change its colour to be a nice rose (hex code `#CC6677`). By default, a confidence interval is plotted around the line, we can colour this interval orange by including [fill = "#CC6677"]{.alt}.
+We can add a line summarizing the trend in the data using `geom_smooth()`. To fit a straight line we can set a method of "lm" (stands for linear model, more on that in later tutorials) and change its colour to be a nice rose (HEX code `#CC6677`). By default, a confidence interval is plotted around the line, we can colour this interval orange by including [fill = "#CC6677"]{.alt}.
 
 #### `r robot()` Code example
 
@@ -1026,12 +1026,12 @@ exam_plot +
 
 ### `r bmu()` Grouped scatterplots [(A)]{.lbl}
 
-As with the other plots we've seen we can split the data into categories. For example, if we wanted to compare the relationship between students identifying as male and female, we could do this by adding a facet:
+As with the other plots we've seen we can split the data into categories. For example, if we wanted to compare the relationship between male and female students, we could do this by adding a facet:
 
 #### `r alien()` Alien coding challenge
 
 
-Add `facet_wrap(~sex)` in the box below so that data for people identifying as men and women are plotted in separate panels:
+Add `facet_wrap(~sex)` in the box below so that data for people male and female at birth are plotted in separate panels:
 
 ```{r exam_scat_facet, exercise = TRUE, exercise.lines = 7}
 exam_plot <- ggplot(exam_tib, aes(x = anxiety, y = exam_grade))
@@ -1052,7 +1052,7 @@ exam_plot +
   theme_bw()
 ```
 
-We can also specifying different colours for those identifying as men and women using [colour = sex]{.alt} when we set up the plot:
+We can also specifying different colours for those male and female at birth using [colour = sex]{.alt} when we set up the plot:
 
 ```{r, eval = FALSE}
 exam_plot <- ggplot(exam_tib, aes(anxiety, exam_grade, colour = sex))
@@ -1068,13 +1068,13 @@ exam_plot <- ggplot(exam_tib, aes(anxiety, exam_grade, colour = sex, fill = sex)
 <div class="bug">
   `r bug()` **De-bug: colour clashes** 
   
-  Colours specified in a `geom()` override the colour argument in the original `ggplot()` function. Therefore, if you set the colour by a variable such as **sex** in `ggplot()`you must delete any colour arguments in the geom itself for this to take effect.
+  Colours specified in a `geom()` override the colour argument in the original `ggplot()` function. Therefore, if you set the colour by a variable such as `sex` in `ggplot()`you must delete any colour arguments in the geom itself for this to take effect.
 
 </div>
 
 #### `r robot()` Code example
 
-This code results in data points and a line coloured by **sex**:
+This code results in data points and a line coloured by `sex`:
 
 ```{r exam_scat_colour, exercise = TRUE, exercise.lines = 7}
 exam_plot <- ggplot(exam_tib, aes(anxiety, exam_grade, colour = sex, fill = sex))
@@ -1084,7 +1084,7 @@ exam_plot +
   theme_minimal()         
 ```
 
-In contrast this code results in data points that are all bile (hex code `#999933`) and a line that is rose (hex code `#CC6677`), in other words the data haven't been split by **sex**:
+In contrast this code results in data points that are all bile (HEX code `#999933`) and a line that is rose (HEX code `#CC6677`), in other words the data haven't been split by `sex`:
 
 
 ```{r exam_scat_colour2, exercise = TRUE, exercise.lines = 7}

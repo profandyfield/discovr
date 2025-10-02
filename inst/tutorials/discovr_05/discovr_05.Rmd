@@ -878,22 +878,22 @@ note_plot +
 A psychologist was interested in the effects of exam stress on exam performance. She devised and validated a questionnaire to assess state anxiety relating to exams (called the Exam Anxiety Questionnaire, or EAQ). This scale produced a measure of anxiety scored out of 100. Anxiety was measured before an exam, and the percentage mark of each student on the exam was used to assess the exam performance. The first thing that the psychologist should do is draw a scatterplot of the two variables. The data are in `exam_tib`, which contains 5 variables:
 
 * `id`: participant id
-* **revise**: the time spent revising for the exam (hours)
-* **exam_grade**: the percentage score of each student on the exam
-* **anxiety**: anxiety score on the EAQ out of 100
-* `sex`: the sex at birth  of the participant
+* `revise`: the time spent revising for the exam (hours)
+* `exam_grade`: the percentage score of each student on the exam
+* `anxiety`: anxiety score on the EAQ out of 100
+* `sex`: the sex at birth of the participant
 
 A scatterplot is the values of one variable plotted on the *x*-axis, against the corresponding values of another on the *y*-axis. 
 
 #### `r robot()` Code example
 
-If we wanted to plot **anxiety** on the *x*-axis and **exam_grade** on the *y* we could set this up in the usual way:
+If we wanted to plot `anxiety` on the *x*-axis and `exam_grade` on the *y* we could set this up in the usual way:
 
 ```{r, eval = FALSE}
 exam_plot <- ggplot(exam_tib, aes(x = anxiety, y = exam_grade))
 ```
 
-This command creates an object called [exam_plot]{.alt} using the data in [exam_tib]{.alt}, and uses the `aes()` function to specify that **anxiety** is plotted on the *x*-axis and **exam_grade** on the *y*. We'd then need to add `geom_point()` to represent the data points:
+This command creates an object called [exam_plot]{.alt} using the data in [exam_tib]{.alt}, and uses the `aes()` function to specify that `anxiety` is plotted on the *x*-axis and `exam_grade` on the *y*. We'd then need to add `geom_point()` to represent the data points:
 
 ```{r, eval = F}
 exam_plot <- ggplot(exam_tib, aes(x = anxiety, y = exam_grade))

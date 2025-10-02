@@ -775,7 +775,7 @@
 #'   * **revise**: the time spent revising for the exam (hours)
 #'   * **exam_grade**: the percentage score of each student on the exam
 #'   * **anxiety**: anxiety score on the EAQ out of 100
-#'   * **sex**: whether the participant self-identified as male or female
+#'   * **sex**: the participant's sex at birth
 #'
 #' @docType data
 #' @format A tibble with 103 rows and 5 variables.

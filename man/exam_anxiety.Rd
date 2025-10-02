@@ -26,7 +26,7 @@ The fictional data contains the following variables:
 \item \strong{revise}: the time spent revising for the exam (hours)
 \item \strong{exam_grade}: the percentage score of each student on the exam
 \item \strong{anxiety}: anxiety score on the EAQ out of 100
-\item \strong{sex}: whether the participant self-identified as male or female
+\item \strong{sex}: the participant's sex at birth
 }
 }
 \keyword{datasets}

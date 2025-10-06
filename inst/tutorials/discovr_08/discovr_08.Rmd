@@ -438,17 +438,17 @@ check_model(album_lm)
 
 ```{r quiz_zresid_ex1, echo = FALSE}
 quiz(caption = "Diagnostic plots",
-  question("Comparing the plot to those in Figure 4, how would you interpret it?",
-    answer("I can't see any problems", correct = TRUE, message = "The dots look like a random, evenly-dispersed pattern. No funnel shapes, no banana shapes, so all is fine."),
+  question("Comparing the plots to those in Figure 4, how would you interpret it?",
+    answer("I can't see any problems", message = "The dots look like a random, evenly-dispersed pattern. No funnel shapes, no banana shapes, so all is fine. I can see a funnel shape in one of the plots so check with your optitian that you don't have funnel vision."),
     answer("I can see a violation of linearity", message = "A lack of linearity is shown by a data cloud with a bendy banana shape. I can't see a banana shape. If you can then check that someone hasn't stuck a  banana to your computer screen for japes."),
-    answer("I can see a violation of homoscedasticity", message = "Heteroscedasticity is shown by a data cloud with a funnel shape. I can't see a funnel shape. Check with your optitian that you don't have funnel vision."),
+    answer("I can see a violation of homoscedasticity", correct = TRUE, message = "Well done, heteroscedasticity is shown by a data cloud with a funnel shape and there appears to be a funnel shape."),
     correct = "Correct - well done!",
     random_answer_order = TRUE,
     allow_retry = T
   ),
   question("Based on the Q-Q plot, can we assume normality of the residuals?",
-    answer("Yes", correct = TRUE, message = "The distribution is very normal: the dots on the Q-Q plot lie almost exactly along the diagonal, which indicates a normal distribution."),
-    answer("No", message = "The distribution is not very normal: the dots on the Q-Q plot seem to deviate from the line at the extremes, which indicates a non-normal distribution."),
+    answer("Yes", message = "The distribution is very normal: the dots on the Q-Q plot lie almost exactly along the diagonal, which indicates a normal distribution."),
+    answer("No", correct = TRUE, message = "The distribution is not very normal: the dots on the Q-Q plot seem to deviate from the line at the extremes, which indicates a non-normal distribution."),
     answer("Maybe", message = "Sorry, you're not allowed to sit on the fence!"),
     correct = "Correct - well done!",
     random_answer_order = TRUE,

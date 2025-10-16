@@ -241,7 +241,7 @@ labs(x = "Time", y = "Success (%)", colour = "Success strategy")
 The code to create a boxplot that uses [fill]{.alt} to differentiate the two success strategies is copied below. Edit the code, using what you've just learnt, to change the label for the [fill]{.alt} property to be *Success strategy*. Run the code and see how the legend changes.
 
 ```{r wish_fill2, exercise = TRUE, exercise.lines = 5}
-wish_plot <- ggplot(wish_tib, aes(x = time, y = success))
+wish_plot <- ggplot(wish_tib, aes(x = time, y = success, fill = strategy))
 wish_plot +
   geom_boxplot() +  
   labs(x = "Time", y = "Success (%)") +

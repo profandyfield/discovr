@@ -143,7 +143,7 @@ download_tidy_tib <- download_tib |>
 )
 ```
 
-In this code we create a new object called [download_tidy_tib]{.alt} by piping the messy data ([download_tib]{.alt}) into `pivot_longer()`. In the function, we specify the columns to restructure into rows as all columns between `day_1` and `day_3`, we ask that the names of these columns be place in a variable called `day` and that the values in these columns be placed in a variable called `hygiene`.
+In this code we create a new object called [download_tidy_tib]{.alt} by piping the messy data ([download_tib]{.alt}) into `pivot_longer()`. In the function, we specify the columns to restructure into rows as all columns between `day_1` and `day_3`, we ask that the names of these columns be placed in a variable called `day` and that the values in these columns be placed in a variable called `hygiene`.
 
 #### `r alien()` Alien coding challenge
 
@@ -208,11 +208,11 @@ Try out the code from the tip and view the resulting data.
 ```
 
 ```{r str_replace-solution}
-download_tidy <- download_tidy_tib |> 
+download_tidy_tib <- download_tidy_tib |> 
    mutate(
     day = str_to_sentence(day) |> str_replace("_", " ")
   )
-download_tidy
+download_tidy_tib
 ```
 
 ###	`r user_visor()` Making tidy data messy [(B)]{.lbl}
@@ -235,7 +235,7 @@ Let's return the tidy version of the download data to messy format. You use [id_
 We can convert the tidy data back to messy using:
 
 ```{r, eval = F}
-download_tib <- download_tidy |> 
+download_tib <- download_tidy_tib |> 
   mutate(
     day = str_to_lower(day) |> str_replace(" ", "_")
   ) |> 
@@ -250,7 +250,7 @@ download_tib
 
 Let's break this code down. When we made the data long we renamed the days from the format where everything was lower case with no spaces (e.g., `day_1`) to a format that used sentence case and replaced the underscore with a space (e.g., `Day 1`). When converting back from long to wide, the variable names are taken from the variable `day` and are in the format `Day 1`, `Day 2` and `Day 3`. If we convert to a messy format these will become the variable names, which contravenes our good style principles from `discovr_02` that recommend using lower case and underscores instead of spaces.
 
-Therefore, the first few lines of code reverses the renaming we did so that `Day 1` becomes `day_1`, `Day 2` becomes `day_2` and so on. It does this by piping the tidy data ([download_tidy]{.alt}) into `mutate()`, converting the text to lower case using `str_to_lower()` and then replacing spaces with an underscore using `str_replace()`, both functions are from the [stringr]{.pkg} package. 
+Therefore, the first few lines of code reverses the renaming we did so that `Day 1` becomes `day_1`, `Day 2` becomes `day_2` and so on. It does this by piping the tidy data ([download_tidy_tib]{.alt}) into `mutate()`, converting the text to lower case using `str_to_lower()` and then replacing spaces with an underscore using `str_replace()`, both functions are from the [stringr]{.pkg} package. 
 
 The restructuring itself is handled by `pivot_wider()`, within which [id_cols]{.alt} defines the variables that we don't want to be restructured (in this case `ticket_no` and `gender`). We use the [names_from]{.alt} argument to tell the function where to take the column names from (in the tidy data, column names are stored in the variable `day`) and [values_from]{.alt} to tell the function from where to get the scores (in the tidy data, values are in the variable `hygiene`).
 
@@ -259,19 +259,12 @@ The restructuring itself is handled by `pivot_wider()`, within which [id_cols]{.
 
 Use the code above to convert our tidy data back into its messy form.
 
-```{r dl_messy_tib, echo = FALSE, exercise.setup = "dl_tidy_tib"}
-download_tidy <- download_tidy_tib |> 
-   mutate(
-    day = str_to_sentence(day) |> str_replace("_", " ")
-  )
-```
-
-```{r pivot_wider, exercise = TRUE, exercise.lines = 15 , exercise.setup = "dl_messy_tib"}
+```{r pivot_wider, exercise = TRUE, exercise.lines = 15 , exercise.setup = "dl_tidy_tib"}
 
 ```
 
 ```{r pivot_wider-solution}
-download_tib <- download_tidy |> 
+download_tib <- download_tidy_tib |> 
   mutate(
     day = str_to_lower(day) |> str_replace(" ", "_")
   ) |> 
@@ -458,7 +451,7 @@ download_tib <- download_tib |>
     day_1 = recode_values(day_1, list(`2.02` = 20.02))
   )
 
-download_tidy <- download_tib |> 
+download_tidy_tib <- download_tib |> 
  pivot_longer(
   cols = day_1:day_3,
   names_to = "day",
@@ -476,7 +469,7 @@ download_tidy <- download_tib |>
   Having corrected the mis-entered data point in the wide data file ([download_tib]{.alt}), we would need to recreate the long version of the data including the corrected score using
   
 ```{r, eval = F, class.source = '.panel_alt'}
-download_tidy <- download_tib |> 
+download_tidy_tib <- download_tib |> 
  pivot_longer(
   cols = day_1:day_3,
   names_to = "day",
@@ -488,7 +481,7 @@ download_tidy <- download_tib |>
 
 ```
 
-I have done this for you within this tutorial, so from this point on [download_tidy]{.alt} contains the corrected data.
+I have done this for you within this tutorial, so from this point on [download_tidy_tib]{.alt} contains the corrected data.
 
 </div>
 
@@ -534,7 +527,7 @@ After the mis-entered value has been corrected, neither plot indicates any parti
 
 #### `r alien()` Alien coding challenge
 
-Use [download_tidy]{.alt} to produce boxplots for all days of the festival and use `facet_wrap()` to show separate plots for each gender. Set the transparency to 0.7, set breaks on the *y*-axis to be 1, 2, 3 & 4.
+Use [download_tidy_tib]{.alt} to produce boxplots for all days of the festival and use `facet_wrap()` to show separate plots for each gender. Set the transparency to 0.7, set breaks on the *y*-axis to be 1, 2, 3 & 4.
 
 ```{r dl_box_all, exercise = TRUE, exercise.lines = 7, exercise.setup = "dl_tib"}
 
@@ -542,26 +535,26 @@ Use [download_tidy]{.alt} to produce boxplots for all days of the festival and u
 
 ```{r dl_box_all-hint-1}
 # Setup the plot with:
-ggplot(download_tidy, aes(day, hygiene, fill = gender)) +
+ggplot(download_tidy_tib, aes(day, hygiene, fill = gender)) +
 ```
 
 ```{r dl_box_all-hint-2}
 # Add the boxplot geom:
-ggplot(download_tidy, aes(day, hygiene, fill = gender)) +
+ggplot(download_tidy_tib, aes(day, hygiene, fill = gender)) +
   geom_boxplot()
 # Now change the binwidth, fill, colours and transparency
 ```
 
 ```{r dl_box_all-hint-3}
 # change the transparency
-ggplot(download_tidy, aes(day, hygiene, fill = gender)) +
+ggplot(download_tidy_tib, aes(day, hygiene, fill = gender)) +
   geom_boxplot(alpha = 0.7)
 # Now put breaks along the y-axis from 0 to 4 in steps of 1
 ```
 
 ```{r dl_box_all-hint-4}
 # Added breaks along the y-axis from 0 to 4 in steps of 1
-ggplot(download_tidy, aes(day, hygiene, fill = gender)) +
+ggplot(download_tidy_tib, aes(day, hygiene, fill = gender)) +
   geom_boxplot(alpha = 0.7) +
   scale_y_continuous(breaks = seq(0, 4, 1))
 # Now add labels for x, y, and fill colour
@@ -570,7 +563,7 @@ ggplot(download_tidy, aes(day, hygiene, fill = gender)) +
 
 ```{r dl_box_all-hint-5}
 # Added labels
-ggplot(download_tidy, aes(day, hygiene, fill = gender)) +
+ggplot(download_tidy_tib, aes(day, hygiene, fill = gender)) +
   geom_boxplot(alpha = 0.7) +
   scale_y_continuous(breaks = seq(0, 4, 1))
   labs(x = "Day of festival", y = "Hygiene scores (0-5)", fill = "Gender")
@@ -579,7 +572,7 @@ ggplot(download_tidy, aes(day, hygiene, fill = gender)) +
 
 ```{r dl_box_all-hint-6}
 # facet_wrap added:
-ggplot(download_tidy, aes(day, hygiene, fill = gender)) +
+ggplot(download_tidy_tib, aes(day, hygiene, fill = gender)) +
   geom_boxplot(alpha = 0.7) +
   scale_y_continuous(breaks = seq(0, 4, 1)) +
   labs(x = "Day of festival", y = "Hygiene scores (0-5)", fill = "Gender") +
@@ -588,7 +581,7 @@ ggplot(download_tidy, aes(day, hygiene, fill = gender)) +
 ```
 
 ```{r dl_box_all-solution}
-ggplot(download_tidy, aes(day, hygiene, fill = gender)) +
+ggplot(download_tidy_tib, aes(day, hygiene, fill = gender)) +
   geom_boxplot(alpha = 0.7) +
   scale_y_continuous(breaks = seq(0, 4, 1)) +
   labs(x = "Day of festival", y = "Hygiene scores (0-5)", fill = "Gender") +
@@ -618,7 +611,7 @@ in which you replace [my_tibble]{.alt} with the name of the tibble containing yo
 
 #### `r robot()` Code example
 
-To standardize the scores on every day of the festivalin the original messy data we'd execute
+To standardize the scores on every day of the festival in the original messy data we'd execute
 
 ```{r, eval = FALSE}
 zdownload_tib <- standardise(x = download_tib,
@@ -686,7 +679,7 @@ zdownload_tib |>
   arrange(day_1)
 ```
 
-You should find that 39 cases had *z*-scores less than $-1.96$ or greater than $1.96$ on day 1, which is about 0.05 (or 5%) of the sample (39/810 = 0.05). This pwercentage is consistent with what we'd expect to find in a normal distribution.
+You should find that 39 cases had *z*-scores less than $-1.96$ or greater than $1.96$ on day 1, which is about 0.05 (or 5%) of the sample (39/810 = 0.05). This percentage is consistent with what we'd expect to find in a normal distribution.
 
 We also want to look at day 2 and day 3. We can use the `if_any()` function from [dplyr]{.pkg} to apply a condition to multiple variables. When used within `filter()` then 'if any' of the columns meet the condition the row is retained. It has the general form
 
@@ -734,7 +727,7 @@ zdownload_tib |>
 ```
 
 
-It turns out that there are 8 cases (out of 200) who have *z*-scores with absolute values greater than or equal to 2.58 on at least one of the days, which is about what we'd expect (4% of cases). If you change the code to so that tyhe threshold is 3.29 you'll see that there are only two cases with *z*-scores with absolute values greater than 3.29 (case 3374 on day 2 and case 4564 on days 2 and 3).
+It turns out that there are 8 cases (out of 200) who have *z*-scores with absolute values greater than or equal to 2.58 on at least one of the days, which is about what we'd expect (4% of cases). If you change the code to so that the threshold is 3.29 you'll see that there are only two cases with *z*-scores with absolute values greater than 3.29 (case 3374 on day 2 and case 4564 on days 2 and 3).
  
 
 ## `r bmu()` Spotting normality [(A)]{.lbl}
@@ -762,23 +755,23 @@ In which you replace [my_tib]{.alt} with the name of the tibble containing the d
 * `stat_qq_line()`. This function draws the diagonal line representing the idealized distribution.
 * `stat_qq_point()`. This function draws the observed values (the dots).
 
-Therefore, we can create a basic Q-Q plot for the tidy version of the data in [download_tidy]{.alt} with this code:
+Therefore, we can create a basic Q-Q plot for the tidy version of the data in [download_tidy_tib]{.alt} with this code:
 
 ```{r qq_basic, exercise = TRUE, exercise.lines = 4, exercise.setup = "dl_tib"}
- ggplot(download_tidy, aes(sample = hygiene)) +
+ ggplot(download_tidy_tib, aes(sample = hygiene)) +
   qqplotr::stat_qq_band() +
   qqplotr::stat_qq_line() +
   qqplotr::stat_qq_point()
 ```
 
-This code plots the variable `hygiene` from [download_tidy]{.alt}. However, because we have used the tidy version of the data, the values of `hygiene` have come from all three days of the festival. It might be useful to split them according to the day of the festival. Luckily, because `qqplotr` creates ggplot objects, we can easily do this by adding a layer that includes `facet_wrap()` and splits the data by the variable `day`.
+This code plots the variable `hygiene` from [download_tidy_tib]{.alt}. However, because we have used the tidy version of the data, the values of `hygiene` have come from all three days of the festival. It might be useful to split them according to the day of the festival. Luckily, because `qqplotr` creates ggplot objects, we can easily do this by adding a layer that includes `facet_wrap()` and splits the data by the variable `day`.
 
 #### `r alien()` Alien coding challenge
 
 Cope the code in the example above and add to the bottom a layer that splits the data by the variable `day` using `facet_wrap()`. While you're at it, add `theme_minimal()`.
 
 ```{r qq_facet, exercise = TRUE, exercise.lines = 6, exercise.setup = "dl_tib"}
- ggplot(download_tidy, aes(sample = hygiene)) +
+ ggplot(download_tidy_tib, aes(sample = hygiene)) +
   qqplotr::stat_qq_band() +
   qqplotr::stat_qq_line() +
   qqplotr::stat_qq_point()
@@ -786,7 +779,7 @@ Cope the code in the example above and add to the bottom a layer that splits the
 
 ```{r qq_facet-hint-1}
 # Add facet_wrap:
- ggplot(download_tidy, aes(sample = hygiene)) +
+ ggplot(download_tidy_tib, aes(sample = hygiene)) +
   qqplotr::stat_qq_band() +
   qqplotr::stat_qq_line() +
   qqplotr::stat_qq_point() +
@@ -797,7 +790,7 @@ Cope the code in the example above and add to the bottom a layer that splits the
 
 ```{r qq_facet-hint-2}
 # Solution:
- ggplot(download_tidy, aes(sample = hygiene)) +
+ ggplot(download_tidy_tib, aes(sample = hygiene)) +
   qqplotr::stat_qq_band() +
   qqplotr::stat_qq_line() +
   qqplotr::stat_qq_point() +
@@ -818,7 +811,7 @@ Adapt the code to do the following:
 * Add the label "Theoretical quantiles" to the *x*-axis and "Sample quantiles" to the *y*-axis.
 
 ```{r qq_full, exercise = TRUE, exercise.lines = 7, exercise.setup = "dl_tib"}
- ggplot(download_tidy, aes(sample = hygiene)) +
+ ggplot(download_tidy_tib, aes(sample = hygiene)) +
   qqplotr::stat_qq_band() +
   qqplotr::stat_qq_line() +
   qqplotr::stat_qq_point() +
@@ -828,7 +821,7 @@ Adapt the code to do the following:
 
 ```{r qq_full-hint-1}
 # Set the fill of the confidence interval to blue ([#CC6677"]{.alt}), and the transparency to 0.3:
- ggplot(download_tidy, aes(sample = hygiene)) +
+ ggplot(download_tidy_tib, aes(sample = hygiene)) +
   qqplotr::stat_qq_band(fill = "#DDCC77", alpha = 0.3) +
   qqplotr::stat_qq_line() +
   qqplotr::stat_qq_point() +
@@ -838,7 +831,7 @@ Adapt the code to do the following:
 
 ```{r qq_full-hint-2}
 # Set the colour of the line to the same colour as the confidence interval.
- ggplot(download_tidy, aes(sample = hygiene)) +
+ ggplot(download_tidy_tib, aes(sample = hygiene)) +
   qqplotr::stat_qq_band(fill = "#DDCC77", alpha = 0.3) +
   qqplotr::stat_qq_line(colour = "#DDCC77") +
   qqplotr::stat_qq_point() +
@@ -848,7 +841,7 @@ Adapt the code to do the following:
 
 ```{r qq_full-hint-3}
 # Set the colour of the data points to ([#CC6677"]{.alt}), the transparency to 0.2 and their size to 1.
- ggplot(download_tidy, aes(sample = hygiene)) +
+ ggplot(download_tidy_tib, aes(sample = hygiene)) +
   qqplotr::stat_qq_band(fill = "#DDCC77", alpha = 0.3) +
   qqplotr::stat_qq_line(colour = "#DDCC77") +
   qqplotr::stat_qq_point(colour = "#CC6677", alpha = 0.2, size = 1) +
@@ -858,7 +851,7 @@ Adapt the code to do the following:
 
 ```{r qq_full-hint-4}
 # Add the label "Theoretical quantiles" to the *x*-axis and "Sample quantiles" to the *y*-axis:
- ggplot(download_tidy, aes(sample = hygiene)) +
+ ggplot(download_tidy_tib, aes(sample = hygiene)) +
   qqplotr::stat_qq_band(fill = "#DDCC77", alpha = 0.3) +
   qqplotr::stat_qq_line(colour = "#DDCC77") +
   qqplotr::stat_qq_point(colour = "#CC6677", alpha = 0.2, size = 1) +
@@ -876,7 +869,7 @@ In `discovr_04` we used the `describe_distribution()` function from [datawizard]
 
 #### `r alien()` Alien coding challenge
 
-Use what you have learnt from previous tutorials to write some code that takes the tidy version of the festival data ([download_tidy]{.alt}) and calculates only the mean, 95% confidence interval, skew and kurtosis for hygiene scores on each day. Print the table to 3 decimal places.
+Use what you have learnt from previous tutorials to write some code that takes the tidy version of the festival data ([download_tidy_tib]{.alt}) and calculates only the mean, 95% confidence interval, skew and kurtosis for hygiene scores on each day. Print the table to 3 decimal places.
 
 <div class="tip">
   `r cat_space()` **Hint**
@@ -892,14 +885,14 @@ You will need to set the arguments in the function to switch off the interquarti
 
 ```{r hygiene_sum-hint-1}
 # Start by grouping the data  ...
-download_tidy |> 
+download_tidy_tib |> 
   group_by(day)
   ...
 # Now think about how you will get summary statistics
 ```
 
 ```{r hygiene_sum-hint-2}
-download_tidy |> 
+download_tidy_tib |> 
   group_by(day) |> 
   describe_distribution(select = xxx)
 # replace the xxx to select the variable you want to summarise
@@ -908,7 +901,7 @@ download_tidy |>
 
 ```{r hygiene_sum-hint-3}
 # replace the xxs
-download_tidy |> 
+download_tidy_tib |> 
   group_by(day) |>  
   describe_distribution(select = hygiene,
                         iqr = xxx,
@@ -920,7 +913,7 @@ download_tidy |>
 
 ```{r hygiene_sum-hint-4}
 # replace the xxs
-download_tidy |> 
+download_tidy_tib |> 
   group_by(day) |>  
   describe_distribution(select = hygiene,
                         dispersion = xxx,
@@ -932,7 +925,7 @@ download_tidy |>
 ```
 
 ```{r hygiene_sum-solution}
-download_tidy |> 
+download_tidy_tib |> 
   group_by(day) |>  
   describe_distribution(select = hygiene,
                         dispersion = FALSE, 
@@ -955,7 +948,7 @@ We have already looked at (in previous tutorials) how to use the `group_by()` fu
 Actually, this is straightforward: we add `gender` within the `group_by()` function before we pipe it into `describe_distribution()`.
 
 ```{r eval = F}
-download_tidy |> 
+download_tidy_tib |> 
   group_by(day, gender) |> 
   describe_distribution(select = hygiene)
 ```
@@ -965,7 +958,7 @@ download_tidy |>
 The code for the previous challenge is below, adapt it to get summary statistics for each day of the festival within different gender classifications.
 
 ```{r hygiene_groupby, exercise = TRUE, exercise.lines = 12, exercise.setup = "dl_tib"}
-download_tidy |> 
+download_tidy_tib |> 
   group_by(day) |>  
   describe_distribution(select = hygiene,
                         dispersion = FALSE, 
@@ -973,11 +966,11 @@ download_tidy |>
                         range = FALSE,
                         ci = 0.95,
                         iterations = 500) |>
-  display(digits = 2)
+  display()
 ```
 
 ```{r hygiene_groupby-solution}
-download_tidy |> 
+download_tidy_tib |> 
   group_by(day, gender) |>  
   describe_distribution(select = hygiene,
                         dispersion = FALSE, 
@@ -985,7 +978,7 @@ download_tidy |>
                         range = FALSE,
                         ci = 0.95,
                         iterations = 500) |>
-  display(digits = 2)
+  display()
 ```
 
 

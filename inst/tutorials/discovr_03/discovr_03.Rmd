@@ -45,7 +45,7 @@ death_date <- c(NA, NA, NA, NA, NA, "1986-09-27", NA) |>
   ymd()
 current_member <- c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
 instrument <- c("Drums", "Guitar", "Guitar", "Bass", "Bass", "Bass", "Guitar") |>
-  forcats::as_factor() |>
+  as_factor() |>
   fct_relevel("Guitar", "Bass", "Drums")
 
 metalli_tib <- discovr::metallica
@@ -94,7 +94,7 @@ Contrast this arrangement with messy format, in which every participant's inform
 
 ##	`r bmu()` Tibbles [(A)]{.lbl}
 
-In `discovr_02` we looked at how to create variables by entering come variable relating to the rock band [Metallica](http://www.metallica.com). What if we want to combine these variables into a tabulated data set in tidy format? The tidyverse way to do this is to create something called a **tibble**. 
+In `discovr_02` we looked at how to create variables by entering some variables relating to the rock band [Metallica](http://www.metallica.com). What if we want to combine these variables into a tabulated data set in tidy format? The tidyverse way to do this is to create something called a **tibble**. 
 
 #### `r robot()` Code example
 

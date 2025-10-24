@@ -21,7 +21,8 @@ album_tib <- here::here("data/album_sales.csv") |> read_csv()
 To load the invisibility data use this code:
 
 ```{r, eval=FALSE}
-cloak_tib <- cloak_tib |> 
+cloak_tib <- here::here("data/invisibility.csv") |> 
+  read_csv() |> 
   mutate(
     cloak = as_factor(cloak)
   )

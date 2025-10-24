@@ -199,7 +199,7 @@ GGally::ggscatmat(album_tib, columns = c("adverts", "airplay", "image", "sales")
 
 Although the data are messy, the three predictors have reasonably linear relationships with the album sales and there are no obvious outliers (except maybe in the bottom left of the scatterplot with band image). Across the diagonal, we see the distributions of scores. Advertising is very skewed and airplay and sales look quite heavy-tailed.
 
-We can use the correlations in the plot to get a sense of the relationships between predictors and the outcome. If we look only at the predictors (ignore album sales) then the highest correlation is between the ratings of the bands image and the amount of airplay which is significant at the 0.01 level (*r* = 0.18). Focussing on the outcome variable, of all of the predictors, adverts and airplay correlate best with the outcome (*r*s = 0.58 and 0.6 respectively).
+We can use the correlations in the plot to get a sense of the relationships between predictors and the outcome. If we look only at the predictors (ignore album sales) then the highest correlation is between the ratings of the bands image and the amount of airplay which is *r* = 0.18. Focussing on the outcome variable, of all of the predictors, adverts and airplay correlate best with the outcome (*r*s = 0.58 and 0.6 respectively).
 
 
 
@@ -708,7 +708,7 @@ We can test whether adding `airplay` and `image` significantly improve the fit o
 
 #### `r robot()` Code example
 
-We can compare hierarchical models using an *F*-statistic using the `anova()` function, which takes the general form:
+We can compare hierarchical models using an *F*-statistic using the `test_wald()` function, which takes the general form:
 
 ```{r, eval = FALSE}
 test_wald(model_1, model_2, ...) |> 
@@ -1231,7 +1231,7 @@ Each of 134 people was administered all questionnaires. Fit a hierarchical linea
 
 #### `r alien()` Alien coding challenge
 
-Use the code box to fit these models and compare using `anova()`.
+Use the code box to fit these models and compare using `test_wald()`.
 
 ```{r soc_anx, exercise = TRUE, exercise.lines = 15, fig.height = 10}
 

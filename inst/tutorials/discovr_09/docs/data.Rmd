@@ -21,7 +21,8 @@ cloak_rm_tib <- here::here("data/invisibility_rm.csv") |> read_csv()
 To work *outside of this tutorial* you need to turn categorical variables into factors and set an appropriate baseline category using `as_factor` and `fct_relevel` from the `forcats` package. For [cloak_tib]{.alt} execute the following code:
 
 ```{r, eval=FALSE}
-cloak_tib <- cloak_tib |> 
+cloak_tib <- here::here("data/invisibility.csv") |> 
+  read_csv() |> 
   mutate(
     cloak = as_factor(cloak)
   )
@@ -30,7 +31,8 @@ cloak_tib <- cloak_tib |>
 For [cloak_rm_tib]{.alt} execute the following code:
 
 ```{r, eval=FALSE}
-cloak_rm_tib <- cloak_rm_tib |>
+cloak_rm_tib <- here::here("data/invisibility_rm.csv") |> 
+  read_csv() |>
   mutate(
     cloak = as_factor(cloak)
   )

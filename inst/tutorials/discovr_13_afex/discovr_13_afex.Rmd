@@ -91,7 +91,7 @@ goggles_aov <- model_parameters(goggles_afx, es_type = "omega", ci = 0.95)
 
 The main example in this tutorial is from [@fielddsr22026], who uses an example of an experimental design with two independent variables (a two-way independent design). The study tested the prediction that subjective perceptions of physical attractiveness become inaccurate after drinking alcohol (the well-known beer-goggles effect). The example is based on research that looked at whether the beer-goggles effect was influenced by the attractiveness of the faces being rated [@chen_moderating_2014]. The logic is that alcohol consumption has been shown to reduce accuracy in symmetry judgements, and symmetric faces have been shown to be rated as more attractive. If the beer-goggles effect is driven by alcohol impairing symmetry judgements then you'd expect a stronger effect for unattractive (asymmetric) faces (because alcohol will affect the perception of asymmetry) than attractive (symmetric) ones. The data well analyse are fictional, but the results mimic the findings of this research paper.
 
-An anthropologist was interested in the effects of facial attractiveness on the beer-goggles effect. She selected 48 participants who were randomly subdivided into three groups of 16: (1) a placebo group drank 500 ml of alcohol-free beer; (2) a low-dose group drank 500 ml of average strength beer (4% ABV); and (3) a high-dose group drank 500 ml of strong beer (7% ABV). Within each group, half (n = 8) rated the attractiveness of 50 photos of unattractive faces on a scale from 0 (pass me a paper bag) to 10 (pass me their phone number) and the remaining half rated 50 photos of attractive faces. The outcome for each participant was their median rating across the 50 photos (These photographs were from a larger pool of 500 that had been pre-rated by a different sample. The 50 photos with the highest and lowest ratings were used.). The data are in [goggles_tib]{.alt}, which contains the variables `facetype` (unattractive vs attractive), `alcohol` (placebo, low dose, high dose) and `attractiveness` (the median rating of each participant out of 10).
+An anthropologist was interested in the effects of facial attractiveness on the beer-goggles effect. She selected 48 participants who were randomly subdivided into three groups of 16: (1) a placebo group drank 500 ml of alcohol-free beer; (2) a low-dose group drank 500 ml of average strength beer (4% ABV); and (3) a high-dose group drank 500 ml of strong beer (7% ABV). Within each group, half (n = 8) rated the attractiveness of 50 photos of unattractive faces on a scale from 0 (pass me a paper bag) to 10 (pass me their phone number) and the remaining half rated 50 photos of attractive faces. The outcome for each participant was their median rating across the 50 photos (These photographs were from a larger pool of 500 that had been pre-rated by a different sample. The 50 photos with the highest and lowest ratings were used.). The data are in [goggles_tib]{.alt}, which contains the variables `facetype` (unattractive vs. attractive), `alcohol` (placebo, low dose, high dose) and `attractiveness` (the median rating of each participant out of 10).
 
 We can follow our usual 5-step process for fitting models. However, we can approach the model fitting using a standard modelling approach or a more historical 'ANOVA' approach (Figure 4). In both approaches we fit the same model so the bulk of the process is the same. The main difference is that in a standard modelling approach we include interactions between predictors only if they are theoretically relevant, and we build the model up sequentially based on theory. In contrast, the 'ANOVA' approach is a specific implementation of the model for experimental designs and so all main effects and interactions are included (because the interactions are typically theoretically interesting) and all effects are evaluated simultaneously using *F*-statistics. 
 
@@ -427,7 +427,7 @@ goggles_afx <- afex::aov_4(attractiveness ~ facetype*alcohol + (1|id), data = go
 
 #### `r alien()` Alien coding challenge
 
-We can evaluate the model ([goggles_lm]{.alt}) in the usual way using `check_model()`. Try this in the code box.
+We can evaluate the model ([goggles_afx]{.alt}) in the usual way using `check_model()`. Try this in the code box.
 
 ```{r goggles_zpred_resid, exercise = TRUE, exercise.lines = 3, exercise.setup = "goggles_afx_setup", fig.height = 10}
 
@@ -556,9 +556,9 @@ In which you replace [my_model]{.alt} with the name of your model ([goggles_afx]
 
 #### `r robot()` Code example
 
-In this case it makes most sense to look at the effect of `facetype` within each category of `alcohol`, because there were only two types of face so each simple effect represents a focussed test of ratings to attarctive compared to unattractive faces.
+In this case it makes most sense to look at the effect of `facetype` within each category of `alcohol`, because there were only two types of face so each simple effect represents a focussed test of ratings to attractive compared to unattractive faces.
 
-To obtain these simple effetcs with a Bonferroni correction, we'd execute:
+To obtain these simple effects with a Bonferroni correction, we'd execute:
 
 ```{r, eval = F}
 estimate_contrasts(model = goggles_afx,
@@ -639,7 +639,7 @@ Simple effects analysis revealed that symmetric faces were rated as significant 
 
 ## `r user_visor()` Robust models [(B)]{.lbl} 
 
-For previous linear models(e.g., in `discovr_08`, `discovr_09` and `discovr_11`), we obrtained robust parameter estimates using `robust::lmRob()` and robust tests of these parameters using `parameters::model_parameters()`. These methods won't work for models created with `afex`. If you are taking an 'ANOVA' approach to your analysis, then you need to use the [WRS2]{.pkg} package to fit models based on trimmed means. The functions `t2way()` and `mcp2atm()` take the general form:
+For previous linear models(e.g., in `discovr_08`, `discovr_09` and `discovr_11`), we obtained robust parameter estimates using `robust::lmRob()` and robust tests of these parameters using `parameters::model_parameters()`. These methods won't work for models created with `afex`. If you are taking an 'ANOVA' approach to your analysis, then you need to use the [WRS2]{.pkg} package to fit models based on trimmed means. The functions `t2way()` and `mcp2atm()` take the general form:
 
 ```{r, eval = F}
 WRS2::t2way(outcome ~ predictor(s), data = my_tib, tr = .2, alpha = .05)

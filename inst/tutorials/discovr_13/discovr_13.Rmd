@@ -494,7 +494,7 @@ goggles_lm <- lm(attractiveness ~ facetype*alcohol, data = goggles_tib)
 
 #### `r alien()` Alien coding challenge
 
-We can evaluate the model ([goggles_lm]{.alt}) in the usual way using `check_model()`. try this in the cocde box.
+We can evaluate the model ([goggles_lm]{.alt}) in the usual way using `check_model()`. try this in the code box.
 
 ```{r goggles_zpred_resid, exercise = TRUE, exercise.lines = 3, exercise.setup = "goggles_lm_setup", fig.height = 10}
 
@@ -605,9 +605,9 @@ In which you replace [my_model]{.alt} with the name of your model ([goggles_lm]{
 
 #### `r robot()` Code example
 
-In this case it makes most sense to look at the effect of `facetype` within each category of `alcohol`, because there were only two types of face so each simple effect represents a focussed test of ratings to attarctive compared to unattractive faces.
+In this case it makes most sense to look at the effect of `facetype` within each category of `alcohol`, because there were only two types of face so each simple effect represents a focussed test of ratings to attractive compared to unattractive faces.
 
-To obtain these simple effetcs with a Bonferroni correction, we'd execute:
+To obtain these simple effects with a Bonferroni correction, we'd execute:
 
 ```{r, eval = F}
 estimate_contrasts(model = goggles_lm,

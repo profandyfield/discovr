@@ -13,8 +13,8 @@ Set up an `r rstudio()` project in the way that [I recommend in this video](http
 
 ```{r, eval=FALSE}
 goggles_tib <- here::here("data/goggles.csv") |>
-  readr::read_csv() |>
-  dplyr::mutate(
+  read_csv() |>
+  mutate(
     facetype = as_factor(facetype),
     alcohol = as_factor(alcohol)
   )

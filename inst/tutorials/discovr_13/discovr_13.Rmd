@@ -511,7 +511,7 @@ quiz(caption = "Diagnostic plot quiz (level 2)",
   question("How would you interpret the *Residual vs. fitted* and *Scale-location* plots?",
     answer("Were in trouble: I see heteroscedasticity.", message = "Unlucky. The green line on the scale-location plot is fairly flat and the vertical lines of dots seem similar in length as we move along the *x*-axis indicating homoscedasticity."),
     answer("I'm not sure, give me a hint.", message = "Heteroscedasticity is shown up by a green line that isn't flat and a vertical spread of dots that changes as you move along the *x*-axis."),
-    answer("Everything is fine - residuals show homogeneity.", correct = TRUE, message = "Yes, the green line is fiarly flat and the vertical spread of dots is similar as you move along the *x*-axis."),
+    answer("Everything is fine - residuals show homogeneity.", correct = TRUE, message = "Yes, the green line is fairly flat and the vertical spread of dots is similar as you move along the *x*-axis."),
     correct = "Correct - well done!",
     random_answer_order = TRUE,
     allow_retry = T
@@ -580,7 +580,7 @@ To sum up, the significant interaction is probably being driven by  alcohol cons
 <div class="reportbox">
   `r pencil()` **Report**`r rproj()`
   
-There was a significant interaction between the type of face being rated and the dose of alcohol, `r report_lrt(goggles_lrt, row = 4)`. Contrasts suggested that the difference between ratings of symmetric and asymmetric faces was significantly smaller after any dose of alcohol compared to no alcohol, `r report_pe(goggles_par, row = 5)`, and became smaller still when comparing a high- to a low-dose of alcohol, `r report_pe(goggles_par, row = 6)`. These effects support the 'beer-googles' hypothesis: when no alcohol is consumed symmetric faces were rated as more attractive than asymmetric faces but this difference diminishes as more alcohol is consumed.
+There was a significant interaction between the type of face being rated and the dose of alcohol, `r report_lrt(goggles_lrt, row = 4)`. Contrasts suggested that the difference between ratings of symmetric and asymmetric faces was significantly smaller after any dose of alcohol compared to no alcohol, `r report_pe(goggles_par, row = 5)`, and became smaller still when comparing a high- to a low-dose of alcohol, `r report_pe(goggles_par, row = 6)`. These effects support the 'beer-goggles' hypothesis: when no alcohol is consumed symmetric faces were rated as more attractive than asymmetric faces but this difference diminishes as more alcohol is consumed.
 </div>
 
 
@@ -681,7 +681,7 @@ gog_se <- estimate_contrasts(model = goggles_lm,
 <div class="reportbox">
   `r pencil()` **Report**`r rproj()`
   
-Simple effects analysis revealed that symmetric faces were rated as significant more attractive than asymmetric faces after no alcohol, `r report_con(gog_se, row = 1)`, and a low dose, `r report_con(gog_se, row = 2)`, but were rated comparably after a high dose of alcohol, `r report_con(gog_se, row = 3)`. These effects support the 'beer-googles' hypothesis: the standard tendency to rate symmetric faces as more attractive than asymmetric faces was present at low doses and no alcohol, but was eliminated by a high dose of alcohol.
+Simple effects analysis revealed that symmetric faces were rated as significant more attractive than asymmetric faces after no alcohol, `r report_con(gog_se, row = 1)`, and a low dose, `r report_con(gog_se, row = 2)`, but were rated comparably after a high dose of alcohol, `r report_con(gog_se, row = 3)`. These effects support the 'beer-goggles' hypothesis: the standard tendency to rate symmetric faces as more attractive than asymmetric faces was present at low doses and no alcohol, but was eliminated by a high dose of alcohol.
 </div>
 
 
@@ -718,7 +718,7 @@ parameters::model_parameters(goggles_lm, vcov = "HC4") |>
   display(digits = 3) 
 ```
 
-When we fit the model with heteroskedasticity-consistent standard errors the parameter estimates will match the non-robust model but the standard errors, *p*-values and confidence intervals change because these are based on methods robust to heteroscedasticity (the HC4 estimates that we asked for). For the two terms that represent the interaction term ([facetype1:alcoholalcohol_vs_none]{.alt} and [facetype1 : alcohollow_vs_high ]{.alt}) the profile of results is unchanged by using robust standard errors, both terms are significant and have 95% confidence intervals that do not contain 0. The fact that the profile of results is unchanged is not surprising given that the model plots suggested that homoscedasticity could be assumed.
+When we fit the model with heteroscedasticity-consistent standard errors the parameter estimates will match the non-robust model but the standard errors, *p*-values and confidence intervals change because these are based on methods robust to heteroscedasticity (the HC4 estimates that we asked for). For the two terms that represent the interaction term ([facetype1:alcoholalcohol_vs_none]{.alt} and [facetype1 : alcohollow_vs_high ]{.alt}) the profile of results is unchanged by using robust standard errors, both terms are significant and have 95% confidence intervals that do not contain 0. The fact that the profile of results is unchanged is not surprising given that the model plots suggested that homoscedasticity could be assumed.
 
 Given the small sample size, we might also consider a bootstrap model of the parameter estimates and their confidence intervals and significance tests. We can obtain these using the [bootstrap]{.alt} argument within the `model_parameters()` function from [parameters]{.pkg}.
 

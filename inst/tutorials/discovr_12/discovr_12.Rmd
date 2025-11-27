@@ -507,7 +507,7 @@ knitr::kable(dummy_tbl, caption = "Table 1: Dummy coding for the three-group pup
 ```
 
 
-These are [non-orthogonal contrasts]{.kt}, which means they are not independent (because they both use the no puppies group scores). This codingh scheme is problematic when we take an AMNCOVA approach because we want to use *F*-statistics to evaluate all effects *simultaneously* and not *sequentially* like we do when we use `test_wald()`. To evaluate *F*-statistics simultaneously, we must use Type III sums of squares. Type III sums of squares differ from Type I in that all effects are evaluated taking into consideration all other effects in the model (not just the ones entered before). As such, the order that you specify predictors doesn't affect the results. (There's a more nuanced discussion of sums of squares in the book.)
+These are [non-orthogonal contrasts]{.kt}, which means they are not independent (because they both use the no puppies group scores). This coding scheme is problematic when we take an ANCOVA approach because we want to use *F*-statistics to evaluate all effects *simultaneously* and not *sequentially* like we do when we use `test_wald()`. To evaluate *F*-statistics simultaneously, we must use Type III sums of squares. Type III sums of squares differ from Type I in that all effects are evaluated taking into consideration all other effects in the model (not just the ones entered before). As such, the order that you specify predictors doesn't affect the results. (There's a more nuanced discussion of sums of squares in the book.)
 
 ```{r ssl_quiz, echo = F}
 question("What's the pragmatic difference between Type I and Type III sums of squares",
@@ -771,7 +771,7 @@ Interpret the model
 </div>
 
 
-## `r user_visor()` Adjusted means [(B)]{.lbl}
+### `r user_visor()` Adjusted means [(B)]{.lbl}
 
 Earlier on we computed the group means. They're displayed again for you in Table 3.
 
@@ -861,7 +861,7 @@ The *b*s in this output are raw effect sizes. I can't stress enough how useful i
 </div>
 
 
-## `r user_visor()` *Post hoc* tests [(B)]{.lbl}
+### `r user_visor()` *Post hoc* tests [(B)]{.lbl}
 
 If, and only if, we hadn't had specific comparisons to test with contrasts we would instead obtain *post hoc* tests. We do this using the `estimate_contrasts()` function as we did in `discovr_11`.
 
@@ -922,7 +922,7 @@ To get you started ... to test our main hypotheses we need to first enter the co
 con_tbl <- tibble(
   `Group` = c("Water", "Lucozade", "Cola"),
   `Contrast 1 (Sugar vs. none)` = c("-2/3", "1/3", "1/3"),
-  `Contrast 2 (Lucozade vs. Cola)` = c("0", "-1/2", "1/2")
+  `Contrast 2 (Lucozade vs. Cola)` = c("0", "1/2", "-1/2")
   )
 
 knitr::kable(con_tbl, caption = "Table 4: Contrast coding for the hangover example")
@@ -949,7 +949,7 @@ lucoz_vs_cola <- c(x, x, x)
 # Assign these variables to the contrast attached to the variable hero
 
 sugar_vs_none <- c(-2/3, 1/3, 1/3)
-lucoz_vs_cola <- c(0, -1/2, 1/2)
+lucoz_vs_cola <- c(0, 1/2, -1/2)
 
 contrasts(cure_tib$drink) <- cbind(sugar_vs_none, lucoz_vs_cola)
 contrasts(cure_tib$drink) # To view the contrasts
@@ -1019,7 +1019,7 @@ Use the code box to fit and look at the main model and the parameter estimates a
 
 ```{r cure_oc}
 sugar_vs_none <- c(-2/3, 1/3, 1/3)
-lucoz_vs_cola <- c(0, -1/2, 1/2)
+lucoz_vs_cola <- c(0, 1/2, -1/2)
 
 contrasts(cure_tib$drink) <- cbind(sugar_vs_none, lucoz_vs_cola)
 ```
@@ -1115,7 +1115,7 @@ Use the code box to get diagnostic plots for [cure_lm]{.alt}.
 
 ```{r cure_lm}
 sugar_vs_none <- c(-2/3, 1/3, 1/3)
-lucoz_vs_cola <- c(0, -1/2, 1/2)
+lucoz_vs_cola <- c(0, 1/2, -1/2)
 
 contrasts(cure_tib$drink) <- cbind(sugar_vs_none, lucoz_vs_cola)
 cure_lm <- lm(well ~ drunk + drink, data = cure_tib)

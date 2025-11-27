@@ -101,11 +101,11 @@ $$
 
 The model contains:
 
-- $\gamma_{0}$ = the average vocalizations in the first block of trials
+- $\gamma_{0}$ = the average vocalizations when block = 0
 - $\gamma_{1}$ = the average rate of change of vocalizations (i.e. the amount that vocalizations change as the blocks of trials increase)
-- $\zeta_{0i}$ = the deviation of a given dog's vocalisations from the group average in the first block (think of the *i* subscript as representing 'a particular dog') 
+- $\zeta_{0i}$ = the deviation of a given dog's vocalisations from the group average when block = 0 (think of the *i* subscript as representing 'a particular dog') 
 - $\zeta_{1i}$ = the deviation of a given dog's rate of change of vocalisations from the average rate of change (again, think of the *i* subscript as representing 'a particular dog')
-- $\varepsilon_{ij}$ = the portion of a given dog's vocalisations that is unpredicted during trial block j.
+- $\varepsilon_{ij}$ = the portion of a given dog's vocalisations that is unpredicted during trial block *j*.
 
 The data are in the tibble [train_tib]{.alt} which has 668 rows (167 dogs measured at each of 4 time points) and 3 variables:
 

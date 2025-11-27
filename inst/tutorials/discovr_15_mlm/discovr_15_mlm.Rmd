@@ -274,7 +274,7 @@ We can get a conceptual grasp of the model we're fitting by thinking about the p
 
 $$
 \begin{aligned}
-\text{vocalizations}_{ij} &= \left[\hat{b}_{0j} + \hat{b}_{1j}\text{entity}_{ij} \right]+ \left[\hat{u}_{0j} + e_{ij}\right] \\
+\text{vocalizations}_{ij} &= \left[\beta_{0j} + \beta_{1j}\text{entity}_{ij} \right]+ \left[u_{0j} + \varepsilon_{ij}\right] \\
 \end{aligned}
 $$
 
@@ -298,11 +298,11 @@ The resulting model is, therefore
 $$
 \begin{aligned}
 \text{vocalizations}_{ij} &= \Big[\hat{\beta}_{0} + \hat{\beta}_{1}\text{alien vs. non}_{ij} + \hat{\beta}_{2}\text{alien vs. shapeshifter}_{ij} \\
-&\quad + \hat{\beta}_{3}\text{human vs. mannequin}_{ij}\Big] + \Big[\hat{u}_{0j} + e_{ij}\Big] \\
+&\quad + \hat{\beta}_{3}\text{human vs. mannequin}_{ij}\Big] + \Big[u_{0j} + \varepsilon_{ij}\Big] \\
 \end{aligned}
 $$
 
-The main difference to models we have seen before is that we have added a term that reflects the deviation of each dog's intercept from the overall intercept ($\hat{u}_{0j}$), and this term will have an associated variance that is estimated from the data. Put another way, we model the fact that individual dogs will vary in the overall number of vocalizations they make.
+The main difference to models we have seen before is that we have added a term that reflects the deviation of each dog's intercept from the overall intercept ($u_{0j}$), and this term will have an associated variance that is estimated from the data. Put another way, we model the fact that individual dogs will vary in the overall number of vocalizations they make.
 
 
 ### `r user_visor()` Planned contrasts [(B)]{.lbl}
@@ -531,7 +531,7 @@ Yep, it's that message we saw earlier again:
 Random effect variances not available. Returned R2 does not account for random effects.
 ```
 
-Don't fir these models to small samples.
+Don't fit these models to small samples.
 
 </div>
 
@@ -677,12 +677,12 @@ The design of the study is such that each dog sniffed 9 things. We denote these 
 
 $$
 \begin{aligned}
-\text{vocalizations}_{ij} & = \left[\hat{b}_{0} + \hat{b}_{1}\text{entity}_{ij} + \hat{b}_{2}\text{scent}_{ij} + \hat{b}_{3}(\text{entity}_{ij}\times\text{scent}_{ij})\right] + \\
-&\quad \ \left[\hat{u}_{0j} + e_{ij}\right]\\
+\text{vocalizations}_{ij} & = \left[\beta_{0} + \beta_{1}\text{entity}_{ij} + \beta_{2}\text{scent}_{ij} + \beta_{3}(\text{entity}_{ij}\times\text{scent}_{ij})\right] + \\
+&\quad \ \left[u_{0j} + \varepsilon_{ij}\right]\\
 \end{aligned}
 $$
 
-This model will capture the 'repeated measures' aspect of the design in that $\hat{u}_{0j}$ represents the difference in vocalizations for a particular dog from the overall mean number of vocalizations, and the model will now include a parameter that estimates the variance in vocalizations across dogs ($\hat{\sigma}^2_{\mu_0}$).
+This model will capture the 'repeated measures' aspect of the design in that $u_{0j}$ represents the difference in vocalizations for a particular dog from the overall mean number of vocalizations, and the model will now include a parameter that estimates the variance in vocalizations across dogs ($\hat{\sigma}^2_{\mu_0}$).
 
 
 <div class="infobox">
@@ -692,8 +692,8 @@ You obtain the maximal model by adding random effects for all predictors (includ
 
 $$
 \begin{aligned}
-\text{vocalizations}_{ij} &= \left[\hat{b}_{0} + \hat{b}_{1}\text{entity}_{ij} + \hat{b}_{2}\text{scent}_{ij} + \hat{b}_{3}(\text{entity}_{ij}\times\text{scent}_{ij})\right] + \\
-&\quad \left[\hat{u}_{0j} + \hat{u}_{1j}\text{entity}_{ij} + \hat{u}_{2j}\text{scent}_{ij} + \hat{u}_{3j}(\text{entity}_{ij}\times\text{scent}_{ij}) + e_{ij}\right]\\
+\text{vocalizations}_{ij} &= \left[\beta_{0} + \beta_{1}\text{entity}_{ij} + \beta_{2}\text{scent}_{ij} + \beta_{3}(\text{entity}_{ij}\times\text{scent}_{ij})\right] + \\
+&\quad \left[u_{0j} + u_{1j}\text{entity}_{ij} + u_{2j}\text{scent}_{ij} + u_{3j}(\text{entity}_{ij}\times\text{scent}_{ij}) + \varepsilon_{ij}\right]\\
 \end{aligned}
 $$
 
@@ -704,10 +704,10 @@ Even this simplified representation model includes 4 variance parameters and 6 c
 
 With multiple predictors, assuming we care about testing the individual contributions of predictors, we need to build up the model in steps. One way to do this for the current example is to fit the following models
 
-- Model 1 (intercept only): $\text{vocalizations}_{ij} = \left[\hat{b}_{0} \right] + \left[\hat{u}_{0j} + e_{ij}\right]$
-- Model 2 (entity only): $\text{vocalizations}_{ij} = \left[\hat{b}_{0} + \hat{b}_{1}\text{entity}_{ij} \right] + \left[\hat{u}_{0j} + e_{ij}\right]$
-- Model 3 (main effects only): $\text{vocalizations}_{ij} = \left[\hat{b}_{0} + \hat{b}_{1}\text{entity}_{ij} + \hat{b}_{2}\text{scent}_{ij}\right] + \left[\hat{u}_{0j} + e_{ij}\right]$
-- Model 4 (full model): $\text{vocalizations}_{ij} = \left[\hat{b}_{0} + \hat{b}_{1}\text{entity}_{ij} + \hat{b}_{2}\text{scent}_{ij} + \hat{b}_{3}(\text{entity}_{ij}\times\text{scent}_{ij})\right] + \left[\hat{u}_{0j} + e_{ij}\right]$
+- Model 1 (intercept only): $\text{vocalizations}_{ij} = \left[\beta_{0} \right] + \left[u_{0j} + \varepsilon_{ij}\right]$
+- Model 2 (entity only): $\text{vocalizations}_{ij} = \left[\beta_{0} + \beta_{1}\text{entity}_{ij} \right] + \left[u_{0j} + \varepsilon_{ij}\right]$
+- Model 3 (main effects only): $\text{vocalizations}_{ij} = \left[\beta_{0} + \beta_{1}\text{entity}_{ij} + \beta_{2}\text{scent}_{ij}\right] + \left[u_{0j} + \varepsilon_{ij}\right]$
+- Model 4 (full model): $\text{vocalizations}_{ij} = \left[\beta_{0} + \beta_{1}\text{entity}_{ij} + \beta_{2}\text{scent}_{ij} + \beta_{3}(\text{entity}_{ij}\times\text{scent}_{ij})\right] + \left[u_{0j} + \varepsilon_{ij}\right]$
 
 The order of models 2 and 3 is determined by the fact we assume entity would have a significant effect in a larger sample based on the previous study. However, in many cases we will care mainly about the interaction so the order in which we enter main effects might be relatively arbitrary.  
 
@@ -1044,7 +1044,7 @@ As with any linear model, we can use the `check_model()` function to produce dia
 check_model(scent_int)
 ```
 
-The top right and middle left plots can be used for testing homoscedasticity. Both plots imply heteroscedasticity because the trend lines are not flat. The bottom left Q-Q plot suggests some non-normality of residuals because they deviate from the line at the extremes. Te bottom right plot suggests relative normality of the random effects (an additional assumption for our model). The middle right plot shows indicates collinearity in the interaction term (which we would expect), and it appears highly collinear with both terms that contribute to it (both VIFs are close to 10).
+The top right and middle left plots can be used for testing homoscedasticity. Both plots imply heteroscedasticity because the trend lines are not flat. The bottom left Q-Q plot suggests some non-normality of residuals because they deviate from the line at the extremes. The bottom right plot suggests relative normality of the random effects (an additional assumption for our model). The middle right plot shows indicates collinearity in the interaction term (which we would expect), and it appears highly collinear with both terms that contribute to it (both VIFs are close to 10).
 
 ## `r bmu()` Step 5: Interpret the model [(A)]{.lbl}
 

@@ -436,10 +436,10 @@ The test of whether the group means are the same is represented by the *F*-stati
 
 ```{r quiz_zresid_ex1, echo = FALSE}
 quiz(caption = "Diagnostic plot quiz",
-  question("How would you interpret the *Residual vs. fitted* and *Scale-location* plots?",
-    answer("I can't see any problems", correct = TRUE, message = "The red lines are flat and the columns are equal length suggesting homoscedasticity."),
-    answer("I'm not sure, I'm not used to seeing columns of dots on these plots and it's making me think something has gone badly wrong.", message = "Remember that the model consists of three groups, and the predicted values from the model are the three group means. That's why there are columns - because there are only three possible predicted values. What you're looking for is whether the columns of ots are about the same length."),
-    answer("I can see a violation of homoscedasticity", message = "Heteroscedasticity would be shown up by a red line that isn't flat and columns of dots that are different lengths."),
+  question("How would you interpret the heteroscedasticity plot?",
+    answer("I can't see any problems", correct = TRUE, message = "The summary line is flat and the columns are roughly equal length suggesting homoscedasticity."),
+    answer("I'm not sure, I'm not used to seeing columns of dots on these plots and it's making me think something has gone badly wrong.", message = "Remember that the model consists of three groups, and the predicted values from the model are the three group means. That's why there are columns - because there are only three possible predicted values. What you're looking for is whether the columns of dots are about the same length."),
+    answer("I can see a violation of homoscedasticity", message = "Heteroscedasticity would be shown up by a line that isn't flat and columns of dots that are different lengths."),
     correct = "Correct - well done!",
     random_answer_order = TRUE,
     allow_retry = T
@@ -452,11 +452,11 @@ quiz(caption = "Diagnostic plot quiz",
     random_answer_order = TRUE,
     allow_retry = T
   ),
-  question("Based on the plot of Cook's distance, are there any influential cases?",
-    answer("Yes", message = "The largest Cook's distance needs to be above about 1 before we'd worry."),
+  question("Based on the plots are there any influential cases?",
+    answer("Yes", message = "The dots need to fall outside the dotted lines before we'd worry."),
     answer("No", correct = TRUE),
     answer("Maybe", message = "Sorry, you're not allowed to sit on the fence!"),
-    correct = "Correct - The largest Cook's distance is about 0.2 which is well below the threshold of 1 at which we'd worry. well done!",
+    correct = "Correct - no data points (dots) fall outside the dotted lines on the influence plot. well done!",
     random_answer_order = TRUE,
     allow_retry = T
   )

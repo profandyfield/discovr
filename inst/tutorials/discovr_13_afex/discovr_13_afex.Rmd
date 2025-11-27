@@ -444,7 +444,7 @@ quiz(caption = "Diagnostic plot quiz (level 2)",
   question("How would you interpret the *Residual vs. fitted* plot?",
     answer("Were in trouble: I see heteroscedasticity.", message = "Unlucky. The green line on the plot is fairly flat and the vertical lines of dots seem similar in length as we move along the *x*-axis indicating linearity and homoscedasticity."),
     answer("I'm not sure, give me a hint.", message = "Linearity and homoscedasticity is shown up by a green line that is flat and a vertical spread of dots that changes as you move along the *x*-axis."),
-    answer("Everything is fine - residuals show linearity and homogeneity.", correct = TRUE, message = "Yes, the green line is fiarly flat and the vertical spread of dots is similar as you move along the *x*-axis."),
+    answer("Everything is fine - residuals show linearity and homogeneity.", correct = TRUE, message = "Yes, the green line is fairly flat and the vertical spread of dots is similar as you move along the *x*-axis."),
     correct = "Correct - well done!",
     random_answer_order = TRUE,
     allow_retry = T
@@ -532,7 +532,7 @@ afex::afex_plot(goggles_afx, "alcohol", "facetype") +
   theme_minimal()
 ```
 
-The plot seems to suggest that attractive stimuli are rated as more attractive than unattractive stimuli in the placebo group, but are rated fairly similarly in the low dose group and very similarly in the high alcohol dose group. Put another way, the beer googles effect seems to being rearing it's head: as more alcohol is consumed the ratings of unattractive faces get more similar to those of attractive faces.
+The plot seems to suggest that attractive stimuli are rated as more attractive than unattractive stimuli in the placebo group, but are rated fairly similarly in the low dose group and very similarly in the high alcohol dose group. Put another way, the beer goggles effect seems to being rearing it's head: as more alcohol is consumed the ratings of unattractive faces get more similar to those of attractive faces.
 
 
 ## `r user_visor()` Simple effects [(B)]{.lbl}
@@ -632,7 +632,7 @@ gog_se <- estimate_contrasts(model = goggles_afx,
 <div class="reportbox">
   `r pencil()` **Report**`r rproj()`
   
-Simple effects analysis revealed that symmetric faces were rated as significant more attractive than asymmetric faces after no alcohol, `r report_con(gog_se, row = 1)`, and a low dose, `r report_con(gog_se, row = 2)`, but were rated comparably after a high dose of alcohol, `r report_con(gog_se, row = 3)`. These effects support the 'beer-googles' hypothesis: the standard tendency to rate symmetric faces as more attractive than asymmetric faces was present at low doses and no alcohol, but was eliminated by a high dose of alcohol.
+Simple effects analysis revealed that symmetric faces were rated as significant more attractive than asymmetric faces after no alcohol, `r report_con(gog_se, row = 1)`, and a low dose, `r report_con(gog_se, row = 2)`, but were rated comparably after a high dose of alcohol, `r report_con(gog_se, row = 3)`. These effects support the 'beer-goggles' hypothesis: the standard tendency to rate symmetric faces as more attractive than asymmetric faces was present at low doses and no alcohol, but was eliminated by a high dose of alcohol.
 </div>
 
 

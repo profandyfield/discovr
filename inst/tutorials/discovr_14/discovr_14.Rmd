@@ -174,7 +174,7 @@ Let's imagine a world where I'm not nice and I've given you the cosmetic surgery
 
 #### `r alien()` Alien coding challenge
 
-The code box shows the code the code to check the levels of the variable `clinic`, add similar code to check `reason` and run it.
+The code box shows the code to check the levels of the variable `clinic`, add similar code to check `reason` and run it.
 
 ```{r fct_levels, exercise = TRUE, exercise.lines = 3}
 levels(cosmetic_evil_tib$clinic)
@@ -293,7 +293,7 @@ That optional detour has shown you how to check the levels of any categorical pr
 
 ### `r user_visor()` Summary statistics [(B)]{.lbl}
 
-We might want some summary statistics of quality of life scores split by `clinic`. We can create a table of descriptive statistics using by grouping the data by `clinic` and then passing it into the `describe_distribution()` function of the [datawizard]{.pkg} package. 
+We might want some summary statistics of quality of life scores split by `clinic`. We can create a table of descriptive statistics by grouping the data by `clinic` and then passing it into the `describe_distribution()` function of the [datawizard]{.pkg} package. 
 
 ```{r, eval = F}
 qol_sum <- cosmetic_tib |>

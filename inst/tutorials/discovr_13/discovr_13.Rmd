@@ -297,13 +297,13 @@ Given we have run an experiment with specific hypotheses, our first job is to th
 > - H~3~: Ratings will be higher after a high dose of alcohol compared to a low dose
 > - H~4~: The effect of alcohol on ratings will depend on the type of face being rated (i.e. moderation)
 
-For the `alcohol` variable, we might set contrasts similar to the ones in `discovr_12`, by creating two dummy variables using the contrast coding in Table 1. Contrast 1 compares the placebo group to the two alcohol groups combined, and the second contrast compares the low and high alcohol groups. Check back to `discovr_12` to understand these codes.
+For the `alcohol` variable, we might set contrasts similar to the ones in `discovr_12`, by creating two dummy variables using the contrast coding in Table 1. Contrast 1 compares the two alcohol groups combined to the placebo, and the second contrast compares the high alcohol group to the low. Check back to `discovr_12` to understand these weights.
 
 ```{r con_tbl, echo = FALSE, results = 'asis'}
 con_tbl <- tibble(
   `Group` = c("Placebo", "Low dose", "High dose"),
-  `Dummy 1 (Placebo vs. alcohol)` = c("-2/3", "1/3", "1/3"),
-  `Dummy 2 (Low vs. High)` = c("0", "-1/2", "1/2")
+  `Dummy 1 (Alcohol vs. placebo)` = c("-2/3", "1/3", "1/3"),
+  `Dummy 2 (High vs. low)` = c("0", "-1/2", "1/2")
   )
 
 knitr::kable(con_tbl, caption = "Table 1: Contrast coding for the alcohol variable")
@@ -800,7 +800,7 @@ Use the code box to set the contrasts for [game]{.alt} and [console]{.alt}.
 ```{r xbox_con_asw-hint-1}
 # Start by defining the contrasts:
 
-static_vs_active <- c(-1/2, 1/2)
+active_vs_static <- c(-1/2, 1/2)
 switch_vs_xbox <- c(-1/2, 1/2)
 
 # Now assign these variables to the appropriate predictors (replace the xxxs)
@@ -809,7 +809,7 @@ switch_vs_xbox <- c(-1/2, 1/2)
 ```{r xbox_con_asw-hint-2}
 # Assign these variables to the appropriate predictors (replace the xxxs)
 
-contrasts(xxxxx) <- static_vs_active
+contrasts(xxxxx) <- active_vs_static
 contrasts(xxxxx) <- switch_vs_xbox
 ```
 

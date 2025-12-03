@@ -210,10 +210,10 @@ The plot confirms that vocalisations generally increase over blocks of trials. H
 
 ## `r user_astronaut()` Step 3: Fit the model [(C)]{.lbl}
 
-We're going to use the `glmTMB()` function from the [glmTMB package]{.pkg} [@R-glmmTMB; @glmmTMB2017; @glmmTMB2025]. (All of the code will also work with the `lmer()` function from [lme4]{.pkg}.) We used this function in `discovr_14`, it takes the following form
+We're going to use the `glmmTMB()` function from the [glmmTMB package]{.pkg} [@R-glmmTMB; @glmmTMB2017; @glmmTMB2025]. (All of the code will also work with the `lmer()` function from [lme4]{.pkg}.) We used this function in `discovr_14`, it takes the following form
 
 ```{r, eval = F}
-my_model <- glmTMB:glmTMB(outcome ~ predictor(s) + (random effects), 
+my_model <- glmmTMB:glmmTMB(outcome ~ predictor(s) + (random effects), 
                           data = tibble,
                           family = gaussian()
                           na.action = an action,
@@ -822,7 +822,7 @@ The plot confirms what we concluded from the descriptives: emotional well-being 
 
 ## `r user_astronaut()` Step 3: Fit the model [(C)]{.lbl}
 
-We're going to use the `glmTMB()` function from the [glmTMB package]{.pkg} [@R-glmmTMB; @glmmTMB2017; @glmmTMB2025]. As in the previous section we will build up the model sequentially.
+We're going to use the `glmmTMB()` function from the [glmmTMB package]{.pkg} [@R-glmmTMB; @glmmTMB2017; @glmmTMB2025]. As in the previous section we will build up the model sequentially.
 
 #### `r robot()` Code example
 

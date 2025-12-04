@@ -254,7 +254,7 @@ Next, let's add the random slope for `block`:
 blockrs_mlm <- glmmTMB(vocalizations ~ block + (block|id), data = train_tib)
 ```
 
-Again, I have named this model informatively by including [re]{.alt} as shorthand for 'random effect' ([blockrs_mlm]{.alt}). A quick reminder that [(block|id)]{.alt} is shorthand for a random intercept and a random slope for `block` within each dog (`id`).
+Again, I have named this model informatively by including [rs]{.alt} as shorthand for 'random slope' ([blockrs_mlm]{.alt}). A quick reminder that [(block|id)]{.alt} is shorthand for a random intercept and a random slope for `block` within each dog (`id`).
 
 
 #### `r alien()` Alien coding challenge

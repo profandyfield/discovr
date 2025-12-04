@@ -13,7 +13,7 @@ Set up an `r rstudio()` project in the way that [I recommend in this video](http
 
 ```{r, eval=FALSE}
 train_tib <- here::here("data/dog_training.csv") |> 
-  read_csv() |> 
+  read_csv()
 ```
 
 For the exercise data, import using this code:

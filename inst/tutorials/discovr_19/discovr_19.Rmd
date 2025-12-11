@@ -698,7 +698,7 @@ penalty_slopes <- estimate_slopes(penalty_glm, trend = "ability", by = "position
 <div class="reportbox">
   `r pencil()` **Report**`r rproj()`
 
-Adding the position in the shootout to the intercept only model significantly improved the fit, `r report_lrt(penalty_lrt, row = 2)`, adding the player's ability also significantly improved the fit, `r report_lrt(penalty_lrt, row = 3)`, as did the interaction of the position in the shootout and the player's ability, `r report_lrt(penalty_lrt, row = 4)`.
+Adding the position in the shootout to the intercept only model did not significantly improve the fit, `r report_lrt(penalty_lrt, row = 2)`, however, adding the player's ability did significantly improved the fit, `r report_lrt(penalty_lrt, row = 3)`, as did the interaction of the position in the shootout and the player's ability, `r report_lrt(penalty_lrt, row = 4)`.
 
 </div>
 

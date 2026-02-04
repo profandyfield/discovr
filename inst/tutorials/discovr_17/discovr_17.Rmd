@@ -609,7 +609,7 @@ As with any models we can get fit statistics by placing our model within `model_
 
 Good fit is (probably) indicated by
 
-* A combination of TLI > 0.96 and RMSR (RMSA in the output) < 0.06
+* A combination of TLI > 0.96 and RMSR < 0.06
 * A combination of RMSEA < 0.05 and RMSR < 0.09 
 
 </div>
@@ -630,7 +630,7 @@ model_performance(raq_fa) |>
 
 The chi-square statistic for the model is `r report_fit(raq_fit, report = "chi")`. We want this statistic to be non-significant but our value is highly significant; however, with a sample size of 2571, a significant result is not surprising because even small deviations from a good fit will be significant.
 
-The RMSEA is `r report_fit(raq_fit, report = "rmsea")`, TLI is `r value_from_ez(raq_fit, value = "TLI")`, and RMSA is `r value_from_ez(raq_fit, value = "RMSA")`. We need to look for a combination of  TLI > 0.96 and RMSA < 0.06 and a combined rule of RMSEA < 0.05 and RMSR < 0.09. With the caveat that universal cut-offs need to be taken with a pinch of salt, it’s reasonable to conclude that the model has excellent fit.
+The RMSEA is `r report_fit(raq_fit, report = "rmsea")`, TLI is `r value_from_ez(raq_fit, value = "TLI")`, and RMSR is `r value_from_ez(raq_fit, value = "RMSR")`. We need to look for a combination of  TLI > 0.96 and RMSR < 0.06 and a combined rule of RMSEA < 0.05 and RMSR < 0.09. With the caveat that universal cut-offs need to be taken with a pinch of salt, it’s reasonable to conclude that the model has excellent fit.
 
 #### `r alien()` Alien coding challenge
 
@@ -853,7 +853,7 @@ model_performance(raq_omg) |>
 ```
 
 
-We get two lots of model fit statistics. The first set are for the model that has four factors and repeat the information from the original EFA. The chi-square statistic is significant, `r report_fit(omg_fit, report = "chi")`, a bad thing but unsurprising given the sample size, the RMSR = `r value_from_ez(omg_fit, value = "RMSA", row = 1)` and `r report_fit(omg_fit, report = "rmsea")`. Next, we get the same information but for a model that contains only the general factor (and not the four sub-factors). The fit gets worse as shown by (1) a larger and more significant chi-square, `r report_fit(omg_fit, report = "chi", row = 2)`; (2) a larger RMSR = `r value_from_ez(omg_fit, value = "RMSA", row = 2)`; and (3) a larger `r report_fit(omg_fit, report = "rmsea", row = 2)`. This tells us that the model that characterises the RAQ in terms of four-factors is a better fit of the data than a model that characterises it as a single factor.
+We get two lots of model fit statistics. The first set are for the model that has four factors and repeat the information from the original EFA. The chi-square statistic is significant, `r report_fit(omg_fit, report = "chi")`, a bad thing but unsurprising given the sample size, the RMSR = `r value_from_ez(omg_fit, value = "RMSR", row = 1)` and `r report_fit(omg_fit, report = "rmsea")`. Next, we get the same information but for a model that contains only the general factor (and not the four sub-factors). The fit gets worse as shown by (1) a larger and more significant chi-square, `r report_fit(omg_fit, report = "chi", row = 2)`; (2) a larger RMSR = `r value_from_ez(omg_fit, value = "RMSR", row = 2)`; and (3) a larger `r report_fit(omg_fit, report = "rmsea", row = 2)`. This tells us that the model that characterises the RAQ in terms of four-factors is a better fit of the data than a model that characterises it as a single factor.
 
 #### `r alien()` Alien coding challenge
 

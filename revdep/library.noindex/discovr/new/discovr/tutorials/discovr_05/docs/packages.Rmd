@@ -1,0 +1,31 @@
+---
+title: "packages"
+author: "Andy Field"
+output: learnr::tutorial
+---
+
+
+
+```{r, eval = F, echo = F}
+# Create bib file for R packages
+
+tidylist <- c('tidyverse', 'dplyr', 'forcats', 'ggplot2', 'readr', 'tibble')
+otherlist <- c('here')
+
+here::here("inst/tutorials/discovr_05/packages.bib") |>
+  knitr::write_bib(c(tidylist, otherlist), file = _)
+```
+
+In this tutorial all packages are pre-loaded. If working outside of the tutorial, load the [easystats]{.pkg} and [tidyverse]{.pkg} packages (and any others if you're using a concise style - see previous section) at the beginning of your `r quarto()` document:
+
+```{r eval = FALSE}
+library(tidyverse)
+```
+
+This tutorial uses the following packages from [tidyverse]{.pkg}
+ 
+- [dplyr]{.pkg} [@R-dplyr]
+- [forcats]{.pkg} [@R-forcats]
+- [ggplot2]{.pkg} [@R-ggplot2; @wickham_ggplot2_2016]
+- [readr]{.pkg} [@R-readr]
+- [tibble]{.pkg} [@R-tibble]

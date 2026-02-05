@@ -1,0 +1,36 @@
+---
+title: "data"
+author: "Andy Field"
+output: learnr::tutorial
+---
+
+To work *outside of this tutorial* you need to download the following data files:
+
+* [eel.csv](https://www.discovr.rocks/csv/eel.csv)
+* [penalty_shootout.csv](https://www.discovr.rocks/csv/penalty_shootout.csv)
+
+Set up an `r rstudio()` project in the way that [I recommend in this video](https://youtu.be/mqT7c17tofE?si=R0aSApz66fGQKESl), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r quarto()` document:
+
+```{r, eval=FALSE}
+eel_tib <- here::here("data/eel.csv") |> 
+  read_csv() |> 
+  mutate(
+    cured = as_factor(cured) |>  fct_relevel("Not cured"),
+    intervention = as_factor(intervention) |>  fct_relevel("No treatment"),
+  )
+
+```
+
+This code reads in the data and converts the variables `cured` and `intervention` to be factors (categorical variable). It also uses `fct_relevel()` to set the order of the levels of each factor.
+
+To read in the second data file use
+
+```{r, eval=FALSE}
+penalty_tib <- here::here("data/penalty_shootout.csv") |> 
+  read_csv() |> 
+  mutate(
+    scored = as_factor(scored) |>  fct_relevel("Missed penalty")
+  )
+```
+
+This code reads in the data and converts the variable `scored` to a factor (categorical variable) and uses `fct_relevel()` to set the the levels of the factor to be ["Missed penalty"]{.alt}.

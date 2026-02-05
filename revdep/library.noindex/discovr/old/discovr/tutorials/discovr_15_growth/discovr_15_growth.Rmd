@@ -1,0 +1,1008 @@
+---
+title: "discovr: Growth models"
+author: "Andy Field"
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+    theme: "united"
+    css: ./css/discovr_style_future.css
+runtime: shiny_prerendered
+description: "Modelling change over time. Growth models using multilevel modelling."
+bibliography: [discovr_15.bib, packages.bib]
+---
+<html lang="en">
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+
+#necessary to render tutorial correctly
+library(learnr) 
+library(htmltools)
+#tidyverse
+library(dplyr)
+library(ggplot2)
+library(tibble)
+#non tidyverse
+library(broom.mixed)
+library(Hmisc)
+library(knitr)
+library(nlme)
+
+source("./www/discovr_helpers.R")
+
+
+#Read data files needed for the tutorial
+
+rehab_growth_tib <- discovr::zombie_growth
+
+growth_evil_tib <- rehab_growth_tib |> 
+  dplyr::mutate(
+    intervention = forcats::fct_relevel(intervention, "Gene therapy"),
+    time = forcats::fct_relevel(time, "1 month", after = Inf)
+  )
+
+rehab_ri <- nlme::lme(resemblance ~ time_num,
+                      random = ~ 1|id,
+                      data = rehab_growth_tib,
+                      method = "ML")
+
+rehab_rs <- nlme::lme(resemblance ~ time_num,
+                      random = ~ time_num|id,
+                      data = rehab_growth_tib,
+                      method = "ML")
+
+rehab_mod <- nlme::lme(resemblance ~ time_num*intervention,
+                      random = ~ time_num|id,
+                      data = rehab_growth_tib,
+                      method = "ML")
+
+rehab_quad <- nlme::lme(resemblance ~ poly(time_num, 2)*intervention,
+                      random = ~ time_num|id,
+                      data = rehab_growth_tib,
+                      method = "ML")
+  
+rehab_quad_rs <- nlme::lme(resemblance ~ poly(time_num, 2)*intervention,
+                      random = ~ poly(time_num, 2)|id,
+                      data = rehab_growth_tib,
+                      method = "ML")
+```
+
+```{r, eval = F, echo = F}
+# Create bib file for R packages
+here::here("inst/tutorials/discovr_15_growth/packages.bib") |>
+  knitr::write_bib(c('here', 'tidyverse', 'dplyr', 'readr', 'forcats', 'tibble', 'knitr', 'nlme', 'broom.mixed', 'Hmisc', 'emmeans'), file = _)
+```
+
+# discovr: Growth models
+
+## Overview
+
+<div class="infobox">
+  <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
+  
+  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2023] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
+  
+</div>
+
+### `r cat_space(fill = blu)` Welcome to the `discovr` space pirate academy
+
+Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
+
+On your way you will face many challenges, but follow Mae's system to keep yourself on track:
+
+* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
+* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
+* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+
+It's not just me that's here to help though, you will meet other characters along the way:
+
+* `r alien(height = 1.5)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
+* `r robot(height = 1.5)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
+* `r bug(height = 1.5)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
+
+Also, use hints and solutions to guide you through the exercises (Figure 1).
+
+<figure>
+<img src="./images/discovr_hints.png" alt="Each codebox has a hints or solution button that activates a popup window containing code and text to guide you through each exercise." style="width:100%">
+<figcaption>Figure 1: In a code exercise click the hints button to guide you through the exercise.</figcaption>
+</figure> 
+ 
+
+By for now and good luck - you'll be amazing!
+
+### Workflow
+
+* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](https://milton-the-cat.rocks/learnr/r/r_getting_started/).
+
+* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create an Quarto document within an `r rstudio()` project and practice everything you do in the tutorial in the Quarto document, make notes on things that confused you or that you want to remember, and save it. Within this document you will need to load the relevant packages and data. 
+
+![](https://youtu.be/mqT7c17tofE)
+
+### Packages
+
+This tutorial uses the following packages:
+
+* `emmeans` [@R-emmeans]
+* `broom.mixed` [@R-broom.mixed]
+* `here` [@R-here]
+* `Hmisc` [@R-Hmisc] is loaded by `ggplot2`
+* `knitr` [@R-knitr]
+* `nlme` [@R-nlme]
+
+It also uses these `tidyverse` packages [@R-tidyverse; @tidyverse2019]: `dplyr` [@R-dplyr], `forcats` [@R-forcats], `ggplot2` [@wickhamGgplot2ElegantGraphics2016], `readr` [@R-readr] and `tibble` [@R-tibble].
+
+
+### Coding style
+
+There are (broadly) two styles of coding:
+
+1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
+
+2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
+
+Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load `tidyverse` because the `dplyr` and `ggplot2` packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+
+You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the `tidyverse` package (and any others if you're using a concise style) at the beginning of your Quarto document:
+
+```{r eval = FALSE}
+library(tidyverse)
+```
+
+
+### Data
+
+To work *outside of this tutorial* you need to download the following data files:
+
+* [zombie_growth.csv](https://www.discovr.rocks/csv/zombie_growth.csv)
+
+Set up an `r rstudio()` project in the way that [I recommend in this tutorial](https://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your Quarto document:
+
+```{r, eval=FALSE}
+rehab_growth_tib <- here::here("data/zombie_growth.csv") |>
+  readr::read_csv() |>
+   dplyr::mutate(
+    intervention = forcats::as_factor(intervention) |>
+      forcats::fct_relevel("Wait list"),
+    time = forcats::as_factor(time) |>
+      forcats::fct_relevel("Baseline", "1 month", "6 months", "12 months")
+    )
+```
+
+This code reads in the data and converts the variables **intervention** and **time** to factors (categorical variable). It uses `fct_relevel` to set the order of the levels of the factor **intervention** to be wait list and intervention. Similarly, the order of the levels of the factor **time** are set as baseline, 1 month, 6 months, 12 months.
+
+## `r bmu()` Zombie rehabilitation [(1)]{.alt}
+
+My book *An Adventure in Statistics* [@fieldAdventureStatisticsReality2016] as well as teaching statistics, has a narrative flowing through it about a brilliant geneticist (Alice) who vanishes much to the dismay of her Musician boyfriend (Zach). Zach is compelled to find her, but his only clue is some of Alice's research, which he doesn't understand. To find her, he has to learn statistics which, from his perspective, is an unfortunate turn of events. Anyway, along the way he meets a lot of people who have been recruited by a company called JIG:SAW to take part in their genetic enhancement programme, which unfortunately turns them into zombies.
+
+At the end of the story it is revealed that Alice develops a gene therapy that restores the zombies to a human state. The example in this tutorial relates to her second clinical trial to test this genetic therapy. 141 zombies were randomly assigned to two arms of the trial (wait list vs. gene therapy) and the outcome of the trial was how much they resembled their pre-zombie state (as a percentage). Each zombie had their resemblance score at four time points: baseline and 1, 6, and 12 months later. Alice predicted that resemblance scores would increase over time in the gene therapy group relative to those on the wait list (because an increase in resemblance indicates that the appearances of those in the treatment group more closely resemble their pre-zombification state). The data are in the tibble [rehab_growth_tib]{.alt} which has 564 rows (141 participants measured at each of 4 time points) and 5 variables:
+
+* **id**: The zombie's ID
+* **intervention**: factor that codes which arm of the trial the participant was randomized to (wait list or gene therapy)}
+* **time**: factor that expresses when resemblance was measured as Baseline, 1 month follow-up, 6-month follow up, and 12-month follow-up.
+* **resemblance**: How closely their face resembled their pre-zombified state (100\% = the participants face is exactly like their original face, 0\% the person bears no resemblance to their pre-zombified face).
+* **time_num**: integer expressing the time in months from baseline (0, 1, 6, 12).
+
+#### `r alien()` Alien coding challenge
+
+View the data in [rehab_growth_tib]{.alt}.
+
+```{r dat_view, exercise = TRUE}
+     
+```
+
+```{r dat_view-solution}
+rehab_growth_tib   
+```
+
+## `r bmu()` Preparing categorical variables [(1)]{.alt}
+
+In [discovr_01]{.alt} and [discovr_14]{.alt} we learnt the following good advice
+
+<div class="tip">
+  `r cat_space()` **Tip: factor levels**
+
+Never assume that you know the order of factor levels. Always check the order of levels using `levels(name_of_factor)` (where [name_of_factor]{.alt} is the name of the factor variable) so that you know what the resulting model parameters (*b*s) represent.
+
+</div>
+
+With the pre-loaded data I have been kind to you and set up categorical predictors in the datasets as factors with the levels coded conveniently for the hypotheses being tested. However, we should practice following the advice because life is sometimes cruel and other people's data are usually cruel.
+
+The data in [growth_evil_tib]{.alt} are the same as [rehab_growth_tib]{.alt} but have been given to you by a researcher who cares not for factor levels. Notwithstanding the frailty of human memory, the following exercises give you an opportunity to practice what you learnt in `discovr_14`.
+
+#### `r alien()` Alien coding challenge
+
+Check the order of the levels of the variables **intervention** and **time** in [growth_evil_tib]{.alt}.
+
+```{r fct_levels, exercise = TRUE, exercise.lines = 5}
+
+```
+
+```{r fct_levels-solution}
+levels(growth_evil_tib$intervention)
+levels(growth_evil_tib$time)
+```
+
+The evilness of this tibble should now be apparent because for **intervention**, the first level is gene therapy and the second level is wait list. This order is the opposite of what we want because ideally we want the *b* for this effect to represent the difference in the mean resemblance in the therapy group relative to the control (not the control relative to the therapy group). For **time** the order of levels is Baseline, 6 months, 12 months and 1 month. Yuk.
+
+In [discovr_01]{.alt} and [discovr_14]{.alt} we met the `fct_relevel()` function from the `forcats` package. Let's see whether we can recall how to use it (use the hints if you get stuck) refresh our memories. 
+
+
+#### `r alien()` Alien coding challenge
+
+Use the code box to
+
+* Relevel **intervention** so that the wait list is the first level
+* Relevel **time** so that the order is Baseline, 1 month, 6 months, 12 months
+* View the levels of the variable to check for success!
+
+```{r relevel_int, exercise = TRUE, exercise.lines = 10}
+
+```
+
+```{r relevel_int-hint-1}
+# Write over the existing variable with a  version that relevels the intervention variable. 
+growth_evil_tib <- growth_evil_tib |> 
+  dplyr::mutate()
+# Think about what goes in mutate()
+```
+
+```{r relevel_int-hint-2}
+# Write over the existing variable with a  version that relevels the intervention variable
+growth_evil_tib <- growth_evil_tib |> 
+  dplyr::mutate(
+    intervention = forcats::fct_relevel(xxxxxxx, xxxxxx),
+    time = forcats::fct_relevel(yyyyyyy, yyyyyyy)
+  )
+# Think about what variable goes into each fct_relevel() function
+```
+
+```{r relevel_int-hint-3}
+# Think about what variable goes into each fct_relevel() function
+growth_evil_tib <- growth_evil_tib |> 
+  dplyr::mutate(
+    intervention = forcats::fct_relevel(intervention, xxxxxx),
+    time = forcats::fct_relevel(time, yyyyyyy)
+  )
+# Think about what instruction within fct_relevel() will change the levels of intervention in the way that you want
+```
+
+```{r relevel_int-hint-4}
+# The simplest way to reorder levels of intervention is to specify "Wait list" because, by default, this level will be moved to the first level giving us the order wait list, gene therapy.
+growth_evil_tib <- growth_evil_tib |> 
+  dplyr::mutate(
+    intervention = forcats::fct_relevel(intervention, "Wait list"),
+    time = forcats::fct_relevel(time, yyyyyyy)
+  )
+# Now think about what instruction within fct_relevel() will change the levels of time in the way that you want
+```
+
+```{r relevel_int-hint-5}
+# For time, we want to move the level '1 Month' from the last level, to the second level (the level after baseline) so we use "1 month", after = 1, which will make '1 month' the second level.
+
+growth_evil_tib <- growth_evil_tib |> 
+  dplyr::mutate(
+    intervention = forcats::fct_relevel(intervention, "Wait list"),
+    time = forcats::fct_relevel(time, "1 month", after = 1)
+  )
+
+# Think about how to view the levels to check the relevelling
+```
+
+```{r relevel_int-solution}
+growth_evil_tib <- growth_evil_tib |> 
+  dplyr::mutate(
+    intervention = forcats::fct_relevel(intervention, "Wait list"),
+    time = forcats::fct_relevel(time, "1 month", after = 1)
+  )
+
+levels(growth_evil_tib$intervention)
+levels(growth_evil_tib$time)
+```
+
+That was a little detour to into the habit of checking the levels of categorical predictors and making sure that the categories are in the order you want them. We'll return to using the tibble called [rehab_growth_tib]{.alt} that has the categorical variables set up as we want them.
+
+## `r user_astronaut()` The model [(3)]{.alt}
+
+The data has a hierarchical structure because resemblance scores are nested within zombies (Figure 1). We, therefore, need to model the individual differences in resemblance scores (random intercept) and the variance in the change in resemblance scores over time (random slopes). We also want to include the effect of treatment condition and the interaction it has with the change in resemblance over time.
+
+
+![Figure 1: The structure of the longitudinal rehabilitation data](./images/ais_growth_data_hierarchy_small.png)
+
+The model we're fitting (expressed in composite form) is described by the following equation:
+
+$$
+\begin{aligned}
+\text{resemblance}_{ij} =& \big[\hat{\gamma}_{00} + \hat{\gamma}_{10}\text{time}_{ij} + \hat{\gamma}_{01}\text{intervention}_i + \hat{\gamma}_{11}(\text{intervention}_i \times \text{time}_{ij})\big] + \\
+& \big[\hat{\zeta}_{0i} +\hat{\zeta}_{1i}\text{time}_{ij} + e_{ij}\big]
+\end{aligned}
+$$
+
+Resemblance scores within participants (*i*) at times (*j*) are predicted from **time**, **intervention** group and their interaction, but we also estimate the following parameters:
+
+$$
+\begin{aligned}
+\hat{\gamma}_{00} &= \text{average baseline resemblance when intervention=0 (wait list)} \\
+\hat{\gamma}_{10} &= \text{average rate of change in resemblance when intervention=0 (wait list)} \\
+\hat{\gamma}_{01} &= \text{baseline difference between wait list and gene therapy} \\
+\hat{\gamma}_{11} &= \text{difference in rate of change in resemblance between wait list and gene therapy groups} \\
+\hat{\zeta}_{0i} &= \text{deviation of individual's baseline resemblance from group average} \\
+\hat{\zeta}_{1i} &= \text{deviation of individual's rate of change in resemblance from group average} \\
+e_{ij} &= \text{portion individual's resemblance score that is unpredicted at time} j
+\end{aligned}
+$$
+
+
+## `r user_visor()` Exploring data [(2)]{.alt}
+### `r user_visor()` Descriptive statistics [(2)]{.alt}
+
+
+#### `r alien()` Alien coding challenge
+
+Using what you've learnt in previous tutorials, create a tibble called [growth_sum]{.alt} containing the mean resemblance scores (and their confidence intervals) at each time point and within each treatment condition.
+
+
+<div class="tip">
+  `r cat_space()` **Tip: Grouping means**
+
+To group means you can use `dplyr::group_by(grouping_variable_1, grouping_variable_2 ...)`. For time use the variable **time** not **time_num**. If you're doing this outside of the tutorial remember to load the `tidyverse` package.
+
+</div>
+
+
+```{r desc, exercise = TRUE, exercise.lines = 10}
+             
+```
+
+```{r desc-solution}
+growth_sum <- rehab_growth_tib |>
+  dplyr::group_by(intervention, time) |>
+  dplyr::summarize(
+    mean_resemblance = mean(resemblance),
+    ci_low_resemblance = ggplot2::mean_cl_normal(resemblance)$ymin,
+    ci_upp_resemblance = ggplot2::mean_cl_normal(resemblance)$ymax
+)
+growth_sum |> 
+  knitr::kable(digits = 3)
+```
+
+### `r user_visor()` Visualizing data [(2)]{.alt}
+#### `r alien()` Alien coding challenge
+
+Use the code box below to create a plot with **time_num** on the *x*-axis and **resemblance** on the *y*-axis, and a line that summarizes the linear trend over time for each intervention condition as a separate colour. Some tips to help you out:
+
+* Include [colour = intervention, fill = intervention]{.alt} in the initial `ggplot()` function to ensure that both the lines (colour) and their confidence intervals (fill) are coloured by intervention group.
+* Include [position = position_jitter(width = 0.1, height = 0.1)]{.alt} within `geom_point()` to avoid over plotting of the raw data.
+* Include `scale_x_continuous(breaks = c(0, 1, 6, 12), labels = c("0", "1", "6", "12"))` to set breaks at each of the 4 time points and to assign them labels
+* Include [colour = "Intervention", fill = "Intervention"]{.alt} in the `labs()` function to avoid getting separate legends for the colour and fill aesthetics.
+
+Use the hints to help you, but also run your code after each hint so you can see how each additional line of code affects the plot.
+
+```{r lin_plot, exercise = TRUE, exercise.lines = 10}
+     
+               
+```
+
+```{r lin_plot-hint-1}
+# set up the plot
+ggplot2::ggplot(rehab_growth_tib, aes(time_num, resemblance, colour = intervention, fill = intervention))
+# Now add points with geom_point()
+```
+
+```{r lin_plot-hint-2}
+ggplot2::ggplot(rehab_growth_tib, aes(time_num, resemblance, colour = intervention, fill = intervention)) +
+  geom_point(size = 1, alpha = 0.6)
+# Now add position_jitter() within geom_point()
+```
+
+```{r lin_plot-hint-3}
+ggplot2::ggplot(rehab_growth_tib, aes(time_num, resemblance, colour = intervention, fill = intervention)) +
+  geom_point(size = 1, alpha = 0.6, position = position_jitter(width = 0.1, height = 0.1))
+# Now add a summary line with geom_smooth()
+```
+
+```{r lin_plot-hint-4}
+ggplot2::ggplot(rehab_growth_tib, aes(time_num, resemblance, colour = intervention, fill = intervention)) +
+  geom_point(size = 1, alpha = 0.6, position = position_jitter(width = 0.1, height = 0.1)) +
+  geom_smooth(method = "lm", alpha = 0.3)
+# The limits of the axes are a bit weird, lets set the limits of y to be from 0 to 90 and for x 0 to 12 with coord_cartesian()
+```
+
+```{r lin_plot-hint-5}
+ggplot2::ggplot(rehab_growth_tib, aes(time_num, resemblance, colour = intervention, fill = intervention)) +
+  geom_point(size = 1, alpha = 0.6, position = position_jitter(width = 0.1, height = 0.1)) +
+  geom_smooth(method = "lm", alpha = 0.3) +
+  coord_cartesian(ylim = c(0, 90))
+  
+# Now lets set the breaks for y to be 0, 10, 20, 30 .... 90 using scale_y_continuous()
+```
+
+```{r lin_plot-hint-6}
+ggplot2::ggplot(rehab_growth_tib, aes(time_num, resemblance, colour = intervention, fill = intervention)) +
+  geom_point(size = 1, alpha = 0.6, position = position_jitter(width = 0.1, height = 0.1)) +
+  geom_smooth(method = "lm", alpha = 0.3) +
+  coord_cartesian(ylim = c(0, 90)) +
+  scale_y_continuous(breaks = seq(0, 90, 10))
+  
+# Now lets set the breaks for x to be 0, 1, 6, and 12 with corresponding labels of 0, 1, 6, and 12 (so we only see these values not those in between). Do this using scale_x_continuous()
+```
+
+```{r lin_plot-hint-7}
+ggplot2::ggplot(rehab_growth_tib, aes(time_num, resemblance, colour = intervention, fill = intervention)) +
+  geom_point(size = 1, alpha = 0.6, position = position_jitter(width = 0.1, height = 0.1)) +
+  geom_smooth(method = "lm", alpha = 0.3) +
+  coord_cartesian(ylim = c(0, 90)) +
+  scale_y_continuous(breaks = seq(0, 90, 10)) +
+  scale_x_continuous(breaks = c(0, 1, 6, 12), labels = c("0", "1", "6", "12"))
+  
+# Now let's add more informative labels to the axes using labs()
+```
+
+```{r lin_plot-hint-8}
+ggplot2::ggplot(rehab_growth_tib, aes(time_num, resemblance, colour = intervention, fill = intervention)) +
+  geom_point(size = 1, alpha = 0.6, position = position_jitter(width = 0.1, height = 0.1)) +
+  geom_smooth(method = "lm", alpha = 0.3) +
+  coord_cartesian(ylim = c(0, 90)) +
+  scale_y_continuous(breaks = seq(0, 90, 10)) +
+  scale_x_continuous(breaks = c(0, 1, 6, 12), labels = c("0", "1", "6", "12")) +
+  labs(x = "Time from baseline (months)", y = "Resemblance (%)", colour = "Intervention", fill = "Intervention")
+  
+# Finally let's add a minimal theme
+```
+
+```{r lin_plot-solution}
+ggplot2::ggplot(rehab_growth_tib, aes(time_num, resemblance, colour = intervention, fill = intervention)) +
+  geom_point(size = 1, alpha = 0.6, position = position_jitter(width = 0.1, height = 0.1)) +
+  geom_smooth(method = "lm", alpha = 0.3) +
+  coord_cartesian(ylim = c(0, 90)) +
+  scale_y_continuous(breaks = seq(0, 90, 10)) +
+  scale_x_continuous(breaks = c(0, 1, 6, 12), labels = c("0", "1", "6", "12")) +
+  labs(x = "Time from baseline (months)", y = "Resemblance (%)", colour = "Intervention", fill = "Intervention") +
+  theme_minimal()
+```
+
+## `r user_astronaut()` Fitting a growth model [(3)]{.alt}
+
+###  `r user_astronaut()` Modelling time  [(3)]{.alt}
+
+Traditionally many people would treat the design of this study as, what's known as, a *mixed design*. It is so-called because the predictors (independent variables) are a 'mix' of repeated measures and independent measures. Specifically:
+
+* **time** is a repeated measure because every zombie provided resemblance scores at each time point.
+* **intervention** is an independent measure because each zombie was assigned to only one of the two arms of the trial (they received gene therapy or wait list but not both)
+
+The RM-ANOVA approach can be used to analyse these 'mixed' designs. The RM-ANOVA approach is a restricted model in which:
+
+* Effects are constant across participants. That is, we expect overall levels of the outcome to differ across participants, but not the effect that our experimental manipulation has. In multilevel language this is akin to assuming a random intercept but a fixed slope. In our specific example, this means that we assume that the change in resemblance over time is the same for all participants.
+* Compound symmetry: it is generally assumed that the covariances between different levels of the repeated-measures variable should be equal. In this example, that means that the covariance between resemblance scores at baseline and 1 month, should be the same as between baseline and 6 months and 12 months, and between 1 month and 6 months, 1 month and 12 months and 6 months and 12 months. Sometimes the less-restrictive assumption of sphericity is made, but let's stick with compound symmetry for now.
+
+When we're dealing with change over time, it also means that we're treating time points as equally spaced. That is, we treat time as a factor where different time points are different categories. Therefore, in our data we'd have categories of *Baseline*, *1 month*, *6 months* and *12 months*. The fact that *Baseline* and *1 month* were 1 month apart, but *6 months* and *12 months* were 6 months apart is ignored. The categories are assumed to be equally spaced. Clearly it's better if we represent time along a continuum that represents the actual temporal spacing of events than to lose information by converting this continuous information to categories. The variable **time_num** represents time in this way as months from baseline. As such it contains values of 0 (baseline), 1 (1 month form baseline), 6 (6 months from baseline) and 12 (12 months from baseline). Growth models allow us to treat time in this flexible way by using a numeric variable to represent time rather than a factor (i.e. categories).
+
+###  `r user_astronaut()` Revision of `lme()`  [(3)]{.alt}
+
+To fit the model we use the `lme()` function from the `nlme` package [@R-nlme], because we want to model the dependency between scores within zombies (see the earlier description of the hierarchical data structure and Figure 1). We could also use the `lmer()` function from `lme4` (because we are fitting a multilevel model), but this function doesn't allow us to model different covariance structures.
+
+The `lme()` function takes the following general form (I've retained only the key options):
+
+```{r, eval = F}
+new_model <- nlme::lme(outcome ~ predictors,
+                        random = formula,
+                        data = my_tibble,
+                        method = "REML",
+                        na.action = na.fail)
+```
+
+In which 
+
+* [new_model]{.alt}: an object created that contains information about the model. We can get summary statistics for this model by executing the name of the model.
+* [outcome]{.alt}: the variable that contains the scores for the outcome measure (in this case **resemblance**).
+* [predictor]{.alt}: the variable that contains information about the time at which resemblance scores were measured (in this case **time_num**).
+* [random]{.alt}: defines the random parts of the model. This takes a formula in the style [~ predictor|context]{.alt}. In this case our context is participants, which is represented by the variable **id**. If we want only to let intercepts vary by participant we could use [~ 1|id]{.alt}, but if we also want to let the effect of **time_num** vary by participant we'd use [~ time_num|id]{.alt}.
+* [my_tibble]{.alt}: the name of the tibble containing the data, which in this case is [rehab_growth_tib]{.alt}.
+* [method]{.alt}: defines which estimation method is used. By default restricted maximum likelihood is used ([REML]{.alt}), but if you want to compare models you should override the default and use maximum likelihood ([method = "ML"]{.alt}).
+* [na.action]{.alt}: If you have complete data (as we have here) exclude this option, but if you have missing values (i.e., NAs in the data frame) then by default the model will fail, so include [na.action = na.exclude]{.alt} to exclude cases with missing values.
+
+###  `r user_astronaut()` Testing for individual differences in change over time [(3)]{.alt}
+
+We might want to test formally whether the effect of time varies by individuals (i.e., test whether the random slope of time improves the fit of the model), in which case we can specify a random intercept model, then add the random slope, and compare the two.
+
+#### `r robot()` Code example
+
+To compare the model that includes the random intercept of **time** with a model that also includes the random slope, we can use this code
+
+```{r echo = TRUE, eval = FALSE}
+rehab_ri <- nlme::lme(resemblance ~ time_num,
+                      random = ~ 1|id,
+                      data = rehab_growth_tib,
+                      method = "ML")
+
+rehab_rs <- update(rehab_ri, random = ~ time_num|id)
+anova(rehab_ri,rehab_rs)
+```
+
+The first block of code creates an object called [rehab_ri]{.alt} which predicts resemblance scores from the effect of **time_num** and with intercepts allowed to vary across participants (I have appended [_ri]{.alt} to the name to remind me it includes a **r**andom **i**ntercept).
+
+Next, we use the `update()` function to update the model we just created ([rehab_ri]{.alt}) to include a random slope of time. We do this by changing the random part of the model to be [random = ~ time_num|id]{.alt}). I stored this model as [rehab_rs]{.alt} with the [_rs]{.alt} to remind me that it includes a **r**andom **s**lope.
+
+The final line uses the `anova()` function to compare the two models.
+
+<div class="infobox">
+  `r info()` **Rounding values**
+
+Remember that if you have output that is a tibble, you can do things like round the values to 2 decimal places and adding a caption when you render by piping it into `knitr::kable()` and setting [digits = 2]{.alt}. For example, if we want to round the values in the table generated by `anova()` and add a caption we can knit the table with rounded values using
+
+```{r eval = F, class.source = '.panel_alt'}
+anova(rehab_ri,rehab_rs) |>
+  knitr::kable(digits = 2, caption = "The caption I want displayed")
+```
+
+
+</div>
+
+
+#### `r alien()` Alien coding challenge
+
+Create and compare the random intercept and random slope models. 
+
+```{r lme_1, exercise = TRUE, exercise.lines = 5}
+     
+```
+
+```{r lme_1-solution}
+rehab_ri <- nlme::lme(resemblance ~ time_num, random = ~ 1|id, data = rehab_growth_tib, method = "ML")
+rehab_rs <- update(rehab_ri, random = ~ time_num|id)
+anova(rehab_ri,rehab_rs) |>
+  knitr::kable(digits = 2, caption = "Comparison of random slope to the random intercept model")
+```
+
+
+```{r, echo = F}
+re_rs_aov <- anova(rehab_ri,rehab_rs)
+re_rs_aov_df <- re_rs_aov$df[2]-re_rs_aov$df[1]
+re_rs_aov_chi <- round(re_rs_aov$L.Ratio[2], 2)
+```
+
+The output shows that adding the random slope of **time_num** (i.e., allowing the change in resemblance scores over time to differ across participants) significantly improves the fit of the model, $\chi^2$(`r re_rs_aov_df`) = `r re_rs_aov_chi`, *p* < 0.0001. This finding should not surprise us given that we'd expect different changes for zombies who had gene therapy to those on the wait list.
+
+<div class="infobox">
+  `r info()` **Degrees of freedom**
+
+Note that the degrees of freedom quoted for the significance test are `r re_rs_aov_df`. This is the difference between the degrees of freedom for [rehab_rs]{.alt} (*df* = `r re_rs_aov$df[2]`) and [rehab_ri]{.alt} (*df* = `r re_rs_aov$df[1]`). The reason why `r re_rs_aov_df` degrees of freedom are added when we include the random slope is because we add two parameters, the first is the estimate of the variability of slopes ($\hat{\zeta}_{1i}$) and the other is the correlation between slopes and intercepts.
+</div>
+
+
+###  `r user_astronaut()` Modelling the effect of the intervention  [(3)]{.alt}
+
+We expect the change over time to be moderated by the intervention condition (we'd predict greater change for those in the gene therapy group than the wait list. In effect we're predicting an interaction between **intervention** and **time_num**. To test this interaction we need to add the fixed effect of **intervention** as a predictor and also its interaction with **time_num**. To specify an interaction in `r rproj()` we use a colon. For example, to specify the interaction between **time_num** and **intervention** we would use [time_num:intervention]{.alt}.
+
+#### `r robot()` Code example
+
+The easiest way to add the effects of **intervention** and its interaction with **time_num** is to use the `update()` function to update the model formula from [rehab_rs]{.alt}. Let's store the new model as [rehab_mod]{.alt} with [_mod]{.alt} reminding us that this is the model that tests for moderation.
+
+```{r echo = TRUE, eval = FALSE}
+rehab_mod <- update(rehab_rs, .~. + intervention + time_num:intervention)
+anova(rehab_ri, rehab_rs, rehab_mod)
+```
+
+The first line creates an object called [rehab_mod]{.alt} using the `update()` function to update the random slope model ([rehab_rs]{.alt}) to include the effects of **intervention** and its interactions with **time_num**. We did this by changing the formula so that it included all previous outcomes and predictors (remember that's what [.~.]{.alt} does) but adding in the new effects ([+ intervention + time_num:intervention]{.alt}). The second line uses the `anova()` function to compare the three models we have created.
+
+#### `r alien()` Alien coding challenge
+
+In the code box fit the moderation model described above and store it as [rehab_mod]{.alt}. Compare [rehab_ri]{.alt}, [rehab_rs]{.alt} and [rehab_mod]{.alt}.
+
+
+```{r lme_3, exercise = TRUE, exercise.lines = 5}
+     
+```
+
+```{r lme_3-solution}
+rehab_mod <- update(rehab_rs, .~. + intervention + time_num:intervention)
+anova(rehab_ri,rehab_rs, rehab_mod) |>
+  knitr::kable(digits = 2, caption = "Comparison of models")
+```
+
+```{r, echo = F}
+rehab_mod_aov <- anova(rehab_ri,rehab_rs, rehab_mod)
+mod_aov_df <- rehab_mod_aov$df[3]-rehab_mod_aov$df[2]
+mod_aov_chi <- round(rehab_mod_aov$L.Ratio[3], 2)
+```
+
+The output shows that adding the main effect of **intervention** and its interaction with the trend over time (i.e., allowing the change in resemblance scores over time to be moderated by the treatment condition) significantly improves the fit of the model, $\chi^2$(`r mod_aov_df`) = `r mod_aov_chi`, *p* < 0.0001.
+
+<div class="infobox">
+  `r info()` **Degrees of freedom**
+
+Note that the degrees of freedom quoted for the significance test for [rehab_mod]{.alt} are `r mod_aov_df`. This is the difference between the degrees of freedom for [rehab_mod]{.alt} (*df* = `r rehab_mod_aov$df[3]`) and [rehab_rs]{.alt} (*df* = `r rehab_mod_aov$df[2]`). The reason why `r mod_aov_df` degrees of freedom are added is because we included two new parameters to the model: the one for the effect of the interevention and the one for its interaction with time.
+</div>
+
+
+###  `r user_astronaut()` *F*-statistics for fixed effects [(3)]{.alt}
+
+We can look at *F*-statistics for the fixed effects in the model by placing the model in the `anova()` function.
+
+#### `r alien()` Alien coding challenge
+
+Use the code box to obtain the *F*-statistics for the fixed effects in the model. Round the values to 2 decimal places and add a caption.
+
+```{r rehab_fixed, exercise = TRUE, exercise.lines = 5}
+     
+```
+
+```{r rehab_fixed-solution}
+anova(rehab_mod) |>
+  knitr::kable(digits = 2, caption = "Table of fixed effects")
+```
+
+
+```{r, echo = F}
+rehab_mod_fixed <- anova(rehab_mod)
+```
+
+The results show no significant main effect of **intervention**, `r report_aov_nlme(rehab_mod_fixed, row = 3)`. However, the main effect of **time_num** was significant, `r report_aov_nlme(rehab_mod_fixed, row = 2)`, and the **time_num** ×  **intervention** interaction, `r report_aov_nlme(rehab_mod_fixed, row = 4)`.
+
+###  `r user_astronaut()` Model parameters for fixed effects [(3)]{.alt}
+
+
+In [discovr_14]{.alt} we used the `tidy()` function from the `broom.mixed` package to view multilevel model parameters. To recap, we place the model name into the function and set [conf.int = TRUE]{.alt} to get the 95% confidence intervals.
+
+We also learnt that we can extract the fixed effects by including [effects = "fixed"]{.alt} and extract the random effects using [effects = "ran_pars"]{.alt}.
+
+#### `r robot()` Code example
+
+For our final model ([rehab_mod]{.alt}) we could use
+
+```{r, eval = F}
+broom.mixed::tidy(rehab_mod, conf.int = T, effects = "fixed")
+broom.mixed::tidy(rehab_mod, conf.int = T, effects = "ran_pars")
+```
+
+#### `r alien()` Alien coding challenge
+
+Use the code box to view the model parameters for the fixed effects and round them to 3 decimal places..
+
+
+```{r rehab_mod_fe, exercise = TRUE, exercise.lines = 4}
+     
+```
+
+```{r rehab_mod_fe-solution}
+broom.mixed::tidy(rehab_mod, conf.int = T, effects = "fixed") |> 
+  knitr::kable(digits = 3)
+```
+
+```{r, echo = F}
+rehab_mod_fe <- broom.mixed::tidy(rehab_mod, conf.int = T) 
+```
+
+
+The final model shows that
+
+* Overall gene therapy (compared to a wait list control) did not significantly predict resemblance scores, $\hat{\gamma}$ = `r report_pars(rehab_mod_fe, row = 3, df = 139)`. Resemblance scores were, overall, `r get_par(rehab_mod_fe, row = 3)` percent (remember resemblance is measured on a percentage scale) lower after gene therapy than in the wait list. However, this effect ignores the change over time.
+* Resemblance scores significantly changed over time $\hat{\gamma}$ = `r report_pars(rehab_mod_fe, row = 2, df = 421)`. For every month that passed, resemblance scores changed by `r get_par(rehab_mod_fe, row = 2)` percent (remember resemblance is measured on a percentage scale), that is, they resembled their pre-zombification state less.
+* The change over time of resemblance scores was significantly affected by whether the zombie had gene therapy or was in the wait list, $\hat{\gamma}$ = `r report_pars(rehab_mod_fe, row = 4, df = 421)`. The rate of change in resemblance scores is `r get_par(rehab_mod_fe, row = 4)` higher in the intervention group than in the wait list group.
+
+###  `r user_astronaut()` Breaking down the interaction [(3)]{.alt}
+
+The interaction effect is the one that tests our hypothesis, but what does it mean that the rate of change in resemblance scores is `r get_par(rehab_mod_fe, row = 4)` higher in the intervention group than in the wait list group?
+
+To break this interaction effect down it would be useful to know what the effect of time was separately for the gene therapy and wait list groups. In other words, get an estimate for the rate of change of resemblance scores in the gene therapy and intervention groups. We can do this using the `emtrends` function from the `emmeans` package [@R-emmeans], which takes the general form
+
+```{r, eval = F}
+emmeans::emtrends(my_model,
+                  specs = "categorical_predictor",
+                  var = "continuous_predictor") |> 
+  tibble::as_tibble()
+```
+
+in which you replace [my_model]{.alt} with the name of your model from `lme()`, [categorical_predictor]{.alt} with the name of the predictor that you want different models for (in this case the intervention groups) and [continuous_predictor]{.alt} with the name of the variable representing (in this context) time. The output of this function is plain text but if we pipe it into `tibble::as_tibble()` it will be converted to a tibble for nice formatting with `kable()`.
+
+#### `r robot()` Code example
+
+For our model ([rehab_mod]{.alt}) we could get the effect of time in each intervention condition and store it in an object called ([rehab_growth_simple]{.alt}) by executing
+
+```{r, eval = F}
+rehab_growth_simple <- emmeans::emtrends(rehab_mod, specs = "intervention", var = "time_num") |> 
+  tibble::as_tibble()
+```
+
+
+#### `r alien()` Alien coding challenge
+
+Use the code box to obtain and view the effect of time in the two intervention groups..
+
+
+```{r rehab_mod_se, exercise = TRUE, exercise.lines = 5}
+     
+```
+
+```{r rehab_mod_se-hint-1}
+rehab_growth_simple <- emmeans::emtrends(rehab_mod, specs = "intervention", var = "time_num") |> 
+  tibble::as_tibble()
+# Remember that to view the output we need to execute the name of the object that we just created
+```
+
+```{r rehab_mod_se-solution}
+rehab_growth_simple <- emmeans::emtrends(rehab_mod, specs = "intervention", var = "time_num") |>
+  tibble::as_tibble()
+rehab_growth_simple |>
+  knitr::kable(digits = 2, caption = "Simple effects")
+```
+
+```{r, echo = F}
+rehab_growth_simple <- emmeans::emtrends(rehab_mod, specs = "intervention", var = "time_num") |> 
+  tibble::as_tibble()
+
+wl_par <- get_par(rehab_growth_simple, row = 1, col = "time_num.trend")
+gt_par <- get_par(rehab_growth_simple, row = 2, col = "time_num.trend")
+```
+
+The output shows us that
+
+* In the wait list group the parameter for time is `r wl_par` suggesting that for every month that passes resemblance scores change by `r wl_par`, that is they decrease: the zombies look *less* like their pre-zombified state. They look worse.
+* In the gene therapy group the parameter for time is `r gt_par` suggesting that for every month that passes resemblance scores change by `r gt_par`, that is they increase: the zombies look *more* like their pre-zombified state. They look better.
+* If we take the difference between these parameter values we get the parameter for the interaction term (look back to the previous section), which was `r get_par(rehab_mod_fe, row = 4)`: $\hat{\gamma}_\text{time (gene therapy)} - \hat{\gamma}_\text{time (wait list)}$ = `r gt_par` - (`r wl_par`) = `r as.numeric(gt_par) - as.numeric(wl_par)`.
+
+###  `r user_astronaut()` Model parameters for random effects [(3)]{.alt}
+
+
+#### `r alien()` Alien coding challenge
+
+Use the code box to view the model parameters for the random effects.
+
+```{r rehab_mod_re, exercise = TRUE}
+     
+```
+
+```{r rehab_mod_re-solution}
+broom.mixed::tidy(rehab_mod, conf.int = T, effects = "ran_pars") |> 
+  knitr::kable(digits = 3)
+```
+
+The output shows that
+
+* The standard deviation of the intercepts was `r report_pars(rehab_mod_fe, row = 5, fixed = F)`. This is the standard deviation of the values of the intercepts across the zombies. In other words, it quantifies how variable the baseline resemblance scores are around the average baseline resemblance score (i.e. around the overall estimate of `r report_pars(rehab_mod_fe, row = 1, fixed = F)`).
+* The standard deviation of the rate of change of resemblance scores  was `r report_pars(rehab_mod_fe, row = 7, fixed = F)`]. This is the standard deviation of the slopes (the rate of change of resemblance over time) across the zombies. In other words, it quantifies how variable the individual change in resemblance over time (within zombies) are around the group-level change over time (`r report_pars(rehab_mod_fe, row = 2, fixed = F)`).
+* The correlation between slopes and intercepts across the zombies was `r report_pars(rehab_mod_fe, row = 6, fixed = F)`]
+
+<div class="reportbox">
+  `r pencil()` **Report**`r rproj()`
+  
+There was non-zero variability in intercepts and slopes. The estimate of standard deviation of intercepts across zombies was $\hat{\sigma}_{u_0}$ = `r report_pars(rehab_mod_fe, row = 5, fixed = F)`, the standard deviation of slopes across zombies was $\hat{\sigma}_{u_\text{months}}$ = `r report_pars(rehab_mod_fe, row = 7, fixed = F)`, and the residual standard deviation was $\sigma$ = `r report_pars(rehab_mod_fe, row = 8, fixed = F)`. The estimated correlation between slopes and intercepts was $r_{u_0, u_\text{months}}$ = `r report_pars(rehab_mod_fe, row = 6, fixed = F)` suggesting that clinics with large intercepts tended to have smaller slopes.
+
+Overall gene therapy (compared to a wait list control) did not significantly predict resemblance scores, $\hat{\gamma}$ = `r report_pars(rehab_mod_fe, row = 3, df = 139)`. However, resemblance scores significantly changed over time $\hat{\gamma}$ = `r report_pars(rehab_mod_fe, row = 2, df = 421)`. For every month that passed, resemblance scores changed by `r get_par(rehab_mod_fe, row = 2)` percent. This change over time was significantly moderated whether the zombie had gene therapy or was in the wait list, $\hat{\gamma}$ = `r report_pars(rehab_mod_fe, row = 4, df = 421)`. The rate of change in resemblance scores is `r get_par(rehab_mod_fe, row = 4)` higher in the intervention group than in the wait list group.
+
+This interaction reflected the fact that in the gene therapy group, resemblance scores increased at a rate of $\hat{\gamma}$ = `r gt_par` (for every month that passes resemblance scores increase by `r gt_par`, whereas in the wait list group the trend was in the opposite direction with $\hat{\gamma}$ = `r wl_par` (for every month that passes resemblance scores change by `r wl_par`.
+
+</div>
+
+##  `r user_astronaut()` Modelling nonlinear effects of time  [(3)]{.alt}
+
+We can model more complex changes over time, such as a second-order polynomial or quadratic trend (i.e. a curvilinear trend). To do this, we can replace the predictor **time_num** with `poly(time_num, 2)`. This action creates a power polynomial up to the order of 2 (because we put 2 in the function). In effect this creates two variables that represent linear (order 1) and quadratic (order 2) trends over time. The advantage of this method is that the resulting predictors for the two trends are independent from each other.
+
+#### `r robot()` Code example
+
+We can use `update()` to update the formula of the previous model [rehab_mod]{.alt} to replace the effect of [time_num]{.alt} with the polynomial.
+
+```{r echo = TRUE, eval = FALSE}
+rehab_quad <- update(rehab_mod, .~ poly(time_num, 2)*intervention)
+anova(rehab_ri,rehab_rs, rehab_mod, rehab_quad)
+```
+
+The first line creates an object called [rehab_quad]{.alt} using the `update()` function to update the previous model ([rehab_mod]{.alt}) to include the quadratic trend of time. We did this by changing the formula so that it included the previous outcome but **not** any of the previous predictors< note that we used [.~]{.alt} - because there is no dot after the tilde, we're excluding all predictors from the model we're updating. We then respecify the predictors as [poly(time_num, 2)*intervention]{.alt}, which will include both the main effects of `poly(time_num, 2)` and [intervention]{.alt} and their interaction. The second line compares the models we have built up.
+
+<div class="infobox">
+  `r info()` **degrees of freedom**
+
+When you run this code, note that two degrees of freedom get added to the model when we update [rehab_mod]{.alt} to [rehab_quad]{.alt}. These degrees of freedom are added because two parameters get added to the model: one that quantifies the quadratic trend and one that quantifies the interaction of the quadratic trend with the intervention group.
+</div>
+
+
+When we looked at the linear change over time, we modelled the variability in this linear change within participants by including a random slope. Now we have updated the model to include a quadratic trend we should also update the random part of the model to include variability in the quadratic trend.
+
+#### `r robot()` Code example
+
+Again we can do this with the update function.
+
+```{r echo = TRUE, eval = FALSE}
+rehab_quad_rs <- update(rehab_quad, random = ~poly(time_num, 2)|id)
+anova(rehab_ri,rehab_rs, rehab_mod, rehab_quad, rehab_quad_rs)
+```
+
+The first line creates an object called [rehab_quad_rs]{.alt} using the `update()` function to update the random part of the previous model ([rehab_quad]{.alt}). We respecify the random part as [random = ~poly(time_num, 2)|id]{.alt}, which allows both the linear and quadratic trends to vary by participant. The second line uses the `anova()` function to compare the models that we have built up.
+
+<div class="infobox">
+  `r info()` **Degrees of freedom**
+
+When you run this code, note that three degrees of freedom get added to the model when we update [rehab_quad]{.alt} to [rehab_quad_rs]{.alt}. These degrees of freedom are added because three parameters get added to the model: one that quantifies the variability in the quadratic trend across participants, one that quantifies the correlation between the quadratic trends and intercepts across participants, and one that quantifies the correlation between the linear and quadratic trends across participants.
+</div>
+
+#### `r alien()` Alien coding challenge
+
+Use the code box below to
+
+* Replace the effect of [time_num]{.alt} with a polynomial
+* Update the random part of the model to include the polynomial
+* Compare all of the models we have created
+
+```{r rehab_quad, exercise = TRUE, exercise.lines = 6}
+     
+             
+```
+
+```{r rehab_quad-hint-1}
+# update the model formula for rehab_mod:
+rehab_quad <- update(xxxxx, .~ xxxxxx)
+```
+
+```{r rehab_quad-hint-2}
+# update the model formula for rehab_mod:
+rehab_quad <- update(rehab_mod, .~ poly(time_num, 2)*intervention)
+# update the random effects
+rehab_quad_rs <- update(xxxxx, xxxxxxxx)
+```
+
+```{r rehab_quad-hint-3}
+# update the model formula for rehab_mod:
+rehab_quad <- update(rehab_mod, .~ poly(time_num, 2)*intervention)
+# update the random effects
+rehab_quad_rs <- update(rehab_quad, random = ~poly(time_num, 2)|id)
+# compare models:
+anova(xxx, xxx, xxx, xxx, xxx)
+```
+
+```{r rehab_quad-solution}
+rehab_quad <- update(rehab_mod, .~ poly(time_num, 2)*intervention)
+rehab_quad_rs <- update(rehab_quad, random = ~poly(time_num, 2)|id)
+anova(rehab_ri,rehab_rs, rehab_mod, rehab_quad, rehab_quad_rs) |> 
+  knitr::kable(digits = 3)
+```
+
+```{r, echo = F}
+rehab_quad_aov <- anova(rehab_ri,rehab_rs, rehab_mod, rehab_quad, rehab_quad_rs)
+
+quad_chi <- round(rehab_quad_aov$L.Ratio[4], 2)
+quad_rs_chi <- round(rehab_quad_aov$L.Ratio[5], 2)
+quad_df <- rehab_quad_aov$df[4] - rehab_quad_aov$df[3]
+quad_rs_df <- rehab_quad_aov$df[5] - rehab_quad_aov$df[4]
+quad_p <- round(rehab_quad_aov$`p-value`[4], 3)
+```
+
+The output shows that
+
+* The quadratic trend significantly improves the fit of the model, $\chi^2$(`r quad_df`) = `r quad_chi`, *p* = `r quad_p`.
+* Including the random effect of the polynomial also significantly improved the fit of the model, $\chi^2$(`r quad_rs_df`) = `r quad_rs_chi`, *p* < 0.001.
+
+###  `r user_astronaut()` Model parameters for fixed effects [(3)]{.alt}
+
+#### `r alien()` Alien coding challenge
+
+We can extract the fixed effects from our final model in the same way as before. Use the code box to do this.
+
+
+```{r rehab_quad_fe, exercise = TRUE}
+     
+```
+
+```{r rehab_quad_fe-solution}
+broom.mixed::tidy(rehab_quad_rs, conf.int = T, effects = "fixed") |> 
+  knitr::kable(digits = 2)
+```
+
+```{r, echo = F}
+rehab_quad_fe <- broom.mixed::tidy(rehab_quad_rs, conf.int = T)
+```
+
+Focussing on the interaction term (because that test our hypothesis), the fixed effects show that
+
+* The linear change over time of resemblance scores was significantly affected by whether the zombie had gene therapy or was in the wait list, $\hat{\gamma}$ = `r report_pars(rehab_quad_fe, row = 5)`. The linear rate of change in resemblance scores is significantly different in the intervention group compared to the wait list.
+* The quadratic change over time of resemblance scores was significantly affected by whether the zombie had gene therapy or was in the wait list, $\hat{\gamma}$ =  `r report_pars(rehab_quad_fe, row = 6)`. The nonlinear rate of change in resemblance scores is significantly different in the intervention group compared to the wait list.
+
+<div class="infobox">
+  `r info()` **Information**
+  
+The observant among you will notice that the parameter values in the model with the quadratic trend are very different to those in the model that included the raw variable of [time_num]{.alt}. With [time_num]{.alt} as a predictor the interaction term for that variable and the intervention group was `r get_par(rehab_mod_fe, row = 4)` but with the quadratic term included we get `r get_par(rehab_quad_fe, row = 5)` for the linear trend, which is several orders of magnitude different. What's going on?
+
+The `poly()` function creates what are known as orthogonal polynomials, that means that they are independent from each other. This independence is handy because it means we can evaluate the linear and nonlinear trends independently (that is, we evaluate the specific effect of the nonlinear trend). The price we pay is that the effect of time has to be rescaled to create this independence and the parameters no longer map onto our original scale of measurement. However, a simple way to interpret the nonlinear interaction is to visualise it. 
+</div>
+
+
+
+#### `r alien()` Alien coding challenge
+
+The code box below contains the code for the plot we made earlier. Run the code to remind yourself of the plot. To plot the nonlinear trend we add [formula = y ~ x + I(x^2)]{.alt} within the `geom_smooth()` function. Edit the code to include this formula (which specifies that the outcome is predicted from both the linear and curvilinear trend for the predictor).
+
+
+```{r rehab_quad_gg, exercise = TRUE, exercise.lines = 12}
+ggplot2::ggplot(rehab_growth_tib, aes(time_num, resemblance, colour = intervention, fill = intervention)) +
+  geom_point(size = 1, alpha = 0.6, position = position_jitter(width = 0.1, height = 0.1)) +
+  geom_smooth(method = "lm", alpha = 0.3) +
+  coord_cartesian(ylim = c(0, 90)) +
+  scale_y_continuous(breaks = seq(0, 90, 10)) +
+  scale_x_continuous(breaks = c(0, 1, 6, 12), labels = c("0", "1", "6", "12")) +
+  labs(x = "Time from baseline (months)", y = "Resemblance (%)", colour = "Intervention", fill = "Intervention") +
+  theme_minimal()
+```
+
+```{r rehab_quad_gg-solution}
+ggplot2::ggplot(rehab_growth_tib, aes(time_num, resemblance, colour = intervention, fill = intervention)) +
+  geom_point(size = 1, alpha = 0.6, position = position_jitter(width = 0.1, height = 0.1)) +
+  geom_smooth(method = "lm", formula = y ~ x + I(x^2), alpha = 0.3) +
+  coord_cartesian(ylim = c(0, 90)) +
+  scale_y_continuous(breaks = seq(0, 90, 10)) +
+  scale_x_continuous(breaks = c(0, 1, 6, 12), labels = c("0", "1", "6", "12")) +
+  labs(x = "Time from baseline (months)", y = "Resemblance (%)", colour = "Intervention", fill = "Intervention") +
+  theme_minimal()
+```
+
+The resulting plot shows that resemblance scores in the gene therapy group have a curvilinear effect: there is improvement up to about 6 months and then it plateaus, whereas the wait list group seem to show a constant linear decrease in resemblance scores.
+
+###  `r user_astronaut()` Model parameters for random effects [(3)]{.alt}
+
+#### `r alien()` Alien coding challenge
+
+Finally we can look at the random effects as we did for previous models. Use the code box to view the model parameters for the random effects.
+
+```{r rehab_quad_re, exercise = TRUE}
+     
+```
+
+```{r rehab_quad_re-solution}
+broom.mixed::tidy(rehab_quad_rs, conf.int = T, effects = "ran_pars") |> 
+  knitr::kable(digits = 2)
+```
+
+```{r, echo = F}
+rehab_quad_re <- broom.mixed::tidy(rehab_quad_rs, conf.int = T)
+  
+sd_lin <- paste0(get_par(rehab_quad_re, row = 10), " [", get_par(rehab_quad_re, row = 14, col = "conf.low"), ", ", get_par(rehab_quad_re, row = 14, col = "conf.high"), "]")
+sd_nonlin <- paste0(get_par(rehab_quad_re, row = 12), " [", get_par(rehab_quad_re, row = 15, col = "conf.low"), ", ", get_par(rehab_quad_re, row = 15, col = "conf.high"), "]")
+cor_slopes <- paste0(get_par(rehab_quad_re, row = 11), " [", get_par(rehab_quad_re, row = 16, col = "conf.low"), ", ", get_par(rehab_quad_re, row = 16, col = "conf.high"), "]")
+```
+
+
+The output shows that
+
+* The standard deviation of the intercepts was `r report_pars(rehab_quad_re, row = 7, fixed = F)`]. This is the standard deviation of the values of the intercepts across the zombies.
+* The standard deviation of the linear rate of change of resemblance scores  was `r sd_lin`. This is the standard deviation of the linear slopes (the rate of change of resemblance over time) across the zombies.
+* The standard deviation of the nonlinear rate of change of resemblance scores  was `r sd_nonlin`]. This is the standard deviation of the nonlinear slopes (the rate of change of resemblance over time) across the zombies.
+* The correlation between linear slopes and intercepts across the zombies was `r report_pars(rehab_quad_re, row = 8, fixed = F)`].
+* The correlation between nonlinear slopes and intercepts across the zombies was `r report_pars(rehab_quad_re, row = 9, fixed = F)`].
+* The correlation between the linear and nonlinear slopes across the zombies was `r cor_slopes`.
+
+
+<div class="infobox">
+  <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
+  
+  **A message from Mae Jemstone:**
+  
+Growth models are a really useful way to model the rate of change of something over time. I'll never forget returning from the Suraksa Blanket, a mission to protect our world from the Spores of Apophis. Two years of the spores had left the world's spirits broken. So we danced. We danced and then we smiled, and we couldn't stop. Some of the world saw the dances, and they danced too. Even those that couldn't dance danced. Even those that hated dancing started to tap their feet, then they swayed, then they smiled too. The world danced and the world smiled, and the world realised how wonderful it was to see a glimpse of hope. We didn't need a growth model to see the fear dissolving from the people's eyes, but we used one anyway.
+  
+</div>
+
+
+## Resources {data-progressive=FALSE}
+
+### Statistics
+
+* The tutorials typically follow examples described in detail in @field_discovering_2023. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
+* If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
+* There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/).
+* There are free statistical resources on my websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [milton-the-cat.rocks](https://milton-the-cat.rocks).
+
+### `r rproj()`
+
+* [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj()` and `r rstudio()`.
+* [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
+* [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
+
+### Acknowledgement
+
+I'm extremely grateful to [Allison Horst](https://www.allisonhorst.com/) for her very informative blog post on [styling learnr tutorials with CSS](https://education.rstudio.com/blog/2020/05/learnr-for-remote/) and also for sending me a CSS template file and allowing me to adapt it. Without Allison, these tutorials would look a lot worse (but she can't be blamed for my colour scheme).
+
+## References
+
+

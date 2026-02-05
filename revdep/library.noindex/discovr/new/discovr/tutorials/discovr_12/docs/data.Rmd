@@ -1,0 +1,34 @@
+---
+title: "data"
+author: "Andy Field"
+output: learnr::tutorial
+---
+
+To work *outside of this tutorial* you need to download the following data files:
+
+* [puppy_rct.csv](https://www.discovr.rocks/csv/puppy_rct.csv)
+* [hangover.csv](https://www.discovr.rocks/csv/hangover.csv)
+
+Set up an `r rstudio()` project in the way that [I recommend in this video](https://youtu.be/mqT7c17tofE?si=R0aSApz66fGQKESl), and save the data files to the folder within your project called [data]{.alt}. To read in the first datafile place this code in the first code chunk in your `r quarto()` document:
+
+```{r, eval=FALSE}
+puptreat_tib <- here::here("data/puppy_rct.csv") |>
+  read_csv() |>
+  mutate(
+    dose = as_factor(dose) |> fct_relevel("No puppies", "15 mins", "30 mins")
+  )
+```
+
+This code reads in the data, converts the variable `dose` to a factor (categorical variable) using `as_factor()` and sets the order of factor levels using `fct_releval()`. We can use very similar code 
+
+For the hangover data use this code:
+
+```{r, eval=FALSE}
+cure_tib <- here::here("data/hangover.csv") |>
+  read_csv() |>
+  mutate(
+    drink = as_factor(drink) |> fct_relevel("Water", "Lucozade", "Cola")
+  )
+```
+
+This code reads in the data, converts the variable `drink` to a factor (categorical variable) and sets the order of the factor levels to match this tutorial.

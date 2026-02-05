@@ -1,0 +1,1095 @@
+---
+title: "discovr: Summarizing data"
+author: "Andy Field"
+output:
+  learnr::tutorial:
+    progressive: false
+    theme: "united"
+    css: ./css/discovr_style_future.css
+runtime: shiny_prerendered
+description: "Summarizing data: frequency distributions, grouped frequency distributions, relative frequencies, histograms, mean, median, variance, standard deviation, interquartile range, tables of summary statistics."
+bibliography: [discovr_02.bib, packages.bib]
+---
+<html lang="en">
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+
+#necessary to render tutorial correctly
+library(learnr) 
+library(htmltools)
+#tidyverse
+library(dplyr)
+library(ggplot2)
+#non tidyverse
+library(knitr)
+
+
+source("./www/discovr_helpers.R")
+
+#Read data files needed for the tutorial
+
+ice_tib <- discovr::ice_bucket
+```
+
+```{r, eval = F, echo = F}
+# Create bib file for R packages
+here::here("inst/tutorials/discovr_02/packages.bib") |> 
+  knitr::write_bib(c('here', 'tidyverse', 'dplyr', 'readr', 'forcats', 'tibble', 'datawizard', 'knitr'), file = _)
+```
+
+
+# discovr: Summarizing data
+
+## Overview
+
+<div class="infobox">
+  <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
+  
+  **Usage:** This tutorial accompanies [Discovering Statistics Using R and RStudio](https://www.discovr.rocks/) [@field_discovering_2023] by [Andy Field](https://en.wikipedia.org/wiki/Andy_Field_(academic)). It contains material from the book so there are some copyright considerations but I offer them under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/). Tl;dr: you can use this tutorial for teaching and non-profit activities but please don't meddle with it or claim it as your own work.
+  
+</div>
+
+### `r cat_space(fill = blu)` Welcome to the `discovr` space pirate academy
+
+Hi, welcome to **discovr** space pirate academy. Well done on embarking on this brave mission to planet `r rproj()`s, which is a bit like Mars, but a less red and more hostile environment. That's right, more hostile than a planet without water. Fear not though, the fact you are here means that you *can* master `r rproj()`, and before you know it you'll be as brilliant as our pirate leader Mae Jemstone (she's the badass with the gun). I am the space cat-det, and I will pop up to offer you tips along your journey.
+
+On your way you will face many challenges, but follow Mae's system to keep yourself on track:
+
+* `r bmu(height = 1.5)` This icon flags materials for *teleporters*. That's what we like to call the new cat-dets, you know, the ones who have just teleported into the academy. This material is the core knowledge that everyone arriving at space academy must learn and practice. For accessibility, these sections will also be labelled with [(1)]{.alt}.
+* `r user_visor(height = 1.5)` Once you have been at space pirate academy for a while, you get your own funky visor. It has various modes. My favourite is the one that allows you to see everything as a large plate of tuna. More important, sections marked for cat-dets with visors goes beyond the core material but is still important and should be studied by all cat-dets. However, try not to be disheartened if you find it difficult. For accessibility, these sections will also be labelled with [(2)]{.alt}.
+* `r user_astronaut(height = 1.5)` Those almost as brilliant as Mae (because no-one is quite as brilliant as her) get their own space suits so that they can go on space pirate adventures. They get to shout *RRRRRR* really loudly too. Actually, everyone here gets to should *RRRRRR* really loudly. Try it now. Go on. It feels good. Anyway, this material is the most advanced and you can consider it optional unless you are a postgraduate cat-det. For accessibility, these sections will also be labelled with [(3)]{.alt}.
+
+It's not just me that's here to help though, you will meet other characters along the way:
+
+* `r alien(height = 1.5)` aliens love dropping down onto the planet and probing humanoids. Unfortunately you'll find them probing you quite a lot with little coding challenges. Helps is at hand though. 
+* `r robot(height = 1.5)` **bend-R** is our coding robot. She will help you to try out bits of `r rproj()` by writing the code for you before you encounter each coding challenge.
+* `r bug(height = 1.5)` we also have our friendly alien bugs that will, erm, help you to avoid bugs in your code by highlighting common mistakes that even Mae Jemstone sometimes makes (but don't tell her I said that or my tuna supply will end). 
+
+Also, use hints and solutions to guide you through the exercises (Figure 1).
+
+<figure>
+<img src="./images/discovr_hints.png" alt="Each codebox has a hints or solution button that activates a popup window containing code and text to guide you through each exercise." style="width:100%">
+<figcaption>Figure 1: In a code exercise click the hints button to guide you through the exercise.</figcaption>
+</figure> 
+ 
+
+By for now and good luck - you'll be amazing!
+
+### Workflow
+
+* Before attempting this tutorial it's a good idea to work through [this tutorial on how to install, set up and work within `r rproj()` and `r rstudio()`](https://milton-the-cat.rocks/learnr/r/r_getting_started/).
+
+* The tutorials are self-contained (you practice code in code boxes). However, so you get practice at working in `r rstudio()` I strongly recommend that you create a Quarto document within an `r rstudio()` project and practice everything you do in the tutorial in the Quarto document, make notes on things that confused you or that you want to remember, and save it. Within this Quarto document you will need to load the relevant packages and data. 
+
+![](https://youtu.be/mqT7c17tofE)
+
+### Packages
+
+This tutorial uses the following packages:
+
+* `datawizard` [@R-datawizard]
+* `here` [@R-here]
+* `knitr` [@R-knitr]
+
+It also uses these `tidyverse` packages [@R-tidyverse; @tidyverse2019]: `readr` [@R-readr], `dplyr` [@R-dplyr], `forcats` [@R-forcats],  `ggplot2` [@wickhamGgplot2ElegantGraphics2016] and `tibble` [@R-tibble].
+
+
+### Coding style
+
+There are (broadly) two styles of coding:
+
+1. **Explicit**: Using this style you declare the package when using a function: `package::function()`. For example, if I want to use the `mutate()` function from the package `dplyr`, I will type `dplyr::mutate()`. If you adopt an explicit style, you don't need to load packages at the start of your Quarto document (although see below for some exceptions).
+
+2. **Concise**: Using this style you load all of the packages at the start of your Quarto document using `library(package_name)`, and then refer to functions without their package. For example, if I want to use the `mutate()` function from the package `dplyr`, I will use `library(dplyr)` in my first code chunk and type the function as `mutate()` when I use it subsequently.
+
+Coding style is a personal choice. The [Google `r rproj()` style guide](https://google.github.io/styleguide/Rguide.html) and [tidyverse style guide](https://style.tidyverse.org/) recommend an explicit style, and I use it in teaching materials for two reasons (1) it helps you to remember which functions come from which packages, and (2) it prevents clashes resulting from using functions from different packages that have the same name. However, even with this style it makes sense to load `tidyverse` because the `dplyr` and `ggplot2` packages contain functions that are often used within other functions and in these cases explicit code is difficult to read. Also, no-one wants to write `ggplot2::` before every function from `ggplot2`.
+
+You can use either style in this tutorial because all packages are pre-loaded. If working outside of the tutorial, load the `tidyverse` package (and any others if you're using a concise style) at the beginning of your Quarto document:
+
+```{r eval = FALSE}
+library(tidyverse)
+```
+
+### Data
+
+To work *outside of this tutorial* you need to download the following data file:
+
+* [ice_bucket.csv](https://www.discovr.rocks/csv/ice_bucket.csv)
+
+Set up an `r rstudio()` project in the way that [I recommend in this tutorial](https://milton-the-cat.rocks/learnr/r/r_getting_started/#section-working-in-rstudio), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your Quarto document:
+
+```{r, eval=FALSE}
+ice_tib <- here::here("data/ice_bucket.csv") |> readr::read_csv()
+```
+
+
+## `r bmu()` Frequency distributions [(1)]{.alt}
+
+We will use data about memes, which typically have a common pattern: they start small, rapidly expand in popularity and then die out. Specifically we'll use data from the ice bucket challenge. You can check Wikipedia for the full story, but it all started (arguably) with golfer Chris Kennedy tipping a bucket of iced water on his head to raise awareness of the disease amyotrophic lateral sclerosis (ALS, also known as Lou Gehrig's disease).  The idea is that you are challenged and have 24 hours to post a video of you having a bucket of iced water poured over your head. In this video you also challenge at least three other people. If you fail to complete the challenge your forfeit is to donate to charity (in this case ALS). Many people completed the challenge and made donations.
+
+The ice bucket challenge generated something like 2.3 million on YouTube. The data are stored in [ice_tib]{.alt}, which contains one variable **upload_day** that is the number of days after Chris Kennedy’s initial challenge that each of 2,323,452 ice bucket related videos were uploaded to YouTube. For example, if the value is 21 it means that the video was uploaded 21 days after Chris Kennedy’s initial challenge. We can't see the pattern of the data easily from 2,323,452 scores. However, we can if we count the frequency of each score and place it in a table.
+
+### `r bmu()` Frequency tables [(1)]{.alt}
+
+To get a basic frequency table we use the `group_by()` and `summarise()` and `n()` functions from the `dplyr` package (automatically loaded as part of tidyverse). These functions do the following:
+
+* `group_by()`: groups the data by whatever variable (or variables) you name within the function.
+* `summarise()`: creates a summary table based on whatever variables you create within the function
+* `n()`: counts the number of scores
+
+To count the frequencies of scores we need to do two things:
+
+1. Tell `r rproj()` to treat values that are the same, as being in the same group or category. For example, tell it that scores of 21 are from the same group/category. We do this using `group_by(upload_day)`, which tells `r rproj()` to treat scores that are the same within **upload_day** as being in the same group. Any subsequent operation will be conducted on these 'groups'. 
+2. Count how many scores fall into each 'category'. This is done using `summarize()`, within which we create a variable called **frequency** that counts how many items are in each group created by `group_by()`. This variable will, therefore, contain the number of times each value of **upload_day** occurs.
+
+#### `r robot()` Code example
+
+We can create a frequency table called [freq_tbl]{.alt} as follows:
+
+```{r freq_dist, exercise=TRUE, exercise.lines=6}
+freq_tbl <- ice_tib |>
+  dplyr::group_by(upload_day) |> 
+  dplyr::summarise(
+    frequency = n()
+  )
+freq_tbl
+```
+
+To sum up, the code feeds the data stored in [ice_tib]{.alt} into the `group_by()` function and asks it to group the output by the variable **upload_day**. Having done this, a variable called **frequency** is created that counts how many scores is in each 'group'. 
+
+We can see, for example, that 29000 videos were uploaded 30 days after Chris Kennedy’s initial challenge, and 10000 were uploaded 27 days after.
+
+### `r bmu()` Grouped frequency tables [(1)]{.alt}
+
+The frequency table that we just produced is large and a little unwieldy. It might be useful to instead have a table that counts the frequencies for a range of scores. For example, how many videos were uploaded between 21 and 24 days, and 25 and 28 days. This is known as a *grouped* frequency distribution. To produce one of these, first we have to place the values of **upload_days** into what are known as *bins*. The values of the number of days range from 21 to 76 days after Chris Kennedy’s initial challenge. Imagine we wanted to group the data in such a way as to see how many videos were uploaded every 4 days (instead of every day). To do this, we'd need to group the values of days into bins of 21-24, 25-28, 29-32 and so on. Notice that each 'bin' is made up of 4 days worth of values.
+
+#### `r robot()` Code example
+
+We can create these bins using `ggplot2::cut_width()` which takes this form:
+
+```{r, eval=FALSE}
+ggplot2::cut_width(variable, width_of_bin)
+```
+
+In which we place the variable that we wish to spread across bins, and [width_of_bin]{.alt} is how wide we want the bins to be. If we want to split the variable **upload_day** into bins containing 4 days worth of data we'd use:
+
+```{r, eval=FALSE}
+ggplot2::cut_width(upload_day, 4)
+```
+
+Combining this function with `dplyr::mutate()` (which we encountered in the **discovr_01** tutorial) to create a new variable called **days_group**, we could execute:
+
+#### `r robot()` Code example
+
+```{r cut_width, exercise=TRUE, exercise.lines=5}
+gp_freq_dist <- ice_tib |> 
+  dplyr::mutate(
+    days_group = ggplot2::cut_width(upload_day, 4)
+    )
+gp_freq_dist
+```
+
+This creates a new object called [gp_freq_dist]{.alt} that contains each value within [ice_tib]{.alt} but with an extra column/variable called **days_group** that indicates into which 'bin' the value of **upload_day** falls.
+
+<div class="tip">
+  `r cat_space()` **Tip: Set notation**
+  
+  Notice that each value of **upload_day** now has a corresponding value of **days_group** containing the 'bin' to which the score has been assigned. For example, the first score of 34 has been assigned to the bin labelled `(30, 34]`. This is the bin containing any score above 30 up to and including 34. The label uses standard mathematical notation for sets where `(` or `)` means 'not including' and `[` or `]` means 'including'.
+</div>
+
+Having done this we can again use `summarize()` and `n()` to count the scores like we did before. However, this time we want to group the summary by **days_group** instead of **upload_day**. Doing so means that the number of times a score falls within each bin will be counted rather than the number times each score occurs. 
+
+#### `r alien()` Alien coding challenge
+
+Create a grouped frequency table called [gp_freq_dist]{.alt} by starting with the code in the code example and then using the code we used to create [freq_tbl]{.alt} to create a pipe that summarizes the grouped scores.
+
+
+```{r gp_freq_dist, exercise=TRUE, exercise.lines=10}
+
+
+```
+
+```{r gp_freq_dist-hint-1}
+# Start with the text from the code example, which creates the bins:
+gp_freq_dist <- ice_tib |> 
+  dplyr::mutate(
+    days_group = ggplot2::cut_width(upload_day, 4)
+    )
+```
+
+```{r gp_freq_dist-hint-2}
+# Previously we used this code to count scores
+# Think about how to connect this code to the previous
+# code. Focus on the right hand side.
+freq_tbl <- ice_tib |>
+  dplyr::group_by(upload_day) |> 
+  dplyr::summarise(
+    frequency = n()
+  )
+```
+
+```{r gp_freq_dist-hint-3}
+# We can combine the two pieces of code like this. 
+# We take the code that bins the data, then
+# pipe the resulting tibble into 
+# group_by and summarize.
+gp_freq_dist <- ice_tib |> 
+  dplyr::mutate(
+    days_group = ggplot2::cut_width(upload_day, 4)
+    ) |> 
+  dplyr::group_by(upload_day) |> 
+  dplyr::summarise(
+    frequency = n()
+  )
+  
+# If you run the above code you'll get the same
+# table as before (freq_tbl) because we have grouped|
+# by upload day
+```
+
+```{r gp_freq_dist-hint-4}
+# We want to group by days_group not upload day.. 
+# Change upload_day in the group_by() function
+# to be days_group 
+gp_freq_dist <- ice_tib |> 
+  dplyr::mutate(
+    days_group = ggplot2::cut_width(upload_day, 4)
+    ) |> 
+  dplyr::group_by(days_group) |> 
+  dplyr::summarise(
+    frequency = n()
+  )
+  
+# Job done. We want to see the resulting table so we add:
+gp_freq_dist
+```
+
+We can see, for example that 534000 videos were uploaded after 38 days and up to and including 42 days. 
+
+### `r bmu()` Relative frequencies [(1)]{.alt}
+
+We now have an object [gp_freq_dist]{.alt} that contains the number of days grouped into bins of 4 days (**days_group**) and the number of videos uploaded during each of the time periods represented by those bins (**frequency**).
+
+#### `r robot()` Code example
+
+If we want to calculate the relative frequency (i.e., the proportion of videos uploaded during each of the time periods represented by the bins) we can use `dplyr::mutate()` to add a variable that divides the frequency by the total number of videos uploaded. We can find this total using `sum()`.
+
+```{r, eval = FALSE}
+... |> 
+  dplyr::mutate(
+    relative_freq = frequency/sum(frequency)
+  )
+```
+
+Within the `mutate()` function we create a new column called **relative_freq** using [frequency/sum(frequency)]{.alt}. The effect of this command is that for each value of the variable **frequency** within [gp_freq_dist]{.alt}, a new value is computed that is the original value divided by the sum (or total) of all of the frequencies. This process converts the raw frequency into a relative frequency.
+
+#### `r alien()` Alien coding challenge
+
+Using the code example, pipe the [gp_freq_dist]{.alt} object into `mutate()`, calculate the relative frequency and store it as a variable called **relative_freq**. 
+
+```{r rel_freq-setup}
+gp_freq_dist <- ice_tib |> 
+  dplyr::mutate(
+    days_group = ggplot2::cut_width(upload_day, 4)
+    ) |> 
+  dplyr::group_by(days_group) |> 
+  dplyr::summarise(
+    frequency = n()
+  )
+```
+
+
+```{r rel_freq, exercise=TRUE, exercise.lines=5}
+
+
+```
+
+```{r rel_freq-hint-1}
+# We want to add a variable to an existing tibble (gp_freq_dist)
+# so a good place to start is:
+
+gp_freq_dist <- gp_freq_dist |> ...
+
+# Think about what will be on the other wise of the pipe
+```
+
+```{r rel_freq-hint-2}
+# We pipe the data into the mutate() from the code example
+
+gp_freq_dist <- gp_freq_dist |> 
+  dplyr::mutate(
+    relative_freq = frequency/sum(frequency)
+  )
+```
+
+```{r rel_freq-hint-3}
+# To see the results we need to execute the name of rthe table:
+
+gp_freq_dist <- gp_freq_dist |> 
+  dplyr::mutate(
+    relative_freq = frequency/sum(frequency)
+  )
+gp_freq_dist
+
+```
+
+
+### `r user_visor()` Efficient code [(2)]{.alt}
+
+In the tasks above we created the table of relative frequencies step by step:
+
+1. We created [gp_freq_dist]{.alt} from [ice_tib]{.alt} and added the variable **days_group** to it.
+2. We fed [gp_freq_dist]{.alt} into a pipe that grouped by **days_group** and then calculated the frequency. We saved it using the same name ([gp_freq_dist]{.alt}).
+3. We fed [gp_freq_dist]{.alt} into a pipe that added a column with the relative frequency.
+
+#### `r robot()` Code example
+
+Usually it's more efficient to carry out these steps in one piece of code. For example, if we combine all of the previous operations we get:
+
+```{r rel_freq_eff, exercise=TRUE, exercise.lines=13}
+gp_freq_dist <- ice_tib |> 
+  dplyr::mutate(
+    days_group = ggplot2::cut_width(upload_day, 4)
+    ) |> 
+  dplyr::group_by(days_group) |> 
+  dplyr::summarise(
+    frequency = n()
+  ) |> 
+  dplyr::mutate(
+    relative_freq = frequency/sum(frequency),
+    percent = relative_freq*100
+  )
+  
+gp_freq_dist
+```
+
+```{r rel_freq_eff-solution}
+gp_freq_dist <- ice_tib |> 
+  dplyr::mutate(
+    days_group = ggplot2::cut_width(upload_day, 4)
+    ) |> 
+  dplyr::group_by(days_group) |> 
+  dplyr::summarise(
+    frequency = n()
+  ) |> 
+  dplyr::mutate(
+    relative_freq = frequency/sum(frequency),
+    percent = relative_freq*100
+  )
+  
+gp_freq_dist
+```
+
+This code takes the data in [ice_tib]{.alt}, feeds it into `mutate()` to create a new variable called **days_group** which contains the 'bin' to which the score in **upload_day** belongs. Having added these 'variable bins', we group the data by them using  `group_by()`, count how many scores fall into each bin using `summarize()` and store these in a variable called **frequency**. We then feed this summary table into `mutate()` to create new variables containing the relative frequency in its raw form and expressed as a percentage. We store the summary table in an object called [gp_freq_dist]{.alt}.
+
+
+## `r bmu()` Histograms [(1)]{.alt}
+
+As well as tabulated frequency distributions, we can visualise distributions using histograms. `ggplot2` is a powerful package for producing data visualisations that we will explore in detail in the **discovr_05** tutorial. For now, we will use it to create a histogram without worrying about how it works.
+
+<div class="tip">
+  `r cat_space()` **Tip: Always load ggplot2!**
+  
+  We've discussed elsewhere that if you include packages when you use functions (e.g., `dplyr::mutate()`) you don't need to explicitly load the package (in this case `dplyr`). However, to create plots with `ggplot2` you build them up layer by layer, which means you use a lot of `ggplot2` functions. For this reason, I advise loading it at the start of your Quarto document and not worrying too much about including package references when you use functions. You can load it either with `library(ggplot2)` or by loading the entire tidyverse using `library(tidyverse)`.
+</div>
+
+### `r bmu()` A basic histogram [(1)]{.alt}
+
+Let's start by plotting a histogram of number of days between the original ice bucket challenge video and when subsequent videos were uploaded. Remember, the data are stored in a variable called **upload_day** in the [ice_tib]{.alt} tibble. To initiate the plot we use the `ggplot()` function, which at its simplest has this general form:
+
+#### `r robot()` Code example
+
+```{r, eval = FALSE}
+`ggplot2::ggplot(my_tib, aes(variable_for_x_axis, variable_for_y_axis))`
+```
+
+Within the `ggplot()` function replace [my_tib]{.alt} with the name of the tibble containing the data you want to plot, and within the `aes()` function replace [variable_for_x_axis]{.alt} with the name of the variable to be plotted on the *x*-axis (horizontal), and replace [variable_for_y_axis]{.alt} with the name of the variable to be plotted on the *y*-axis (vertical).
+
+To plot the days since the first ice bucket challenge video that each video was uploaded, we could execute the code below, which uses the tibble called [ice_tib]{.alt}, and plots the variable **upload_day** on the *x* axis (for a histogram we don't need to specify *y*). Try it.
+
+```{r gg1, exercise=TRUE}
+ggplot2::ggplot(ice_tib, aes(upload_day))
+```
+
+**That doesn't look right!?**
+
+Don't worry, you haven't done anything wrong: this command tells `ggplot2` *what* to plot, but not *how* to plot it. We need to add something called a **geom** to display the data. For a histogram we use `geom_histogram()`. 
+
+#### `r alien()` Alien coding challenge
+
+Take the code from the code example (reproduced below), add `+ geom_histogram()` to it and run it.
+
+```{r ice_hist, exercise=TRUE}
+ggplot2::ggplot(ice_tib, aes(upload_day))
+```
+
+```{r ice_hist-solution}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram()
+```
+
+The completed command tells `r rproj()` to take the object created by `ggplot2::ggplot(ice_tib, aes(upload_day))` and add (`+`) a layer to it using `geom_histogram()`. You should see a beautiful histogram now!
+
+### `r bmu()` Changing the bin widths [(1)]{.alt}
+
+By default `ggplot2` constructs the bins of the histogram to be 1/30th the width of the data. You can over-ride this default by specifying [binwidth =]{.alt} within the `geom_histogram()` function. In the code box below, type [binwidth = 1]{.alt} into the brackets after `geom_histogram()` and execute the code. Note how the histogram changes. A binwidth of 1 makes sense for these data because responses could only be whole numbers (days), but try some other values and note how the histogram changes.
+
+```{r ice_bin, exercise=TRUE}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram()
+```
+
+```{r ice_bin-solution}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1)
+```
+
+### `r bmu()` Changing the colours of the bars [(1)]{.alt}
+
+We can change the colour of the bars by including [fill =]{.alt} within the `geom_histogram()` function.
+
+#### `r robot()` Code example
+
+For example, we could specify the colour red as:
+
+
+```{r, eval = FALSE}
+geom_histogram(binwidth = 1, fill = "red")
+```
+
+<div class="bug">
+  `r bug()` **De-bug: Check for missing commas** 
+
+  Note that arguments within a function are separated by a comma. In this example [binwidth = 1, fill = "red"]{.alt} will work but [binwidth = 1 fill = "red"]{.alt} (note the comma is missing) would throw an error. If you get an error message, always check for these small syntax errors because a missing comma or quote can wreak more havoc than you could possibly imagine. Also remember that **everyone** makes these errors, even those of us who use `r rproj()` all day, every day.
+</div>
+
+#### `r alien()` Alien coding challenge
+
+Adapt the code below to colour the histogram bars red.
+
+```{r ice_hist_fill, exercise=TRUE}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1)
+```
+
+You can also specify any [HEX colour code](http://www.color-hex.com/). For example, the shade of blue defined by hex code #56B4E9 is good for colour blind people, so we could specify this by replacing ["red"]{.alt} with ["#56B4E9"]{.alt}.
+
+#### `r alien()` Alien coding challenge
+
+Replacing ["red"]{.alt} with ["#56B4E9"]{.alt} and run the code to see the effect this change has. Using the [HEX colour code](http://www.color-hex.com/) website, try changing the fill colour to a different colour using a hex code.
+
+```{r ice_hist_hex, exercise=TRUE}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1, fill = "red")
+```
+
+```{r ice_hist_hex-solution}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9")
+```
+
+### `r bmu()` Changing the transparency of the bars [(1)]{.alt}
+
+You can also make filled objects semi-transparent by using [alpha =]{.alt} where alpha is a proportion (i.e., between 0 and 1). For example, if you want the histograms to have 20% opacity you could include [alpha = 0.2]{.alt} in the `geom_histogram()` function (remembering to separate it from other options with a comma).
+
+<div class="bug">
+  `r bug()` **De-bug: inadmissible values** 
+
+Arguments within functions often have admissible values, an example would be that alpha *must* fall between 0 and 1. If you set a value outside of an argument's range, the argument is usually ignored, or you'll get an error. If changing a value within a function appears to have no effect (or you get an error) check that you have used admissible values. In the current example, check you haven't included [alpha = 100]{.alt}.
+</div>
+
+
+#### `r alien()` Alien coding challenge
+
+Taking our previous histogram, try setting 50% opacity. Try out some other values of alpha (between 0 and 1) and note the effect on the transparency of the bars.
+
+```{r ice_hist_alpha, exercise=TRUE}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9")
+```
+
+```{r ice_hist_alpha-solution}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5)
+```
+
+### `r bmu()` Editing axis labels [(1)]{.alt}
+
+#### `r robot()` Code example
+
+To change the labels on the *x*- and *y*-axis we can use the `labs()` function. To do this, we add a `+` after the `geom_histogram()` function and on the next line type:
+
+```{r, eval = FALSE}
+labs(y = "label_for_y_axis", x = "label_for_x_axis")
+```
+
+Replacing [label_for_y_axis]{.alt} with the text we want on the *y*-axis and [label_for_x_axis]{.alt} with the text that we want on the *x*-axis. For the current plot, we are plotting the frequency of uploads (because it's a histogram) on the *y*-axis and the number of days since the original ice bucket challenge on the *x*-axis, so we might use:
+
+```{r, eval = FALSE}
+labs(y = "Frequency", x = "Days since first ice bucket challenge video")
+```
+
+#### `r alien()` Alien coding challenge
+
+Run the code in the box below to reproduce our histogram, then add the code from the code example and run it again. You should see that the axis labels change.
+
+```{r ice_hist_labs, exercise = TRUE, exercise.lines=3}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5)
+```
+
+```{r ice_hist_labs-solution}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5) +
+  labs(y = "Frequency", x = "Days since first ice bucket challenge video")
+```
+
+<div class="bug">
+  `r bug()` **De-bug: don't forget +** 
+
+  A common cause of errors messages when using `ggplot()` is forgetting to put a `+` at the end of each line (except the last). If you get an error message check that each line that builds up a plot has a `+` at the end of it (i.e. each function is separated by `+`).
+</div>
+
+
+### `r bmu()` Changing theme [(1)]{.alt}
+
+`ggplot2` has various built in themes that change the appearance of the plot. The two we will use most often are `theme_bw()`, which applies a black and white theme and `theme_minimal()` which applies a minimalist theme. Both of these themes are good for scientific plots (like the ones you'll find in journal articles).
+
+#### `r robot()` Code example
+
+To apply a theme we add `+` after the previous function and then type `theme_bw()` or `theme_minimal()`. For example, to apply a minimalist theme to our histogram code we'd use the code below. Note that we have taken the code from the previous section and simply tagged `+ theme_minimal()` to the end. Compare the result to the previous version of the histogram.
+
+```{r ice_hist_theme_min, exercise=TRUE, exercise.lines=4}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5) +
+  labs(y = "Frequency", x = "Days since first ice bucket challenge video") +
+  theme_minimal()
+```
+
+#### `r alien()` Alien coding challenge
+
+Try applying `theme_bw()`, `theme_classic()` and `theme_dark()` to see what effect it has on the plot.
+
+```{r ice_hist_theme, exercise=TRUE, exercise.lines=4}
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5) +
+  labs(y = "Frequency", x = "Days since first ice bucket challenge video")
+```
+
+```{r ice_hist_theme-hint-1}
+# Theme black and white:
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5) +
+  labs(y = "Frequency", x = "Days since first ice bucket challenge video") +
+  theme_bw()
+```
+
+```{r ice_hist_theme-hint-2}
+# Theme classic:
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5) +
+  labs(y = "Frequency", x = "Days since first ice bucket challenge video") +
+  theme_classic()
+```
+
+```{r ice_hist_theme-hint-3}
+# Theme dark:
+ggplot2::ggplot(ice_tib, aes(upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5) +
+  labs(y = "Frequency", x = "Days since first ice bucket challenge video") +
+  theme_dark()
+```
+
+We'll return to the `ggplot2` package in more depth in **discovr_05**.
+
+## `r bmu()` Summarizing data [(1)]{.alt}
+
+We've seen already that functions take the form of a command followed by brackets. We also saw that there are usually options that can be placed within those brackets (for example, in the previous section we changed the binwidth and bar colour of the histogram by placing instructions within the `geom_histogram()` function). We'll explore this idea more by looking at the function to estimate the mean and median of the ice bucket scores.
+
+### `r bmu()` The mean and median [(1)]{.alt}
+
+We can compute the mean using the built-in function `mean()`. The full format of the function is:
+
+```{r, eval=FALSE}
+mean(variable, trim = 0, na.rm = FALSE)
+```
+
+Which just says that you need to include a reference to the variable/data that you want the mean for, and that you can set two arguments:
+
+* [trim]{.alt}: allows you to trim the scores before calculating the mean by specifying a value between 0 and 0.5. The default is 0 (no trim), but if you wanted to trim 10% of scores from each end of the distribution you could set [trim = 0.1]{.alt}, similarly to trim 20% from each end before computing the mean set [trim = 0.2]{.alt}.
+* [na.rm]{.alt}: you'll see this argument in many functions, it stands for 'NA remove'. In `r rproj()` missing values are denoted as [NA]{.alt} (not available), so by setting [na.rm = TRUE]{.alt} (or [na.rm = T]{.alt} for short) you ask `r rproj()` to remove missing values before computing the mean. 
+
+<div class="bug">
+  `r bug()` **De-bug: missing values** 
+
+  The default in many functions is not to remove missing values (e.g. [na.rm = FALSE]{.alt}). If you have missing values in your data and don't change this default behaviour `r rproj()` will throw an error. Therefore, if you get an error from a function like `mean()`, check whether you have missing values and whether you have forgotten to set [na.rm = TRUE]{.alt}.
+</div>
+
+The function for the median has a similar format except that there isn't an argument to trim the data because that wouldn't make sense (the median is effectively the data with a 50% trim):
+
+```{r, eval=FALSE}
+median(variable, na.rm = FALSE)
+```
+
+<div class="tip">
+  `r cat_space()` **Tip: using $**
+  
+  Remember from the `discovr_01` tutorial that we can use `$` to refer to a variable within a tibble. In general, we use `tibble$variable`, for example, in the previous tutorial we used `ice_tib$upload_day` to select the variable **upload_day** from the [ice_tib]{.alt} tibble.
+</div>
+
+#### `r robot()` Code example
+
+If you are happy with the default settings you don't need to specify those arguments explicitly. For example, to find the mean of the variable **upload_day** from the [ice_tib]{.alt} tibble, we could execute:
+
+```{r ice_mean_ce1, exercise = TRUE}
+mean(ice_tib$upload_day)
+```
+
+However, if we wanted to remove missing values we need to override the default setting for the [na.rm]{.alt} argument:
+
+```{r ice_mean_ce2, exercise = TRUE}
+mean(ice_tib$upload_day, na.rm = TRUE)
+```
+
+<div class="tip">
+  `r cat_space()` **Tip: Finding the arguments of a function**
+  
+  To find the list of arguments (options) available for a particular function, remember that you can get help by executing `?` and the name of the function. For example, to remind yourself of the options for the `mean()` function, execute `?mean`
+</div>
+
+We can obtain the median in much the same way.
+
+#### `r alien()` Alien coding challenge
+
+Find the median number of days after the original ice bucket video that other videos were uploaded. 
+
+```{r ice_mean, exercise = TRUE}
+
+```
+
+```{r ice_mean-solution}
+median(ice_tib$upload_day)
+```
+
+
+### `r bmu()` Quantifying the 'fit' of the mean [(1)]{.alt}
+
+We can use the functions `var()`, `sd()` to get the variance and standard deviation of the ice bucket scores. These functions behave exactly like `mean()` in that we input the variable for which we want the variance and standard deviation and specify how we treat missing values (by default they are not removed):
+
+#### `r robot()` Code example
+
+```{r, eval=FALSE}
+var(variable_name, na.rm = FALSE)
+sd(variable_name, na.rm = FALSE)
+```
+
+#### `r alien()` Alien coding challenge
+
+Use what you learned in the previous section and the code example above to get the variance and standard deviation of the days since the original ice bucket video that other videos were uploaded.
+
+<div class="tip">
+  `r cat_space()` **Tip**
+  
+  Because the current data has no missing scores we can omit the default argument of [na.rm=FALSE]{.alt}.
+</div>
+
+```{r ice_var, exercise = TRUE}
+
+```
+
+```{r ice_var-solution}
+var(ice_tib$upload_day)
+sd(ice_tib$upload_day)
+```
+
+### `r bmu()` The inter-quartile range [(1)]{.alt}
+
+We can use the `IQR()` function to obtain the interquartile range of a set of scores. This function has an additional option of [type =]{.alt} which allows you to specify one of 8 different ways to calculate the IQR. The default is 7. There is an argument for using [type  = 8]{.alt}, which uses a method recommended by [@hyndman_sample_1996].
+
+#### `r robot()` Code example
+
+```{r, eval=FALSE}
+IQR(variable_name, na.rm = FALSE, type = 7)
+```
+
+#### `r alien()` Alien coding challenge
+
+Adapt the code example to get the inter-quartile range of the days since the original ice bucket video. Recalcutae it using method 8.
+
+```{r, eval=FALSE}
+IQR(ice_tib$upload_day, type = 8)
+```
+
+In the code box below, use this function to get the inter-quartile range of the **upload_day** variable.
+
+```{r ice_iqr, exercise = TRUE}
+
+```
+
+```{r ice_iqr-hint-1}
+# The code example is:
+IQR(variable_name, na.rm = FALSE, type = 7)
+
+# Replace variable_name with the name of the variable that we want to summarize.
+```
+
+```{r ice_iqr-hint-2}
+# This gives us:
+
+IQR(ice_tib$upload_day, na.rm = FALSE, type = 7)
+
+# We have no missing values, and to start with we want the default method
+# of 7 so we can omit these arguments
+```
+
+```{r ice_iqr-hint-3}
+# Solution 1:
+
+IQR(ice_tib$upload_day)
+
+# To use method 8, insert type = 8 into the function
+```
+
+```{r ice_iqr-hint-4}
+# Solution 2:
+
+IQR(ice_tib$upload_day, type = 8)
+```
+
+
+## `r user_visor()` Creating a summary table [(2)]{.alt}
+
+So far we have looked at computing individual statistics for a set of scores, but what if we want to combine these values into a table? We can do this using the `summarise()` function described earlier in the tutorial.
+
+#### `r robot()` Code example
+
+The code looks like this in general:
+
+```{r eval = FALSE}
+ice_tib |>
+  dplyr::summarise(
+    median =  median(upload_day),
+    mean =  mean(upload_day),
+    ...
+    )
+```
+
+The code feeds the data stored in [ice_tib]{.alt} into the `summarise()` function. In this function new variables are created. The first variable we name `median` and it stores the output of `median(upload_day)`. In other words, we create a variable that we chose to call `median` (left hand side of the command) that stores the value of the median of the variable **upload_day** (right-hand side of the command). Similarly, we store the mean upload day in a variable called **mean** and so on. We can add as many new variables as we wish, but for the last variable we create we need to omit the comma at the end of the line (like we do when using `mutate()`).
+
+<div class="bug">
+  `r bug()` **De-bug: commas at the end of commands** 
+  
+  Every line within the `summarize()` function ends with a comma except for the last. When `r rproj()` sees a comma it expects to see another command, so the lack of comma after the last command tells `r rproj()` that it is the last command. If you get an error message when using `summarize()` check you have remembered commas at the end of each line except the last.
+</div>
+
+#### `r alien()` Alien coding challenge
+
+Create a summary table containing the mean, median, IQR, variance and SD of the number of days since the original ice bucket video.
+
+```{r ice_sum, exercise = TRUE, exercise.lines=9}
+
+```
+
+```{r ice_sum-hint-1}
+#start with the code example:
+ice_tib |>
+  dplyr::summarise(
+    median =  median(upload_day),
+    mean =  mean(upload_day),
+    ...
+    ) 
+```
+
+```{r ice_sum-hint-2}
+# Now add the command to get the IQR into the summarize() function
+ice_tib |>
+  dplyr::summarise(
+    median =  median(upload_day),
+    mean =  mean(upload_day),
+    IQR = IQR(upload_day)
+    )
+```
+
+```{r ice_sum-hint-3}
+# Now add the command to get the variance into the summarize() function
+ice_tib |>
+  dplyr::summarise(
+    median =  median(upload_day),
+    mean =  mean(upload_day),
+    IQR = IQR(upload_day),
+    variance = var(upload_day)
+    )
+```
+
+```{r ice_sum-hint-4}
+# Now add the command to get the standard deviation into the summarize() function
+ice_tib |>
+  dplyr::summarise(
+    median =  median(upload_day),
+    mean =  mean(upload_day),
+    IQR = IQR(upload_day),
+    variance = var(upload_day),
+    std_dev = sd(upload_day)
+    )
+
+# Check that you have commas at the end of every line except the last within summarise.
+```
+
+#### `r robot()` Code example
+
+If we want to store this table of summary statistics we can do so by assigning it to a new object. Let's say we want to assign it to an object called [upload_summary]{.alt} then we'd add `upload_summary <-` to the beginning of the command
+
+```{r eval = FALSE}
+upload_summary <- ice_tib |>
+  dplyr::summarise(
+    median =  median(upload_day),
+    mean =  mean(upload_day),
+    IQR = IQR(upload_day),
+    variance = var(upload_day),
+    std_dev = sd(upload_day)
+    ) 
+```
+
+
+## `r user_visor()` Rounding values [(1)]{.alt}
+
+We can use the `round()` function to round values, and we can use the `kable()` function from `knitr` to round an entire table of values.
+
+### `r user_visor()` The `round()` function [(1)]{.alt}
+
+The `round()` function takes this form 
+
+```{r, eval=FALSE}
+round(x, digits = 0)
+```
+
+In which [x]{.alt} is the thing we want to round, and [digits]{.alt} is the number of decimal places we want (the default is 0, which returns a whole number). For example, to round the value 3.211420 to a whole number we would execute:
+
+```{r, eval=FALSE}
+round(3.211420)
+```
+
+But to round it to two decimal places we would include the number two after a comma:
+
+```{r, eval=FALSE}
+round(3.211420, 2)
+```
+
+We could also use a pipe to feed a mean, median or variance into the round function. For example, to round the value of the variance of **upload_day** to 3 decimal places we could execute:
+
+#### `r robot()` Code example
+
+```{r var_ice_rnd, exercise = TRUE}
+var(ice_tib$upload_day) |>
+  round(3)
+```
+
+#### `r alien()` Alien coding challenge
+
+Round the standard deviation and mean of **upload_day** to 2 decimal places.
+
+```{r ice_rnd, exercise = TRUE}
+
+```
+
+```{r ice_rnd-solution}
+# SD
+sd(ice_tib$upload_day) |> round(2)
+# Mean
+mean(ice_tib$upload_day) |> round(2)
+```
+
+
+#### `r alien()` Alien coding challenge
+
+If we have a table that only contains numbers, then we can also apply `round()` to the entire table. For example, in the previous section we created an object called [upload_summary]{.alt} using the following code in the code box.
+
+```{r upload_sum, exercise = TRUE, exercise.lines=12}
+upload_summary <- ice_tib |>
+  dplyr::summarise(
+    median =  median(upload_day),
+    mean =  mean(upload_day),
+    IQR = IQR(upload_day),
+    variance = var(upload_day),
+    std_dev = sd(upload_day)
+    )
+upload_summary
+```
+
+```{r upload_sum-solution}
+upload_summary <- ice_tib |>
+  dplyr::summarise(
+    median =  median(upload_day),
+    mean =  mean(upload_day),
+    IQR = IQR(upload_day),
+    variance = var(upload_day),
+    std_dev = sd(upload_day)
+    )
+
+upload_summary |> round(2)
+```
+
+Execute the code in the code box to view the table. Then edit the last line to pipe the table into `round()` using
+
+```{r, eval = F}
+upload_summary |> round(2)
+```
+
+Execute this new code and you should find the values are now rounded to 2 decimal places.
+
+
+### `r user_visor()` The `kable()` function [(1)]{.alt}
+
+The code in the previous section works only because every column in the table contains numbers. If one of the columns contained text, or something other than a number, `r rproj()` will throw an error because `round()` doesn't know what to do with it. A more straightforward option for tables is to pipe them into the `kable()` function from `knitr()`. It has these main arguments
+
+```{r, eval = F}
+knitr::kable(x = my_table,
+  digits = number_of_decimal_places,
+  row.names = a_list_of_row_names,
+  col.names = a_list_of_column_names,
+  align,
+  caption = "Write a caption"
+)
+```
+
+The function takes your table as the main input, but has options to set the maximum number of decimal places using [digits]{.alt}, you can add row and column names (in the case of column names you can provide a list to override the variable names in the tibble), you can set the alignment of each column, and include a caption. For now, let's add a caption and set the maximum number of decimal places to 2 using
+
+```{r, eval = F}
+upload_summary |> 
+  knitr::kable(digits = 2,
+        caption = "Summary statistics for the ice bucket challenge."
+        )
+```
+
+#### `r alien()` Alien coding challenge
+
+Let's again use the code to create an object called [upload_summary]{.alt} but this time pipe it through `kable()`.
+
+```{r upload_skable, exercise = TRUE, exercise.lines=15}
+upload_summary <- ice_tib |>
+  dplyr::summarise(
+    median =  median(upload_day),
+    mean =  mean(upload_day),
+    IQR = IQR(upload_day),
+    variance = var(upload_day),
+    std_dev = sd(upload_day)
+    )
+
+upload_summary |> 
+  knitr::kable(digits = 2,
+        caption = "Summary statistics for the ice bucket challenge."
+        ) 
+```
+
+Execute this new code and you should again find the values are rounded to 2 decimal places. However, `kable()` has the advantage that it will intelligently round the columns, so it won't try to round columns with text in, and we have options to align and caption the table. So, other things being equal, use `kable()` to round values in tables.
+
+<div class="tip">
+  `r cat_space()` **Tip: `kable()` in code chunks**
+
+If you execute an individual code chunk that uses `kable()` within your document the table will appear below the code chunk as normal but looks horrible. `kable()` weaves its magic when the entire document is rendered. If you want to view the table as a work in progress, highlight the code excluding the `|> kable()` part and press control + enter (command + enter on MacOS) to view the table.
+</div>
+
+
+## `r user_visor()` Quick descriptives with `datawizard` [(2)]{.alt}
+
+Creating a bespoke table of summary statistics is useful and helps us to practice our `tidyverse` skills. However, if we want a quick set of descriptive statistics we can use the `describe_distribution()` function from the `datawizard` package. It has the following arguments:
+
+```{r, eval = F}
+datawizard::describe_distribution(x = my_data,
+  select = NULL,
+  exclude = NULL,
+  centrality = "mean",
+  dispersion = TRUE,
+  iqr = TRUE,
+  range = TRUE,
+  quartiles = FALSE,
+  include_factors = FALSE,
+  ci = NULL)
+```
+
+You replace [my_data]{.alt} with the name of a tibble that you want to summarize, you can use [select]{.alt} to select specific variables within the tibble, or [exclude]{.alt} to exclude them (as you would if you used the `select()` function from `dplyr`). By default mean is displayed [centrality = "mean"]{.alt} but this can be set to "median", "MAP" (the maximum a posteriori probability, which we don't cover) or "all" to get all of them. The remaining arguments can be set to [TRUE]{.alt} or [FALSE]{.alt} to indicate which summary statistics to include, by default you get measures of dispersion (standard deviation for the mean and mean absolute deviation for the median), the interquartile range [iqr]{.alt}, and the range, but not the upper ($q_{0.75}$) and lower ($q_{0.25}$) quartiles or confidence intervals (which we'll learn about in `discovr_03`).
+
+<div class="tip">
+  `r cat_space()` **Tip**
+
+When a function has an argument that can be set to [TRUE]{.alt} or [FALSE]{.alt} you can abbreviate these to [T]{.alt} and [F]{.alt} respectively. For example this code
+
+```{r, eval = F, class.source = '.panel_alt'}
+datawizard::describe_distribution(x = my_data, dispersion = T, quartiles = F)
+```
+
+is equivalent to
+
+```{r, eval = F, class.source = '.panel_alt'}
+datawizard::describe_distribution(x = my_data, dispersion = TRUE, quartiles = FALSE)
+```
+
+In these tutorials I will sometimes use [TRUE]{.alt}/[FALSE]{.alt} and sometimes [T]{.alt}/[F]{.alt} just to keep you on your toes.
+
+</div>
+
+#### `r alien()` Alien coding challenge
+
+Using the default options, get some descriptive statistics for the ice bucket challenge data.
+
+```{r ice_wiz, exercise = TRUE, exercise.lines=3}
+
+```
+
+```{r ice_wiz-hint-1}
+#replace the xxx
+datawizard::describe_distribution(xxx)
+```
+
+```{r ice_wiz-hint-2}
+#replace the xxx
+datawizard::describe_distribution(ice_tib)
+# now use kable() to round the valeues to 2dp
+```
+
+```{r ice_wiz-solution}
+datawizard::describe_distribution(ice_tib) |> 
+  knitr::kable(digits = 2)
+```
+
+
+<br />
+
+
+<div class="infobox">
+  <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
+  
+  **A message from Mae Jemstone:**
+  
+  Well done on completing phase 2 of your mission! You have learnt how to summarize data using histograms and statistics such as the mean, median, variance and standard deviation. Remember to go over any parts that you don't fully understand, and ask questions!
+  
+</div>
+
+## Resources {data-progressive=FALSE}
+
+### Statistics
+
+* The tutorials typically follow examples described in detail in @field_discovering_2023. That book covers the theoretical side of the statistical models, and has more depth on conducting and interpreting the models in these tutorials.
+* If any of the statistical content doesn't make sense, you could try my more introductory book *An adventure in statistics* [@fieldAdventureStatisticsReality2016].
+* There are free lectures and screencasts on my [YouTube channel](https://www.youtube.com/user/ProfAndyField/).
+* There are free statistical resources on my websites [www.discoveringstatistics.com](http://www.discoveringstatistics.com) and [milton-the-cat.rocks](https://milton-the-cat.rocks).
+
+### `r rproj()`
+
+* [R for data science](http://r4ds.had.co.nz/index.html) by @wickhamDataScience2017 is an open-access book by the creator of the tidyverse (Hadley Wickham). It covers the *tidyverse* and data management.
+* [ModernDive](http://moderndive.com/index.html) is an open-access textbook on `r rproj()` and `r rstudio()`.
+* [`r rstudio()` cheat sheets](https://www.rstudio.com/resources/cheatsheets/).
+* [`r rstudio()` list of online resources](https://www.rstudio.com/online-learning/).
+
+### Acknowledgement
+
+I'm extremely grateful to [Allison Horst](https://www.allisonhorst.com/) for her very informative blog post on [styling learnr tutorials with CSS](https://education.rstudio.com/blog/2020/05/learnr-for-remote/) and also for sending me a CSS template file and allowing me to adapt it. Without Allison, these tutorials would look a lot worse (but she can't be blamed for my colour scheme).
+
+## References
+
+

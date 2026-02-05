@@ -1,0 +1,1121 @@
+---
+title: "discovr categorical outcomes"
+author: "Andy Field"
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+    theme: "united"
+    highlight: "kate"
+    css: ./css/discovr_style_future.css
+runtime: shiny_prerendered
+description: "Categorical outcomes (logistic regression). This tutorial builds on previous ones to show how the general linear model model extends to situations where you want to predict a binary outcome (logistic regression). We look at fitting the models and interpretting the odds ratio."
+bibliography: [discovr_19.bib, packages.bib]
+---
+<html lang="en">
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+
+#necessary to render tutorial correctly
+library(learnr) 
+library(htmltools)
+#easystats
+library(datawizard)
+library(insight)
+library(modelbased)
+library(parameters)
+library(performance)
+#tidyverse
+library(dplyr)
+library(forcats)
+library(ggplot2)
+#non tidyverse/easystats
+library(robustbase)
+#students don't use
+library(knitr)
+
+source("./www/discovr_helpers.R")
+
+# Read data files needed for the tutorial
+
+eel_tib <- discovr::eel
+penalty_tib <- discovr::penalty_shootout
+```
+
+```{r, eval = F, echo = F}
+# Create bib file for R packages
+here::here("inst/tutorials/discovr_20/packages.bib") |>
+  knitr::write_bib(c('here', 'tidyverse', 'dplyr', 'readr', 'forcats', 'tibble', 'tidyr', 'knitr', 'gt', 'broom', 'interactions', 'robustbase'), file = _)
+```
+
+# discovr categorical outcomes (logistic regression)
+
+```{r, child = "./docs/intro.Rmd"}
+
+```
+
+## Packages {data-progressive=FALSE}
+
+```{r, child = "./docs/packages.Rmd"}
+
+```
+
+
+## Data
+
+```{r, child = "./docs/data.Rmd"}
+
+```
+
+
+## Fitting models
+
+```{r, child = "./docs/fit_models.Rmd"}
+
+```
+
+## `r user_visor()` Feeling eel? [(B)]{.lbl}
+
+In my book I mention that a hobby of mine is unearthing bizarre academic papers [@fielddsr22026]. One in particular, describes the case of a 50-year-old man who reported to the emergency department of a hospital with abdominal pain. A physical examination revealed peritonitis, so they X-rayed the man's abdomen. The X-ray revealed an eel. To cut a long story short, this inspired an eel-related example that you can unearth in the book, but because some statistics lecturers don't share my enthusiasm for the bizarre, here it is framed rather generically as a randomized clinical trial to treat 'something' (just as a random example, constipation) through some kind of intervention (just off the top of my head, placing an eel somewhere). There's a festive version of this tutorial in `discovr_19_xmas` if you prefer.
+
+Anyway, 113 people were recruited into a trial and randomly assigned to an intervention group or a control. The duration of symptoms was measured at the start of the trial. After the intervention researchers recorded whether the patient was cured (no symptoms) or not (still symptomatic). In the book we fit a model involving all of these variables, but in this tutorial we are going to strip the example down to address a simpler hypothesis:
+
+> H~1~: Having the intervention will 'cure' the problem more than not having the intervention.
+
+The data are in [eel_tib]{.alt}.
+
+- `id`: Participant id
+- `cured`: Whether the participant cured or not after treatment
+- `intervention`: Whether the participant was randomized to the no intervention arm of the trial or the intervention arm
+- `duration`: the number of days before treatment that the patient had the problem
+
+In a second example we will follow our 5-step process for fitting models. However, this first example's job is to help us to get an intuition about models with categorical outcomes and how to interpret their parameters so we will skip steps 2 (visualise) and 4 (evaluate).
+
+The model we want to fit predicts the log odds of being cured from `intervention`:
+
+$$
+\ln\left(\frac{P(\text{cured})}{1- P(\text{cured})}\right) = \hat{b}_0 + \hat{b}_1\text{intervention} + e_i
+$$
+
+We can re-arrange this equation to express the outcome as a probability:
+
+$$
+P(\text{cured}) = \frac{1}{1+ e^{-\left(\hat{b}_0 + \hat{b}_1\text{intervention}  + e_i\right)}}  
+$$
+
+In this version we predict the *probability* of being cured.
+
+
+## `r bmu()` Step 1: summarize [(A)]{.lbl}
+
+<div class="stepbox">
+  `r step()` **Step 1**
+
+Get your data into `r rproj()` and pre-process using [tidyverse]{.pkg} packages or the [datawizard]{.pkg} package from [easystats]{.pkg}.
+</div>
+
+
+#### `r alien()` Alien coding challenge
+
+View the data in [eel_tib]{.alt}.
+
+```{r eel_tib, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r eel_tib-solution}
+eel_tib
+```
+
+Note that there are four variables:
+
+- `id`: a character variable (note the `<chr>` under the name) containing the name of the participant.
+- `cured`: a factor variable (note the `<fct>` under the name) whether the person was symptom free ([Cured]{.alt} or not [Not cured]{.alt}).
+- `intervention`: a factor variable (note the `<fct>` under the name) indicating whether the person was randomized to the [Intervention]{.alt} or [No treatment]{.alt}).
+- `duration`: a numeric variable (note the `<dbl>` under the name) indicating the number of days symptoms had lasted.
+
+The variables `intervention` and `cured` are factors (categorical variable), so having read the data file and converted these variables to factors it's a good idea to check the order of the levels for each one.
+
+
+#### `r alien()` Alien coding challenge
+
+Using what you've learnt in previous tutorials check the order of the levels of the variables `intervention` and `cured`.
+
+```{r chk_levels, exercise = TRUE, exercise.lines = 4}
+
+```
+
+```{r chk_levels-hint-1}
+# use this function:
+levels()
+```
+
+```{r chk_levels-hint-2}
+# Remember that to access a variable you use:
+name_of_tibble$name_of_variable
+```
+
+```{r chk_levels-hint-3}
+# solution:
+levels(eel_tib$intervention)
+levels(eel_tib$cured)
+```
+
+You'll find that the factor levels are:
+
+* For `intervention`, the baseline category is 'no treatment'.
+* For `cured`, the factor levels are ordered 'not cured' and 'cured' so an 'increase' in the outcome corresponds to it being more probable that someone is symptom free.
+
+These category orders are as they are because I set the data up within this tutorial. Working outside of the tutorial you might need to manually set the order of levels for each factor using `fct_relevel()` as described in the [Data]{.alt} part of this tutorial.
+
+
+#### `r robot()` Code example
+
+One predictor (`intervention`) is categorical, so it might be useful to look at a contingency table of both the raw scores and proportions like we did in the previous chapter. We can do this using the `data_tabulate()` function within [datawizard]{.pkg} (see `discovr_18`):
+
+The code to create a basic contingency table is
+
+```{r, eval = F}
+eel_xtbl <- eel_tib |>
+  data_tabulate(select = "intervention", by = "cured", remove_na = TRUE)
+```
+
+This code pipes the data into `data_tabulate()` within which we specify the variables that define the rows and columns of the table and [remove_na = TRUE]{.alt} prevents missing values from being tabulate. We can view this table using `display()`
+
+```{r, eval = F}
+eel_xtbl |> 
+  display()
+```
+
+
+#### `r alien()` Alien coding challenge
+
+Use the code box to create a table of frequencies for the variables of `intervention` and `cured`.
+
+```{r xtab, exercise = TRUE, exercise.lines = 7}
+             
+```
+
+```{r xtab-solution}
+# Create the table
+eel_xtbl <- eel_tib |>
+  data_tabulate(select = "intervention", by = "cured", remove_na = TRUE)
+# View it
+eel_xtbl |> 
+  display()
+```
+
+
+We can use these frequencies to look at the [odds]{.kt} and [odds ratio]{.kt}.
+
+## `r user_visor()` Odds and the odds ratio [(B)]{.lbl}
+
+### Odds
+
+The odds of an event (e.g. cured) is the ratio of the number of times an event occurs compared to the number of times it doesn't occur:
+
+$$
+\begin{aligned}
+\text{odds} &= \frac{\text{number of times event occurs}}{\text{number of times even does not occur}} \\
+\text{odds}_\text{cured} &= \frac{\text{number of times someone is cured}}{\text{number of times someone is not cured}}
+\end{aligned}
+$$
+
+The contingency table (which we generated in the previous section) shows the number of successful and unsuccessful treatments split by the intervention group.
+
+```{r, echo = F}
+eel_tib |>
+  data_tabulate(select = "intervention", by = "cured", remove_na = TRUE) |> 
+  display()
+```
+
+
+```{r qn_odds, echo = F}
+quiz(caption = "Odds quiz (level 2)",
+     question("Using the contingency table, the odds of being cured are?",
+         answer("1.35", correct = TRUE),
+         answer("0.74", message = "These are the odds of not being cured. You've got the equation upside down!"),
+         answer("0.75", message = "These are the odds of being cured after no treatment, not overall"),
+         answer("2.56", message = "These are the odds of being cured after treatment, not overall"),
+         incorrect = "Try again!",
+         allow_retry = T,
+         random_answer_order = T
+         )
+     )
+```
+
+### The odds ratio
+
+The odds ratio expresses the *change* in odds. In this case, we could compute the change in odds as we change from someone who is not treated to someone who is. To do this we would compute the odds of being cured in the intervention group, and then do the same for the no intervention group. The resulting odds ratio would be:
+
+$$
+\text{odds ratio} = \frac{\text{odds}_\text{cured after treatment}}{\text{odds}_\text{cured after no treatment}}
+$$
+
+```{r qn_odds_ratio, echo = F}
+quiz(caption = "Odds ratio quiz (level 2)",
+  question("Using the contingency table, what are the odds of being cured after treatment?",
+         answer("1.35", message = "These are the odds of being cured overall, not for the intervention group"),
+         answer("0.39", message = "These are the odds of NOT being cured after treatment. You've got the equation upside down!"),
+         answer("2.56", correct = TRUE),
+         answer("0.75", message = "These are the odds of being cured after NO treatment"),
+         incorrect = "Try again!",
+         allow_retry = T,
+         random_answer_order = T
+         ),
+  question("Using the contingency table, what are the odds of being cured after no treatment?",
+         answer("1.35", message = "These are the odds of being cured overall, not for the no intervention group"),
+         answer("1.33", message = "These are the odds of NOT being cured after no treatment. You've got the equation upside down!"),
+         answer("2.56", message = "These are the odds of being cured after treatment"),
+         answer("0.75", correct = TRUE),
+         incorrect = "Try again!",
+         allow_retry = T,
+         random_answer_order = T
+         ),
+  question("Using the answers to the previous two questions, what is the odds ratio for treatment compared to no treatment?",
+         answer("1.71", message = "This is the odds of being treated if you were cured. The odds ratio is the odds in one condition divided by the odds in the other."),
+         answer("0.29", message = "This is the odds ratio for no treatment compared to treatment. You've got the equation upside down!"),
+         answer("1.35", message = "This is the odds of being cured. The odds ratio is the odds in one condition divided by the odds in the other."),
+         answer("3.41", correct = TRUE),
+         incorrect = "Try again!",
+         allow_retry = T,
+         random_answer_order = T
+         )
+)
+```
+
+
+## `r user_visor()` Step 3: Fit the model [(B)]{.lbl}
+
+To fit models with categorical outcomes we use the `glm()` function which stands for 'generalized linear model'. The function takes the same form as `lm()`, which we have used many times before. It differs in that it allows you to specify a specific distribution for the errors in the model. When the outcome is a dichotomy (categorical with two categories) we need to specify the distribution as `binomial()` giving us a general form of the function as follows:
+
+```{r, eval = F}
+glm(outcome ~ predictor(s),
+    data = my_tib,
+    family = binomial(),
+    na.action = na.fail)
+```
+
+In which you replace [outcome ~ predictor(s)]{.alt} with the formula for your model in exactly the same you would for `lm()`. For our model, we want to predict `cured` from `intervention` so our formula is [cured ~ intervention]{.alt}. We replace [my_tib]{.alt} with the name of our tibble (in this case [eel_tib]{.alt}). The argument [na.action = na.fail]{.alt} determines how to treat missing values. By default it is set to [na.fail]{.alt} which means that the model fails (it is not fit). If you have missing values then set this option to [na.omit]{.alt} which removes cases, or [na.exclude]{.alt} which excludes cases from the model (but does not remove them).
+
+In addition to these familiar arguments, there is 
+
+* [family = gaussian()]{.alt}, which determines the distribution of errors. By default the family is set to `gaussian()` (a posh word for 'normal') and the function will fit a standard linear model. By changing it to [family = binomial()]{.alt} we get a logistic linear model.
+
+#### `r robot()` Code example
+
+We could fit our models by executing:
+
+```{r, eval = F}
+intcpt_glm <- glm(cured ~ 1, family = binomial(), data = eel_tib)
+intervention_glm <- glm(cured ~ intervention, family = binomial(), data = eel_tib)
+```
+
+The first line creates a model containing only the intercept, the second adds `intervention` as a predictor. We can compare these models using `test_lrt()`, which we have used before.
+
+#### `r alien()` Alien coding challenge
+
+Use the code box below to create the models just described and compare them.
+
+```{r build_mod, exercise = TRUE, exercise.lines = 8}
+          
+```
+
+
+```{r build_mod-solution}
+intcpt_glm <- glm(cured ~ 1, family = binomial(), data = eel_tib)
+intervention_glm <- glm(cured ~ intervention, family = binomial(), data = eel_tib)
+test_lrt(intcpt_glm, intervention_glm) |> 
+  display()
+```
+
+```{r, echo = F}
+intcpt_glm <- glm(cured ~ 1, family = binomial(), data = eel_tib)
+intervention_glm <- glm(cured ~ intervention, family = binomial(), data = eel_tib)
+
+eel_lrt <- test_lrt(intcpt_glm, intervention_glm)
+eel_par <- model_parameters(intervention_glm)
+eel_exp <- model_parameters(intervention_glm, exponentiate = TRUE)
+
+eel_xtab <- xtabs(~ intervention + cured, data = eel_tib)
+odds_ni <- eel_xtab[1, 2]/eel_xtab[1, 1]
+odds_i <- eel_xtab[2, 2]/eel_xtab[2, 1]
+```
+
+
+The likelihood ratio test shows that adding `intervention` significantly improves the fit of the model `r report_lrt(eel_lrt)`.
+
+## `r user_visor()` Step 5: Interpret the model [(B)]{.lbl}
+
+<div class="stepbox">
+  `r step()` **Step 5**
+
+Interpret the model
+
+- Interpret the values that define the model (the [parameter estimates]{.alt}) using the [parameters]{.pkg} package from [easystats]{.pkg}.
+- Make specific predictions from our model using the [modelbased]{.pkg} package from [easystats]{.pkg}.
+ 
+</div>
+
+
+#### `r alien()` Alien coding challenge
+
+Use the code box below to obtain the table of parameters from [intervention_glm]{.alt} using the same code you have used throughout these tutorials.
+
+```{r get_glm}
+intervention_glm <- glm(cured ~ intervention, family = binomial(), data = eel_tib)
+```
+
+
+```{r eel_coefs, exercise = TRUE, exercise.lines = 3, exercise.setup = "get_glm"}
+          
+```
+
+
+```{r eel_coefs-solution}
+model_parameters(intervention_glm) |> 
+  display()
+```
+
+We can see that the intercept was `r report_pe(eel_par, row = 1, symbol = "\\hat{b}_0")`, which means that in the condition coded as zero (i.e. the no treatment condition) the *log* odds of being cured were `r value_from_ez(eel_par, row = 1)`. What does this mean? Earlier we calculated the odds of being cured after no treatment as being `r report_value(odds_ni)`. The log odds, is the natural logarithm of this value, ln(`r report_value(odds_ni)`) = `r report_value(log(odds_ni))`.
+
+The effect of intervention, `r report_pe(eel_par, row = 2)`, tells us how the log odds in the baseline (no treatment) group *change* as the variable `intervention` changes by 1 unit. A change of 1 unit in this case would be a change from the no treatment group to the treatment group. The value of `r value_from_ez(eel_par, row = 2)` tells us that as we move from no treatment to treatment the *log odds* of being cured changes by `r value_from_ez(eel_par, row = 2)`. In other words, the log odds of being cured are increasing  (they are better after treatment than no treatment).
+
+The problem that most of us have is that our brain cannot think in terms of logs - it's difficult enough to think in terms of odds let alone log odds. Consequently, it makes life (a little) easier if we convert the log odds back into odds by taking the exponent of them. For example, instead of trying to interpret `r value_from_ez(eel_par, row = 2)`, the change in the *log odds*, we instead interpret *e*^`r value_from_ez(eel_par, row = 2)`^ = `r value_from_ez(eel_exp, row = 2)`, the change in the *odds*. 
+
+#### `r robot()` Code example
+
+We can get `model_parameters()` to do this conversion for us by including the argument [exponentiate = TRUE]{.alt}.
+
+```{r, eval = F}
+model_parameters(intervention_glm, exponentiate = TRUE)
+```
+
+#### `r alien()` Alien coding challenge
+
+Use `model_parameters()` to view the exponentiated model parameters and `display()` to round to 2 decimal places.
+
+```{r get_model, echo = F}
+intervention_glm <- glm(cured ~ intervention, family = binomial(), data = eel_tib)
+```
+
+
+```{r eel_exp, exercise = TRUE, exercise.setup = "get_model"}
+     
+            
+```
+
+```{r eel_exp-solution}
+model_parameters(intervention_glm, exponentiate = TRUE) |>
+  display()
+```
+
+Th output has changed: it now contains the model parameters expressed as odds rather than log odds. For the intercept, then, the odds of being cured in the baseline (no treatment) group were `r value_from_ez(eel_exp, row = 1)`. We calculated this value earlier, it means that `r value_from_ez(eel_exp, row = 1)` times people were cured then not in the no intervention group. In other words, in the no treatment group fewer people were cured than not.
+
+The parameter estimate for the variable `intervention` is $\hat{b}$ = `r value_from_ez(eel_exp, row = 2)`, and this matches the value of the odds ratio that we calculated earlier. Look back to that section and you'll see that this value means that the odds of being cured after treatment are `r value_from_ez(eel_exp, row = 2)` the odds of being cured after no treatment. In other words, having the intervention improves the chances of being symptom free by a factor of `r value_from_ez(eel_exp, row = 2)`.
+
+Assuming the current sample is one of the 95% for which the confidence interval contains the true value, then the population value of the odds ratio for `intervention` lies between `r value_from_ez(eel_exp, row = 2, value = "CI_low")` and `r value_from_ez(eel_exp, row = 2, value = "CI_high")`. However, our sample could be one of the 5% that produces a confidence interval that 'misses' the population value. The important thing is that the interval **does not contain 1** (both values are more than 1). The value of 1 is important because it is the threshold at which the direction of the effect changes. Think about what the odds ratio represents: values greater than 1 mean that as the predictor variable increases, so do the odds of (in this case) being cured, but values less than 1 mean that as the predictor variable increases, the odds of being cured decrease. If the value is 1 it means that the odds of being cured are identical for no treatment and treatment groups. In other words, there is no effect at all of the intervention.
+
+If the confidence interval contains 1 then the population value might be one that suggests that the intervention group increases the odds of being cured, decreases it or doesn't change it. For our confidence interval, the fact that both limits are above 1 suggests (under the usual assumptions) that the direction of the relationship that we have observed reflects that of the population (i.e., it's likely that the odds of being cured after the intervention really are better than after no treatment). If the lower limit had been below 1 then it would tell us that there is a chance that in the population the odds of being cured are actually lower after the intervention compared to no treatment, or that the intervention group makes no difference at all.
+
+Now we have an intuition about what the parameters mean, let's move onto a more complex example.
+
+
+## `r user_visor()` A sporty example [(B)]{.lbl}
+
+A sports scientist wanted to look at whether a soccer player's position in a penalty shootout predicted success at scoring a goal. In soccer, games in knockout competitions are sometimes decided by a penalty shootout. The format is that each team takes five penalties using five different players. The winning team is the one that scores the most goals from the five penalties. If after this initial stage both teams have the same number of goals it goes to an excitingly named 'sudden death'. Fortunately no one suddenly dies, but instead each team takes a penalty and if both score or both miss another penalty is taken, but if one team scores and the other misses the scoring team wins the game. As you might imagine, the pressure ramps up considerably with each successive penalty. If the first player misses his or her kick, it's not necessarily a disaster because there are four more kicks to be taken, and therefore opportunities for your opponent to miss and make up for your mistake. However, if you are the player taking the fifth penalty you are under a lot more pressure because a miss is highly likely to result in your team losing.
+
+The scientist hypothesised:
+
+> H~1~: Scoring will decrease as a function of the player's position in the shootout but this will be moderated by their ability. Better ability will protect against the effect of the position in the shootout.  
+
+The scientist gathered information from many penalty shootouts including the penalty taker's name, their position in the shootout (first penalty taker, second etc.), and whether they scored or missed. Subsequently, they contacted the coaching staff of each player got them to rate the player's ability based on their penalty taking in training using a scale from 1 to 10, where 1 is 'their penalties are in the bottom 10% of players I've coached', 2 is 'their penalties are in the bottom 10–20% of players I've coached', and 10 is 'their penalties are in the top 10% of players I've coached'.
+
+Those of you who hate soccer can read this example as being factors that predict success in a free throw in basketball or netball, a penalty in hockey, a penalty kick in rugby, or a field goal in American football (although you might need to pretend that these sports involve the penalty shootout format!)
+
+The data are in [penalty_tib]{.alt}, which contains these variables:
+
+- `id`: Penalty taker's id
+- `ability`: Each player was rated against all other players the coaches had coached using a scale from 1 to 10, where 1 is 'their penalties are in the bottom 10% of players I've coached', 2 is 'their penalties are in the bottom 10–20% of players I've coached', and 10 is 'their penalties are in the top 10% of players I've coached'.
+- `position`: position in the shootout (1 = first penalty, 5 = fifth penalty).
+- `scored`: Whether the penalty was missed or scored
+
+Ultimately, we are working towards a model that includes `ability`, `position` and their interaction as predictors. We will build the model sequentially starting by predicting the log odds of scoring from `position`:
+
+$$
+\ln\left(\frac{P(\text{scored})}{1- P(\text{scored})}\right) = \hat{b}_0 + \hat{b}_1\text{position} + e_i
+$$
+
+Next, we'll add `ability` as a predictor:
+
+$$
+\ln\left(\frac{P(\text{scored})}{1- P(\text{scored})}\right) = \hat{b}_0 + \hat{b}_1\text{position} + \hat{b}_2\text{ability}_i  + e_i
+$$
+
+and finally, we'll add the interaction
+
+$$
+\ln\left(\frac{P(\text{scored})}{1- P(\text{scored})}\right) = \hat{b}_0 + \hat{b}_1\text{position} + \hat{b}_2\text{ability}_i + \hat{b}_3\left(\text{position} \times \text{ability}\right)_i + e_i
+$$
+
+In other words, we predict the log odds of scoring from the position in the shootout, the ability of the player, and the interaction of those two variables. We can re-arrange this equation to express the outcome as a probability:
+
+$$
+P(\text{scored}) = \frac{1}{1+ e^{-\left(\hat{b}_0 + \hat{b}_1\text{position} + \hat{b}_2\text{ability}_i + \hat{b}_3\left(\text{position} \times \text{ability}\right)_i + e_i\right)}}  
+$$
+
+In this version we predict the *probability* of scoring. We will follow our 5-step process for fitting models (see the section on model fitting).
+
+## `r bmu()` Step 1: summarize [(A)]{.lbl}
+
+<div class="stepbox">
+  `r step()` **Step 1**
+
+Get your data into `r rproj()` and pre-process using [tidyverse]{.pkg} packages or the [datawizard]{.pkg} package from [easystats]{.pkg}.
+</div>
+
+
+#### `r alien()` Alien coding challenge
+
+View the data in [eel_tib]{.alt}.
+
+```{r pen_tib, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r pen_tib-solution}
+penalty_tib
+```
+
+Note that there are four variables:
+
+- `id`: a character variable (note the `<chr>` under the name) containing the name of the player.
+- `ability`: a numeric variable (note the `<dbl>` under the name) indicating the player's ability.
+- `position`: a numeric variable (note the `<dbl>` under the name) indicating the player's position in the shootout where 1 is the first penalty taken and 5 is the last.
+- `scored`: a factor variable (note the `<fct>` under the name) indicating whether the player ([Scored penalty]{.alt} or not [Missed penalty]{.alt}).
+
+The variable `scored` is a factor, so having read the data file and converted this variables to a factor it's a good idea to check the order of the levels. We want 'Missed' to be the first category so that it acts as our reference category.
+
+#### `r alien()` Alien coding challenge
+
+Using what you've learnt in previous tutorials check the order of the levels of `scored`.
+
+```{r chk_levels2, exercise = TRUE, exercise.lines = 4}
+
+```
+
+```{r chk_levels2-hint-1}
+# use this function:
+levels()
+```
+
+```{r chk_levels2-hint-2}
+# Remember that to access a variable you use:
+name_of_tibble$name_of_variable
+```
+
+```{r chk_levels2-hint-3}
+# solution:
+levels(penalty_tib$scored)
+```
+
+You'll find that the levels for `scored` are ordered 'missed penalty' and 'scored penalty' so an 'increase' in the outcome corresponds to it being more probable that someone scored, which is what we want. Working outside of the tutorial you might need to manually set the order of levels for each factor using `fct_relevel()` as described in the [Data]{.alt} part of this tutorial.
+
+
+#### `r robot()` Code example
+
+Both predictors are ordinal, so we need to be a bit careful about contingency tables (they will be big), but nevertheless it can help us identify whether we have incomplete information (empty cells). We can use `data_tabulate()` to create separate tables of frequencies for `scored` and `ability` and `scored` and `position`.
+
+#### `r alien()` Alien coding challenge
+
+Adapt your earlier code to create a table of frequencies for the variables of `position` and `scored`.
+
+```{r xtab_pos, exercise = TRUE, exercise.lines = 7}
+             
+```
+
+```{r xtab_pos-solution}
+# Create the table
+position_xtbl <- penalty_tib |>
+  data_tabulate(select = "scored", by = "position", remove_na = TRUE)
+# View it
+position_xtbl |> 
+  display()
+```
+
+You can see that relatively few players missed penalties, and for each position there are relative few cases who missed. Now imagine also that within each position we'd also hope to have players of varying varieties it is already becoming clear that we have quite limited information. For example, the first penalty taker only ever missed 9 times and we have ratings of ability from 1 to 10 so at best we'll have one missing combination of ability and position within the category of missed.
+
+#### `r alien()` Alien coding challenge
+
+Adapt your earlier code to create a table of frequencies for the variables of `ability` and `scored`.
+
+```{r xtab_ab, exercise = TRUE, exercise.lines = 7}
+             
+```
+
+```{r xtab_ab-solution}
+# Create the table
+ability_xtbl <- penalty_tib |>
+  data_tabulate(select = "scored", by = "ability", remove_na = TRUE)
+# View it
+ability_xtbl |> 
+  display()
+```
+
+As you might expect we no players 10 on ability who missed, on 2 who were rated 9 and so on. Also, very few players were rated below 3 on ability. Again, this highlights limitations in the raw data. We  have incomplete information and a biased sample (in that most of the sample are good penalty takers).
+
+## `r bmu()` Step 2: Visualize [(A)]{.lbl}
+
+<div class="stepbox">
+  `r step()` **Step 2**
+
+Visualise the data using the [ggplot2]{.pkg} package from [tidyverse]{.pkg}.
+</div>
+
+For this example, the most useful visualisation is a plot of the predicted probabilities for combinations of `ability` and `position`. To get these, we need to first fit the models, so we'll cycle back to visualisations *after* we have fitted the model.
+
+
+## `r user_visor()` Step 3: Fit the model [(B)]{.lbl}
+
+#### `r robot()` Code example
+
+We're going to build up the model sequentially using `glm()`:
+
+- Intercept only ([int_glm]{.alt}): predict scoring using only the intercept (`scored ~ 1`)
+- Position [position_glm]{.alt}): predict scoring using the intercept and the `position` in the shootout (`scored ~ position`)
+- Ability [ability_glm]{.alt}): predict scoring using the intercept, the `position` in the shootout and the player's ability (`scored ~ position + ability`)
+- Final model [penalty_glm]{.alt}): predict scoring using the intercept, the `position` in the shootout, the player's ability and their interaction (`scored ~ position + ability + position:ability` or `scored ~ position*ability`)
+
+We could fit these models by executing:
+
+```{r, eval = F}
+int_glm <- glm(scored ~ 1, data = penalty_tib, family = binomial())
+position_glm <- glm(scored ~ position, data = penalty_tib, family = binomial())
+ability_glm <- glm(scored ~ position + ability, data = penalty_tib, family = binomial())
+penalty_glm <- glm(scored ~ position*ability, data = penalty_tib, family = binomial())
+```
+
+However, it's useful to use the `update()` function instead (see the box for a refresher):
+
+```{r, eval = F}
+int_glm <- glm(scored ~ 1, data = penalty_tib, family = binomial())
+position_glm <- update(int_glm, .~. + position)
+ability_glm <- update(position_glm, .~. + ability)
+penalty_glm <- update(ability_glm, .~. + position:ability)
+```
+
+<div class="infobox">
+  `r info()` **Refresher of the `update()` function**
+
+The `update()` function takes the general form:
+
+```{r, eval = F, class.source = '.panel_alt'}
+new_model <- update(old_model, update_instructions)
+```
+
+Where [new_model]{.alt} is the name assigned to the updated model, [old_model]{.alt} is the name of the model you're updating, and [update_instructions]{.alt} specify how to update the old model. The update instructions use a tilde (`~`) to represent the tilde in the original formula, a dot on the left to indicate 'the existing outcome', and a dot on the right to indicate 'the existing predictors'. From this we get the following possibilities:
+
+-	`.~.` means keep the original outcome and any existing predictors.
+-	`.~` means keep the original outcome but replace all existing predictors.
+-	`~.` means replace the original outcome but keep all existing predictors.
+
+We can add or subtract predictors using the `+` and `–` symbols.
+
+</div>
+
+
+#### `r alien()` Alien coding challenge
+
+Use the code box below to create all of the models just described.
+
+```{r build_mods, exercise = TRUE, exercise.lines = 8}
+          
+```
+
+
+```{r build_mods-solution}
+int_glm <- glm(scored ~ 1, data = penalty_tib, family = binomial())
+position_glm <- update(int_glm, .~. + position)
+ability_glm <- update(position_glm, .~. + ability)
+penalty_glm <- update(ability_glm, .~. + position:ability)
+```
+
+
+<div class="bug">
+  `r bug()` **De-bug**
+
+This code creates the models but doesn't display them so it will appear as though nothing has happened, but it has.
+
+</div>
+
+
+We can use the `test_lrt()` function from [performance]{.pkg} to compare these models, which we have used before (e.g., `discovr_14`).
+
+#### `r alien()` Alien coding challenge
+
+Use the code box below to compare the models we have just created.
+
+
+```{r get_models}
+int_glm <- glm(scored ~ 1, data = penalty_tib, family = binomial())
+position_glm <- update(int_glm, .~. + position)
+ability_glm <- update(position_glm, .~. + ability)
+penalty_glm <- update(ability_glm, .~. + position:ability)
+```
+
+
+```{r compare_mods, exercise = TRUE, exercise.lines = 4, exercise.setup = "get_models"}
+          
+```
+
+
+```{r compare_mods-solution}
+test_lrt(int_glm, position_glm, ability_glm, penalty_glm) |> 
+  display()
+```
+
+
+```{r, echo = F}
+int_glm <- glm(scored ~ 1, data = penalty_tib, family = binomial())
+position_glm <- update(int_glm, .~. + position)
+ability_glm <- update(position_glm, .~. + ability)
+penalty_glm <- update(ability_glm, .~. + position:ability)
+
+penalty_lrt <- test_lrt(int_glm, position_glm, ability_glm, penalty_glm)
+penalty_fit <-compare_performance(int_glm, position_glm, ability_glm, penalty_glm,
+                    metrics = "common")
+penalty_par <- model_parameters(penalty_glm)
+penalty_exp <- model_parameters(penalty_glm, exponentiate = TRUE)
+penalty_slopes <- estimate_slopes(penalty_glm, trend = "ability", by = "position", predict = "link", transform = exp)
+```
+
+
+<div class="reportbox">
+  `r pencil()` **Report**`r rproj()`
+
+Adding the position in the shootout to the intercept only model did not significantly improve the fit, `r report_lrt(penalty_lrt, row = 2)`, however, adding the player's ability did significantly improved the fit, `r report_lrt(penalty_lrt, row = 3)`, as did the interaction of the position in the shootout and the player's ability, `r report_lrt(penalty_lrt, row = 4)`.
+
+</div>
+
+## `r user_visor()` Step 4: Evaluate the model [(B)]{.lbl}
+
+<div class="stepbox">
+  `r step()` **Step 4**
+
+Evaluate the model using a small number of functions from the [performance]{.pkg} package from [easystats]{.pkg}. Specially, we evaluate
+
+- How well the model fits the data
+- Whether the underlying assumptions of the model are met. If not, we refit the model using robust methods (see Figure 3).
+ 
+</div>
+
+#### `r robot()` Code example
+
+Having fit the models we can compare the fit statistics of the models using `compare_performance()` from the [performance]{.pkg} package. We put the models into the function and use `display()` to format when we render our document. We include [metrics = "common")]{.alt} to limit the output to the key metrics.
+
+```{r, eval = F}
+compare_performance(int_glm, position_glm, ability_glm, penalty_glm,
+                    metrics = "common") |> 
+  display()
+```
+
+
+#### `r alien()` Alien coding challenge
+
+Use the code box below to compare fit statistics for the models.
+
+```{r mod_fit, exercise = TRUE, exercise.lines = 4, exercise.setup = "get_models"}
+          
+```
+
+
+```{r mod_fit-solution}
+compare_performance(int_glm, position_glm, ability_glm, penalty_glm,
+                    metrics = "common") |> 
+  display()
+```
+
+
+
+<div class="reportbox">
+  `r pencil()` **Report**`r rproj()`
+
+Tjur's *R*^2^ tells us that the model including the position in the shootout accounted for `r percent_from_ez(penalty_fit, value = "R2_Tjur", row = 2, digits = 2)` of the variance in scoring penalties. Adding the player's ability to the model increased this to `r percent_from_ez(penalty_fit, value = "R2_Tjur", row = 3)`, and including the interaction increased this to `r percent_from_ez(penalty_fit, value = "R2_Tjur", row = 4)`.
+
+</div>
+
+
+#### `r alien()` Alien coding challenge
+
+As with any linear model, we can use the `check_model()` function to produce diagnostic plots. Use the code box to do this.
+
+```{r mod_chk, exercise = TRUE, exercise.lines = 4, exercise.setup = "get_models", fig.height=10, fig.width = 8}
+          
+```
+
+
+```{r mod_chk-solution}
+check_model(penalty_glm)
+```
+
+Top left we have a check of whether the predicted values from the model match the observed value of the outcome. With binary outcomes we get our two outcome categories on the *x*-axis and within each the observed number of counts and the number predicted by the model (along with a prediction interval). If the observed values fall with the corresponding prediction interval (which they do) then the model is capturing what we observed. So, all is fine here.
+
+The top left is the equivalent of the residual vs predicted values plot for models with continuous outcomes. We're looking for the residuals and their intervals to fall within the error bounds, which many don't, so we have red flags here.
+
+The middle-left plot shows cases that might be influencing the model. It plots standardized residuals against leverage (an indicator of influence). No problems here because all points fall within the contour lines.
+
+The middle-right plot check for collinearity between predictors. The interaction is very collinear with `position`. Although we'd expect this because the interaction is the product of the two other predictors, the levels are very high, suggesting that the interaction should be dropped.
+
+The bottom-left plot shows the distribution of residuals and we're looking for the dots to fall along the diagonal line (which they do), so no problems here.
+
+## `r user_visor()` Step 5: Interpret the model [(B)]{.lbl}
+
+<div class="stepbox">
+  `r step()` **Step 5**
+
+Interpret the model
+
+- Interpret the values that define the model (the [parameter estimates]{.alt}) using the [parameters]{.pkg} package from [easystats]{.pkg}.
+- Make specific predictions from our model using the [modelbased]{.pkg} package from [easystats]{.pkg}.
+ 
+</div>
+
+
+#### `r alien()` Alien coding challenge
+
+Use `model_parameters()` to view the model parameters for the full model ([penalty_glm]{.alt}).
+
+```{r penalty_glm_2, exercise = TRUE, exercise.setup = "get_models"}
+     
+            
+```
+
+```{r penalty_glm_2-solution}
+model_parameters(penalty_glm) |> 
+  display()
+```
+
+From the resulting table we can see 
+
+- The intercept is $\hat{b}_0$ = `r value_from_ez(penalty_par, row = 1)`, which means that when all predictors are zero the *log* odds of scoring were `r value_from_ez(penalty_par, row = 1)`. This parameter estimate isn't useful because these are impossible values in the data: no player was rated as zero on ability (because it was rated from 1 to 10) and no player took a penalty in position 0 (because the positions were labelled 1 to 5).
+- The estimate for the main effect of `ability`, `r report_pe(penalty_par, row = 3)`, is basically zero indicating a tiny effect.
+- The estimate for the main effect of `position`, `r report_pe(penalty_par, row = 2)`, means that when ability is fixed, as the position in the shootout increases by 1, the log odds of scoring decrease by `r value_from_ez(penalty_par, row = 2, as_is = T) |> abs() |>  report_value()`. In other words, the further down the queue of penalty takers you are the less likely you are to score.
+- The interaction effect *is* also significant, `r report_pe(penalty_par, row = 4)`. The $\hat{b}$-value suggests that as the combined effect of position and ability increases by one unit, the log odds of scoring change by `r value_from_ez(penalty_par, row = 4)` units. Whatever that means. To make (more) sense of these effects lets convert the parameters back to odds.
+
+#### `r alien()` Alien coding challenge
+
+View the exponentiated model parameters.
+
+```{r penalty_glm_exp, exercise = TRUE, exercise.setup = "get_models"}
+     
+            
+```
+
+```{r penalty_glm_exp-solution}
+model_parameters(penalty_glm, exponentiate = TRUE) |> 
+  display()
+```
+
+From the resulting table we can see that:
+
+The intercept is $\widehat{OR}$ = `r value_from_ez(penalty_exp, row = 1)`, which means that when all predictors are zero (as mentioned an impossible situation in the data) the *odds* of scoring were `r value_from_ez(penalty_exp, row = 1)`. That is `r value_from_ez(penalty_exp, row = 1)` times more goals were scored than not.
+
+For the effect of `ability` the odds ratio is $\widehat{OR}$ = `r value_from_ez(penalty_exp, row = 3)`, which tells us that when position is fixed, as the ability rating increases by 1, the odds of scoring are `r value_from_ez(penalty_exp, row = 3)` times what they were before that change. Because this value is more than 1 it tells us that the odds of scoring increase very slightly as ability increases. However, the value is very close to 1, suggesting this increase is negligible. In fact, the effect is not significant, `r report_pe(penalty_exp, row = 3, symbol = "$\\widehat{OR}$")`.
+
+For the effect of `position` odds ratio is $\widehat{OR}$ = `r value_from_ez(penalty_exp, row = 2)`, which tells us that when ability is fixed, with each penalty kick that is taken, the odds of scoring are `r value_from_ez(penalty_exp, row = 2)` times what they were for the previous player on the team. Because this value is less than 1 it tells us that the odds of scoring decrease, the further into the shootout we get. This is a substantial change in the odds, and the corresponding significance test is highly significant, `r report_pe(penalty_exp, row = 2, symbol = "$\\widehat{OR}$")`.
+
+The odds ratio for the interaction effect is $\widehat{OR}$ = `r value_from_ez(penalty_exp, row = 4)`, which tells us that the increase in the odds of scoring associated with increasing ability gets larger as position increases. Alternatively, the negative change in the odds of scoring associated with increasing position is becoming more positive as ability increases. The corresponding significance test is highly significant, `r report_pe(penalty_exp, row = 4, symbol = "$\\widehat{OR}$")`. To unpick what this value of `r value_from_ez(penalty_exp, row = 4)` means, we'll do two things:
+
+1. Plot the interaction
+2. Fit models that predict scoring penalties from `ability` alone separately for mulled wine and Christmas pudding (simple slopes).
+
+### `r user_visor()` Plotting the interaction [(B)]{.lbl}
+
+A useful way to visualise the interaction is to plot the average predicted probabilities for all combinations of values of the predictors. To get these values, we use the `estimate_means()` from [modelbased]{.alt}, which we've used many times before. If we store these average predicted probabilities then we can use the `plot()` function from the [see]{.pkg} package, which is another of our friends from [easystats]{.pkg}.
+
+```{r, eval = F}
+my_probs <- estimate_means(my_model,
+                           by = c("predictor 1", "predictor 2" ... "predictor 3"))
+plot(my_probs)
+```
+
+in which [my_probs]{.alt} is the name you're giving for the saved predicted probabilities from the model. You replace [my_model]{.alt} with the name of the model from which you want predicted values, and ["predictor 1", "predictor 2" ... "predictor 3"]{.alt} is replaced with a list of predictors across which you want predicted values. Having stored these values, we put the object we've just created into `plot()`. The output of `plot()` is a [ggplot2]{.pkg} object, so we can augment it with any functions and themes from [ggplot2]{.pkg} by adding them as layers to the plot in the usual way.
+
+#### `r robot()` Code example
+
+To get the predicted probabilities from our final model we'd use
+
+```{r, eval = F}
+penalty_probs <- estimate_means(penalty_glm, by = c("ability", "position"))
+plot(penalty_probs)
+```
+
+This will plot `ability` on the *x*-axis and display `position` as different coloured lines.
+
+We can jazz up the plot by using the viridis palette, which is good for accessibility, for both the colour (`scale_colour_viridis_d(begin = 0.3, end = 0.85)`) and fill (`scale_fill_viridis_d(begin = 0.3, end = 0.85)`) attributes of the plot, supply labels for the axes and legend, and apply a theme.
+
+```{r, eval = F}
+plot(penalty_probs) +
+  scale_colour_viridis_d(begin = 0.3, end = 0.85) +
+  scale_fill_viridis_d(begin = 0.3, end = 0.85) +
+  labs(x = "Player ability (1-10)", y = "Probability of scoring", colour = "Position", fill = "Position") +
+  theme_minimal()
+```
+
+<div class="tip">
+  `r cat_space()` **Tip**
+
+To reverse which variable appears on the *x*-axis and which appears and different lines, reverse the order when you get the predicted probabilities. For example, to plot plot `position` on the *x*-axis and display `ability` as different coloured lines use:
+
+```{r, eval = F, class.source = '.panel_alt'}
+penalty_probs <- estimate_means(penalty_glm, by = c("position", "ability"))
+plot(penalty_probs)
+```
+
+Note that within `estimate_means()` we have specified `c("position", "ability")` instead of `c("ability", "position")`.
+
+</div>
+
+
+#### `r alien()` Alien coding challenge
+
+Plot the **position × ability** interaction effect. 
+
+```{r plot_int, exercise = TRUE, exercise.lines = 8, exercise.setup = "get_models"}
+          
+```
+
+```{r plot_int-hint-1}
+# Get the means
+penalty_probs <- estimate_means(xxxx, xxxx = c("xxxx", "xxxx"))
+```
+
+```{r plot_int-hint-2}
+# Get the means
+penalty_probs <- estimate_means(penalty_glm, by = c("ability", "position"))
+# Now plot the predicted values
+```
+
+```{r plot_int-hint-3}
+# Get the means
+penalty_probs <- estimate_means(penalty_glm, by = c("ability", "position"))
+# Now plot the predicted values
+plot(xxxx)
+```
+
+```{r plot_int-hint-4}
+# Get the means
+penalty_probs <- estimate_means(penalty_glm, by = c("ability", "position"))
+# Now plot the predicted values
+plot(penalty_probs)
+# you can do better than that! Jazz up the plot with labels, themes and accessible colours
+```
+
+```{r plot_int-solution}
+penalty_probs <- estimate_means(penalty_glm, by = c("ability", "position"))
+plot(penalty_probs) +
+  scale_colour_viridis_d(begin = 0.3, end = 0.85) +
+  scale_fill_viridis_d(begin = 0.3, end = 0.85) +
+  labs(x = "Player ability (1-10)", y = "Probability of scoring", colour = "Position", fill = "Position") +
+  theme_minimal()
+```
+
+The plot shows the probability curves for penalty-taking ability separately for the five different positions in the shootout (penalties 1 to 5). Note that when ability is high (6 and above) the probability curves are identical: all players have a very high probability of scoring regardless of which penalty they take in the shootout. However, when ability is low (below 6) the curves separate. In particular, at very low abilities, for example, the probability of scoring if you take the first penalty is very high at about 0.75, but if you take the last one (position = 5) it is only 0.1. This shows that the interaction tells us that the penalty you take (first through to fifth) only matters for players rated low on their ability to take penalties. For these players they are progressively less likely to score the further their penalty is from the first one
+
+### `r user_visor()` Simple slopes [(B)]{.lbl}
+
+To get simple slopes we can use the `estimate_slopes()` function from the [modelbased]{.alt} package that was introduced in `discovr_10` but we have used numerous times since. With logistic models there's a couple of extra arguments we need to think about. In general:
+
+```{r, eval = F}
+estimate_slopes(model = my_model,
+                trend = predictor_variable,
+                by = moderator_variable,
+                predict = "link",
+                transform = exp)
+```
+
+The two argument we haven't see before are:
+
+- [predict = "link"]{.alt}: this argument tells the function to express the results in the same units as the original model (that is, log odds). The [link]{.alt} refers to what's known as a link function, which is the function used to transform a nonlinear relationship (e.g. predictors of categories membership) to a linear one (e.g. the log odds of scoring/the probability of scoring).
+- [transform = exp]{.alt}: like with the main model we might want the model parameters to be expressed as odds (e.g. exponentiated) and this argument tells the function top exponentiate the model parameters.
+
+
+#### `r alien()` Alien coding challenge
+
+Use `estimate_slopes()` to view the simple slopes of `ability` within each `position`. Remember to exponentiate the results.
+
+```{r penalty_ss, exercise = TRUE, exercise.lines = 8, exercise.setup = "get_models"}
+     
+            
+```
+
+```{r penalty_ss-solution}
+estimate_slopes(penalty_glm,
+                trend = "ability",
+                by = "position",
+                predict = "link",
+                transform = exp) |> 
+  display()
+```
+
+
+The output shows the effect of the player's ability on scoring for the different positions in the shootout. For the first penalty taker the effect of ability is small (the odds ratio is only a little over 1), `r report_ss(penalty_slopes, row = 1, symbol = "\\widehat{OR}")`, which all suggest that `ability` has a small effect for the first penalty taker. This mirrors what was shown by the blue line in the plot: the line is fairly flat suggesting that ability of the player doesn't affect the probability of scoring when they are the first penalty taker.
+
+Contrast this with the final penalty taker (`position` = 5). The effect of ability is, `r report_ss(penalty_slopes, row = 5, symbol = "\\widehat{OR}")`, which all suggest that `ability` increases by 1, the odds of scoring more than doubles. That is, player ability has a large effect for the last penalty taker. This mirrors what was shown by the light green line in the plot: as ability increases the probability of scoring rapidly increases.
+
+The interaction effect, therefore, reflects the fact that the effect of ability on scoring is significantly changing as a function of position in the shootout. To make sense of these findings. As a rough approximation it means that in the plot, the different coloured lines have different slopes.
+
+
+<div class="reportbox">
+  `r pencil()` **Report**`r rproj()`
+
+A logistic regression model was fit predicting scoring from the type position in the shootout, the player's ability and their interaction. Table 1 shows the parameter estimates, their 95% confidence intervals and significance tests. The main effect of ability was not significant, `r report_pe(penalty_exp, row = 3, symbol = "$\\widehat{OR}$")`, but the position in the shootout was, `r report_pe(penalty_exp, row = 2, symbol = "$\\widehat{OR}$")`, as was the interaction, `r report_pe(penalty_exp, row = 4, symbol = "$\\widehat{OR}$")`.
+
+To tease apart the significant interaction, simple slopes analysis was conducted. Table 2 shows the slope for `ability` at each position in the shootout. As ability increases the odds of scoring always increase; however, for the first penalty taker this effect is small (the odds ratio is only a little over 1), `r report_ss(penalty_slopes, row = 1, symbol = "\\widehat{OR}")`, suggesting  that the player's ability has a small effect on scoring for the first penalty taker. In contrast, for the final penalty taker the effect of ability was substantial, `r report_ss(penalty_slopes, row = 5, symbol = "\\widehat{OR}")`; as ability increases by 1, the odds of scoring more than doubles for the final penalty taker. That is, player ability has a large effect for the last penalty taker.
+
+```{r, echo = F}
+penalty_exp |>
+  format_table() |> 
+  data_remove("df") |> 
+  knitr::kable(caption = "Table 1: Exponentiated parameter estimates", digits = 2)
+```
+
+```{r, echo = F}
+penalty_slopes |>
+  format_table() |> 
+  knitr::kable(caption = "Table 2: Exponentiated parameter estimates", digits = 2)
+```
+
+
+</div>
+
+#### `r alien()` Alien coding challenge
+
+As an optional exercise that might help you understand the interaction, use the code box to view the *raw* parameter estimates for the simple slopes (Hint: remove [transform = exp]{.alt}.)
+
+
+
+```{r raw_wine_pud, exercise = TRUE, exercise.lines = 7, exercise.setup = "get_models"}
+
+```
+
+
+```{r raw_wine_pud-solution}
+estimate_slopes(penalty_glm,
+                trend = "ability",
+                by = "position",
+                predict = "link") |> 
+  display()
+```
+
+```{r, echo = F}
+penalty_ss <- estimate_slopes(penalty_glm,
+                trend = "ability",
+                by = "position",
+                predict = "link")
+
+b_1 <- value_from_ez(penalty_ss, row = 1, value = "Slope", as_is = T)
+b_2 <- value_from_ez(penalty_ss, row = 2, value = "Slope", as_is = T)
+```
+
+
+The interaction effect reflects the fact that the effect of ability on scoring is significantly different for each position in the shootout. For example:
+
+- For those who took the first penalty, $\hat{b}_{\text{ability}}$ = `r report_value(b_1)`, which means that as the ability rating increases by 1, the log odds of scoring increase by `r report_value(b_1)`.
+- For those who took the second penalty, $\hat{b}_{\text{ability}}$ = `r report_value(b_2)`, which means that as the ability rating increases by 1, the log odds of scoring increase by`r report_value(b_2)`.
+
+Interestingly, if we calculate the difference between the $\hat{b}$s we get:
+`r report_value(b_2)` - (`r report_value(b_1)`) = `r report_value(b_2-b_1)`, which is the parameter estimate for the interaction effect. And if we take the exponent of this value we get the odds ratio for the interaction effect: `r paste0("$e^{", report_value(b_2-b_1), "}$")` = `r report_value(exp(b_2-b_1))`. You can try this out for other positions and you'll find the difference between consecutive intervals is always the same.
+
+So, the odds ratio for the interaction is the odds ratio for the difference in the effect of one predictor across levels of the other. In this case, it's the odds ratio for the difference between the effect of ability on scoring at each change in position.
+
+
+## `r user_visor()` Robust logistic regression [(B)]{.lbl}
+
+It is also possible to create a robust model using the `glmrob()` function from the `robustbase` package. This takes the same form as the `glm()` function but returns robust estimates of parameters and associated standard errors and *p*-values.
+
+#### `r robot()` Code example
+
+To create a robust variant of the model we would execute:
+
+```{r, eval = F}
+penalty_rob <- robustbase::glmrob(scored ~ position*ability,
+                                data = penalty_tib,
+                                family = binomial())
+
+model_parameters(penalty_rob) |> 
+  display()
+```
+
+which creates an object [penalty_rob]{.alt} that contains robust model parameters. We can again summarise it with `model_parameters()`.
+
+#### `r alien()` Alien coding challenge
+
+Creates a robust model of scoring penalties [penalty_rob]{.alt} using the code above and summarise it with `model_parameters()`.
+
+```{r robust_mod, exercise = TRUE, exercise.lines = 7}
+         
+```
+
+```{r robust_mod-solution}
+penalty_rob <- robustbase::glmrob(scored ~ position*ability,
+                                data = penalty_tib,
+                                family = binomial())
+
+model_parameters(penalty_rob) |> 
+  display()
+```
+
+```{r echo = F}
+penalty_rob <- robustbase::glmrob(scored ~ position*ability, data = penalty_tib, family = binomial())
+penalty_rob_par <- model_parameters(penalty_rob)
+penalty_rob_exp <- model_parameters(penalty_rob, exponentiate = TRUE)
+```
+
+
+Compare the resulting model to the one you created earlier. Basically, the parameter estimates ($\hat{b}$s) don't change much and the conclusions of the model stay largely the same. For example, the parameter estimate for the interaction term was $\hat{b}$ =  `r value_from_ez(penalty_par, row = 4)` for the non-robust model but  $\hat{b}$ =  `r value_from_ez(penalty_rob_par, row = 4)` for the robust model.
+
+
+#### `r alien()` Alien coding challenge
+
+Now view the model parameters as odds rather than log odds.
+
+```{r glmrob_mod}
+penalty_rob <- robustbase::glmrob(scored ~ position*ability, data = penalty_tib, family = binomial())      
+```
+
+```{r robustor_mod, exercise = TRUE, exercise.setup = "glmrob_mod"}
+         
+```
+
+```{r robustor_mod-solution}
+model_parameters(penalty_rob, exponentiate = TRUE) |> 
+  display()
+```
+
+As you'd expect based on the raw parameter estimate, the robust odds ratio of $\widehat{OR}$ = `r value_from_ez(penalty_rob_exp, row = 4)` is virtually identical to the one from the non-robust model, which was $\widehat{OR}$ = `r value_from_ez(penalty_exp, row = 4)`. The robust model gives us confidence that we can trust the original model. If the parameters were very different we'd report the robust model.
+
+
+<div class="infobox">
+  <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
+  
+  **A message from Mae Jemstone:**
+  
+Mae stared at the box. She hadn't slept - the excitement had been too much. As everyone knew knew, December 24th was the one night of the year that the Sanza from the Solstice Nebula left their part of the galaxy to visit the rest of the universe. Mae loved December 25th and the anticipation that the Sanza had visited. As everyone knew, if you had tried to be the best version of 'you', the Sanza left you a gift. You didn't have to have behaved well, or acted perfectly, or made no mistakes. But you did have to try your best. You did have to try to choose love and empathy even when it was hardest to do. Mae always tried to choose love and like every other year of her life, she woke to find a small, plain cardboard cube, stamped with the characteristic *S* of the Sanza. The gift of the Sanza was to truly feel, for one short day, your place in the universe and the ripples your effort creates. By opening the box, every good deed, every positive thought, every attempt to be kind, was reflected back at you. She opened the box and was overwhelmed. Despite everything, it had been a good year.
+
+</div>
+
+
+## Resources/References {data-progressive=FALSE}
+
+```{r, child = "./docs/resources.Rmd"}
+
+```
+
+
+### References

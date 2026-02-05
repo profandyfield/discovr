@@ -1,0 +1,39 @@
+---
+title: "data"
+author: "Andy Field"
+output: learnr::tutorial
+---
+
+To work *outside of this tutorial* you need to download the following data file:
+
+* [invisibility.csv](https://www.discovr.rocks/csv/invisibility.csv)
+* [invisibility_rm.csv](https://www.discovr.rocks/csv/invisibility_rm.csv)
+
+Set up an `r rstudio()` project in the way that [I recommend in this video](https://youtu.be/mqT7c17tofE?si=R0aSApz66fGQKESl), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r quarto()` document:
+
+```{r, eval=FALSE}
+cloak_tib <- here::here("data/invisibility.csv") |> read_csv()
+cloak_rm_tib <- here::here("data/invisibility_rm.csv") |> read_csv()
+```
+
+### Preparing data
+
+To work *outside of this tutorial* you need to turn categorical variables into factors and set an appropriate baseline category using `as_factor` and `fct_relevel` from the `forcats` package. For [cloak_tib]{.alt} execute the following code:
+
+```{r, eval=FALSE}
+cloak_tib <- here::here("data/invisibility.csv") |> 
+  read_csv() |> 
+  mutate(
+    cloak = as_factor(cloak)
+  )
+```
+
+For [cloak_rm_tib]{.alt} execute the following code:
+
+```{r, eval=FALSE}
+cloak_rm_tib <- here::here("data/invisibility_rm.csv") |> 
+  read_csv() |>
+  mutate(
+    cloak = as_factor(cloak)
+  )
+```

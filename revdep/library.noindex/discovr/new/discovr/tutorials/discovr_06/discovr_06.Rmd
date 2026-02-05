@@ -1,0 +1,1002 @@
+---
+title: "discovr the beast of bias"
+author: "Andy Field"
+output:
+  learnr::tutorial:
+    progressive: false
+    theme: "united"
+    highlight: "kate"
+    css: ./css/discovr_style_future.css
+runtime: shiny_prerendered
+description: "The beast of bias. Restructuring data from messy to tidy format (and back). Spotting outliers using histograms and boxplots. Calculating z-scores (standardizing scores). Writing your own function. Using z-scores to detect outliers. Q-Q plots. Calculating skewness, kurtosis and the number of valid cases. Grouping summary statistics by multiple categorical/grouping variables."
+bibliography: [discovr_06.bib, packages.bib]
+---
+<html lang="en">
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+
+#necessary to render tutorial correctly
+library(learnr) 
+library(htmltools)
+#easystats
+library(datawizard)
+library(insight)
+#tidyverse
+library(dplyr)
+library(ggplot2)
+library(stringr)
+library(tidyr)
+#non tidyverse/easystats
+library(qqplotr)
+#students don't use
+
+
+source("./www/discovr_helpers.R")
+
+#Read files needed for the tutorial
+
+download_tib <- discovr::download
+```
+
+
+```{r, eval = F, echo = F}
+# Create bib file for R packages
+here::here("inst/tutorials/discovr_06/packages.bib") |>
+  knitr::write_bib(c('here', 'tidyverse', 'dplyr', 'forcats', 'readr', 'stringr', 'tibble', 'tidyr', 'knitr', 'datawizard', 'qqplotr'), file = _)
+```
+
+# discovr the beast of bias
+
+```{r, child = "./docs/intro.Rmd"}
+
+```
+
+## Packages {data-progressive=FALSE}
+
+```{r, child = "./docs/packages.Rmd"}
+
+```
+
+
+## Data
+
+```{r, child = "./docs/data.Rmd"}
+
+```
+
+
+## `r bmu()` The example [(A)]{.lbl}
+
+Throughout this chapter we will use an example of a biologist worried about the potential health effects of music festivals. She went to the [Download Music Festival](https://downloadfestival.co.uk/)  (those of you outside the UK can pretend it is [Roskilde Festival](https://www.roskilde-festival.dk/en/), [Coachella](https://www.coachella.com/), [Wacken](https://www.wacken.com/en/) or something) and measured the hygiene of 810 concert-goers over the three days of the festival. She tried to measure every person on every day but, because it was difficult to track people down, there were missing data on days 2 and 3. Hygiene was measured using a standardized technique that results in a score ranging between 0 (you smell like a flatulent skunk) and 4 (you smell of sweet roses on a fresh spring day). The biologist predicted that personal hygiene would go down dramatically over the three days of the festival.
+
+#### `r alien()` Alien coding challenge
+
+The data can be found in [download_tib]{.alt}. There are 5 variables, the person's ticket number (`ticket_no`), their `gender` and their hygiene over the three days of the festival (`day_1`, `day_2` and `day_3` respectively). Use the code box to view the data.
+
+<div class="tip">
+  `r cat_space()` **Tip**
+  
+  Remember to view an object in `r rproj()` execute its name.
+</div>
+
+```{r dl_data, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r dl_data-solution}
+download_tib
+```
+
+```{r quiz_ds6_ex1, echo = FALSE}
+quiz(
+  question("Which of the following describes tidy data?",
+    answer("Data that are arranged such that scores from a single entity appear in a single row and levels of independent or predictor variables are arranged over different columns. In designs with multiple measurements of an outcome variable within a case the outcome variable scores will be contained in multiple columns each representing a level of an independent variable, or a timepoint at which the score was observed. Columns can also represent attributes of the score or entity that are fixed over the duration of data collection, such as participant id, employment status, etc.", message = "This answer describes messy or wide data."),
+    answer("Data that are arranged such that scores on a variable appear in a single column and rows represent a combination of the attributes of those scores – the entity from which the scores came, when the score was recorded, etc. Scores from a single entity can appear over multiple rows where each row represents a combination of the attributes of the score – for example, levels of an independent variable or time point at which the score was recorded.", correct = TRUE),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  ),
+  question("Are the download data in tidy or messy format?",
+    answer("Tidy", message = "The download data aren't tidy becasue the hygiene scores on different days are spread across different columns rather than being in a single colum with an additional column to indicate the day of the festival that the hygiene score was measured."),
+    answer("Messy", correct = TRUE),
+    correct = "Correct - well done! The download data are messy because the hygiene scores on different days are spread across different columns rather than being in a single colum with an additional column to indicate the day of the festival that the hygiene score was measured.",
+    random_answer_order = TRUE,
+    allow_retry = T
+  )
+)
+``` 
+
+##	`r user_visor()` Restructuring data [(B)]{.lbl}
+
+The data are in messy format because hygiene scores across the days have been spread across three columns rather than three rows. The package [tidyr]{.pkg} has two functions for converting data from tidy to messy and vice versa. The function `pivot_longer()` takes columns and puts them into rows and so helps you to make messy data tidy, whereas `pivot_wider()` takes rows and puts them into columns which helps you to make tidy data messy.
+ 
+###	`r user_visor()` Making messy data tidy [(B)]{.lbl}
+
+The `pivot_longer()` function takes this general form:
+
+```{r eval = FALSE}
+pivot_longer(
+  data = tibble,
+  cols = column_names,
+  names_to = "name_of_column_to_contain_variable_names",
+  values_to = "name_of_column_to_contain_values",
+)
+```
+
+In which [tibble]{.alt} is the name of the messy tibble that you want to make tidy and [column_names]{.alt} is a list of columns that you want to restructure into rows. The columns to be converted into rows have a name and values within each column associated with each case/entity. During restructuring, these properties will be split into two columns/variables, one containing the value for a particular case and one containing the name of the original column from which that value came. We use [names_to]{.alt} to specify a name for the new variable that contains the names of the original columns, and [value_to]{.alt} to specify a name for the new variable that will contain the values.
+
+#### `r alien()` Alien coding challenge
+
+Within the download data we have three columns/variables (`day_1`, `day_2` and `day_3`) that we want to restructure into rows. We can specify these variables using [day_1:day_3]{.alt} or [c(day_1, day_2, day_3)]{.alt}. The scores in each of these columns represent hygiene scores, so we might use `hygiene` as the name for the variable created to contain the values after restructuring. Similarly, the columns we're transforming all represent different days at the festival so we might use `day` as the name the variable created to contain these column names. The resulting code would be:
+
+```{r, eval = F}
+download_tidy_tib <- download_tib |> 
+  pivot_longer(
+  cols = day_1:day_3,
+  names_to = "day",
+  values_to = "hygiene"
+)
+```
+
+In this code we create a new object called [download_tidy_tib]{.alt} by piping the messy data ([download_tib]{.alt}) into `pivot_longer()`. In the function, we specify the columns to restructure into rows as all columns between `day_1` and `day_3`, we ask that the names of these columns be placed in a variable called `day` and that the values in these columns be placed in a variable called `hygiene`.
+
+#### `r alien()` Alien coding challenge
+
+Use the example code to create and view a tidy version of the download festival data.
+
+```{r dl_tidy_tib, echo = FALSE}
+download_tidy_tib <- download_tib |> 
+  pivot_longer(
+  cols = day_1:day_3,
+  names_to = "day",
+  values_to = "hygiene",
+)
+```
+
+```{r piv_long, exercise = TRUE, exercise.lines = 8}
+
+```
+
+```{r piv_long-solution}
+download_tidy_tib <- download_tib |> 
+  pivot_longer(
+    cols = day_1:day_3,
+    names_to = "day",
+    values_to = "hygiene",
+)
+
+download_tidy_tib
+```
+
+Compare the restructured (tidy) data with the original (messy) version. Note that the hygiene scores for the first participant (ticket number 2111) are no longer spread across three columns but instead are in three rows. A new variable, `day`, tells us to which day of the festival a score relates, and a new variable, `hygiene`, contains the score itself.
+
+<div class="tip">
+  `r cat_space()` **Tip: tidying up labels**
+
+The values in `day` match the original column names exactly ('day_1'), which sucks because in a table or plot you'd probably want to have an upper case 'd' and a space instead of an underscore ('Day 1'). We can convert the value of `day` using two functions from the [stringr]{.pkg} package:
+
+```{r, eval = F, class.source = '.panel_alt'}
+download_tidy_tib <- download_tidy_tib |> 
+   mutate(
+    day = str_to_sentence(day) |> str_replace("_", " ")
+  )
+```
+
+This code recreates [download_tidy_tib]{.alt} from itself after using mutate to recreate the variable `day`. This variable is recreated from itself after passing through two functions. First, it is passed through `str_to_sentence()`, which capitalizes the 'd'. Next, it is piped into `str_replace()` which searches for an underscore and replaces it with a space. In general, `str_replace()` takes the form:
+
+```{r, eval = F, class.source = '.panel_alt'}
+str_replace(string = "text_or_variable",
+            pattern = "pattern_to_replace",
+            replacement = "replace_it_with")
+```
+
+When used within a pipe the stuff coming through the pipe is assigned to the [string]{.alt} argument so we don't need to specify it explicitly, we set [pattern]{.alt} to ["_"]{.alt} (it will find the underscore), and we set [replacement]{.alt} to [" "]{.alt} (it replaces the underscore with a space). The result is `str_replace("_", " ")`.
+
+</div>
+
+#### `r alien()` Alien coding challenge
+
+Try out the code from the tip and view the resulting data.
+
+```{r str_replace, exercise = TRUE, exercise.lines = 5, exercise.setup = "dl_tidy_tib"}
+
+```
+
+```{r str_replace-solution}
+download_tidy_tib <- download_tidy_tib |> 
+   mutate(
+    day = str_to_sentence(day) |> str_replace("_", " ")
+  )
+download_tidy_tib
+```
+
+###	`r user_visor()` Making tidy data messy [(B)]{.lbl}
+
+The `pivot_wider()` function from [tidyr]{.pkg} reverses the process we've just been through by restructuring rows into columns. Its general form is:
+
+```{r, eval = FALSE}
+pivot_wider(
+  data = tibble,
+  id_cols = variables_that_you_do_not_want_to_restructure,
+  names_from = "variable_containing_the_names_of_columns",
+  values_from = " variable_containing_the_scores",
+)
+```
+
+Let's return the tidy version of the download data to messy format. You use [id_cols]{.alt} to define any variables that you won't want to be included in the restructuring (in this case `ticket_no` and `gender`). We use [names_from]{.alt} to tell the function from where to take the column names (in the tidy data column names are stored in the variable `day`) and [values_from]{.alt} to tell the function from where to get the scores (in the tidy data values are in the variable `hygiene`).
+
+#### `r robot()` Code example
+
+We can convert the tidy data back to messy using:
+
+```{r, eval = F}
+download_tib <- download_tidy_tib |> 
+  mutate(
+    day = str_to_lower(day) |> str_replace(" ", "_")
+  ) |> 
+  pivot_wider(
+    id_cols = c(ticket_no, gender),
+    names_from = "day",
+    values_from = "hygiene"
+    )
+
+download_tib
+```
+
+Let's break this code down. When we made the data long we renamed the days from the format where everything was lower case with no spaces (e.g., `day_1`) to a format that used sentence case and replaced the underscore with a space (e.g., `Day 1`). When converting back from long to wide, the variable names are taken from the variable `day` and are in the format `Day 1`, `Day 2` and `Day 3`. If we convert to a messy format these will become the variable names, which contravenes our good style principles from `discovr_02` that recommend using lower case and underscores instead of spaces.
+
+Therefore, the first few lines of code reverses the renaming we did so that `Day 1` becomes `day_1`, `Day 2` becomes `day_2` and so on. It does this by piping the tidy data ([download_tidy_tib]{.alt}) into `mutate()`, converting the text to lower case using `str_to_lower()` and then replacing spaces with an underscore using `str_replace()`, both functions are from the [stringr]{.pkg} package. 
+
+The restructuring itself is handled by `pivot_wider()`, within which [id_cols]{.alt} defines the variables that we don't want to be restructured (in this case `ticket_no` and `gender`). We use the [names_from]{.alt} argument to tell the function where to take the column names from (in the tidy data, column names are stored in the variable `day`) and [values_from]{.alt} to tell the function from where to get the scores (in the tidy data, values are in the variable `hygiene`).
+
+
+#### `r alien()` Alien coding challenge
+
+Use the code above to convert our tidy data back into its messy form.
+
+```{r pivot_wider, exercise = TRUE, exercise.lines = 15 , exercise.setup = "dl_tidy_tib"}
+
+```
+
+```{r pivot_wider-solution}
+download_tib <- download_tidy_tib |> 
+  mutate(
+    day = str_to_lower(day) |> str_replace(" ", "_")
+  ) |> 
+  pivot_wider(
+    id_cols = c(ticket_no, gender),
+    names_from = "day",
+    values_from = "hygiene"
+    )
+
+download_tib
+```
+
+
+## `r bmu()` Spotting outliers [(A)]{.lbl}
+
+An outlier is  a score very different from the other scores. We will look at two ways to spot outliers:
+
+1. Visualise the data and look for unusual cases.
+2. Look for values that our statistical model predicts poorly. We can do this using the standardized residuals, which were explained in the book.
+
+
+```{r quiz_ds6_ex2, echo = FALSE}
+quiz(
+  question("What are the model residuals?",
+    answer("The differences between the values a model predicts and the values observed in the data on which the model is based", correct = TRUE, ),
+    answer("Scores expressed in standard deviation units.", message = "This answer describes *z*-scores."),
+    answer("The predicted values from the model.", message = "This answer describes the predicted values."),
+    answer("The values in the sample on which the model is based.", message = "This answer describes the observed values."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  )
+)
+``` 
+
+
+### `r bmu()`	Histograms and boxplots [(A)]{.lbl}
+
+#### `r alien()` Alien coding challenge
+
+If you completed previous tutorials you should know how to produce histograms and boxplots. Plot a histogram of the hygiene scores on day 1 of the festival. Use the messy version of the data ([download_tib]{.alt}). Use a binwidth of 0.2, a fill colour of [#882255]{.alt}", a line colour of [#CC6677]{.alt}, and transparency of 0.2. Apply axis labels and a theme.
+
+```{r dl_hist, exercise = TRUE, exercise.lines = 6, exercise.setup = "dl_tidy_tib"}
+
+```
+
+```{r dl_hist-hint-1}
+# Setup the plot with:
+ggplot(download_tib, aes(day_1)) +
+```
+
+```{r dl_hist-hint-2}
+# Add the histogram geom:
+ggplot(download_tib, aes(day_1)) +
+geom_histogram()
+# Now change the binwidth, fill, colours and transparency
+```
+
+```{r dl_hist-hint-3}
+# change the binwidth, fill, colours and transparency
+ggplot(download_tib, aes(day_1)) +
+  geom_histogram(binwidth = 0.2, fill = "#882255", colour = "#CC6677", alpha = 0.2)
+# Now add labels
+```
+
+```{r dl_hist-hint-4}
+# Labels added:
+ggplot(download_tib, aes(day_1)) +
+  geom_histogram(binwidth = 0.2, fill = "#882255", colour = "#CC6677", alpha = 0.2) +
+  labs(y = "Frequency", x = "Hygiene scores (0-5)", title = "Hygiene scores on day 1")
+# Finally, apply a theme
+```
+
+```{r dl_hist-hint-5}
+# Solution:
+ggplot(download_tib, aes(day_1)) +
+  geom_histogram(binwidth = 0.2, fill = "#882255", colour = "#CC6677", alpha = 0.2) +
+  labs(y = "Frequency", x = "Hygiene scores (0-5)", title = "Hygiene scores on day 1") +
+  theme_minimal()
+```
+
+#### `r alien()` Alien coding challenge
+
+Plot a boxplot of the hygiene scores on day 1 of the festival. Set the fill colour to ["#CC6677"]{.alt} and transparency to 0.7, put breaks along the *y*-axis from 0 to 20 in steps of 2, add labels to the *x*- and *y*-axis and apply a theme.
+
+<div class="tip">
+  `r cat_space()` **Tip: Plotting a single column**
+
+In previous tutorials we have plotted boxplots where the *x*-axis represents categories or groups, and you get a boxplot for each category. Here we just want a single boxplot for a single set of scores (the day 1 hygiene scores). To achieve this we specify the *x*-axis variable within the `aes()` function as [x = "some_text"]{.alt} in which we replace [some_text]{.alt} with whatever label we want to appear as the tick label on the *x*-axis. For example, in this case we might specify [x = "Day 1"]{.alt} because the boxplot will summarize the day 1 hygiene scores.
+</div>
+
+```{r dl_box, exercise = TRUE, exercise.lines = 5, exercise.setup = "dl_tidy_tib"}
+
+```
+
+```{r dl_box-hint-1}
+# Setup the plot with:
+ggplot(download_tib, aes(x = "Day 1", y = day_1)) +
+```
+
+```{r dl_box-hint-2}
+# Add the boxplot geom:
+ggplot(download_tib, aes(x = "Day 1", y = day_1)) +
+  geom_boxplot()
+# Now change the binwidth, fill, colours and transparency
+```
+
+```{r dl_box-hint-3}
+# change the binwidth, fill, colours and transparency
+ggplot(download_tib, aes(x = "Day 1", y = day_1)) +
+  geom_boxplot(fill = "#CC6677", alpha = 0.7)
+# Now put breaks along the y-axis from 0 to 20 in steps of 2
+```
+
+```{r dl_box-hint-4}
+# Added breaks along the y-axis from 0 to 20 in steps of 2
+ggplot(download_tib, aes(x = "Day 1", y = day_1)) +
+  geom_boxplot(fill = "#CC6677", alpha = 0.7) +
+  scale_y_continuous(breaks = seq(0, 20, 2))
+# Now add labels
+```
+
+```{r dl_box-hint-5}
+# Labels added:
+ggplot(download_tib, aes(x = "Day 1", y = day_1)) +
+  geom_boxplot(fill = "#CC6677", alpha = 0.7) +
+  scale_y_continuous(breaks = seq(0, 20, 2)) +
+  labs(x = "Day of festival", y = "Hygiene scores (0-5)")
+# Finally, apply a theme
+```
+
+```{r dl_box-solution}
+ggplot(download_tib, aes(x = "Day 1", y = day_1)) +
+  geom_boxplot(fill = "#CC6677", alpha = 0.7) +
+  scale_y_continuous(breaks = seq(0, 20, 2)) +
+  labs(x = "Day of festival", y = "Hygiene scores (0-5)") +
+  theme_minimal()
+```
+
+
+The resulting histogram and boxplot look odd: there is one case that is very different from the others. It has a value of 20, which is particularly odd because it exceeds the top of our scale (our hygiene scale ranged from 0 to 4). It must be a mistake. The quickest way to find this case is to use the `filter()` function (explained in **discovr_01**) to filter the data using a rule that returns values for the variable `day_1` that are greater than 4 (the maximum of the scale). Doing so will return the one case that for which this is true.
+
+#### `r alien()` Alien coding challenge
+
+Filter [download_tib]{.alt} to show only the cases with scores greater than 4 for the variable `day_1`.
+
+```{r dl_filter, exercise = TRUE, exercise.lines = 4}
+
+```
+
+```{r dl_filter-solution}
+download_tib |> 
+  filter(day_1 > 4)
+```
+
+It turns out that the person with ticket number 4158 has a hygiene score of 20.02, which is probably a mistyping of 2.02. We'd have to go back to the raw data and check. We'll assume we've checked the raw data and this score should be 2.02, we need to replace the value 20.02 with the value 2.02 before continuing. We can do this using the `recode_values()` function from the [datawizard]{.pkg} package, which for numeric values takes the general form:
+
+```{r, eval = F}
+recode_values(thing_to_recode, 
+              list(`new_value` = old_value, `new_value` = old_value, ... `new_value` = old_value)
+              )
+```
+
+
+In which [thing_to_recode]{.alt} can be a variable or tibble, and within `list()` you place a list of pairs of values consisting of the new value (in backticks) and the value that you want it to replace separated by an equals sign. If you include several pairs they must be separated by commas.
+
+
+#### `r robot()` Code example
+
+We use `mutate()` to recreate the variable `day_1` from a version itself that has been processed by the `recode_values()` function. Within the `recode_values()` function, we first tell `r rproj()` that we are recoding the variable `day_1`, then within `list()` we specify a single pair of values that specify that we want a new value of 2.02 (note the backticks) to replace any value of 20.02 that it finds. We assign the corrected data back to the original object  ([download_tib]{.alt}) so that when we use this tibble we are using the corrected version.
+
+```{r recode, exercise = TRUE, exercise.lines = 6}
+download_tib <- download_tib |>
+  mutate(
+    day_1 = recode_values(day_1, list(`2.02` = 20.02))
+  )
+download_tib
+```
+
+
+```{r dl_tib}
+download_tib <- download_tib |>
+  mutate(
+    day_1 = recode_values(day_1, list(`2.02` = 20.02))
+  )
+
+download_tidy_tib <- download_tib |> 
+ pivot_longer(
+  cols = day_1:day_3,
+  names_to = "day",
+  values_to = "hygiene"
+) |> 
+   mutate(
+    day = str_to_sentence(day) |> str_replace("_", " ")
+  )
+```
+
+
+<div class="tip">
+  `r cat_space()` **Tip: Recoding the long data**
+
+  Having corrected the mis-entered data point in the wide data file ([download_tib]{.alt}), we would need to recreate the long version of the data including the corrected score using
+  
+```{r, eval = F, class.source = '.panel_alt'}
+download_tidy_tib <- download_tib |> 
+ pivot_longer(
+  cols = day_1:day_3,
+  names_to = "day",
+  values_to = "hygiene"
+) |> 
+   mutate(
+    day = str_to_sentence(day) |> str_replace("_", " ")
+  )
+
+```
+
+I have done this for you within this tutorial, so from this point on [download_tidy_tib]{.alt} contains the corrected data.
+
+</div>
+
+
+
+#### `r alien()` Alien coding challenge
+
+Filter [download_tib]{.alt} to show only the case with ticket number 4158 to check that their `day_1` hygiene score is now 2.02.
+
+```{r dl_filter2, exercise = TRUE, exercise.lines = 4, exercise.setup = "dl_tib"}
+
+```
+
+```{r dl_filter2-solution}
+download_tib |> 
+  filter(ticket_no == "4158")
+```
+ 
+#### `r alien()` Alien coding challenge
+
+Re-plot the histogram and boxplot (you can use exactly the same code as before).
+
+```{r dl_hist_box, exercise = TRUE, exercise.lines = 12, exercise.setup = "dl_tib"}
+
+
+
+```
+
+```{r dl_hist_box-solution}
+ggplot(download_tib, aes(day_1)) +
+  geom_histogram(binwidth = 0.2, fill = "#882255", colour = "#CC6677", alpha = 0.2) +
+  labs(y = "Frequency", x = "Hygiene scores (0-5)", title = "Hygiene scores on day 1") +
+  theme_minimal()
+
+ggplot(download_tib, aes(x = "Day 1", y = day_1)) +
+  geom_boxplot(fill = "#CC6677", alpha = 0.7) +
+  scale_y_continuous(breaks = seq(0, 20, 2)) +
+  labs(x = "Day of festival", y = "Hygiene scores (0-5)") +
+  theme_minimal()
+```
+
+After the mis-entered value has been corrected, neither plot indicates any particularly extreme scores.
+
+#### `r alien()` Alien coding challenge
+
+Use [download_tidy_tib]{.alt} to produce boxplots for all days of the festival and use `facet_wrap()` to show separate plots for each gender. Set the transparency to 0.7, set breaks on the *y*-axis to be 1, 2, 3 & 4.
+
+```{r dl_box_all, exercise = TRUE, exercise.lines = 7, exercise.setup = "dl_tib"}
+
+```
+
+```{r dl_box_all-hint-1}
+# Setup the plot with:
+ggplot(download_tidy_tib, aes(day, hygiene, fill = gender)) +
+```
+
+```{r dl_box_all-hint-2}
+# Add the boxplot geom:
+ggplot(download_tidy_tib, aes(day, hygiene, fill = gender)) +
+  geom_boxplot()
+# Now change the binwidth, fill, colours and transparency
+```
+
+```{r dl_box_all-hint-3}
+# change the transparency
+ggplot(download_tidy_tib, aes(day, hygiene, fill = gender)) +
+  geom_boxplot(alpha = 0.7)
+# Now put breaks along the y-axis from 0 to 4 in steps of 1
+```
+
+```{r dl_box_all-hint-4}
+# Added breaks along the y-axis from 0 to 4 in steps of 1
+ggplot(download_tidy_tib, aes(day, hygiene, fill = gender)) +
+  geom_boxplot(alpha = 0.7) +
+  scale_y_continuous(breaks = seq(0, 4, 1))
+# Now add labels for x, y, and fill colour
+```
+
+
+```{r dl_box_all-hint-5}
+# Added labels
+ggplot(download_tidy_tib, aes(day, hygiene, fill = gender)) +
+  geom_boxplot(alpha = 0.7) +
+  scale_y_continuous(breaks = seq(0, 4, 1))
+  labs(x = "Day of festival", y = "Hygiene scores (0-5)", fill = "Gender")
+# Now use facet_wrap to produces separate panels for each gender
+```
+
+```{r dl_box_all-hint-6}
+# facet_wrap added:
+ggplot(download_tidy_tib, aes(day, hygiene, fill = gender)) +
+  geom_boxplot(alpha = 0.7) +
+  scale_y_continuous(breaks = seq(0, 4, 1)) +
+  labs(x = "Day of festival", y = "Hygiene scores (0-5)", fill = "Gender") +
+  facet_wrap(~ gender)
+# Finally, apply a theme
+```
+
+```{r dl_box_all-solution}
+ggplot(download_tidy_tib, aes(day, hygiene, fill = gender)) +
+  geom_boxplot(alpha = 0.7) +
+  scale_y_continuous(breaks = seq(0, 4, 1)) +
+  labs(x = "Day of festival", y = "Hygiene scores (0-5)", fill = "Gender") +
+  facet_wrap(~ gender) +
+  theme_minimal()
+```
+
+The pattern of hygiene scores across the three days is consistent for all genders: hygiene decreases from day 1 to day 2, but stays at similar levels to day 2 on day 3. There look like some potential outliers for people who self-classified as male and female on day 2 (and some males on day 1).
+ 
+### `r bmu()` Standardizing raw scores [(A)]{.lbl}
+
+Any score can be converted to a *z*-score, which has known distributional properties. This section looks at how to use these standardized scores to look for outliers. Everything in this section can be applied to model residuals too (see `discovr_08`). To standardize raw scores we take the score, subtract from it the mean of all scores and divide by the standard deviation of all scores:
+
+$$
+z = \frac{x-\bar{X}}{s}
+$$
+
+We can convert scores to *z*-scores by using the function `standardize()` (`standadise()` works too) from the [datawizard]{.pkg} package within [easystats]{.pkg} In general, it takes this form
+
+
+```{r, eval = FALSE}
+standardise(x = my_tibble,
+            select = variables_to_transform)
+```
+
+in which you replace [my_tibble]{.alt} with the name of the tibble containing your data and [variables_to_transform]{.alt} with a list of variables enclosed within `c()`. 
+
+#### `r robot()` Code example
+
+To standardize the scores on every day of the festival in the original messy data we'd execute
+
+```{r, eval = FALSE}
+zdownload_tib <- standardise(x = download_tib,
+                          select = c("day_1", "day_2", "day_3"))
+
+```
+
+or better still because `day_1` to `day_3` are consecutive variables within the data we could use [day_1:day_3]{.alt}: 
+
+```{r, eval = FALSE}
+zdownload_tib <- standardise(x = download_tib,
+                          select = day_1:day_3)
+
+```
+
+Note that I have stored the standardized scores in a new tibble called [zdownload_tib]{.alt} so that we can use the *z*-scores in other procedures.
+
+#### `r alien()` Alien coding challenge
+
+Use the example code to create and view a standardized version of the data.
+
+```{r z_easy, exercise = TRUE, exercise.lines = 5, exercise.setup = "dl_tib"}
+
+```
+
+```{r z_easy-solution}
+zdownload_tib <- standardise(x = download_tib, select = day_1:day_3)
+zdownload_tib
+```
+
+Note that the values in `day_1` to `day_3` have changed and represent standard deviations from the mean value, so some are positive and others negative and these variables have means of 0.
+
+### `r user_visor()` Using standardized scores to detect outliers [(B)]{.lbl}
+
+We now have *z*-scores of hygiene on each day of the festival. We can apply a filter to the data so that we see only large values of *z*.
+
+#### `r robot()` Code example
+
+If we want to see only cases with a *z*-score for `day_1` less than $-1.96$ or greater than $1.96$ we could execute: 
+
+```{r eval = F}
+zdownload_tib |> 
+  filter(abs(day_1) >= 1.96) |> 
+  arrange(day_1)
+```
+
+This code pipes the data into `filter()` where we set the criteria that the absolute value of the variable `day_1` must be greater or equal to 1.96 (that's what [abs(day_1) >= 1.96]{.alt} does). Finally (and optionally) we pipe the tibble into `arrange()` to sort it by `day_1`, so that the resulting table will list cases from the smallest standardized residual to the largest.
+
+#### `r alien()` Alien coding challenge
+
+Use the code above to see whether any cases had hygiene scores on day 1 of the festival greater than 1.96 standard deviations from the mean.
+
+```{r dlz_tib, exercise.setup = "dl_tib"}
+zdownload_tib <- standardise(x = download_tib,
+                             select = day_1:day_3)
+```
+
+```{r z_single, exercise = TRUE, exercise.lines = 5, exercise.setup = "dlz_tib"}
+
+```
+
+```{r z_single-solution}
+zdownload_tib |> 
+  filter(abs(day_1) >= 1.96) |> 
+  arrange(day_1)
+```
+
+You should find that 39 cases had *z*-scores less than $-1.96$ or greater than $1.96$ on day 1, which is about 0.05 (or 5%) of the sample (39/810 = 0.05). This percentage is consistent with what we'd expect to find in a normal distribution.
+
+We also want to look at day 2 and day 3. We can use the `if_any()` function from [dplyr]{.pkg} to apply a condition to multiple variables. When used within `filter()` then 'if any' of the columns meet the condition the row is retained. It has the general form
+
+```{r, eval = F}
+if_any(
+  .cols = columns_to_which_i_want_to_apply_the_condition,
+  .fn = the_condition_i_want_to_apply
+)
+```
+
+#### `r robot()` Code example
+
+We can filter the cases across multiple variables using:
+
+```{r, eval = F}
+zdownload_tib |> 
+  filter(
+    if_any(.cols = day_1:day_3, 
+           .fn = ~. >= 2.58)
+    )
+```
+
+
+Note that within the `filter()` function we use `if_any()` and within that
+
+* `.cols = zday_1:zday_3` selects the columns containing the *z*-scores of hygiene for the three days of the festival.
+* `.fn = ~. >= 2.58` sets the condition. The [~.]{.alt} means *all of the listed variables*, so with this code we're saying "if any of the listed variables has a value greater or equal to 2.58".
+
+Put together our filter retains all cases for which the value of `day_1` OR `day_2` OR `day_3` is greater than or equal to 2.58.
+
+#### `r alien()` Alien coding challenge
+
+Use the code above to find out how many cases have *z*-scores greater than 2.58 for any of the days.
+
+```{r z_multiple, exercise = TRUE, exercise.lines = 5, exercise.setup = "dlz_tib"}
+
+```
+
+```{r z_multiple-solution}
+zdownload_tib |> 
+  filter(
+    if_any(.cols = day_1:day_3, 
+           .fn = ~. >= 2.58)
+    )
+```
+
+
+It turns out that there are 8 cases (out of 200) who have *z*-scores with absolute values greater than or equal to 2.58 on at least one of the days, which is about what we'd expect (4% of cases). If you change the code to so that the threshold is 3.29 you'll see that there are only two cases with *z*-scores with absolute values greater than 3.29 (case 3374 on day 2 and case 4564 on days 2 and 3).
+ 
+
+## `r bmu()` Spotting normality [(A)]{.lbl}
+
+There are times when we want to know whether scores (or model residuals) are normally distributed. This section reviews some ways to do that, but we return to the topic in `discovr_08`. 
+
+
+### `r bmu()` Using plots to spot normality [(A)]{.lbl}
+
+Histograms are not only good for spotting outliers, they are the natural choice for looking at the shape of the distribution as we saw from plotting the day 1 scores earlier. Two alternatives are a probability-probability plot or P-P plot and a quantile-quantile plot, or Q-Q plot. A P-P plot plots the cumulative probability of a variable against the cumulative probability of a particular distribution (in this case a normal distribution). The data are ranked and sorted, then for each rank the corresponding *z*-score is calculated to create an 'expected value' that the score should have in a normal distribution. Next, the score itself is converted to a *z*-score. The actual *z*-score is plotted against the expected *z*-score. The Q-Q plot does something similar except that it plots the quantiles of the data against the quantiles of the desired distribution instead of every individual score.
+
+The interpretation of these plots is basically the same. If scores follow the desired distribution then the observed *z*-score or quantile will be the same as the *z*-score or quantile that you'd expect from that distribution and the points on the plot will form a straight diagonal line. When scores are normally distributed the dots on the Q-Q plot follow the diagonal line that represents perfect normality and they all fall within the confidence band around that line. If scores are positively skewed then the points of the Q-Q plot sag downwards in the middle, and for negative skew the opposite is true: points curve upwards in the middle. Note that some of the points fall outside of the confidence band around the diagonal line. When there are too many scores in the tails (a heavy-tailed distribution) the points form an S with points curving down below the diagonal line at the left of the *x*-axis and rising above it at the right. The points also form an S when there are too few scores in the tails (a light-tailed distribution) but they curve an S upwards from the diagonal at the left of the *x*-axis and curve downwards from the diagonal at the right. Again, points at the extremes go beyond the confidence band around the diagonal line. If you have a lot of scores Q-Q plots can be easier to interpret than P-P plots because they display fewer values.
+
+#### `r robot()` Code example
+
+We can use the [qqplotr]{.pkg} package,to create a Q-Q plot. We set up the plot much like any other plot:
+
+```{r, eval = F}
+ggplot(my_tib, aes(sample = variable_to_plot))
+```
+
+In which you replace [my_tib]{.alt} with the name of the tibble containing the data, and [variable_to_plot]{.alt} with the name of the variable you want to plot. The main difference to previous plots is that we use the [sample]{.alt} argument within `aes()` to specify the variable we want to plot. Having set up the plot, we apply three layers using different functions in this order: 
+
+* `stat_qq_band()`. This function draws a confidence band around the diagonal line. By default, the function uses a confidence interval based on the normal distribution, but you can change this to an interval based on a parametric bootstrap by including [bandType = "boot"]{.alt}, or a band based on the Kolmorgorov-Smirnov test by including [bandType = "ks"]{.alt}).
+* `stat_qq_line()`. This function draws the diagonal line representing the idealized distribution.
+* `stat_qq_point()`. This function draws the observed values (the dots).
+
+Therefore, we can create a basic Q-Q plot for the tidy version of the data in [download_tidy_tib]{.alt} with this code:
+
+```{r qq_basic, exercise = TRUE, exercise.lines = 4, exercise.setup = "dl_tib"}
+ ggplot(download_tidy_tib, aes(sample = hygiene)) +
+  qqplotr::stat_qq_band() +
+  qqplotr::stat_qq_line() +
+  qqplotr::stat_qq_point()
+```
+
+This code plots the variable `hygiene` from [download_tidy_tib]{.alt}. However, because we have used the tidy version of the data, the values of `hygiene` have come from all three days of the festival. It might be useful to split them according to the day of the festival. Luckily, because `qqplotr` creates ggplot objects, we can easily do this by adding a layer that includes `facet_wrap()` and splits the data by the variable `day`.
+
+#### `r alien()` Alien coding challenge
+
+Cope the code in the example above and add to the bottom a layer that splits the data by the variable `day` using `facet_wrap()`. While you're at it, add `theme_minimal()`.
+
+```{r qq_facet, exercise = TRUE, exercise.lines = 6, exercise.setup = "dl_tib"}
+ ggplot(download_tidy_tib, aes(sample = hygiene)) +
+  qqplotr::stat_qq_band() +
+  qqplotr::stat_qq_line() +
+  qqplotr::stat_qq_point()
+```
+
+```{r qq_facet-hint-1}
+# Add facet_wrap:
+ ggplot(download_tidy_tib, aes(sample = hygiene)) +
+  qqplotr::stat_qq_band() +
+  qqplotr::stat_qq_line() +
+  qqplotr::stat_qq_point() +
+  facet_wrap(~ day)
+
+# Now add theme_minimal()
+```
+
+```{r qq_facet-hint-2}
+# Solution:
+ ggplot(download_tidy_tib, aes(sample = hygiene)) +
+  qqplotr::stat_qq_band() +
+  qqplotr::stat_qq_line() +
+  qqplotr::stat_qq_point() +
+  facet_wrap(~ day) +
+  theme_minimal()
+```
+
+We can also add labels and titles, and within each function we can set aesthetics such as colours, shapes, sizes, transparency and so on, just as we would with any ggplot object.
+
+
+#### `r alien()` Alien coding challenge
+
+Adapt the code to do the following:
+
+* Set the fill of the confidence interval to ([#DDCC77"]{.alt}), and the transparency to 0.3.
+* Set the colour of the line to the same colour as the confidence interval.
+* Set the colour of the data points to ([#CC6677"]{.alt}), the transparency to 0.2 and their size to 1.
+* Add the label "Theoretical quantiles" to the *x*-axis and "Sample quantiles" to the *y*-axis.
+
+```{r qq_full, exercise = TRUE, exercise.lines = 7, exercise.setup = "dl_tib"}
+ ggplot(download_tidy_tib, aes(sample = hygiene)) +
+  qqplotr::stat_qq_band() +
+  qqplotr::stat_qq_line() +
+  qqplotr::stat_qq_point() +
+  facet_wrap(~ day) +
+  theme_minimal()
+```
+
+```{r qq_full-hint-1}
+# Set the fill of the confidence interval to blue ([#CC6677"]{.alt}), and the transparency to 0.3:
+ ggplot(download_tidy_tib, aes(sample = hygiene)) +
+  qqplotr::stat_qq_band(fill = "#DDCC77", alpha = 0.3) +
+  qqplotr::stat_qq_line() +
+  qqplotr::stat_qq_point() +
+  facet_wrap(~ day) +
+  theme_minimal()
+```
+
+```{r qq_full-hint-2}
+# Set the colour of the line to the same colour as the confidence interval.
+ ggplot(download_tidy_tib, aes(sample = hygiene)) +
+  qqplotr::stat_qq_band(fill = "#DDCC77", alpha = 0.3) +
+  qqplotr::stat_qq_line(colour = "#DDCC77") +
+  qqplotr::stat_qq_point() +
+  facet_wrap(~day) +
+  theme_minimal()
+```
+
+```{r qq_full-hint-3}
+# Set the colour of the data points to ([#CC6677"]{.alt}), the transparency to 0.2 and their size to 1.
+ ggplot(download_tidy_tib, aes(sample = hygiene)) +
+  qqplotr::stat_qq_band(fill = "#DDCC77", alpha = 0.3) +
+  qqplotr::stat_qq_line(colour = "#DDCC77") +
+  qqplotr::stat_qq_point(colour = "#CC6677", alpha = 0.2, size = 1) +
+  facet_wrap(~day) +
+  theme_minimal()
+```
+
+```{r qq_full-hint-4}
+# Add the label "Theoretical quantiles" to the *x*-axis and "Sample quantiles" to the *y*-axis:
+ ggplot(download_tidy_tib, aes(sample = hygiene)) +
+  qqplotr::stat_qq_band(fill = "#DDCC77", alpha = 0.3) +
+  qqplotr::stat_qq_line(colour = "#DDCC77") +
+  qqplotr::stat_qq_point(colour = "#CC6677", alpha = 0.2, size = 1) +
+  labs(x = "Theoretical quantiles", y = "Sample quantiles") +
+  facet_wrap(~day) +
+  theme_minimal()
+```
+
+
+We looked at the day 1 scores earlier with a histogram and concluded that they looked quite normal. The Q-Q plot echoes this view because the data points fall close to the 'ideal' diagonal line and within the confidence band around it. However, the distributions for days 2 and 3 look positively skewed. This can be seen in the Q-Q plots by the data points dipping in the middle to form a curve and points falling outside of the confidence band at the extremes. These plots suggest that relative to day 1, hygiene scores on days 2 and 3 were more clustered around the low end of the scale (more people were less hygienic); so people became smellier as the festival progressed. The skew on days 2 and 3 occurs because a minority insisted on upholding their levels of hygiene over the course of the festival (baby wet-wipes are indispensable, I find).
+
+### `r user_visor()`	More summary statistics [(A)]{.lbl}
+
+In `discovr_04` we used the `describe_distribution()` function from [datawizard]{.pkg} to get summary statistics such as the mean, confidence interval, and the IQR. This function also returns values of skew and kurtosis. 
+
+#### `r alien()` Alien coding challenge
+
+Use what you have learnt from previous tutorials to write some code that takes the tidy version of the festival data ([download_tidy_tib]{.alt}) and calculates only the mean, 95% confidence interval, skew and kurtosis for hygiene scores on each day. Print the table to 3 decimal places.
+
+<div class="tip">
+  `r cat_space()` **Hint**
+
+You will need to set the arguments in the function to switch off the interquartile range and range.
+
+</div>
+
+
+```{r hygiene_sum, exercise = TRUE, exercise.lines = 8, exercise.setup = "dl_tib"}
+
+```
+
+```{r hygiene_sum-hint-1}
+# Start by grouping the data  ...
+download_tidy_tib |> 
+  group_by(day)
+  ...
+# Now think about how you will get summary statistics
+```
+
+```{r hygiene_sum-hint-2}
+download_tidy_tib |> 
+  group_by(day) |> 
+  describe_distribution(select = xxx)
+# replace the xxx to select the variable you want to summarise
+# Now think about how to change the default settings for the arguments in the function.
+```
+
+```{r hygiene_sum-hint-3}
+# replace the xxs
+download_tidy_tib |> 
+  group_by(day) |>  
+  describe_distribution(select = hygiene,
+                        iqr = xxx,
+                        range = xxx,
+                        ci = xxx,
+                        iterations = xxx)
+```
+
+
+```{r hygiene_sum-hint-4}
+# replace the xxs
+download_tidy_tib |> 
+  group_by(day) |>  
+  describe_distribution(select = hygiene,
+                        dispersion = xxx,
+                        iqr = xxx,
+                        range = xxx,
+                        ci = xxx,
+                        iterations = xxx)
+# how do you render the table nicely?
+```
+
+```{r hygiene_sum-solution}
+download_tidy_tib |> 
+  group_by(day) |>  
+  describe_distribution(select = hygiene,
+                        dispersion = FALSE, 
+                        iqr = FALSE,
+                        range = FALSE,
+                        ci = 0.95,
+                        iterations = 500) |>
+  display(digits = 2)
+```
+
+On average, hygiene scores were 1.77 (out of 5) on day 1 of the festival, but went down to 0.96 and 0.98 on days 2 and 3 respectively. For day 1 the skew value is very close to the expected value of zero (which is good) and kurtosis is a little negative. For days 2 and 3, though, there is a skewness of around 1 (positive skew) and kurtosis is positive, suggesting heavier tails than a normal distribution. We can also see that 546 of the original 810 cases are missing on day 2 and 687 are missing at day 3.
+
+
+### `r user_visor()`	Exploring multiple groups [(B)]{.lbl}
+
+We have already looked at (in previous tutorials) how to use the `group_by()` function to apply code to groups of scores separately. We have data for people who self-classify under different gender labels (in the variable `gender`). What if we wanted to summarize the hygiene scores by both day of the festival *and* how the person classifies their `gender` (given the available options).
+
+#### `r robot()` Code example
+
+Actually, this is straightforward: we add `gender` within the `group_by()` function before we pipe it into `describe_distribution()`.
+
+```{r eval = F}
+download_tidy_tib |> 
+  group_by(day, gender) |> 
+  describe_distribution(select = hygiene)
+```
+
+#### `r alien()` Alien coding challenge
+
+The code for the previous challenge is below, adapt it to get summary statistics for each day of the festival within different gender classifications.
+
+```{r hygiene_groupby, exercise = TRUE, exercise.lines = 12, exercise.setup = "dl_tib"}
+download_tidy_tib |> 
+  group_by(day) |>  
+  describe_distribution(select = hygiene,
+                        dispersion = FALSE, 
+                        iqr = FALSE,
+                        range = FALSE,
+                        ci = 0.95,
+                        iterations = 500) |>
+  display()
+```
+
+```{r hygiene_groupby-solution}
+download_tidy_tib |> 
+  group_by(day, gender) |>  
+  describe_distribution(select = hygiene,
+                        dispersion = FALSE, 
+                        iqr = FALSE,
+                        range = FALSE,
+                        ci = 0.95,
+                        iterations = 500) |>
+  display()
+```
+
+
+
+<div class="infobox">
+  <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
+  
+  **A message from Mae Jemstone:**
+  
+  As space pirates, exploring is what we do. Exploring to the left, exploring to the right, exploring all day, exploring all night. It's in our blood. This lesson has been all about exploring data and learning how to spot unusual cases and look for problems in the distributions of scores. It may not have been as exciting as whizzing around space at hyperspeed, but being a space pirate isn't all about hyperspeed, sometimes you need to navigate slowly and meticulously to spot the the space billiods lurking around waiting to mess up your assumptions. No-one likes a space billiod, trust me. Even fewer people like having their assumptions messed with. You now have the tools to spot problems in your data. Well done, explorers!
+</div>
+
+
+## Resources/References {data-progressive=FALSE}
+
+```{r, child = "./docs/resources.Rmd"}
+
+```
+
+
+### References

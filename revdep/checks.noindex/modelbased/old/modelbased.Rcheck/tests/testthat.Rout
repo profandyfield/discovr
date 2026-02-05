@@ -1,0 +1,70 @@
+
+R version 4.5.1 (2025-06-13) -- "Great Square Root"
+Copyright (C) 2025 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin20
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> # This file is part of the standard setup for testthat.
+> # It is recommended that you do not modify it.
+> #
+> # Where should you do additional test configuration?
+> #
+> # * https://r-pkgs.org/tests.html
+> # * https://testthat.r-lib.org/reference/test_package.html#special-files
+> library(testthat)
+> library(modelbased)
+> 
+> test_check("modelbased")
+Starting 2 test processes.
+> test-multivariate_response.R: Confidence intervals are not yet supported for models of class `mlm`.
+> test-multivariate_response.R: Confidence intervals are not yet supported for models of class `mlm`.
+[ FAIL 0 | WARN 1 | SKIP 55 | PASS 234 ]
+
+══ Skipped tests (55) ══════════════════════════════════════════════════════════
+• .Platform$OS.type == "windows" is not TRUE (1):
+  'test-estimate_predicted.R:58:3'
+• On CRAN (45): 'test-backtransform_invlink.R:1:1', 'test-betareg.R:1:1',
+  'test-bias_correction.R:1:1', 'test-brms-marginaleffects.R:1:1',
+  'test-brms.R:1:1', 'test-equivalence.R:1:1',
+  'test-estimate_contrasts-average.R:1:1',
+  'test-estimate_contrasts_bookexamples.R:1:1',
+  'test-estimate_contrasts_counterfactual.R:1:1',
+  'test-estimate_contrasts.R:1:1', 'test-estimate_contrasts_effectsize.R:1:1',
+  'test-estimate_contrasts_inequality.R:1:1',
+  'test-estimate_contrasts_methods.R:1:1', 'test-estimate_filter.R:1:1',
+  'test-estimate_grouplevel.R:54:3', 'test-estimate_grouplevel.R:72:3',
+  'test-estimate_grouplevel.R:93:3', 'test-estimate_grouplevel.R:123:3',
+  'test-estimate_grouplevel.R:150:5', 'test-estimate_grouplevel.R:182:3',
+  'test-estimate_grouplevel.R:261:3', 'test-estimate_grouplevel.R:308:3',
+  'test-estimate_means-average.R:1:1', 'test-estimate_means.R:1:1',
+  'test-estimate_means_ci.R:1:1', 'test-estimate_means_counterfactuals.R:1:1',
+  'test-estimate_means_dotargs.R:1:1',
+  'test-estimate_means_marginalization.R:1:1',
+  'test-estimate_means_mixed.R:1:1', 'test-estimate_slopes.R:129:1',
+  'test-g_computation.R:1:1', 'test-get_marginaltrends.R:1:1',
+  'test-glmmTMB.R:1:1', 'test-joint_test.R:1:1', 'test-keep_iterations.R:1:1',
+  'test-maihda.R:1:1', 'test-mice.R:1:1', 'test-ordinal.R:1:1',
+  'test-plot-grouplevel.R:1:1', 'test-predict-dpar.R:1:1',
+  'test-standardize.R:1:1', 'test-summary_estimate_slopes.R:3:1',
+  'test-vcov.R:1:1', 'test-transform_response.R:3:1', 'test-zeroinfl.R:1:1'
+• On Mac (9): 'test-mgcv.R:54:3', 'test-plot-facet.R:1:1',
+  'test-plot-flexible_numeric.R:1:1', 'test-plot-ordinal.R:1:1',
+  'test-plot-slopes.R:1:1', 'test-plot.R:1:1', 'test-print.R:1:1',
+  'test-residualize_over_grid.R:1:1', 'test-scoping_issues.R:1:1'
+
+[ FAIL 0 | WARN 1 | SKIP 55 | PASS 234 ]
+> 
+> proc.time()
+   user  system elapsed 
+ 41.942   2.316  20.773 

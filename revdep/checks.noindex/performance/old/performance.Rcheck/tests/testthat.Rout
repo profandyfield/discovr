@@ -1,0 +1,85 @@
+
+R version 4.5.1 (2025-06-13) -- "Great Square Root"
+Copyright (C) 2025 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin20
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(testthat)
+> library(performance)
+> 
+> test_check("performance")
+Starting 2 test processes.
+> test-check_itemscale.R: Some of the values are negative. Maybe affected items need to be
+> test-check_itemscale.R:   reverse-coded, e.g. using `datawizard::reverse()`.
+> test-check_itemscale.R: Some of the values are negative. Maybe affected items need to be
+> test-check_itemscale.R:   reverse-coded, e.g. using `datawizard::reverse()`.
+> test-check_itemscale.R: Some of the values are negative. Maybe affected items need to be
+> test-check_itemscale.R:   reverse-coded, e.g. using `datawizard::reverse()`.
+> test-check_itemscale.R: Some of the values are negative. Maybe affected items need to be
+> test-check_itemscale.R:   reverse-coded, e.g. using `datawizard::reverse()`.
+> test-check_itemscale.R: Some of the values are negative. Maybe affected items need to be
+> test-check_itemscale.R:   reverse-coded, e.g. using `datawizard::reverse()`.
+> test-check_itemscale.R: Some of the values are negative. Maybe affected items need to be
+> test-check_itemscale.R:   reverse-coded, e.g. using `datawizard::reverse()`.
+> test-check_itemscale.R: Some of the values are negative. Maybe affected items need to be
+> test-check_itemscale.R:   reverse-coded, e.g. using `datawizard::reverse()`.
+> test-check_itemscale.R: Some of the values are negative. Maybe affected items need to be
+> test-check_itemscale.R:   reverse-coded, e.g. using `datawizard::reverse()`.
+> test-check_itemscale.R: Some of the values are negative. Maybe affected items need to be
+> test-check_itemscale.R:   reverse-coded, e.g. using `datawizard::reverse()`.
+> test-check_itemscale.R: Some of the values are negative. Maybe affected items need to be
+> test-check_itemscale.R:   reverse-coded, e.g. using `datawizard::reverse()`.
+> test-check_collinearity.R: NOTE: 2 fixed-effect singletons were removed (2 observations).
+> test-check_overdispersion.R: Overdispersion detected.
+> test-check_overdispersion.R: Underdispersion detected.
+> test-glmmPQL.R: iteration 1
+> test-item_discrimination.R: Some of the values are negative. Maybe affected items need to be
+> test-item_discrimination.R:   reverse-coded, e.g. using `datawizard::reverse()`.
+> test-item_discrimination.R: Some of the values are negative. Maybe affected items need to be
+> test-item_discrimination.R:   reverse-coded, e.g. using `datawizard::reverse()`.
+> test-item_discrimination.R: Some of the values are negative. Maybe affected items need to be
+> test-item_discrimination.R:   reverse-coded, e.g. using `datawizard::reverse()`.
+> test-check_outliers.R: No outliers were detected (p = 0.238).
+> test-performance_aic.R: Model was not fitted with REML, however, `estimator = "REML"`. Set
+> test-performance_aic.R:   `estimator = "ML"` to obtain identical results as from `AIC()`.
+[ FAIL 0 | WARN 2 | SKIP 41 | PASS 423 ]
+
+══ Skipped tests (41) ══════════════════════════════════════════════════════════
+• On CRAN (36): 'test-bootstrapped_icc_ci.R:2:3',
+  'test-bootstrapped_icc_ci.R:44:3', 'test-binned_residuals.R:163:3',
+  'test-binned_residuals.R:190:3', 'test-check_convergence.R:1:1',
+  'test-check_dag.R:1:1', 'test-check_distribution.R:1:1',
+  'test-check_itemscale.R:1:1', 'test-check_itemscale.R:100:1',
+  'test-check_model.R:1:1', 'test-check_collinearity.R:140:3',
+  'test-check_collinearity.R:239:1', 'test-check_residuals.R:2:3',
+  'test-check_singularity.R:2:3', 'test-check_singularity.R:30:3',
+  'test-check_zeroinflation.R:73:3', 'test-check_zeroinflation.R:112:3',
+  'test-compare_performance.R:46:3', 'test-helpers.R:1:1',
+  'test-item_omega.R:1:1', 'test-item_omega.R:31:3',
+  'test-check_outliers.R:115:3', 'test-check_outliers.R:339:3',
+  'test-mclogit.R:56:1', 'test-model_performance.bayesian.R:1:1',
+  'test-model_performance.lavaan.R:1:1', 'test-model_performance.merMod.R:2:3',
+  'test-model_performance.merMod.R:37:3', 'test-model_performance.psych.R:1:1',
+  'test-model_performance.rma.R:36:1', 'test-performance_reliability.R:23:3',
+  'test-pkg-ivreg.R:1:1', 'test-r2_nagelkerke.R:35:3', 'test-r2_bayes.R:39:3',
+  'test-rmse.R:39:3', 'test-test_likelihoodratio.R:55:1'
+• On Mac (4): 'test-check_predictions.R:1:1', 'test-icc.R:1:1',
+  'test-nestedLogit.R:1:1', 'test-r2_nakagawa.R:1:1'
+• getRversion() > "4.4.0" is TRUE (1): 'test-check_outliers.R:300:3'
+
+[ FAIL 0 | WARN 2 | SKIP 41 | PASS 423 ]
+> 
+> proc.time()
+   user  system elapsed 
+ 36.748   2.915  22.305 

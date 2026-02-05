@@ -1,0 +1,47 @@
+---
+title: "packages"
+author: "Andy Field"
+output: learnr::tutorial
+---
+
+```{r, eval = F, echo = F}
+# Create bib file for R packages
+
+tidylist <- c('tidyverse', 'dplyr', 'forcats', 'ggplot2', 'readr', 'stringr', 'tibble', 'tidyr')
+easylist <- c("easystats", "datawizard", "effectsize", "insight", "parameters")
+otherlist <- c('here', 'WRS2')
+
+here::here("inst/tutorials/discovr_09/packages.bib") |>
+  knitr::write_bib(c(easylist, tidylist, otherlist), file = _)
+```
+
+In this tutorial all packages are pre-loaded. If working outside of the tutorial, load the `easystats` and `tidyverse` packages (and any others if you're using a concise style - see previous section) at the beginning of your `r quarto()` document:
+
+```{r eval = FALSE}
+library(easystats)
+library(tidyverse)
+```
+
+This tutorial uses the following packages:
+
+- `here` [@R-here]
+- `WRS2` [@R-WRS2; @WRS22020]
+
+It also uses these packages from:
+
+### easystats
+
+- `datawizard` [@R-datawizard; @datawizard2022]
+- `effectsize` [@R-effectsize; @effectsize2020]
+- `insight` [@R-insight]
+- `parameters` [@R-parameters; @parameters2020]
+ 
+### tidyverse 
+ 
+- `dplyr` [@R-dplyr]
+- `forcats` [@R-forcats]
+- `ggplot2` [@R-ggplot2; @wickham_ggplot2_2016]
+- `readr` [@R-readr]
+- `stringr` [@R-stringr]
+- `tibble` [@R-tibble]
+- `tidyr` [@R-tidyr]

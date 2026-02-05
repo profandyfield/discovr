@@ -1,0 +1,122 @@
+
+R version 4.5.1 (2025-06-13) -- "Great Square Root"
+Copyright (C) 2025 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin20
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(parameters)
+> library(testthat)
+> 
+> test_check("parameters")
+Starting 2 test processes.
+> test-include_reference.R: Your model may suffer from singularity (see `?lme4::isSingular` and
+> test-include_reference.R:   `?performance::check_singularity`).
+> test-include_reference.R:   Some of the confidence intervals of the random effects parameters are
+> test-include_reference.R:   probably not meaningful!
+> test-include_reference.R:   You may try to impose a prior on the random effects parameters, e.g.
+> test-include_reference.R:   using the glmmTMB package.
+> test-include_reference.R: Your model may suffer from singularity (see `?lme4::isSingular` and
+> test-include_reference.R:   `?performance::check_singularity`).
+> test-include_reference.R:   Some of the confidence intervals of the random effects parameters are
+> test-include_reference.R:   probably not meaningful!
+> test-include_reference.R:   You may try to impose a prior on the random effects parameters, e.g.
+> test-include_reference.R:   using the glmmTMB package.
+> test-model_parameters.afex_aov.R: Contrasts set to contr.sum for the following variables: condition, talk
+> test-model_parameters.afex_aov.R: Contrasts set to contr.sum for the following variables: condition, talk
+> test-model_parameters.afex_aov.R: Contrasts set to contr.sum for the following variables: treatment, gender
+> test-n_factors.R: [1] "# Method Agreement Procedure:"                                                                                                                                                                                                                 
+> test-n_factors.R: [2] ""                                                                                                                                                                                                                                              
+> test-n_factors.R: [3] "The choice of 1 dimensions is supported by 11 (84.62%) methods out of 13 (Bartlett, Anderson, Lawley, Optimal coordinates, Acceleration factor, Parallel analysis, Kaiser criterion, Scree (SE), Scree (R2), VSS complexity 1, Velicer's MAP)."
+> test-n_factors.R: [1] "# Method Agreement Procedure:"                                                                               
+> test-n_factors.R: [2] ""                                                                                                            
+> test-n_factors.R: [3] "The choice of 1 dimensions is supported by 3 (60.00%) methods out of 5 (Velicer's MAP, BIC, BIC (adjusted))."
+[ FAIL 0 | WARN 2 | SKIP 132 | PASS 665 ]
+
+══ Skipped tests (132) ═════════════════════════════════════════════════════════
+• Installed glmmTMB is version 1.1.12; but 1.1.13 is required (1):
+  'test-model_parameters_df_method.R:4:1'
+• On CRAN (118): 'test-Hmisc.R:1:1', 'test-GLMMadaptive.R:1:1',
+  'test-averaging.R:1:1', 'test-backticks.R:1:1',
+  'test-bootstrap_emmeans.R:1:1', 'test-bootstrap_parameters.R:1:1',
+  'test-brms.R:1:1', 'test-compare_parameters.R:90:5',
+  'test-compare_parameters.R:95:5', 'test-complete_separation.R:4:1',
+  'test-complete_separation.R:18:1', 'test-complete_separation.R:28:1',
+  'test-coxph.R:69:1', 'test-efa.R:1:1', 'test-emmGrid-df_colname.R:1:1',
+  'test-equivalence_test.R:3:1', 'test-equivalence_test.R:13:1',
+  'test-equivalence_test.R:22:3', 'test-equivalence_test.R:112:3',
+  'test-factor_analysis.R:2:3', 'test-factor_analysis.R:124:3',
+  'test-format_model_parameters2.R:2:3', 'test-gam.R:30:1',
+  'test-get_scores.R:1:1', 'test-glmer.R:1:1', 'test-glmmTMB-2.R:1:1',
+  'test-glmmTMB-profile_CI.R:2:3', 'test-glmmTMB.R:1:1', 'test-helper.R:1:1',
+  'test-ivreg.R:45:1', 'test-lcmm.R:1:1', 'test-lmerTest.R:1:1',
+  'test-include_reference.R:4:1', 'test-include_reference.R:62:1',
+  'test-include_reference.R:110:1', 'test-mipo.R:5:1', 'test-mipo.R:23:1',
+  'test-mmrm.R:1:1', 'test-model_parameters.BFBayesFactor.R:4:3',
+  'test-model_parameters.BFBayesFactor.R:77:3',
+  'test-model_parameters.BFBayesFactor.R:114:3',
+  'test-model_parameters.anova.R:1:1', 'test-model_parameters.aov.R:1:1',
+  'test-model_parameters.aov_es_ci.R:183:3',
+  'test-model_parameters.aov_es_ci.R:294:3',
+  'test-model_parameters.aov_es_ci.R:344:3',
+  'test-model_parameters.aov_es_ci.R:397:3',
+  'test-model_parameters.bracl.R:1:1', 'test-model_parameters.cgam.R:1:1',
+  'test-model_parameters.coxme.R:1:1', 'test-marginaleffects.R:170:1',
+  'test-marginaleffects.R:199:3', 'test-model_parameters.epi2x2.R:1:1',
+  'test-model_parameters.efa_cfa.R:30:3',
+  'test-model_parameters.fixest_multi.R:1:1',
+  'test-model_parameters.glm.R:35:1', 'test-model_parameters.glm.R:67:1',
+  'test-model_parameters.glmgee.R:1:1', 'test-model_parameters.fixest.R:2:3',
+  'test-model_parameters.fixest.R:77:3',
+  'test-model_parameters.fixest.R:145:1',
+  'test-model_parameters.logistf.R:1:1', 'test-model_parameters.logitr.R:1:1',
+  'test-model_parameters.mclogit.R:1:1', 'test-model_parameters.mediate.R:1:1',
+  'test-model_parameters.mixed.R:2:1', 'test-model_parameters.nnet.R:5:1',
+  'test-model_parameters.vgam.R:3:1', 'test-model_parameters_df.R:1:1',
+  'test-model_parameters_ordinal.R:1:1',
+  'test-model_parameters_random_pars.R:1:1', 'test-model_parameters_std.R:1:1',
+  'test-model_parameters_std_mixed.R:1:1', 'test-n_factors.R:10:3',
+  'test-n_factors.R:26:3', 'test-n_factors.R:76:3', 'test-p_adjust.R:1:1',
+  'test-p_direction.R:1:1', 'test-p_significance.R:1:1', 'test-p_value.R:14:1',
+  'test-panelr.R:1:1', 'test-pipe.R:1:1', 'test-pca.R:64:1', 'test-polr.R:1:1',
+  'test-pool_parameters.R:1:1', 'test-pool_parameters.R:32:1',
+  'test-posterior.R:1:1', 'test-plm.R:97:1', 'test-print_AER_labels.R:5:1',
+  'test-printing-stan.R:1:1', 'test-printing.R:1:1',
+  'test-pretty_names.R:40:1', 'test-pretty_names.R:73:5',
+  'test-printing2.R:14:5', 'test-printing2.R:21:5', 'test-printing2.R:26:5',
+  'test-printing2.R:31:5', 'test-printing2.R:36:5', 'test-printing2.R:48:5',
+  'test-printing2.R:91:7', 'test-printing2.R:126:5', 'test-quantreg.R:1:1',
+  'test-random_effects_ci-glmmTMB.R:3:1', 'test-random_effects_ci.R:1:1',
+  'test-robust.R:1:1', 'test-serp.R:5:1', 'test-svylme.R:1:1',
+  'test-svyolr.R:1:1', 'test-visualisation_recipe.R:1:1', 'test-wrs2.R:55:1',
+  'test-standardize_parameters.R:28:1', 'test-standardize_parameters.R:36:3',
+  'test-standardize_parameters.R:61:3', 'test-standardize_parameters.R:173:3',
+  'test-standardize_parameters.R:297:3', 'test-standardize_parameters.R:332:3',
+  'test-standardize_parameters.R:425:3', 'test-standardize_parameters.R:515:3'
+• On Mac (7): 'test-group_level_total.R:1:1', 'test-nestedLogit.R:78:3',
+  'test-rstanarm.R:1:1', 'test-sampleSelection.R:1:1',
+  'test-simulate_model.R:1:1', 'test-simulate_parameters.R:1:1',
+  'test-weightit.R:1:1'
+• TODO: check this test locally, fails on CI, probably due to scoping issues?
+  (1): 'test-marginaleffects.R:280:3'
+• TODO: fix this test (1): 'test-model_parameters.lqmm.R:40:3'
+• TODO: this one actually is not correct. (1):
+  'test-model_parameters_robust.R:127:3'
+• empty test (2): 'test-wrs2.R:69:1', 'test-wrs2.R:81:1'
+• {metaBMA} is not installed (1): 'test-model_parameters.metaBMA.R:1:1'
+
+[ FAIL 0 | WARN 2 | SKIP 132 | PASS 665 ]
+> 
+> proc.time()
+   user  system elapsed 
+ 76.299   5.274  43.873 

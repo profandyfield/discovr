@@ -1,0 +1,45 @@
+---
+title: "packages"
+author: "Andy Field"
+output: learnr::tutorial
+---
+
+
+```{r, eval = F, echo = F}
+# Create bib file for R packages
+
+tidylist <- c('tidyverse', 'dplyr', 'forcats', 'readr', 'tibble', 'tidyr')
+easylist <- c('easystats', 'datawizard', 'effectsize', 'insight', 'parameters')
+otherlist <- c('here', 'knitr', 'kableExtra')
+
+here::here("inst/tutorials/discovr_19/packages.bib") |>
+  knitr::write_bib(c(easylist, tidylist, otherlist), file = _)
+```
+
+In this tutorial all packages are pre-loaded. If working outside of the tutorial, load the [easystats]{.pkg} and [tidyverse]{.pkg} packages (and any others if you're using a concise style - see previous section) at the beginning of your `r quarto()` document:
+
+```{r eval = FALSE}
+library(easystats)
+library(tidyverse)
+```
+
+This tutorial uses the following packages:
+
+- [here]{.pkg} [@R-here]
+
+It also uses these packages from:
+
+### easystats 
+
+- [datawizard]{.pkg} [@R-datawizard; @datawizard2022]
+- [effectsize]{.pkg} [@R-effectsize; @effectsize2020]
+- [insight]{.pkg} [@R-insight]
+- [parameters]{.pkg} [@R-parameters; @parameters2020]
+ 
+### tidyverse 
+ 
+- [dplyr]{.pkg} [@R-dplyr]
+- [forcats]{.pkg} [@R-forcats]
+- [readr]{.pkg} [@R-readr]
+- [tibble]{.pkg} [@R-tibble]
+- [tidyr]{.pkg} [@R-tidyr].

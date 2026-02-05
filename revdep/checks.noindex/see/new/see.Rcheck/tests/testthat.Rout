@@ -1,0 +1,66 @@
+
+R version 4.5.1 (2025-06-13) -- "Great Square Root"
+Copyright (C) 2025 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin20
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> # graphics engine changed in R 4.4, and so snapshots generated on
+> # previous R version won't work
+> if (getRversion() >= "4.4.0") {
++   library(testthat)
++   library(see)
++ 
++   test_check("see")
++ }
+Starting 2 test processes.
+> test-performance_large_datasets.R: Ignoring unknown labels:
+> test-performance_large_datasets.R: * size : ""
+> test-plot.check_normality.R: [[1]]
+> test-plot.check_normality.R: 
+> test-plot.check_normality.R: Loading required namespace: GPArotation
+> test-plot.check_outliers.R: `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
+> test-plot.compare_parameters.R: boundary (singular) fit: see help('isSingular')
+> test-plot.parameters_model.R: Ignoring unknown labels:
+> test-plot.parameters_model.R: * colour : "CI"
+> test-plot.performance_pp_check.R: Ignoring unknown labels:
+> test-plot.performance_pp_check.R: * size : ""
+[ FAIL 0 | WARN 1 | SKIP 36 | PASS 40 ]
+
+══ Skipped tests (36) ══════════════════════════════════════════════════════════
+• Fails at retrieving data (1): 'test-plot.simulate_parameters.R:1:1'
+• On CRAN (35): 'test-check_model.R:2:3', 'test-geom_binomdensity.R:1:1',
+  'test-plot.check_collinearity.R:1:1',
+  'test-performance_large_datasets.R:36:3',
+  'test-performance_large_datasets.R:66:3', 'test-plot.check_normality.R:1:1',
+  'test-plot.check_normality.R:46:1', 'test-plot.check_outliers.R:1:1',
+  'test-plot.check_outliers.R:82:1', 'test-plot.compare_parameters.R:1:1',
+  'test-plot.effectsize_table.R:1:1', 'test-plot.check_dag.R:5:1',
+  'test-plot.check_dag.R:56:1', 'test-plot.check_dag.R:75:1',
+  'test-plot.estimate_density.R:12:1', 'test-plot.estimate_density.R:34:3',
+  'test-plot.p_direction.R:11:1', 'test-plot.p_significance.R:11:1',
+  'test-plot.n_factors.R:1:1', 'test-plot.performance_pp_check.R:1:1',
+  'test-plot.performance_pp_check.R:14:3', 'test-plot.performance_roc.R:1:1',
+  'test-plot.parameters_model.R:1:1', 'test-plot.parameters_model.R:17:1',
+  'test-plot.parameters_model.R:54:1', 'test-plot.parameters_model.R:110:1',
+  'test-plot.parameters_model.R:129:1', 'test-scale_color_colorhex_c.R:1:1',
+  'test-plots.R:1:1', 'test-vdiffr_bayestestr_plots.R:1:1',
+  'test-vdiffr_check_model.R:1:1', 'test-scale_color_okabeito.R:1:1',
+  'test-vdiffr_geoms_coords.R:1:1', 'test-vdiffr_scale_color.R:1:1',
+  'test-vdiffr_themes.R:3:1'
+
+[ FAIL 0 | WARN 1 | SKIP 36 | PASS 40 ]
+> 
+> proc.time()
+   user  system elapsed 
+ 72.853   3.581  41.103 

@@ -1,0 +1,1262 @@
+---
+title: "discovr repeated measures"
+author: "Andy Field"
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+    theme: "united"
+    highlight: "kate"
+    css: ./css/discovr_style_future.css
+runtime: shiny_prerendered
+description: "Repeated measures designs. Fitting models for one- and two-way repeated measures designs using the afex package. This tutorial builds on previous ones to show how models can be fit with one or two categorical predictors when these variables have been manipulated within the same entities. We look at fitting the models, setting contrasts for the categorical predictors, obtaining estimated marginal means, interaction plots, simple effects analysis, diagnostic plots, and robust models."
+bibliography: [discovr_15.bib, packages.bib]
+---
+<html lang="en">
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+
+#necessary to render tutorial correctly
+library(learnr) 
+library(htmltools)
+#easystats
+library(datawizard)
+library(insight)
+library(modelbased)
+library(parameters)
+library(performance)
+#tidyverse
+library(dplyr)
+library(ggplot2)
+#non tidyverse/easystats
+library(afex)
+library(marginaleffects)
+library(WRS2)
+#students don't use
+library(knitr)
+
+
+source("./www/discovr_helpers.R")
+
+#Read data files needed for the tutorial
+
+sniff_tib <- discovr::sniffer_dogs
+scent_tib <- discovr::alien_scents
+```
+
+
+
+
+# discovr repeated measures designs (GLM 4)
+
+```{r, child = "./docs/intro.Rmd"}
+
+```
+
+## Packages {data-progressive=FALSE}
+
+```{r, child = "./docs/packages.Rmd"}
+
+```
+
+
+## Data
+
+```{r, child = "./docs/data.Rmd"}
+
+```
+
+
+## Fitting models
+
+```{r, child = "./docs/fit_models.Rmd"}
+
+```
+
+
+## `r bmu()` Aliens and sniffer dogs [(B)]{.lbl}
+
+The main examples in this tutorial are from [@fielddsr22026]. When the alien invasion comes we'll need spaniels (or possibly other dogs, but lets hope its mainly spaniels because spaniels are cool) to help us to identify the space lizards. Having got wind of a potential invasion from alien space lizards, some of whom could shapeshift into humanoid form, the top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) met to come up with a plan for detecting the invading space lizards. They decided to test the plausibility of training sniffer dogs to detect aliens. Over many trials 8 of their best dogs (Milton, Woofy, Ramsey, Mr. Snifficus III, Willock, The Venerable Dr. Waggy, Lord Scenticle, and Professor Nose) were recruited for a pilot study. During training, these dogs were rewarded for making vocalizations while sniffing alien space lizards (which they happened to have a few of in Hangar 18). On the test trial, the 8 dogs were allowed to sniff 4 entities for 1-minute each: an alien space lizard, a shapeshifting alien space lizard who had taken on humanoid form and worked undetected as a statistics lecturer, a human, and a human mannequin). The number of vocalizations made during each 1-minute sniffing session was recorded. So, this is a [repeated measures design]{.alt}: each dog has four scores representing the number of vocalizations they made while sniffing each of the four entities.
+
+> - H~1~: If training has been successful the dogs should vocalise more when sniffing space lizards compared to when sniffing other things
+
+
+## `r bmu()` Step 1: summarize [(A)]{.lbl}
+
+<div class="stepbox">
+  `r step()` **Step 1**
+
+Get your data into `r rproj()` and pre-process using [tidyverse]{.pkg} packages or the [datawizard]{.pkg} package from [easystats]{.pkg}.
+</div>
+
+
+#### `r alien()` Alien coding challenge
+
+View the data in [sniff_tib]{.alt}.
+
+```{r sniff_tib, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r sniff_tib-solution}
+sniff_tib
+```
+
+Note that there are three variables: the `dog_name`, which is a character variable (note the `<chr>` under the name), `entity` (alien, shapeshifter, human, mannequin), which is a factor (note the `<fct>` under the name) and `vocalizations` (the number of vocalizations made during 1 minute of sniffing), which is numeric and has the data type 'double' (note the `<dbl>` under the name). The data are in tidy format, which means that each row represents an instance of the outcome variable and the columns code information about each instance, for example, which dog the instance is related to and what they sniffed. Consequently each dog occupies 4 rows of the tibble (because each dog contributes four instances of the outcome variable, `vocalizations`).
+
+The variable `entity` is a factor (categorical variable), so having read the data file and converted this variable to a factor it's a good idea to check the order of the levels of this variables.
+
+#### `r alien()` Alien coding challenge
+
+Using what you've learnt in previous tutorials check the order of the levels of the variables `entity`.
+
+```{r chk_levels, exercise = TRUE, exercise.lines = 3}
+
+```
+
+```{r chk_levels-hint-1}
+# use this function:
+levels()
+```
+
+```{r chk_levels-hint-2}
+# Remember that to access a variable you use:
+name_of_tibble$name_of_variable
+```
+
+```{r chk_levels-hint-3}
+# solution:
+levels(sniff_tib$entity)
+```
+
+You should find that the levels are ordered as alien, human, mannequin, and shapeshifter.
+
+#### `r alien()` Alien coding challenge
+
+Use what you already know to create an object called [sniff_sum]{.alt} that is a table of descriptive statistics for vocalizations grouped by the entity sniffed and display it.
+
+<div class="tip">
+  `r cat_space()` **Tip**
+
+When we group data and use `describe_distribution()` the resulting table has a column called [Variable]{.opt} that tells you which variable is being described. If we select a single variable to be described this column is redundant. We can remove it using `data_remove()` from [datawizard]{.pkg} and specifying ["Variable"]{.alt} as the variable to be removed. For example, to remove this column from our summary table ([sniff_sum]{.alt}) before rendering we can use:
+
+```{r, eval = F, class.source = '.panel_alt'}
+sniff_sum |> 
+  data_remove("Variable") |>
+  display()
+```
+</div>
+
+
+```{r sniff_sum, exercise = TRUE, exercise.lines = 10}
+
+```
+
+```{r sniff_sum-hint-1}
+# Start by piping the tibble into the group_by function to group output by entity:
+sniff_sum <- sniff_tib |> 
+  group_by(entity)
+# Now pipe the results into the describe_distribution() function
+```
+
+```{r sniff_sum-hint-2}
+# Pipe the results into the summarize() function
+sniff_sum <- sniff_tib |> 
+  group_by(entity) |> 
+  describe_distribution(select = "vocalizations") 
+# Now use display() to display the table (pay attention to the tip)
+```
+
+
+```{r sniff_sum-solution}
+# Solution
+sniff_sum <- sniff_tib |> 
+  group_by(entity) |> 
+  describe_distribution(select = "vocalizations") 
+
+sniff_sum |> 
+  data_remove("Variable") |> # optional to remove redundant column
+  display()
+```
+
+It looks like the dogs made the most vocalizations when sniffing the alien and shapeshifting alien, which is what we would expect if training was successful.
+
+## `r bmu()` Step 2: Visualize [(A)]{.lbl}
+
+<div class="stepbox">
+  `r step()` **Step 2**
+
+Visualise the data using the [ggplot2]{.pkg} package from [tidyverse]{.pkg}.
+</div>
+
+#### `r alien()` Alien coding challenge
+
+Use what you already know to create a violin plot of vocalization scores split by the entity (*x*-axis).
+
+
+```{r sniff_gg, exercise = TRUE, exercise.lines = 7}
+
+```
+
+```{r sniff_gg-hint-1}
+# Start by setting up the plot (replace the xs):
+ggplot(sniff_tib, aes(x = xxxx, y = xxxx)) 
+
+```
+
+```{r sniff_gg-hint-2}
+# Now use geom_violin() to add the distributions. Feel free to change the colour and fill by replacing #999933 and #DDCC77 with different HEX codes. 
+ggplot(sniff_tib, aes(x = entity, y = vocalizations)) +
+  geom_violin(colour = "#999933", fill = "#DDCC77", alpha = 0.3) 
+```
+
+```{r sniff_gg-hint-3}
+# Now use stat_summary() to add the confidence intervals (replace the xs)
+ggplot(sniff_tib, aes(x = entity, y = vocalizations)) +
+  geom_violin(colour = "#999933", fill = "#DDCC77", alpha = 0.3) +
+  stat_summary(fun.data = "xxxx", colour = "#999933")
+```
+
+```{r sniff_gg-hint-4}
+# Use scale_y_continuous() to set the breaks for the y-axis to be whole numbers between 0 and 12 (replace the xs):
+ggplot(sniff_tib, aes(x = entity, y = vocalizations)) +
+  geom_violin(colour = "#999933", fill = "#DDCC77", alpha = 0.3) +
+  stat_summary(fun.data = "mean_cl_normal", colour = "#999933") +
+  scale_y_continuous(xxxx = xxxx) +
+```
+
+```{r sniff_gg-hint-5}
+# use labs() to add axis labels to the x, y and colour legend (replace xxxs):
+ggplot(sniff_tib, aes(x = entity, y = vocalizations)) +
+  geom_violin(colour = "#999933", fill = "#DDCC77", alpha = 0.3) +
+  stat_summary(fun.data = "mean_cl_normal", colour = "#999933") +
+  scale_y_continuous(breaks = 0:12) +
+  labs(y = "xxxx", x = "xxxx")
+```
+
+```{r sniff_gg-hint-6}
+# add a theme (replace the xs):
+ggplot(sniff_tib, aes(x = entity, y = vocalizations)) +
+  geom_violin(colour = "#999933", fill = "#DDCC77", alpha = 0.3) +
+  stat_summary(fun.data = "mean_cl_normal", colour = "#999933") +
+  scale_y_continuous(breaks = 0:12) +
+  labs(y = "Vocalizations (in 1 minute)", x = "Entity sniffed") +
+  xxxxxx()
+```
+
+```{r sniff_gg-solution}
+# Solution
+ggplot(sniff_tib, aes(x = entity, y = vocalizations)) +
+  geom_violin(colour = "#999933", fill = "#DDCC77", alpha = 0.3) +
+  stat_summary(fun.data = "mean_cl_normal", colour = "#999933") +
+  scale_y_continuous(breaks = 0:12) +
+  labs(x = "Entity sniffed", y = "Vocalizations (in 1 minute)") +
+  theme_minimal()
+```
+
+The plot reiterates what we know from the means: dogs made the most vocalizations when sniffing the alien and shapeshifting alien, which is what we would expect if training was successful.
+
+## `r user_visor()` Step 3: Fit the model [(B)]{.lbl}
+
+The model we're fitting is described by the following equation (which is simplified in that I have represented the predictor variable `entity` as a single variable rather than the three dummy variables that represent it in the actual fitted model):
+
+$$
+\begin{aligned}
+\text{vocalizations}_{ij} & = \hat{b}_{0j} + \hat{b}_{1j}\text{entity}_{ij}+ e_{ij}\\
+\hat{b}_{0j} & = \hat{b}_0 + \hat{u}_{0j} \\
+\end{aligned}
+$$
+
+The main difference to models we have seen before is that the intercept ($\hat{b}_{0j}$) is made up of the overall intercept ($\hat{b}_0$) and an estimate of the variance of intercepts for each individual ($\hat{u}_{0j}$). Put another way, we model the fact that individual dogs will vary in the overall number of vocalizations they make. 
+
+We can fit an overall model of type of entity predicting the number of dog vocalizations using the `afex` package, which we met in `discovr_13`. We can fit a model using this code:
+
+```{r, eval = F}
+afex::aov_4(outcome ~ predictor + (1|id_variable), data = my_tib)
+```
+
+In which we replace [my_tib]{.alt} with the name of our tibble. When we have a repeated measures design we make one important change to this code. Instead of using [1|id_variable]{.alt}, we need to tell the function that any repeated measures predictor variables (lets call them [rm_predictors]{.alt}`) are nested within individual participants. Therefore, this term changes to (in general) [(rm_predictors|id_variable)]{.alt}:
+
+```{r, eval = F}
+afex::aov_4(outcome ~ predictor + (rm_predictors|id_variable), data = my_tib)
+```
+
+In the current design, there is only one repeated measures predictor variable, which is [entity]{.alt} and the variable that uniquely identifies the different dogs is [dog_name]{.alt}, therefore, we'd replace [(rm_predictors|id_variable)]{.alt} with [(entity|dog_name)]{.alt} to indicate that the variable `entity` is nested within the variable `dog_name`. Other than this change the function is used in the same way that we have used it before.
+
+#### `r robot()` Code example
+
+Remembering that the outcome variable is `vocalizations`, and the tibble containing the data is called [sniff_tib]{.alt}, we can put it all together to fit and store the model as [sniff_afx]{.alt} using this code:
+
+```{r, eval = F}
+sniff_afx <- afex::aov_4(vocalizations ~ entity + (entity|dog_name), data = sniff_tib)
+```
+
+As ever we can use `model_parameters()` to display a summary of our model and add effect sizes and `display()` to render the table nicely:
+
+```{r, eval = F}
+model_parameters(sniff_afx, es_type = "omega", ci = 0.95) |> 
+  display(use_symbols = TRUE)
+```
+
+
+#### `r alien()` Alien coding challenge
+
+Use the `aov_4()` function to fit the model.
+
+```{r sniff_aov_4, exercise = TRUE, exercise.lines = 6}
+
+```
+
+```{r sniff_aov_4-hint-1}
+# fit the model (replace the xs):
+sniff_afx <- afex::aov_4(xxxxx ~ xxxxx*xxxxx + (xxxx|xxxxx), data = xxxxx)
+```
+
+```{r sniff_aov_4-hint-2}
+# fit the model:
+sniff_afx <- afex::aov_4(vocalizations ~ entity + (entity|dog_name), data = sniff_tib)
+# now use model_parameters() and display() to show the results in a nice table (replace the xs):
+model_parameters(xxxx, xxxx = "omega") |> 
+  display(xxxx = TRUE)
+```
+
+```{r sniff_aov_4-solution}
+# Solution
+sniff_afx <- afex::aov_4(vocalizations ~ entity + (entity|dog_name), data = sniff_tib)
+model_parameters(sniff_afx, es_type = "omega") |> 
+  display(use_symbols = TRUE)
+```
+
+```{r qn_sphericity_ex1, echo = F}
+quiz(caption = "One-way repeated measures quiz (level 2)",
+  question("Which of the following statements about the assumption of sphericity is false?",
+         answer("It is the assumption that the variances for levels of a repeated-measures variable are equal.", correct = T, message = "This is false, therefore it is the correct answer. Sphericity refers to the equality of variances of the *differences* between treatment levels."),
+         answer("It is automatically met when a variable has only two levels.", message = "This statement is true, therefore it is the incorrect answer. When we have only two levels of the within-subjects variable, there is only one pair of differences and therefore only one 'variance of differences', so there is no other 'variance of differences' to compare it to"),
+         answer("If it is not met then it is remedied by adjusting the degrees of freedom by the degree to which the data are not spherical", message = "This statement is true, therefore it is the incorrect answer."),
+         correct = "Correct - well done!",
+         allow_retry = T,
+         random_answer_order = T
+),
+question("How would you interpret the effect of `entity` in the output?",
+         answer("The number of vocalizations was significantly different across the entities sniffed because the Greenhouse-Geisser adjusted *p*-value associated with the *F*-statistic is 0.063, which is greater than than the criterion value of 0.05.", message = "This answer is incorrect, notwithstanding how pointless the 0.05 cutoff is, technically this effect is not significant."),
+         answer("The number of vocalizations was *not* significantly different across the entities sniffed because the Greenhouse-Geisser adjusted *p*-value associated with the *F*-statistic is 0.063, which is greater than than the criterion value of 0.05.", correct = T, message = "This answer is correct, although note that this illustrates the artibtrary nature of having a cut off value to determine significance."),
+         correct = "",
+         allow_retry = T,
+         random_answer_order = T
+)
+)
+```
+
+```{r echo = F}
+sniff_afx <- afex::aov_4(vocalizations ~ entity + (entity|dog_name), data = sniff_tib)
+sniff_aov <- model_parameters(sniff_afx, es_type = "omega")
+sniff_es <- report_value(100*value_from_ez(sniff_aov, value = "Omega2_partial", as_is = T), 0)
+sniff_cons <- cbind(
+  aliens_vs_non = c(1/2, -1/2, -1/2, 1/2),
+  alien_vs_shape = c(1/2, 0, 0, -1/2),
+  human_vs_manquin = c(0, 1/2, -1/2, 0)
+  )
+
+sniff_con <- estimate_contrasts(sniff_afx, contrast = "entity", comparison = sniff_cons)
+```
+
+
+
+<div class="reportbox">
+  `r pencil()` **Report**`r rproj()`
+
+There was no significant effect of the type of entity on sniffer dog's vocalizations when approaching them, `r report_ez_aov(sniff_aov, es_type = "Omega2_partial")`. However, the type of entity explained `r sniff_es`% of the variance in vocalizations, which is a very substantial effect suggesting that the study may have been under powered.
+</div>
+
+
+## `r bmu()` Step 4: Evaluate the model [(A)]{.lbl}
+
+<div class="stepbox">
+  `r step()` **Step 4**
+
+Evaluate the model using a small number of functions from the [performance]{.pkg} package from [easystats]{.pkg}. Specially, we evaluate
+
+- How well the model fits the data
+- Whether the underlying assumptions of the model are met. If not, we refit the model using robust methods (see Figure 3).
+ 
+</div>
+
+
+```{r sniff_afx_setup}
+sniff_afx <- afex::aov_4(vocalizations ~ entity + (entity|dog_name), data = sniff_tib)
+```
+
+
+#### `r alien()` Alien coding challenge
+
+Fitting the model using [afex]{.pkg} limits the extent to which we can evaluate the model but we can get limited plots in the usual way using `check_model()`. Try this in the code box.
+
+```{r sniff_chk, exercise = TRUE, exercise.lines = 3, exercise.setup = "sniff_afx_setup", fig.height = 7}
+
+```
+
+```{r sniff_chk-solution}
+check_model(sniff_afx)
+```
+
+The top left plot suggests we can assume homogeneity and linearity. The other plots suggest non-normal residuals although this assumption is relatively unimportant.
+
+
+## `r bmu()` Step 5: Interpret the model [(A)]{.lbl}
+
+<div class="stepbox">
+  `r step()` **Step 5**
+
+Interpret the model
+
+- Interpret the values that define the model (the [parameter estimates]{.alt}) using the [parameters]{.pkg} package from [easystats]{.pkg}.
+- Make specific predictions from our model using the [modelbased]{.pkg} package from [easystats]{.pkg}.
+ 
+</div>
+
+Unfortunately, one price we pay for using `afex` is that there are only overall effects so we can't use model parameters to make sense of the model. Instead, we need to focus on plots and focussed predictions (in this case we'll use contrast analysis).
+
+
+### `r user_visor()` Planned contrasts [(B)]{.lbl}
+
+If the dog training had been successful then we'd expect sniffer dogs to make more vocalizations when sniffing alien entities than non alien-entities. Therefore, our first contrast would be to compare vocalizations to alien entities (aliens and shapeshifting aliens) against those for humans and mannequin:
+
+* Contrast 1: {alien, shapeshifter} vs. {human, mannequin}
+
+We have two 'chunks' in contrast 1 that would then need to be decomposed:
+
+* Contrast 2: {alien} vs. {shapeshifter}
+* Contrast 3: {human} vs. {mannequin}
+
+If we follow the rules that we learnt about contrast coding we'd:
+
+* Have $k-1$ contrasts, and with 4 groups that means 3 contrasts. We have already defined these contrasts.
+* For each contrast, assign one chunk positive weights and the other negative.
+* For each contrast, assign an initial weight equal to the number of groups in the opposite chunk
+* For each contrast, assign a final weight by dividing the initial weight by the number of groups with non-zero weights
+
+Following these rules we'd end up with the contrasts in Table 1. (It might help you to figure out from where the values come to note that 2/4 = 1/2.)
+
+```{r con_tbl, echo = FALSE, results = 'asis'}
+con_tbl <- tibble(
+  `Group` = c("Alien", "Human", "Mannequin", "Shapeshifter"),
+  `Contrast 1 (aliens vs. non-aliens)` = c("1/2", "-1/2", "-1/2", "1/2"),
+  `Contrast 2 (alien vs. shapeshifter)` = c("1/2", 0, 0, "-1/2"),
+  `Contrast 3 (human vs. mannequin)` = c(0, "1/2", "-1/2", 0),
+  )
+
+knitr::kable(con_tbl, caption = "Table 1: Contrast coding for the entity variable")
+```
+
+To set these contrasts, we first need to check the order of factor levels, but we did this in step 1 and found:
+
+```{r, echo = T}
+levels(sniff_tib$entity)
+```
+
+Remembering this order, to set the contrasts we create a grid using `cbind()`. We give this grid a name (for example, [sniff_cons]{.alt}) and within the grid we specify each contrast in turn. On the left-hand side of the equals sign we give the contrast a name. For example, I have called the first contrast `aliens_vs_non`. You can call them what you like but the names can't contain spaces. On the right-hand side we specify the contrast weights in Table 1. For example, for contrast 1 we specify [c(1/2, -1/2, -1/2, 1/2)]{.alt}, which, remembering the order of the levels of `entity`,  means that the alien and shapeshifter conditions are assigned weights of $\frac{1}{2}$ whereas the human and mannequin conditions are assigned weights of $-\frac{1}{2}$.
+
+```{r, eval = F}
+sniff_cons <- cbind(
+  aliens_vs_non = c(1/2, -1/2, -1/2, 1/2),
+  alien_vs_shape = c(1/2, 0, 0, -1/2),
+  human_vs_manquin = c(0, 1/2, -1/2, 0)
+  )
+```
+
+Having specified these contrasts, we can use the `estimate_contrast()` function from [modelbased]{.pkg}, which we've met several times before. To get specific contrast we'd use the general form:
+
+```{r, eval = F}
+estimate_contrasts(model = my_model,
+                   contrast = "effect_of_interest",
+                   comparison = "matrix_of_contrasts")
+```
+
+In which we replace [my_model]{.alt} with the name of our model (in this case [sniff_afx]{.alt}), and we replace [effect_of_interest]{.alt} with the name of the variable of interest (in this case `entity`), and [matrix_of_contrasts]{.alt} with the contrasts we've just specified in [sniff_cons]{.alt}. 
+
+#### `r robot()` Code example
+
+Therefore, to display the contrasts for our current model we'd execute.
+
+```{r, eval = F}
+sniff_cons <- cbind(
+  aliens_vs_non = c(1/2, -1/2, -1/2, 1/2),
+  alien_vs_shape = c(1/2, 0, 0, -1/2),
+  human_vs_manquin = c(0, 1/2, -1/2, 0)
+  )
+
+estimate_contrasts(sniff_afx, contrast = "entity", comparison = sniff_cons) |> 
+  display()
+```
+
+#### `r alien()` Alien coding challenge
+
+Try fitting the model as described above.
+
+```{r sniff_con, exercise = TRUE, exercise.lines = 10, exercise.setup = "sniff_afx_setup"}
+
+```
+
+```{r sniff_con-solution}
+sniff_cons <- cbind(
+  aliens_vs_non = c(1/2, -1/2, -1/2, 1/2),
+  alien_vs_shape = c(1/2, 0, 0, -1/2),
+  human_vs_manquin = c(0, 1/2, -1/2, 0)
+  )
+
+estimate_contrasts(sniff_afx, contrast = "entity", comparison = sniff_cons) |> 
+  display()
+```
+
+It seems as though vocalizations were significantly higher when sniffing aliens compared to non-aliens, `r report_ph(sniff_con, row = 1)`), but vocalizations were not significantly different when sniffing different types of aliens, `r report_ph(sniff_con, row = 2)` or when sniffing a human compared to a mannequin, `r report_ph(sniff_con, row = 3)`.
+
+### `r user_visor()` *Post hoc* tests [(B)]{.lbl}
+
+An alternative to contrasts is to compare all means to each other with *post hoc* tests. This procedure tends to be used when you have no specific *a priori* hypotheses (although why you'd be doing research without prior hypotheses is anyone's guess).
+
+
+<div class="warning">
+  `r warning()` **Advisory**
+
+Two health warnings:
+
+1. You wouldn't do contrasts AND *post hoc* tests, you'd do one or the other.
+2. We wouldn't interpret these particular *post hoc* tests given the main effect of the entity sniffed was not significant. 
+</div>
+
+
+#### `r robot()` Code example
+
+We can get *post hoc* tests by excluding the comparisons argument within `estimate_contrasts()` and adding a *p*-value adjustment using the [p_adjust]{.alt} argument. Given that a Bonferroni adjustment works well when sphericity is violated let's apply this method}:
+
+```{r, eval = F}
+estimate_contrasts(sniff_afx, contrast = "entity", p_adjust = "bonferroni") |> 
+  display()
+```
+
+
+#### `r alien()` Alien coding challenge
+
+Get *post hoc* comparisons between the mean vocalizations across all combinations of entities. Use a Holm adjustment for multiple comparisons.
+
+```{r sniff_ph, exercise = TRUE, exercise.lines = 3, exercise.setup = "sniff_afx_setup"}
+
+```
+
+```{r sniff_ph-solution}
+estimate_contrasts(sniff_afx, contrast = "entity", p_adjust = "bonferroni") |> 
+  display()
+```
+
+```{r qn_ph_ex1, echo = F}
+quiz(caption = "Post hoc test quiz (level 2)",
+  question("Assuming an a priori alpha of 0.05, complete the following statement by ticking all responses that are correct. \"There were significantly more dog vocalizations when sniffing ...\"",
+         answer("... an alien compared to a human.", correct = T, message = "The *p*-value of 0.01 is less than 0.05 and the mean is higher for aliens than humans so this statement is correct."),
+         answer("... an alien compared to a mannequin.", correct = T, message = "The *p*-value of 0.006 is less than 0.05 and the mean is higher for aliens than mannequins so this statement is correct."),
+         answer("... an alien compared to a shapeshifter.", message = "This statement is incorrect: the *p*-value is larger than 0.05 implying a non-significant difference between mean vocalizations."),
+         answer("... a human compared to a shapeshifter.", message = "This statement is incorrect: the *p*-value is larger than 0.05 implying a non-significant difference between mean vocalizations."),
+         answer("... a mannequin compared to a shapeshifter.", message = "This statement is incorrect: the *p*-value is larger than 0.05 implying a non-significant difference between mean vocalizations."),
+         answer("... a human compared to a mannequin.", message = "This statement is incorrect: the *p*-value is larger than 0.05 implying a non-significant difference between mean vocalizations."),
+         correct = "Correct - well done!",
+         allow_retry = T,
+         random_answer_order = T
+)
+)
+```
+
+### `r user_visor()` Robust models [(B)]{.lbl} 
+
+It seems then that (notwithstanding the non-significant overall effect), sniffer dogs could discriminate between aliens and humans and aliens and mannequins, but not between other entities. Given the relatively limited diagnostic plots available for repeated measures models a pragmatic solution is to routinely run a robust model and compare the results.
+
+The [WRS2]{.pkg} package [@Mair_Wilcox_2019] has two functions that compare several means from repeated measures designs using a robust method. Specifically, it uses a 20% trimmed mean (the means are calculated after trimming the top and bottom 20% of scores). The function `rmanova()` calculates the test for dependent trimmed means:
+
+```{r, eval = F}
+rmanova(y = outcome, groups = rm_predictor, blocks = id_var, tr = 0.2)
+```
+
+and the function `rmmcp()` computes the associated *post hoc* tests:
+
+```{r, eval = F}
+rmmcp(y = outcome, groups = rm_predictor, blocks = id_var, tr = 0.2)
+```
+
+These functions have similar arguments:
+
+* [y]{.alt}: replace [outcome]{.alt} with the variable containing the outcome variable (in this case `vocalizations`).
+* [groups]{.alt}: replace [rm_predictor]{.alt} with the variable defining the different levels of the repeated measures variable (in this case `entity`).
+* [blocks]{.alt}: replace [id_var]{.alt} with the variable within which scores are nested (in this case `dog_name`).
+* [tr = 0.2]{.alt}: determines the level of trim. The default is a 20% trim, which has been shown to perform well. You can change this value to 0.1 (10% trim) or any value up to 0.5, but we'll stick with the default of 20% which means we can omit this argument.
+
+#### `r robot()` Code example
+
+Annoyingly, these functions do not allow us to specify the tibble within which variables are stored. Instead, we have to place `tibble_name$` in front of each variable. For example, instead of entering `vocalizations` we must enter `sniff_tib$vocalizations` so that the function knows where to find the variable. For the current example, we'd execute:
+
+```{r echo = TRUE, eval = FALSE}
+WRS2::rmanova(
+  y = sniff_tib$vocalizations,
+  groups = sniff_tib$entity,
+  blocks = sniff_tib$dog_name
+  )
+WRS2::rmmcp(
+  y = sniff_tib$vocalizations,
+  groups = sniff_tib$entity,
+  blocks = sniff_tib$dog_name
+  )
+```
+
+#### `r alien()` Alien coding challenge
+
+Test the differences between the 20% means.
+
+```{r sniff_wrs, exercise = TRUE, exercise.lines = 8}
+
+```
+
+```{r sniff_wrs-solution}
+WRS2::rmanova(y = sniff_tib$vocalizations,
+              groups = sniff_tib$entity,
+              blocks = sniff_tib$dog_name)
+WRS2::rmmcp(y = sniff_tib$vocalizations,
+            groups = sniff_tib$entity,
+            blocks = sniff_tib$dog_name)
+```
+
+```{r, echo = F}
+sniff_rob <- WRS2::rmanova(y = sniff_tib$vocalizations, groups = sniff_tib$entity, blocks = sniff_tib$dog_name)
+
+report_sniff_rob <- paste0("$F_t$(", sprintf("%.2f", sniff_rob$df1), ", ", sprintf("%.2f", sniff_rob$df2), ") = ", sprintf("%.2f", sniff_rob$test), ", *p* = ", sprintf("%.2f", sniff_rob$p.value))
+```
+
+
+The robust test concurs with the non-robust one in that overall the group means were not significantly different, `r report_sniff_rob`. For the *post hoc* tests we're looking at whether the *p*-value is less than the value in the column [p.crit]{.opt}. If it is then the test is significant and the **sig** column will read [TRUE]{.alt}. However, if the *p*-value is greater than the value in the column [p.crit]{.opt} (as it is for all of the tests here), then the test is not significant and the [sig]{.opt} column will read [FALSE]{.alt}. Unlike the non-robust tests these *post hoc* tests suggest no significant differences between any means. Again though, bare in mind that the sample size is tiny (*N* = 8).
+
+## `r user_visor()` Factorial repeated measures designs [(B)]{.lbl}
+
+The aliens, excited by humans' apparent inability to train sniffer dogs to detect them, decided to move their invasion plan forward. Aliens are far too wedded to *p*-values in small samples. They decided that they could make themselves even harder to detect by fooling the sniffer dogs by masking their alien smell. After extensive research they agreed that the two most effective masking scents would be human pheromones (which they hoped would make them smell human-like) and fox-pheromones (because they are a powerful, distracting smell for dogs). The aliens started smearing themselves with humans and foxes and prepared to invade.
+
+Meanwhile, the top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) had got wind of their plan and set about testing how effective it would be. They trained 50 sniffer dogs. During training, these dogs were rewarded for making vocalizations while sniffing alien space lizards. On the test trials, the 50 dogs were allowed to sniff 9 different entities for 1-minute each: 3 alien space lizards, 3 shapeshifting alien space lizard who had taken on humanoid form, and 3 humans. Within each type of entity, 1 had no masking scent, 1 was smothered in human pheromones and 1 wore fox pheromones. The number of vocalizations made during each 1-minute sniffing session was recorded.
+
+## `r bmu()` Step 1: summarize [(A)]{.lbl}
+
+<div class="stepbox">
+  `r step()` **Step 1**
+
+Get your data into `r rproj()` and pre-process using [tidyverse]{.pkg} packages or the [datawizard]{.pkg} package from [easystats]{.pkg}.
+</div>
+
+#### `r alien()` Alien coding challenge
+
+View the data in [scent_tib]{.alt}.
+
+```{r scent_tib, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r scent_tib-solution}
+scent_tib
+```
+
+Note that there are four variables: the participant's `dog_id`, which is a character variable (note the `<chr>` under the name), the `entity` that the dog sniffed (alien, shapeshifter or human) and the `scent_mask` used to cover the entity's natural smell (none, human scent, fox scent), both of which are factors (note the `<fct>` under the names). Finally, `vocalizations` is a numeric variable and has the data type 'double' (note the `<dbl>` under the name).
+
+The variables `entity` and `scent_mask` are factors (categorical variable), so having read the data file and converted these variables to factors it's a good idea to check that the levels of these variables are in the order that we want. Ideally we want to order them so that the control category is first. For `entity` the control category is human (the other two categories are both types of alien) and for `scent_mask` the control category is 'none' (i.e. no scent was worn).
+
+#### `r alien()` Alien coding challenge
+
+Check the order of the levels of the variables `entity` and `scent_mask`.
+
+```{r chk_levels2, exercise = TRUE, exercise.lines = 4}
+
+```
+
+```{r chk_levels2-hint-1}
+# use this function:
+levels()
+```
+
+```{r chk_levels2-hint-2}
+# Remember that to access a variable you use:
+name_of_tibble$name_of_variable
+```
+
+```{r chk_levels2-hint-3}
+# solution:
+levels(scent_tib$entity)
+levels(scent_tib$scent_mask)
+```
+
+Because I have set up the data within this tutorial you should see that the levels are listed in the order that we want them when you execute the code. The information at the beginning of the tutorial about the data files gives you code to order the factor levels in the same way.
+
+#### `r alien()` Alien coding challenge
+
+Adapt the code from the previous example to create and display an object called [scent_sum]{.alt} that is a table of descriptive statistics for vocalizations grouped by the entity sniffed and the type of scent.
+
+
+```{r scent_sum, exercise = TRUE, exercise.lines = 7}
+
+```
+
+```{r scent_sum-solution}
+# Solution
+scent_sum <- scent_tib |> 
+  group_by(entity, scent_mask) |> 
+  describe_distribution(select = "vocalizations") 
+
+scent_sum |> 
+  data_remove("Variable") |> # optional to remove redundant column
+  display()
+```
+
+The number of vocalizations tended to be lower (on average) when sniffing humans compared to either type of alien. When sniffing aliens the number of vocalizations was largest when they wore no scent.
+
+## `r bmu()` Step 2: Visualize [(A)]{.lbl}
+
+<div class="stepbox">
+  `r step()` **Step 2**
+
+Visualise the data using the [ggplot2]{.pkg} package from [tidyverse]{.pkg}.
+</div>
+
+We'll come back to this step because there's a neat way to get plots out of [afex]{.pkg} but we need to fit the model first.
+
+
+## `r user_astronaut()` Step 3: Fit the model [(C)]{.lbl}
+
+The model we're fitting is described by the following equation (which is simplified in that I have represented the predictor variables `entity` and `scent_mask` as single variables. (In fact, because both variables contain three categories they would be entered into the model as two dummy variables.)
+
+The design of the study is such that each dog sniffed 9 things. We denote these sniffs with the letter $i$. Also, let's denote the dogs with the letter $j$. Using these symbols, we can say that each of $i = 1, 2, \ldots , 9$ sniffs is nested within each of $j = 1, 2, \ldots , 50$ dogs. If we fit a random intercept model; that is, we estimate the variability in vocalizations due to individual differences between dogs, we would write the model as:
+
+$$
+\begin{aligned}
+\text{vocalizations}_{ij} & = \hat{b}_{0j} + \hat{b}_{1}\text{entity}_{ij} + \hat{b}_{2}\text{scent}_{ij} + \hat{b}_{3}(\text{entity}_{ij}\times\text{scent}_{ij}) + e_{ij}\\
+\hat{b}_{0j} & = \hat{b}_0 + \hat{u}_{0j} \\
+\end{aligned}
+$$
+
+This model will capture the 'repeated measures' aspect of the design in that $\hat{u}_{0j}$ represents the difference in vocalizations for a particular dog from the overall mean number of vocalizations, and the model will now include a parameter that estimates the variance in vocalizations across dogs ($\hat{\sigma}^2_{\mu_0}$).
+
+We can use the `aov_4()` function in much the same way as in the previous example. The main differences is that we need to specify the predictors in the model as `entity`, `scent_mask` and their interaction as repeated measures predictors.
+
+<div class="tip">
+  `r cat_space()` **Tip**
+
+Remember that we can specify all main effects and their interactions using `*`. For example, `entity*scent_mask` will introduce the main effect of `entity`, the main effect of `scent_mask` and their interaction.
+
+</div>
+
+We saw earlier that the `aov_4()` function has the following format:
+
+```{r, eval = F}
+afex::aov_4(outcome ~ predictors + (rm_predictors|id_variable), data = my_tib)
+```
+
+In the current design, we can specify the two repeated measures predictors and their interaction using [entity\*scent_mask]{.alt}, therefore, we replace both [predictors]{.alt} and [rm_predictors]{.alt} in the code above with [entity\*scent_mask]{.alt}. For example, remembering that the variable that uniquely identifies the different dogs is [dog_id]{.alt}, we'd replace [(rm_predictors|id_variable)]{.alt} with [(entity\*scent_mask|dog_id)]{.alt} to indicate that the variables `entity`, `scent_mask` and their interaction are nested within the variable `dog_id`.
+
+#### `r robot()` Code example
+
+Remembering that the outcome variable is `vocalizations`, and the tibble containing the data is called [scent_tib]{.alt}, we can put it all together to fit the model with this code:
+
+```{r, eval = F}
+scent_afx <- afex::aov_4(vocalizations ~ entity*scent_mask + (entity*scent_mask|dog_id), data = scent_tib)
+```
+
+We can display a summary in the usual way:
+
+```{r, eval = F}
+model_parameters(scent_afx, es_type = "omega") |> 
+  display(use_symbols = TRUE)
+```
+
+#### `r alien()` Alien coding challenge
+
+Use the `aov_4()` function to fit the model.
+
+```{r scent_aov_4, exercise = TRUE, exercise.lines = 6}
+
+```
+
+```{r scent_aov_4-hint-1}
+# fit the model (replace the xs):
+scent_afx <- afex::aov_4(xxxxxx ~ xxxx*xxxxx + (xxxxx*xxxxx|xxxxx), data = xxxxx)
+```
+
+```{r scent_aov_4-solution}
+# fit the model:
+scent_afx <- afex::aov_4(vocalizations ~ entity*scent_mask + (entity*scent_mask|dog_id), data = scent_tib)
+# Tabulated summary the model
+model_parameters(scent_afx, es_type = "omega") |> 
+  display(use_symbols = TRUE)
+```
+
+```{r, echo = F}
+scent_afx <- afex::aov_4(vocalizations ~ entity*scent_mask + (entity*scent_mask|dog_id), data = scent_tib)
+
+scent_aov <- model_parameters(scent_afx, es_type = "omega")
+scent_se <- estimate_contrasts(model = scent_afx,
+                   contrast = "entity",
+                   by = "scent_mask",
+                   comparison = "joint",
+                   p_adjust = "bonferroni")
+
+scent_ph <- estimate_contrasts(model = scent_afx, contrast = "entity", by = "scent_mask", p_adjust = "bonferroni")
+```
+
+
+
+## `r bmu()` Step 4: Evaluate the model [(A)]{.lbl}
+
+<div class="stepbox">
+  `r step()` **Step 4**
+
+Evaluate the model using a small number of functions from the [performance]{.pkg} package from [easystats]{.pkg}. Specially, we evaluate
+
+- How well the model fits the data
+- Whether the underlying assumptions of the model are met. If not, we refit the model using robust methods (see Figure 3).
+ 
+</div>
+
+
+```{r afx_fct, echo = F}
+scent_afx <- afex::aov_4(vocalizations ~ entity*scent_mask + (entity*scent_mask|dog_id), data = scent_tib)
+```
+
+
+#### `r alien()` Alien coding challenge
+
+Fitting the model using [afex]{.pkg} limits the extent to which we can evaluate the model but we can get limited plots in the usual way using `check_model()`. Try this in the code box.
+
+```{r scent_chk, exercise = TRUE, exercise.lines = 3, exercise.setup = "afx_fct", fig.height = 6}
+
+```
+
+```{r scent_chk-solution}
+check_model(scent_afx)
+```
+
+The top left plot suggests we can assume homogeneity and linearity. The other plots suggest non-normal residuals although this assumption is relatively unimportant.
+
+
+## `r bmu()` Step 5: Interpret the model [(A)]{.lbl}
+
+<div class="stepbox">
+  `r step()` **Step 5**
+
+Interpret the model
+
+- Interpret the values that define the model (the [parameter estimates]{.alt}) using the [parameters]{.pkg} package from [easystats]{.pkg}.
+- Make specific predictions from our model using the [modelbased]{.pkg} package from [easystats]{.pkg}.
+ 
+</div>
+
+
+The main output is reproduced below. It shows us the three effects. Let's look at what the mean in turn.
+
+```{r, echo = F}
+display(scent_aov,
+        column_names = c("Parameter", "SS", "SS~R~", "df", "df~e~", "MS", "*F*", "*p*", "$\\omega^2_p$"))
+```
+
+### `r user_visor()` The main effect of `entity` [(B)]{.lbl}
+
+```{r quiz_entity_ex2, echo = F}
+quiz(
+  question("How would you interpret the effect of `entity`?",
+    answer("There was a significant effect of entity because the Greenhouse-Geisser adjusted *p* is 0.000, which is less than 0.05.", correct = T),
+    answer("There was a non-significant effect of entity because the Greenhouse-Geisser adjusted *p* is 0.000, which is less than 0.05", message = "A *p* value less than 0.05 is typically interpretted as a *significant* effect."),
+    correct = "Correct - well done!",
+    incorrect = "Sorry, this answer is incorrect.",
+    random_answer_order = TRUE,
+    allow_retry = T
+  ),
+  question("Which of these statements correctly describes the effect of entity?",
+    answer("If you ignore the type of scent worn, vocalizations were significantly affected by the type of entity sniffed.", correct = T),
+    answer("If you ignore the type of scent worn, vocalizations were not significantly affected by the type of entity sniffed.", message = "This describes a non-significant effect - see the answer to the previous question  for why this is a problem!"),
+    answer("The extent to which the type of entity being sniffed affected vocalizations depended on the type of scent worn.", message = "This possibility would be evaluated using the interaction term, not the main effect of drink."),
+    answer("The extent to which the type of type of scent worn affected vocalizations depended on the type of entity being sniffed.", message = "This possibility would be evaluated using the interaction term, not the main effect of drink."),
+    correct = "Correct - well done!",
+    incorrect = "Sorry, this answer is incorrect.",
+    random_answer_order = TRUE,
+    allow_retry = T
+  )
+)
+```
+
+Other things being equal, the main effect of `entity` isn't interesting because it is superseded by the interaction term. However, it seems to indicate that, when you ignore the scent worn, vocalizations were different for different entities, `r report_ez_aov(scent_aov, row = 1, es_type = "Omega2_partial")`. The partial omega-squared suggests a fairly large effect. You can use the code below to get the estimated marginal means for this effect. You'll see that the vocalizations were highest for the two aliens compared to when a human was sniffed.
+
+#### `r alien()` Alien coding challenge
+
+```{r entity_emm, exercise = TRUE, exercise.lines = 3, exercise.setup = "afx_fct"}
+estimate_means(model = scent_afx, by = "entity") |> 
+  display()
+```
+
+### `r user_visor()` The main effect of `scent_mask` [(B)]{.lbl}
+
+The main output from the model is reproduced below (to save you scrolling).
+
+```{r, echo = F}
+display(scent_aov,
+        column_names = c("Parameter", "SS", "SS~R~", "df", "df~e~", "MS", "*F*", "*p*", "$\\omega^2_p$"))
+```
+
+
+```{r quiz_scent_ex2, echo = F}
+quiz(caption = "The main effect of `scent_mask` (level (2))",
+  question("How would you interpret the effect of `scent_mask` in the main output?",
+    answer("There was a significant effect of `scent_mask` because the Greenhouse-Geisser adjusted *p* is 0.000, which is less than 0.05.", correct = T),
+    answer("There was a non-significant effect of `scent_mask` because the Greenhouse-Geisser adjusted *p* is 0.000, which is less than 0.05", message = "A *p* value less than 0.05 is typically interpretted as a *significant* effect."),
+    correct = "Correct - well done!",
+    incorrect = "Sorry, this answer is incorrect.",
+    random_answer_order = TRUE,
+    allow_retry = T
+  ),
+  question("Which of these statements correctly describes the effect of `scent_mask` in the main output?",
+    answer("If you ignore the type of entity sniffed vocalizations were significantly affected by the type of scent worn.", correct = T),
+    answer("If you ignore the type of entity sniffed vocalizations were not significantly affected by the type of scent worn.", message = "This describes a non-significant effect - see the answer to the previous question  for why this is a problem!"),
+    answer("The extent to which the type of scent worn affected vocalizations depended on the type of entity sniffed.", message = "This possibility would be evaluated using the interaction term, not the main effect of scent_mask"),
+    answer("The extent to which the type of entity sniffed affected vocalizations depended on the type of scent worn.", message = "This possibility would be evaluated using the interaction term, not the main effect of scent worn."),
+    correct = "Correct - well done!",
+    incorrect = "Sorry, this answer is incorrect.",
+    random_answer_order = TRUE,
+    allow_retry = T
+  )
+)
+```
+
+Other things being equal, the main effect of `scent_mask` isn't interesting because it is superseded by the interaction term. However, it seems to indicate that, when you ignore the entity sniffed, vocalizations were different for different when different scents were worn, `r report_ez_aov(scent_aov, row = 2, es_type = "Omega2_partial")`. You can use the code below to get the estimated marginal means for this effect. You'll see that the vocalizations were lowest when a human scent was used. However, The partial omega-squared suggests a trivial effect.
+
+#### `r alien()` Alien coding challenge
+
+```{r scent_emm, exercise = TRUE, exercise.lines = 3, exercise.setup = "afx_fct"}
+estimate_means(model = scent_afx, by = "scent_mask") |> 
+  display()
+```
+
+### `r user_visor()` The interaction effect [(B)]{.lbl}
+
+The effect we really care about is the interaction term. The main output from the model is reproduced below (to save you scrolling).
+
+```{r, echo = F}
+display(scent_aov,
+        column_names = c("Parameter", "SS", "SS~R~", "df", "df~e~", "MS", "*F*", "*p*", "$\\omega^2_p$"))
+```
+
+```{r quiz_int_ex2, echo = F}
+quiz(caption = "The interaction quiz (level(2))",
+  question("Using the main output, interpret the significant effect of **entity * scent_mask** (select ALL that apply).",
+    answer("The extent to which the type of scent worn affected vocalizations depended on the type of entity sniffed.", correct = T),
+    answer("The extent to which the type of entity sniffed affected vocalizations depended on the type of scent worn.", correct = T),
+    answer("The entity sniffed significantly predicted the type of scent worn."),
+    answer("The difference between the mean vocalizations across the three types of scents was similar when sniffing aliens, shapeshifters and humans."),
+    answer("vocalizations were similar regardless of the type of entity sniffed and the type of scent worn."),
+    correct = "Correct - well done!",
+    incorrect = "Incorrect. Hint: The fact that the interaction effect was significant suggests that the effect of the type of entity sniffed depended on what drink was being advertised and vice versa.",
+    random_answer_order = TRUE,
+    allow_retry = T
+  )
+)
+```
+
+The interaction effect suggests that the effect of `entity` on vocalizations was significantly moderated by what scent the entity was wearing, `r report_ez_aov(scent_aov, row = 3, es_type = "Omega2_partial")`. Let's break down this effect.
+
+### `r bmu()` Plots using the `afex` package [(A)]{.lbl}
+
+We saw in [discovr_13]{.alt} that you can get plots of the interaction by feeding an `afex` object into the `afex_plot()` function. Remember, this function takes the general form:
+
+```{r, eval = F}
+afex::afex_plot(object = afx_object,
+                x = x_variable, 
+                trace = line_shape_variable, 
+                legend_title = title_for_legend)
+```
+
+In which you replace [afx_object]{.alt} with the name of the the model you fitted with `aov_4()`, [x_variable]{.alt} with the predictor you want on the *x*-axis, [line_shape_variable]{.alt} with a predictor that you want to be depicted with using different lines/shapes, and [title_for_legend]{.alt} with text to override the default legend title. The result is a `ggplot` object so you can use [ggplot2]{.pkg} code to edit the results, for example, you can apply a standard [ggplot2]{.pkg} theme. 
+
+When using a repeated measures design (as we are here) we need to add [error = "within"]{.alt} to the function to get error bars that are corrected for the study design. So, in general, for repeated measures designs, the code would be:
+
+```{r, eval = F}
+afex::afex_plot(object = afx_object,
+                x = x_variable, 
+                trace = line_shape_variable, 
+                legend_title = title_for_legend,
+                error = "within")
+```
+
+If you forget this argument, you'll get a message alerting you to this fact.
+
+#### `r alien()` Alien coding challenge
+
+Plot the [entity*scent_mask]{.alt} interaction with `scent_mask` on the *x*-axis. Add axis labels and apply `theme_minimal()`.
+
+```{r afx_plot, exercise = TRUE, exercise.lines = 8, exercise.setup = "afx_fct"}
+
+```
+
+```{r afx_plot-hint-1}
+# Plot the means (replace the xs):
+afex::afex_plot(object = xxxxx, 
+                x = "xxxxx", 
+                trace = "xxxxx")
+# Now specify that it was a repeated measures design
+```
+
+```{r afx_plot-hint-2}
+afex::afex_plot(object = scent_afx, 
+                x = "scent_mask", 
+                trace = "entity",
+                error = "within")
+# now add a legend title and axis labels to override the defaults in the usual way
+```
+
+```{r afx_plot-hint-3}
+afex::afex_plot(object = scent_afx,
+                x = "scent_mask",
+                trace = "entity",
+                error = "within",
+                legend_title = "Entity") +
+  labs(x = "Scent used", y = "Number of vocalizations")
+# now add theme_minima() in the usual way
+```
+
+```{r afx_plot-solution}
+afex::afex_plot(object = scent_afx,
+                x = "scent_mask",
+                trace = "entity",
+                error = "within",
+                legend_title = "Entity") +
+  labs(x = "Scent used", y = "Number of vocalizations") +
+  theme_minimal()
+```
+
+The plot seems to suggest that when no scent is used, both types of aliens elicit more vocalizations when the dogs sniff them than when they sniff humans. This is also true when a human scent is used. However, when fox scent is used the number of vocalizations when sniffing a human matches the number (more or less) when sniffing both types of aliens.
+
+### `r bmu()` Estimated marginal means [(A)]{.lbl}
+
+#### `r robot()` Code example
+
+To get the estimated marginal means for the [entity*scent_mask]{.alt} interaction, and save them in an object called [scent_emm]{.alt}, we would execute:
+
+```{r, eval = F}
+estimate_means(model = scent_afx, by = c("scent_mask", "entity")) |> 
+  display()
+```
+
+<div class="tip">
+  `r cat_space()` **Tip**
+
+Within `display()` we can use [column_names]{.alt} to over-ride the default column names. For example
+
+```{r, eval = F, class.source = '.panel_alt'}
+estimate_means(model = scent_afx, by = c("scent_mask", "entity")) |> 
+  display(column_names = c("Scent", "Entity", "Mean", "SE", "95% CI", "t(440)"))
+```
+</div>
+
+
+#### `r alien()` Alien coding challenge
+
+Obtain the estimated marginal means for the [scent_mask*entity]{.alt} interaction.
+
+```{r afx_emm2, exercise = TRUE, exercise.lines = 4, exercise.setup = "afx_fct"}
+
+```
+
+```{r afx_emm2-solution}
+estimate_means(model = scent_afx, by = c("scent_mask", "entity")) |> 
+  display(column_names = c("Scent", "Entity", "Mean", "SE", "95% CI", "t(440)"))
+```
+
+### `r user_visor()` Simple effects analysis [(B)]{.lbl}
+
+We saw in [discovr_13]{.alt} that an effective way to break down interactions is [simple effects analysis]{.alt}, which looks at the effect of one predictor at individual levels of another. For example, we could do a simple effects analysis looking at the effect of type of scent used at each level of entity. This would mean testing whether the mean number of vocalizations differed across the three scents when sniffing a human, then making the same comparison after sniffing a shapeshifter, and then finally for sniffing an alien. By doing so we ask: what is the effect of [scent_mask]{.alt} within each entity group?
+
+An alternative is to quantify the effect of [entity]{.alt} (the pattern of means across the human, shapeshifter and alien) separately for each of the three scents.
+
+As in in [discovr_13]{.alt} we can do this analysis using the `estimate_contrasts()` function from [modelbased]{.pkg} and including [comparison = "joint"]{.alt}.
+
+#### `r robot()` Code example
+
+For example, if we want to look at the effect of [scent_mask]{.alt} in each level of entity, we'd execute:
+
+```{r, eval = F}
+estimate_contrasts(model = scent_afx,
+                   contrast = "entity",
+                   by = "scent_mask",
+                   comparison = "joint",
+                   p_adjust = "bonferroni") |> 
+  display()
+```
+
+The corresponding simple effects of `entity` within each scent are obtained by switching the variables assigned to the [by]{.alt} and [contrast]{.alt} arguments in the previous code.
+
+```{r, eval = F}
+estimate_contrasts(model = scent_afx,
+                   contrast = "scent_mask",
+                   by = "entity",
+                   comparison = "joint",
+                   p_adjust = "bonferroni") |> 
+  display()
+```
+
+#### `r alien()` Alien coding challenge
+
+Do a simple effects analysis to look at the effect of [entity]{.alt} separately for the different types of scent.
+
+```{r scent_afx_se, exercise = TRUE, exercise.lines = 7, exercise.setup = "afx_fct"}
+
+```
+
+
+```{r scent_afx_se-solution}
+estimate_contrasts(model = scent_afx,
+                   contrast = "entity",
+                   by = "scent_mask",
+                   comparison = "joint",
+                   p_adjust = "bonferroni") |> 
+  display()
+```
+
+
+```{r quiz_face_se, echo = F}
+quiz(caption = "Interpreting simple effects 1 (level 2)",
+  question("Using the output above, after applying which of the following scents were there significant differences in the mean number of vocalizations made by sniffer dogs when sniffing different entities? (tick ALL that apply)",
+    answer("No scent.", correct = T),
+    answer("Human scent.", correct = T),
+    answer("Fox scent.", correct = T),
+    answer("50 cent.", message = "Sunny days wouldn't be special if it wasn't for rain,
+Joy wouldn't feel so good if it wasn't for pain [Many Men (Wish Death)]"),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  )
+)
+```
+
+<div class="reportbox">
+  `r pencil()` **Report**`r rproj()`
+
+There were significant main effects of entity, `r report_ez_aov(scent_aov, row = 1, es_type = "Omega2_partial")`, and scent, `r report_ez_aov(scent_aov, row = 2, es_type = "Omega2_partial")` on the number of vocalizations dogs made when approaching an entity. However, these effects were superseded by a significant entity $\times$ scent interaction, `r report_ez_aov(scent_aov, row = 3, es_type = "Omega2_partial")`, suggesting that the effect of scent on vocalizations was moderated by the type of entity sniffed (and vice versa). Simple effects analysis revealed that the effect of entity was significant when no scent was used, `r report_con(scent_se, row = 1)`, when human scent was used, `r report_con(scent_se, row = 2)` and also when fox scent was used, `r report_con(scent_se, row = 3)`.
+</div>
+
+
+
+#### `r alien()` Alien coding challenge
+
+Let's try the simple effects analysis the other way around: obtain the simple effect of [scent_mask]{.alt} separately for each [entity]{.alt}.
+
+<div class="warning">
+  `r warning()` **Advisory**
+
+You wouldn't normally run the simple effects both ways around (because you are doing more tests and increasing your chance of a Type I error). You'd usually choose the way around that makes the most sense for your research question. In this situation, you'd ask yourself whether it's more useful to know the effect of scent within each entity, or the effect of entity within each scent. There's not a correct answer, but for me it makes most sense to look at the effect of entity within each scent because our main interest is in the effect of each scent as a mask. In other words, I'd conduct the previous simple effects analysis but not this one.
+</div>
+
+```{r scent_se2, exercise = TRUE, exercise.lines = 7, exercise.setup = "afx_fct"}
+
+```
+
+```{r scent_se2-solution}
+estimate_contrasts(model = scent_afx,
+                   contrast = "scent_mask",
+                   by = "entity",
+                   comparison = "joint",
+                   p_adjust = "bonferroni") |> 
+  display()
+```
+
+```{r quiz_face_se2, echo = F}
+quiz(caption = "Interpreting simple effects 2 (level 2)",
+  question("Using the output above, when sniffing which of the following entities did the scent worn lead to significant differences in the mean number of vocalizations made by sniffer dogs? (tick ALL that apply)",
+    answer("Human.", correct = T),
+    answer("Shapeshifter.", correct = T),
+    answer("Alien.", correct = T),
+    answer("Mannequin.", message = "They didn't use a mannequin in this study."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  )
+)
+```
+
+### `r user_visor()` Post hoc tests across an interaction [(B)]{.lbl}
+
+In this case, the simple effects analysis doesn't help us break down the interaction because all effects are significant all all levels of the other effect! We can also break down an interaction by doing pairwise comparisons of all means. If we run our usual code to get *post hoc* tests we will obtain a table that compares every mean with every other mean. We have 9 means, so we'd end up with 36 *post hoc* tests all of which need correction for multiple testing. Instead we'll use a more specific set of *post hoc* tests. For example, having conducted simple effects analyses, we could follow it up with *post hoc* tests only of the simple effects. For example, we know that there was a significant effect of `entity` within each scent, so let's conduct *post hoc* tests on `entity` within each scent. We can do this by removing [comparison = "joint"]{.alt} from the code we used for the simple effects.
+
+
+#### `r alien()` Alien coding challenge
+
+Obtain *post hoc* tests for `entity` within each scent.
+
+```{r scent_ph, exercise = TRUE, exercise.lines = 6, exercise.setup = "afx_fct"}
+
+```
+
+```{r scent_ph-solution}
+estimate_contrasts(model = scent_afx,
+                   contrast = "entity",
+                   by = "scent_mask",
+                   p_adjust = "bonferroni") |> 
+  display()
+```
+
+
+These tests make the interpretation of the interaction much more straightforward. When no scent is worn, mean vocalizations differ between all entities. From the plot (reproduced below), aliens elicit significantly more vocalizations than both shapeshifters and humans, and shapeshifters elicit significantly more vocalizations than humans. This pattern of findings is the same when a human scent is worn. The interaction, therefore, does not reflect a change in this pattern between no scent and human scent, and so must reflect a change in this pattern of results when fox scent is worn. The final set of tests supports this suggestion because when fox scent is worn, although there are still significantly more vocalizations when sniffing aliens and shapeshifters compared to humans, the difference between shapeshifters and aliens is now not significant.
+
+To sum up, the scents don't distract the sniffer dogs from detecting aliens compared to humans, but they do confuse them when distinguishing aliens in their natural lizard form (alien) compared to when in humanoid form (shapeshifter). Specifically, fox scent makes the sniffer dogs unable to distinguish aliens in humanoid compared to lizard form, but they can still distinguish them from actual humans. Phew!
+
+```{r, echo = F}
+afex::afex_plot(scent_afx, "scent_mask", "entity", error = "within") +
+  scale_color_manual(values = c(bwn, blu, byz)) +
+  labs(x = "Scent used", y = "Number of vocalizations") +
+  annotate("rect", xmin = 0.5, xmax = 1.5, ymin = 0, ymax = 15, fill = bwn, alpha = 0.2) +
+  annotate("rect", xmin = 1.5, xmax = 2.5, ymin = 0, ymax = 15, fill = blu, alpha = 0.2) +
+  annotate("rect", xmin = 2.5, xmax = 3.5, ymin = 0, ymax = 15, fill = byz, alpha = 0.2) +
+  theme_minimal()
+```
+
+
+
+<div class="reportbox">
+  `r pencil()` **Report**`r rproj()`
+
+There were significant main effects of entity, `r report_ez_aov(scent_aov, row = 1, es_type = "Omega2_partial")`, and scent, `r report_ez_aov(scent_aov, row = 2, es_type = "Omega2_partial")` on the number of vocalizations dogs made when approaching an entity. However, these effects were superseded by a significant entity $\times$ scent interaction, `r report_ez_aov(scent_aov, row = 3, es_type = "Omega2_partial")`, suggesting that the effect of scent on vocalizations was moderated by the type of entity sniffed (and vice versa).
+
+Table 1 shows that *Post hoc*  using a Holm correction showed that when no mask and human scent was used vocalizations were significantly higher when sniffing aliens compared to shapeshifters and humans, but when fox scent was used vocalizations were significantly higher when sniffing aliens compared to humans, but tehre was no significant difference when sniffing the two types of aliens. In summary, fox scent made the sniffer dogs unable to distinguish aliens in humanoid compared to lizard form, but they could still distinguish aliens from actual humans.
+
+```{r echo = F}
+scent_ph |> 
+  data_remove("SE") |> 
+  display(
+    column_names = c("Entity 1", "Entity 2", "Scent", "Mean difference", "95\\% CI", "*t*(49)", "*p*")
+  )
+```
+
+
+</div>
+
+
+### `r user_visor()` Robust models [(B)]{.lbl} 
+
+Unfortunately there's also no easy way to fit a robust model (at least not if you're looking for a *p*-value) for factorial designs that use repeated measures.
+
+
+<div class="infobox">
+  <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
+  
+  **A message from Mae Jemstone:**
+  
+  Repeated measures experimental designs are a very efficient way to test hypotheses. Back in my trainee days, we were about to do battle with the Crimson Riders, a band of space outlaws who spread statistical misinformation. If you think that a confidence interval relates to your confidence in a value then your brain has probably been infiltrated by the Crimson Riders' propaganda. The thing about this band of reprobates is that they're very hard to track down. To work out how to defeat them we needed to test their reaction to different doses of a truth serum we had developed, but we could only capture a dozen or so of them. Enter the repeated measures design and victory. Although, their foul work survived that particular battle. Thanks to your hard work, you can now analyse repeated measures designs. Happy days cadets - well done!
+</div>
+
+
+## Resources/References {data-progressive=FALSE}
+
+```{r, child = "./docs/resources.Rmd"}
+
+```
+
+
+### References

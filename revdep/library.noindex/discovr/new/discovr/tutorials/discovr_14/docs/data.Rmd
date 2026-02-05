@@ -1,0 +1,22 @@
+---
+title: "data"
+author: "Andy Field"
+output: learnr::tutorial
+---
+
+To work *outside of this tutorial* you need to download the following data file:
+
+* [cosmetic.csv](https://www.discovr.rocks/csv/cosmetic.csv)
+
+Set up an `r rstudio()` project in the way that [I recommend in this video](https://youtu.be/mqT7c17tofE?si=R0aSApz66fGQKESl), and save the data files to the folder within your project called [data]{.alt}. Place this code in the first code chunk in your `r quarto()` document:
+
+```{r, eval=FALSE}
+cosmetic_tib <- here::here("data/cosmetic.csv") |>
+  read_csv() |>
+    mutate(
+      clinic = as_factor(clinic) |> fct_relevel(paste("Clinic", seq(1, 20, 1))),
+      reason = as_factor(reason) |> fct_relevel("Change appearance")
+  )
+```
+
+This code reads in the data and converts the variables `reason` and `clinic` to factors (categorical variable). It uses `fct_relevel` to set the order of the levels of the factor `reason` to be change appearance and physical reason, and to set the levels of the factor `clinic` to be Clinic 1, Clinic 2 ... Clinic 10 in numeric order (try executing the code `paste("Clinic", seq(1, 10, 1))` and you'll see it pastes the text "Clinic " to the numbers 1 to 10 in turn).

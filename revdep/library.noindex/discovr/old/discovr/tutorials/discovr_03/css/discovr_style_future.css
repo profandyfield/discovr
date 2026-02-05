@@ -1,0 +1,356 @@
+/* CSS
+
+Adapted from the sanddollar theme by Allison Horst, which uses these colours:
+
+------
+
+Colours this theme uses:
+
+Burnt umber #912D25 (hyperlink hover only)
+Persian Red #CA3E34 (202, 62, 52) (dark red)
+
+Field drab #775418 (119, 84, 24) (dark champagne)
+champagne #f3e2c4 (243, 226, 196) (light browny-yellow)
+
+spanish blue #136CB9 (19, 108, 185)
+bedazzled blue #2C5577 (44, 85, 119)
+dark_blue_grey #6F709F (111, 112, 159) purple
+
+platinum #e8eae5 (232, 234, 229) paler green/grey
+slate-gray-dark: #2F4F4F;
+
+Contrast compliancy grid at: http://contrast-grid.eightshapes.com/?background-colors=&foreground-colors=FFFFFF%0D%0A912D25%0D%0ACA3E34%0D%0A775418%0D%0AF3E2C4%0D%0A136CB9%0D%0A2C5577%0D%0A6F709F%0D%0AE8EAE5%0D%0A3F3F3F&es-color-form__tile-size=compact
+
+
+*/
+
+.inline-image{
+  height: 1em;
+}
+
+/*-------- Background color & body font --------*/
+body {
+  background-color: #e8eae5;
+  color: #616161;
+}
+
+/*-------- Main Panel ---------*/
+.topics {
+    width: 75%;
+    overflow-x: auto;
+    padding-bottom: 600px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: white;
+    border-left: 0;
+    border-right: 0;
+}
+
+/*------- padding sides --------*/
+.band {
+    padding-left: 2%;
+    padding-right: 2%;
+    position: relative;
+}
+
+/* Emphasis */
+em {
+    color: #3d3835;
+}
+
+/*--------- Headers ---------*/
+
+p {
+  font-size: 18px;
+}
+
+ul {
+  font-size: 18px;
+}
+
+h2 {
+  color: #2C5577;
+}
+
+h3 {
+  color: #136CB9;
+}
+
+h4 {
+  color: #CA3E34;
+}
+
+.alt {
+    color: #912D25;
+    font-size: 1em;
+}
+
+
+
+/* Tutorial start over button */
+.topicsFooter .resetButton {
+    padding-left: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    opacity: .7;
+}
+
+/*-------- Code chunk header panel ---------*/
+.panel-default > .panel-heading {
+    color: #2F4F4F;
+    background-color: #e8eae5;
+    border-top: 1px solid #e8eae5;
+    border-left: 1px solid #e8eae5;
+    border-right: 1px solid #e8eae5;
+    font-size: 16px;
+}
+
+/*------- Rectangle panels --------*/
+.panel, pre {
+    color: #2C5577;
+    border-radius: 10;
+    background-color: #e8eae5;
+    border: 0;
+    font-size: 16px;
+}
+
+.panel_alt {
+    background-color: transparent
+}
+
+/*-------- Code chunk main panel --------*/
+
+.ace-tm {
+    background-color: white;
+    color: #3f3f3f;
+    border-bottom: 1px solid #e8eae5;
+    border-left: 1px solid #e8eae5;
+    border-right: 1px solid #e8eae5;
+    font-size: 15px;
+}
+
+/*-------- Line # cells --------*/
+
+.ace_gutter-cell {
+    padding-left: 10px;
+    padding-right: 4px;
+    background-repeat: no-repeat;
+    background-color: #e8eae5;
+    border: 0;
+    color: #2F4F4F;
+}
+
+/*-------- Code returns --------*/
+.tutorial-exercise-output > pre {
+    max-height: 500px;
+    overflow-y: auto;
+    background-color: white;
+    color: #3f3f3f;
+}
+
+
+/*------- In line code aesthetic --------*/
+code {
+    color: white;
+    background-color: #2C5577;
+    background-color: rgba(44, 85, 119, 0.8);
+    font-size: 14px;
+}
+
+
+
+/*------- Hyperlinks --------*/
+a {
+    color: #136CB9;
+    text-decoration: none;
+}
+
+a:hover, a:focus {
+    color: #2C5577;
+    text-decoration: underline;
+}
+
+/*------- Main menu -------*/
+.topicsList .topic {
+    color: #2C5577;
+    line-height: 40px;
+    font-size: 20px;
+    padding-left: 10px;
+    cursor: pointer;
+    background-color: white;
+    background-repeat: no-repeat;
+    background-size: 2px 80px;
+    background-position: left 100%;
+    background-image: url(images/topicProgress.png);
+    border-bottom: 1px solid #edeae2;
+    border-top: 0;
+    -webkit-transition-property: background-position;
+    transition-property: background-position;
+    -webkit-transition-duration: 0.25s;
+    transition-duration: 0.25s;
+}
+
+/*------- Selected menu item -------*/
+.topicsList .topic.current {
+    background-color: #f3e2c4;
+    color: #2F4F4F;
+    border: 0;
+}
+/*--- When hovering ---*/
+.topicsList .topic:hover {
+    background-color: #2C5577;
+    color: white;
+    border: 0;
+}
+
+/*------- Solution / Hint buttons -------*/
+.tutorial-exercise-input .btn-tutorial-solution {
+    margin-left: 15px;
+    background-color: #2C5577;
+    color: white;
+    font-family: 'Jaldi', sans-serif;
+    font-size: 13px;
+    border: 0;
+    text-shadow: none;
+}
+
+/*------- Solution popover --------*/
+.popover-title {
+    margin: 0;
+    padding: 8px 14px;
+    font-size: 14px;
+    background-color: #E8EAE5;
+    border-bottom: 1px solid #2C5577;
+    border-radius: 5px 5px 0 0;
+    color: #3F3F3F;
+    text-shadow: none;
+    font-family: 'Jaldi', sans-serif;
+}
+
+/*------- Buttons -------*/
+
+.btn-primary, .btn-success, .btn-info, .btn-xs, .btn-default {
+    color: white;
+    background-color: #2C5577;
+    background-image: none;
+    border: 0;
+    font-size: 15px;
+    text-shadow: none;
+}
+
+/*------- Buttons when hovering -------*/
+.btn-default:hover, btn-success:hover, btn-info:hover, btn-primary:hover {
+  background-color: #136CB9;
+  color: white;
+}
+
+/*-------- Code chunk buttons hover aesthetic -------*/
+
+.tutorial-exercise-input .btn-xs{
+    font-size: 13px;
+}
+
+.tutorial-exercise-input .btn-xs:hover {
+    margin-right: 0;
+    margin-top: -1px;
+    font-size: 13px;
+    margin-left: 12px;
+    padding-right: 8px;
+    font-weight: normal;
+    background-color: #136CB9;
+    color: white;
+    border: 0;
+}
+
+/*------- Button disabled -------*/
+.btn-primary.disabled {
+    color: white;
+    background-color: lightgray;
+    background-image: none;
+    border: none;
+    font-size: 13px;
+}
+
+/*------- Update Next Section button -------*/
+.topicActions .btn-primary:hover {
+    color: white;
+    background-color: #136CB9;
+    background-image: none;
+    border: none;
+}
+
+/*-------- Answer alert --------*/
+.alert-success {
+    background-color: #E6E8E2;
+    border: 0;
+    color: #2F4F4F;
+}
+.alert-danger {
+    background-color: #f3e2c4;
+    border: 0;
+    color: #2F4F4F;
+}
+
+
+/* Pedagogic boxes */
+
+.tip {
+  border-radius: 10px;
+  padding: 10px;
+  border: 2px solid #136CB9;
+  background-color: #136CB9;
+  background-color: rgba(19, 108, 185, 0.1);
+  color: #2C5577;
+}
+
+.bug {
+  border-radius: 10px;
+  padding: 10px;
+  border: 2px solid #f3e2c4;
+  background-color: #f3e2c4;
+  background-color: rgba(243, 226, 196, 0.1);
+  color: #775418;
+}
+
+.warning {
+  border-radius: 10px;
+  padding: 10px;
+  border: 2px solid #CA3E34;
+  background-color: #CA3E34;
+  background-color: rgba(202, 62, 52, 0.1);
+  color: #912D25;
+}
+
+.infobox {
+  border-radius: 10px;
+  padding: 10px;
+  border: 2px solid #868e96;
+  background-color: #868e96;
+  background-color: rgba(134, 142, 150, 0.1);
+  color: #2F4F4F;
+}
+
+.reportbox {
+  border-radius: 10px;
+  padding: 10px;
+  border: 2px solid #82b1b0;
+  background-color: #82b1b0;
+  background-color: rgba(130, 177, 176, 0.1);
+  color: #427479;
+}
+
+.img_left {
+ float: left;
+ padding: 0 10px 0 0;
+}
+
+/* two column text */
+
+.left_txt {
+  float: left;
+  width: 25%;
+}
+
+.right_txt {
+  width: 75%;
+}

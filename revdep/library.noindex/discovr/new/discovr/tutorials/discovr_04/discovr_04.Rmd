@@ -1,0 +1,957 @@
+---
+title: "discovr data summaries"
+author: "Andy Field"
+output:
+  learnr::tutorial:
+    progressive: false
+    theme: "united"
+    highlight: "kate"
+    css: ./css/discovr_style_future.css
+runtime: shiny_prerendered
+description: "Summarizing data. The mean, median, variance, standard deviation, interquartile range,  normal and bootstrap confidence intervals, tables of summary statistics. Includes an interactive app demonstrating what a confidence interval is."
+bibliography: [discovr_04.bib, packages.bib]
+---
+<html lang="en">
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+
+#necessary to render tutorial correctly
+library(learnr) 
+library(htmltools)
+#easystats
+library(datawizard)
+library(insight)
+#tidyverse
+library(dplyr)
+library(ggplot2)
+library(purrr)
+library(tibble)
+#non tidyverse/easystats
+#students don't use
+library(plotly)
+
+source("./www/discovr_helpers.R")
+
+#Read data files needed for the tutorial
+
+ice_tib <- discovr::ice_bucket
+```
+
+# discovr data summaries
+
+
+```{r, child = "./docs/intro.Rmd"}
+
+```
+
+
+## Packages {data-progressive=FALSE}
+
+```{r, child = "./docs/packages.Rmd"}
+
+```
+
+## Data
+
+```{r, child = "./docs/data.Rmd"}
+
+```
+
+
+## `r bmu()` Histograms [(A)]{.lbl}
+
+
+We will use data about memes, which typically have a common pattern: they start small, rapidly expand in popularity and then die out. Specifically we'll use data from the ice bucket challenge. You can check Wikipedia for the full story, but it all started (arguably) with golfer Chris Kennedy tipping a bucket of iced water on his head to raise awareness of the disease amyotrophic lateral sclerosis (ALS, also known as Lou Gehrig's disease).  The idea is that you are challenged and have 24 hours to post a video of you having a bucket of iced water poured over your head. In this video you also challenge at least three other people. If you fail to complete the challenge your forfeit is to donate to charity (in this case ALS). Many people completed the challenge and made donations.
+
+The ice bucket challenge generated 2,323,452 ice bucket related videos uploaded to YouTube and thanks to web-scraping I know the number of days after Chris Kennedy's initial challenge that each of these videos was uploaded. However, over two-million data points means the data file is large. So instead, the tibble `ice_tib` contains a random sample of 23,230 data points. These are representative of the larger data set so we can think of each observation as representing 1000 videos. The tibble contains one variable, **upload_day** which is the number of days after Chris Kennedy's initial challenge that 1000 videos were uploaded.
+
+It's hard to see the wood for the trees with 23,230 data points (let alone 2.3 million!) but we can start to make sense of the data using descriptive statistics. First though, let's visualise the distribution. The tutorial `discovr_05` looks at data visualization using the [ggplot2]{.pkg} in detail, but we'll get a flavour of what's to come by producing a histogram of the ice bucket data.
+
+### `r bmu()` A basic histogram [(A)]{.lbl}
+
+Let's start by plotting a histogram of number of days between the original ice bucket challenge video and when subsequent videos were uploaded. Remember, the data are stored in a variable called **upload_day** in the [ice_tib]{.alt} tibble. To initiate the plot we use the `ggplot()` function from the [ggplot2]{.pkg} package, which is part of [tidyverse]{.alt}. In its simplest the function has this general form:
+
+#### `r robot()` Code example
+
+```{r, eval = FALSE}
+ggplot(my_tib, aes(x = variable_for_x_axis, y = variable_for_y_axis))
+```
+
+Within the `ggplot()` function replace [my_tib]{.alt} with the name of the tibble containing the data you want to plot, and within the `aes()` function replace [variable_for_x_axis]{.alt} with the name of the variable to be plotted on the *x*-axis (horizontal), and replace [variable_for_y_axis]{.alt} with the name of the variable to be plotted on the *y*-axis (vertical).
+
+To plot the days since the first ice bucket challenge video that each video was uploaded, we could execute the code below, which uses the tibble called [ice_tib]{.alt}, and plots the variable **upload_day** on the *x* axis (for a histogram we don't need to specify *y*). Try it.
+
+```{r gg1, exercise=TRUE}
+ggplot(ice_tib, aes(x = upload_day))
+```
+
+**That doesn't look right!?**
+
+Don't worry, you haven't done anything wrong: this command tells [ggplot2]{.pkg} *what* to plot, but not *how* to plot it. We need to add something called a **geom** to display the data. For a histogram we use `geom_histogram()`. 
+
+#### `r alien()` Alien coding challenge
+
+Take the code from the code example (reproduced below), add `+ geom_histogram()` to it and run it.
+
+```{r ice_hist, exercise=TRUE}
+ggplot(ice_tib, aes(x = upload_day))
+```
+
+```{r ice_hist-solution}
+ggplot(ice_tib, aes(x = upload_day)) +
+  geom_histogram()
+```
+
+The completed command tells `r rproj()` to take the object created by `ggplot(ice_tib, aes(x = upload_day))` and add (`+`) a layer to it using `geom_histogram()`. You should see a beautiful histogram now! 
+
+
+### `r bmu()` Changing the bin widths [(A)]{.lbl}
+
+By default [ggplot2]{.pkg} constructs the bins of the histogram to be 1/30th the width of the data. You can over-ride this default by specifying [binwidth =]{.alt} within the `geom_histogram()` function. In the code box below, type [binwidth = 1]{.alt} into the brackets after `geom_histogram()` and execute the code. Note how the histogram changes. A binwidth of 1 makes sense for these data because responses could only be whole numbers (days), but try some other values and note how the histogram changes.
+
+```{r ice_bin, exercise=TRUE}
+ggplot(ice_tib, aes(x = upload_day)) +
+  geom_histogram()
+```
+
+```{r ice_bin-solution}
+ggplot(ice_tib, aes(x = upload_day)) +
+  geom_histogram(binwidth = 1)
+```
+
+
+The histogram shows us that the peak of video uploads was about 38 days after the video that started the ice bucket trend. So it took about a month for the challenge to reach its peak virility. There's a really dramatic increase in uploads between 20-40 days after the initial video as people start jumping on the bandwagon. After 38 days, video uploads dramatically decline as the challenge becomes 'old news' and people lose interest. However, the distribution is skewed and has a long tail to the right where after about 50 days there's still a trickle of videos being posted (presumably by middle aged men like myself who have been too pre-occupied with statistical models to notice what's happening in the real world until long after its relevant and suddenly get the urge to be 'down with the kids' by chucking a bucket of water over my head).
+
+
+### `r bmu()` Changing the colours of the bars [(A)]{.lbl}
+
+We can change the colour of the bars by including [fill =]{.alt} within the `geom_histogram()` function.
+
+#### `r robot()` Code example
+
+For example, we could specify the colour red as:
+
+```{r, eval = FALSE}
+geom_histogram(binwidth = 1, fill = "red")
+```
+
+<div class="bug">
+  `r bug()` **De-bug: Check for missing commas** 
+
+  Note that arguments within a function are separated by a comma. In this example [binwidth = 1, fill = "red"]{.alt} will work but [binwidth = 1 fill = "red"]{.alt} (note the comma is missing) would throw an error. If you get an error message, always check for these small syntax errors because a missing comma or quote can wreak more havoc than you could possibly imagine. Also remember that **everyone** makes these errors, even those of us who use `r rproj()` all day, every day.
+</div>
+
+#### `r alien()` Alien coding challenge
+
+Adapt the code below to colour the histogram bars red.
+
+```{r ice_hist_fill, exercise=TRUE}
+ggplot(ice_tib, aes(x = upload_day)) +
+  geom_histogram(binwidth = 1)
+```
+
+```{r ice_hist_fill-solution}
+ggplot(ice_tib, aes(x = upload_day)) +
+  geom_histogram(binwidth = 1, fill = "red")
+```
+
+
+You can also specify any [HEX colour code](http://www.color-hex.com/). For example, the shade of blue defined by hex code `#56B4E9` is good for colour blindness, so we could specify this by replacing ["red"]{.alt} with ["#56B4E9"]{.alt}.
+
+#### `r alien()` Alien coding challenge
+
+Replacing ["red"]{.alt} with ["#56B4E9"]{.alt} and run the code to see the effect this change has. Using the [HEX colour code](http://www.color-hex.com/) website, try changing the fill colour to a different colour using a hex code.
+
+```{r ice_hist_hex, exercise=TRUE}
+ggplot(ice_tib, aes(x = upload_day)) +
+  geom_histogram(binwidth = 1, fill = "red")
+```
+
+```{r ice_hist_hex-solution}
+ggplot(ice_tib, aes(x = upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9")
+```
+
+### `r bmu()` Changing the transparency of the bars [(A)]{.lbl}
+
+You can also make filled objects semi-transparent by using [alpha =]{.alt} where alpha is a proportion (i.e., between 0 and 1). For example, if you want the histograms to have 20% opacity you could include [alpha = 0.2]{.alt} in the `geom_histogram()` function (remembering to separate it from other options with a comma).
+
+<div class="bug">
+  `r bug()` **De-bug: inadmissible values** 
+
+Arguments within functions often have admissible values, an example would be that alpha *must* fall between 0 and 1. If you set a value outside of an argument's range, the argument is usually ignored, or you'll get an error. If changing a value within a function appears to have no effect (or you get an error) check that you have used admissible values. In the current example, check you haven't included [alpha = 100]{.alt}.
+</div>
+
+
+#### `r alien()` Alien coding challenge
+
+Taking our previous histogram, try setting 50% opacity. Try out some other values of alpha (between 0 and 1) and note the effect on the transparency of the bars.
+
+```{r ice_hist_alpha, exercise=TRUE}
+ggplot(ice_tib, aes(x = upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9")
+```
+
+```{r ice_hist_alpha-solution}
+ggplot(ice_tib, aes(x = upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5)
+```
+
+### `r bmu()` Editing axis labels [(A)]{.lbl}
+
+#### `r robot()` Code example
+
+To change the labels on the *x*- and *y*-axis we can use the `labs()` function. To do this, we add a `+` after the `geom_histogram()` function and on the next line type:
+
+```{r, eval = FALSE}
+labs(y = "label_for_y_axis", x = "label_for_x_axis")
+```
+
+Replacing [label_for_y_axis]{.alt} with the text we want on the *y*-axis and [label_for_x_axis]{.alt} with the text that we want on the *x*-axis. For the current plot, we are plotting the frequency of uploads (because it's a histogram) on the *y*-axis and the number of days since the original ice bucket challenge on the *x*-axis, so we might use:
+
+```{r, eval = FALSE}
+labs(y = "Frequency", x = "Days since first ice bucket challenge video")
+```
+
+#### `r alien()` Alien coding challenge
+
+Run the code in the box below to reproduce our histogram, then add the code from the code example and run it again. You should see that the axis labels change.
+
+```{r ice_hist_labs, exercise = TRUE, exercise.lines=3}
+ggplot(ice_tib, aes(x = upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5)
+```
+
+```{r ice_hist_labs-solution}
+ggplot(ice_tib, aes(x = upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5) +
+  labs(y = "Frequency", x = "Days since first ice bucket challenge video")
+```
+
+<div class="bug">
+  `r bug()` **De-bug: don't forget +** 
+
+  A common cause of errors messages when using `ggplot()` is forgetting to put a `+` at the end of each line (except the last). If you get an error message check that each line that builds up a plot has a `+` at the end of it (i.e. each function is separated by `+`).
+</div>
+
+
+### `r bmu()` Changing theme [(A)]{.lbl}
+
+[ggplot2]{.pkg} has various built in themes that change the appearance of the plot. The two we will use most often are `theme_bw()`, which applies a black and white theme and `theme_minimal()` which applies a minimalist theme. Both of these themes are good for scientific plots (like the ones you'll find in journal articles).
+
+#### `r robot()` Code example
+
+To apply a theme we add `+` after the previous function and then type `theme_bw()` or `theme_minimal()`. For example, to apply a minimalist theme to our histogram code we'd use the code below. Note that we have taken the code from the previous section and simply tagged `+ theme_minimal()` to the end. Compare the result to the previous version of the histogram.
+
+```{r ice_hist_theme_min, exercise=TRUE, exercise.lines=4}
+ggplot(ice_tib, aes(x = upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5) +
+  labs(y = "Frequency", x = "Days since first ice bucket challenge video") +
+  theme_minimal()
+```
+
+#### `r alien()` Alien coding challenge
+
+Try applying `theme_bw()`, `theme_classic()` and `theme_dark()` to see what effect it has on the plot.
+
+```{r ice_hist_theme, exercise=TRUE, exercise.lines=4}
+ggplot(ice_tib, aes(x = upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5) +
+  labs(y = "Frequency", x = "Days since first ice bucket challenge video")
+```
+
+```{r ice_hist_theme-hint-1}
+# Theme black and white:
+ggplot(ice_tib, aes(x = upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5) +
+  labs(y = "Frequency", x = "Days since first ice bucket challenge video") +
+  theme_bw()
+```
+
+```{r ice_hist_theme-hint-2}
+# Theme classic:
+ggplot(ice_tib, aes(x = upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5) +
+  labs(y = "Frequency", x = "Days since first ice bucket challenge video") +
+  theme_classic()
+```
+
+```{r ice_hist_theme-hint-3}
+# Theme dark:
+ggplot(ice_tib, aes(x = upload_day)) +
+  geom_histogram(binwidth = 1, fill = "#56B4E9", alpha = 0.5) +
+  labs(y = "Frequency", x = "Days since first ice bucket challenge video") +
+  theme_dark()
+```
+
+This gives you a flavour of the [ggplot2]{.pkg} package, but we'll look at it in more depth in `discovr_05`.
+
+## `r bmu()` Summarizing data [(A)]{.lbl}
+
+We've seen already that functions take the form of a command followed by brackets. We also saw that there are usually options that can be placed within those brackets (for example, in the previous section we changed the binwidth and bar colour of the histogram by placing instructions within the `geom_histogram()` function). We'll explore this idea more by looking at the function to estimate the mean and median of the ice bucket scores.
+
+### `r bmu()` The mean and median [(A)]{.lbl}
+
+We can compute the mean using the built-in function `mean()`. The full format of the function is:
+
+```{r, eval=FALSE}
+mean(x = variable, trim = 0, na.rm = FALSE)
+```
+
+Which just says that you need to include a reference to the variable/data that you want the mean for, and that you can set two arguments:
+
+- [trim]{.alt}: allows you to trim the scores before calculating the mean by specifying a value between 0 and 0.5. The default is 0 (no trim), but if you wanted to trim 10% of scores from each end of the distribution you could set [trim = 0.1]{.alt}, similarly to trim 20% from each end before computing the mean set [trim = 0.2]{.alt}.
+- [na.rm]{.alt}: you'll see this argument in many functions, it stands for 'NA remove'. In `r rproj()` missing values are denoted as [NA]{.alt} (not available), so by setting [na.rm = TRUE]{.alt} (or [na.rm = T]{.alt} for short) you ask `r rproj()` to remove missing values before computing the mean. 
+
+<div class="bug">
+  `r bug()` **De-bug: missing values** 
+
+  The default in many functions is not to remove missing values (e.g. [na.rm = FALSE]{.alt}). If you have missing values in your data and don't change this default behaviour `r rproj()` will throw an error. Therefore, if you get an error from a function like `mean()`, check whether you have missing values and whether you have forgotten to set [na.rm = TRUE]{.alt}.
+</div>
+
+The function for the median has a similar format except that there isn't an argument to trim the data because that wouldn't make sense (the median is effectively the data with a 50% trim):
+
+```{r, eval=FALSE}
+median(x = variable, na.rm = FALSE)
+```
+
+<div class="tip">
+  `r cat_space()` **Tip: using $**
+  
+  Remember from the `discovr_03` tutorial that we can use `$` to refer to a variable within a tibble. In general, we use `tibble$variable`, for example, we can use `ice_tib$upload_day` to select the variable **upload_day** from the [ice_tib]{.alt} tibble.
+</div>
+
+#### `r robot()` Code example
+
+If you are happy with the default settings you don't need to specify those arguments explicitly. For example, to find the mean of the variable **upload_day** from the [ice_tib]{.alt} tibble, we could execute:
+
+```{r ice_mean_ce1, exercise = TRUE}
+mean(ice_tib$upload_day)
+```
+
+However, if we wanted to remove missing values we need to override the default setting for the [na.rm]{.alt} argument:
+
+```{r ice_mean_ce2, exercise = TRUE}
+mean(ice_tib$upload_day, na.rm = TRUE)
+```
+
+<div class="tip">
+  `r cat_space()` **Tip: Finding the arguments of a function**
+  
+  To find the list of arguments (options) available for a particular function, remember that you can get help by executing `?` and the name of the function. For example, to remind yourself of the options for the `mean()` function, execute `?mean`
+</div>
+
+We can obtain the median in much the same way.
+
+#### `r alien()` Alien coding challenge
+
+Find the median number of days after the original ice bucket video that other videos were uploaded. 
+
+```{r ice_mean, exercise = TRUE}
+
+```
+
+```{r ice_mean-solution}
+median(ice_tib$upload_day)
+```
+
+We can see from the mean and median that the average amount of days after the challenge started that a video was upoloaded was 38-39 days (which is the peak of the histogram).
+
+### `r bmu()` Quantifying the 'fit' of the mean [(A)]{.lbl}
+
+We can use the functions `var()`, `sd()` to get the variance and standard deviation of the ice bucket scores. These functions behave exactly like `mean()` in that we input the variable for which we want the variance and standard deviation and specify how we treat missing values (by default they are not removed):
+
+#### `r robot()` Code example
+
+```{r, eval=FALSE}
+var(variable_name, na.rm = FALSE)
+sd(variable_name, na.rm = FALSE)
+```
+
+#### `r alien()` Alien coding challenge
+
+Use what you learned in the previous section and the code example above to get the variance and standard deviation of the days since the original ice bucket video that other videos were uploaded.
+
+<div class="tip">
+  `r cat_space()` **Tip**
+  
+  Because the current data has no missing scores we can omit the default argument of [na.rm=FALSE]{.alt}.
+</div>
+
+```{r ice_var, exercise = TRUE}
+
+```
+
+```{r ice_var-solution}
+var(ice_tib$upload_day)
+sd(ice_tib$upload_day)
+```
+
+### `r bmu()` The inter-quartile range [(A)]{.lbl}
+
+We can use the `IQR()` function to obtain the interquartile range of a set of scores. This function has an additional option of [type =]{.alt} which allows you to specify one of 8 different ways to calculate the IQR. The default is 7. There is an argument for using [type  = 8]{.alt}, which uses a method recommended by [@hyndman_sample_1996].
+
+#### `r robot()` Code example
+
+```{r, eval=FALSE}
+IQR(variable_name, na.rm = FALSE, type = 7)
+```
+
+#### `r alien()` Alien coding challenge
+
+Adapt the code example to get the inter-quartile range of the days since the original ice bucket video. Recalcutae it using method 8.
+
+```{r ice_iqr, exercise = TRUE}
+
+```
+
+```{r ice_iqr-hint-1}
+# The code example is:
+IQR(variable_name, na.rm = FALSE, type = 7)
+
+# Replace variable_name with the name of the variable that we want to summarize.
+```
+
+```{r ice_iqr-hint-2}
+# This gives us:
+
+IQR(ice_tib$upload_day, na.rm = FALSE, type = 7)
+
+# We have no missing values, and to start with we want the default method
+# of 7 so we can omit these arguments
+```
+
+```{r ice_iqr-hint-3}
+# Solution 1:
+
+IQR(ice_tib$upload_day)
+
+# To use method 8, insert type = 8 into the function
+```
+
+```{r ice_iqr-hint-4}
+# Solution 2:
+
+IQR(ice_tib$upload_day, type = 8)
+```
+
+
+## `r user_visor()` Creating a summary table [(B)]{.lbl}
+
+So far we have looked at computing individual statistics for a set of scores, but what if we want to combine these values into a table? We can do this using the `summarise()` function from the [dply]{.pkg}, which is part of the [tidyverse]{.pkg}.
+
+#### `r robot()` Code example
+
+The code looks like this in general:
+
+```{r eval = FALSE}
+ice_tib |>
+  dplyr::summarise(
+    median =  median(upload_day),
+    mean =  mean(upload_day),
+    ...
+    )
+```
+
+The code feeds the data stored in [ice_tib]{.alt} into the `summarise()` function. In this function new variables are created. The first variable we name `median` and it stores the output of `median(upload_day)`. In other words, we create a variable that we chose to call `median` (left hand side of the command) that stores the value of the median of the variable **upload_day** (right-hand side of the command). Similarly, we store the mean upload day in a variable called **mean** and so on. We can add as many new variables as we wish, but for the last variable we create we need to omit the comma at the end of the line (like we do when using `mutate()`).
+
+<div class="bug">
+  `r bug()` **De-bug: commas at the end of commands** 
+  
+  Every line within the `summarize()` function ends with a comma except for the last. When `r rproj()` sees a comma it expects to see another command, so the lack of comma after the last command tells `r rproj()` that it is the last command. If you get an error message when using `summarize()` check you have remembered commas at the end of each line except the last.
+</div>
+
+#### `r alien()` Alien coding challenge
+
+Create a summary table containing the mean, median, IQR, variance and SD of the number of days since the original ice bucket video.
+
+```{r ice_sum, exercise = TRUE, exercise.lines=9}
+
+```
+
+```{r ice_sum-hint-1}
+#start with the code example:
+ice_tib |>
+  dplyr::summarise(
+    median =  median(upload_day),
+    mean =  mean(upload_day),
+    ...
+    ) 
+```
+
+```{r ice_sum-hint-2}
+# Now add the command to get the IQR into the summarize() function
+ice_tib |>
+  dplyr::summarise(
+    median =  median(upload_day),
+    mean =  mean(upload_day),
+    IQR = IQR(upload_day)
+    )
+```
+
+```{r ice_sum-hint-3}
+# Now add the command to get the variance into the summarize() function
+ice_tib |>
+  dplyr::summarise(
+    median =  median(upload_day),
+    mean =  mean(upload_day),
+    IQR = IQR(upload_day),
+    variance = var(upload_day)
+    )
+```
+
+```{r ice_sum-hint-4}
+# Now add the command to get the standard deviation into the summarize() function
+ice_tib |>
+  dplyr::summarise(
+    median =  median(upload_day),
+    mean =  mean(upload_day),
+    IQR = IQR(upload_day),
+    variance = var(upload_day),
+    std_dev = sd(upload_day)
+    )
+
+# Check that you have commas at the end of every line except the last within summarise.
+```
+
+#### `r robot()` Code example
+
+If we want to store this table of summary statistics we can do so by assigning it to a new object. Let's say we want to assign it to an object called [upload_summary]{.alt} then we'd add `upload_summary <-` to the beginning of the command
+
+```{r eval = FALSE}
+upload_summary <- ice_tib |>
+  dplyr::summarise(
+    median =  median(upload_day),
+    mean =  mean(upload_day),
+    IQR = IQR(upload_day),
+    variance = var(upload_day),
+    std_dev = sd(upload_day)
+    ) 
+```
+
+
+## `r bmu()` Confidence intervals [(A)]{.lbl}
+
+As a brief recap, we usually use a sample value as an estimate of a parameter (e.g., the mean) in the population. The estimate of a parameter (e.g., the mean) will differ across samples, and we can use the standard error to get some idea of the extent to which these estimates differ across samples. We can also use this information to calculate boundaries within which we believe the population value will fall. Such boundaries are called [confidence intervals]{.alt}. Although what I'm about to describe applies to any parameter, we'll stick with the mean to keep things consistent with what you have already learnt.
+
+In the book we look at an example of how many followers someone has on their social media account. I think I used Facebook, but that's because I haven't yet realised that Facebook is populated only by people over the age of 40. I'm told that Instagram is the place to be, but no-one wants to see my wrinkly old scrotum of a face so I never use it. I pretty much don't use Facebook either. Did I mention I like statistics? Draw your own conclusions.
+
+Anyway, we looked at the number of followers people have on [*insert name of currently popular social media gizmo*]. We're interested in the average number of followers. There is a true mean (the mean in the population of all users). Let's imagine it's 120 (because most people are *not* statisticians). We take a sample of users and we find the mean number of followers is 100 Because we don't know what the true value of the mean is (the population value), we don't know how good (or bad) our sample value of 100 followers is as an estimate of it. So rather than fixating on a single value from the sample (the point estimate), we could use an interval estimate instead: we use our sample value as the midpoint, but set a lower and upper limit as well. So, we might say, we think the true value of the mean number of followers is somewhere between 70 and 130 followers (note that 100, our point estimate, falls exactly between these values). Of course, in this case the true value (100 followers) does falls within these limits. However, what if we'd set smaller limits – what if we'd said we think the true value falls between 90 and 110 followers (again, note that 100, our point estimate, is in the middle)? In this case the interval does not contain the population value of the mean.
+ 
+Let's imagine that you were particularly fixated with Japanese quail sperm, and you took 100 different samples of social media users. In each sample, you calculate the mean and constructed an interval around it as I've just described. The crucial thing is to construct the intervals in such a way that they tell us something useful. For example, perhaps we might want to know how often, in the ltol_rose run, an interval contains the true value of the parameter we're trying to estimate (in this case, the population mean). This is what a confidence interval does. Typically, we look at 95% confidence intervals, and sometimes 99% confidence intervals, but they all have a similar interpretation: they are limits constructed such that for a certain percentage of samples (be that 95% or 99%) the true value of the population parameter falls within the limits (on average). So, when you see a 95% confidence interval for a mean, think of it like this: if we'd collected 100 samples, and for each sample calculated the mean and a confidence interval for it then for approximately 95 of these samples, the confidence interval contains the value of the mean in the population, and in approximately 5 of the samples the confidence interval does not contain the population mean. The trouble is, you do not know whether the confidence interval from a particular sample is one of the 95% that contain the true value or one of the 5% that do not.
+
+The parameter estimate (in this case the mean) is always in the centre of the confidence interval. We know that 95% of confidence intervals contain the population value, so we might assume that this confidence interval contains the true mean (but remember this is an assumption and 5% of the time we will be incorrect). Under this assumption, if the interval is small, the sample mean must be very close to the true mean and if the confidence interval is very wide then the sample mean could be very different from the true mean, indicating that the sample estimate is a poor representation of the population. We'll now use an interactive activity to explore this explanation of a confidence interval.
+
+## `r bmu()` Confidence interval explorer [(A)]{.lbl}
+
+```{r ci_ui, echo = FALSE}
+fluidPage(
+
+    # Application title
+    titlePanel(""),
+
+    fluidRow(
+      wellPanel(
+        h3("Instructions"),
+        p("Use this interactive app to explore and understand confidence intervals. The idea is that you set up a population with a particular mean. When you click the", tags$code("Take samples"), "button 100 random samples will be taken from that population. In each sample we will calculate the mean and construct a confidence interval around it. We will then plot the mean as a dot and the confidence interval as a horizontal bar ranging from the lower limit of the interval to the upper limit. A vertical line, will show the population mean. By default, the data appears for each sample one at a time."),
+        p("Your main job is to pay attention to how often each confidence interval crosses the vertical line showing the population mean because in these situations the confidence interval contains the population value (i.e. contains the value we're trying to estimate). To help you out, samples that have confidence intervals that don't contain the population mean are plotted in a different colour to those that do."),
+        p("By default, the sliders are set up to mimic the example in the book chapter. Use these default settings first."),
+        p("1. Note that in each of the 100 samples we take, we are trying to estimate a population parameter (in this case the mean) using a point estimate (the sample mean) and an interval estimate (the 95% confidence interval). Normally, we don't know the value in the population, but in this simulation we do. By default it is 15. We want our samples to 'hit' this value, which is shown on the plot as a vertical line."),
+        p("2. Click",  tags$code("Take samples"), "and watch each sample appear on the plot. Note that (1) the samples yield different estimates (both the sample mean and the corresponding confidence interval differ from sample to sample); (2) some samples yield confidence intervals that contain the population value, others don't; (3) Note how many samples have confidence intervals that contain the population value (i.e. cross the grey, vertical, line)."),
+        p("3. Click",  tags$code("Take samples"), "again to take another 100 samples. Again, note the percentage of samples that have confidence intervals that contain the population value. (You can de-select the",  tags$code("Animate?"), "checkbox before clicking",  tags$code("Take samples"), "to display the final plot rather than having to wait for each sample to appear individually.)"),
+        p("4. Keeping everything else the same, change the slider for the confidence interval percentage to and repeat the process. What do you notice about the percentage of samples that have confidence intervals that contain the population value?"),
+        p("5. Keeping everything else the same, change the slider for the size of each sample and repeat the process. What do you notice about the width of the confidence intervals as the sample size increases and decreases?")
+      )
+    ),
+    
+    fluidRow(
+      column(6, align="center",
+             sliderInput("mu",
+                           "Population mean",
+                           min = 0,
+                           max = 100,
+                           step = 5,
+                           value = 15),
+              sliderInput("pop_sd",
+                           "Population standard deviation",
+                           min = 1,
+                           max = 30,
+                           step = 1,
+                           value = 5),
+             actionButton("gen_dat", "Take samples")
+             ),
+      column(6, align="center",
+            sliderInput("n_samp",
+                           "The size of each sample",
+                           min = 10,
+                           max = 200,
+                           step = 10,
+                           value = 30),
+            sliderInput("ci_level",
+                          "Confidence interval %",
+                           min = 50,
+                           max = 100,
+                           step = 1,
+                           value = 95),
+            checkboxInput("animate_cbx", label = "Animate?", value = TRUE)
+      ),
+    ),
+    hr(),
+    fluidRow(align="center",
+               h4(textOutput("coverage"), align = "centre")
+             ),
+    fluidRow(align="center",
+               plotlyOutput("ci_plot", height = "1000px") 
+             )
+)
+```
+
+```{r ci_server, context = "server", echo = FALSE}
+
+tol_bile <- "#999933"
+tol_rose <- "#CC6677"
+
+ci_tib <- reactiveValues(data = NULL, show = FALSE)
+timer_active <- reactiveVal(FALSE)
+animation_counter <- reactiveVal(0)
+
+get_cis <- function() {
+  tibble::tibble(sample = 1:100) |>
+    dplyr::mutate(
+      data = purrr::map(sample, \(i) rnorm(n = input$n_samp, mean = input$mu, sd = input$pop_sd)),
+      mean_ci = purrr::map(data, \(x) mean_cl_normal(x, conf.int = input$ci_level / 100)),
+      mean = purrr::map_dbl(mean_ci, \(ci) ci$y),
+      ci_low = purrr::map_dbl(mean_ci, \(ci) ci$ymin),
+      ci_upp = purrr::map_dbl(mean_ci, \(ci) ci$ymax),
+      contains_mu = input$mu >= ci_low & input$mu <= ci_upp
+    )
+}
+
+set_x <- function(x_min, x_max) {
+  ci <- input$ci_level / 100
+  area <- (1 + ci) / 2
+  width <- round(4 * qnorm(area) * (input$pop_sd / sqrt(10)))
+
+  step <- floor(width / 5)
+  if (step > 0) {
+    x_breaks <- input$mu + step * seq(-5, 5, 1)
+  } else {
+    x_breaks <- round(input$mu + (width / 5) * seq(-5, 5, 1), 2)
+  }
+  x_breaks
+}
+
+get_plot <- function(tib, x_min, x_max) {
+  tib <- tib |>
+    dplyr::mutate(
+      color = ifelse(contains_mu, tol_bile, tol_rose),
+      sample_label = paste0(
+        "Sample: ", sample,
+        "<br>Mean: ", round(mean, 2),
+        "<br>CI: [", round(ci_low, 2), ", ", round(ci_upp, 2), "]"
+      )
+    )
+
+  p <- plotly::plot_ly()
+
+  for (i in seq_len(nrow(tib))) {
+    p <- p |>
+      plotly::add_trace(
+        x = tib$mean[i],
+        y = tib$sample[i],
+        type = "scatter",
+        mode = "markers",
+        marker = list(color = tib$color[i], size = 8),
+        error_x = list(
+          type = "data",
+          symmetric = FALSE,
+          array = tib$ci_upp[i] - tib$mean[i],
+          arrayminus = tib$mean[i] - tib$ci_low[i],
+          color = tib$color[i]
+        ),
+        text = tib$sample_label[i],
+        hoverinfo = "text",
+        showlegend = FALSE
+      )
+  }
+
+  # Add population mean line last so it's in the background
+  p <- p |>
+    plotly::layout(
+      xaxis = list(
+        title = "",
+        range = c(min(set_x(x_min, x_max)), max(set_x(x_min, x_max))),
+        tickvals = set_x(x_min, x_max)
+      ),
+      yaxis = list(title = "Sample number", autorange = "reversed"),
+      shapes = list(list(
+        type = "line",
+        x0 = input$mu, x1 = input$mu,
+        y0 = 0, y1 = 100,
+        line = list(color = "#88CCEE", width = 2),
+        layer = "below"  # keep behind CI bars
+      ))
+    )
+
+  p
+}
+
+# Animation loop using reactiveTimer
+autoInvalidate <- reactiveTimer(100)
+
+observe({
+  if (timer_active()) {
+    autoInvalidate()
+    isolate({
+      if (animation_counter() < 100) {
+        animation_counter(animation_counter() + 1)
+      } else {
+        timer_active(FALSE)  # stop timer once finished
+      }
+    })
+  }
+})
+
+output$ci_plot <- renderPlotly({
+  req(ci_tib$data)
+
+  if (input$animate_cbx) {
+    req(animation_counter() > 0)  # prevent rendering before any frames exist
+    tib <- ci_tib$data |> dplyr::filter(sample <= animation_counter())
+  } else {
+    tib <- ci_tib$data
+  }
+
+  x_min <- min(ci_tib$data$ci_low)
+  x_max <- max(ci_tib$data$ci_upp)
+
+  get_plot(tib, x_min, x_max)
+})
+
+observeEvent(input$gen_dat, {
+  timer_active(FALSE)      # stop any running animation
+  animation_counter(0)     # reset frame counter
+
+  ci_tib$data <- get_cis()
+  ci_tib$show <- TRUE
+
+  if (input$animate_cbx) {
+    timer_active(TRUE)     # start animation
+  }
+
+  output$coverage <- renderText({
+    paste0("Confidence intervals containing the population value = ",
+           round(100 * mean(ci_tib$data$contains_mu), 2), "%")
+  })
+})
+
+
+```
+
+Based on your explorations of confidence intervals, please try to answer these questions.
+
+```{r quiz_ci, echo = FALSE}
+quiz(caption = "Confidence interval quiz",
+  question("When the confidence interval width was 95% what did you observe?",
+    answer("The percentage of samples with confidence intervals that included the population value was always 95%", message = "This statement could be true if you tried pressing the 'Take samples' only a few times, but in general this staement is false. The percentage of samples with confidence intervals that included the population value should not *always* be 95%. Go back to the interactive demo and take some more samples."),
+    answer("The percentage of samples with confidence intervals that included the population value was never 95%", message = "This statement could be true if you tried pressing the 'Take samples' only a few times, but in general this staement is false. The percentage of samples with confidence intervals that included the population value should in the ltol_rose run be 95%, so you'd expect a few of your sets of 100 samples to hit a 95% hit rate. Go back to the interactive demo and take some more samples."),
+    answer("The percentage of samples with confidence intervals that included the population value seemed to fluctuate around 95%. Sometimes it was a little more, sometimes a little less.", message = "This statement should reflect what you'd see. In the ltol_rose run (i.e. over infinite numbers of samples), the hit rate for 95% confidence intervals will be 95% but in the short run (i.e. for 100 samples) it might be slightly off that value. Try re-doing the exercise 5-10 times but this time note the percentage of samples with confidence intervals that included the population value each time you press 'Take samples'. You should find that if you average these values you get 95% (or close to it) showing that as you atke larger numbers of samples, the percentage of samples with confidence intervals that included the population value converge on 95%.", correct = TRUE),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  ),
+  question("What happened to the percentage of samples with confidence intervals containing the population value as you increased and decreased the confidence interval percentage?",
+    answer("The percentage of samples with confidence intervals that included the population value seemed to fluctuate around the percentage I set.", correct = TRUE, message = "This statement should reflect what you'd see. In the ltol_rose run (i.e. over infinite numbers of samples), the hit rate for confidence intervals will be the percentage you set but in the short run (i.e. for 100 samples) it might be slightly off that value. Note that as the percentage get higher you get less fluctuation, meaning that you have more certainty that your particular sample contains the population value."),
+    answer("The percentage of samples with confidence intervals that included the population value was always the value that I set.", message = "This statement could be true if you tried pressing the 'Take samples' only a few times, but in general this staement is false. The percentage of samples with confidence intervals that included the population value should in the ltol_rose run match the % value that you set on the slider."),
+    answer("The percentage of samples with confidence intervals that included the population value was always 95%.", message = "This statement could be true if you didn't move the slider from the default position!  Go back to the interactive demo and take some more samples but change the percentage for the confidence interval."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  ),
+  question("What happened to the width of the confidence intervals as the sample size increased?",
+    answer("The confidence intervals got narrower.", correct = TRUE, message = "This statement should reflect what you'd see. Large samples typically provide estimates of population values that more closely match the true values. Large sample also typically provide extimates of population values that vary less from sample to sample. Hence you get narrow intervals. Small samples tend to be more different from each other, and have more potential to provide estimates of population values that are more distant from the true values. Hence confidence intervals in small samples tend to be wider than large samples."),
+    answer("The confidence intervals got wider.", message = "This should not have been what you saw. Re-do the exercise and pay particular attention to the values on the x-axis (which tell you about the width of the intervals)"),
+    answer("The width of the confidence intervals stayed the same.", message = "This statement could be true if you didn't move the slider very far from the default positions. Go back to the interactive demo and take some more samples but set the sample size slider to the extremes."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+  )
+)
+``` 
+
+
+## `r bmu()` Easier descriptives using [datawizard]{.pkg} [(A)]{.lbl}
+
+Creating a bespoke table of summary statistics is useful and helped us to learn more about functions and practice our tidyverse skills, but we can get a set of descriptive statistics using the `describe_distribution()` function from the [datawizard]{.pkg} package from [easystats]{.pkg} that includes confidence intervals. The function has the following form:
+
+```{r, eval = F}
+describe_distribution(x = my_data,
+  select = NULL,
+  exclude = NULL,
+  centrality = "mean",
+  dispersion = TRUE,
+  iqr = TRUE,
+  range = TRUE,
+  quartiles = FALSE,
+  include_factors = FALSE,
+  ci = NULL,
+  iterations = 100)
+```
+
+You replace [my_data]{.alt} with the name of a tibble that you want to summarize, you can use [select]{.alt} to select specific variables within the tibble, or [exclude]{.alt} to exclude them. By default, the mean is displayed [centrality = "mean"]{.alt} but this can be set to "median", "MAP" (the maximum a posteriori probability, which we don't cover) or "all" to get all of them. The remaining arguments can be set to [TRUE]{.alt} or [FALSE]{.alt} to indicate which summary statistics to include, by default you get measures of dispersion (standard deviation for the mean and mean absolute deviation for the median), the interquartile range [iqr]{.alt}, and the range, but not the upper ($q_{0.75}$) and lower ($q_{0.25}$) quartiles or confidence intervals.
+
+To include a confidence interval we include the argument [ci = proportion]{.alt} in which we replace [proportion]{.alt} with a value that represents the percentage of the interval. For a 95% confidence interval the proportion is 0.95 so you'd include [ci = 0.95]{.alt}. This function always uses a bootstrap method with a default of 100 bootstrap samples ([iterations = 100]{.alt}). This is possibly a little low (but keeps computations fast), so consider increasing it to 500 or even 1000.
+
+<div class="tip">
+  `r cat_space()` **Tip**
+
+When a function has an argument that can be set to [TRUE]{.alt} or [FALSE]{.alt} you can abbreviate these to [T]{.alt} and [F]{.alt} respectively. For example this code
+
+```{r, eval = F, class.source = '.panel_alt'}
+describe_distribution(x = my_data, dispersion = T, quartiles = F)
+```
+
+is equivalent to
+
+```{r, eval = F, class.source = '.panel_alt'}
+describe_distribution(x = my_data, dispersion = TRUE, quartiles = FALSE)
+```
+
+In these tutorials I will sometimes use [TRUE]{.alt}/[FALSE]{.alt} and sometimes [T]{.alt}/[F]{.alt} just to keep you on your toes.
+
+</div>
+
+#### `r alien()` Alien coding challenge
+
+Using the default options as well as setting arguments to get a confidence interval from 500 bootstrap samples, get descriptive statistics for the ice bucket challenge data.
+
+```{r ice_wiz, exercise = TRUE, exercise.lines=3}
+
+```
+
+```{r ice_wiz-hint-1}
+#replace the xxx
+describe_distribution(xxx)
+```
+
+```{r ice_wiz-hint-2}
+#replace the xxx
+describe_distribution(ice_tib)
+# now include the ci and iterations arguments
+```
+
+```{r ice_wiz-solution}
+describe_distribution(ice_tib, ci = 0.95, iterations = 500)
+```
+
+
+```{r quiz_ci_ex1, echo = FALSE}
+question("The 95% confidence interval for the upload days ranges from 39.57 to 39.76 (your numbers may differ slightly because of using a bootstrap method). What does this tell us?",
+    answer("If this confidence interval is one of the 95% that contains the population value then the mean number of followers in the population lies between 39.57 and 39.76.", correct = TRUE),
+    answer("There is a 95% chance that the mean number of followers in the population lies between 39.57 and 39.76.", message = "You cannot make probability statements from a confidence interval. We don't know whether this particular CI is one of the 95% that contains the population value of the mean number of followers."),
+    answer("The probability of this confidence interval containing the population value is 0.95.", message = "The probability of this confidence interval containing the population value is either 0 (it doesn't) or 1 (it does) but it's impossible to know which."),
+    answer("I can be 95% confident that the mean number of followers in the population lies between 39.57 and 39.76.", message = "Confidence intervals do not quantify your subjective confidence."),
+    correct = "Correct - well done!",
+    random_answer_order = TRUE,
+    allow_retry = T
+)
+```
+
+
+## `r bmu()` Nicer tables with insight [(A)]{.lbl}
+
+If you've tried out any of the code above in a `r quarto()` document and rendered it you'll see that the output is plain text. It doesn't look great. A straightforward way to turn this output into beautifully rendered tables, is to put it into the `display()` function from [insight]{.pkg}, which is part of [easystats]{.pkg}. It takes this general form
+
+```{r, eval = F}
+display(x = my_output,
+  digits = 2,
+  column_names = a_list_of_column_names,
+  align,
+  caption = "Write a caption"
+)
+```
+
+The function formats your output, but has options to set the maximum number of decimal places using [digits]{.alt}, you can set column names (in case you want to override them in your output), you can set the alignment of each column, and include a caption.
+
+#### `r robot()` Code example
+
+For example, to add a caption to our table of descriptives and set the maximum number of decimal places to 2 we'd use
+
+```{r, eval = F}
+describe_distribution(ice_tib, ci = 0.95) |> 
+  display(digits = 2,
+        caption = "Summary statistics for the ice bucket challenge."
+        )
+```
+
+We can also first create the table and then use display.
+
+
+#### `r alien()` Alien coding challenge
+
+Execute the code to create an object called [upload_tbl]{.alt} which we then display. We then display it again using `display()` to control the decimal places and add a caption.
+
+```{r upload_skable, exercise = TRUE, exercise.lines=15}
+upload_tbl <- describe_distribution(ice_tib, ci = 0.95) 
+
+upload_tbl
+
+upload_tbl |> 
+  display(digits = 2,
+        caption = "Summary statistics for the ice bucket challenge."
+        ) 
+```
+
+
+We can also format the column names using something called markdown, which is a system of symbols that apply formatting to text when the document is rendered. For example, placing any text within `*` formats that text as italic, so if we specify column names using markdown then we can get things like italic text. Some useful markdown for tables:
+
+-	`*text*`: will be formatted in italics (*text*)
+-	`^text^`: will be formatted in superscript, so `s^2^` renders as s^2^. You can combine this with italics. For example, `*s*^2^` renders as *s*^2^ (note the s is italic).
+-	`~text~`: will be formatted in subscript, so `Q~L~` renders as Q~L~. You can combine this with italics. For example, `*Q*~L~` renders as *Q*~L~ (note the Q is italic).
+
+For example, the code below over-rides the default column names and uses markdown to format certain column names in italic:
+
+```{r upload_skable_md, exercise = TRUE, exercise.lines=15}
+describe_distribution(ice_tib, ci = 0.95)  |> 
+  display(
+    column_names = c("Variable",  "*M*", "95% CI", "*s*", "IQR", "Range", "Skewness", "Kurtosis", "n", "Missing"),
+    digits = 2,
+    caption = "Summary statistics for the ice bucket challenge."
+        ) 
+```
+
+
+
+<div class="tip">
+  `r cat_space()` **Tip: `display()` in code chunks**
+
+If you execute an individual code chunk that uses `display()` within your document the table will appear below the code chunk as normal but looks horrible. `display()` weaves its magic when the entire document is rendered. If you want to view the table as a work in progress, highlight the code excluding the `|> display()` part and press control + enter (command + enter on MacOS) to view the table.
+</div>
+
+
+<br />
+
+<div class="infobox">
+  <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
+  
+  **A message from Mae Jemstone:**
+  
+Well done on completing phase 4 of your mission! You have learnt how to summarize data using histograms and statistics such as the mean, median, variance and standard deviation. Better still, unlike most professional scientists, you now know the correct interpretation of a confidence interval. Confidence intervals are tricky to understand but you are well on your way to knowing more about them than those supposedly clever academic types, because you completed my amazing confidence interval explorer app. Little did you know that those sliders also controlled someone else's mind, but I'm not telling you whose. Play with them some more though and see if you can spot anyone swatting their head as though surrounded by flies. Anyway, well done and keep it up!!  
+  
+</div>
+
+## Resources/References {data-progressive=FALSE}
+
+```{r, child = "./docs/resources.Rmd"}
+
+```
+
+
+### References
+
+

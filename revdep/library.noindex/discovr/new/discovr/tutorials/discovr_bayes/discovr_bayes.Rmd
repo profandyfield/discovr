@@ -1,0 +1,1283 @@
+---
+title: "discovr Bayesian statistics"
+author: "Andy Field"
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+    theme: "united"
+    highlight: "kate"
+    css: ./css/discovr_style_future.css
+runtime: shiny_prerendered
+description: "Bayesian taster tutorial. This tutorial offers a taster of Bayesian statistics by showing how to estimate models from other tutorials within a Bayesian framework using `rstanarm`. We also look at Bayes factors. The tutorial includes five examples of linear models: (1) predicting a continuous outcome from several continuous predictors; (2) comparing two means; (3) comparing multiple means; (4) comparing means adjusted for a covariate (ANCOVA); and (5) predicting a continuous outcome from two continuous predictors (a factorial design)."
+bibliography: [discovr_bayes.bib, packages.bib]
+---
+
+<html lang="en">
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+
+#necessary to render tutorial correctly
+library(learnr) 
+library(htmltools)
+#easystats
+library(bayestestR)
+library(datawizard)
+library(insight)
+library(parameters)
+#tidyverse
+library(dplyr)
+library(ggplot2)
+library(tibble)
+#non tidyverse/easystats
+library(rstanarm)
+library(logspline) # needed for Bayes Factors
+#students don't use
+library(patchwork)
+
+source("./www/discovr_helpers.R")
+
+
+#Read dat files needed for the tutorial
+
+album_tib <- discovr::album_sales
+cloak_tib <- discovr::invisibility_cloak
+puppy_tib <- discovr::puppies
+puptreat_tib <- discovr::puppy_rct
+goggles_tib <- discovr::goggles
+
+# get plot aesthetics
+line_width <- 1
+tol_palette <- discovr::tol_muted_pal()(8)
+tol_blue <- tol_palette[5]
+tol_bile <- tol_palette[7]
+tol_rose <- tol_palette[1]
+```
+
+
+# discovr Bayesian statistics
+
+```{r, child = "./docs/intro.Rmd"}
+
+```
+
+## Packages {data-progressive=FALSE}
+
+```{r, child = "./docs/packages.Rmd"}
+
+```
+
+
+## Data
+
+```{r, child = "./docs/data.Rmd"}
+
+```
+
+## `r user_astronaut()` General linear models [(C)]{.lbl}
+
+To start with, we'll look back at the example from Chapter 8 [@fielddsr22026] that looks at predicting physical, downloaded and streamed album sales (outcome variable) from various predictor variables (we encountered this example in `discovr_08`). The data file has 200 rows, each one representing a different album. There are also several columns, one of which contains the sales (in thousands) of each album in the week after release (`sales`) and one containing the amount (in thousands of pounds/dollars/euro/whatever currency you use) spent promoting the album before release (`adverts`). The other columns represent how many times songs from the album were played on a prominent national radio station in the week before release (`airplay`), and the 'look' of the band out of 10 (`image`). The data are in a tibble called [album_tib]{.alt}.
+
+#### `r alien()` Alien coding challenge
+
+Use the code box to view the data.
+
+<div class="tip">
+  `r cat_space()` **Hint**
+  
+  Remember to view an object in `r rproj()` execute its name.
+</div>
+
+```{r album_data, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r album_data-solution}
+album_tib
+```
+
+Note how the data are laid out: each variable is in a column and each row represents a different album. So, the first album had £10,260 spent advertising it, sold 330,000 copies (remember sales are in thousands), received 43 plays on radio the week before release, and was made by a band with a pretty sick image (10 out of 10!).
+
+You can revisit `discovr_08` to look at descriptive statistics and scatterplots of the variables. The final model we fitted in `discovr_08` is described by:
+
+$$
+\begin{aligned}
+Y_i & = b_0 + b_1X_{1i}+ b_2X_{2i} + \ldots + b_nX_{ni} + \varepsilon_i\\
+\text{Sales}_i & = b_0 + b_1\text{Advertising}_i+ b_2\text{Airplay}_i + b_3\text{Image}_i + \varepsilon_i
+\end{aligned}
+$$
+
+From a Bayesian perspective we can fit the model using either [default priors]{.kt}, which set distributions that represent very diffuse prior beliefs or [informative (subjective) priors]{.kt} that are distributions reflecting specific prior beliefs about the model parameters. We'll use the [rstanarm]{.pkg}  because it is a good gateway drug to more versatile (and complex) packages. The strength of [rstanarm]{.pkg} is that it uses sensible default priors, so it is straightforward to fit models with uninformative priors. However, the key strength of Bayesian statistics (in my opinion) is that you can set evidence-based (informative) priors that you update with the data that you collect. This undertaking is not a trivial: it requires a deeper understanding of the models than we can cover. Fortunately, [rstanarm]{.pkg} has limited, but straightforward, options for setting informative priors, meaning that we can dip our toes in the water.
+
+To fit models using [rstanarm]{.pkg} requires using a lot of internal functions from the package, so it makes sense to use concise style rather than explicit for this package. Therefore, in your setup code chunk include:
+
+```{r eval = F}
+library(rstanarm)
+```
+
+
+### `r user_astronaut()` Uninformative (default) priors [(C)]{.lbl}
+
+
+The function we'll use from [rstanarm]{.pkg} is `stan_glm()` which is fairly similar to `lm()`. For a model that uses default priors it takes the general form:
+
+
+```{r eval = F}
+my_dp <- stan_glm(outcome ~ predictor_1 + predictor_2 + ... + predictor_n, data = my_tib)
+```
+
+
+We create a model by specifying a formula for the model and the data, just like in `lm()`. We store the model using an informative name; replace [my_dp]{.alt} with the name you want to give it (I use [_dp]{.alt} to mean 'default priors').
+
+#### `r robot()` Code example
+
+For the model in this chapter the code would be
+
+```{r eval = F}
+album_dp <- stan_glm(sales ~ adverts + airplay + image, data = album_tib)
+```
+
+We can extract information about the posterior distribution in the same way as for other models: we place the model into `model_parameters()` from [parameters]{.pkg}. For Bayesian models this function uses the bayestestR  [@bayestestR2019] package to get the information from the posterior distribution. 
+
+This function has some options that apply only in the Bayesian context. In general:
+
+```{r eval = F}
+model_parameters(model = album_dp,
+                 test = "pd",
+                 null = 0)
+```
+
+The two unfamiliar arguments are
+
+- [test = "pd"]{.alt}: by default, the function returns something known as the probability of direction (`pd`), which is an index of how likely it is that an effect goes in a certain direction (ranging from 50% to 100%). It is not an indicator of importance, because you can have effects that are, for example, definitely positive but trivially small. We want to look at Bayes Factors so we need to change this argument to [test = c("pd", "bf")]{.alt}, or just [test = "bf"]{.alt}.
+- [null = 0]{.alt}: the null value for the parameters. In the models we fit in this book, this will usually be 0 (the default) meaning that the function returns the Bayes factors for each parameter against the null hypothesis that it is equal to zero.
+
+#### `r robot()` Code example
+
+We can, therefore, extract information form our model based on default priors using
+
+```{r eval = F}
+model_parameters(model = album_dp, test = c("pd", "bf"), null = 0) |> 
+  display()
+```
+
+#### `r alien()` Alien coding challenge
+
+Try fitting the model described above.
+
+```{r rstan_dp, exercise = TRUE, exercise.lines = 10}
+
+```
+
+```{r rstan_dp-hint-1}
+# first, fit the model (replace the xxxs)
+album_dp <- stan_glm(xxx ~ xxx + xxx + xxx, data = xxx)
+# now extract the model parameters
+```
+
+```{r rstan_dp-hint-2}
+# fit the model (replace the xxxs)
+album_dp <- stan_glm(sales ~ adverts + airplay + image, data = album_tib)
+# extract the model parameters  (replace the xxxs)
+model_parameters(xxx) |> xxx
+```
+
+```{r rstan_dp-solution}
+# fit the model
+album_dp <- stan_glm(sales ~ adverts + airplay + image, data = album_tib)
+# extract the model parameters
+model_parameters(model = album_dp, test = c("pd", "bf"), null = 0) |> 
+  display()
+```
+
+
+The Bayesian parameter estimates based on default priors are in the column labelled [median]{.opt} (these values are the median of the posterior distribution), which are basically the same as the frequentest ones from `discovr_08`. This is because the default priors are very weak and uninformative so the estimates will be based mainly on the data (and for Frequentest models estimation is based entirely on the data). In fact, we can see the priors used in the final column. Each predictor had a prior centred at zero (no effect) with a standard deviation that varies according to the scale of measurement but is always large. For example, for image the distribution is so wide that almost any value of $b$ is plausible prior to fitting the model.
+
+<div class="infobox">
+  `r info()` **Bayesian models are based on sampling**
+
+Bayesian estimation relies on sampling from the posterior distribution so your results will differ from mine. Therefore, the interpretation below is based on these model parameters:
+
+```{r echo = F, results = "hide"}
+album_dp <- stan_glm(sales ~ adverts + airplay + image, data = album_tib)
+album_dp_par <- model_parameters(model = album_dp, test = c("pd", "bf"), null = 0) 
+```
+
+```{r echo = F}
+display(album_dp_par)
+```
+
+
+</div>
+
+
+
+```{r, echo = F}
+bf_ad_num <- value_from_ez(album_dp_par, row = 2, value = "log_BF", exponentiate = T, as_is = T, digits = 2) |> format(big.mark = ",")
+bf_air_num <- value_from_ez(album_dp_par, row = 3, value = "log_BF", exponentiate = T, as_is = T, digits = 2) |> format(big.mark = ",")
+bf_ad <- value_from_ez(album_dp_par, row = 2, value = "log_BF", exponentiate = T, digits = 2, scientific = T)
+bf_air <- value_from_ez(album_dp_par, row = 3, value = "log_BF", exponentiate = T, digits = 2, scientific = T)
+bf_im <- value_from_ez(album_dp_par, row = 4, value = "log_BF", exponentiate = T, digits = 2)
+```
+
+
+Unlike our frequentest model, the 95% credible intervals (unlike confidence intervals) contain the true estimate with 0.95 probability. That is, with 0.95 probability, the true effect of advertising lies between a `r value_from_ez(album_dp_par, row = 2, value = "CI_low")` increase in sales for every pound spent, and a `r value_from_ez(album_dp_par, row = 2, value = "CI_high")` increase in sales for every pound spent (remember that both advertising and sales are measured in thousands of units). In other words, the true effect is weak.
+
+The column labelled [BF]{.opt} contains the Bayes factors. For advertising the Bayes Factor is `r bf_ad`, which means that the data are `r bf_ad_num` times more likely under the alternative hypothesis (the $b$ for advertising is not zero) than under the null (the $b$ for advertising is zero). We should shift our belief about advertising being related to sales by a factor of `r bf_ad_num`! The Bayes factor for airplay is similarly huge (`r bf_air` or `r bf_air_num`). These values represent extreme evidence. The Bayes factor for image is a more modest `r bf_im` that is nevertheless strong evidence in favour of the alternative hypotheses.
+
+### `r user_astronaut()` Informative (subjective) priors [(C)]{.lbl}
+
+This is great, but the real power of Bayesian models comes with setting informative priors. We have four parameters to think about: one for each of the three predictors and the intercept. [Technically we should set a prior for the error variance, but we'll use the default.] To set informative priors we would need to consider our expectations about the $b$s before we collected the data. To keep things as simple as we can we will consider only normally-distributed priors, but there are a wide range of other distributions you could use.
+
+- `Intercept`: the intercept represents mean album sales when nothing is spent on advertising, there is no airplay and the band's image is rated at zero. It's like asking 'how many sales would we expect for a really uncool-looking band, if we did nothing'. Probably the record company has historic data on this. Let's assume that they know that you can expect 20,000 sales on average, but that it varies for different artists. They also know from historic data that the standard deviation is large, around 7,000. A reasonable prior might be a normal distribution centred on 20 (remember sales are expressed as 1000s) with a standard deviation of 7. This prior (Figure 1, top-left) represents a belief that the mean number of sales for uncool bands with no promotion cannot be less than 0 (end of the left tail) or more than about 40 (end of the right tail) and will most likely be around 20 thousand. These beliefs seem reasonable, it would be odd, for example to have a prior in which negative sales (an impossibility) were likely.
+- `advertising`: remember that this predictor was one about which there was prior information. Let's assume that based on past data the record company knew that historically, for every £1000 pounds they spend on advertising they can expect 1000 album sales. This equates to a b of 1. They also know that although spending money on advertising typically increases sales, they have been known to go down. Figure 1 (top right) shows a prior distribution that reflects these prior beliefs: it is centred at 1 and ranges from about −0.5 to 2.5. Most of the distribution lies above zero, so we believe that advertising will most likely equate to more sales; however, because a small part of it lies below zero we are acknowledging the possibility that increased advertising might reduce sales.
+- `airplay` and `image`: the 'new' features of our study were to measure airplay and quantify the band's image. In focus groups people tended to acknowledge that they would buy music if they were exposed to it and liked it, but some said that sometimes hearing a song made them less likely to buy it because they had heard it for free. Similarly, many of the group acknowledged that a cool image influenced whether they bought music but there was a lot of disagreement about this. Therefore, we're expecting these bs to be above zero but we're not too sure how big they might be. In particular, the focus group showed a wider variety of views about the importance of image. We want to set a weak priors for both to let the data do the work, but a weaker prior for image than airplay. Figure 1 shows some possible priors for the $b$s for `airplay` (bottom-left) and `image` (bottom-right). For airplay our prior says that we believe that the most likely value is $b$ = 5, meaning that for every addition airplay 5000 additional units would be sold, and that we think it highly unlikely (but possible) that sales could be negative. We also think there's a slim possibility that $b$ could be as much as 10. Similarly for image our prior says  that we believe that the most likely value is $b$ = 8, meaning that for every increase on the image scale 8000 additional units would be sold. This distribution is wider (and, therefore weaker) than for airplay though because we think that a fall in sales more likely (more of the distribution falls below 0) and we are more uncertain about the value in general (the distribution ranges from about -8 to 25).
+
+```{r priorplots, echo = F, fig.cap = "Figure 1: Playing with priors", fig.width=8, fig.height=6}
+# prior for advertising
+b1_gg <- ggplot(tibble(x = c(-1, 5)), aes(x=x)) +
+  geom_function(fun = dnorm, args = list(mean = 1, sd = 0.5), colour = tol_blue, linewidth = line_width) +
+  scale_x_continuous(breaks = seq(-1, 5, 1)) +
+  geom_vline(xintercept = 0, colour = tol_bile, linetype = 2, linewidth = line_width) +
+  geom_vline(xintercept = 1, colour = tol_rose, linewidth = line_width) +
+  ggtitle('Prior for advertising') +
+  theme_minimal()
+
+# prior for airplay
+b2_gg <- ggplot(tibble(x = c(-2, 12)), aes(x=x)) +
+  geom_function(fun = dnorm, args = list(mean = 5, sd = 2), colour = tol_blue, linewidth = line_width) +
+  scale_x_continuous(breaks = seq(-2, 12, 1)) +
+  geom_vline(xintercept = 0, colour = tol_bile, linetype = 2, linewidth = line_width) +
+  geom_vline(xintercept = 5, colour = tol_rose, linewidth = line_width) +
+  ggtitle('Prior for airplay') +
+  theme_minimal()
+
+# prior for image
+b3_gg <- ggplot(tibble(x = c(-10, 25)), aes(x=x)) +
+  geom_function(fun = dnorm, args = list(mean = 8, sd = 5), colour = tol_blue, linewidth = line_width) +
+  scale_x_continuous(breaks = seq(-10, 25, 5)) +
+  geom_vline(xintercept = 0, colour = tol_bile, linetype = 2, linewidth = line_width) +
+  geom_vline(xintercept = 8, colour = tol_rose, linewidth = line_width) +
+  ggtitle('Prior for image') +
+  theme_minimal()
+
+# prior for intercept
+b0_gg <- ggplot(tibble(x = c(-10, 50)), aes(x=x)) +
+  geom_function(fun = dnorm, args = list(mean = 20, sd = 7), colour = tol_blue, linewidth = line_width) +
+  scale_x_continuous(breaks = seq(-10, 50, 5)) +
+  geom_vline(xintercept = 0, colour = tol_bile, linetype = 2, linewidth = line_width) +
+  geom_vline(xintercept = 20, colour = tol_rose, linewidth = line_width) +
+  ggtitle('Prior for intercept') +
+  theme_minimal()
+
+b0_gg +b1_gg + b2_gg + b3_gg + plot_layout(nrow = 2)
+```
+
+
+#### `r robot()` Code example
+
+To include informative priors we add two arguments:
+
+- [prior]{.alt} sets the prior distributions for the $b$s associated with each predictor
+- [prior_intercept]{.alt} sets the prior distribution for the intercept ($b_0$). The function takes the general form:
+
+```{r eval = F}
+my_rstn <- stan_glm(outcome ~ predictor_1 + predictor_2 + … + predictor_n,
+                    data = my_tib,
+                    prior = normal(location = c(mean_1, mean_2, … mean_n),
+                                   scale = c(sd_1, sd_2, … sd_n)),
+                    prior_intercept = normal(location = mean_0, scale = sd_0))
+```
+
+
+As with the previous model, we give it a name, define it using the standard formula notation and specify the data. The prior argument is for specifying the priors for any predictors. In [rstanarm]{.pkg} the priors must have the same distribution, which is why all our priors are normally distributed. To define the priors we use a function for the distribution we want, in this case `normal()`. There are other functions we could use, but we won't cover them. Within `normal()` we supply the means of each prior distribution as the location, and the standard deviations as the scale. Our priors for advertising, airplay and image respectively were 1, 5, and 8, with the corresponding standard deviations of 0.5, 2 and 5. We can write this formally as:
+
+- $b_0 \sim N(\mu = 20, \sigma = 7)$
+- $b_\text{adverts} \sim N(\mu = 1, \sigma = 0.5)$
+- $b_\text{airplay} \sim N(\mu = 5, \sigma = 2)$
+- $b_\text{image} \sim N(\mu = 8, \sigma = 5)$
+
+We'd specify these as
+
+```{r eval = F}
+prior = normal(location = c(1, 5, 8), scale = c(0.5, 2, 5))
+```
+
+The first values in [location]{.alt} and [scale]{.alt} are the mean and standard deviation of the prior for the first predictor in your formula and so on. We specify the prior for the intercept in a similar way using the [prior_intercept]{.alt} argument, but need only to supply a single value for the location (mean) and scale (standard deviation). Putting this together, our code to fit the model using our informative priors would be:
+
+
+```{r eval = F}
+album_rstn <- stan_glm(sales ~ adverts + airplay + image,
+                      data = album_tib,
+                      prior = normal(location = c(1, 5, 8), scale = c(0.5, 2, 5)),
+                      prior_intercept = normal(location = 20, scale = 7))
+```
+
+
+We'd extract the model information using the same code as before (just changing the model name).
+
+#### `r alien()` Alien coding challenge
+
+Try fitting the model with informative priors described above.
+
+```{r rstan_ip, exercise = TRUE, exercise.lines = 10}
+
+```
+
+```{r rstan_ip-hint-1}
+# first, fit the model (replace the xxxs)
+album_rstn <- stan_glm(sales ~ adverts + airplay + image,
+                      data = album_tib,
+                      prior = normal(location = c(1, 5, 8), scale = c(0.5, 2, 5)),
+                      prior_intercept = normal(location = 20, scale = 7))
+# now extract the model parameters
+```
+
+
+```{r rstan_ip-solution}
+# fit the model
+album_rstn <- stan_glm(sales ~ adverts + airplay + image,
+                      data = album_tib,
+                      prior = normal(location = c(1, 5, 8), scale = c(0.5, 2, 5)),
+                      prior_intercept = normal(location = 20, scale = 7))
+# extract the model parameters
+model_parameters(model = album_rstn, test = c("pd", "bf"), null = 0) |> 
+  display()
+```
+
+
+Comparing the output to that of the previous model reveals the effect of the priors on the parameter estimates (and note the [Prior]{.opt} column has changed to reflect the priors we set). The estimates for the intercept has changed a lot because our prior was a lot narrower and located much closer to zero resulting in a more negative estimate. The prior has dragged the estimate down. The credibility interval has got wider because the prior is a little at odds with the data. The estimates of the other $b$s haven't changed a lot because the priors were broadly in line with the data (and for `airplay` and `image` were quite weak anyway). We can also see the effect of the priors on the Bayes factors. They have all decreased substantially but are nevertheless very large! Remember, you wouldn't fit both models and compare, you'd generally fit the model with informative priors and interpret it.
+
+
+## `r user_astronaut()` Comparing two means [(C)]{.lbl}
+
+Chapter 9 (`discovr_09`) of @fielddsr22026 shows that we can compare two means using a linear model, so we can adapt the code from the previous section to fit a Bayesian variant using `stan_glm()` from [rstanarm]{.pkg} and extract information about the posterior distribution using `model_parameters()`. In the example from the book we imagined a future in which we had cloaks of invisibility. The future me is interested in the effect that wearing a cloak of invisibility has on the tendency for mischief. I take 24 participants and placed them in an enclosed community. The community is riddled with hidden cameras so that we can record mischievous acts. Half of the participants are given cloaks of invisibility; they are told not to tell anyone else about their cloak and that they can wear it whenever they liked. I measure how many mischievous acts they performed in a week. We hypothesise:
+
+> H~1~: There will be more mischievous acts, on average, when a cloak is worn than when not. 
+
+### `r user_astronaut()` Priors [(C)]{.lbl}
+
+We have two parameters to think about: the $b$ for the effect of cloak, which represents the difference in group means, and the intercept ($b_0$), which is the amount of mischief in the no cloak group.  What were our expectations before we collected the data?
+
+- `Intercept`: the intercept represents mean mischief in the no cloak group. Imagine that before the study we anticipate that most people don't get up to mischief. A reasonable prior might be a normal distribution centred on 2 with a standard deviation of 0.7. Figure 2 (left) shows this distribution. It represents a belief that the mean number of mischievous acts in the no cloak group cannot be less than about 0 (end of the left tail) or more than 4 (end of the right tail) and will most likely be around 2. Basically, we expect people to commit between 0 and 4 mischievous acts when they don't have a cloak. These beliefs seem reasonable given that it's impossible to have a negative number of actions and in general people are not rabidly mischievous.
+- `cloak`: what effect do we expect from giving people an invisibility cloak? By how much do we expect mischief to increase? First off, we probably don't expect it to decrease. Therefore, we'd want the bulk of the distribution to represent positive values; that is, we believe that *b* – the difference between means –  is most likely to be greater than 0. However, we'd probably entertain the possibility that we're wrong and that there's some chance that the effect is zero or negative. So, we want a distribution that includes zero, but that mostly contains positive values. On average what are we expecting the difference to be? Usually we'd have other research to inform this decision, but let's say we were expecting the cloak to lead to two additional acts of mischief. Figure 2 (right) shows a normal distribution centred at 2 with a standard deviation of 1.2. It seems to fit the bill: most of the distribution lies above zero, so we believe that an invisibility cloak will most likely have a positive effect; however, because some of it lies below zero we are also open to the possibility that the cloak might reduce mischief. This prior is quite weak: we are prepared to believe that mischievous acts might go down by as much as about 2 or go up by as much as about 6.
+
+Formally, we can express these priors as:
+
+- $b_0 \sim N(\mu = 2, \sigma = 0.7)$
+- $b_\text{cloak} \sim N(\mu = 2, \sigma = 1.2)$
+
+
+```{r priorplots2, echo = F, fig.cap = "Figure 2: Playing with priors", fig.width=8, fig.height=3}
+# prior for intercept 
+b0_gg <- ggplot(tibble(x = c(-1, 5)), aes(x=x)) +
+  geom_function(fun = dnorm, args = list(mean = 2, sd = 0.7), colour = "#88CCEE", linewidth = 1) +
+  scale_x_continuous(breaks = seq(-1, 5, 1)) +
+  geom_vline(xintercept = 0, colour = "#999933", linetype = 2, linewidth = 1) +
+  geom_vline(xintercept = 2, colour = "#CC6677", linewidth = 1) +
+  ggtitle('Prior for intercept') +
+  theme_minimal()
+
+# prior for cloak 
+b1_gg <- ggplot(tibble(x = c(-3, 7)), aes(x=x)) +
+  geom_function(fun = dnorm, args = list(mean = 2, sd = 1.2), colour = "#88CCEE", linewidth = 1) +
+  scale_x_continuous(breaks = seq(-3, 7, 1)) +
+  geom_vline(xintercept = 0, colour = "#999933", linetype = 2, linewidth = 1) +
+  geom_vline(xintercept = 2, colour = "#CC6677", linewidth = 1) +
+  ggtitle('Prior for cloak') +
+  theme_minimal()
+
+b0_gg + b1_gg + plot_layout(ncol = 2)
+```
+ 
+### `r bmu()` Summarize the data [(A)]{.lbl}
+
+These data are preloaded in this tutorial in a tibble called [cloak_tib]{.alt}.
+
+#### `r alien()` Alien coding challenge
+
+Use the code box to view these data.
+
+```{r cloak_data, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r cloak_data-solution}
+cloak_tib
+```
+
+Note there are three variables:
+
+- `id`: participant id
+- `cloak`: whether the participant was assigned a cloak of invisibility
+- `mischief`: the number of mischievous acts committed during the week of the study
+
+We can use `describe_distribution()` from [datawizard]{.pkg} to get summary statistics for the variables in the data.
+
+#### `r alien()` Alien coding challenge
+
+Get a table of descriptive statistics for `mischief` for the two cloak groups.
+
+```{r album_whiz, exercise = TRUE, exercise.lines = 5}
+
+```
+
+```{r album_whiz-hint-1}
+# pipe the data into group_by() to split the descriptives by group. Replace the xxx
+cloak_tib |>
+  group_by(xxx)
+# now use describe_distribution()
+```
+
+```{r album_whiz-hint-2}
+#  Use describe_distribution(). Replace the xxx
+cloak_tib |>
+  group_by(cloak) |> 
+  describe_distribution()
+# now get the table to render nicely
+```
+
+```{r album_whiz-solution}
+cloak_tib |> 
+  group_by(cloak) |> 
+  describe_distribution() |> 
+  display()
+```
+
+
+### `r user_astronaut()` Fit the model [(C)]{.lbl}
+
+#### `r robot()` Code example
+
+Let's use what we learnt about `stan_glm()` to fit the model with these priors and get Bayes factors.
+
+```{r, eval = F}
+cloak_rstn <- stan_glm(mischief ~ cloak,
+                      data = cloak_tib,                      
+                      prior = normal(location = 2, scale = 1.2),
+                      prior_intercept = normal(location = 2, scale = 0.7))
+
+model_parameters(cloak_rstn, test = c("pd", "bf"), null = 0) |> 
+  display()
+```
+
+
+#### `r alien()` Alien coding challenge
+
+Try fitting the model described above.
+
+```{r rstan_cloak, exercise = TRUE, exercise.lines = 10}
+
+```
+
+```{r rstan_cloak-hint-1}
+# first, fit the model (replace the xxxs)
+cloak_rstn <- stan_glm(xxxx ~ xxxx, data = xxxx)
+# now add the priors
+```
+
+```{r rstan_cloak-hint-2}
+# add the priors (replace the xxxxs)
+cloak_rstn <- stan_glm(mischief ~ cloak, ddata = cloak_tib, prior = xxxx(xxxx = x, xxxx = x.x), prior_intercept = xxxx(xxxx = x, xxxx = x.x))
+# extract the model parameters
+```
+
+```{r rstan_cloak-hint-3}
+# fit the model
+cloak_rstn <- stan_glm(mischief ~ cloak,
+                      data = cloak_tib,                      
+                      prior = normal(location = 2, scale = 1.2),
+                      prior_intercept = normal(location = 2, scale = 0.7))
+# extract the model parameters (replace the xxxxs)
+model_parameters(model = xxxx, test = c("xx", "xx"), null = x) |> 
+  display()
+```
+
+```{r rstan_cloak-solution}
+# fit the model
+cloak_rstn <- stan_glm(mischief ~ cloak,
+                      data = cloak_tib,                      
+                      prior = normal(location = 2, scale = 1.2),
+                      prior_intercept = normal(location = 2, scale = 0.7))
+# extract the model parameters
+model_parameters(model = cloak_rstn, test = c("pd", "bf"), null = 0) |> 
+  display()
+```
+
+
+
+
+<div class="infobox">
+  `r info()` **Bayesian models are based on sampling**
+
+Bayesian estimation relies on sampling from the posterior distribution so your results will differ from mine. Therefore, the interpretation below is based on these model parameters:
+
+```{r echo = F, results = "hide"}
+cloak_rstn <- stan_glm(mischief ~ cloak,
+                      data = cloak_tib,                      
+                      prior = normal(location = 2, scale = 1.2),
+                      prior_intercept = normal(location = 2, scale = 0.7))
+cloak_rstn_par <- model_parameters(model = cloak_rstn, test = c("pd", "bf"), null = 0)
+```
+
+```{r echo = F}
+display(cloak_rstn_par)
+```
+
+
+</div>
+
+
+The Bayes factor is `r report_bf(cloak_rstn_par)`. This value means that the data are `r report_value(report_bf(cloak_rstn_par, as_is = T))` times as probable under the alternative hypothesis as under the null. In other words, we should shift our belief towards the alternative hypothesis by a factor of `r report_value(report_bf(cloak_rstn_par, as_is = T))`. Remembering that a Bayes factor of 1 means that the data are equally probable under the alternative hypothesis as under the null, the value here suggests that we should not change our prior beliefs by any meaningful amount. There is no evidence for the hypothesis that invisibility cloaks lead to mischief. Also, remember to check the column labelled Prior to make sure that the distributions match what you wanted to specify!
+ 	
+The Bayesian estimate, assuming that the alternative hypothesis is true, of the difference between means is `r value_from_ez(cloak_rstn_par, value = "Median", row = 2)` with a Bayesian 95% credible interval ranging from `r value_from_ez(cloak_rstn_par, value = "CI_low", row = 2)` to `r value_from_ez(cloak_rstn_par, value = "CI_high", row = 2)`. This difference reflects the cloak group relative to the no cloak group. That is, there are typically `r value_from_ez(cloak_rstn_par, value = "Median", row = 2)` more mischievous acts when an invisibility cloak is worn. The credible interval suggests that, assuming that the effect exists, the population value of this difference will be between `r value_from_ez(cloak_rstn_par, value = "CI_low", row = 2)` and `r value_from_ez(cloak_rstn_par, value = "CI_high", row = 2)` with 95% probability. This interval tells us nothing about the null hypothesis (because we assume the effect exists) but helps us to ascertain the likely population value if we're prepared to accept that the effect exists. We can say with 95% probability the number of mischievous acts in those with a cloak will be between `r value_from_ez(cloak_rstn_par, value = "CI_low", row = 2)` more acts (i.e. no effect) and `r value_from_ez(cloak_rstn_par, value = "CI_high", row = 2)` more acts than for those without cloaks.
+
+
+## `r user_astronaut()` Comparing several means [(C)]{.lbl}
+
+Chapter 11 (`discovr_11`) of @fielddsr22026 shows that we can compare several means using a linear model, so we can adapt the code from the previous sections to fit a Bayesian variant using `stan_glm()` from [rstanarm]{.pkg} and extract information about the posterior distribution using `model_parameters()`. In the example from the book we look at puppy therapy. Puppy therapy is a form of animal-assisted therapy, in which puppy contact is introduced into the therapeutic process. Imagine we ran a study in which we randomized people into three groups: (1) a control group in which people had no puppy contact; (2) 15 minutes of puppy therapy (a low-dose group); and (3) 30 minutes of puppy contact (a high-dose group). The dependent variable was a measure of happiness ranging from 0 (as unhappy as I can possibly imagine being) to 10 (as happy as I can possibly imagine being). Our hypotheses are:
+
+> - H~1~: Any form of puppy therapy should lead to greater happiness scores than the control
+> - H~2~: Happiness will be greater after 30 minutes of puppy therapy compared to 15 minutes.
+
+
+### `r user_visor()` Explore the data [(B)]{.lbl}
+
+
+Let's re-acquaint ourselves with the data.
+
+#### `r alien()` Alien coding challenge
+
+View the data in [puppy_tib]{.alt}.
+
+```{r puppy_tib, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r puppy_tib-solution}
+puppy_tib
+```
+
+Note that there are three variables:
+
+- `id`: Participant id
+- `dose`: Treatment group to which the participant was randomly assigned (No puppies (control), 15 minutes of puppy therapy, 30 minutes of puppy therapy)
+- `happiness`: Self-reported happiness from 0 (as unhappy as I can possibly imagine being) to 10 (as happy as I can possibly imagine being)
+
+The variable `dose` is a factor (categorical variable), so having read the data file and converted it to a factor it's a good idea to check that the levels of `dose` are in the order that we want: No puppies (control), 15 minutes, 30 minutes.
+
+#### `r robot()` Code example
+
+Check the levels of the variable `dose` within the tibble [puppy_tib]{.alt} we'd execute
+
+```{r chk_levels, exercise = TRUE, exercise.lines = 2}
+levels(puppy_tib$dose)
+```
+
+Because I have set up the data within this tutorial the levels are ordered as we want them: "No puppies", "15 mins", and "30 mins". 
+
+#### `r alien()` Alien coding challenge
+
+Let's remind ourselves of the group means. Compute descriptive statistics of happiness scores split by the therapy group to which a person belonged.
+
+```{r pup_sum, exercise = TRUE, exercise.lines = 7}
+
+```
+
+```{r pup_sum-hint-1}
+# Start by piping the tibble into the group_by function to group output by dose:
+puppy_tib |> 
+  group_by(dose)
+# Now pipe the results into the describe_distribution() function
+```
+
+```{r pup_sum-hint-2}
+# Pipe the results into the describe_distribution() function
+puppy_tib |> 
+  group_by(dose) |> 
+  describe_distribution()
+# use a function to display the table nicely
+```
+
+
+```{r pup_sum-solution}
+# Solution
+puppy_tib |> 
+  group_by(dose) |> 
+  describe_distribution() |> 
+  display()
+```
+
+
+### `r user_visor()` Set contrasts [(B)]{.lbl}
+
+#### `r robot()` Code example
+
+In `discovr_11`, we also set contrasts to test our two hypotheses using this code:
+
+```{r eval = FALSE}
+puppy_vs_none <- c(-2/3, 1/3, 1/3)
+long_vs_short <- c(0, -1/2, 1/2)
+contrasts(puppy_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+contrasts(puppy_tib$dose) # This line prints the contrast weights so we can check them
+```
+
+#### `r alien()` Alien coding challenge
+
+Use the code from the example to set the contrasts for `dose`.
+
+```{r set_contrast, exercise = TRUE}
+     
+               
+```
+
+```{r set_contrast-hint-1}
+# Set the weights for the first contrast using the example code:
+puppy_vs_none <- c(-2/3, 1/3, 1/3)
+# Now set the weights for the second contrast
+```
+
+```{r set_contrast-hint-2}
+# Set the weights for the second contrast:
+long_vs_short <- c(0, -1/2, 1/2)
+# Next, set the two contrasts to the dose variable
+```
+
+```{r set_contrast-hint-3}
+# Set the two contrasts to the dose variable:
+contrasts(puppy_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+# Finally, view the weights to check they are set correctly
+```
+
+```{r set_contrast-hint-4}
+# Put it all together:
+puppy_vs_none <- c(-2/3, 1/3, 1/3)
+long_vs_short <- c(0, -1/2, 1/2)
+contrasts(puppy_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+contrasts(puppy_tib$dose) # This line prints the contrast weights so we can check them
+```
+
+### `r user_astronaut()` Priors [(C)]{.lbl}
+
+We have fitted a linear model to compare means so we can fit a Bayesian variant with default priors using `stan_glm()` from [rstanarm]{.pkg} and extract information about the posterior distribution using `model_parameters()`, which for a Bayesian model uses the [bayestestR}{.pkg} package to get the information from the posterior distribution.
+
+#### `r robot()` Code example
+
+If we wanted a model with uninformative priors we could use this code:
+
+```{r, eval = F}
+puppy_dp <- stan_glm(happiness ~ dose, data = puppy_tib)
+model_parameters(puppy_dp, test = c("pd", "bf"), null = 0) |> 
+  display()
+```
+
+Just to remind you, the [null = 0]{.alt} will give us the Bayes factors for each parameter against the null hypothesis that the parameter is equal to zero. This is great, but the real power of Bayesian models comes with setting informative priors, so that's what we'll do. Am I evil? Yes I am.
+
+We have three parameters to think about , what were our expectations before we collected the data?
+
+- `Intercept`: the intercept represents mean happiness in the no puppy groups. Let's say we know that our happiness scale typically has a mean of about 4 and a standard deviation of about 1. A reasonable prior might be a normal distribution centred on 4 with a standard deviation of 1. This prior (Figure 3, bottom) represents a belief that the mean in the no puppy group cannot be less than about 1 (end of the left tail) or more than 7 (end of the right tail) and will most likely be around 4. These beliefs seem reasonable given happiness is measured on a 10-point scale and you would not expect the mean value to be close to either extreme.
+- `Therapy vs no puppies`: imagine that previous work suggests that puppy therapy typically increases happiness by 2 points on this 10-point scale then it's reasonable to centre the prior on this value, but how wide should the distribution be? Let's assume that we again will use a normal distribution as the prior, then plotting different curves is a good way land on values that make sense. Figure 3 (top left) shows a prior distribution that is centred at 2 and ranges from about -4 to 8. Most of the distribution lies above zero, so we believe that puppy therapy will most likely have a positive effect; however, because some of it lies below zero we are also open to the possibility that puppy therapy might reduce happiness. In this sense, this prior is quite weak: we are prepared to believe puppy therapy might reduce happiness by as much as 4 on our 10-point scale, or increase it by as much as 8, although most of the mass of the distribution lies between about −1 and 5 (we think values outside of this are very unlikely). This 'weakness' is reflected in a relatively wide distribution.
+•	`30 minutes vs 15 minutes`: the 'new' feature of our study was to vary the dose of puppy therapy. Let's again use a normal distribution as the prior. Imagine we have no past information about whether longer therapy sessions improve happiness, but we planned the study because we think they will. Given that therapy seems to work, we are confident that a longer dose will, at the very least be as effective as a short dose. Therefore, we're expecting the difference between the long and short dose to be at least 0. However, we don't expect the effect to be massive: perhaps a 1-point increase on our 10-point scale. Figure 3 (top right) shows a prior distribution that is centred at 1 with a standard deviation of 0.5. The bulk of the distribution falls between 0 and 2. Almost all the distribution lies above zero, reflecting our belief that in increased dose will almost certainly have a positive effect on happiness. Also, almost all the distribution lies below 2, reflecting our belief that a long dose is unlikely to improve happiness (compared to a short dose) by more than 2 points on our 10-point scale. This prior is quite strong: we are only prepared to believe that a long dose will improve happiness by between 1 and 2 points on the scale. This 'strength' is reflected in a narrow distribution.
+
+Formally, our priors are:
+
+- $b_0 \sim N(\mu = 4, \sigma = 1)$
+- $b_\text{therapy vs. none} \sim N(\mu = 2, \sigma = 2)$
+- $b_\text{30 vs 15 mins} \sim N(\mu = 1, \sigma = 0.5)$
+
+
+```{r priorplots3, echo = F, fig.cap = "Figure 3: Playing with priors", fig.width=8, fig.height=6}
+x_tib <- tibble(x = c(-5, 10))
+
+# prior for therapy vs no puppies
+b1_gg <- ggplot(x_tib, aes(x=x)) +
+  geom_function(fun = dnorm, args = list(mean = 2, sd = 2), colour = tol_blue, linewidth = line_width) +
+  scale_x_continuous(breaks = seq(-10, 10, 1)) +
+  geom_vline(xintercept = 0, colour = tol_bile, linetype = 2, linewidth = line_width) +
+  geom_vline(xintercept = 2, colour = tol_rose, linewidth = line_width) +
+  ggtitle('Prior for therapy vs no puppies') +
+  theme_minimal()
+
+# prior for therapy vs no puppies
+b2_gg <- ggplot(x_tib, aes(x=x)) +
+  geom_function(fun = dnorm, args = list(mean = 1, sd = 0.5), colour = tol_blue, linewidth = line_width) +
+  scale_x_continuous(breaks = seq(-10, 10, 1)) +
+  geom_vline(xintercept = 0, colour = tol_bile, linetype = 2, linewidth = line_width) +
+  geom_vline(xintercept = 1, colour = tol_rose, linewidth = line_width) +
+  ggtitle('Prior for 30 mins vs 15 mins') +
+  theme_minimal()
+
+# prior for intercept
+b0_gg <- ggplot(tibble(x = c(-2, 10)), aes(x=x)) +
+  geom_function(fun = dnorm, args = list(mean = 4, sd = 1), colour = tol_blue, linewidth = line_width) +
+  scale_x_continuous(breaks = seq(-10, 10, 1)) +
+  geom_vline(xintercept = 0, colour = tol_bile, linetype = 2, linewidth = line_width) +
+  geom_vline(xintercept = 4, colour = tol_rose, linewidth = line_width) +
+  ggtitle('Prior for intercept') +
+  theme_minimal()
+
+b1_gg + b2_gg + b0_gg + plot_layout(nrow = 2)
+```
+
+
+### `r user_astronaut()` Fit the model [(C)]{.lbl}
+
+#### `r robot()` Code example
+
+To fit this model with the priors described above we'd use this code (see the first section for more detail).
+
+```{r eval = FALSE}
+puppy_rtb <- stan_glm(happiness ~ dose,
+                      data = puppy_tib,
+                      prior = normal(location = c(2, 1), scale = c(2, 0.5)),
+                      prior_intercept = normal(location = 4, scale = 1))
+model_parameters(puppy_rtb, test = c("pd", "bf"), null = 0) |> 
+  display()
+```
+
+#### `r alien()` Alien coding challenge
+
+Use the code box to fit the model.
+
+```{r set_dose_contrast}
+puppy_vs_none <- c(-2/3, 1/3, 1/3)
+long_vs_short <- c(0, -1/2, 1/2)
+contrasts(puppy_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+contrasts(puptreat_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+```
+
+```{r puppy_bayes, exercise = TRUE, exercise.lines = 10, exercise.setup = "set_dose_contrast"}
+
+```
+
+```{r puppy_bayes-solution}
+puppy_rtb <- stan_glm(happiness ~ dose,
+                      data = puppy_tib,
+                      prior = normal(location = c(2, 1), scale = c(2, 0.5)),
+                      prior_intercept = normal(location = 4, scale = 1))
+model_parameters(puppy_rtb, test = c("pd", "bf"), null = 0) |> 
+  display()
+```
+
+
+<div class="infobox">
+  `r info()` **Bayesian models are based on sampling**
+
+Bayesian estimation relies on sampling from the posterior distribution so your results will differ from mine. Therefore, the interpretation below is based on these model parameters:
+
+```{r echo = F, results = "hide"}
+pup_sum <- puppy_tib |> 
+  group_by(dose) |> 
+  describe_distribution()
+
+puppy_vs_none <- c(-2/3, 1/3, 1/3)
+long_vs_short <- c(0, -1/2, 1/2)
+contrasts(puppy_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+puppy_rtb <- stan_glm(happiness ~ dose,
+                      data = puppy_tib,
+                      prior = normal(location = c(2, 1), scale = c(2, 0.5)),
+                      prior_intercept = normal(location = 4, scale = 1))
+puppy_par <- model_parameters(puppy_rtb, test = c("pd", "bf"), null = 0)
+puppy_par_rf <- lm(happiness ~ dose, data = puppy_tib) |> model_parameters()
+```
+
+```{r echo = F}
+display(puppy_par)
+```
+
+
+</div>
+
+By comparing your output to the frequentest model in `discovr_11`, which is reproduced below, we can see the effect of the priors on the parameter estimates. The estimates for the intercept and effect of puppy therapy don't change a lot because our priors were fairly weak so the data estimates are driven by the data. However, the estimate for the effect of a long vs. short dose has decreased from `r value_from_ez(puppy_par_rf, row = 3)` to `r value_from_ez(puppy_par, row = 3, value = "Median")` and the credibility is quite narrow. This reflects the strong prior (especially because our sample is small so there is not a lot of data to throw in the mix). Our prior was centred on 1, but the data showed a mean difference of  `r value_from_ez(puppy_par_rf, row = 3)`, so the prior has dragged the estimate from the data down. The credible interval is narrow because the prior has narrowed the posterior distribution. With huge datasets a strong prior wouldn't have such a dramatic effect, but this illustrates how Bayesian estimates contain information about both the prior and the data.
+
+For any dose of puppies compared to none the Bayes Factor is `r report_bf(puppy_par, row = 2)`, which means that the data are `r report_bf(puppy_par, row = 2, as_is = T) |>  report_value()` times more likely under the alternative hypothesis than under the null. We should shift our belief about puppy therapy being effective (relative to not) by a factor of about `r report_bf(puppy_par, row = 2, as_is = T) |>  report_value()`. This is moderate evidence for our first hypothesis. For a long verses short dose of puppies the Bayes factor is `r report_bf(puppy_par, row = 3)`, which means that the data are `r report_bf(puppy_par, row = 3, as_is = T) |>  report_value()` times more likely under the alternative hypothesis than under the null. We should shift our belief about a longer the duration of therapy being better than a shorter dose by a factor of about `r report_bf(puppy_par, row = 3, as_is = T) |>  report_value()`. Again, it is moderate evidence for our second hypothesis.
+
+
+```{r echo = F}
+display(puppy_par_rf)
+```
+
+
+## `r user_astronaut()` Adjusting means for a covariate [(C)]{.lbl}
+
+Chapter 12 (`discovr_12`) of @fielddsr22026 shows that sometimes people include a mix of continuous and categorical predictors in a linear model hoping to compare the means while adjusting for the covariate. Specifically, we developed the example of the efficacy of puppy therapy by including a baseline measure of happiness. The hypothesis is:
+
+> - H~1~: Any form of puppy therapy should lead to greater post-treatment happiness scores than the control at average levels of pre-therapy happiness
+> - H~2~: Post-treatment happiness scores will be greater after 30 minutes of puppy therapy compared to 15 minutes at average levels of pre-therapy happiness.
+
+The model we want to fit quantifies the effect of our treatment (`dose`) at average levels of pre-treatment happiness:
+
+$$
+\begin{aligned}
+\text{happy (post)}_i = \ &\hat{b}_0 + \hat{b}_1\text{happy (pre)}_i + \hat{b}_2\text{dose}_i  + e_i
+\end{aligned}
+$$
+
+This is a linear model, so as ever we we can adapt the code from the previous sections to fit a Bayesian variant using `stan_glm()` from [rstanarm]{.pkg} and extract information about the posterior distribution using `model_parameters()`. 
+
+### `r user_visor()` Explore the data [(B)]{.lbl}
+
+Let's re-acquaint ourselves with the data.
+
+#### `r alien()` Alien coding challenge
+
+View the data in [puptreat_tib]{.alt}.
+
+```{r rct_tib, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r rct_tib-solution}
+puptreat_tib
+```
+
+Note that there are four variables:
+
+The data are in [puptreat_tib]{.alt} and contain these variables
+
+- `id`: the participant's id code
+- `dose`: No puppies, 15 minutes, or 30 minutes
+- `pre_happy` each person's happiness on a scale from 0-10 *before* therapy
+- `post_happy`: the person's happiness on a scale from 0-10 *after* therapy
+
+The variable `dose` is a factor (categorical variable), so having read the data file and converted it to a factor it's a good idea to check that the levels of `dose` are in the order that we want: No puppies (control), 15 minutes, 30 minutes.
+
+#### `r robot()` Code example
+
+Check the levels of the variable `dose` within the tibble [puppy_tib]{.alt} we'd execute
+
+```{r chk_levels2, exercise = TRUE, exercise.lines = 2}
+levels(puptreat_tib$dose)
+```
+
+Because I have set up the data within this tutorial the levels are ordered as we want them: "No puppies", "15 mins", and "30 mins". 
+
+#### `r alien()` Alien coding challenge
+
+Let's remind ourselves of the group means. Compute descriptive statistics of post-treatment happiness scores split by the therapy group to which a person belonged.
+
+```{r rct_sum, exercise = TRUE, exercise.lines = 7}
+
+```
+
+```{r rct_sum-hint-1}
+# Start by piping the tibble into the group_by function to group output by dose:
+puptreat_tib |> 
+  group_by(dose)
+# Now pipe the results into the describe_distribution() function
+```
+
+```{r rct_sum-hint-2}
+# Pipe the results into the describe_distribution() function
+puptreat_tib |> 
+  group_by(dose) |> 
+  describe_distribution(select = "post_happy")
+# use a function to display the table nicely
+```
+
+
+```{r rct_sum-solution}
+# Solution
+puptreat_tib |> 
+  group_by(dose) |> 
+  describe_distribution(select = "post_happy") |> 
+  display()
+```
+
+
+#### `r alien()` Alien coding challenge
+
+Let's remind ourselves of the overall mean happiness before treatment. Compute descriptive statistics of pre-treatment happiness (do not split by treatment group).
+
+```{r pre_sum, exercise = TRUE, exercise.lines = 7}
+
+```
+
+
+```{r pre_sum-solution}
+# Solution
+puptreat_tib |> 
+  describe_distribution(select = "pre_happy") |> 
+  display()
+```
+
+
+### `r user_visor()` Set contrasts [(B)]{.lbl}
+
+#### `r robot()` Code example
+
+In `discovr_12`, we also set contrasts to test our two hypotheses using this code (which is the same as in the previous section except for the name of the tibble):
+
+```{r eval = FALSE}
+puppy_vs_none <- c(-2/3, 1/3, 1/3)
+long_vs_short <- c(0, -1/2, 1/2)
+contrasts(puptreat_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+contrasts(puptreat_tib$dose) # This line prints the contrast weights so we can check them
+```
+
+#### `r alien()` Alien coding challenge
+
+Use the code from the example to set the contrasts for `dose`.
+
+```{r set_contrast2, exercise = TRUE}
+     
+               
+```
+
+```{r set_contrast2-hint-1}
+# Set the weights for the first contrast using the example code:
+puppy_vs_none <- c(-2/3, 1/3, 1/3)
+# Now set the weights for the second contrast
+```
+
+```{r set_contrast2-hint-2}
+# Set the weights for the second contrast:
+long_vs_short <- c(0, -1/2, 1/2)
+# Next, set the two contrasts to the dose variable
+```
+
+```{r set_contrast2-hint-3}
+# Set the two contrasts to the dose variable:
+contrasts(puptreat_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+# Finally, view the weights to check they are set correctly
+```
+
+```{r set_contrast2-hint-4}
+# Put it all together:
+puppy_vs_none <- c(-2/3, 1/3, 1/3)
+long_vs_short <- c(0, -1/2, 1/2)
+contrasts(puptreat_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+contrasts(puptreat_tib$dose) # This line prints the contrast weights so we can check them
+```
+
+### `r user_astronaut()` Fit the model [(C)]{.lbl}
+
+Ordinarily it's a good idea to set your own priors; however, for this example let's stick with the defaults and let the data do the work.
+
+#### `r robot()` Code example
+
+To fit this model with default priors use this code (see the first section for more detail).
+
+```{r eval = FALSE}
+puptreat_rtb <- stan_glm(post_happy ~ pre_happy + dose, data = puptreat_tib)
+model_parameters(puptreat_rtb, test = c("pd", "bf"), null = 0) |> 
+  display()
+```
+
+#### `r alien()` Alien coding challenge
+
+Use the code box to fit the model.
+
+```{r rct_bayes, exercise = TRUE, exercise.lines = 10, exercise.setup = "set_dose_contrast"}
+
+```
+
+```{r rct_bayes-solution}
+puptreat_rtb <- stan_glm(post_happy ~ pre_happy + dose, data = puptreat_tib)
+model_parameters(puptreat_rtb, test = c("pd", "bf"), null = 0) |> 
+  display()
+```
+
+
+<div class="infobox">
+  `r info()` **Bayesian models are based on sampling**
+
+Bayesian estimation relies on sampling from the posterior distribution so your results will differ from mine. Therefore, the interpretation below is based on these model parameters:
+
+```{r echo = F, results = "hide"}
+contrasts(puptreat_tib$dose) <- cbind(puppy_vs_none, long_vs_short)
+puptreat_rtb <- stan_glm(post_happy ~ pre_happy + dose, data = puptreat_tib)
+rct_par <- model_parameters(puptreat_rtb, test = c("pd", "bf"), null = 0)
+rct_par_rf <- lm(post_happy ~ pre_happy + dose, data = puptreat_tib) |> model_parameters()
+```
+
+```{r echo = F}
+display(rct_par)
+```
+
+
+</div>
+
+By comparing your output to the frequentest model in `discovr_12`, which is reproduced below, we can see the effect of the priors on the parameter estimates. The Bayesian parameter estimates are basically identical to the frequentest ones because the default priors are very weak and so the data drives estimation (in frequentest models estimation is based entirely on the data). The big difference is that the 95% credible intervals have a different (and more useful) interpretation to frequentest confidence intervals; that is, they contain the true estimate with 0.95 probability. For example, with 0.95 probability, the true relationship between pre- and post-treatment happiness is between `r value_from_ez(rct_par, row = 2, value = "CI_low")` (i.e. a strong relationship) and `r value_from_ez(rct_par, row = 2, value = "CI_high")` (any shift along the 10-point happiness scale pre-treatment is matched by a very similar shift in post-treatment happiness) with 95% probability. Similarly, the increase in happiness associated with therapy (compared to none) lies between `r value_from_ez(rct_par, row = 3, value = "CI_low")` (not much change at all) and `r value_from_ez(rct_par, row = 3, value = "CI_high")` (quite a jump up the 10-point happiness scale) with 95% probability.
+
+The Bayes Factor for puppy therapy compared to none is `r report_bf(rct_par, row = 3)` suggesting that we shift our belief about puppy therapy affecting happiness away from the null by a factor of `r report_bf(rct_par, row = 3, as_is = T) |>  report_value()`. This is very weak evidence. For the contrast comparing long to short durations of puppy therapy the Bayes factor is `r report_bf(rct_par, row = 4)`; because this value is less than 1 it suggests we shift our belief towards the null; that is, believe more strongly that the duration of puppy exposure makes no difference to post-treatment happiness at average levels of pre-treatment happiness.
+
+
+```{r echo = F}
+display(rct_par_rf)
+```
+
+## `r user_astronaut()` Factorial designs [(C)]{.lbl}
+
+The final example uses a factorial design, which was discussed in Chapter 13 (`discovr_13`) of @fielddsr22026. In that chapter/tutorial we used an example of an experimental design with two independent variables (a two-way independent design). The study tested the prediction that subjective perceptions of physical attractiveness become inaccurate after drinking alcohol (the well-known beer-goggles effect). An anthropologist was interested in the effects of facial attractiveness on the beer-goggles effect. She selected 48 participants who were randomly subdivided into three groups of 16: (1) a placebo group drank 500 ml of alcohol-free beer; (2) a low-dose group drank 500 ml of average strength beer (4% ABV); and (3) a high-dose group drank 500 ml of strong beer (7% ABV). Within each group, half (n = 8) rated the attractiveness of 50 photos of unattractive faces on a scale from 0 (pass me a paper bag) to 10 (pass me their phone number) and the remaining half rated 50 photos of attractive faces. The outcome for each participant was their median rating across the 50 photos (These photographs were from a larger pool of 500 that had been pre-rated by a different sample). The 50 photos with the highest and lowest ratings were used.).
+
+ The hypotheses  are:
+
+> - H~1~: Ratings will be higher for attractive compared to unattractive faces
+> - H~2~: Ratings will be higher after alcohol compared to no alcohol
+> - H~3~: Ratings will be higher after a high dose of alcohol compared to a low dose
+> - H~4~: The effect of alcohol on ratings will depend on the type of face being rated (i.e. moderation)
+
+A simplified version of the model we're fitting is described by the following equation:
+
+$$
+\begin{aligned}
+Y_i & = \hat{b}_0 + \hat{b}_1X_i+ e_i\\
+\text{attractiveness}_i & = \hat{b}_0 + \hat{b}_1\text{facetype}_i + \hat{b}_2\text{alcohol}_i + \hat{b}_3[\text{facetype} \times \text{alcohol}]_i + e_i
+\end{aligned}
+$$
+
+In reality though `alcohol` would be split into two dummy variables that use contrast codes to compare groups. Specifically one contrast would look at all alcohol conditions compared top a placebo, and the second that compared the high alcohol content to the low.
+
+$$
+\begin{aligned}
+Y_i & = \hat{b}_0 + \hat{b}_1X_i+ e_i\\
+\text{attractiveness}_i & = \hat{b}_0 + \hat{b}_1\text{facetype}_i + \hat{b}_2\text{alcohol vs. none}_i +\hat{b}_3\text{high vs. low}_i + \\
+&\quad  \hat{b}_4[\text{facetype} \times \text{alcohol vs. none}]_i + \\
+&\quad \hat{b}_5[\text{facetype} \times \text{high vs. low}]_i + e_i
+\end{aligned}
+$$
+This is a linear model, so as ever we we can adapt the code from the previous sections to fit a Bayesian variant using `stan_glm()` from [rstanarm]{.pkg} and extract information about the posterior distribution using `model_parameters()`. 
+
+### `r user_visor()` Explore the data [(B)]{.lbl}
+
+Let's re-acquaint ourselves with the data.
+
+
+#### `r alien()` Alien coding challenge
+
+View the data in [goggles_tib]{.alt}.
+
+```{r goggles_tib, exercise = TRUE, exercise.lines = 2}
+
+```
+
+```{r goggles_tib-solution}
+goggles_tib
+```
+
+Note that there are four variables: 
+
+- `id`: Participant's id
+- `facetype`: Whether the participant rated photos of 'attractive' or 'unattractive' faces
+- `alcohol`: The alcohol group to which the participant was assigned. Either a placebo group (who drank 500 ml of alcohol-free beer), a low-dose group (who drank 500 ml of 4% ABV beer), or a high-dose group (who drank 500 ml of 7% ABV beer)
+- `attractiveness`: the median rating of the attractiveness of 50 photos from 0 (pass me a paper bag) to 10 (pass me their phone number)
+
+#### `r alien()` Alien coding challenge
+
+Using what you've learnt in previous tutorials check the order of the levels of the variables `facetype` and `alcohol`.
+
+```{r chk_levels_gog, exercise = TRUE, exercise.lines = 3}
+
+```
+
+```{r chk_levels_gog-hint-1}
+# use this function:
+levels()
+```
+
+```{r chk_levels_gog-hint-2}
+# Remember that to access a variable you use:
+name_of_tibble$name_of_variable
+```
+
+```{r chk_levels_gog-solution}
+levels(goggles_tib$facetype)
+levels(goggles_tib$alcohol)
+```
+
+Because I have set up the data within this tutorial you should see that the levels are listed in the order that we want them when you execute the code.
+
+
+#### `r alien()` Alien coding challenge
+
+Use what you already know to create a table of descriptive statistics (including 95% confidence intervals) of attractiveness scores split by the type of face in the stimulus and the alcohol consumption. Print this object rounding to 2 decimal places.
+
+```{r goggles_sum, exercise = TRUE, exercise.lines = 7}
+
+```
+
+```{r goggles_sum-hint-1}
+# Start by piping the tibble into the group_by function to group output by facetype and alcohol:
+goggles_tib |> 
+  group_by(dose)
+# Now pipe the results into the describe_distribution() function
+```
+
+```{r goggles_sum-hint-2}
+# Pipe the results into the describe_distribution() function
+goggles_tib |> 
+  group_by(facetype, alcohol) |> 
+  describe_distribution()
+# use a function to display the table to 2dp
+```
+
+
+```{r goggles_sum-solution}
+# Solution
+goggles_tib |> 
+  group_by(facetype, alcohol) |> 
+  describe_distribution() |> 
+  data_remove("Variable") |> 
+  display()
+```
+
+
+Note that the mean attractiveness is very similar across the doses of alcohol for the attractive faces, but varies in the unattractive faces.
+
+
+### `r user_visor()` Set contrasts [(B)]{.lbl}
+
+In `discovr_12`, we set contrasts to test our two hypotheses using this code (which is the same as in the previous section except for the name of the tibble):
+
+#### `r robot()` Code example
+
+In `discovr_13`, we  set contrasts to test our hypotheses using this code:
+
+```{r, eval = F}
+# contrasts for alcohol
+alcohol_vs_none <- c(-2/3, 1/3, 1/3)
+high_vs_low <- c(0, -1/2, 1/2)
+contrasts(goggles_tib$alcohol) <- cbind(alcohol_vs_none, high_vs_low)
+
+# contrasts for facetype
+att_vs_unatt <- c(-1/2, 1/2)
+contrasts(goggles_tib$facetype) <- att_vs_unatt
+```
+
+The first three lines set the contrasts for the variable `alcohol` and the last two set the contrast for `facetype`.
+
+#### `r alien()` Alien coding challenge
+
+Try setting the contrasts described above and check that they have been set correctly.
+
+
+```{r goggles_con, exercise = TRUE, exercise.lines = 12}
+
+```
+
+```{r goggles_con-hint-1}
+# contrasts for alcohol
+alcohol_vs_none <- c(-2/3, 1/3, 1/3)
+high_vs_low <- c(0, -1/2, 1/2)
+contrasts(goggles_tib$alcohol) <- cbind(alcohol_vs_none, high_vs_low)
+
+# contrasts for facetype
+att_vs_unatt <- c(-1/2, 1/2)
+contrasts(goggles_tib$facetype) <- att_vs_unatt
+# now use contrasts() to check the contrasts for each variable
+```
+
+
+```{r goggles_con-solution}
+# contrasts for alcohol
+alcohol_vs_none <- c(-2/3, 1/3, 1/3)
+high_vs_low <- c(0, -1/2, 1/2)
+contrasts(goggles_tib$alcohol) <- cbind(alcohol_vs_none, high_vs_low)
+
+# contrasts for facetype
+att_vs_unatt <- c(-1/2, 1/2)
+contrasts(goggles_tib$facetype) <- att_vs_unatt
+
+# check contrasts
+contrasts(goggles_tib$alcohol) 
+contrasts(goggles_tib$facetype)
+```
+
+```{r set_goggle_cons, echo = F}
+# contrasts for alcohol
+alcohol_vs_none <- c(-2/3, 1/3, 1/3)
+high_vs_low <- c(0, -1/2, 1/2)
+contrasts(goggles_tib$alcohol) <- cbind(alcohol_vs_none, high_vs_low)
+
+# contrasts for facetype
+att_vs_unatt <- c(-1/2, 1/2)
+contrasts(goggles_tib$facetype) <- att_vs_unatt
+```
+
+### `r user_astronaut()` Fit the model [(C)]{.lbl}
+
+Again, I'd stress to use this section as a way to ease into proper Bayesian analysis with a view to fitting models using informative priors like we did in earlier sections, but for now we'll use uninformative priors.
+
+#### `r robot()` Code example
+
+To fit this model with default priors use this code (see the first section for more detail).
+
+```{r eval = FALSE}
+goggles_rtb <- stan_glm(attractiveness ~ alcohol*facetype, data = goggles_tib)
+model_parameters(goggles_rtb, test = c("pd", "bf"), null = 0) |> 
+  display()
+```
+
+#### `r alien()` Alien coding challenge
+
+Use the code box to fit the model.
+
+```{r goggle_bayes, exercise = TRUE, exercise.lines = 10, exercise.setup = "set_goggle_cons"}
+
+```
+
+```{r goggle_bayes-solution}
+goggles_rtb <- stan_glm(attractiveness ~ alcohol*facetype, data = goggles_tib)
+model_parameters(goggles_rtb, test = c("pd", "bf"), null = 0) |> 
+  display()
+```
+
+<div class="infobox">
+  `r info()` **Bayesian models are based on sampling**
+
+Bayesian estimation relies on sampling from the posterior distribution so your results will differ from mine. Therefore, the interpretation below is based on these model parameters:
+
+```{r echo = F, results = "hide"}
+# contrasts for alcohol
+alcohol_vs_none <- c(-2/3, 1/3, 1/3)
+high_vs_low <- c(0, -1/2, 1/2)
+contrasts(goggles_tib$alcohol) <- cbind(alcohol_vs_none, high_vs_low)
+
+# contrasts for facetype
+att_vs_unatt <- c(-1/2, 1/2)
+contrasts(goggles_tib$facetype) <- att_vs_unatt
+
+goggles_rtb <- stan_glm(attractiveness ~ alcohol*facetype, data = goggles_tib)
+gogg_par <- model_parameters(goggles_rtb, test = c("pd", "bf"), null = 0)
+gogg_par_rf <- lm(attractiveness ~ alcohol*facetype, data = goggles_tib) |> model_parameters()
+```
+
+```{r echo = F}
+display(gogg_par)
+```
+
+
+</div>
+
+The frequentest model from `discovr_13` is reproduced below. The Bayesian parameter estimates based on default priors are almost identical to the frequentest ones because with weak default priors, the data drives estimation. The 95% credible intervals (unlike confidence intervals) contain the true estimate with 0.95 probability. That is, with 0.95 probability, the difference in ratings between attractive and unattractive faces is between `r value_from_ez(gogg_par, row = 4, value = "CI_low")` and `r value_from_ez(gogg_par, row = 4, value = "CI_high")` with 95% probability.
+
+The Bayes Factor for the first interaction contrast is `r report_bf(gogg_par, row = 5)` suggesting that we shift our belief about alcohol compared to none moderating the effect of `facetype` away from the null by a factor of about `r report_bf(gogg_par, row = 5, as_is = T) |>  report_value()`. For the second contrast it is `r report_bf(gogg_par, row = 6)`, which is close to 1 suggesting that we don't change our beliefs about the null at all.  
+
+```{r echo = F}
+display(gogg_par_rf)
+```
+
+
+<div class="infobox">
+  <img src="./images/discovr_hex.png" alt="discovr package hex sticker, female space pirate with gun. Gunsmoke forms the letter R." style="width:100px;height:116px;" class = "img_left">
+  
+  **A message from Mae Jemstone:**
+  
+  Hopefully you are not Bayes-ed and confused after your flight into the black hole of Bayesian approaches to model fitting. This is the final step in your intergalactic journey to become a fully fledged space pirate and you aced it! Well done, congratulations and welcome to my team! You now have the power to fight opinion, misinformation and rhetoric with data and critical thinking. Now go out into the world and use your new found powers for good. Be kind, be compassionate and be data-driven. 
+</div>
+
+
+## Resources/References {data-progressive=FALSE}
+
+```{r, child = "./docs/resources.Rmd"}
+
+```
+
+
+### References

@@ -53,8 +53,10 @@ The current released version is available from CRAN:
 install.packages("discovr")
 ```
 
-However, the tutorials within this package were fully updated summer
-2025 so to get the most recent version install it from github.
+I don’t currently plan any major updates because the entire package was
+overhauled in 2025 to match the published version of the book. That
+said, minor tweaks, typo fixes and so on will be available in the
+development version, which can be installed using
 
 ``` r
 if(!require(remotes)){
@@ -63,16 +65,6 @@ if(!require(remotes)){
 
 remotes::install_github("profandyfield/discovr")
 ```
-
-The most recent version relies on the latest development versions of the
-`easystats` packages, so to make sure everything goes smoothly execute
-
-``` r
-easystats::install_latest()
-```
-
-Once the latest `easystats` packages are on CRAN I will release the
-updated version there.
 
 ## Interactive tutorials
 
@@ -382,7 +374,7 @@ ggplot(classic_era, aes(x = energy, y = valence, color = album_name)) +
   theme_minimal()
 ```
 
-<img src="man/figures/README-unnamed-chunk-10-1.png" alt="" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-1.png" alt="" width="100%" />
 
 Similarly to apply the Powerslave palette to the fill of objects in a
 ggplot add `scale_fill_power()` as a layer:
@@ -395,7 +387,7 @@ ggplot(classic_era, aes(x = album_name, y = valence, fill = album_name)) +
   theme_minimal()
 ```
 
-<img src="man/figures/README-unnamed-chunk-11-1.png" alt="" width="100%" />
+<img src="man/figures/README-unnamed-chunk-10-1.png" alt="" width="100%" />
 
 ## Datasets
 

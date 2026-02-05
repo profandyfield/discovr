@@ -1,3 +1,10 @@
+# discovr (development version)
+
+# discovr 1.0.1
+
+* Replaced `animal_bride` data (not used in book) and replaced with `pets` data (used in book)
+
+
 # discovr 1.0.0
 
 ## General

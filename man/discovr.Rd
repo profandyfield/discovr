@@ -77,7 +77,6 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{alien_scents}: Fictitious data about training sniffer dogs to detect alien space lizards when they try to mask their identity with different scents. See also \link{sniffer_dogs}.
 \item \link{angry_pigs}: fictitious data about whether playing the video game angry pigs makes people more aggressive towards pigs. See also \link{angry_real}.
 \item \link{angry_real}: fictitious data about whether playing the video game angry pigs makes people more aggressive in everyday life. See also \link{angry_pigs}.
-\item \link{animal_bride}: Fictitious data about life satisfaction when married to a dog or a goat.
 \item \link{animal_dance}: Fictitious data about training cats and dogs to dance.
 \item \link{beckham_1929}: Data from a study by Beckham (1929).
 \item \link{big_hairy_spider}: Fictitious data about whether anxiety is greater after exposure to real spiders or pictures of spiders.
@@ -138,6 +137,7 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{ong_2011}: Data about social media profile pictures and personality traits.
 \item \link{ong_tidy}: Data about social media profile pictures and personality traits.
 \item \link{penalty_shootout}: Fictitious data about predictors of penalty kick success in soccer (or whatever sport you enjoy).
+\item \link{pets}: Fictitious data about life satisfaction and whether you own a fish or a cat as a pet.
 \item \link{profile_pic}: Fictitious data related to whether the number of friend requests from random people on social media is affected by whether your profile picture depicts you as single or part of a romantic couple.
 \item \link{pubs}: Data illustrating the difference between an outlier and an influential case.
 \item \link{puppies}: Fictitious data related to whether puppy therapy works.

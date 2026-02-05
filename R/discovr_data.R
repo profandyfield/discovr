@@ -121,30 +121,6 @@
 "angry_real"
 
 
-#' Animal bride data
-#'
-#' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
-#'
-#' Fictitious data inspired by two news stories that I enjoyed. The first was about a Sudanese man who was forced to marry a goat
-#' after being caught having sex with it. I'm not sure he treated the goat to a nice dinner in a posh restaurant before taking advantage of her, but either way you have to feel sorry for the goat.
-#' I'd barely had time to recover from that story when another appeared about an Indian man forced to marry a dog to atone for stoning two dogs and stringing them up in a tree 15 years earlier.
-#' Why anyone would think it's a good idea to enter a dog into matrimony with a man with a history of violent behaviour towards dogs is beyond me.
-#' Still, I wondered whether a goat or dog made a better spouse. I found (but not really) some other people who had been forced to marry goats and dogs and measured their life satisfaction and, also, how much they like animals.
-#' The data contains the following variables:
-#'
-#'   * **wife**: whether the person married a goat or a dog
-#'   * **animal**: how much the person likes animals
-#'   * **life_satisfaction**: the person's life satisfaction score
-#'   * **wife**: Whether the person married a goat or a dog
-#'   * **animal**: How much the person likes animals
-#'   * **life_satisfaction**: The person's life satisfaction score
-#'
-#' @format A tibble with 20 rows and 3 variables.
-#' @docType data
-#' @source [www.discovr.rocks/csv/animal_bride.csv](https://www.discovr.rocks/csv/animal_bride.csv)
-
-"animal_bride"
-
 #' Dancing cats and dogs data
 #'
 #' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
@@ -1674,6 +1650,25 @@
 #' @source [www.discovr.rocks/csv/penalty.csv](https://www.discovr.rocks/csv/penalty_shootout.csv)
 
 "penalty_shootout"
+
+#' Pets and life satisfaction data
+#'
+#' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Fictitious data relating to whether a fish or a cat is a better pet. Life satisfaction and how much they liked animals was measured in samples of fish (*n* = 12) and cat (*n* = 8) owners.
+#' The data contains the following variables:
+#'
+#'   * **id**: The participant's id
+#'   * **pet**: whether the person owned a fish or a cat
+#'   * **animal**: how much the person likes animals
+#'   * **life_satisfaction**: the person's life satisfaction score
+#'
+#' @format A tibble with 20 rows and 4 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/pets.csv](https://www.discovr.rocks/csv/pets.csv)
+
+"pets"
+
 
 #' Profile picture data
 #'

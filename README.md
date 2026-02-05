@@ -403,8 +403,6 @@ the book’s website.
 - **alien_scents**: fictitious data about training sniffer dogs to
   detect alien space lizards when they try to mask their identity with
   different scents. For details execute `?alien_scents`.
-- **animal_bride**: fictitious data about life satisfaction when married
-  to a dog or a goat. For details execute `?animal_bride`.
 - **angry_pigs**: fictitious data about whether playing the video game
   angry pigs makes people more aggressive towards pigs. For details
   execute `?angry_pigs`.
@@ -554,6 +552,8 @@ the book’s website.
 - **penalty_shootout**: Fictitious data about predictors of penalty kick
   success in soccer (or whatever sport you enjoy). For details execute
   `?penalty`.
+- **pets**: Fictitious data about life satisfaction and whether you own
+  a fish or a cat as a pet. `?pets`.
 - **profile_pic**: Fictitious data related to whether the number of
   friend requests from random people on social media is affected by
   whether your profile picture depicts you as single or part of a

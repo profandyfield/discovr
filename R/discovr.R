@@ -69,7 +69,6 @@
 #' * [alien_scents]: Fictitious data about training sniffer dogs to detect alien space lizards when they try to mask their identity with different scents. See also [sniffer_dogs].
 #' * [angry_pigs]: fictitious data about whether playing the video game angry pigs makes people more aggressive towards pigs. See also [angry_real].
 #' * [angry_real]: fictitious data about whether playing the video game angry pigs makes people more aggressive in everyday life. See also [angry_pigs].
-#' * [animal_bride]: Fictitious data about life satisfaction when married to a dog or a goat.
 #' * [animal_dance]: Fictitious data about training cats and dogs to dance.
 #' * [beckham_1929]: Data from a study by Beckham (1929).
 #' * [big_hairy_spider]: Fictitious data about whether anxiety is greater after exposure to real spiders or pictures of spiders.
@@ -130,6 +129,7 @@
 #' * [ong_2011]: Data about social media profile pictures and personality traits.
 #' * [ong_tidy]: Data about social media profile pictures and personality traits.
 #' * [penalty_shootout]: Fictitious data about predictors of penalty kick success in soccer (or whatever sport you enjoy).
+#' * [pets]: Fictitious data about life satisfaction and whether you own a fish or a cat as a pet.
 #' * [profile_pic]: Fictitious data related to whether the number of friend requests from random people on social media is affected by whether your profile picture depicts you as single or part of a romantic couple.
 #' * [pubs]: Data illustrating the difference between an outlier and an influential case.
 #' * [puppies]: Fictitious data related to whether puppy therapy works.

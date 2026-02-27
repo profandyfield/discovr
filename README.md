@@ -413,6 +413,8 @@ the book’s website.
   dance.`?animal_dance`
 - **beckham_1929**: Data from a study by Beckham (1929). For details
   execute `?beckham_1929`.
+- **bernard_2012**: Data from a study by Bernard et al. (2012). For
+  details execute `?bernard_2012`.
 - **big_hairy_spider**: fictitious data about whether anxiety is greater
   after exposure to real spiders or pictures of spiders. For details
   execute `?big_hairy_spider`.
@@ -509,6 +511,9 @@ the book’s website.
   makes you successful. For details execute `?jiminy_cricket`.
 - **johns_2012**: Data about whether the colour red is a mating signal
   to men. For details execute `?johns_2012`.
+- **lacourse_2001_females**: Data from a study by Lacourse et
+  al. (2001). Female sample only. For details execute
+  `?lacourse_2001_females`.
 - **lambert_2012**: Data about whether pornography use is related to
   relationhsip commitment and infidelity. For details execute
   `?lambert_2012`.
@@ -552,6 +557,8 @@ the book’s website.
 - **penalty_shootout**: Fictitious data about predictors of penalty kick
   success in soccer (or whatever sport you enjoy). For details execute
   `?penalty`.
+- **perham_2012**: Data from a study by Perham and Sykora (2012). For
+  details execute `?perham_2012`.
 - **pets**: Fictitious data about life satisfaction and whether you own
   a fish or a cat as a pet. `?pets`.
 - **profile_pic**: Fictitious data related to whether the number of
@@ -584,6 +591,8 @@ the book’s website.
 - **santas_log**: Fictitious data related to whether the type and
   quantity of treat consumed on Christmas night affects whether elves
   successfully deliver presents. For details execute `?santas_log`.
+- **schutzwohl_2008**: Data from a study by Schützwohl (2008). For
+  details execute `?schutzwohl_2008`.
 - **self_help**: fictitious data about whether self-help books improve
   relationship satisfaction. For details execute `?self_help`.
 - **self_help_dsur**: fictitious data about whether self-help books

@@ -1,6 +1,11 @@
 # discovr (development version)
 
-* Replaced `animal_bride` data (not used in book) and replaced with `pets` data (used in book)
+* Replaced `animal_bride` data (not used in book) with `pets` data (used in book) and documented
+* Added and documented the following data sets for Labcoat Leni tasks
+  - `bernard_2012`
+  - `lacourse_2001_females`
+  - `perham_2012`
+  - `schutzwohl_2008`
 
 
 # discovr 1.0.0

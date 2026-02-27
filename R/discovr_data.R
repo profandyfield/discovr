@@ -181,6 +181,37 @@
 
 "beckham_1929"
 
+#' Bernard, et al. (2012) data
+#'
+#' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#'  There is a concern that images that portray women as sexually desirable objectify them. Philippe Bernard and colleagues tested this idea in an inventive study that used the 'inversion effect', which describes the phenomenon
+#'  that people find it harder to recognize upside-down (inverted) pictures than ones the right way up. It turns out that this 'inversion effect' occurs for pictures of humans but not objects, so by seeing how easily people recognize
+#'  inverted sexualized pictures of women, Bernard could see whether these pictures were processed more like people or objects (Bernard et al., 2012). Participants were presented with pictures of sexualized (i.e., not wearing many clothes)
+#'  males and females, half of which were inverted (`inverted_women` and `inverted_men`) whereas the remainder were upright (`upright_women` and `upright_men`). Participants self-reported their gender. After each trial,
+#'  participants were shown two pictures and asked to identify the one they had just seen. The outcome was the proportion of correctly identified pictures.
+#'
+#'  An inversion effect is demonstrated by higher recognition scores for upright pictures than for inverted ones. If sexualized females are processed as objects, you would expect an inversion effect for the male pictures but not the female ones.
+#'  The data contains the following variables:
+#'
+#'   * **id**: Participant ID number
+#'   * **gender**: Self-reported gender
+#'   * **inverted_women**: the proportion of correctly identified inverted pictures of women
+#'   * **upright_women**: the proportion of correctly identified upright pictures of women
+#'   * **inverted_men**: the proportion of correctly identified inverted pictures of men
+#'   * **upright_men**: the proportion of correctly identified upright pictures of men
+#'
+#' @format A tibble with 78 rows and 6 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/bernard_2012.csv](https://www.discovr.rocks/csv/bernard_2012.csv)
+#' @references
+#'
+#'    * Bernard, P., Gervais, S. J., Allen, J., Campomizzi, S., & Klein, O. (2012). Integrating sexual objectification with object versus person recognition: The sexualized-body-inversion hypothesis. *Psychological Science*, 23(5), 469–471. \doi{10.1177/0956797611434748}
+
+
+"bernard_2012"
+
+
 #' The biggest liar data
 #'
 #' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
@@ -1193,6 +1224,45 @@
 
 "johns_2012"
 
+#' Lacourse et al. (2001) data
+#'
+#' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#'  Eric Lacourse and his colleagues used questionnaires to measure suicide risk (yes or no), marital status of parents (together or divorced/separated), the extent to which the person experienced neglect,
+#'  self-estrangement/powerlessness (adolescents who have negative self-perceptions, are bored with life, etc.), social isolation (feelings of a lack of support), normlessness (beliefs that socially disapproved behaviours can be used to achieve certain goals),
+#'  meaninglessness (doubting that school is relevant to gaining employment) and drug use. In addition, the authors measured liking of heavy metal; they included the sub-genres of classic (Black Sabbath, Iron Maiden), thrash metal (Slayer, Metallica),
+#'  death/black metal (Obituary, Burzum) and gothic (Marilyn Manson). As well as liking they measured behavioural manifestations of worshipping these bands (e.g., hanging posters, hanging out with other metal fans) and what the authors termed 'vicarious music listening'
+#'  (whether music was used when angry or to bring out aggressive moods). They used logistic regression to predict suicide risk from these variables for those identifying as male and female separately. This the data for the female sample and contains the following variables:
+#'
+#'   * **age**: Participant's age
+#'   * **age_group**: Age group of participant (14-16 years old or 16-19 years old)
+#'   * **drug_use**: the quantity of alcohol, cannabis, and hallucinogens consumed during the past year from 1 (never) to 4 (10 or more times)
+#'   * **gender**: the self-reported gender (all female in this sub-sample)
+#'   * **isolation**: a measure of subjective perceptions of lack of support
+#'   * **marital_status**: whether the participants parents were together or separated/divorced
+#'   * **meaninglessness**: a measure of the degree to which the person doubts the relevance of school in attaining future employment
+#'   * **metal**: the degree to which the person likes heavy metal music
+#'   * **mother_negligence**: the perceived warmth in relationships with the mother. A high score represents a perception of cold and rejecting maternal relationship.
+#'   * **father_negligence**: the perceived warmth in relationships with the father A high score represents a perception of cold and rejecting paternal relationship.
+#'   * **normlessness**: a measure of beliefs that socially disapproved behaviours may be used to achieve certain goals
+#'   * **self_estrangement**: a measure of negative self-perception, feeling bored with life, overwhelmed by difficulties considered out of ones control.
+#'   * **suicide_risk**: whether the participant was at risk for suicide or not
+#'   * **vicarious**: the degree to which the person listens to music when angry or to bring out anger
+#'   * **worshipping**: the degree to which the person engages in fan-like behaviour about the bands they like
+#'
+#'
+#' @format A tibble with 121 rows and 15 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/lacourse_2001_females.csv](https://www.discovr.rocks/csv/lacourse_2001_females.csv)
+#' @references
+#'
+#'    * Lacourse, E., Claes, M., & Villeneuve, M. (2001). Heavy metal music and adolescent suicidal risk. *Journal of Youth and Adolescence*, 30, 321–332. \doi{10.1023/A:1010492128537}
+
+
+"lacourse_2001_females"
+
+
+
 #' Lambert et al. (2012) data
 #'
 #' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
@@ -1651,6 +1721,32 @@
 
 "penalty_shootout"
 
+#' Perham & Sykora (2012) data
+#'
+#' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#'  Perham and Sykora (2012) were interested in the effects of liked and disliked music (compared to quiet) on people's ability to remember things. Twenty-five participants remembered lists of eight letters.
+#'  They manipulated the background noise while each list was presented: silence (the control), liked music or disliked music. They used music that they believed most participants would like (a popular song called
+#'  'From Paris to Berlin' by Infernal) and dislike (songs such as Repulsion's 'Acid Bath', 'Eaten Alive' and 'Splattered Cadavers' – in other words, the sort of thing I listen to,
+#'  although I don't actually have any stuff by Repulsion). Participants recalled each list of eight letters, and the authors calculated the probability of correctly recalling a letter in each position in the list. The data contains the following variables:
+#'
+#'   * **id**: Participant's ID (added by me, not from the original data)
+#'   * **sound**: Was the background noise silence (the control), liked music or disliked music
+#'   * **position**: Position in the list of the letter from 1 to 8
+#'   * **recall**: the probability of recalling the letter
+#'
+#'
+#' @format A tibble with 600 rows and 4 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/perham_2012.csv](https://www.discovr.rocks/csv/perham_2012.csv)
+#' @references
+#'
+#'    * Perham, N., & Sykora, M. (2012). Disliked music can be better for performance than liked music. *Applied Cognitive Psychology*, 26, 550–555. \doi{10.1002/acp.2826}
+
+
+"perham_2012"
+
+
 #' Pets and life satisfaction data
 #'
 #' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
@@ -1960,6 +2056,42 @@
 #' @source [www.discovr.rocks/csv/santas_log.csv](https://www.discovr.rocks/csv/santas_log.csv)
 
 "santas_log"
+
+#' Perham & Sykora (2012) data
+#'
+#' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' People can be jealous when they think that their partner is being unfaithful. An evolutionary view suggests that men and women have evolved distinctive types of jealousy:
+#' specifically, a woman's sexual infidelity deprives her mate of a reproductive opportunity and could burden him with years investing in a child that is not his. Conversely, a man's sexual infidelity does not burden his mate
+#' with unrelated children, but may divert his resources from his mate's progeny. This diversion of resources is signalled by emotional attachment to another female.
+#' Consequently, men's jealousy mechanism should have evolved to prevent a mate's sexual infidelity, whereas in women it has evolved to prevent emotional infidelity.
+#' If this is the case, women should be 'on the lookout' for emotional infidelity, whereas men should be watching out for sexual infidelity.
+#'
+#' Whether or not you buy into this theory, it can be tested. Achim Schützwohl exposed men and women to sentences on a computer screen (Schützwohl, 2008). At each trial, participants saw a target sentence that was emotionally neutral
+#' (e.g., 'The gas station is at the other side of the street'). However, before each of these targets, a distractor sentence was presented that could also be affectively neutral, or could indicate sexual infidelity
+#' (e.g., 'Your partner suddenly has difficulty becoming sexually aroused when he and you want to have sex') or emotional infidelity (e.g., 'Your partner doesn't say "I love you" to you any more').
+#' Schützwohl reasoned that if these distractor sentences grabbed a person's attention then (1) they would remember them, and (2) they would not remember the target sentence that came afterwards (because their attentional resources were focused on the distractor).
+#' These effects should show up only in people currently in a relationship. The outcome was the number of sentences that a participant could remember (out of six), and the predictors were whether the person had a partner or not (relationship) whether the trial used a neutral distractor,
+#' an emotional infidelity distractor or a sexual infidelity distractor, and whether the sentence was a distractor or the target following a distractor. The data contains the following variables:
+#'
+#'   * **id**: Participant's ID (added by me, not from the original data)
+#'   * **relationship**: Whether the person was with a partner or not
+#'   * **age**: Participant's age
+#'   * **distractor_colour**: was the distractor presented in white or colour?
+#'   * **gender**: the self-reported gender of the participant
+#'   * **distractor_type**: Was the sentence a distractor or a target?
+#'   * **sentence_type**: Was the distractor sentence affectively neutral, emotionally valenced or sexually valenced?
+#'   * **recall**: the number of sentences that a participant could remember (out of six)
+#'
+#'
+#' @format A tibble with 480 rows and 8 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/schutzwohl_2008.csv](https://www.discovr.rocks/csv/schutzwohl_2008.csv)
+#' @references
+#'
+#'    * Schützwohl, A. (2008). The disengagement of attentive resources from task-irrelevant cues to sexual and emotional infidelity. *Personality and Individual Differences*, 44(3), 633–644. \doi{10.1016/j.paid.2007.09.022}
+
+"schutzwohl_2008"
 
 #' Self-help book data
 #'

@@ -2079,8 +2079,8 @@
 #'   * **age**: Participant's age
 #'   * **distractor_colour**: was the distractor presented in white or colour?
 #'   * **gender**: the self-reported gender of the participant
-#'   * **distractor_type**: Was the sentence a distractor or a target?
-#'   * **sentence_type**: Was the distractor sentence affectively neutral, emotionally valenced or sexually valenced?
+#'   * **sentence_type**: Was the sentence a distractor or a target?
+#'   * **distractor_type**: Was the distractor sentence affectively neutral, emotionally valenced or sexually valenced?
 #'   * **recall**: the number of sentences that a participant could remember (out of six)
 #'
 #'

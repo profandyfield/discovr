@@ -35,8 +35,8 @@ an emotional infidelity distractor or a sexual infidelity distractor, and whethe
 \item \strong{age}: Participant's age
 \item \strong{distractor_colour}: was the distractor presented in white or colour?
 \item \strong{gender}: the self-reported gender of the participant
-\item \strong{distractor_type}: Was the sentence a distractor or a target?
-\item \strong{sentence_type}: Was the distractor sentence affectively neutral, emotionally valenced or sexually valenced?
+\item \strong{sentence_type}: Was the sentence a distractor or a target?
+\item \strong{distractor_type}: Was the distractor sentence affectively neutral, emotionally valenced or sexually valenced?
 \item \strong{recall}: the number of sentences that a participant could remember (out of six)
 }
 }

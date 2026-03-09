@@ -6,6 +6,7 @@
   - `lacourse_2001_females`
   - `perham_2012`
   - `schutzwohl_2008`
+* Changed name of `group` to `text_gp` in `text_messages` to avoid conflict with `estimate_contrasts()` function.
 
 
 # discovr 1.0.0

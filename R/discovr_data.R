@@ -2519,13 +2519,13 @@
 #'  The (fictional) data contains the following variables:
 #'
 #'   * **id**: participant ID
-#'   * **group**: whether the participant was assigned to the text message group or control group
+#'   * **text_gp**: whether the participant was assigned to the text message group or control group
 #'   * **time**: the time at which grammar ability was measured (baseline or 6 months later)
 #'   * **grammar**: the score on the grammar test as a percentage (%)
 #'
 #' @format A tibble with 100 rows and 4 variables
 #' @docType data
-#' @source [www.discovr.rocks/csv/speed_date.csv](https://www.discovr.rocks/csv/text_messages.csv)
+#' @source [www.discovr.rocks/csv/text_messages.csv](https://www.discovr.rocks/csv/text_messages.csv)
 
 "text_messages"
 

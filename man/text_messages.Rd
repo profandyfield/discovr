@@ -8,7 +8,7 @@
 A tibble with 100 rows and 4 variables
 }
 \source{
-\href{https://www.discovr.rocks/csv/text_messages.csv}{www.discovr.rocks/csv/speed_date.csv}
+\href{https://www.discovr.rocks/csv/text_messages.csv}{www.discovr.rocks/csv/text_messages.csv}
 }
 \usage{
 text_messages
@@ -26,7 +26,7 @@ The outcome was a score on a grammatical test (as a percentage) that was measure
 The (fictional) data contains the following variables:
 \itemize{
 \item \strong{id}: participant ID
-\item \strong{group}: whether the participant was assigned to the text message group or control group
+\item \strong{text_gp}: whether the participant was assigned to the text message group or control group
 \item \strong{time}: the time at which grammar ability was measured (baseline or 6 months later)
 \item \strong{grammar}: the score on the grammar test as a percentage (\%)
 }

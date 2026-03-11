@@ -1,6 +1,19 @@
 # discovr (development version)
 
 * Replaced `animal_bride` data (not used in book) with `pets` data (used in book) and documented
+* Added and documented the following data sets for Smart Alex tasks
+  - `band_personality`
+  - `burnout`
+  - `condom`
+  - `display`
+  - `distracted_by_social_media`
+  - `handlebars`
+  - `horoscope`
+  - `piff_2012_pedestrian`
+  - `piff_2012_vehicle`
+  - `sage_editors_cant_play_football`
+  - `sonnentag_2012`
+  - `sing_or_guitar`
 * Added and documented the following data sets for Labcoat Leni tasks
   - `bernard_2012`
   - `lacourse_2001_females`

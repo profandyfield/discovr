@@ -38,9 +38,9 @@ These are the data from that study. The data contains the following variables:
 \itemize{
 \item \strong{profession}: Profession of respondents
 \item \strong{response}: response to the question as yes or no
-\item \strong{happy}: frequencies of reponses to a question about whether black Americans were happy
-\item \strong{you_happy}: frequencies of reponses to a question about whether they personally were happy
-\item \strong{should_be_happy}: frequencies of reponses to a question about whether black Americans should be happy
+\item \strong{happy}: frequencies of response to a question about whether black Americans were happy
+\item \strong{you_happy}: frequencies of response to a question about whether they personally were happy
+\item \strong{should_be_happy}: frequencies of response to a question about whether black Americans should be happy
 }
 }
 \references{

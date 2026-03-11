@@ -397,28 +397,30 @@ the book’s website.
 
 - **acdc**: Data about whether Bon Scott or Brian Johnson is the best
   singer of AC/DC. For details execute `?acdc`.
-- **album_sales**: fictitious data about predicting album sales from
+- **album_sales**: Fictitious data about predicting album sales from
   advertising, airplay and the band’s image. For details execute
   `?album_sales`.
-- **alien_scents**: fictitious data about training sniffer dogs to
+- **alien_scents**: Fictitious data about training sniffer dogs to
   detect alien space lizards when they try to mask their identity with
   different scents. For details execute `?alien_scents`.
-- **angry_pigs**: fictitious data about whether playing the video game
+- **angry_pigs**: Fictitious data about whether playing the video game
   angry pigs makes people more aggressive towards pigs. For details
   execute `?angry_pigs`.
-- **angry_real**: fictitious data about whether playing the video game
+- **angry_real**: Fictitious data about whether playing the video game
   angry pigs makes people more aggressive in everyday life. For details
   execute `?angry_real`.
 - **animal_dance**: Fictitious data about training cats and dogs to
   dance.`?animal_dance`
+- **band_personality**: Fictitious data about predicting the instrument
+  played from personality traits.`?band_personality`
 - **beckham_1929**: Data from a study by Beckham (1929). For details
   execute `?beckham_1929`.
 - **bernard_2012**: Data from a study by Bernard et al. (2012). For
   details execute `?bernard_2012`.
-- **big_hairy_spider**: fictitious data about whether anxiety is greater
+- **big_hairy_spider**: Fictitious data about whether anxiety is greater
   after exposure to real spiders or pictures of spiders. For details
   execute `?big_hairy_spider`.
-- **biggest_liar**: fictitious data about creativity and telling lies.
+- **biggest_liar**: Fictitious data about creativity and telling lies.
   For details execute `?biggest_liar`.
 - **bronstein_2019**: Data about whether delusion proneness predicts
   belief in fake news because of less analytic thinking. For details
@@ -426,36 +428,45 @@ the book’s website.
 - **bronstein_miss_2019**: The data in \[bronstein_2019\] but with
   missing values inserted using MCAR amputation. For details execute
   `?bronstein_miss_2019`.
-- **catterplot**: fictitious data for plotting a catterplot. For details
+- **burnout**: Fictitious data about predicting burnout in lecturers
+  from various sources of stress. For details execute `?burnout`.
+- **catterplot**: Fictitious data for plotting a catterplot. For details
   execute `?catterplot`.
-- **cat_dance**: fictitious data about training cats to dance. For
+- **cat_dance**: Fictitious data about training cats to dance. For
   details execute `?cat_dance`.
-- **cat_reg**: fictitious data about training cats to dance. For details
+- **cat_reg**: Fictitious data about training cats to dance. For details
   execute `?cat_reg`.
-- **cetinkaya_2006**: data from a study by Cetinkaya and Domjan (2006)
+- **cetinkaya_2006**: Data from a study by Cetinkaya and Domjan (2006)
   about quails with sexual fetishes. Seriously. For details execute
   `?cetinkaya_2006`.
 - **chamorro_premuzic**: Data about what students want (personality
   wise) from their lecturers. For details execute `?chamorro_premuzic`.
-- **child_aggression**: fictitious data (based on real research) about
+- **child_aggression**: Fictitious data (based on real research) about
   predicting aggression in children. For details execute
   `?child_aggression`.
 - **coldwell_2006**: Data predicting childhood adjustment from various
   parenting variables. For details execute `?coldwell_2006`.
+- **condom**: Fictitious data predicting condom use from relevant
+  beliefs and experiences. For details execute `?condom`.
 - **cosmetic**: Fictitious multilevel data predicting quality of life
   from cosmetic surgery. For details execute `?cosmetic`.
 - **daniels_2012**: Data about the effects of sexualised sports images
   on self-image. For details execute `?daniels_2012`.
-- **dark_lord**: fictitious data about the subliminal messages in songs.
+- **dark_lord**: Fictitious data about the subliminal messages in songs.
   For details execute `?dark_lord`.
 - **davey_2003**: Data about the effects mood and stop rules on checking
   behaviour. For details execute `?davey_2003`.
 - **dog_training**: Data about the training dogs to vocalise when they
   sniff alien life forms. For details execute `?dog_training`.
-- **download**: fictitious data about the download music festival and
+- **download**: Fictitious data about the download music festival and
   being smelly. For details execute `?download`.
-- **df_beta**: fictitious data used to illustrate the DF Beta statistic.
+- **df_beta**: Fictitious data used to illustrate the DF Beta statistic.
   For details execute `?df_beta`.
+- **display**: Fictitious data about theory of mind and display rule
+  understanding. For details execute `?display`.
+- **distracted_by_social_media**: Fictitious data about the effect of
+  social media distraction on exam performance. For details execute
+  `?distracted_by_social_media`.
 - **eel**: Fictitious data about a randomized control trial to test
   whether eel therapy is an effective treatment of constipation. For
   details execute `?eel`.
@@ -463,9 +474,9 @@ the book’s website.
   (soccer). For details execute `?elephooty`.
 - **escape**: Fictitious data about whether I’m a better songwriter than
   my old bandmate Malcolm `?escape`.
-- **essay_marks**: fictitious data about essay marking. For details
+- **essay_marks**: Fictitious data about essay marking. For details
   execute `?essay_marks`.
-- **exam_anxiety**: fictitious data about exam performance, anxiety and
+- **exam_anxiety**: Fictitious data about exam performance, anxiety and
   revision. For details execute `?exam_anxiety`.
 - **exercise**: Fictitious data from a randomised control trial of the
   effect of exercise on emotional well-being. For details execute
@@ -480,34 +491,38 @@ the book’s website.
   For details execute `?gelman_2009`.
 - **glastonbury**: More fictitious data about music festivals and being
   smelly. For details execute `?glastonbury`.
-- **goggles**: fictitious data about whether alcohol affects perception
+- **goggles**: Fictitious data about whether alcohol affects perception
   of physical attractiveness. For details execute `?goggles`.
-- **goggles_lighting**: fictitious data about the moderating effect of
+- **goggles_lighting**: Fictitious data about the moderating effect of
   lighting on the ratings of attractivenesses of faces after different
   doses of alcohol. For details execute `?goggles_lighting`.
-- **grades**: fictitious data about statistics grades. For details
+- **grades**: Fictitious data about statistics grades. For details
   execute `?grades`.
-- **hangover**: fictitious data about the efficacy of different drinks
+- **handlebars**: Fictional data about national trends in bike riding
+  behaviour. For details execute `?handlebars`.
+- **hangover**: Fictitious data about the efficacy of different drinks
   as cures for a hangover. For details execute `?hangover`
-- **hiccups**: fictitious data on digital rectal stimulation and
+- **hiccups**: Fictitious data on digital rectal stimulation and
   hiccups. For details execute `?hiccups`.
 - **hill_2007**: Data from Hill et al. (2007) testing the effect of
   different forms of psychoeducation on exercise behaviour. For details
   execute `?hill_2007`.
-- **honesty_lab**: fictitious data about perceptions of honesty. For
+- **honesty_lab**: Fictitious data about perceptions of honesty. For
   details execute `?honesty_lab`.
+- **horoscope**: Fictional data exploring whether horoscopes are
+  tomfoolery. For details execute `?horoscope`.
 - **ice_bucket**: Data about the ice bucket challenge. For details
   execute `?ice_bucket`.
 - **invisibility_base**: Fictitious data about how much mischief people
   would get up to if they had an invisibility cloak using a pre-post
   study design.`?invisibility_base`
-- **invisibility_cloak**: fictitious data about how much mischief people
+- **invisibility_cloak**: Fictitious data about how much mischief people
   would get up to if they had an invisibility cloak using an independent
   design. For details execute `?invisibility_cloak`.
-- **invisibility_rm**: fictitious data about how much mischief people
+- **invisibility_rm**: Fictitious data about how much mischief people
   would get up to if they had an invisibility cloak but using a repeated
   measures design. For details execute `?invisibility_rm`.
-- **jiminy_cricket**: fictitious data about whether wishing on a star
+- **jiminy_cricket**: Fictitious data about whether wishing on a star
   makes you successful. For details execute `?jiminy_cricket`.
 - **johns_2012**: Data about whether the colour red is a mating signal
   to men. For details execute `?johns_2012`.
@@ -522,11 +537,11 @@ the book’s website.
 - **mcnulty_2008**: Simulated data to match the results of a study about
   whether attractivenes sis linked to the support given within a
   relationship. For details execute `?mcnulty_2008`.
-- **men_dogs**: fictitious data about whether men exhibit dog-like
+- **men_dogs**: Fictitious data about whether men exhibit dog-like
   behaviours (compared to dogs). For details execute `?men_dogs`.
 - **metal**: Fictitious data about whether listening to metal music
   makes you angry `?metal`.
-- **metal_health**: fictitious data about whether listening to heavy
+- **metal_health**: Fictitious data about whether listening to heavy
   metal negatively affects mental health. For details execute
   `?metal_health`.
 - **metallica**: Data about thrash metal band, Metallica. For details
@@ -537,7 +552,7 @@ the book’s website.
   imagery in advertising affect ratings of different types of drinks
   based on the gender identity of the participant. For details execute
   `?mixed_attitude`.
-- **murder**: fictitious data about the number of murder each month at
+- **murder**: Fictitious data about the number of murder each month at
   three street locations (Ruskin Avenue, Acacia Avenue and Rue Morgue).
   For details execute `?murder`.
 - **muris_2008**: Data about whether you can train children to interpret
@@ -546,7 +561,7 @@ the book’s website.
 - **nichols_2004**: Data from the development of the Internet Addiction
   Scale, IAS (Nichols & Nicki, 2004). For details execute
   `?nichols_2004`.
-- **notebook**: fictitious data about whether watching the film the
+- **notebook**: Fictitious data about whether watching the film the
   notebook is emotionally arousing. For details execute `?notebook`.
 - **ocd**: Fictitious data about interventions for obsessive compulsive
   disorder. For details execute `?ocd`.
@@ -560,7 +575,13 @@ the book’s website.
 - **perham_2012**: Data from a study by Perham and Sykora (2012). For
   details execute `?perham_2012`.
 - **pets**: Fictitious data about life satisfaction and whether you own
-  a fish or a cat as a pet. `?pets`.
+  a fish or a cat as a pet. For details execute `?pets`.
+- **piff_2012_pedestrian**: Data reconstructed from Figure 1B of Piff et
+  al. (2012) about social class and driver behaviour towards
+  pedestrians. For details execute `?piff_2012_pedestrian`.
+- **piff_2012_vehicle**: Data reconstructed from Figure 1A of Piff et
+  al. (2012) about social class and driver behaviour towards other
+  vehicles. For details execute `?piff_2012_vehicle`.
 - **profile_pic**: Fictitious data related to whether the number of
   friend requests from random people on social media is affected by
   whether your profile picture depicts you as single or part of a
@@ -577,81 +598,88 @@ the book’s website.
   `?puppy_love`.
 - **r_exam**: Fictitious data relating to an R exam at two universities.
   For details execute `?r_exam`.
-- **reality_tv**: Fictitious data relating to whether being on a reality
-  TV show exacerbates personality disorder traits. For details execute
-  `?reality_tv`.
 - **raq**: Fictitious data relating to a fictional questionnaire about R
   anxiety that is not an actual questionnaire. For details execute
   `?raq`.
-- **roaming_cats**: fictitious data about how far cats roam from their
+- **reality_tv**: Fictitious data relating to whether being on a reality
+  TV show exacerbates personality disorder traits. For details execute
+  `?reality_tv`.
+- **roaming_cats**: Fictitious data about how far cats roam from their
   homes. For details execute `?roaming_cats`.
 - **rollercoaster**: Fictitious data about how roller-coaster induced
   fear affects attractiveness ratings. For details execute
   `?rollercoaster`.
+- **sage_editors_cant_play_football**: Fictional data about SAGE editors
+  and their football prowess. For details execute
+  `?sage_editors_cant_play_football`.
 - **santas_log**: Fictitious data related to whether the type and
   quantity of treat consumed on Christmas night affects whether elves
   successfully deliver presents. For details execute `?santas_log`.
 - **schutzwohl_2008**: Data from a study by Schützwohl (2008). For
   details execute `?schutzwohl_2008`.
-- **self_help**: fictitious data about whether self-help books improve
+- **self_help**: Fictitious data about whether self-help books improve
   relationship satisfaction. For details execute `?self_help`.
-- **self_help_dsur**: fictitious data about whether self-help books
+- **self_help_dsur**: Fictitious data about whether self-help books
   improve relationship satisfaction compared to statistics books. For
   details execute `?self_help_dsur`.
 - **sharman_2015**: Data from Sharman & Dingle (2015) about whether
   listening to metal music increases anger `?sharman_2015`.
-- **shopping**: fictitious data about shopping For details execute
+- **shopping**: Fictitious data about shopping For details execute
   `?shopping_exercise`.
-- **sniffer_dogs**: fictitious data about training sniffer dogs to
+- **sing_or_guitar**: Fictitious data about predicting the instrument
+  played from personality traits. For details execute `?sing_or_guitar`.
+- **sniffer_dogs**: Fictitious data about training sniffer dogs to
   detect alien space lizards. For details execute `?sniffer_dogs`.
-- **social_anxiety**: fictitious (I think) data about whether social
+- **social_anxiety**: Fictitious (I think) data about whether social
   anxiety symptoms are specific to social anxiety. For details execute
   `?social_anxiety`.
-- **social_media**: fictitious data about the effects of social media on
+- **social_media**: Fictitious data about the effects of social media on
   grammar. For details execute `?social_media`.
-- **soya**: fictitious data about the effects of eating soya on sperm
+- **sonnentag_2012**: Simulated data to approximate Figure 1 in
+  Sonnentag (2012). For details execute `?sonnentag_2012`.
+- **soya**: Fictitious data about the effects of eating soya on sperm
   count. For details execute `?soya`.
 - **speed_date**: Fictitious data related to the extent to which
   interest in dating someone is affected by their looks, personality or
   the dating strategy they adopt. For details execute `?speed_date`.
-- **stalker**: fictitious data about therapy for stalking. For details
+- **stalker**: Fictitious data about therapy for stalking. For details
   execute `?stalker`.
 - **students**: I can’t even remember what this data file contains. For
   details execute `?student`.
-- **superhero**: fictitious data about whether wearing different
+- **superhero**: Fictitious data about whether wearing different
   superhero costumes leads to more severe physical injuries. For details
   execute `?superhero`.
-- **supermodel**: fictitious data about supermodel salaries. For details
+- **supermodel**: Fictitious data about supermodel salaries. For details
   execute `?supermodel`.
 - **switch**: Fictitious data relating to whether injuries from playing
   video console games can be mitigated by a warm up.`?switch`
-- **tablets**: fictitious data about predicting the desirability of
+- **tablets**: Fictitious data about predicting the desirability of
   computing tablets. For details execute `?tablets`.
-- **tea_15**: fictitious data based on real data about cognitive
+- **tea_15**: Fictitious data based on real data about cognitive
   functioning and drinking tea. For details execute
   `?tea_makes_you_brainy_15`.
-- **tea_716**: fictitious data based on real data about cognitive
+- **tea_716**: Fictitious data based on real data about cognitive
   functioning and drinking tea. For details execute
   `?tea_makes_you_brainy_716`.
-- **teaching**: fictitious data about the success of different methods
+- **teaching**: Fictitious data about the success of different methods
   of teaching. For details execute `?teaching`.
-- **teach_method**: more fictitious data about the success of different
+- **teach_method**: More fictitious data about the success of different
   methods of teaching. For details execute `?teach_method`.
-- **text_messages**: fictitious data about whether use of messaging apps
+- **text_messages**: Fictitious data about whether use of messaging apps
   ruins your grammar. For details execute `?text_messages`.
 - **tosser**: Fictitious data relating to a fictional questionnaire
   about The Teaching of Statistics for Scientific Experiments, which is
   fictional. For details execute `?tosser`.
 - **tuk_2011**: Data about whether needing to urinate helps decision
   making. For details execute `?tuk_2011`.
-- **tumour**: fictitious data about mobile phone use and brain tumours.
+- **tumour**: Fictitious data about mobile phone use and brain tumours.
   For details execute `?tumour`.
-- **tutor_marks**: fictitious data comparing 4 tutors marks of the same
+- **tutor_marks**: Fictitious data comparing 4 tutors marks of the same
   essays. For details execute `?tutor_marks`.
 - **van_bourg_2020**: Data from van Bourg et al (2020) relating to
   whether dogs would release their distressed owners from a box. For
   details execute `?van_bourg_2020`.
-- **video_games**: fictitious data about the relationship between video
+- **video_games**: Fictitious data about the relationship between video
   game use, callous unemotional traits and aggression. For details
   execute `?video_games`.
 - **williams**: Data relating to the development of a questionnaire to
@@ -665,10 +693,10 @@ the book’s website.
 - **zibarras_2008**: Data from Zibarras, Port, and Woods (2008) relating
   to the relationship between personality and creativity. For details
   execute `?zibarras_2008`.
-- **zombie_growth**: fictitious data that mimics a randomised control
+- **zombie_growth**: Fictitious data that mimics a randomised control
   trial over time testing an intervention to transform zombies back to
   their pre-zombified state. For details execute `?zombie_growth`.
-- **zombie_rehab**: fictitious data that mimics a randomised control
+- **zombie_rehab**: Fictitious data that mimics a randomised control
   trial testing an intervention to transform zombies back to their
   pre-zombified state in different clinics. For details execute
   `?zombie_rehab`.

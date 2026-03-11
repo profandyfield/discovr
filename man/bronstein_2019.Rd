@@ -27,8 +27,8 @@ The full dataset is available at \doi{10.1016/j.jarmac.2018.09.005}.
 \itemize{
 \item \strong{id} (ResponseID in the original dataset): participant ID
 \item \strong{fake_newz} (ZBelief_Fake in the original dataset): participants viewed 12 fake news headlines, each with a brief description and photo, and rated their accuracy (1 = Not at all accurate, 4 = Very accurate). This variable is the average rating converted to a z-score.
-\item \strong{delusionz} (ZPDI_Total in the original dataset): Peter's et al Delusion Inventory (PDI), which uses statements such as “Do you ever feel as if there is a conspiracy against you?” to gauge a person's propensity for delusion-like thinking. Again, scores were converted to z-scores.
-\item \strong{thinkz_open} (ZAOT_Total in the original dataset):  open minded thinking was assessed with the Actively Open-minded Thinking (AOT) scale, on which people endorse statements such as “A person should always consider new possibilities” using a six-point scale (1 = strongly disagree, 6 = strongly agree). The total score was again converted to z.
+\item \strong{delusionz} (ZPDI_Total in the original dataset): Peter's et al Delusion Inventory (PDI), which uses statements such as "Do you ever feel as if there is a conspiracy against you?" to gauge a person's propensity for delusion-like thinking. Again, scores were converted to z-scores.
+\item \strong{thinkz_open} (ZAOT_Total in the original dataset):  open minded thinking was assessed with the Actively Open-minded Thinking (AOT) scale, on which people endorse statements such as "A person should always consider new possibilities" using a six-point scale (1 = strongly disagree, 6 = strongly agree). The total score was again converted to z.
 \item \strong{thinkz_anal} (ZRF_Total in the original dataset): Analytic thinking was assessed using the Cognitive Reflection Test (CRT), which uses several problems that have intuitive-but-incorrect responses. Participants must override their intuition to get the correct answer. Over 7 items, higher scores (converted to z-scores again) indicate a greater tendency to use an analytic cognitive style.
 }
 }

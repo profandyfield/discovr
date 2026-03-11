@@ -13,7 +13,7 @@
 #'
 #' **Getting started**:
 #'
-#' I recommend working through [this tutorial](https://milton-the-cat.rocks/learnr/r/r_getting_started/) on how to install, set up and work within R and RStudio before starting the interactive tutorials.
+#' I recommend working through [this playlist of tutorials](https://www.youtube.com/playlist?list=PLEzw67WWDg83weG3idsgy4wuOIJAashA2&si=PiI-sDvqc1DkaWOq) on how to install, set up and work within R and RStudio before starting the interactive tutorials.
 #'
 #' **Running a tutorial**:
 #'
@@ -67,21 +67,25 @@
 #' * [acdc]: Data about whether Bon Scott or Brian Johnson is the best singer of AC/DC.
 #' * [album_sales]: Fictitious data about predicting album sales from advertising, airplay and the band's image.
 #' * [alien_scents]: Fictitious data about training sniffer dogs to detect alien space lizards when they try to mask their identity with different scents. See also [sniffer_dogs].
-#' * [angry_pigs]: fictitious data about whether playing the video game angry pigs makes people more aggressive towards pigs. See also [angry_real].
-#' * [angry_real]: fictitious data about whether playing the video game angry pigs makes people more aggressive in everyday life. See also [angry_pigs].
+#' * [angry_pigs]: Fictitious data about whether playing the video game angry pigs makes people more aggressive towards pigs. See also [angry_real].
+#' * [angry_real]: Fictitious data about whether playing the video game angry pigs makes people more aggressive in everyday life. See also [angry_pigs].
 #' * [animal_dance]: Fictitious data about training cats and dogs to dance.
+#' * [band_personality]: Fictitious data about predicting the instrument played from personality traits. See also [sing_or_guitar].
 #' * [beckham_1929]: Data from a study by Beckham (1929).
+#' * [bernard_2012]: Data from a study by Bernard et al. (2012).
 #' * [big_hairy_spider]: Fictitious data about whether anxiety is greater after exposure to real spiders or pictures of spiders.
 #' * [biggest_liar]: Fictitious data about creativity and telling lies.
 #' * [bronstein_2019]: Data about whether delusion proneness predicts belief in fake news because of less analytic thinking.
 #' * [bronstein_miss_2019]: The data in [bronstein_2019] but with missing values inserted using MCAR amputation.
+#' * [burnout]: Fictitious data about predicting burnout in lecturers from various sources of stress.
 #' * [catterplot]: Fictitious data for plotting a catterplot.
 #' * [cat_dance]: Fictitious data about training cats to dance.
 #' * [cat_reg]: Fictitious data about training cats to dance.
-#' * [cetinkaya_2006]: data from a study by Cetinkaya and Domjan (2006) about quails with sexual fetishes. Seriously.
+#' * [cetinkaya_2006]: Data from a study by Cetinkaya and Domjan (2006) about quails with sexual fetishes. Seriously.
 #' * [chamorro_premuzic]: Data about what students want (personality wise) from their lecturers.
 #' * [child_aggression]: Fictitious data (based on real research) about predicting aggression in children.
 #' * [coldwell_2006]: Data predicting childhood adjustment from various parenting variables.
+#' * [condom]: Fictitious data predicting condom use from relevant beliefs and experiences.
 #' * [cosmetic]: Fictitious multilevel data predicting quality of life from cosmetic surgery.
 #' * [daniels_2012]: Data about the effects of sexualised sports images on self-image.
 #' * [dark_lord]: Fictitious data about the subliminal messages in songs.
@@ -89,6 +93,8 @@
 #' * [dog_training]: Data about the training dogs to vocalise when they sniff alien life forms.
 #' * [download]: Fictitious data about the download music festival and being smelly.
 #' * [df_beta]: Fictitious data used to illustrate the DF Beta statistic.
+#' * [display]: Fictitious data about theory of mind and display rule understanding.
+#' * [distracted_by_social_media]: Fictitious data about the effect of social media distraction on exam performance.
 #' * [eel]: Fictitious data about a randomized control trial to test whether eel therapy is an effective treatment of constipation.
 #' * [elephooty]: Fictitious data about elephants playing football (soccer).
 #' * [escape]: Fictitious data about whether I'm a better songwriter than my school bandmate Malcolm.
@@ -100,18 +106,21 @@
 #' * [gelman_2009]: Data used to critically evaluate the explanations (and claim) that there are more beautiful women than men in the world.
 #' * [glastonbury]: More fictitious data about music festivals and being smelly.
 #' * [goggles]: Fictitious data about whether alcohol affects perception of physical attractiveness.
-#' * [goggles_lighting]: fictitious data about the moderating effect of lighting on the ratings of attractivenesses of faces after different doses of alcohol.
+#' * [goggles_lighting]: Fictitious data about the moderating effect of lighting on the ratings of attractivenesses of faces after different doses of alcohol.
 #' * [grades]: Fictitious data about statistics grades.
+#' * [handlebars]: Fictional data about national trends in bike riding behaviour.
+#' * [hangover]: Fictitious data about the efficacy of different drinks as cures for a hangover.
+#' * [hiccups]: Fictitious data on digital rectal stimulation and hiccups.
+#' * [hill_2007]: Data from Hill et al. (2007) testing the effect of different forms of psychoeducation on exercise behaviour.
+#' * [honesty_lab]: Fictitious data about perceptions of honesty.
+#' * [horoscope]: Fictional data exploring whether horoscopes are tomfoolery.
 #' * [ice_bucket]: Data about the ice bucket challenge.
 #' * [invisibility_base]: Fictitious data about how much mischief people would get up to if they had an invisibility cloak using a pre-post study design.
 #' * [invisibility_cloak]: Fictitious data about how much mischief people would get up to if they had an invisibility cloak using an independent design.
 #' * [invisibility_rm]: Fictitious data about how much mischief people would get up to if they had an invisibility cloak but using a repeated measures design.
-#' * [hangover]: fictitious data about the efficacy of different drinks as cures for a hangover.
-#' * [hiccups]: Fictitious data on digital rectal stimulation and hiccups.
-#' * [hill_2007]: Data from Hill et al. (2007) testing the effect of different forms of psychoeducation on exercise behaviour.
-#' * [honesty_lab]: Fictitious data about perceptions of honesty.
 #' * [jiminy_cricket]: Fictitious data about whether wishing on a star makes you successful.
 #' * [johns_2012]: Data about whether the colour red is a mating signal to men.
+#' * [lacourse_2001_females]: Data from a study by Lacourse et al. (2001). Female sample only.
 #' * [lambert_2012]: Data about whether pornography use is related to relationship commitment and infidelity.
 #' * [massar_2012]: Data about whether gossiping has an evolutionary function.
 #' * [mcnulty_2008]: Simulated data to match the results of a study about whether attractiveness is linked to the support given within a relationship.
@@ -129,30 +138,37 @@
 #' * [ong_2011]: Data about social media profile pictures and personality traits.
 #' * [ong_tidy]: Data about social media profile pictures and personality traits.
 #' * [penalty_shootout]: Fictitious data about predictors of penalty kick success in soccer (or whatever sport you enjoy).
+#' * [perham_2012]: Data from a study by Perham and Sykora (2012).
 #' * [pets]: Fictitious data about life satisfaction and whether you own a fish or a cat as a pet.
+#' * [piff_2012_pedestrian]: Data reconstructed from Figure 1B of Piff et al. (2012) about social class and driver behaviour towards pedestrians. See also [piff_2012_vehicle].
+#' * [piff_2012_vehicle]: Data reconstructed from Figure 1A of Piff et al. (2012) about social class and driver behaviour towards other vehicles. See also [piff_2012_pedestrian].
 #' * [profile_pic]: Fictitious data related to whether the number of friend requests from random people on social media is affected by whether your profile picture depicts you as single or part of a romantic couple.
 #' * [pubs]: Data illustrating the difference between an outlier and an influential case.
 #' * [puppies]: Fictitious data related to whether puppy therapy works.
 #' * [puppy_rct]: Fictitious data related to whether puppy therapy works when you adjust for a person's baseline happiness.
 #' * [puppy_love]: Fictitious data related to whether puppy therapy works when you adjust for a person's love of puppies.
-#' * [raq]: Fictitious data relating to a fictional questionnaire about R anxiety that is not an actual questionnaire.
 #' * [r_exam]: Fictitious data relating to an R exam at two universities.
+#' * [raq]: Fictitious data relating to a fictional questionnaire about R anxiety that is not an actual questionnaire.
 #' * [reality_tv]: Fictitious data relating to whether being on a reality TV show exacerbates personality disorder traits.
 #' * [roaming_cats]: Fictitious data about how far cats roam from their homes.
 #' * [rollercoaster]: Fictitious data about how roller-coaster induced fear affects attractiveness ratings.
+#' * [sage_editors_cant_play_football]: Fictional data about SAGE editors and their football prowess.
 #' * [santas_log]: Fictitious data related to whether the type and quantity of treat consumed on Christmas night affects whether elves successfully deliver presents.
+#' * [schutzwohl_2008]: Data from a study by Schützwohl (2008).
 #' * [self_help]: Fictitious data about whether self-help books improve relationship satisfaction.
 #' * [self_help_dsur]: Fictitious data about whether self-help books improve relationship satisfaction compared to statistics books.
 #' * [sharman_2015]: Data from Sharman & Dingle (2015) about whether listening to metal music increases anger.
 #' * [shopping]: Fictitious data about shopping.
+#' * [sing_or_guitar]: Fictitious data about predicting the instrument played from personality traits. See also [band_personality].
 #' * [sniffer_dogs]: Fictitious data about training sniffer dogs to detect alien space lizards when they try to mask their identity with different scents. See also [alien_scents].
 #' * [social_anxiety]: Fictitious (I think) data about whether social anxiety symptoms are specific to social anxiety.
 #' * [social_media]: Fictitious data about the effects of social media on grammar.
-#' * [soya]: fictitious data about the effects of eating soya on sperm count.
+#' * [sonnentag_2012]: Simulated data to approximate Figure 1 in Sonnentag (2012).
+#' * [soya]: Fictitious data about the effects of eating soya on sperm count.
 #' * [speed_date]: Fictitious data related to the extent to which interest in dating someone is affected by their looks, personality or the dating strategy they adopt.
-#' * [stalker]: fictitious data about therapy for stalking.
+#' * [stalker]: Fictitious data about therapy for stalking.
 #' * [students]: I can't even remember what this data file contains.
-#' * [superhero]: fictitious data about whether wearing different superhero costumes leads to more severe physical injuries.
+#' * [superhero]: Fictitious data about whether wearing different superhero costumes leads to more severe physical injuries.
 #' * [supermodel]: Fictitious data about supermodel salaries.
 #' * [switch]: Fictitious data relating to whether injuries from playing video console games can be mitigated by a warm up.
 #' * [tablets]: Fictitious data about predicting the desirability of computing tablets.
@@ -160,20 +176,19 @@
 #' * [tea_716]: Fictitious data based on real data about cognitive functioning and drinking tea.
 #' * [teaching]: Fictitious data about the success of different methods of teaching.
 #' * [teach_method]: More fictitious data about the success of different methods of teaching.
-#' * [text_messages]: fictitious data about whether use of messaging apps ruins your grammar.
+#' * [text_messages]: Fictitious data about whether use of messaging apps ruins your grammar.
 #' * [tosser]: Fictitious data relating to a fictional questionnaire about The Teaching of Statistics for Scientific Experiments, which is fictional.
 #' * [tuk_2011]: Data about whether needing to urinate helps decision making.
-#' * [tumour]: fictitious data about mobile phone use and brain tumours.
-#' * [tutor_marks]: fictitious data comparing 4 tutors marks of the same essays.
+#' * [tumour]: Fictitious data about mobile phone use and brain tumours.
+#' * [tutor_marks]: Fictitious data comparing 4 tutors marks of the same essays.
 #' * [van_bourg_2020]: Data from van Bourg et al (2020) relating to whether dogs would release their distressed owners from a box.
 #' * [video_games]: Fictitious data about the relationship between video game use, callous unemotional traits and aggression.
 #' * [williams]: Data relating to the development of a questionnaire to measure organizational ability.
 #' * [xbox]: Fictitious data relating injuries to the type of video console game played and the console it was played on.
-#' * [tuk_2011]: Data about whether needing to urinate helps decision making.
 #' * [zhang_sample]: Data about whether performing a maths test under a different name assists performance.
 #' * [zibarras_2008]: Data from Zibarras, Port, and Woods (2008) relating to the relationship between personality and creativity.
-#' * [zombie_growth]: fictitious data that mimics a randomised control trial over time testing an intervention to transform zombies back to their pre-zombified state.
-#' * [zombie_rehab]: fictitious data that mimics a randomised control trial testing an intervention to transform zombies back to their pre-zombified state in different clinics.
+#' * [zombie_growth]: Fictitious data that mimics a randomised control trial over time testing an intervention to transform zombies back to their pre-zombified state.
+#' * [zombie_rehab]: Fictitious data that mimics a randomised control trial testing an intervention to transform zombies back to their pre-zombified state in different clinics.
 #'
 #' @section Smart Alex solutions:
 #'

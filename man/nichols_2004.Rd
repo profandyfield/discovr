@@ -61,7 +61,7 @@ and dropped three others because of relatively low correlations with other items
 \item \strong{ias33}: responses (1-5) to the question \emph{When I feel lonely, I use the Internet to talk to others.}
 \item \strong{ias34}: responses (1-5) to the question \emph{When I use the Internet, I experience a buzz or a high (i.e., feeling elated).}
 \item \strong{ias35}: responses (1-5) to the question \emph{I use the Internet as a way of escaping the real world.}
-\item \strong{ias36}: responses (1-5) to the question \emph{I use the Internet as a way of escaping the “real world.”}
+\item \strong{ias36}: responses (1-5) to the question \emph{I use the Internet as a way of escaping the "real world."}
 }
 }
 \references{

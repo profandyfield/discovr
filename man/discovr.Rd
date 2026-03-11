@@ -19,7 +19,7 @@ Anyone teaching from or reading \href{https://www.discovr.rocks/}{Discovering St
 
 \strong{Getting started}:
 
-I recommend working through \href{https://milton-the-cat.rocks/learnr/r/r_getting_started/}{this tutorial} on how to install, set up and work within R and RStudio before starting the interactive tutorials.
+I recommend working through \href{https://www.youtube.com/playlist?list=PLEzw67WWDg83weG3idsgy4wuOIJAashA2&si=PiI-sDvqc1DkaWOq}{this playlist of tutorials} on how to install, set up and work within R and RStudio before starting the interactive tutorials.
 
 \strong{Running a tutorial}:
 
@@ -75,21 +75,25 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{acdc}: Data about whether Bon Scott or Brian Johnson is the best singer of AC/DC.
 \item \link{album_sales}: Fictitious data about predicting album sales from advertising, airplay and the band's image.
 \item \link{alien_scents}: Fictitious data about training sniffer dogs to detect alien space lizards when they try to mask their identity with different scents. See also \link{sniffer_dogs}.
-\item \link{angry_pigs}: fictitious data about whether playing the video game angry pigs makes people more aggressive towards pigs. See also \link{angry_real}.
-\item \link{angry_real}: fictitious data about whether playing the video game angry pigs makes people more aggressive in everyday life. See also \link{angry_pigs}.
+\item \link{angry_pigs}: Fictitious data about whether playing the video game angry pigs makes people more aggressive towards pigs. See also \link{angry_real}.
+\item \link{angry_real}: Fictitious data about whether playing the video game angry pigs makes people more aggressive in everyday life. See also \link{angry_pigs}.
 \item \link{animal_dance}: Fictitious data about training cats and dogs to dance.
+\item \link{band_personality}: Fictitious data about predicting the instrument played from personality traits. See also \link{sing_or_guitar}.
 \item \link{beckham_1929}: Data from a study by Beckham (1929).
+\item \link{bernard_2012}: Data from a study by Bernard et al. (2012).
 \item \link{big_hairy_spider}: Fictitious data about whether anxiety is greater after exposure to real spiders or pictures of spiders.
 \item \link{biggest_liar}: Fictitious data about creativity and telling lies.
 \item \link{bronstein_2019}: Data about whether delusion proneness predicts belief in fake news because of less analytic thinking.
 \item \link{bronstein_miss_2019}: The data in \link{bronstein_2019} but with missing values inserted using MCAR amputation.
+\item \link{burnout}: Fictitious data about predicting burnout in lecturers from various sources of stress.
 \item \link{catterplot}: Fictitious data for plotting a catterplot.
 \item \link{cat_dance}: Fictitious data about training cats to dance.
 \item \link{cat_reg}: Fictitious data about training cats to dance.
-\item \link{cetinkaya_2006}: data from a study by Cetinkaya and Domjan (2006) about quails with sexual fetishes. Seriously.
+\item \link{cetinkaya_2006}: Data from a study by Cetinkaya and Domjan (2006) about quails with sexual fetishes. Seriously.
 \item \link{chamorro_premuzic}: Data about what students want (personality wise) from their lecturers.
 \item \link{child_aggression}: Fictitious data (based on real research) about predicting aggression in children.
 \item \link{coldwell_2006}: Data predicting childhood adjustment from various parenting variables.
+\item \link{condom}: Fictitious data predicting condom use from relevant beliefs and experiences.
 \item \link{cosmetic}: Fictitious multilevel data predicting quality of life from cosmetic surgery.
 \item \link{daniels_2012}: Data about the effects of sexualised sports images on self-image.
 \item \link{dark_lord}: Fictitious data about the subliminal messages in songs.
@@ -97,6 +101,8 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{dog_training}: Data about the training dogs to vocalise when they sniff alien life forms.
 \item \link{download}: Fictitious data about the download music festival and being smelly.
 \item \link{df_beta}: Fictitious data used to illustrate the DF Beta statistic.
+\item \link{display}: Fictitious data about theory of mind and display rule understanding.
+\item \link{distracted_by_social_media}: Fictitious data about the effect of social media distraction on exam performance.
 \item \link{eel}: Fictitious data about a randomized control trial to test whether eel therapy is an effective treatment of constipation.
 \item \link{elephooty}: Fictitious data about elephants playing football (soccer).
 \item \link{escape}: Fictitious data about whether I'm a better songwriter than my school bandmate Malcolm.
@@ -108,18 +114,21 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{gelman_2009}: Data used to critically evaluate the explanations (and claim) that there are more beautiful women than men in the world.
 \item \link{glastonbury}: More fictitious data about music festivals and being smelly.
 \item \link{goggles}: Fictitious data about whether alcohol affects perception of physical attractiveness.
-\item \link{goggles_lighting}: fictitious data about the moderating effect of lighting on the ratings of attractivenesses of faces after different doses of alcohol.
+\item \link{goggles_lighting}: Fictitious data about the moderating effect of lighting on the ratings of attractivenesses of faces after different doses of alcohol.
 \item \link{grades}: Fictitious data about statistics grades.
+\item \link{handlebars}: Fictional data about national trends in bike riding behaviour.
+\item \link{hangover}: Fictitious data about the efficacy of different drinks as cures for a hangover.
+\item \link{hiccups}: Fictitious data on digital rectal stimulation and hiccups.
+\item \link{hill_2007}: Data from Hill et al. (2007) testing the effect of different forms of psychoeducation on exercise behaviour.
+\item \link{honesty_lab}: Fictitious data about perceptions of honesty.
+\item \link{horoscope}: Fictional data exploring whether horoscopes are tomfoolery.
 \item \link{ice_bucket}: Data about the ice bucket challenge.
 \item \link{invisibility_base}: Fictitious data about how much mischief people would get up to if they had an invisibility cloak using a pre-post study design.
 \item \link{invisibility_cloak}: Fictitious data about how much mischief people would get up to if they had an invisibility cloak using an independent design.
 \item \link{invisibility_rm}: Fictitious data about how much mischief people would get up to if they had an invisibility cloak but using a repeated measures design.
-\item \link{hangover}: fictitious data about the efficacy of different drinks as cures for a hangover.
-\item \link{hiccups}: Fictitious data on digital rectal stimulation and hiccups.
-\item \link{hill_2007}: Data from Hill et al. (2007) testing the effect of different forms of psychoeducation on exercise behaviour.
-\item \link{honesty_lab}: Fictitious data about perceptions of honesty.
 \item \link{jiminy_cricket}: Fictitious data about whether wishing on a star makes you successful.
 \item \link{johns_2012}: Data about whether the colour red is a mating signal to men.
+\item \link{lacourse_2001_females}: Data from a study by Lacourse et al. (2001). Female sample only.
 \item \link{lambert_2012}: Data about whether pornography use is related to relationship commitment and infidelity.
 \item \link{massar_2012}: Data about whether gossiping has an evolutionary function.
 \item \link{mcnulty_2008}: Simulated data to match the results of a study about whether attractiveness is linked to the support given within a relationship.
@@ -137,30 +146,37 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{ong_2011}: Data about social media profile pictures and personality traits.
 \item \link{ong_tidy}: Data about social media profile pictures and personality traits.
 \item \link{penalty_shootout}: Fictitious data about predictors of penalty kick success in soccer (or whatever sport you enjoy).
+\item \link{perham_2012}: Data from a study by Perham and Sykora (2012).
 \item \link{pets}: Fictitious data about life satisfaction and whether you own a fish or a cat as a pet.
+\item \link{piff_2012_pedestrian}: Data reconstructed from Figure 1B of Piff et al. (2012) about social class and driver behaviour towards pedestrians. See also \link{piff_2012_vehicle}.
+\item \link{piff_2012_vehicle}: Data reconstructed from Figure 1A of Piff et al. (2012) about social class and driver behaviour towards other vehicles. See also \link{piff_2012_pedestrian}.
 \item \link{profile_pic}: Fictitious data related to whether the number of friend requests from random people on social media is affected by whether your profile picture depicts you as single or part of a romantic couple.
 \item \link{pubs}: Data illustrating the difference between an outlier and an influential case.
 \item \link{puppies}: Fictitious data related to whether puppy therapy works.
 \item \link{puppy_rct}: Fictitious data related to whether puppy therapy works when you adjust for a person's baseline happiness.
 \item \link{puppy_love}: Fictitious data related to whether puppy therapy works when you adjust for a person's love of puppies.
-\item \link{raq}: Fictitious data relating to a fictional questionnaire about R anxiety that is not an actual questionnaire.
 \item \link{r_exam}: Fictitious data relating to an R exam at two universities.
+\item \link{raq}: Fictitious data relating to a fictional questionnaire about R anxiety that is not an actual questionnaire.
 \item \link{reality_tv}: Fictitious data relating to whether being on a reality TV show exacerbates personality disorder traits.
 \item \link{roaming_cats}: Fictitious data about how far cats roam from their homes.
 \item \link{rollercoaster}: Fictitious data about how roller-coaster induced fear affects attractiveness ratings.
+\item \link{sage_editors_cant_play_football}: Fictional data about SAGE editors and their football prowess.
 \item \link{santas_log}: Fictitious data related to whether the type and quantity of treat consumed on Christmas night affects whether elves successfully deliver presents.
+\item \link{schutzwohl_2008}: Data from a study by Schützwohl (2008).
 \item \link{self_help}: Fictitious data about whether self-help books improve relationship satisfaction.
 \item \link{self_help_dsur}: Fictitious data about whether self-help books improve relationship satisfaction compared to statistics books.
 \item \link{sharman_2015}: Data from Sharman & Dingle (2015) about whether listening to metal music increases anger.
 \item \link{shopping}: Fictitious data about shopping.
+\item \link{sing_or_guitar}: Fictitious data about predicting the instrument played from personality traits. See also \link{band_personality}.
 \item \link{sniffer_dogs}: Fictitious data about training sniffer dogs to detect alien space lizards when they try to mask their identity with different scents. See also \link{alien_scents}.
 \item \link{social_anxiety}: Fictitious (I think) data about whether social anxiety symptoms are specific to social anxiety.
 \item \link{social_media}: Fictitious data about the effects of social media on grammar.
-\item \link{soya}: fictitious data about the effects of eating soya on sperm count.
+\item \link{sonnentag_2012}: Simulated data to approximate Figure 1 in Sonnentag (2012).
+\item \link{soya}: Fictitious data about the effects of eating soya on sperm count.
 \item \link{speed_date}: Fictitious data related to the extent to which interest in dating someone is affected by their looks, personality or the dating strategy they adopt.
-\item \link{stalker}: fictitious data about therapy for stalking.
+\item \link{stalker}: Fictitious data about therapy for stalking.
 \item \link{students}: I can't even remember what this data file contains.
-\item \link{superhero}: fictitious data about whether wearing different superhero costumes leads to more severe physical injuries.
+\item \link{superhero}: Fictitious data about whether wearing different superhero costumes leads to more severe physical injuries.
 \item \link{supermodel}: Fictitious data about supermodel salaries.
 \item \link{switch}: Fictitious data relating to whether injuries from playing video console games can be mitigated by a warm up.
 \item \link{tablets}: Fictitious data about predicting the desirability of computing tablets.
@@ -168,20 +184,19 @@ See the book or data descriptions for more details. This is a list of available 
 \item \link{tea_716}: Fictitious data based on real data about cognitive functioning and drinking tea.
 \item \link{teaching}: Fictitious data about the success of different methods of teaching.
 \item \link{teach_method}: More fictitious data about the success of different methods of teaching.
-\item \link{text_messages}: fictitious data about whether use of messaging apps ruins your grammar.
+\item \link{text_messages}: Fictitious data about whether use of messaging apps ruins your grammar.
 \item \link{tosser}: Fictitious data relating to a fictional questionnaire about The Teaching of Statistics for Scientific Experiments, which is fictional.
 \item \link{tuk_2011}: Data about whether needing to urinate helps decision making.
-\item \link{tumour}: fictitious data about mobile phone use and brain tumours.
-\item \link{tutor_marks}: fictitious data comparing 4 tutors marks of the same essays.
+\item \link{tumour}: Fictitious data about mobile phone use and brain tumours.
+\item \link{tutor_marks}: Fictitious data comparing 4 tutors marks of the same essays.
 \item \link{van_bourg_2020}: Data from van Bourg et al (2020) relating to whether dogs would release their distressed owners from a box.
 \item \link{video_games}: Fictitious data about the relationship between video game use, callous unemotional traits and aggression.
 \item \link{williams}: Data relating to the development of a questionnaire to measure organizational ability.
 \item \link{xbox}: Fictitious data relating injuries to the type of video console game played and the console it was played on.
-\item \link{tuk_2011}: Data about whether needing to urinate helps decision making.
 \item \link{zhang_sample}: Data about whether performing a maths test under a different name assists performance.
 \item \link{zibarras_2008}: Data from Zibarras, Port, and Woods (2008) relating to the relationship between personality and creativity.
-\item \link{zombie_growth}: fictitious data that mimics a randomised control trial over time testing an intervention to transform zombies back to their pre-zombified state.
-\item \link{zombie_rehab}: fictitious data that mimics a randomised control trial testing an intervention to transform zombies back to their pre-zombified state in different clinics.
+\item \link{zombie_growth}: Fictitious data that mimics a randomised control trial over time testing an intervention to transform zombies back to their pre-zombified state.
+\item \link{zombie_rehab}: Fictitious data that mimics a randomised control trial testing an intervention to transform zombies back to their pre-zombified state in different clinics.
 }
 }
 

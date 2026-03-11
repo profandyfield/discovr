@@ -141,6 +141,28 @@
 
 "animal_dance"
 
+#' Musicians and personality data
+#'
+#' A fictional dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' A musicologist was interested in whether the instrument played in a rock band could be predicted by their personality traits.
+#' She measured personality traits in 434 musicians and noted the instrument they played. See also [sing_or_guitar].
+#' The data contains the following variables:
+#'
+#'
+#'   * **id**: Participant's ID
+#'   * **neurotic**: participant's neuroticism score (high score = high neuroticism)
+#'   * **extroversion**: participant's extroversion score (high score = high extroversion)
+#'   * **agreeableness**: participant's agreeableness score (high score = high agreeableness)
+#'   * **conscientiousness**: participant's conscientiousness score (high score = high conscientiousness)
+#'   * **instrument**: the instrument played (singer, guitar, bass or drums)
+#'
+#' @format A tibble with 434 rows and 6 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/band_personality.csv](https://www.discovr.rocks/csv/band_personality.csv)
+
+"band_personality"
+
 #' Beckham (1929) data
 #'
 #' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
@@ -167,9 +189,9 @@
 #'
 #'   * **profession**: Profession of respondents
 #'   * **response**: response to the question as yes or no
-#'   * **happy**: frequencies of reponses to a question about whether black Americans were happy
-#'   * **you_happy**: frequencies of reponses to a question about whether they personally were happy
-#'   * **should_be_happy**: frequencies of reponses to a question about whether black Americans should be happy
+#'   * **happy**: frequencies of response to a question about whether black Americans were happy
+#'   * **you_happy**: frequencies of response to a question about whether they personally were happy
+#'   * **should_be_happy**: frequencies of response to a question about whether black Americans should be happy
 #'
 #' @format A tibble with 16 rows and 5 variables.
 #' @docType data
@@ -265,8 +287,8 @@
 #'
 #'   * **id** (ResponseID in the original dataset): participant ID
 #'   * **fake_newz** (ZBelief_Fake in the original dataset): participants viewed 12 fake news headlines, each with a brief description and photo, and rated their accuracy (1 = Not at all accurate, 4 = Very accurate). This variable is the average rating converted to a z-score.
-#'   * **delusionz** (ZPDI_Total in the original dataset): Peter's et al Delusion Inventory (PDI), which uses statements such as “Do you ever feel as if there is a conspiracy against you?” to gauge a person's propensity for delusion-like thinking. Again, scores were converted to z-scores.
-#'   * **thinkz_open** (ZAOT_Total in the original dataset):  open minded thinking was assessed with the Actively Open-minded Thinking (AOT) scale, on which people endorse statements such as “A person should always consider new possibilities” using a six-point scale (1 = strongly disagree, 6 = strongly agree). The total score was again converted to z.
+#'   * **delusionz** (ZPDI_Total in the original dataset): Peter's et al Delusion Inventory (PDI), which uses statements such as "Do you ever feel as if there is a conspiracy against you?" to gauge a person's propensity for delusion-like thinking. Again, scores were converted to z-scores.
+#'   * **thinkz_open** (ZAOT_Total in the original dataset):  open minded thinking was assessed with the Actively Open-minded Thinking (AOT) scale, on which people endorse statements such as "A person should always consider new possibilities" using a six-point scale (1 = strongly disagree, 6 = strongly agree). The total score was again converted to z.
 #'   * **thinkz_anal** (ZRF_Total in the original dataset): Analytic thinking was assessed using the Cognitive Reflection Test (CRT), which uses several problems that have intuitive-but-incorrect responses. Participants must override their intuition to get the correct answer. Over 7 items, higher scores (converted to z-scores again) indicate a greater tendency to use an analytic cognitive style.
 #'
 #' @format A tibble with 947 rows and 5 variables
@@ -294,6 +316,32 @@
 #'    * Bronstein, M. V., Pennycook, G., Bear, A., Rand, D. G., & Cannon, T. D. (2019). Belief in fake news is associated with delusionality, dogmatism, religious fundamentalism, and reduced analytic thinking. *Journal of Applied Research in Memory and Cognition*, 8(1), 108–117. \doi{10.1016/j.jarmac.2018.09.005}
 
 "bronstein_miss_2019"
+
+#' Burnout data
+#'
+#' A fictional dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Fictional data about burnout. Four hundred and sixty-seven lecturers completed questionnaire measures of `burnout` (burnt out or not),
+#' perceived `control` (high score = low perceived control), `coping` ability (high score = high ability to cope with stress),
+#' stress from `teaching` (high score = teaching creates a lot of stress for the person),
+#' stress from `research` (high score = research creates a lot of stress for the person) and stress from providing `pastoral` care
+#' (high score = providing pastoral care creates a lot of stress for the person).
+#' The data contains the following variables:
+#'
+#'
+#'   * **id**: Participant's ID
+#'   * **burnout**: whether the participant was classified as burnt out or not
+#'   * **control**: perceived control (high score = low perceived control)
+#'   * **coping**: coping ability (high score = high ability to cope with stress)
+#'   * **teaching**: stress from teaching (high score = teaching creates a lot of stress for the person)
+#'   * **research**: stress from research (high score = research creates a lot of stress for the person)
+#'   * **pastoral**: stress from providing pastoral care (high score = pastoral care creates a lot of stress for the person)
+#'
+#' @format A tibble with 467 rows and 7 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/burnout.csv](https://www.discovr.rocks/csv/burnout.csv)
+
+"burnout"
 
 #' Catterplot data
 #'
@@ -478,6 +526,37 @@
 
 "coldwell_2006"
 
+#' Condom use data
+#'
+#' A fictional dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Fictional data about condom use. An HIV researcher explored the factors that influenced condom use with a new partner
+#' (relationship less than 1 month old). The outcome measure was whether a condom was used. The predictor variables were mainly
+#' scales from the Condom Attitude Scale (Sacco et al., 1991): gender; the degree to which the person views their relationship as 'safe'
+#' from sexually transmitted disease; the degree to which previous experience influences attitudes towards condom use;
+#' whether or not the couple used a condom in their previous encounter; the degree of self-control that a person has when it comes to condom use;
+#' the degree to which the person perceives a risk from unprotected sex.
+#' The data contains the following variables:
+#'
+#'
+#'   * **id**: Participant's ID
+#'   * **safety**: the degree to which the person views their relationship as 'safe' from sexually transmitted disease
+#'   * **use**: whether a condom was used (unprotected or condom used)
+#'   * **gender**: participant's gender (male or female)
+#'   * **experience**: the degree to which previous experience influences attitudes towards condom use
+#'   * **previous**: whether the couple used a condom in their previous encounter (condom used, no condom, this was the first time with this partner)
+#'   * **self_control**: the degree of self-control that a person has when it comes to condom use
+#'   * **risk_perception**: the degree to which the person perceives a risk from unprotected sex
+#'
+#' @format A tibble with 100 rows and 8 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/condom.csv](https://www.discovr.rocks/csv/condom.csv)
+#' @references
+#'
+#'    * Sacco, W. P., Levine, B., Reed, D. & Thompson, K. (1991). Attitudes about condom use as an AIDS-relevant behavior: Their factor structure and relation to condom use. *Psychological Assessment: A Journal of Consulting and Clinical Psychology*, 3(2), 265–272. \doi{10.1037/1040-3590.3.2.265}
+
+"condom"
+
 #' Cosmetic surgery data
 #'
 #' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
@@ -606,6 +685,52 @@
 
 "df_beta"
 
+#' Data about display rule understanding
+#'
+#' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Fictional data about the relationship between theory of mind and display rule understanding. A display rule refers to displaying an appropriate emotion in a situation.
+#' For example, if you receive a present that you don't like, you should smile politely and say "Thank you, Auntie Kate, I've always wanted a rotting cabbage"; you do not start
+#' crying and scream "Why did you buy me a rotting cabbage?!" A psychologist believed that display rule understanding would be connecting to understanding others' mental states (having a 'theory of mind').
+#' He measured children's understanding of display rules (with a task that they could pass or fail),
+#' their age (months), and their ability to understand others' mental states ('theory of mind', measured with a false belief task that they could pass or fail).
+#' The data contains the following variables:
+#'
+#'   * **id**: Participant's ID
+#'   * **age**: the participant's age in months
+#'   * **fb**: Whether someone passed the false belief task (yes or no)
+#'   * **display**: Whether someone passed the display rule understanding task (yes or no)
+#'
+#' @format A tibble with 70 rows and 4 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/display.csv](https://www.discovr.rocks/csv/display.csv)
+
+"display"
+
+#' Data about being distracted by social media
+#'
+#' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Fictional data about being distracted by social media. On my statistics module students have weekly practical statistics
+#' classes in a computer laboratory. I've noticed that many students are studying social media more than the very interesting
+#' statistics assignments that I have set them. I wanted to see the impact that this behaviour had on their exam performance.
+#' I collected data from all 260 students on my module. I classified their attendance as being either more or less than 50% of their practical classes,
+#' and I classified them as someone who I'd noticed sneakily looking at social_media during their class, or someone who I'd never seen looking at social media.
+#' After the exam, I noted whether they passed or failed.
+#' The data contains the following variables:
+#'
+#'
+#'   * **attendance**: Whether someone was classified as attending more or less than 50% of their practical classes
+#'   * **social_media**: Whether someone was classified as a person who looked a social media during class (or not)
+#'   * **exam**: whether someone passed or failed their statistics exam
+#'   * **frequency**: the number of people falling into each combination of attendance, social media and exam performance
+#'
+#' @format A tibble with 8 rows and 4 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/distracted_by_social_media.csv](https://www.discovr.rocks/csv/distracted_by_social_media.csv)
+
+"distracted_by_social_media"
+
 #' Dog training data
 #'
 #' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
@@ -664,7 +789,7 @@
 #' * **mode**: From the Spotify API: "Mode indicates the modality (major or minor) of a track, the type of scale from which its melodic content is derived. Major is represented by 1 and minor is 0."
 #' * **speechiness**: From the Spotify API: "Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the recording (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value. Values above 0.66 describe tracks that are probably made entirely of spoken words. Values between 0.33 and 0.66 describe tracks that may contain both music and speech, either in sections or layered, including such cases as rap music. Values below 0.33 most likely represent music and other non-speech-like tracks."
 #' * **acousticness**: From the Spotify API: "A confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic."
-#' * **instrumentalness**: From the Spotify API: "Predicts whether a track contains no vocals. “Ooh” and “aah” sounds are treated as instrumental in this context. Rap or spoken word tracks are clearly “vocal”. The closer the instrumentalness value is to 1.0, the greater likelihood the track contains no vocal content. Values above 0.5 are intended to represent instrumental tracks, but confidence is higher as the value approaches 1.0."
+#' * **instrumentalness**: From the Spotify API: "Predicts whether a track contains no vocals. "Ooh" and "aah" sounds are treated as instrumental in this context. Rap or spoken word tracks are clearly "vocal". The closer the instrumentalness value is to 1.0, the greater likelihood the track contains no vocal content. Values above 0.5 are intended to represent instrumental tracks, but confidence is higher as the value approaches 1.0."
 #' * **liveness**: From the Spotify API: "Detects the presence of an audience in the recording. Higher liveness values represent an increased probability that the track was performed live. A value above 0.8 provides strong likelihood that the track is live."
 #' * **valence**: From the Spotify API: "A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry)."
 #' * **tempo**: From the Spotify API: "The overall estimated tempo of a track in beats per minute (BPM). In musical terminology, tempo is the speed or pace of a given piece and derives directly from the average beat duration."
@@ -1003,6 +1128,28 @@
 
 "social_media"
 
+#' Data about riding bikes
+#'
+#' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Fictional data about national trends in bike riding. I have a soft spot for the Netherlands.
+#' The Dutch travel by bike much more than the English. I noticed that many more Dutch people cycle while steering with only one hand.
+#' I pointed this out to one of my Dutch friends, Birgit Mayer, and she said that I was a crazy English fool and that Dutch people did not cycle one-handed.
+#' Several weeks of me pointing at one-handed cyclists and her pointing at two-handed cyclists ensued. To put it to the test
+#' I counted the number of Dutch and English cyclists who ride with one or two hands on the handlebars. I didn't really do this.
+#' The data contains the following variables:
+#'
+#'
+#'   * **hands**: Whether someone was rode a bike with one or two hands on the handlebars
+#'   * **nationality**: Whether someone was Dutch or English
+#'   * **frequency**: the number of people falling into each combination of hands and nationality
+#'
+#' @format A tibble with 4 rows and 3 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/handlebars.csv](https://www.discovr.rocks/csv/handlebars.csv)
+
+"handlebars"
+
 #' Hangover cure data
 #'
 #' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
@@ -1093,6 +1240,32 @@
 #' @source [www.discovr.rocks/csv/honesty_lab.csv](https://www.discovr.rocks/csv/honesty_lab.csv)
 
 "honesty_lab"
+
+#' Data about horoscopes
+#'
+#' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#'  Fictional data exploring whether horoscopes are tomfoolery. In a hypothetical universe, I recruited 2201 people, made a note of their star sign
+#'  (this variable, obviously, has 12 categories: Capricorn, Aquarius, Pisces, Aries, Taurus, Gemini, Cancer, Leo, Virgo, Libra, Scorpio and Sagittarius)
+#'  and whether they believed in horoscopes (this variable has two categories: believer or unbeliever). I sent them an identical horoscope about events
+#'  in the next month, which read "August is an exciting month for you. You will make friends with a tramp in the first week and cook him a cheese omelette.
+#'  Curiosity is your greatest virtue, and in the second week, you'll discover knowledge of a subject that you previously thought was boring. Statistics perhaps.
+#'  You might purchase a book around this time that guides you towards this knowledge. Your new wisdom leads to a change in career around the third week,
+#'  when you ditch your current job and become an accountant. By the final week you find yourself free from the constraints of having friends,
+#'  your boy/girlfriend has left you for a Russian ballet dancer with a glass eye, and you now spend your weekends doing loglinear analysis
+#'  by hand with a pigeon called Hephzibah for company." At the end of August I interviewed these people and I classified the horoscope as having come true, or not,
+#'  based on how closely their lives had matched the fictitious horoscope. The data contains the following variables:
+#'
+#'   * **star_sign**: The person's star sign (Capricorn, Aquarius, Pisces, Aries, Taurus, Gemini, Cancer, Leo, Virgo, Libra, Scorpio and Sagittarius)
+#'   * **believe**: Whether the perwson believes in horoscopes (unbeliever or believer)
+#'   * **true**: Whether the horoscope came true (Horoscope didn't come true, Horoscope came true)
+#'   * **frequency**: the number of people falling into each combination of star sign, belief in star signs and whether the horoscope came true
+#'
+#' @format A tibble with 48 rows and 4 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/horoscope.csv](https://www.discovr.rocks/csv/horoscope.csv)
+
+"horoscope"
 
 
 #' Ice bucket challenge data
@@ -1575,7 +1748,7 @@
 #' * **ias33**: responses (1-5) to the question \emph{When I feel lonely, I use the Internet to talk to others.}
 #' * **ias34**: responses (1-5) to the question \emph{When I use the Internet, I experience a buzz or a high (i.e., feeling elated).}
 #' * **ias35**: responses (1-5) to the question \emph{I use the Internet as a way of escaping the real world.}
-#' * **ias36**: responses (1-5) to the question \emph{I use the Internet as a way of escaping the “real world.”}
+#' * **ias36**: responses (1-5) to the question \emph{I use the Internet as a way of escaping the "real world."}
 #'
 #'
 #' @format A tibble with 207 rows and 38 variables.
@@ -1764,6 +1937,52 @@
 #' @source [www.discovr.rocks/csv/pets.csv](https://www.discovr.rocks/csv/pets.csv)
 
 "pets"
+
+#' Data about social class and driver behaviour towards pedestrians
+#'
+#' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#'  The behaviour of drivers has been used to claim that people of a higher social class are more unpleasant (Piff et al., 2012).
+#'  Piff and colleagues classified social class by the type of car on a five-point scale and observed whether the drivers cut
+#'  in front of other cars at a busy intersection (see [piff_2012_vehicle]) and in a separate study whether drivers cut off pedestrians at a crossing (these data).
+#'  These data are reconstructed from Figure 1B of Piff et al. (2012):
+#'
+#'   * **id**: Case ID
+#'   * **vehicle**: observers codes of vehicle status (make, age, and appearance) to index drivers social class from 1 to 5
+#'   * **pedestrian_cut**: Whether the driver cut off pedestrians at a crossing
+#'
+#' @format A tibble with 152 rows and 3 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/piff_2012_pedestrian.csv](https://www.discovr.rocks/csv/piff_2012_pedestrian.csv)
+#' @references
+#'
+#'    * Piff, P. K., Stancato, D. M., Côté, S., Mendoza-Dentona, R., & Keltner, D. (2012). Higher social class predicts increased unethical behavior. *Proceedings of the National Academy of Sciences*, 109, 4086–4091. \doi{10.1073/pnas.1716910114}
+
+
+"piff_2012_pedestrian"
+
+#' Data about social class and driver behaviour towards other vehicles
+#'
+#' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#'  The behaviour of drivers has been used to claim that people of a higher social class are more unpleasant (Piff et al., 2012).
+#'  Piff and colleagues classified social class by the type of car on a five-point scale and observed whether the drivers cut
+#'  in front of other cars at a busy intersection (these data) and in a separate study whether drivers cut off pedestrians at a crossing (see [piff_2012_pedestrian]).
+#'  These data are reconstructed from Figure 1A of Piff et al. (2012):
+#'
+#'   * **id**: Case ID
+#'   * **vehicle**: observers codes of vehicle status (make, age, and appearance) to index drivers social class from 1 to 5
+#'   * **vehicle_cut**: Whether the driver cut in front of other cars at a busy intersection
+#'
+#' @format A tibble with 274 rows and 3 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/piff_2012_vehicle.csv](https://www.discovr.rocks/csv/piff_2012_vehicle.csv)
+#' @references
+#'
+#'    * Piff, P. K., Stancato, D. M., Côté, S., Mendoza-Dentona, R., & Keltner, D. (2012). Higher social class predicts increased unethical behavior. *Proceedings of the National Academy of Sciences*, 109, 4086–4091. \doi{10.1073/pnas.1716910114}
+
+
+"piff_2012_vehicle"
 
 
 #' Profile picture data
@@ -2002,6 +2221,26 @@
 
 "rollercoaster"
 
+#' Data about SAGE editors and their football prowess
+#'
+#' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Fictional data about SAGE editors and their football prowess. Certain former editors of mine at SAGE
+#'  like to think they're great at football (soccer). To see whether they are better than Sussex lecturers and
+#'  postgraduates we invited employees of SAGE to join in our football matches. Every person played in one match.
+#'  Over many matches, we counted the number of players that scored goals. The data contains the following variables:
+#'
+#'
+#'   * **employer**: Whether someone was employed by University of Sussex or SAGE publications
+#'   * **score**: Whether someone scored or not in the game they played
+#'   * **frequency**: the number of people falling into each combination of employer and scored
+#'
+#' @format A tibble with 4 rows and 3 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/sage_editors_cant_play_football.csv](https://www.discovr.rocks/csv/sage_editors_cant_play_football.csv)
+
+"sage_editors_cant_play_football"
+
 #' Self-help book data
 #'
 #' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
@@ -2131,6 +2370,26 @@
 
 "self_help_dsur"
 
+#' Singers, guitarists and personality data
+#'
+#' A fabricated dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' A musicologist was interested in whether the instrument played in a rock band could be predicted by their personality traits.
+#' She measured personality traits in 200 musicians and noted whether they were the singer of guitarist. See also [band_personality].
+#' The data contains the following variables:
+#'
+#'
+#'   * **id**: Participant's ID
+#'   * **extroversion**: participant's extroversion score (high score = high extroversion)
+#'   * **agreeableness**: participant's agreeableness score (high score = high agreeableness)
+#'   * **instrument**: the instrument played (singer, guitar, bass or drums)
+#'
+#' @format A tibble with 200 rows and 4 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/sing_or_guitar.csv](https://www.discovr.rocks/csv/sing_or_guitar.csv)
+
+"sing_or_guitar"
+
 
 #' Sharman & Dingle (2015) data
 #'
@@ -2159,7 +2418,7 @@
 
 #' Shopping and exercise data
 #'
-#' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A fictional dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' According to some highly unscientific research done by a UK department store chain and reported in Marie Claire magazine, shopping is good for you.
 #' They found that the average woman spends 150 minutes and walks 2.6 miles when she shops, burning off around 385 calories. In contrast, men spend only about 50 minutes shopping, covering 1.5 miles.
@@ -2177,7 +2436,7 @@
 
 #' Sniffer dogs
 #'
-#' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A fabricated dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' When the alien invasion comes we'll need spaniels (or possibly other dogs, but lets hope its mainly spaniels because spaniels are cool)
 #' to help us to identify the space lizards. The top-secret government agency for Training Extra-terrestrial Reptile Detection (TERD) was put together
@@ -2232,9 +2491,32 @@
 
 "social_anxiety"
 
-#' Soya and sperm counts data
+#' Data exploring time pressure and work detachment
 #'
 #' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#'
+#' Simulated data to approximate Figure 1 in Sonnentag (2012). Research suggests that people who can switch off from work (detachment) during off-hours are more satisfied with life and have fewer symptoms of psychological strain (Sonnentag, 2012).
+#' Factors at work, such as time pressure, affect your ability to detach when away from work. A study of 1709 employees measured their time pressure at work (no time pressure, low, medium, high and very high time pressure).
+#' The data contains the following variables:
+#'
+#'
+#'   * **time_pressure**: time pressure at work (no time pressure, low, medium, high and very high time pressure)
+#'   * **detachment**: Degree to which someone can switch off from work during off-hours (low detachment or very low detachment)
+#'   * **frequency**: the number of people falling into each combination of time pressure and detachment
+#'
+#' @format A tibble with 10 rows and 3 variables.
+#' @docType data
+#' @source [www.discovr.rocks/csv/sonnentag_2012.csv](https://www.discovr.rocks/csv/sonnentag_2012.csv)
+#' @references
+#'
+#'    * Sonnentag, S. (2012). Psychological detachment from work during leisure time: The benefits of mentally disengaging from work. *Current Directions in Psychological Science*, 21, 114–118. \doi{10.1177/0963721411434979}
+
+
+"sonnentag_2012"
+
+#' Soya and sperm counts data
+#'
+#' A fictional dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #' I read a story in a newspaper (yes, back when they existed) claiming that the chemical genistein, which is
 #' naturally occurring in soya, was linked to lowered sperm counts in Western males. When you read the actual study,
@@ -2260,7 +2542,7 @@
 
 #' Speed dating data
 #'
-#' A dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
+#' A fictional dataset from Field, A. P. (2026). Discovering statistics using R and RStudio (2nd ed.). London: Sage.
 #'
 #'  Imagine a scientist designed a study to look at the interplay between looks, personality and
 #'  dating strategies on evaluations of a date. She set up a speed-dating night with 9 tables at which there

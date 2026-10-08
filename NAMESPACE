@@ -65,9 +65,11 @@ export(ssoass_pal)
 export(tol_muted_pal)
 export(virtual_pal)
 import(learnr)
-importFrom(ggplot2,discrete_scale)
-importFrom(ggplot2,scale_color_gradientn)
-importFrom(ggplot2,scale_fill_gradientn)
+importFrom(ggplot2,
+  discrete_scale,
+  scale_color_gradientn,
+  scale_fill_gradientn
+)
 importFrom(glue,glue)
 importFrom(grDevices,colorRampPalette)
 importFrom(scales,manual_pal)

@@ -265,4 +265,9 @@ Useful links:
 \author{
 \strong{Maintainer}: Andy Field \email{andyf@sussex.ac.uk} [copyright holder]
 
+Authors:
+\itemize{
+  \item Andy Field \email{andyf@sussex.ac.uk} [copyright holder]
+}
+
 }

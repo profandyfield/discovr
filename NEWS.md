@@ -1,5 +1,7 @@
 # discovr (development version)
 
+* Fixed text about heteroscedasticity with one predictor in `discovr_08`
+* Replaced text about quails in `discovr_04`
 * Replaced `animal_bride` data (not used in book) with `pets` data (used in book) and documented
 * Added and documented the following data sets for Smart Alex tasks
   - `band_personality`

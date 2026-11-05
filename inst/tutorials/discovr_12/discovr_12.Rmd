@@ -322,7 +322,7 @@ pre_lm <- lm(xxx ~ xxxx, data = xxxx)
 
 ```{r cov_ind-hint-2}
 # fit the model:
-pre_lm <- lm(puppy_love ~ dose, data = puptreat_tib)
+pre_lm <- lm(pre_happy ~ dose, data = puptreat_tib)
 # now summarize it with anova()
 ```
 
@@ -610,7 +610,7 @@ contrasts(puptreat_tib$dose) # This line prints the contrast weights so we can c
 <div class="tip">
   `r cat_space()` **Tip**
   
-  Remember that `r rproj()` will create dummy variables for `dose` based on the contrasts you set, so you don't need to create the variables `contrast 1` and `contrast 2` in the equation; you need only enter `dose` as a predictor. Similarly, to get the interaction terms you need only specify `dose:puppy_love`.
+  Remember that `r rproj()` will create dummy variables for `dose` based on the contrasts you set, so you don't need to create the variables `contrast 1` and `contrast 2` in the equation; you need only enter `dose` as a predictor. Similarly, to get the interaction terms you need only specify `dose:pre_happy`.
 </div>
 
 
@@ -637,7 +637,7 @@ So, you create a model using `lm()` in the usual way, then within `Anova()` repl
 
 #### `r alien()` Alien coding challenge
 
-Use the `lm()` function to fit a model in which `happiness` is predicted from the covariate (`puppy_love`) and `dose`, and summarize the effects with *F*-statistics based on Type III sums of squares.
+Use the `lm()` function to fit a model in which `happiness` is predicted from the covariate (`pre_happy`) and `dose`, and summarize the effects with *F*-statistics based on Type III sums of squares.
 
 ```{r puptreat_oc}
 puppy_vs_none <- c(-2/3, 1/3, 1/3)

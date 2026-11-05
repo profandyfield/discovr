@@ -1384,7 +1384,9 @@ compare_performance(soc_anx_lm, soc_anx_obq_lm) |>
   display(digits = 3)
 check_model(soc_anx_obq_lm)
 model_parameters(soc_anx_obq_lm, vcov = "HC4") |> 
-  display(digits = 3)
+  display(digits = 3) # for unstandardized parameter estimates
+model_parameters(soc_anx_obq_lm, vcov = "HC4", standardize = "refit") |> 
+  display(digits = 3) # for standardized parameter estimates
 ```
 
 

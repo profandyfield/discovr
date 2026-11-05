@@ -1231,7 +1231,7 @@ Each of 134 people was administered all questionnaires. Fit a hierarchical linea
 
 #### `r alien()` Alien coding challenge
 
-Use the code box to fit these models and compare using `test_wald()`.
+Use the code box to fit these models and compare using `test_wald()`. [You will get an error message, but it is explained after the exercise.]{.lbl}
 
 ```{r soc_anx, exercise = TRUE, exercise.lines = 15, fig.height = 10}
 
@@ -1304,7 +1304,9 @@ test_wald(soc_anx_lm, soc_anx_obq_lm) |>
   display(digits = 3)
 check_model(soc_anx_obq_lm)
 model_parameters(soc_anx_obq_lm, vcov = "HC4") |> 
-  display(digits = 3)
+  display(digits = 3) # for unstandardized parameter estimates
+model_parameters(soc_anx_obq_lm, vcov = "HC4", standardize = "refit") |> 
+  display(digits = 3) # for standardized parameter estimates
 ```
 
 

@@ -106,9 +106,9 @@ Remembering that dose will be split into two dummy variables reflecting contrast
 
 $$
 \begin{aligned}
-\text{happy (post)}_i = \ &\hat{b}_0 + \hat{b}_1\text{happy (pre)}_i + \hat{b}_2\text{contrast 1}_i+ \hat{b}_3\text{contrast 2}_i \\
-\quad &+ \hat{b}_4[\text{contrast 1} \times \text{happy (pre)}]_i + \\
-\quad &+ \hat{b}_5[\text{contrast 2} \times \text{happy (pre)}]_i + e_i
+\text{happy (post)}_i = \ &\hat{b}_0 + \hat{b}_1\text{happy (pre)}_i + \hat{b}_2\text{contrast 1}_i+ \hat{b}_3\text{contrast 2}_i + \\
+\quad &\hat{b}_4[\text{contrast 1} \times \text{happy (pre)}]_i + \\
+\quad &\hat{b}_5[\text{contrast 2} \times \text{happy (pre)}]_i + e_i
 \end{aligned}
 $$
 

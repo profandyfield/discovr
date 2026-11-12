@@ -253,7 +253,7 @@ aggress_lm <- lm(...)
 aggress_lm <- lm(aggress ~ caunts*vid_game, data = vids_cent_tib)
 # or (most explicit):
 aggress_lm <- lm(aggress ~ caunts + vid_game + caunts:vid_game, data = vids_cent_tib)
-# now display the parameters with tidy()
+# now display the parameters with model_parameters()
 ```
 
 ## `r user_visor()` [Moderation]{.alt}: Evaluate the model [(B)]{.lbl}

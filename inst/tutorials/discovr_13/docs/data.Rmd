@@ -15,12 +15,12 @@ Set up an `r rstudio()` project in the way that [I recommend in this video](http
 goggles_tib <- here::here("data/goggles.csv") |>
   read_csv() |>
   mutate(
-    facetype = as_factor(facetype),
-    alcohol = as_factor(alcohol)
+    facetype = as_factor(facetype) |> fct_relevel("Unattractive"),
+    alcohol = as_factor(alcohol) |> fct_relevel("Placebo", "Low dose", "High dose")
   )
 ```
 
-This code reads in the data and converts the variables `alcohol` and `facetype` to factors (categorical variable). 
+This code reads in the data and converts the variables `alcohol` and `facetype` to factors (categorical variable) and sets the levels to be in the order we want them. 
 
 For the xbox data use this code (in which I have been explicit in setting certain categories as the first level of the factor using `fct_relevel()`):
 
